@@ -24,3 +24,5 @@ group by itemcode
 ) b
 where a.itemcode = b.itemcode and a.qty1 <> b.qty1
 order by 1
+
+-- what's up
