@@ -1,0 +1,2461 @@
+
+
+2010-04-16   09:32 Source Management Initialization...
+Initialization of SccInitialize() Failed
+Restoring SCC Offline Status Cache from last backup.
+4823 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-16   09:33 Source Management Initialization...
+Initialization of SccInitialize() Failed
+Restoring SCC Offline Status Cache from last backup.
+4823 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+Initialization of SccInitialize() Failed
+
+
+2010-04-16   09:43 Source Management Initialization...
+Initialization of SccInitialize() Failed
+Restoring SCC Offline Status Cache from last backup.
+4823 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-16   09:45 Source Management Initialization...
+Initialization of SccInitialize() Failed
+Restoring SCC Offline Status Cache from last backup.
+4823 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+Initialization of SccInitialize() Failed
+
+
+2010-04-16   09:54 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4823 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-16   09:55 Source control terminated
+
+
+2010-04-16   10:15 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) version 1.0
+Operation Completed
+Reverting check out of selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.0.
+Successfully reverted C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) back to version 1.0.
+Operation Completed
+Serializing SCC Status Cache...
+4823 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-16   10:17 Source control terminated
+
+
+2010-04-16   10:19 Source Management Initialization...
+Initialization of SccInitialize() Failed
+Restoring SCC Offline Status Cache from last backup.
+4823 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-16   10:21 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(d_bpm424i_01.srd) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\사업계획\d_bpm424i_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\사업계획\w_bpm424i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-16   17:50 Source control terminated
+
+
+2010-04-19   09:02 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4824 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-19   09:18 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(d_bpm424i_01.srd) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) version 1.1
+Operation Completed
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-19   11:57 Source control terminated
+
+
+2010-04-19   12:01 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked in new revision 1.2; old revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\사업계획\d_bpm424i_01.srd version 1.2 successfully checked in
+C:\kdac\PBL\PB90\사업계획\w_bpm424i.srw version 1.2 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-19   12:19 Source control terminated
+
+
+2010-04-19   12:26 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.2.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) version 1.2
+Operation Completed
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-19   14:56 Source control terminated
+
+
+2010-04-19   16:02 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-19   19:01 Source control terminated
+
+
+2010-04-20   07:59 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\사업계획\w_bpm424i.srw version 1.3 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-20   18:03 Source control terminated
+
+
+2010-04-21   09:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-21   17:45 Source control terminated
+
+
+2010-04-22   13:46 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4824 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-22   15:37 Source control terminated
+
+
+2010-04-22   16:38 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4824 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-23   10:00 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4824 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-23   13:26 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4824 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-04-23   15:49 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-23   17:45 Source control terminated
+
+
+2010-04-26   09:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\사업계획\d_bpm425i_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\사업계획\w_bpm425i.srw
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\사업계획\d_bpm425i_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\사업계획\w_bpm425i.srw version 1.0 successfully added to source control
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-26   17:48 Source control terminated
+
+
+2010-04-27   07:54 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm425i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm425i.srw) version 1.0
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm425i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\사업계획\w_bpm425i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-27   18:11 Source control terminated
+
+
+2010-04-28   08:29 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_find_exdiv.srf) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_exchange_danga.srf) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_exchange.srw) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-28   17:24 Source control terminated
+
+
+2010-04-29   08:27 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked out revision 1.3.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(w_bpm424i.srw) version 1.3
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked out revision 1.2.
+Successfully checked out C:\kdac\PBL\PB90\사업계획\bpm004.pbl(d_bpm424i_01.srd) version 1.2
+Operation Completed
+
+
+2010-04-29   14:31 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-04-29   18:03 Source control terminated
+
+
+2010-04-30   08:40 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/사업계획/bpm004.pbg Checked out revision 1.3.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/사업계획/d_bpm424i_01.srd Checked in new revision 1.3; old revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/사업계획/w_bpm424i.srw Checked in new revision 1.4; old revision 1.3.
+C:\kdac\PBL\PB90\사업계획\d_bpm424i_01.srd version 1.3 successfully checked in
+C:\kdac\PBL\PB90\사업계획\w_bpm424i.srw version 1.4 successfully checked in
+Operation Completed
+
+
+2010-04-30   11:25 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-04-30   15:18 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-03   07:54 Source control terminated
+
+
+2010-05-03   09:15 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-05-03   15:25 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4826 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom003.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\w_exchange.srw version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/commpdm.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\f_exchange_danga.srf version 1.1 successfully checked in
+C:\kdac\PBL\PB90\BOM\f_find_exdiv.srf version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/Wip/wip050.pbg Checked out revision 1.1.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/Wip/w_wip058u.srw Checked in new revision 1.4; old revision 1.3.
+ChangeMan Version Manager Info: /연구&생산/Wip/w_wip05fu.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\Wip\w_wip058u.srw version 1.4 successfully checked in
+C:\kdac\PBL\PB90\Wip\w_wip05fu.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-03   18:08 Source control terminated
+
+
+2010-05-03   19:18 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4826 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-05-04   11:00 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom201i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom001.pbl(w_bom201i.srw) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-04   15:48 Source control terminated
+
+
+2010-05-04   16:12 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-04   16:24 Source control terminated
+
+
+2010-05-04   16:28 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_exchange.srw) version 1.1
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\BOM\w_exchange.srw version 1.2 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4826 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-04   17:57 Source control terminated
+
+
+2010-05-06   00:36 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4826 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-05-06   07:44 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm134i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm011.pbl(w_mpm134i.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism130i.srw Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism140i.srw Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism190i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\IPIS종합효율\pis650.pbl(w_pism130i.srw) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\IPIS종합효율\pis650.pbl(w_pism140i.srw) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\IPIS종합효율\pis650.pbl(w_pism190i.srw) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm011.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm134i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\w_mpm134i.srw version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/pis650.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism130i.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism140i.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/IPIS종합효율/w_pism190i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\IPIS종합효율\w_pism130i.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\IPIS종합효율\w_pism140i.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\IPIS종합효율\w_pism190i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-06   18:05 Source control terminated
+
+
+2010-05-06   18:57 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-06   18:57 Source control terminated
+
+
+2010-05-07   07:46 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_exchange_danga.srf) version 1.1
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_find_exdiv.srf) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked out revision 1.2.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_exchange.srw) version 1.2
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-07   23:36 Source control terminated
+
+
+2010-05-10   08:59 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/BOM/commpdm.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked in new revision 1.2; old revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\BOM\f_exchange_danga.srf version 1.2 successfully checked in
+C:\kdac\PBL\PB90\BOM\f_find_exdiv.srf version 1.2 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-10   09:04 Source control terminated
+
+
+2010-05-10   09:04 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/BOM/bom003.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\BOM\w_exchange.srw version 1.3 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.0.
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\BOM\d_bom201_partlist_fta.srd
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\d_bom201_partlist_fta.srd version 1.0 successfully added to source control
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom001.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom201i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\w_bom201i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-10   18:08 Source control terminated
+
+
+2010-05-11   08:14 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom201_partlist_fta.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom201_partlist_fta.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom201i.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom001.pbl(w_bom201i.srw) version 1.1
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom201i.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\BOM\w_bom201i.srw version 1.2 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.1.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom201_partlist_fta.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\d_bom201_partlist_fta.srd version 1.1 successfully checked in
+Operation Completed
+
+
+2010-05-11   15:00 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-05-11   16:33 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/w_pisf040.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\ipis_km2000\pis791.pbl(w_pisf040.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/d_wo_report.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\ipis_km2000\pis791.pbl(d_wo_report.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-11   18:08 Source control terminated
+
+
+2010-05-12   08:24 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/pis791.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/d_wo_report.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/w_pisf040.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\ipis_km2000\d_wo_report.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\ipis_km2000\w_pisf040.srw version 1.1 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom116i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom001.pbl(w_bom116i.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom116i_indent_current.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom116i_indent_history.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom116i_indent_current.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom116i_indent_history.srd) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.1.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom116i_indent_current.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom116i_indent_history.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\d_bom116i_indent_current.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\BOM\d_bom116i_indent_history.srd version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom001.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom116i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\w_bom116i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4827 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-12   17:00 Source control terminated
+
+
+2010-05-13   09:38 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\Wip\f_wip050_cost_pcc950.srf
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\Wip\f_wip050_cost_pcc950.srf version 1.0 successfully added to source control
+Operation Completed
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\Wip\d_wip_cost_pcc950.srd
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\Wip\d_wip_cost_pcc950.srd version 1.0 successfully added to source control
+Operation Completed
+
+
+2010-05-13   13:52 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-13   16:00 Source control terminated
+
+
+2010-05-14   08:43 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked out revision 1.2.
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_exchange_danga.srf) version 1.2
+Successfully checked out C:\kdac\PBL\PB90\BOM\commpdm.pbl(f_find_exdiv.srf) version 1.2
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked out revision 1.3.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_exchange.srw) version 1.3
+Operation Completed
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-14   11:09 Source control terminated
+
+
+2010-05-14   11:16 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-05-14   13:50 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-14   15:15 Source control terminated
+
+
+2010-05-14   15:26 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\Wip\d_wip_exqty_pcc051.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\Wip\f_wip_detault_pcc051.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\Wip\f_wip_exqty_pcc051.srf
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.3.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.3.
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked in new revision 1.4; old revision 1.3.
+C:\kdac\PBL\PB90\Wip\d_wip_exqty_pcc051.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\Wip\f_wip_detault_pcc051.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\Wip\f_wip_exqty_pcc051.srf version 1.0 successfully added to source control
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/commpdm.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/f_exchange_danga.srf Checked in new revision 1.3; old revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/BOM/f_find_exdiv.srf Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\BOM\f_exchange_danga.srf version 1.3 successfully checked in
+C:\kdac\PBL\PB90\BOM\f_find_exdiv.srf version 1.3 successfully checked in
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_exchange.srw Checked in new revision 1.4; old revision 1.3.
+C:\kdac\PBL\PB90\BOM\w_exchange.srw version 1.4 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-14   17:46 Source control terminated
+
+
+2010-05-17   10:13 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\ipis_km2000\f_cmms_crud_logic.srf
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/commaii5.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/commaii5.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/commaii5.pbg Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\ipis_km2000\f_cmms_crud_logic.srf version 1.0 successfully added to source control
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/Wip/d_wip_exqty_pcc051.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\Wip\commwip.pbl(d_wip_exqty_pcc051.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/Wip/f_wip_detault_pcc051.srf Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\Wip\commwip.pbl(f_wip_detault_pcc051.srf) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/Wip/commwip.pbg Checked out revision 1.4.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/Wip/d_wip_exqty_pcc051.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/Wip/f_wip_detault_pcc051.srf Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\Wip\d_wip_exqty_pcc051.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\Wip\f_wip_detault_pcc051.srf version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-17   17:56 Source control terminated
+
+
+2010-05-18   09:05 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/w_pisf040.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\ipis_km2000\pis791.pbl(w_pisf040.srw) version 1.1
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/ipis_km2000/w_pisf040.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\ipis_km2000\w_pisf040.srw version 1.2 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm331i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm331i.srw) version 1.0
+Operation Completed
+
+
+2010-05-18   15:02 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-05-18   17:50 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4834 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-18   18:02 Source control terminated
+
+
+2010-05-19   09:07 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_03.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04_01.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04_02.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(d_mpm220u_03.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(d_mpm220u_04.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(d_mpm220u_04_01.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(d_mpm220u_04_02.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm220u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(w_mpm220u.srw) version 1.0
+Operation Completed
+
+
+2010-05-19   11:30 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4838 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-19   17:46 Source control terminated
+
+
+2010-05-20   09:22 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm220u_04_quad.srd
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_04_quad.srd version 1.0 successfully added to source control
+Operation Completed
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_left.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_quad.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_right.srd
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm020.pbg Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_left.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_quad.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_03_right.srd version 1.0 successfully added to source control
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04_02.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_04.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_04_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_04_02.srd version 1.1 successfully checked in
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_03.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_03.srd version 1.1 successfully checked in
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm220u.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\w_mpm220u.srw version 1.1 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04.srd Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(d_mpm220u_04.srd) version 1.1
+Operation Completed
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm220u_04.srd Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\d_mpm220u_04.srd version 1.2 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4839 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-20   17:21 Source control terminated
+
+
+2010-05-31   08:16 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4839 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-05-31   19:19 Source control terminated
+
+
+2010-05-31   21:39 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4839 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-01   07:46 Source control terminated
+
+
+2010-06-01   08:33 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4847 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-01   17:50 Source control terminated
+
+
+2010-06-03   07:35 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm120u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm120u.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm120u_02.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm010.pbl(d_mpm120u_02.srd) version 1.0
+Operation Completed
+Reverting check out of selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm120u.srw Checked out revision 1.0.
+Successfully reverted C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm120u.srw) back to version 1.0.
+Operation Completed
+Reverting check out of selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm120u_02.srd Checked out revision 1.0.
+Successfully reverted C:\kdac\PBL\PB90\금형공정\mpm010.pbl(d_mpm120u_02.srd) back to version 1.0.
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm220u.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm020.pbl(w_mpm220u.srw) version 1.1
+Operation Completed
+Serializing SCC Status Cache...
+4848 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-03   18:00 Source control terminated
+
+
+2010-06-04   07:42 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-06-04   17:43 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-06-04   18:07 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Quitting refresh scc status...
+succeeded.
+Serializing SCC Status Cache...
+4848 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-04   18:07 Source control terminated
+
+
+2010-06-07   08:37 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4850 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-07   17:00 Source control terminated
+
+
+2010-06-07   17:27 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4850 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-07   18:03 Source control terminated
+
+
+2010-06-08   09:15 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4850 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-08   18:56 Source control terminated
+
+
+2010-06-09   09:10 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4850 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-09   12:17 Source control terminated
+
+
+2010-06-10   10:24 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4851 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-10   18:03 Source control terminated
+
+
+2010-06-11   08:31 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4852 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-11   12:07 Source control terminated
+
+
+2010-06-14   09:26 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_bom115u.srw) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4853 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-14   18:06 Source control terminated
+
+
+2010-06-15   09:50 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4853 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-15   16:51 Source control terminated
+
+
+2010-06-16   09:12 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-06-16   11:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-16   17:33 Source control terminated
+
+
+2010-06-18   09:27 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-18   16:50 Source control terminated
+
+
+2010-06-18   16:50 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-18   16:50 Source control terminated
+
+
+2010-06-21   09:24 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-06-21   11:36 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4854 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-06-22   09:41 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4854 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-06-22   10:06 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4854 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-06-22   10:38 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm220u.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\w_mpm220u.srw version 1.2 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm120u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm120u.srw) version 1.0
+Operation Completed
+Reverting check out of selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm120u.srw Checked out revision 1.0.
+Successfully reverted C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm120u.srw) back to version 1.0.
+Operation Completed
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-22   14:17 Source control terminated
+
+
+2010-06-22   14:21 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_optionchk.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom001_115u_optionchk.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-22   15:58 Source control terminated
+
+
+2010-06-22   16:07 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-22   17:11 Source control terminated
+
+
+2010-06-23   09:40 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-23   13:53 Source control terminated
+
+
+2010-06-24   10:27 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-24   17:52 Source control terminated
+
+
+2010-06-25   09:07 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-25   17:42 Source control terminated
+
+
+2010-06-28   08:12 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm331i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\w_mpm331i.srw version 1.1 successfully checked in
+Operation Completed
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm410u_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm410u_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm420u_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm420u_01_print.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm420u_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm421u_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm430u_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm441i_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm441i_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm441i_03.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm410u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm420u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm421u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm430u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm441i.srw
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_01_print.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm421u_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm430u_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_03.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\w_mpm410u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\w_mpm420u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\w_mpm421u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\w_mpm430u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\w_mpm441i.srw version 1.0 successfully added to source control
+Operation Completed
+
+
+2010-06-28   14:05 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-28   18:41 Source control terminated
+
+
+2010-06-29   08:13 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_rytrep.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom001_115u_rytrep.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_preryt.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom001_115u_preryt.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-06-29   18:13 Source control terminated
+
+
+2010-06-30   08:13 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_01.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_02.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_03.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm011.pbl(d_mpm132i_01.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm011.pbl(d_mpm132i_02.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm011.pbl(d_mpm132i_03.srd) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm011.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_02.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm132i_03.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm132i_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm132i_02.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm132i_03.srd version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom003.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\w_bom115u.srw version 1.1 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.1.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_optionchk.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_preryt.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_rytrep.srd Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\BOM\d_bom001_115u_optionchk.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\BOM\d_bom001_115u_preryt.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\BOM\d_bom001_115u_rytrep.srd version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-01   12:27 Source control terminated
+
+
+2010-07-01   20:37 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4854 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-07-03   07:59 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4854 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-07-05   09:06 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-05   09:12 Source control terminated
+
+
+2010-07-05   09:15 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4854 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-05   20:33 Source control terminated
+
+
+2010-07-06   08:57 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm410u.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm112u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm112u.srw) version 1.0
+Operation Completed
+Reverting check out of selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm112u.srw Checked out revision 1.0.
+Successfully reverted C:\kdac\PBL\PB90\금형공정\mpm010.pbl(w_mpm112u.srw) back to version 1.0.
+Operation Completed
+Serializing SCC Status Cache...
+4857 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-06   17:47 Source control terminated
+
+
+2010-07-08   09:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm441i.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm441i.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm410u_01.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4857 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-08   12:10 Source control terminated
+
+
+2010-07-09   09:09 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4857 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-09   09:58 Source control terminated
+
+
+2010-07-09   12:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4857 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-09   12:39 Source control terminated
+
+
+2010-07-12   09:27 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm420u.srw Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm421u.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm420u.srw) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm421u.srw) version 1.0
+Operation Completed
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\w_mpm410u_01.srw
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\w_mpm410u_01.srw version 1.0 successfully added to source control
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u_01.srw Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm410u_01.srw) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_01.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_01_print.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_02.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm421u_01.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm420u_01.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm420u_01_print.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm420u_02.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm421u_01.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4857 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-12   13:34 Source control terminated
+
+
+2010-07-12   13:45 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_left.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_right.srd
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.2.
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_left.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_right.srd version 1.0 successfully added to source control
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01_left.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01_right.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm410u_01_left.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm410u_01_right.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_02.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm410u_02.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4859 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-12   18:57 Source control terminated
+
+
+2010-07-13   08:20 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-13   10:25 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-13   11:17 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4859 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-13   15:56 Source control terminated
+
+
+2010-07-13   17:03 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4859 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-13   18:00 Source control terminated
+
+
+2010-07-14   09:29 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-14   11:39 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-14   18:19 Source control terminated
+
+
+2010-07-15   08:25 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-15   18:05 Source control terminated
+
+
+2010-07-16   09:08 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.3.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01_left.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_01_right.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm410u_02.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_01_print.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm420u_02.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm421u_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u_01.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm420u.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm421u.srw Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm441i.srw Checked in new revision 1.1; old revision 1.0.
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_left.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_01_right.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm410u_02.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_01_print.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm420u_02.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm421u_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm410u.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm410u_01.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm420u.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm421u.srw version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm441i.srw version 1.1 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-16   10:21 Source control terminated
+
+
+2010-07-16   10:38 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-16   18:04 Source control terminated
+
+
+2010-07-16   18:51 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-07-16   19:13 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-16   19:19 Source control terminated
+
+
+2010-07-19   08:38 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-19   08:55 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-19   16:02 Source control terminated
+
+
+2010-07-19   16:02 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-19   16:42 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-19   18:23 Source control terminated
+
+
+2010-07-20   10:09 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-20   15:41 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_01.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm441i_01.srd) version 1.0
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u_01.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm410u_01.srw) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm441i.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm441i.srw) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_02.srd Checked out revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_03.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm441i_02.srd) version 1.0
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(d_mpm441i_03.srd) version 1.0
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-20   16:48 Source control terminated
+
+
+2010-07-21   12:06 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.3.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_01.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_02.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/d_mpm441i_03.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u_01.srw Checked in new revision 1.2; old revision 1.1.
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm441i.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_01.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_02.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\d_mpm441i_03.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm410u_01.srw version 1.2 successfully checked in
+C:\kdac\PBL\PB90\금형공정\w_mpm441i.srw version 1.2 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-21   18:49 Source control terminated
+
+
+2010-07-22   08:36 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-22   18:06 Source control terminated
+
+
+2010-07-23   08:54 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_bom115u.srw) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_preryt.srd Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom001_115u_preryt.srd) version 1.1
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_modellist.srd Checked out revision 1.0.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom000.pbl(d_bom001_115u_modellist.srd) version 1.0
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom000.pbg Checked out revision 1.1.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_modellist.srd Checked in new revision 1.1; old revision 1.0.
+ChangeMan Version Manager Info: /연구&생산/BOM/d_bom001_115u_preryt.srd Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\BOM\d_bom001_115u_modellist.srd version 1.1 successfully checked in
+C:\kdac\PBL\PB90\BOM\d_bom001_115u_preryt.srd version 1.2 successfully checked in
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/BOM/bom003.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\BOM\w_bom115u.srw version 1.2 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u.srw Checked out revision 1.1.
+Successfully checked out C:\kdac\PBL\PB90\금형공정\mpm031.pbl(w_mpm410u.srw) version 1.1
+Operation Completed
+ChangeMan Version Manager Info: /연구&생산/금형공정/mpm031.pbg Checked out revision 1.3.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/금형공정/w_mpm410u.srw Checked in new revision 1.2; old revision 1.1.
+C:\kdac\PBL\PB90\금형공정\w_mpm410u.srw version 1.2 successfully checked in
+Operation Completed
+Checking out selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked out revision 1.2.
+Successfully checked out C:\kdac\PBL\PB90\BOM\bom003.pbl(w_bom115u.srw) version 1.2
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-23   18:03 Source control terminated
+
+
+2010-07-23   18:04 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+ChangeMan Version Manager Info: /연구&생산/BOM/bom003.pbg Checked out revision 1.0.
+Checking in selected items . . .
+ChangeMan Version Manager Info: /연구&생산/BOM/w_bom115u.srw Checked in new revision 1.3; old revision 1.2.
+C:\kdac\PBL\PB90\BOM\w_bom115u.srw version 1.3 successfully checked in
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-23   18:08 Source control terminated
+
+
+2010-07-26   10:09 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-07-26   13:47 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-26   18:02 Source control terminated
+
+
+2010-07-27   10:01 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-27   18:05 Source control terminated
+
+
+2010-07-28   08:21 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-28   14:12 Source control terminated
+
+
+2010-07-28   18:10 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-28   18:11 Source control terminated
+
+
+2010-07-28   20:35 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-07-29   07:41 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: 생산계획  Created Project.
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_insert_mps004.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_mps001.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_mps002.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_mps002_new.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_mps003.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_sle103.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_sle212.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mps_upload_old.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsc01_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsc01_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpst03.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpst03_new.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu01_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu01_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu01_03.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu02_01.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu02_02.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu02_03.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_mpsu02_04.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\d_upload_mps.srd
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_creation_mpst03.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_get_mps007.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_get_mps_sle105.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_get_pcs101_mps.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_get_pcs102_mps.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_get_workday_mps.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\f_mps007_update.srf
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\mps000.pbg
+C:\kdac\PBL\PB90\생산계획\d_insert_mps004.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_mps001.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_mps002.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_mps002_new.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_mps003.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_sle103.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_sle212.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mps_upload_old.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsc01_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsc01_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpst03.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpst03_new.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu01_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu01_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu01_03.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu02_01.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu02_02.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu02_03.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_mpsu02_04.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\d_upload_mps.srd version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_creation_mpst03.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_get_mps_sle105.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_get_mps007.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_get_pcs101_mps.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_get_pcs102_mps.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_get_workday_mps.srf version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\f_mps007_update.srf version 1.0 successfully added to source control
+Operation Completed
+Adding selected items to source control. . .
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_101c.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_101d.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_101u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_102u.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_103i.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\w_mps_104d.srw
+ChangeMan Version Manager Info: Added: C:\kdac\PBL\PB90\생산계획\mps010.pbg
+C:\kdac\PBL\PB90\생산계획\w_mps_101c.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\w_mps_101d.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\w_mps_101u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\w_mps_102u.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\w_mps_103i.srw version 1.0 successfully added to source control
+C:\kdac\PBL\PB90\생산계획\w_mps_104d.srw version 1.0 successfully added to source control
+Operation Completed
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-29   17:48 Source control terminated
+
+
+2010-07-30   09:24 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+Serializing SCC Status Cache...
+4860 status entries saved in C:\kdac\PBL\PB90\kdac.pbc.
+2010-07-30   18:02 Source control terminated
+
+
+2010-07-30   18:30 Source Management Initialization...
+ChangeMan Version Manager Info: Login cancelled by user.
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-07-31   19:18 Source Management Initialization...
+	Scc Provider: ChangeMan Version Manager
+	UserID: 000030
+	Project Path: /연구&생산?PVCS Version Manager?\\KDAC?
+	Aux Project Path: ?PVCS Version Manager?\\KDAC?
+	Local Project Path: C:\kdac\PBL\PB90
+
+Scc multi-threading defaulting to TRUE
+Connection to source control established
+
+
+2010-08-09   09:18 Source Management Initialization...
+ChangeMan Version Manager Info: The project root could not be loaded: "\\KDAC".
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-08-09   09:30 Source Management Initialization...
+ChangeMan Version Manager Info: The project root could not be loaded: "\\KDAC".
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-08-10   01:23 Source Management Initialization...
+ChangeMan Version Manager Info: The project root could not be loaded: "\\KDAC".
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-08-10   08:51 Source Management Initialization...
+ChangeMan Version Manager Info: The project root could not be loaded: "\\KDAC".
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed
+
+
+2010-08-11   07:44 Source Management Initialization...
+ChangeMan Version Manager Info: The project root could not be loaded: "\\KDAC".
+Initialization of PVCS failed.
+Source control is in offline mode.
+Restoring SCC Offline Status Cache from last backup.
+4860 entries restored to SCC offline status cache.
+Initialization of ChangeMan Version Manager Failed

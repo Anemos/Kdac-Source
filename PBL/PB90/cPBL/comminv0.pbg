@@ -1,0 +1,45 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "comminv0.pbl" "";
+@end;
+@begin Objects
+ "f_dw_setcolumn2.srf" "comminv0.pbl";
+ "f_vndr_jscd1.srf" "comminv0.pbl";
+ "f_getobjectpoint_head.srf" "comminv0.pbl";
+ "uf_fromto_output1.srf" "comminv0.pbl";
+ "f_get_ctlno1.srf" "comminv0.pbl";
+ "f_get_slno1.srf" "comminv0.pbl";
+ "f_get_ctlno2.srf" "comminv0.pbl";
+ "f_init_null_chk.srf" "comminv0.pbl";
+ "f_get_ctlno3.srf" "comminv0.pbl";
+ "f_seri_srno2.srf" "comminv0.pbl";
+ "uf_week_output1.srf" "comminv0.pbl";
+ "f_dw_dup_check.srf" "comminv0.pbl";
+ "f_popup_check.srf" "comminv0.pbl";
+ "f_increase_pdnr.srf" "comminv0.pbl";
+ "f_vdnm_pur1.srf" "comminv0.pbl";
+ "f_mandantory_chk.srf" "comminv0.pbl";
+ "f_multi_select.srf" "comminv0.pbl";
+ "f_dw_sts_chk.srf" "comminv0.pbl";
+ "f_get_fromtoday.srf" "comminv0.pbl";
+ "f_get_ctlchk.srf" "comminv0.pbl";
+ "f_replace.srf" "comminv0.pbl";
+ "uf_get_workday.srf" "comminv0.pbl";
+ "f_vndr_jscd.srf" "comminv0.pbl";
+ "f_get_yearweek.srf" "comminv0.pbl";
+ "f_null_chk.srf" "comminv0.pbl";
+ "f_dw_setcolumn.srf" "comminv0.pbl";
+ "f_screen_print.srf" "comminv0.pbl";
+ "f_save_to_txt.srf" "comminv0.pbl";
+ "f_delete_row.srf" "comminv0.pbl";
+ "uf_add_month.srf" "comminv0.pbl";
+ "f_get_ctlno.srf" "comminv0.pbl";
+ "f_get_costav.srf" "comminv0.pbl";
+ "f_inptid.srf" "comminv0.pbl";
+ "uf_fromto_output.srf" "comminv0.pbl";
+ "f_get_slno.srf" "comminv0.pbl";
+ "uf_week_output.srf" "comminv0.pbl";
+ "f_down_to_excel2.srf" "comminv0.pbl";
+ "f_dw_sort.srf" "comminv0.pbl";
+ "f_vdnm_pur.srf" "comminv0.pbl";
+@end;

@@ -1,0 +1,55 @@
+SELECT * FROM PBBPM.BPM501
+WHERE COMLTD = '01' AND AYEAR = '2012' AND AREV = '0A' AND ACODE = 'A' AND APLANT = 'D'
+AND AMDNO IN ('52426754','52423268','52424207','52426696');
+
+//SELECT * FROM PBBPM.BPM508
+//WHERE COMLTD = '01' AND XYEAR = '2012' AND BREV = '0A' AND BGUBUN = 'B' AND
+//BMDNO = '52426754' AND BCHNO IN ('52423268','52424207','52426696');
+
+select a.vsrno, a.itno, 
+       substring(a.adjdt,1,6),  // 변경일자
+       COALESCE(MAX(CASE WHEN a.dept <> 'I'  THEN a.dcost ELSE a.ecost END),0) AS ITCST,  // 구매단가
+		 COALESCE(MAX(CASE WHEN a.dept <> 'I'  THEN a.dcurr ELSE a.ecurr END),'KRW') AS CURR, //환율
+       MAX(a.mcost+a.gcost) // 가공관리비
+ from  pbpur.pur104 a  //단가 변경 (history 포함)
+		 inner join pbbpm.bpm509 b
+	on b.yccyy = '2012' and b.revno = '0A' and
+		a.itno = b.yitno and a.vsrno = b.yvndsr
+ where a.comltd = '01'
+ and   a.vsrc = 'D'
+ and   a.dept in ('D','Y','P')
+ and   b.cls in ('10','50')
+ and   b.srce <> '01'
+ and   a.adjdt >= '20110101' and a.adjdt <= '20111031'
+group by substring(a.adjdt,1,6),a.vsrno,a.itno
+
+
+SELECT A.WACMCD,
+			A.WAPLANT,
+			A.WADVSN,
+			A.WAORCT,
+			E.VNDNM,
+			C.PDCD,
+      A.WAITNO,   
+      B.ITNM,   
+      C.CLS,   
+      C.SRCE,   
+      C.XUNIT,
+		(SELECT WBAVRG1 FROM PBWIP.WIP002 WHERE WBCMCD = A.WACMCD AND WBPLANT = A.WAPLANT AND
+			WBDVSN = A.WADVSN AND WBITNO = A.WAITNO AND WBORCT = A.WAORCT AND WBIOCD = '2' AND
+			WBYEAR = '2011' AND WBMONTH = '10') * C.CONVQTY,
+			(A.WAOHQT/C.CONVQTY) AS OHQT,
+		(SELECT DECIMAL((SUM(WBBGQT) /C.CONVQTY) / 3,15,4) FROM PBWIP.WIP002 WHERE WBCMCD = A.WACMCD AND WBPLANT = A.WAPLANT AND
+			WBDVSN = A.WADVSN AND WBITNO = A.WAITNO AND WBORCT = A.WAORCT AND WBIOCD = '2' AND
+			WBYEAR = '2011' AND WBMONTH >= '09' AND WBMONTH <= '11') AS AVGQTY
+FROM PBWIP.WIP001 A INNER JOIN  PBINV.INV002 B
+		ON  A.WACMCD = B.COMLTD and A.WAITNO = B.ITNO
+    INNER JOIN PBINV.INV101 C
+    ON A.WACMCD = C.COMLTD AND A.WAPLANT = C.XPLANT AND  
+       A.WADVSN = C.DIV AND A.WAITNO = C.ITNO
+    LEFT OUTER JOIN PBCOMMON.DAC002 D
+    ON D.COMLTD = C.COMLTD AND D.COCODE = C.XPLAN AND
+		   D.COGUBUN = 'INV050'
+		LEFT OUTER JOIN PBPUR.PUR101 E
+		ON A.WACMCD = E.COMLTD AND A.WAORCT = E.VSRNO
+   WHERE A.WACMCD = '01' AND  A.WAIOCD = '2';

@@ -1,0 +1,12 @@
+--  Generate SQL 
+--  Version:                   	V5R3M0 040528 
+--  Generated on:              	08/08/14 12:08:54 
+--  Relational Database:       	I520 
+--  Standards Option:          	DB2 UDB iSeries 
+  
+CREATE TABLE PBWIP.WIP005 ( 
+	WECMCD CHAR(2) CCSID 833 NOT NULL , 
+	WESLTY CHAR(2) CCSID 833 NOT NULL , 
+	WESRNO CHAR(10) CCSID 933 NOT NULL , 
+	WEREMK CHAR(100) CCSID 933 NOT NULL , 
+	CONSTRAINT PBWIP.Q_PBWIP_WIP005_WECMCD_00001 PRIMARY KEY( WECMCD , WESLTY , WESRNO ) ) ;

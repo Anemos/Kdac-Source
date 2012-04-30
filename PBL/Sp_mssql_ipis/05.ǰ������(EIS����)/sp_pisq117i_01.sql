@@ -1,0 +1,159 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+/*
+Exec sp_pisq117i_01
+		@ps_AreaCode        = '1'    ,
+		@ps_DivisionCode    = '1'    ,
+        @ps_SupplierCode    = '%'    ,
+        @ps_DeliveryNo      = '%'    ,
+        @ps_ItemCode        = '%'    ,
+	   @ps_revno              = '%'
+*/
+
+
+/****** Object:  Stored Procedure dbo.sp_pisq117i_01    Script Date: 03-06-24  ******/
+ALTER    PROCEDURE sp_pisq117i_01
+        @ps_AreaCode          char(01)      ,   -- 지역구분
+        @ps_DivisionCode      char(01)      ,   -- 공장코드
+        @ps_SupplierCode      char(05)   	,	-- 업체코드
+		@ps_DeliveryNo	      varchar(12)	,	-- 납품번호
+        @ps_ItemCode          varchar(12)   ,    -- 품번
+        @ps_revno                char(02)
+
+AS
+
+BEGIN
+
+  SELECT A.AREACODE,   
+         A.DIVISIONCODE,   
+         A.SUPPLIERCODE,   
+         A.DELIVERYNO,   
+         A.ITEMCODE,   
+         A.SUPPLIERLOTNO,   
+         A.ORDERNO,   
+         A.LOTQTY  ,
+         B.QCITEM,   
+         B.DECISIONRANK,   
+         B.ITEMSPECQUALITY,   
+         A.SUPPLIERMEASUREMENTX1,   
+         A.SUPPLIERMEASUREMENTX2,   
+         A.SUPPLIERMEASUREMENTX3,   
+         A.SUPPLIERMEASUREMENTX4,   
+         A.SUPPLIERMEASUREMENTX5,   
+         A.SUPPLIERMEASUREMENTX6,   
+         A.SUPPLIERMEASUREMENTX7,   
+         A.SUPPLIERMEASUREMENTX8,   
+         A.SUPPLIERMEASUREMENTX9,   
+         A.SUPPLIERMEASUREMENTX10,   
+         A.SUPPLIERMEASUREMENTX,   
+         A.SUPPLIERMEASUREMENTR,   
+         A.SUPPLIERMEASUREMENTS,   
+         A.SUPPLIERFLAGRESULT,   
+         A.QCMEASUREMENTX1,   
+         A.QCMEASUREMENTX2,   
+         A.QCMEASUREMENTX3,   
+         A.QCMEASUREMENTX4,   
+         A.QCMEASUREMENTX5,   
+         A.QCMEASUREMENTX6,   
+         A.QCMEASUREMENTX7,   
+         A.QCMEASUREMENTX8,   
+         A.QCMEASUREMENTX9,   
+         A.QCMEASUREMENTX10,   
+         A.QCMEASUREMENTX,   
+         A.QCMEASUREMENTR,   
+         A.QCMEASUREMENTS,   
+         A.QCFLAGRESULT
+	FROM TQQCRESULTDETAIL   A,
+         (	SELECT AREACODE, DIVISIONCODE,SUPPLIERCODE,ITEMCODE,ORDERNO,
+					QCITEM, DECISIONRANK, ITEMSPECQUALITY
+			FROM TQQCSTANDARDDETAIL
+			WHERE AREACODE = @PS_AREACODE AND DIVISIONCODE = @PS_DIVISIONCODE AND
+					SUPPLIERCODE = @PS_SUPPLIERCODE AND ITEMCODE = @PS_ITEMCODE AND
+					STANDARDREVNO = @PS_REVNO ) B
+   WHERE A.AREACODE             = B.AREACODE
+     AND A.DIVISIONCODE         = B.DIVISIONCODE
+     AND A.SUPPLIERCODE         = B.SUPPLIERCODE
+     AND A.ITEMCODE             = B.ITEMCODE
+     AND A.ORDERNO				  = B.ORDERNO
+     AND A.AREACODE             = @PS_AREACODE
+     AND A.DIVISIONCODE         = @PS_DIVISIONCODE
+     AND A.SUPPLIERCODE         = @PS_SUPPLIERCODE
+     AND A.DELIVERYNO           = @PS_DELIVERYNO
+     AND A.ITEMCODE             = @PS_ITEMCODE
+
+UNION ALL
+
+  SELECT A.AREACODE,   
+         A.DIVISIONCODE,   
+         A.SUPPLIERCODE,   
+         A.DELIVERYNO,   
+         A.ITEMCODE,   
+         A.SUPPLIERLOTNO,   
+         A.ORDERNO,   
+         A.LOTQTY  ,
+         B.QCITEM,   
+         B.DECISIONRANK,   
+         B.ITEMSPECQUALITY,   
+         A.SUPPLIERMEASUREMENTX1,   
+         A.SUPPLIERMEASUREMENTX2,   
+         A.SUPPLIERMEASUREMENTX3,   
+         A.SUPPLIERMEASUREMENTX4,   
+         A.SUPPLIERMEASUREMENTX5,   
+         A.SUPPLIERMEASUREMENTX6,   
+         A.SUPPLIERMEASUREMENTX7,   
+         A.SUPPLIERMEASUREMENTX8,   
+         A.SUPPLIERMEASUREMENTX9,   
+         A.SUPPLIERMEASUREMENTX10,   
+         A.SUPPLIERMEASUREMENTX,   
+         A.SUPPLIERMEASUREMENTR,   
+         A.SUPPLIERMEASUREMENTS,   
+         A.SUPPLIERFLAGRESULT,   
+         A.QCMEASUREMENTX1,   
+         A.QCMEASUREMENTX2,   
+         A.QCMEASUREMENTX3,   
+         A.QCMEASUREMENTX4,   
+         A.QCMEASUREMENTX5,   
+         A.QCMEASUREMENTX6,   
+         A.QCMEASUREMENTX7,   
+         A.QCMEASUREMENTX8,   
+         A.QCMEASUREMENTX9,   
+         A.QCMEASUREMENTX10,   
+         A.QCMEASUREMENTX,   
+         A.QCMEASUREMENTR,   
+         A.QCMEASUREMENTS,   
+         A.QCFLAGRESULT
+    FROM TQQCRESULTDETAIL   A,
+         (	SELECT AREACODE, DIVISIONCODE,SUPPLIERCODE,ITEMCODE,ORDERNO,
+					QCITEM, DECISIONRANK, ITEMSPECQUALITY
+			FROM TQQCSTANDARDCHANGEDETAIL
+			WHERE AREACODE = @PS_AREACODE AND DIVISIONCODE = @PS_DIVISIONCODE AND
+					SUPPLIERCODE = @PS_SUPPLIERCODE AND ITEMCODE = @PS_ITEMCODE AND
+					STANDARDREVNO = @PS_REVNO ) B
+   WHERE A.AREACODE             = B.AREACODE
+     AND A.DIVISIONCODE         = B.DIVISIONCODE
+     AND A.SUPPLIERCODE         = B.SUPPLIERCODE
+     AND A.ITEMCODE             = B.ITEMCODE
+     AND A.ORDERNO				  = B.ORDERNO
+     AND A.AREACODE             = @PS_AREACODE
+     AND A.DIVISIONCODE         = @PS_DIVISIONCODE
+     AND A.SUPPLIERCODE         = @PS_SUPPLIERCODE
+     AND A.DELIVERYNO           = @PS_DELIVERYNO
+     AND A.ITEMCODE             = @PS_ITEMCODE
+
+END 
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

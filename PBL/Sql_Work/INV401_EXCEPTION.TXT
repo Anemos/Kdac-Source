@@ -1,0 +1,44 @@
+실행속도 : 2분
+SELECT   "PBINV"."INV401"."COMLTD",   
+         "PBINV"."INV401"."SLIPTYPE",   
+         "PBINV"."INV401"."SRNO",   
+         "PBINV"."INV401"."SRNO1",   
+         "PBINV"."INV401"."SRNO2",   
+         "PBINV"."INV401"."XPLANT",   
+         "PBINV"."INV401"."DIV",   
+         "PBINV"."INV401"."SLNO",   
+         "PBINV"."INV401"."ITNO",   
+         "PBINV"."INV401"."CLS",   
+         "PBINV"."INV401"."SRCE",   
+         "PBINV"."INV401"."XUSE",   
+         "PBINV"."INV401"."RTNGUB",   
+         "PBINV"."INV401"."VSRNO",   
+         "PBINV"."INV401"."DEPT",   
+         "PBINV"."INV401"."TDTE4",
+			"PBINV"."INV401"."TQTY1",
+			"PBINV"."INV401"."TQTY2",
+			"PBINV"."INV401"."TQTY3",   
+         "PBINV"."INV401"."TQTY4"     
+    FROM "PBINV"."INV401"
+   WHERE ("PBINV"."INV401"."COMLTD" = '01') AND  
+         ("PBINV"."INV401"."XPLANT" = 'D' ) AND 
+			("PBINV"."INV401"."DIV" = 'A' ) AND
+			("PBINV"."INV401"."TDTE4" >= '20031001')  AND 
+			("PBINV"."INV401"."TDTE4" <= '20031031')  AND
+			("PBINV"."INV401"."CLS" in ('10','30','40','50')) AND
+         ("PBINV"."INV401"."SRCE" in ('03','04','  ')) AND
+			("PBINV"."INV401"."XPLANT" <> 'Y') AND
+			(("PBINV"."INV401"."SLIPTYPE" IN ('RM','SM') AND "PBINV"."INV401"."SRCE" IN ('03','  ')) OR
+			 ("PBINV"."INV401"."SLIPTYPE" IN ('IS','RS') AND "PBINV"."INV401"."SRCE" = '03') OR
+			 ("PBINV"."INV401"."SLIPTYPE" = 'RP' AND "PBINV"."INV401"."SRCE" = '04')) AND
+			( NOT EXISTS (SELECT "PBWIP"."WIP004"."WDPRNO"
+								FROM "PBWIP"."WIP004"  
+								WHERE ( "PBWIP"."WIP004"."WDCMCD" = '01' ) AND
+										( "PBWIP"."WIP004"."WDSLTY" = 'WC' ) AND
+										( "PBINV"."INV401"."SLIPTYPE" = "PBWIP"."WIP004"."WDPRSRTY") AND 
+										( "PBINV"."INV401"."SRNO" = "PBWIP"."WIP004"."WDPRSRNO") AND
+										( "PBINV"."INV401"."SRNO1" = "PBWIP"."WIP004"."WDPRSRNO1") AND
+										( "PBINV"."INV401"."SRNO2" = "PBWIP"."WIP004"."WDPRSRNO2") 
+										))
+ORDER BY "PBINV"."INV401"."SLIPTYPE",   
+         "PBINV"."INV401"."TDTE4";

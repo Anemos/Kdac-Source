@@ -1,0 +1,13 @@
+select distinct a.balcd,a.baldiv,a.bchno,a.bcumorate from pbbpm.bpm508 a inner join pbbpm.bpm503 b
+	on a.xyear = b.xyear and a.brev = b.revno and
+		a.balcd = b.xplant and a.baldiv = b.div and
+		a.bchno = b.itno and a.bgubun = 'b'
+where a.comltd = '01' and a.xyear = '2012' and a.brev = '0a' and b.srce = '03' and
+	a.bplant <> a.balcd and
+	a.bchno in ( select itno from pbbpm.bpm503
+						where xyear = '2012' and revno = '0a' and srce = '05' )
+and a.bchno = '510444d'
+fetch first 1 row only;
+
+//SELECT * FROM PBBPM.BPM501
+//WHERE COMLTD = '01' AND AYEAR = '2012' AND AREV = '0A' AND ACODE = 'A' AND AMDNO = '510444D';

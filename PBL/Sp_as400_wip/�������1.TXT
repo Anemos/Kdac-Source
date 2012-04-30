@@ -1,0 +1,42 @@
+SELECT comltd, sliptype,srno,srno1,srno2,xplant,   
+       div,slno,itno,cls,srce,xuse,rtngub,vsrno,   
+       dept,tdte4,tqty1,tqty2,tqty3,tqty4     
+FROM pbinv.inv401
+WHERE comltd = '01' AND xplant = 'D' AND 
+			div = 'A' AND sliptype IN ('RM','SM','IS','RS','RP') and 
+			tdte4 >= '20031001' AND tdte4 <= '20031027' AND 
+      cls IN ('10','30','40','50') AND
+			NOT ( ( cls = '10' ) AND 
+			(srce = '01' OR srce = '02' OR srce = '05' OR srce = '06') ) AND
+			NOT ( (sliptype = 'IS' OR sliptype = 'RS') AND 
+			( (cls = '10' OR cls = '40' OR cls = '50') AND 
+			  (srce = '04' OR srce = '05' OR srce = '06') ) ) AND
+			tqty4 <> 0 AND
+			NOT EXISTS ( SELECT wdsrno
+								FROM pbwip.wip004  
+								WHERE wdcmcd = comltd AND wdprsry = sliptype AND
+											wdprsrno = srno AND wdprsrno1 = srno1 AND
+											wdprsrno2 = srno2 ) ;
+											
+SELECT comltd, sliptype,srno,srno1,srno2,xplant,   
+       div,slno,itno,cls,srce,xuse,rtngub,vsrno,   
+       dept,tdte4,tqty1,tqty2,tqty3,tqty4     
+FROM pbinv.inv401
+WHERE comltd = '01' AND xplant = 'D' AND 
+			div = 'M' AND sliptype IN ('RM','SM','IS','RS','RP') and 
+			tdte4 >= '20031001' AND tdte4 <= '20031027' AND 
+         cls IN ('10','30','40','50') AND
+			NOT ( ( cls = '10' ) AND 
+			(srce = '01' OR srce = '02' OR srce = '05' OR srce = '06') ) AND
+			NOT ( (sliptype = 'IS' OR sliptype = 'RS') AND 
+			( (cls = '10' OR cls = '40' OR cls = '50') AND 
+			  (srce = '04' OR srce = '05' OR srce = '06') ) ) AND
+			tqty4 <> 0 AND
+			NOT EXISTS ( SELECT wdsrno
+								FROM pbwip.wip004  
+								WHERE wdcmcd = comltd AND wdprsrty = sliptype AND
+											wdprsrno = srno AND wdprsrno1 = srno1 AND
+											wdprsrno2 = srno2 ) ;
+											
+								
+

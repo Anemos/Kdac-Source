@@ -1,0 +1,27 @@
+CREATE TRIGGER PBIPIS.T_PUR103AD
+   AFTER DELETE ON PBPUR.PUR103
+   REFERENCING OLD ROW AS OR
+   FOR EACH ROW
+   MODE DB2SQL
+BEGIN
+  DECLARE L_N_COUNT INTEGER DEFAULT 0 ;
+  DECLARE L_S_DEPT CHAR ;
+  IF OR.DEPT = 'D' THEN
+     SET L_S_DEPT = 'P';
+  END IF;
+  IF OR.DEPT = 'P' THEN
+     SET L_S_DEPT = 'D';
+  END IF;
+  SELECT COUNT(*) INTO L_N_COUNT FROM PBPUR.PUR103
+         WHERE COMLTD = '01' AND VSRC = 'D' AND DEPT = L_S_DEPT AND
+               ITNO = OR.ITNO and vsrno = or.vsrno ;
+  IF L_N_COUNT = 0 THEN
+     INSERT INTO PBIPIS.PDPUR103 (CHGDATE, CHGCD, VSRNO, ITNO,
+                                  DADJDT,  DCOST, XSTOP,
+                                  STSCD,   DOWNDATE)
+       VALUES (CHAR(CURRENT TIMESTAMP), 'D', OR.VSRNO, OR.ITNO,
+                                  OR.DADJDT, OR.DCOST, OR.XSTOP,
+                                  'N', ' ') ;
+  END IF;
+END
+

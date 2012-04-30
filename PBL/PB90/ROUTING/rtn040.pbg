@@ -1,0 +1,23 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ROUTING\\rtn040.pbl" "";
+@end;
+@begin Objects
+ "ROUTING\\d_rtn041u_01.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn042u_01.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn042u_02.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn042u_03.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn044u_01.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn044u_02.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn044u_03.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn043i.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn041u.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn042u.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn044u.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn042u_email_attach.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\w_rtn_select_pl.srw" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn_dac003.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn043i_01.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn043i_02.srd" "ROUTING\\rtn040.pbl";
+ "ROUTING\\d_rtn043i_03.srd" "ROUTING\\rtn040.pbl";
+@end;

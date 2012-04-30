@@ -1,0 +1,8 @@
+Save Format v3.0(19990112)
+@begin Unchecked
+@end;
+@begin Targets
+ 0 "wip_execute_day.pbt";
+@end;
+DefaultTarget "wip_execute_day.pbt";
+DefaultRemoteTarget "wip_execute_day.pbt";

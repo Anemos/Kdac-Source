@@ -1,0 +1,89 @@
+OLD) Running BOM 존재하지 않는 판매계획 품번 Find - 사업계획 BOM ( BPM001 ) Data 생성전 Check 용도
+
+//
+SELECT DISTINCT APLANT,   
+         ADIV,   
+         APDCD, 
+			APDNM,  
+         ACUST,   
+         ACUNM,
+         AMDNO,   
+         AMDNM,
+         ADECD,   
+			ASRCE,
+			ACAR  FROM PBBPM.BPM501
+WHERE ACODE = 'B' AND AYEAR = '2010' AND SEQGB <> 'S' AND  //ASRCE = '' AND
+APLANT || ADIV || AMDNO NOT IN 
+( SELECT DISTINCT plant || pdvsn || ppitn FROM pbpdm.BOM001
+where (trim( PEDTE ) =  '' and "PBPDM"."BOM001"."PEDTM" <= '20091019' ) or  
+( trim("PBPDM"."BOM001"."PEDTE") <> '' and "PBPDM"."BOM001"."PEDTM" <= '20091019'
+and "PBPDM"."BOM001"."PEDTE" >= '20091019' ) )
+ORDER BY APLANT,ADIV,APDCD,AMDNO
+;
+//
+
+NEW). Running BOM 존재하지 않는 판매계획 품번 Find - 사업계획 BOM ( BPM001 ) Data 생성전 Check 용도
+SELECT DISTINCT '매출품목(단품) BOM미등록' AS CHK_GUBUN, AA.APLANT,   
+         AA.ADIV,   
+         AA.APDCD, 
+			AA.APDNM,  
+         AA.ACUST,   
+         AA.ACUNM,
+         AA.AMDNO,   
+         AA.AMDNM,
+         AA.ADECD,   
+			AA.ASRCE,
+			AA.ACAR 
+    FROM PBBPM.BPM501 AA INNER JOIN PBINV.INV101 BB
+		ON AA.COMLTD = BB.COMLTD AND AA.APLANT = BB.XPLANT AND 
+            AA.ADIV = BB.DIV AND AA.AMDNO = BB.ITNO
+WHERE AA.COMLTD = '01' AND AA.AYEAR = '2010' AND
+	   AA.AREV = '0A' AND AA.ACODE = 'A' AND AA.SEQGB <> 'S' AND
+	(BB.SRCE = '01' OR BB.SRCE = '02' OR BB.SRCE = '05' OR BB.SRCE = '06') AND
+   NOT EXISTS (  SELECT *
+    FROM PBPDM.BOM001  
+    WHERE ( PBPDM.BOM001.PCMCD = AA.COMLTD ) AND
+			( PBPDM.BOM001.PLANT = AA.APLANT ) AND
+         ( PBPDM.BOM001.PDVSN = AA.ADIV ) AND  
+         ( PBPDM.BOM001.PCITN = AA.AMDNO ) AND  
+         ( (PBPDM.BOM001.PEDTM <= PBPDM.BOM001.PEDTE AND PBPDM.BOM001.PEDTE <> ' '
+            AND PBPDM.BOM001.PEDTE >= '20091019' ) 
+          OR  
+         ( PBPDM.BOM001.PEDTE = ' ' )))
+
+UNION ALL
+
+SELECT DISTINCT '매출품목 BOM미등록' AS CHK_GUBUN, AA.APLANT,   
+         AA.ADIV,   
+         AA.APDCD, 
+			AA.APDNM,  
+         AA.ACUST,
+         AA.ACUNM,   
+         AA.AMDNO,   
+         AA.AMDNM,   
+         AA.ADECD,
+			AA.ASRCE,
+			AA.ACAR 
+    FROM PBBPM.BPM501 AA INNER JOIN PBINV.INV101 BB
+		ON AA.COMLTD = BB.COMLTD AND AA.APLANT = BB.XPLANT AND 
+            AA.ADIV = BB.DIV AND AA.AMDNO = BB.ITNO
+WHERE AA.COMLTD = '01' AND AA.AYEAR = '2010' AND
+	   AA.AREV = '0A' AND AA.ACODE = 'A' AND AA.SEQGB <> 'S' AND
+	BB.SRCE <> '01' AND BB.SRCE <> '02' AND BB.SRCE <> '05' AND BB.SRCE <> '06' AND
+   NOT EXISTS (  SELECT *
+    FROM PBPDM.BOM001  
+    WHERE ( PBPDM.BOM001.PCMCD = AA.COMLTD ) AND
+			( PBPDM.BOM001.PLANT = AA.APLANT ) AND
+         ( PBPDM.BOM001.PDVSN = AA.ADIV ) AND  
+         ( PBPDM.BOM001.PPITN = AA.AMDNO ) AND  
+         ( (PBPDM.BOM001.PEDTM <= PBPDM.BOM001.PEDTE AND PBPDM.BOM001.PEDTE <> ' '
+            AND PBPDM.BOM001.PEDTE >= '20091019' ) 
+          OR  
+         ( PBPDM.BOM001.PEDTE = ' ' )))
+ORDER BY APLANT,   
+         ADIV,   
+         APDCD, 
+			APDNM,  
+         ACUST,   
+         ACUNM,
+         AMDNO;

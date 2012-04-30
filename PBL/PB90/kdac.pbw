@@ -1,0 +1,8 @@
+Save Format v3.0(19990112)
+@begin Unchecked
+@end;
+@begin Targets
+ 0 "cpbl\\kdac.pbt";
+@end;
+DefaultTarget "cpbl\\kdac.pbt";
+DefaultRemoteTarget "cpbl\\kdac.pbt";

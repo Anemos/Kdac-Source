@@ -1,0 +1,17 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "BOM\\bom002.pbl" "";
+@end;
+@begin Objects
+ "BOM\\d_report_partlist_901.srd" "BOM\\bom002.pbl";
+ "BOM\\d_bom999_implo_03.srd" "BOM\\bom002.pbl";
+ "BOM\\w_bom901i.srw" "BOM\\bom002.pbl";
+ "BOM\\w_bom902i.srw" "BOM\\bom002.pbl";
+ "BOM\\d_bom999_explo_03.srd" "BOM\\bom002.pbl";
+ "BOM\\d_bom001_901i_partlist.srd" "BOM\\bom002.pbl";
+ "BOM\\d_bom001_901i_listview.srd" "BOM\\bom002.pbl";
+ "BOM\\d_bom_temp_inv.srd" "BOM\\bom002.pbl";
+ "BOM\\d_report_bomlist_901.srd" "BOM\\bom002.pbl";
+ "BOM\\d_bom001_901i_singlelevel.srd" "BOM\\bom002.pbl";
+ "BOM\\f_option_chk_after_901.srf" "BOM\\bom002.pbl";
+@end;

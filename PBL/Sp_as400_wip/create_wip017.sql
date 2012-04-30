@@ -1,0 +1,29 @@
+--  Generate SQL 
+--  Version:                   	V5R3M0 040528 
+--  Generated on:              	09/05/20 16:19:41 
+--  Relational Database:       	I520 
+--  Standards Option:          	DB2 UDB iSeries 
+--  실사자료 제출용 자재수량 누계테이블
+
+DROP TABLE PBWIP.WIP017;
+
+CREATE TABLE PBWIP.WIP017 ( 
+	COMLTD CHAR(2) CCSID 833 NOT NULL ,     --회사
+	XPLANT CHAR(1) CCSID 833 NOT NULL ,     --지역
+	DIV CHAR(1) CCSID 833 NOT NULL ,       --공장
+	ITNO VARCHAR(12) CCSID 933 NOT NULL ,     --제품모델
+	ORCT VARCHAR(5) CCSID 833 NOT NULL ,  -- 업체코드/라인코드
+	IOCD CHAR(1) CCSID 833 NOT NULL ,     --재공구분
+	P00 NUMERIC(11, 1) NOT NULL ,     --수량
+	P30 NUMERIC(11, 1) NOT NULL ,     --수량
+	P60 NUMERIC(11, 1) NOT NULL ,     --수량
+	P90 NUMERIC(11, 1) NOT NULL ,     --수량
+	P120 NUMERIC(11, 1) NOT NULL ,     --수량
+	P150 NUMERIC(11, 1) NOT NULL ,     --수량
+	INPTID CHAR(6) CCSID 933 NOT NULL , 
+	INPTDT CHAR(19) CCSID 933 NOT NULL , 
+	PRIMARY KEY( COMLTD , XPLANT, DIV, ITNO, ORCT, IOCD ) ) ;
+	
+INSERT INTO PBWIP.WIP017
+( COMLTD,XPLANT,DIV,ITNO,ORCT,IOCD,
+P00,P30,P60,P90,P120,P150,INPTID,INPTDT )

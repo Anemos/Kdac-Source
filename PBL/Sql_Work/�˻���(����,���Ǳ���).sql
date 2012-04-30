@@ -1,0 +1,47 @@
+SELECT A.AREACODE			,   
+         A.DIVISIONCODE		,   
+         A.PRODUCTGROUP		,   
+         A.MODELGROUP		,   
+         A.ITEMCODE			,   
+         B.ITEMNAME			,   
+         A.SUPPLIERCODE		,   
+         C.SUPPLIERKORNAME	,   
+         A.APPLYDATEFROM	,   
+         A.APPLYDATETO  	,
+         A.QCGUBUN			,
+			A.ITEMCLASS			,
+			A.ITEMBUYSOURCE	,
+			D.USEFLAG			,
+			D.APPLYFROM			,
+         ' '	DEL_CHK
+    FROM ( SELECT E.AREACODE 	,
+						E.DIVISIONCODE	,
+						E.PRODUCTGROUP	,
+						E.MODELGROUP	,
+						E.ITEMCODE	,
+						E.SUPPLIERCODE	,
+						E.APPLYDATEFROM	,
+						E.APPLYDATETO	,
+						E.QCGUBUN	,
+						F.ITEMCLASS	,
+						F.ITEMBUYSOURCE	
+				FROM TQQCITEM E, TMSTMODEL F
+				WHERE E.AREACODE = F.AREACODE	AND
+						E.DIVISIONCODE = F.DIVISIONCODE AND
+						E.ITEMCODE = F.ITEMCODE AND
+						F.AREACODE       = @ps_AreaCode	AND
+               	F.DIVISIONCODE   = @ps_DivisionCode	AND
+               	F.PRODUCTGROUP   LIKE @ps_ProductGroup	AND
+               	F.MODELGROUP     LIKE @ps_ModelGroup	AND
+               	F.ITEMCLASS	IN ('10', '20', '35', '40', '50') AND
+						E.QCGUBUN like :as_qcgubun ) A,
+         TMSTITEM  		B,
+         TMSTSUPPLIER	C,
+			TMSTPARTKB     D
+   WHERE A.ITEMCODE 		*= B.ITEMCODE
+     AND A.SUPPLIERCODE *= C.SUPPLIERCODE
+	  AND A.AREACODE 		*= D.AREACODE
+	  AND A.DIVISIONCODE	*= D.DIVISIONCODE
+	  AND A.ITEMCODE 		*= D.ITEMCODE
+	  AND A.SUPPLIERCODE *= D.SUPPLIERCODE
+

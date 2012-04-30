@@ -1,0 +1,22 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "BOM\\bom001.pbl" "";
+@end;
+@begin Objects
+ "BOM\\w_bom120i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom201i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom202i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom113i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom203i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom112u_detail.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom116i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom119i.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom201t.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom112u.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u_res_01.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u_res_02.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u_res_03.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u_res_04.srw" "BOM\\bom001.pbl";
+ "BOM\\w_bom110u_res_05.srw" "BOM\\bom001.pbl";
+@end;

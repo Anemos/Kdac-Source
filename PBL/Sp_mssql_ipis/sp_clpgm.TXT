@@ -1,0 +1,49 @@
+SQLAllocStmt(hdbc,&hstmt);
+ strcpy(stmt,"call qsys.qcmdexc('STRDBG UPDPROD(*YES)',");
+ strcat(stmt,"0000000020.00000)");
+ SQLExecDirect(hstmt,stmt,SQL_NTS);
+
+ CL Program
+Put the following code into a source physical file on the iSeries,
+ use the member name SPDSPFD. This program calls DSPFD and sends the output
+ to the passed in filename in the QTEMP library.
+ If Y is passed in the 4th argument,
+ the program will replace any information in the file.
+
+             PGM        PARM(&LIB &FIL &OFI &OVR)
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FIL) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&OFI) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&OVR) TYPE(*CHAR) LEN(1)
+             IF         COND(&OVR = Y) THEN(DSPFD FILE(&LIB/&FIL) +
+                          TYPE(*MBR) OUTPUT(*OUTFILE) +
+                          OUTFILE(QTEMP/&OFI))
+             ELSE       CMD(DSPFD FILE(&LIB/&FIL) TYPE(*MBR) +
+                          OUTPUT(*OUTFILE) OUTFILE(QTEMP/&OFI) +
+                          OUTMBR(*FIRST *ADD))
+             ENDPGM
+ Issue the following command to create the CL program.
+
+CRTCLPGM PGM(SQLBOOK/SPDSPFD) SRCFILE(SQLBOOK/QCLSRC)
+TEXT('CL Stored Procedure Program')
+Procedure Wrapper
+Use SQLThing Enterprise Edition to issue the following create procedure statement:
+
+CREATE PROCEDURE SQLBOOK.SPDSPFD
+            ( LIB        INOUT CHAR(10),
+              FIL        INOUT CHAR(10),
+              OUTF    INOUT CHAR(10),
+              OVERWRITE INOUT CHAR(1))
+EXTERNAL NAME sqlbook.spdspfd
+PARAMETER STYLE GENERAL
+LANGUAGE CL
+You now have a procedure that can run the DSPFD command for member information.
+
+CREATE PROCEDURE PBWIP.SP_RGZPF01
+( LIB IN CHAR(10),
+  FIL IN CHAR(10) )
+EXTERNAL NAME PBWIP.SP_RGZPF
+PARAMETER STYLE GENERAL
+LANGUAGE CL;
+
+

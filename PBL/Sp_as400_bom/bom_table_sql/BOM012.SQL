@@ -1,0 +1,27 @@
+--  Generate SQL
+--  Version:                    V5R3M0 040528
+--  Generated on:               10/11/16 10:53:24
+--  Relational Database:        I520
+--  Standards Option:           DB2 UDB iSeries
+--  Description : BOM 원단위DB
+
+CREATE TABLE PBPDM.BOM012 (
+  MCMCD CHAR(2) CCSID 833 NOT NULL DEFAULT '' ,   -- 회사
+  MDATE CHAR(6) CCSID 833 NOT NULL DEFAULT '' ,   -- 년월
+  MPLANT CHAR(2) CCSID 833 NOT NULL DEFAULT '' ,  -- 지역
+  MDIV CHAR(1) CCSID 833 NOT NULL DEFAULT '' ,    -- 공장
+  MDCD CHAR(4) CCSID 833 NOT NULL DEFAULT '' ,    -- 제품군
+  MDNO CHAR(15) CCSID 833 NOT NULL DEFAULT '' ,   -- 완제품
+  MSERIAL NUMERIC(4, 0) NOT NULL DEFAULT 0 ,      -- 시리얼 넘버
+  MPRNO CHAR(15) CCSID 833 NOT NULL DEFAULT '' ,  -- 상위품번
+  MCHNO CHAR(15) CCSID 833 NOT NULL DEFAULT '' ,  -- 하위품번
+  MLEVEL NUMERIC(2, 0) NOT NULL DEFAULT 0 ,       -- 레벨
+  MUNIT CHAR(2) CCSID 833 NOT NULL DEFAULT '' ,   -- 단위
+  MWKCT CHAR(4) CCSID 833 NOT NULL DEFAULT '' ,   -- 조코드
+  MQTY NUMERIC(8, 3) NOT NULL DEFAULT 0 ,         -- 원단위량
+  MQTYSUM NUMERIC(8, 3) NOT NULL DEFAULT 0 ,      -- 누적원단위량
+  MFMDT CHAR(8) CCSID 833 NOT NULL DEFAULT '' ,   -- 적용시작일
+  MTODT CHAR(8) CCSID 833 NOT NULL DEFAULT '' ,   -- 적용완료일
+  MOPTION CHAR(15) CCSID 833 NOT NULL DEFAULT '' ,  -- 호환품번
+  PRIMARY KEY( MCMCD , MDATE , MPLANT , MDIV , MDCD , MDNO , MSERIAL ) ) ;
+  

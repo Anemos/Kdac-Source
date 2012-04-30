@@ -1,0 +1,15 @@
+CREATE TRIGGER PBIPIS.T_SLE101AI
+   AFTER INSERT ON PBSLE.SLE101
+   REFERENCING NEW ROW AS NR
+   FOR EACH ROW
+   MODE DB2SQL
+BEGIN
+  INSERT INTO PBIPIS.PDSLE101 (CHGDATE, CHGCD, CUSTCD, CITNO,
+                               CITNM,   XPLANT, DIV, ITNO,
+                               STSCD,   DOWNDATE)
+    VALUES (CHAR(CURRENT TIMESTAMP), 'A', NR.CUSTCD, NR.CITNO,
+                               NR.CITNM, NR.XPLANT, NR.DIV, NR.ITNO,
+                               'N', ' ') ;
+END
+
+

@@ -1,0 +1,15 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ROUTING\\rtn030.pbl" "";
+@end;
+@begin Objects
+ "ROUTING\\w_rtn031i.srw" "ROUTING\\rtn030.pbl";
+ "ROUTING\\w_rtn032i.srw" "ROUTING\\rtn030.pbl";
+ "ROUTING\\w_rtn033i.srw" "ROUTING\\rtn030.pbl";
+ "ROUTING\\w_rtn034i.srw" "ROUTING\\rtn030.pbl";
+ "ROUTING\\d_bomsam_01.srd" "ROUTING\\rtn030.pbl";
+ "ROUTING\\d_rtn031i_rtn015_template.srd" "ROUTING\\rtn030.pbl";
+ "ROUTING\\d_rtn031i_rtn016_template.srd" "ROUTING\\rtn030.pbl";
+ "ROUTING\\d_comm110_01.srd" "ROUTING\\rtn030.pbl";
+ "ROUTING\\d_rtn034i_01.srd" "ROUTING\\rtn030.pbl";
+@end;

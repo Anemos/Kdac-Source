@@ -1,0 +1,207 @@
+long ll_row
+long ll_cnt, ll_rowcnt
+Boolean lb_Updated = False
+String ls_equip
+String ls_tarArea, ls_tarFactory
+String ls_msg
+
+ls_tarArea = ""
+ls_tarFactory = ""
+uo_status.st_message.text = ""
+
+ls_equip = id_dw_current.getitemstring(id_dw_current.getrow(),'equip_code')
+
+if not IsNull(id_dw_current) then
+	ll_row = id_dw_current.GetRow()
+	
+	if ll_row > 0 then
+		choose case tab_1.selectedTab
+			case 1
+				ls_tarArea = id_dw_current.object.target_area[ll_row]
+				ls_tarFactory = id_dw_current.object.target_factory[ll_row]
+		
+				if (not (gs_kmArea = 'D' And gs_kmDivision = 'R')) And (ls_tarArea = 'D' And ls_tarFactory = 'R') then
+					uo_status.st_message.text = '해당장비는 연구소 장비이므로 타공장에서 수정할 수 없읍니다.!!'
+					return 0
+				end if
+				
+				if messagebox("확인", "해당장비를 삭제하시겠읍니까?", Question!, YesNo!) <> 1 Then
+					return 0
+				end if
+				
+				SELECT COUNT(*)  
+					INTO :ll_rowcnt
+					FROM wo_hist  
+					WHERE wo_hist.equip_code = :ls_equip   
+					using sqlcmms;
+				
+				if ll_rowcnt = 0 then
+					id_dw_current.DeleteRow(ll_row)
+					lb_Updated = True
+				else
+					uo_status.st_message.text = '작명이 발행된 장비는 삭제할수 없습니다.'
+					return 0
+				end if
+
+				if ls_tarArea <> '' and ls_tarFactory <> '' then
+					transaction tar_conn
+					tar_conn = Create Transaction
+					
+					if f_cmms_setserver_any(ls_tarArea, ls_tarFactory, tar_conn) = False then
+						DESTROY tar_conn
+						ls_msg = "타켓지역: "+ls_tarArea+" 타켓공장: "+ls_tarFactory &
+									+ " 서버와의 연결이 끊어졌습니다.잠시후에 재작업하십시오"
+						uo_status.st_message.text = ls_msg
+						messagebox("연결오류", ls_msg)
+						return 0
+					end if
+
+					// 타켓 공장의 작명 체크
+					SELECT COUNT(*)
+						INTO :ll_rowcnt
+						FROM wo_hist  
+						WHERE wo_hist.equip_code = :ls_equip   
+						using tar_conn;
+					
+					if ll_rowcnt = 0 then
+						id_dw_current.DeleteRow(ll_row)
+						lb_Updated = True
+					else
+						uo_status.st_message.text = '타켓공장에서 작명이 발행되었으므로 삭제할수 없습니다.'
+						return 0
+					end if
+					
+					tar_conn.AutoCommit = false
+					DELETE FROM EQUIP_MASTER 
+					WHERE EQUIP_CODE = :ls_equip
+							AND AREA_CODE = :ls_tarArea
+							AND FACTORY_CODE = :ls_tarFactory
+					USING tar_conn;
+					
+					if tar_conn.sqlcode <> 0 then
+						ls_msg = tar_conn.SqlErrText
+				
+						RollBack Using tar_conn;
+						tar_conn.AutoCommit = true
+						DisConnect Using tar_conn;
+						DESTROY tar_conn
+									
+						uo_status.st_message.text = ls_msg
+						messagebox("타켓 DELETE 오류", ls_msg)
+	
+						return 0
+					end if
+				end if
+			case 2
+				if messagebox("확인", "해당자재를 삭제하시겠읍니까?", Question!, YesNo!) <> 1 Then
+					return 0
+				end if
+				
+				//A:예비 D:전용(공무자재 기본정보에서 맵핑 데이터 전용으로 다운)
+				if id_dw_current.getitemstring(ll_row,'part_flag') <> 'A' then
+					uo_status.st_message.text = '해당 자재는 공무자재기본정보에서 수정하셔야 합니다.'
+				else
+					id_dw_current.DeleteRow(ll_row)
+					lb_Updated = True
+				end if
+					
+			case 3
+			case 4
+			case 5
+			case 6
+				if messagebox("확인", "해당자료를 삭제하시겠읍니까?", Question!, YesNo!) <> 1 Then
+					return 0
+				end if
+				
+				id_dw_current.DeleteRow(ll_row)
+		
+				for ll_cnt = 1 to id_dw_current.rowcount()
+					id_dw_current.setitem(ll_cnt,2,ll_cnt)
+				next
+				lb_Updated = True
+				
+			case 7
+			case 8
+			case 9
+				//2007.05.08
+				//전장 김진열 조장 요청사항
+				ls_msg = string(ll_row) + "행의 ~r~n" + id_dw_current.getitemstring(ll_row,'class_item') &
+							+ "~r~n점검항목을 삭제 하시겠읍니까?"
+				if messagebox("확인", ls_msg, Question!, YesNo!) <> 1 Then
+					return 0
+				end if
+				
+				id_dw_current.DeleteRow(ll_row)
+				lb_Updated = True
+
+			case 10
+			case 11
+	//			id_dw_current.DeleteRow(ll_row)
+	//	
+	//			for i= 1 to id_dw_current.rowcount()
+	//				if check_data=1 then
+	//					id_dw_current.setitem(i,'daily_order',i)
+	//				end if
+	//				if check_data=2 then
+	//					id_dw_current.setitem(i,'daily_order',i+10)
+	//				end if
+	//				if check_data=3 then
+	//					id_dw_current.setitem(i,'daily_order',i+15)
+	//				end if
+	//			next
+		end choose
+	end if
+end if
+
+if lb_Updated Then
+	sqlcmms.AutoCommit = False
+	id_dw_current.accepttext()
+	
+	if id_dw_current.Update() = -1 then
+		
+		//타켓공장이 있으면
+		if ls_tarArea <> '' and ls_tarFactory <> '' then
+			RollBack Using tar_conn;
+			tar_conn.AutoCommit = true
+			DisConnect Using tar_conn;
+			DESTROY tar_conn
+		end if
+		
+		uo_status.st_message.text = sqlcmms.sqlerrtext
+		RollBack Using sqlcmms;
+		messagebox("삭제에러", uo_status.st_message.text)
+	else		
+		//타켓공장이 있으면
+		if ls_tarArea <> '' and ls_tarFactory <> '' then
+			Commit Using tar_conn;
+			tar_conn.AutoCommit = true
+			DisConnect Using tar_conn;
+			DESTROY tar_conn
+		end if
+
+		Commit Using sqlcmms;
+		uo_status.st_message.text = "삭제되었읍니다."
+		messagebox("삭제성공", uo_status.st_message.text)
+		
+		ib_data_changed = true
+	end if
+	
+	sqlcmms.AutoCommit = true
+	this.triggerevent('ue_retrieve')
+	dw_list.scrolltorow(dw_list.find("equip_code='"+ls_equip+"'",1,dw_list.rowcount()))
+end if
+
+return 0
+
+Rollback_:
+if ls_tarArea <> '' and ls_tarFactory <> '' then
+	ROLLBACK USING tar_conn;
+	tar_conn.AutoCommit = true
+	DisConnect Using tar_conn;
+	DESTROY tar_conn
+end if
+
+RollBack Using sqlcmms;
+sqlcmms.AutoCommit = true
+uo_status.st_message.text = sqlcmms.sqlerrtext
+

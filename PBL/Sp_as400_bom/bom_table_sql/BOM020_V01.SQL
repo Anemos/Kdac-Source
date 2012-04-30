@@ -1,0 +1,17 @@
+--  Generate SQL
+--  Version:                    V5R3M0 040528
+--  Generated on:               10/11/16 11:15:21
+--  Relational Database:        I520
+--  Standards Option:           DB2 UDB iSeries
+--  Description : 시스템작업내역
+
+DROP TABLE PBPDM.BOM020;
+
+CREATE TABLE PBPDM.BOM020 (
+  ZDATE CHAR(6) CCSID 833 NOT NULL ,
+  ZWORKDATE VARCHAR(30) CCSID 933 NOT NULL ,
+  ZPLANT CHAR(1) CCSID 833 NOT NULL ,
+  ZDIV CHAR(1) CCSID 833 NOT NULL ,
+  ZJOBNAME VARCHAR(100) CCSID 933 NOT NULL ,
+  ZJOBCNT INTEGER NOT NULL ,
+  PRIMARY KEY( ZDATE, ZWORKDATE, ZPLANT, ZDIV ) ) ;

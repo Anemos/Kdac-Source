@@ -1,0 +1,23 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ipis_km2000\\pis730.pbl" "";
+@end;
+@begin Objects
+ "ipis_km2000\\dd_team.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_emp_property.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_emp_edu.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_title.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\dd_dept.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_cc.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\dd_section.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\dd_skill.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_emp_list.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\dd_title.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\dd_cc.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_emp_certif.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_team.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_dept.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\w_pisf012.srw" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_section.srd" "ipis_km2000\\pis730.pbl";
+ "ipis_km2000\\d_group_skill.srd" "ipis_km2000\\pis730.pbl";
+@end;

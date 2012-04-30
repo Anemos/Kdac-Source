@@ -1,0 +1,11 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ipis_km2000\\commaii5.pbl" "";
+@end;
+@begin Objects
+ "ipis_km2000\\d_up_ipis_mis_tmcpartreturn.srd" "ipis_km2000\\commaii5.pbl";
+ "ipis_km2000\\d_down_ipis_mis_inv401.srd" "ipis_km2000\\commaii5.pbl";
+ "ipis_km2000\\f_down_ipis_mis_inv401.srf" "ipis_km2000\\commaii5.pbl";
+ "ipis_km2000\\f_cmms_crud_logic.srf" "ipis_km2000\\commaii5.pbl";
+ "ipis_km2000\\d_up_ipis_mis_tmcpartrelease.srd" "ipis_km2000\\commaii5.pbl";
+@end;

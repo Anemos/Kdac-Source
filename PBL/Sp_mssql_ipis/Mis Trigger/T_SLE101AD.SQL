@@ -1,0 +1,14 @@
+CREATE TRIGGER PBIPIS.T_SLE101AD
+   AFTER DELETE ON PBSLE.SLE101
+   REFERENCING OLD ROW AS OR
+   FOR EACH ROW
+   MODE DB2SQL
+BEGIN
+  INSERT INTO PBIPIS.PDSLE101 (CHGDATE, CHGCD, CUSTCD, CITNO,
+                               CITNM,   XPLANT, DIV, ITNO,
+                               STSCD,   DOWNDATE)
+    VALUES (CHAR(CURRENT TIMESTAMP), 'D', OR.CUSTCD, OR.CITNO,
+                               OR.CITNM, OR.XPLANT, OR.DIV, OR.ITNO,
+                               'N', ' ')  ;
+END
+

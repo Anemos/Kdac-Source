@@ -1,0 +1,31 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ROUTING\\rtn010.pbl" "";
+@end;
+@begin Objects
+ "ROUTING\\w_rtn014b.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn015b.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn016b.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\uo_calendar.sru" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn011u.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn012u.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\calendar.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn012u_res01.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u_res01.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn013u_rtn013_template.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u_res02.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn013u_rtn014_template.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u_res03.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u_res04.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn013u_res05.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\f_get_inv002_rtn.srf" "ROUTING\\rtn010.pbl";
+ "ROUTING\\f_get_inv101_rtn.srf" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn015b_display.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn016b_display.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn014b_01.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\w_rtn01_rtninfo_history.srw" "ROUTING\\rtn010.pbl";
+ "ROUTING\\s_inv101_info.srs" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn013u_res04_01.srd" "ROUTING\\rtn010.pbl";
+ "ROUTING\\d_rtn013u_res05_01.srd" "ROUTING\\rtn010.pbl";
+@end;

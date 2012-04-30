@@ -1,0 +1,17 @@
+CREATE TRIGGER PBIPIS.T_PUR102AI
+   AFTER INSERT ON PBPUR.PUR102
+   REFERENCING NEW ROW AS NR
+   FOR EACH ROW
+   MODE DB2SQL
+WHEN
+   (NR.DEPT = 'D')
+BEGIN
+  INSERT INTO PBIPIS.PDPUR102 (CHGDATE, CHGCD, VSRNO, INSIDE, KBCD,
+                               VANCD,   JSCD,   XSTOP,
+                               STSCD,   DOWNDATE)
+    VALUES (CHAR(CURRENT TIMESTAMP), 'R', NR.VSRNO, NR.INSIDE, NR.KBCD,
+                               NR.VANCD, NR.JSCD, NR.XSTOP,
+                               'N', ' ') ;
+END
+
+

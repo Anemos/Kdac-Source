@@ -1,0 +1,112 @@
+SELECT   "PBWIP"."WIP002"."WBPLANT",   
+         "PBWIP"."WIP002"."WBDVSN",
+         "PBWIP"."WIP002"."WBORCT",
+			"PBWIP"."WIP002"."WBITNO",
+			"PBINV"."INV002"."ITNM",
+			"PBINV"."INV101"."CLS",   
+         "PBINV"."INV101"."SRCE",   
+         "PBINV"."INV101"."PDCD",   
+         "PBINV"."INV101"."XUNIT",   
+
+         SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',  
+         "PBWIP".F_WIP_QTY("PBWIP"."WIP002"."WBYEAR",
+							"PBWIP"."WIP002"."WBMONTH","PBWIP"."WIP002"."WBCMCD",
+							"PBWIP"."WIP002"."WBPLANT","PBWIP"."WIP002"."WBDVSN","PBWIP"."WIP002"."WBORCT",
+							"PBWIP"."WIP002"."WBITNO",'2'),0)) as scrp,   
+         SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',  
+         "PBWIP".F_WIP_QTY("PBWIP"."WIP002"."WBYEAR",
+							"PBWIP"."WIP002"."WBMONTH","PBWIP"."WIP002"."WBCMCD",
+							"PBWIP"."WIP002"."WBPLANT","PBWIP"."WIP002"."WBDVSN","PBWIP"."WIP002"."WBORCT",
+							"PBWIP"."WIP002"."WBITNO",'3'),0)) as retn,
+			SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',   
+            "PBWIP"."WIP002"."WBAVRG1" * "PBINV"."INV101"."CONVQTY", 0)) as avrg1,
+			SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200201',   
+         	DECIMAL("PBWIP"."WIP002"."WBBGQT" / "PBINV"."INV101"."CONVQTY",15,2), 0))  as bgqt,
+			SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200201',   
+         	"PBWIP"."WIP002"."WBBGAT1",  0)) as bgat, 
+         SUM( DECIMAL(("PBWIP"."WIP002"."WBINQT" - "PBWIP"."WIP002"."WBUSQT3")  / "PBINV"."INV101"."CONVQTY",15,2) ) as inqt,   
+         SUM( "PBWIP"."WIP002"."WBINAT1" + "PBWIP"."WIP002"."WBINAT2" + "PBWIP"."WIP002"."WBINAT3" - "PBWIP"."WIP002"."WBUSAT3") as inat,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT1" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt1,   
+         SUM( "PBWIP"."WIP002"."WBUSAT1" ) as usat1,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT2" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt2,   
+         SUM( "PBWIP"."WIP002"."WBUSAT2" ) as usat2,   
+         SUM( DECIMAL(0,15,2) ) as usqt3,   
+         SUM(0) as usat3,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT4" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt4,   
+         SUM( "PBWIP"."WIP002"."WBUSAT4" ) as usat4,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT5" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt5,   
+         SUM( "PBWIP"."WIP002"."WBUSAT5" ) as usat5,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT6" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt6,   
+         SUM( "PBWIP"."WIP002"."WBUSAT6" ) as usat6,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT7" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt7,   
+         SUM( "PBWIP"."WIP002"."WBUSAT7" ) as usat7,   
+         SUM( DECIMAL("PBWIP"."WIP002"."WBUSQT8" / "PBINV"."INV101"."CONVQTY",15,2) ) as usqt8,   
+         SUM( "PBWIP"."WIP002"."WBUSAT8" ) as usat8,   
+         SUM( "PBWIP"."WIP002"."WBUSAT9" ) as usat9,   
+         SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',   
+         	"PBWIP"."WIP002"."WBUSQTA" / "PBINV"."INV101"."CONVQTY", 0) ) as diffqta,   
+         SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',   
+         	"PBWIP"."WIP002"."WBUSATA" , 0) ) as diffata,    
+         SUM( "PBWIP"."WIP002"."WBUSAT5" + "PBWIP"."WIP002"."WBUSAT9" )  as etc_amt,
+			SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',
+   			DECIMAL(("PBWIP"."WIP002"."WBBGQT"+"PBWIP"."WIP002"."WBINQT"- ("PBWIP"."WIP002"."WBUSQT1"+
+				"PBWIP"."WIP002"."WBUSQT2"+"PBWIP"."WIP002"."WBUSQT3"+"PBWIP"."WIP002"."WBUSQT4"+
+				"PBWIP"."WIP002"."WBUSQT5"+"PBWIP"."WIP002"."WBUSQT6"+"PBWIP"."WIP002"."WBUSQT7"+
+				"PBWIP"."WIP002"."WBUSQT8")) / "PBINV"."INV101"."CONVQTY",15,2),0)) as cur_qty,   
+         SUM( "PBCOMMON".F_IF("PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH",'200203',
+   			"PBWIP"."WIP002"."WBBGAT1"+"PBWIP"."WIP002"."WBINAT1"+"PBWIP"."WIP002"."WBINAT2"+
+				"PBWIP"."WIP002"."WBINAT3"- ("PBWIP"."WIP002"."WBUSAT1"+
+				"PBWIP"."WIP002"."WBUSAT2"+"PBWIP"."WIP002"."WBUSAT3"+"PBWIP"."WIP002"."WBUSAT4"+
+				"PBWIP"."WIP002"."WBUSAT5"+"PBWIP"."WIP002"."WBUSAT6"+"PBWIP"."WIP002"."WBUSAT7"+
+				"PBWIP"."WIP002"."WBUSAT8"+"PBWIP"."WIP002"."WBUSAT9"),0)) as cur_amt, 
+			
+			SUM( 0) as bet_amt,
+			
+			SUM( 0) as bet_qty, 
+
+			SUM( DECIMAL(("PBWIP"."WIP002"."WBUSQT1"+"PBWIP"."WIP002"."WBUSQT2"+
+				"PBWIP"."WIP002"."WBUSQT4"+"PBWIP"."WIP002"."WBUSQT5"+"PBWIP"."WIP002"."WBUSQT6"+
+				"PBWIP"."WIP002"."WBUSQT7"+"PBWIP"."WIP002"."WBUSQT8") / "PBINV"."INV101"."CONVQTY",15,2))  as use_qty,   
+         SUM("PBWIP"."WIP002"."WBUSAT1"+
+				"PBWIP"."WIP002"."WBUSAT2"+"PBWIP"."WIP002"."WBUSAT4"+
+				"PBWIP"."WIP002"."WBUSAT5"+"PBWIP"."WIP002"."WBUSAT6"+"PBWIP"."WIP002"."WBUSAT7"+
+				"PBWIP"."WIP002"."WBUSAT8"+"PBWIP"."WIP002"."WBUSAT9") as use_amt,
+			SUM( 0.0000 ) as qty_scrp,
+			SUM( 0 ) as amt_scrp,
+			SUM( 0.0000 ) as qty_retn,
+			SUM( 0 ) as amt_retn,
+			SUM( 0.0000 ) as qty_claim,
+			SUM( 0 ) as amt_claim
+    FROM "PBWIP"."WIP002",   
+         "PBINV"."INV002",   
+         "PBINV"."INV101"  
+   WHERE ( "PBWIP"."WIP002"."WBITNO"  = "PBINV"."INV002"."ITNO" ) and  
+         ( "PBWIP"."WIP002"."WBPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+         ( "PBWIP"."WIP002"."WBCMCD"  = "PBINV"."INV101"."COMLTD" ) and  
+         ( "PBWIP"."WIP002"."WBDVSN"  = "PBINV"."INV101"."DIV" ) and  
+         ( "PBWIP"."WIP002"."WBITNO"  = "PBINV"."INV101"."ITNO" ) and  
+         (( "PBWIP"."WIP002"."WBCMCD" = '01' ) AND 
+         ( "PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH"  >= '200201' ) AND  
+         ( "PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH" <= '200203' ) AND 
+			( "PBWIP"."WIP002"."WBIOCD" = '2' ) AND 
+         ( "PBWIP"."WIP002"."WBORCT"  in ( 'D1664','D0490' ) AND
+         NOT ("PBWIP"."WIP002"."WBBGQT" = 0 AND "PBWIP"."WIP002"."WBINQT" = 0 AND 
+            "PBWIP"."WIP002"."WBUSQT1" = 0 AND "PBWIP"."WIP002"."WBUSQT2" = 0 AND
+				"PBWIP"."WIP002"."WBUSQT3" = 0 AND
+				"PBWIP"."WIP002"."WBUSQT4" = 0 AND "PBWIP"."WIP002"."WBUSQT5" = 0 AND
+            "PBWIP"."WIP002"."WBUSQT6" = 0 AND "PBWIP"."WIP002"."WBUSQT7" = 0 AND
+				"PBWIP"."WIP002"."WBUSQT8" = 0))
+GROUP BY "PBWIP"."WIP002"."WBPLANT",   
+         "PBWIP"."WIP002"."WBDVSN",
+         "PBWIP"."WIP002"."WBORCT",
+			"PBWIP"."WIP002"."WBITNO",
+			"PBINV"."INV002"."ITNM",
+			"PBINV"."INV101"."CLS",   
+         "PBINV"."INV101"."SRCE",   
+         "PBINV"."INV101"."PDCD",   
+         "PBINV"."INV101"."XUNIT"   
+ORDER BY "PBWIP"."WIP002"."WBORCT" ASC,
+			"PBWIP"."WIP002"."WBPLANT" ASC,   
+         "PBWIP"."WIP002"."WBDVSN" ASC,   
+          "PBINV"."INV101"."PDCD" asc, 
+         "PBWIP"."WIP002"."WBITNO" ASC  ; 

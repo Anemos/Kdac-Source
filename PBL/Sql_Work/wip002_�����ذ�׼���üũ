@@ -1,0 +1,46 @@
+UPDATE PBWIP.WIP002 A
+SET A.WBBGQT = IFNULL( ( select ( B.wbbgqt + B.wbinqt - (B.wbusqt1 + B.wbusqt2 +
+       B.wbusqt3 + B.wbusqt4 + B.wbusqt5 + B.wbusqt6 + B.wbusqt7 +
+       B.wbusqt8 + B.wbusqta)) from pbwip.wip002 B 
+WHERE B.WBCMCD = A.WBCMCD AND B.WBPLANT = A.WBPLANT AND
+			B.WBDVSN = A.WBDVSN AND B.WBITNO = A.WBITNO AND B.WBORCT = A.WBORCT AND B.WBIOCD = A.WBIOCD AND
+			B.WBYEAR = '2010' AND B.WBMONTH = '05'), 0),
+  A.WBBGAT1 = IFNULL( (select (B.wbbgat1 + B.wbinat1 + B.wbinat2 +
+       B.wbinat3 + B.wbinat4 -
+       (B.wbusat1 + B.wbusat2 + B.wbusat3 + B.wbusat4 + B.wbusat5 +
+       B.wbusat6 + B.wbusat7 + B.wbusat8 + B.wbusat9 + B.wbusata)) from pbwip.wip002 B 
+WHERE B.WBCMCD = A.WBCMCD AND B.WBPLANT = A.WBPLANT AND
+			B.WBDVSN = A.WBDVSN AND B.WBITNO = A.WBITNO AND B.WBORCT = A.WBORCT AND B.WBIOCD = A.WBIOCD AND
+			B.WBYEAR = '2010' AND B.WBMONTH = '05'),0)
+WHERE A.WBCMCD = '01' AND A.WBPLANT = 'D' AND A.WBDVSN = 'A' AND
+A.WBYEAR = '2010' AND A.WBMONTH = '06';
+
+
+insert into pbwip.wip002(wbcmcd,wbplant,wbdvsn,wborct,wbitno,
+       wbyear,wbmonth,wbrev,wbiocd,wbitcl,wbsrce,wbpdcd,
+       wbunit,wbtype,wbdesc,wbspec,wbscrp,wbretn,wbavrg1,
+       wbavrg2,wbbgqt,wbbgat1,wbbgat2,wbinqt,wbinat1,
+       wbinat2,wbinat3,wbinat4,wbusqt1,wbusat1,wbusqt2,
+       wbusat2,wbusqt3,wbusat3,wbusqt4,wbusat4,wbusqt5,
+       wbusat5,wbusqt6,wbusat6,wbusqt7,wbusat7,wbusqt8,
+       wbusat8,wbusat9,wbusqta,wbusata,wbplan,wbipaddr,
+       wbmacaddr,wbinptdt,wbupdtdt)
+select a.wbcmcd,a.wbplant,a.wbdvsn,a.wborct,a.wbitno,
+       '2010','06',a.wbrev,a.wbiocd,a.wbitcl,a.wbsrce,a.wbpdcd,
+       a.wbunit,a.wbtype,a.wbdesc,a.wbspec,a.wbscrp,a.wbretn,a.wbavrg1,
+       a.wbavrg2,a.wbbgqt + a.wbinqt - (a.wbusqt1 + a.wbusqt2 +
+       a.wbusqt3 + a.wbusqt4 + a.wbusqt5 + a.wbusqt6 + a.wbusqt7 +
+       a.wbusqt8 + a.wbusqta), a.wbbgat1 + a.wbinat1 + a.wbinat2 +
+       a.wbinat3 + a.wbinat4 -
+       (a.wbusat1 + a.wbusat2 + a.wbusat3 + a.wbusat4 + a.wbusat5 +
+       a.wbusat6 + a.wbusat7 + a.wbusat8 + a.wbusat9 + a.wbusata),
+       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+       0,0,0,0,0,' ','','','',''
+from pbwip.wip002 a
+where a.wbcmcd = '01' and a.wbyear = '2010' and
+      a.wbmonth = '05' and not exists
+		( select * from pbwip.wip002 b
+			where b.wbcmcd = a.wbcmcd and b.wbplant = a.wbplant and
+				b.wbdvsn = a.wbdvsn and b.wbitno = a.wbitno and
+				b.wborct = a.wborct and b.wbiocd = a.wbiocd and
+				b.wbyear = '2010' and b.wbmonth = '06' );

@@ -1,0 +1,19 @@
+CREATE TRIGGER PBIPIS.T_SLE101AU
+   AFTER UPDATE ON PBSLE.SLE101
+   REFERENCING NEW ROW AS NR
+               OLD ROW AS OR
+   FOR EACH ROW
+   MODE DB2SQL
+WHEN
+   (NR.CITNM <> OR.CITNM OR NR.XPLANT <> OR.XPLANT OR
+    NR.DIV   <> OR.DIV   OR NR.ITNO   <> OR.ITNO)
+BEGIN
+  INSERT INTO PBIPIS.PDSLE101 (CHGDATE, CHGCD, CUSTCD, CITNO,
+                               CITNM, XPLANT, DIV, ITNO,
+                               STSCD,   DOWNDATE)
+    VALUES (CHAR(CURRENT TIMESTAMP), 'R', NR.CUSTCD, NR.CITNO,
+                               NR.CITNM, NR.XPLANT, NR.DIV, NR.ITNO,
+                               'N', ' ') ;
+END
+
+

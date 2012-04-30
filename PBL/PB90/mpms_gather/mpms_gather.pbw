@@ -1,0 +1,9 @@
+Save Format v3.0(19990112)
+@begin Unchecked
+@end;
+@begin Targets
+ 0 "mpms_gather.pbt";
+ 1 "mpms_down.pbt";
+@end;
+DefaultTarget "mpms_gather.pbt";
+DefaultRemoteTarget "mpms_gather.pbt";

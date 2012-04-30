@@ -1,0 +1,185 @@
+/************************************************************************************************/
+/*	File Name	: sp_eisq010i_02.SQL                                                            */
+/*	SYSTEM		: 경영자용 통합정보	                                                            */
+/*	Description	: 월간 수입검사 불량율(전사-LOT)	                                            */
+/*	Supply		: DAEWOO Information Systems Co., LTD IAS Dept                                  */
+/*	Use DataBase: IPIS2000                                                                      */
+/*	Use Table	: TQQCRESULT                                                                    */
+/*	              TMSTDIVISION                                                                  */
+/*  Parameter   : @ps_QCDateFmb         char(10)    => 전년조회일자FROM                         */
+/*                @ps_QCDateTob         char(10)    => 전년조회일자TO                           */
+/*  			  @ps_QCDateFm          char(10)    => 조회일자FROM                             */
+/*                @ps_QCDateTo          char(10)    => 조회일자TO                               */
+/*	Notes		: 전사 월간 수입검사 불량율을 조회한다.							                */
+/*	Made Date	: 2002. 11. 27                                                                  */
+/*	Author		: 대우정보-유종희                                                               */
+/************************************************************************************************/
+if exists (select * from sysobjects where id = object_id('dbo.sp_eisq010i_02') and sysstat & 0xf = 4)
+	drop procedure dbo.sp_eisq010i_02
+GO
+/*
+Exec sp_eisq010i_02
+        @ps_QCDateFmb       = '2001.12.01',
+        @ps_QCDateTob       = '2001.12.31',
+        @ps_QCDateFm        = '2002.12.01',
+        @ps_QCDateTo        = '2002.12.31'
+*/
+
+
+/****** Object:  Stored Procedure dbo.sp_eisq010i_02    Script Date: 02-09-01  ******/
+CREATE PROCEDURE sp_eisq010i_02
+        @ps_QCDateFmb         char(10)      ,   -- 조회일자FROM
+        @ps_QCDateTob         char(10)		,   -- 조회일자TO
+        @ps_QCDateFm          char(10)      ,   -- 조회일자FROM
+        @ps_QCDateTo          char(10)          -- 조회일자TO
+AS
+
+BEGIN
+
+	SELECT	AS_AREACODE,
+			AS_DIVISIONCODE,
+			A.AREANAME		AS AS_AREANAME,
+			B.DIVISIONNAME	AS AS_DIVISIONNAME,
+			I_00,
+			I_01,
+			I_02,
+			I_03,
+			I_04,
+			I_05,
+			I_06,
+			I_07,
+			I_08,
+			I_09,
+			I_10,
+			I_11,
+			I_12,
+			I_13,
+			B_00,
+			B_01,
+			B_02,
+			B_03,
+			B_04,
+			B_05,
+			B_06,
+			B_07,
+			B_08,
+			B_09,
+			B_10,
+			B_11,
+			B_12,
+			B_13
+	FROM (
+		SELECT	AS_AREACODE,
+				AS_DIVISIONCODE,
+				SUM(ISNULL(M_IBYEAR, 0)) AS I_00,
+				SUM(ISNULL(M_I11, 0))	 AS I_01,
+				SUM(ISNULL(M_I10, 0))	 AS I_02,
+				SUM(ISNULL(M_I09, 0))	 AS I_03,
+				SUM(ISNULL(M_I08, 0))	 AS I_04,
+				SUM(ISNULL(M_I07, 0))	 AS I_05,
+				SUM(ISNULL(M_I06, 0))	 AS I_06,
+				SUM(ISNULL(M_I05, 0))	 AS I_07,
+				SUM(ISNULL(M_I04, 0))	 AS I_08,
+				SUM(ISNULL(M_I03, 0))	 AS I_09,
+				SUM(ISNULL(M_I02, 0))	 AS I_10,
+				SUM(ISNULL(M_I01, 0))	 AS I_11,
+				SUM(ISNULL(M_I00, 0))	 AS I_12,
+				SUM(ISNULL(M_IYEAR, 0))	 AS I_13,
+				SUM(ISNULL(M_BBYEAR, 0)) AS B_00,
+				SUM(ISNULL(M_B11, 0))	 AS B_01,
+				SUM(ISNULL(M_B10, 0))	 AS B_02,
+				SUM(ISNULL(M_B09, 0))	 AS B_03,
+				SUM(ISNULL(M_B08, 0))	 AS B_04,
+				SUM(ISNULL(M_B07, 0))	 AS B_05,
+				SUM(ISNULL(M_B06, 0))	 AS B_06,
+				SUM(ISNULL(M_B05, 0))	 AS B_07,
+				SUM(ISNULL(M_B04, 0))	 AS B_08,
+				SUM(ISNULL(M_B03, 0))	 AS B_09,
+				SUM(ISNULL(M_B02, 0))	 AS B_10,
+				SUM(ISNULL(M_B01, 0))	 AS B_11,
+				SUM(ISNULL(M_B00, 0))	 AS B_12,
+				SUM(ISNULL(M_BYEAR, 0))	 AS B_13
+		  FROM	(
+				SELECT	A.AREACODE AS AS_AREACODE,
+						A.DIVISIONCODE	AS AS_DIVISIONCODE,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11,@ps_QCDateFmb), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -00,@ps_QCDateTob), 102) THEN count(*) END AS M_IBYEAR,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateTo), 102) THEN count(*) END AS M_I11,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -10, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -10, @ps_QCDateTo), 102) THEN count(*) END AS M_I10,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -09, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -09, @ps_QCDateTo), 102) THEN count(*) END AS M_I09,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -08, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -08, @ps_QCDateTo), 102) THEN count(*) END AS M_I08,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -07, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -07, @ps_QCDateTo), 102) THEN count(*) END AS M_I07,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -06, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -06, @ps_QCDateTo), 102) THEN count(*) END AS M_I06,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -05, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -05, @ps_QCDateTo), 102) THEN count(*) END AS M_I05,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -04, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -04, @ps_QCDateTo), 102) THEN count(*) END AS M_I04,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -03, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -03, @ps_QCDateTo), 102) THEN count(*) END AS M_I03,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -02, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -02, @ps_QCDateTo), 102) THEN count(*) END AS M_I02,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -01, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -01, @ps_QCDateTo), 102) THEN count(*) END AS M_I01,
+						CASE WHEN                                       @ps_QCDateFm        <= A.QCDATE AND A.QCDATE <=                                       @ps_QCDateTo        THEN count(*) END AS M_I00,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -00, @ps_QCDateTo), 102) THEN count(*) END AS M_IYEAR,
+						0                                                                                                                                                                           AS M_BBYEAR,
+						0                                                                                                                                                                           AS M_B11,
+						0                                                                                                                                                                           AS M_B10,
+						0                                                                                                                                                                           AS M_B09,
+						0                                                                                                                                                                           AS M_B08,
+						0                                                                                                                                                                           AS M_B07,
+						0                                                                                                                                                                           AS M_B06,
+						0                                                                                                                                                                           AS M_B05,
+						0                                                                                                                                                                           AS M_B04,
+						0                                                                                                                                                                           AS M_B03,
+						0                                                                                                                                                                           AS M_B02,
+						0                                                                                                                                                                           AS M_B01,
+						0                                                                                                                                                                           AS M_B00,
+						0                                                                                                                                                                           AS M_BYEAR
+				  FROM	TQQCRESULT  A
+		         WHERE	A.QCDATE	>=   CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFmb), 102)
+		           AND	A.QCDATE	<=   @ps_QCDateTo
+				 GROUP	BY A.AREACODE, A.DIVISIONCODE, A.QCDATE
+		
+		        UNION ALL
+			
+				SELECT	A.AREACODE AS AS_AREACODE,
+						A.DIVISIONCODE	AS AS_DIVISIONCODE,
+						0																																																									  AS M_IBYEAR,
+						0                                                                                                                                                                           AS M_I11,
+						0                                                                                                                                                                           AS M_I10,
+						0                                                                                                                                                                           AS M_I09,
+						0                                                                                                                                                                           AS M_I08,
+						0                                                                                                                                                                           AS M_I07,
+						0                                                                                                                                                                           AS M_I06,
+						0                                                                                                                                                                           AS M_I05,
+						0                                                                                                                                                                           AS M_I04,
+						0                                                                                                                                                                           AS M_I03,
+						0                                                                                                                                                                           AS M_I02,
+						0                                                                                                                                                                           AS M_I01,
+						0                                                                                                                                                                           AS M_I00,
+						0                                                                                                                                                                           AS M_IYEAR,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11,@ps_QCDateFmb), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -00,@ps_QCDateTob), 102) THEN count(*) END AS M_BBYEAR,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateTo), 102) THEN count(*) END AS M_B11,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -10, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -10, @ps_QCDateTo), 102) THEN count(*) END AS M_B10,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -09, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -09, @ps_QCDateTo), 102) THEN count(*) END AS M_B09,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -08, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -08, @ps_QCDateTo), 102) THEN count(*) END AS M_B08,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -07, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -07, @ps_QCDateTo), 102) THEN count(*) END AS M_B07,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -06, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -06, @ps_QCDateTo), 102) THEN count(*) END AS M_B06,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -05, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -05, @ps_QCDateTo), 102) THEN count(*) END AS M_B05,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -04, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -04, @ps_QCDateTo), 102) THEN count(*) END AS M_B04,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -03, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -03, @ps_QCDateTo), 102) THEN count(*) END AS M_B03,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -02, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -02, @ps_QCDateTo), 102) THEN count(*) END AS M_B02,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -01, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -01, @ps_QCDateTo), 102) THEN count(*) END AS M_B01,
+						CASE WHEN                                       @ps_QCDateFm        <= A.QCDATE AND A.QCDATE <=                                       @ps_QCDateTo        THEN count(*) END AS M_B00,
+						CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -00, @ps_QCDateTo), 102) THEN count(*) END AS M_BYEAR
+				  FROM	TQQCRESULT  A
+		         WHERE	A.QCDATE	 >=   CONVERT(CHAR(10), DATEADD(month, -11, @ps_QCDateFmb), 102)
+		           AND	A.QCDATE	 <=   @ps_QCDateTo
+		           AND	A.JUDGEFLAG  IN   ('2', '3')
+		         GROUP	BY A.AREACODE, A.DIVISIONCODE, A.QCDATE
+				) TMP
+		 GROUP	BY AS_AREACODE, AS_DIVISIONCODE
+		 ) TEMP, TMSTAREA A, TMSTDIVISION B
+	 WHERE	AS_AREACODE		= A.AREACODE
+	   AND	AS_AREACODE		= B.AREACODE
+	   AND	AS_DIVISIONCODE	= B.DIVISIONCODE
+	 ORDER  BY AS_AREACODE, B.SORTORDER
+
+END 
+
+go

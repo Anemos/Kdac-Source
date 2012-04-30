@@ -1,0 +1,387 @@
+select distinct a.plant,a.pdvsn,a.pcitn,a.pexplant,a.pexdv,a.pedte,b.oedte,c.cls,c.srce,
+	(select d.srce from pbinv.inv101 d where d.comltd = '01' and d.xplant = a.pexplant and
+		d.div = a.pexdv and d.itno = a.pcitn),f.yyyymm,f.qtysum
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.ofitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join (select substring(tdte4,1,6) as yyyymm,xplant,div,itno,sum(tqty4) as qtysum from pbinv.inv401 e
+    where e.comltd = '01' and e.sliptype = 'RW' and
+    tdte4 >= '20110101' and tdte4 <= '20110831'
+    group by substring(tdte4,1,6),xplant,div,itno ) f
+  on a.pcmcd = '01' and a.plant = f.xplant and
+     a.pdvsn = f.div and a.pcitn = f.itno
+WHERE a.pcmcd = '01' AND (( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and a.pexplant <> '' and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' ))
+order by a.plant,a.pdvsn,a.pcitn,f.yyyymm,f.qtysum;
+
+
+f_check_workcentor_bom
+회사,지역,공장,하위품번,유/무상,적용일
+반환값 0, -1
+
+if ag_wkct = '8888'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '9999' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+else ag_wkct = '9999'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '8888' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+
+if li_cnt > 0 then
+  return -1
+else
+  return 0
+
+
+f_check_workcentor_option
+회사,지역,공장,호환품번,유/무상,적용일
+반환값 0, -1
+
+if ag_wkct <> '8888' or ag_wkct <> '9999' then
+  return 0
+end if
+
+//호환유무체크
+ls_option = f_option_chk_after(ag_plant,ag_dvsn,ag_itno,ag_date)
+if f_spacechk(ls_option) <> -1 then
+  if ls_opton = ag_itno then
+    do while true
+      select ofitn into :ls_chk_option
+      from pbpdm.bom003
+      where ocmcd = '01' and oplant = a_plant and 
+        odvsn = a_div and opitn = ag_itno and
+        ofitn > ls_chk_itno and
+        (( oedte = ' ' and  oedtm <= a_date ) or
+          ( oedte <> ' ' and oedte >= a_date and oedtm <= a_date ))
+      order by ofitn
+      fetch first 1 row only
+      using sqlca;
+      
+      if f_spacechk(ls_chk_option) = -1 then
+        exit
+      end if
+          
+      select count(*) into :li_cnt
+      from pbpdm.bom003
+      where ocmcd = '01' and oplant = a_plant and 
+        odvsn = a_div and opitn = ag_itno
+        and (( oedte = ' ' and  oedtm <= a_date ) or
+          ( oedte <> ' ' and oedte >= a_date and oedtm <= a_date ))
+      if ag_wkct = '8888'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '9999' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+else ag_wkct = '9999'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '8888' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+end if
+
+if li_cnt > 0 then
+  return -1
+else
+  return 0
+    loop
+  else
+    
+  end if
+  select count(*) into :li_cnt
+  from
+end if
+if ag_wkct = '8888'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '9999' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+else ag_wkct = '9999'
+select count(*) into :li_cnt
+from pbpdm.bom001 a
+where a.pcmcd = a_comltd AND a.plant = a_beforeplant AND
+a.pdvsn = a_beforedvsn AND a.pcitn = p_itno AND a.pwkct = '8888' and
+(( a.pedte = ' '  and a.pedtm <= a_date ) or
+( a.pedte <> ' ' and a.pedtm <= a_date
+                and a.pedte >= a_date ))
+using sqlca;
+end if
+
+if li_cnt > 0 then
+  return -1
+else
+  return 0
+
+
+		 ORDER BY TMSTEMP.DeptCode, TMSTEMP.EmpJikchek, TMSTEMP.EmpClass, TMSTEMP.EmpEnterDate,
+			TMSTEMP.EmpName, TMSTEMP.EmpNo
+			
+			
+-- 2011.10.21 호환주/부품목 입고수량리스트 추가
+
+// 호환주품목 -- 월별 합계
+select tmp.plant,tmp.div,tmp.itno,tmp.opitn,
+  sum( case when substring(tdte4,1,4) = :ls_postyear then b.tqty4 else 0 end) as wqty,
+  sum( case when substring(tdte4,1,4) = :ls_postyear then b.tramt else 0 end) as wamt,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','01') then b.tqty4 else 0 end) as wqty01,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','01') then b.tramt else 0 end) as wamt01,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','02') then b.tqty4 else 0 end) as wqty02,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','02') then b.tramt else 0 end) as wamt02,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','03') then b.tqty4 else 0 end) as wqty03,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','03') then b.tramt else 0 end) as wamt03,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','04') then b.tqty4 else 0 end) as wqty04,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','04') then b.tramt else 0 end) as wamt04,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','05') then b.tqty4 else 0 end) as wqty05,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','05') then b.tramt else 0 end) as wamt05,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','06') then b.tqty4 else 0 end) as wqty06,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','06') then b.tramt else 0 end) as wamt06,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','07') then b.tqty4 else 0 end) as wqty07,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','07') then b.tramt else 0 end) as wamt07,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','08') then b.tqty4 else 0 end) as wqty08,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','08') then b.tramt else 0 end) as wamt08,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','09') then b.tqty4 else 0 end) as wqty09,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','09') then b.tramt else 0 end) as wamt09,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','10') then b.tqty4 else 0 end) as wqty10,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','10') then b.tramt else 0 end) as wamt10,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','11') then b.tqty4 else 0 end) as wqty11,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','11') then b.tramt else 0 end) as wamt11,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','12') then b.tqty4 else 0 end) as wqty12,
+  sum( case when substring(b.tdte4,1,6) = concat('2011','12') then b.tramt else 0 end) as wamt12
+from ( select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,a.pcitn as opitn,'*' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.opitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND (( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' ))
+union all
+select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,
+	pbpdm.f_bom_02('01',a.plant,a.pdvsn,a.pcitn,'20110926') as opitn,'' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.ofitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND (( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' )) ) tmp, pbinv.inv401 b
+WHERE tmp.comltd = b.comltd and tmp.plant = b.xplant and tmp.div = b.div and
+	tmp.itno = b.itno and b.sliptype in ('RP','RF') and 
+	b.tqty4 <> 0 and b.tdte4 >= :ls_from and b.tdte4 <= :ls_to
+group by tmp.plant,tmp.div,tmp.itno,tmp.opitn
+
+// 호환주품목 -- 연간 합계
+select tmp.plant,tmp.div,tmp.itno,tmp.opitn,
+  sum( ifnull(b.tqty4,0) ) as wqty,
+  sum( ifnull(b.tramt,0) ) as wamt
+from ( select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,a.pcitn as opitn,'*' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.opitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' ))
+union all
+select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,
+	pbpdm.f_bom_02('01',a.plant,a.pdvsn,a.pcitn,'20110926') as opitn,'' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.ofitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' )) ) tmp left outer join pbinv.inv401 b
+on tmp.comltd = b.comltd and tmp.plant = b.xplant and tmp.div = b.div and
+	tmp.itno = b.itno and b.sliptype in ('RP','RF') and 
+	b.tqty4 <> 0 and b.tdte4 >= :ls_from and b.tdte4 <= :ls_to
+group by tmp.plant,tmp.div,tmp.itno,tmp.opitn
+
+//최종 입고수량 리스트
+select tmp_each.plant, tmp_each.div, tmp_each.opitn, tmp_each.itno, substring(c.pdcd,1,2) as pdcd,
+	d.itnm,c.cls,c.srce,c.xunit,
+	tmp_each.wqty, tmp_each.wamt, tmp_sum.wqty, tmp_sum.wamt, 
+	( case when tmp_sum.wqty <> 0 then decimal(tmp_each.wqty * 100 / tmp_sum.wqty,10,0) else 0 end ) as qty_ratio,
+	( case when tmp_sum.wamt <> 0 then decimal(tmp_each.wamt * 100 / tmp_sum.wamt,10,0) else 0 end ) as amt_ratio
+from
+( select tmp.comltd,tmp.plant,tmp.div,tmp.itno,tmp.opitn,
+  sum( ifnull(b.tqty4,0) ) as wqty,
+  sum( ifnull(b.tramt,0) ) as wamt
+from ( select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,a.pcitn as opitn,'*' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.opitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' ))
+union all
+select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,
+	pbpdm.f_bom_02('01',a.plant,a.pdvsn,a.pcitn,'20110926') as opitn,'' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.ofitn
+	inner join pbinv.inv101 c
+	on a.pcmcd = c.comltd and a.plant = c.xplant and
+		a.pdvsn = c.div and a.pcitn = c.itno
+	inner join pbinv.inv002 d
+	on a.pcmcd = d.comltd and a.pcitn = d.itno
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' )) ) tmp left outer join pbinv.inv401 b
+on tmp.comltd = b.comltd and tmp.plant = b.xplant and tmp.div = b.div and
+	tmp.itno = b.itno and b.sliptype in ('RP','RF') and 
+	b.tqty4 <> 0 and b.tdte4 >= '20110101' and b.tdte4 <= '20110930'
+group by tmp.comltd,tmp.plant,tmp.div,tmp.itno,tmp.opitn ) tmp_each,
+
+( select tmp.comltd,tmp.plant,tmp.div,tmp.opitn,
+  sum( ifnull(b.tqty4,0) ) as wqty,
+  sum( ifnull(b.tramt,0) ) as wamt
+from ( select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,a.pcitn as opitn,'*' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.opitn
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' ))
+union all
+select distinct a.pcmcd as comltd,a.plant as plant,a.pdvsn as div,a.pcitn as itno,
+	pbpdm.f_bom_02('01',a.plant,a.pdvsn,a.pcitn,'20110926') as opitn,'' as opchk
+from pbpdm.bom001 a inner join pbpdm.bom003 b
+	on a.pcmcd = b.ocmcd and a.plant = b.oplant and
+		a.pdvsn = b.odvsn and a.pcitn = b.ofitn
+WHERE a.pcmcd = '01' AND a.plant = 'D' and a.pdvsn = 'A' and 
+(( a.pedte = ' '  and a.pedtm <= '20110926' ) or
+( a.pedte <> ' ' and a.pedtm <= '20110926'
+                and a.pedte >= '20110926' )) and
+(( b.oedte = ' '  and b.oedtm <= '20110926' ) or
+( b.oedte <> ' ' and b.oedtm <= '20110926'
+                and b.oedte >= '20110926' )) ) tmp left outer join pbinv.inv401 b
+on tmp.comltd = b.comltd and tmp.plant = b.xplant and tmp.div = b.div and
+	tmp.itno = b.itno and b.sliptype in ('RP','RF') and 
+	b.tqty4 <> 0 and b.tdte4 >= '20110101' and b.tdte4 <= '20110930'
+group by tmp.comltd,tmp.plant,tmp.div,tmp.opitn ) tmp_sum,
+pbinv.inv101 c,
+pbinv.inv002 d
+where tmp_each.comltd = tmp_sum.comltd and tmp_each.plant = tmp_sum.plant and 
+	tmp_each.div = tmp_sum.div and tmp_each.opitn = tmp_sum.opitn and
+	tmp_each.comltd = c.comltd and tmp_each.plant = c.xplant and
+	tmp_each.div = c.div and tmp_each.itno = c.itno and
+	tmp_each.comltd = d.comltd and tmp_each.itno = d.itno
+order by tmp_each.plant, tmp_each.div, tmp_each.opitn, tmp_each.itno;
+
+-- BOM원단위 삭제 및 추가내역
+//SELECT * FROM PBBPM.BPM508
+//WHERE COMLTD = '01' AND XYEAR = '2012' AND BREV = 'OP' AND BGUBUN = 'B' AND BCHNO = 'AR0004';
+
+//SELECT * FROM PBBPM.BPM505
+//WHERE OCMCD = '01' AND XYEAR = '2012' AND REVNO = 'OP' AND ORATE <> 0;
+
+-- 버전별 삭제/추가 리스트 내역조회
+SELECT DISTINCT A.BPLANT,A.BDIV,A.BCHNO,B.ITNM,C.CLS,C.SRCE
+FROM PBBPM.BPM508 A LEFT OUTER JOIN PBBPM.BPM502 B
+	ON A.XYEAR = B.XYEAR AND A.BCHNO = B.ITNO AND B.REVNO = '0A'
+	LEFT OUTER JOIN PBBPM.BPM503 C
+	ON A.XYEAR = C.XYEAR AND C.REVNO = '0A' AND
+		A.BPLANT = C.XPLANT AND A.BDIV = C.DIV AND
+		A.BCHNO = C.ITNO
+WHERE A.COMLTD = '01' AND A.XYEAR = '2012' AND A.BGUBUN = 'B' AND A.BREV = '0A' 
+AND NOT EXISTS ( SELECT * FROM PBBPM.BPM508 B
+						WHERE A.COMLTD = B.COMLTD AND A.XYEAR = B.XYEAR AND A.BGUBUN = B.BGUBUN AND
+							A.BPLANT = B.BPLANT AND A.BDIV = B.BDIV AND A.BCHNO = B.BCHNO AND 
+							B.BREV = 'OP' );
+
+-- 재료비계산 비대상 리스트 내역조회
+SELECT DISTINCT A.BPLANT,A.BDIV,A.BCHNO,B.ITNM,C.CLS,C.SRCE
+FROM PBBPM.BPM508 A LEFT OUTER JOIN PBBPM.BPM502 B
+	ON A.XYEAR = B.XYEAR AND A.BREV = B.REVNO AND A.BCHNO = B.ITNO
+	LEFT OUTER JOIN PBBPM.BPM503 C
+	ON A.XYEAR = C.XYEAR AND A.BREV = C.REVNO AND
+		A.BPLANT = C.XPLANT AND A.BDIV = C.DIV AND
+		A.BCHNO = C.ITNO
+WHERE A.COMLTD = '01' AND A.XYEAR = '2012' AND A.BGUBUN = 'A' AND A.BREV = '0A' 
+AND A.BCHNO NOT IN ( SELECT D.BCHNO FROM PBBPM.BPM508 D
+		WHERE D.COMLTD = '01' AND D.XYEAR = '2012' AND D.BGUBUN = 'A' AND D.BREV = '0A' 
+				AND D.BCUMORATE <> 0  )
+ORDER BY A.BPLANT,A.BDIV,A.BCHNO;
+
+//SELECT * FROM PBBPM.BPM501
+//WHERE COMLTD = '01' AND AYEAR = '2012' AND AREV = '0A' AND AMDNO = '55111947';
+
+
+SUM(CASE WHEN SUBSTRING(B.FDATE,5,2) = '01' THEN B.ITCST ELSE 0 END)) AS CST01,

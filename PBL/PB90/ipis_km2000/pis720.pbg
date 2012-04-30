@@ -1,0 +1,15 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ipis_km2000\\pis720.pbl" "";
+@end;
+@begin Objects
+ "ipis_km2000\\d_comp_property.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\d_comp_01.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\d_comp_02.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\dd_part.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\dd_status.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\dd_comp_div.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\d_group_comp_div.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\d_comp_list.srd" "ipis_km2000\\pis720.pbl";
+ "ipis_km2000\\w_pisf011.srw" "ipis_km2000\\pis720.pbl";
+@end;

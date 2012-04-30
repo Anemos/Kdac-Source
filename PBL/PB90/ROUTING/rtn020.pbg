@@ -1,0 +1,27 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ROUTING\\rtn020.pbl" "";
+@end;
+@begin Objects
+ "ROUTING\\d_rtn034i_cfgdetail.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn033i_chartdata.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_line_line.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_item_line.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_wkct_item.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\f_get_qty_time.srf" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_dddw_secjob.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_line_line_item.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_dddw_gubn01.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_dddw_gubn02.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_dddw_gubn03.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn033i_detail_secjobinfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn034i_cfginfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_item_line_line.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_wkct_item_line.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_wkct_item_line2.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_opno_secjobinfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn031i_detail_rtninfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn032i_detail_rtninfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_opno_mcnoinfo.srd" "ROUTING\\rtn020.pbl";
+ "ROUTING\\d_rtn01_external_secjob.srd" "ROUTING\\rtn020.pbl";
+@end;

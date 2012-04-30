@@ -1,0 +1,376 @@
+//제품별재료비 구버전
+SELECT	 "PBBPM"."BPM107"."MYEAR",   
+         "PBBPM"."BPM107"."MPLANT",   
+         "PBBPM"."BPM107"."MDIV",   
+         "PBBPM"."BPM107"."MMDCD",   
+         "PBBPM"."BPM107"."MMDNO",   
+         "PBBPM"."BPM107"."MSEQGB",   
+         "PBBPM"."BPM106"."ADECD",   
+	 "PBBPM"."BPM106"."ACUST",   
+         "PBBPM"."BPM106"."ACUNO", 
+	 "PBBPM"."BPM106"."AASCD",   
+         "PBBPM"."BPM106"."APRCCD",   
+         "PBBPM"."BPM106"."ASRCE",   
+         "PBBPM"."BPM106"."ACAR",   
+         "PBBPM"."BPM106"."ATYPE",
+	 "PBBPM"."BPM107"."MLOSS",
+         "PBBPM"."BPM107"."MTWON",   
+         "PBBPM"."BPM107"."MTUSD",   
+         "PBBPM"."BPM107"."MTJPY",   
+         "PBBPM"."BPM107"."MTDEM",   
+         "PBBPM"."BPM107"."MTFRF",   
+         "PBBPM"."BPM107"."MTGBP",   
+         "PBBPM"."BPM107"."MTAUD",   
+         "PBBPM"."BPM107"."MTESP",   
+         "PBBPM"."BPM107"."MTEMU",   
+         "PBBPM"."BPM107"."MTITL",   
+         "PBBPM"."BPM107"."MTCHF",   
+         "PBBPM"."BPM107"."MTBFR",   
+         "PBBPM"."BPM107"."MTDKK",   
+         "PBBPM"."BPM107"."MTATS",   
+         "PBBPM"."BPM107"."MTCAD",   
+         "PBBPM"."BPM107"."MTSEK",   
+         "PBBPM"."BPM107"."MTRMB",   
+         "PBBPM"."BPM107"."MTETC",   
+         "PBBPM"."BPM107"."MOMAT",   
+         "PBBPM"."BPM107"."MOLAT", 
+         "PBBPM"."BPM107"."MCMCD",  
+         "PBBPM"."BPM106"."ATQTY",   
+         "PBBPM"."BPM106"."ATAMT"    ,
+	case	when "PBBPM"."BPM106"."ACUST" in
+		('L10500','L20600','L11100','L11700','L20700','L11400','L10502','L16000','L11200',
+		'L19000','L28000','L27200','L11702','L11701','L27500','L10305' )  
+		then "PBBPM"."BPM107"."MCMCD"      else 0 end
+    FROM "PBBPM"."BPM106",   
+         "PBBPM"."BPM107"  
+//	,( select z.vsrno from 
+//			( select g.vndr,g.scgubun,g.vsrno from pbpur.pur101 g,pbinv.inv903 h
+//			  where g.vsrno = h.bvsrno group by g.vndr,g.scgubun,g.vsrno ) y, pbpur.pur101 z
+//	where z.comltd = '01' and z.scgubun = 'C' and z.vndr = y.vndr ) C
+   WHERE ( "PBBPM"."BPM106"."COMLTD" = "PBBPM"."BPM107"."COMLTD" ) and  
+         ( "PBBPM"."BPM106"."AYEAR" = "PBBPM"."BPM107"."MYEAR" ) and  
+         ( "PBBPM"."BPM106"."APLANT" = "PBBPM"."BPM107"."MPLANT" ) and  
+         ( "PBBPM"."BPM106"."ADIV" = "PBBPM"."BPM107"."MDIV" ) and  
+         ( "PBBPM"."BPM106"."APDCD" = "PBBPM"."BPM107"."MMDCD" ) and  
+         ( "PBBPM"."BPM106"."AMDNO" = "PBBPM"."BPM107"."MMDNO" ) and  
+         ( "PBBPM"."BPM106"."SEQGB" = "PBBPM"."BPM107"."MSEQGB" ) and  
+         ( "PBBPM"."BPM107"."MUSGE" = 'D') and
+         ( "PBBPM"."BPM106"."ACUST" like 'L%' ) and
+         ( ( "PBBPM"."BPM106"."AYEAR" = '2009' ) AND  
+         ( "PBBPM"."BPM106"."ACODE" = 'A' ) )   
+
+union
+
+SELECT 	 "PBBPM"."BPM107"."MYEAR",   
+         "PBBPM"."BPM107"."MPLANT",   
+         "PBBPM"."BPM107"."MDIV",   
+         "PBBPM"."BPM107"."MMDCD",   
+         "PBBPM"."BPM107"."MMDNO",   
+         "PBBPM"."BPM107"."MSEQGB",   
+         "PBBPM"."BPM106"."ADECD",   
+	 "PBBPM"."BPM106"."ACUST",   
+         "PBBPM"."BPM106"."ACUNO", 
+	 "PBBPM"."BPM106"."AASCD",   
+         "PBBPM"."BPM106"."APRCCD",   
+         "PBBPM"."BPM106"."ASRCE",   
+         "PBBPM"."BPM106"."ACAR",   
+         "PBBPM"."BPM106"."ATYPE",
+	 "PBBPM"."BPM107"."MLOSS",   
+         "PBBPM"."BPM107"."MTWON",   
+         "PBBPM"."BPM107"."MTUSD",   
+         "PBBPM"."BPM107"."MTJPY",   
+         "PBBPM"."BPM107"."MTDEM",   
+         "PBBPM"."BPM107"."MTFRF",   
+         "PBBPM"."BPM107"."MTGBP",   
+         "PBBPM"."BPM107"."MTAUD",   
+         "PBBPM"."BPM107"."MTESP",   
+         "PBBPM"."BPM107"."MTEMU",   
+         "PBBPM"."BPM107"."MTITL",   
+         "PBBPM"."BPM107"."MTCHF",   
+         "PBBPM"."BPM107"."MTBFR",   
+         "PBBPM"."BPM107"."MTDKK",   
+         "PBBPM"."BPM107"."MTATS",   
+         "PBBPM"."BPM107"."MTCAD",   
+         "PBBPM"."BPM107"."MTSEK",   
+         "PBBPM"."BPM107"."MTRMB",   
+         "PBBPM"."BPM107"."MTETC",   
+         "PBBPM"."BPM107"."MOMAT",   
+         "PBBPM"."BPM107"."MOLAT",     
+         "PBBPM"."BPM107"."MCMCD",
+         "PBBPM"."BPM106"."ATQTY",   
+         "PBBPM"."BPM106"."ATAMT"    ,
+	 case when "PBBPM"."BPM106"."ACUST" in
+		('L10500','L20600','L11100','L11700','L20700','L11400','L10502','L16000','L11200',
+		'L19000','L28000','L27200','L11702','L11701','L27500','L10305' ) 
+	 then "PBBPM"."BPM107"."MCMCD"      else 0 end
+    FROM "PBBPM"."BPM106",   
+         "PBBPM"."BPM107" 
+//, ( select z.vsrno from 
+//			( select g.vndr,g.scgubun,g.vsrno from pbpur.pur101 g,pbinv.inv903 h
+//				where g.vsrno = h.bvsrno group by g.vndr,g.scgubun,g.vsrno ) y, pbpur.pur101 z
+//		where z.comltd = '01' and z.scgubun = 'C' and z.vndr = y.vndr ) C
+   WHERE ( "PBBPM"."BPM106"."COMLTD" = "PBBPM"."BPM107"."COMLTD" ) and  
+         ( "PBBPM"."BPM106"."AYEAR"  = "PBBPM"."BPM107"."MYEAR" ) and  
+         ( "PBBPM"."BPM106"."APLANT" = "PBBPM"."BPM107"."MPLANT" ) and  
+         ( "PBBPM"."BPM106"."ADIV"   = "PBBPM"."BPM107"."MDIV" ) and  
+         ( "PBBPM"."BPM106"."APDCD"  = "PBBPM"."BPM107"."MMDCD" ) and  
+         ( "PBBPM"."BPM106"."AMDNO" = "PBBPM"."BPM107"."MMDNO" ) and  
+         ( "PBBPM"."BPM106"."SEQGB" = "PBBPM"."BPM107"."MSEQGB" ) and  
+         ( "PBBPM"."BPM106"."ADECD" = "PBBPM"."BPM107"."MUSGE" ) and ( "PBBPM"."BPM106"."ACUST" like 'E%' ) and
+         ( ( "PBBPM"."BPM106"."AYEAR" = '2009' ) AND  
+         ( "PBBPM"."BPM106"."ACODE" = 'A' ) )
+
+ORDER BY "MYEAR",   
+         "MPLANT",   
+         "MDIV",   
+         "MMDCD",   
+         "MMDNO",   
+         "MSEQGB",   
+         "ADECD",   
+	 "ACUST";
+
+// 제품별재료비 신버전
+
+SELECT	 "PBBPM"."BPM515"."MYEAR",   
+         "PBBPM"."BPM515"."MPLANT",   
+         "PBBPM"."BPM515"."MDIV",   
+         "PBBPM"."BPM515"."MMDCD",   
+         "PBBPM"."BPM515"."MMDNO",   
+         "PBBPM"."BPM515"."MSEQGB",   
+         "PBBPM"."BPM501"."ADECD",   
+	 "PBBPM"."BPM501"."ACUST",   
+         "PBBPM"."BPM501"."ACUNO", 
+	 "PBBPM"."BPM501"."AASCD",   
+         "PBBPM"."BPM501"."APRCCD",   
+         "PBBPM"."BPM501"."ASRCE",   
+         "PBBPM"."BPM501"."ACAR",   
+         "PBBPM"."BPM501"."ATYPE",
+	 "PBBPM"."BPM515"."MLOSS",  
+         "PBBPM"."BPM515"."MTWON",   
+         "PBBPM"."BPM515"."MTUSD",   
+         "PBBPM"."BPM515"."MTJPY",   
+         "PBBPM"."BPM515"."MTDEM",   
+         "PBBPM"."BPM515"."MTFRF",   
+         "PBBPM"."BPM515"."MTGBP",   
+         "PBBPM"."BPM515"."MTAUD",   
+         "PBBPM"."BPM515"."MTESP",   
+         "PBBPM"."BPM515"."MTEMU",   
+         "PBBPM"."BPM515"."MTITL",   
+         "PBBPM"."BPM515"."MTCHF",   
+         "PBBPM"."BPM515"."MTBFR",   
+         "PBBPM"."BPM515"."MTDKK",   
+         "PBBPM"."BPM515"."MTATS",   
+         "PBBPM"."BPM515"."MTCAD",   
+         "PBBPM"."BPM515"."MTSEK",   
+         "PBBPM"."BPM515"."MTRMB",   
+         "PBBPM"."BPM515"."MTTHB",   
+         "PBBPM"."BPM515"."MTETC",   
+         "PBBPM"."BPM515"."MOMAT",   
+         "PBBPM"."BPM515"."MOLAT",   
+         "PBBPM"."BPM515"."MCMCD",
+         "PBBPM"."BPM501"."ATQTY",   
+         "PBBPM"."BPM501"."ATAMT"    ,
+	case	when "PBBPM"."BPM501"."ACUST" in
+		('L10500','L20600','L11100','L11700','L20700','L11400','L10502','L16000','L11200',
+		'L19000','L28000','L27200','L11702','L11701','L27500','L10305' )  
+		then "PBBPM"."BPM515"."MCMCD"      else 0 end
+    FROM "PBBPM"."BPM501",   
+         "PBBPM"."BPM515"  
+//	,( select z.vsrno from 
+//			( select g.vndr,g.scgubun,g.vsrno from pbpur.pur101 g,pbinv.inv903 h
+//			  where g.vsrno = h.bvsrno group by g.vndr,g.scgubun,g.vsrno ) y, pbpur.pur101 z
+//	where z.comltd = '01' and z.scgubun = 'C' and z.vndr = y.vndr ) C
+   WHERE ( "PBBPM"."BPM501"."COMLTD" = "PBBPM"."BPM515"."COMLTD" ) and  
+         ( "PBBPM"."BPM501"."AYEAR" = "PBBPM"."BPM515"."MYEAR" ) and  
+         ( "PBBPM"."BPM501"."APLANT" = "PBBPM"."BPM515"."MPLANT" ) and  
+         ( "PBBPM"."BPM501"."ADIV" = "PBBPM"."BPM515"."MDIV" ) and  
+         ( "PBBPM"."BPM501"."APDCD" = "PBBPM"."BPM515"."MMDCD" ) and  
+         ( "PBBPM"."BPM501"."AMDNO" = "PBBPM"."BPM515"."MMDNO" ) and  
+         ( "PBBPM"."BPM501"."SEQGB" = "PBBPM"."BPM515"."MSEQGB" ) and  
+			( "PBBPM"."BPM501"."AREV" = "PBBPM"."BPM515"."MBREV" ) and
+			( "PBBPM"."BPM501"."ACODE" = "PBBPM"."BPM515"."MGUBUN" ) and
+         ( "PBBPM"."BPM515"."MUSGE" = 'D') and
+         ( "PBBPM"."BPM501"."ACUST" like 'L%' ) and
+         ( ( "PBBPM"."BPM501"."AYEAR" = '2010' ) AND  
+         ( "PBBPM"."BPM501"."ACODE" = 'A' ) AND
+			( "PBBPM"."BPM501"."AREV" = '0B' ))   
+
+union
+
+SELECT 	 "PBBPM"."BPM515"."MYEAR",   
+         "PBBPM"."BPM515"."MPLANT",   
+         "PBBPM"."BPM515"."MDIV",   
+         "PBBPM"."BPM515"."MMDCD",   
+         "PBBPM"."BPM515"."MMDNO",   
+         "PBBPM"."BPM515"."MSEQGB",   
+         "PBBPM"."BPM501"."ADECD",   
+	 "PBBPM"."BPM501"."ACUST",   
+         "PBBPM"."BPM501"."ACUNO", 
+	 "PBBPM"."BPM501"."AASCD",   
+         "PBBPM"."BPM501"."APRCCD",   
+         "PBBPM"."BPM501"."ASRCE",   
+         "PBBPM"."BPM501"."ACAR",   
+         "PBBPM"."BPM501"."ATYPE",
+	 "PBBPM"."BPM515"."MLOSS",   
+         "PBBPM"."BPM515"."MTWON",   
+         "PBBPM"."BPM515"."MTUSD",   
+         "PBBPM"."BPM515"."MTJPY",   
+         "PBBPM"."BPM515"."MTDEM",   
+         "PBBPM"."BPM515"."MTFRF",   
+         "PBBPM"."BPM515"."MTGBP",   
+         "PBBPM"."BPM515"."MTAUD",   
+         "PBBPM"."BPM515"."MTESP",   
+         "PBBPM"."BPM515"."MTEMU",   
+         "PBBPM"."BPM515"."MTITL",   
+         "PBBPM"."BPM515"."MTCHF",   
+         "PBBPM"."BPM515"."MTBFR",   
+         "PBBPM"."BPM515"."MTDKK",   
+         "PBBPM"."BPM515"."MTATS",   
+         "PBBPM"."BPM515"."MTCAD",   
+         "PBBPM"."BPM515"."MTSEK",   
+         "PBBPM"."BPM515"."MTRMB",   
+         "PBBPM"."BPM515"."MTTHB",   
+         "PBBPM"."BPM515"."MTETC",   
+         "PBBPM"."BPM515"."MOMAT",   
+         "PBBPM"."BPM515"."MOLAT",   
+         "PBBPM"."BPM515"."MCMCD",  
+         "PBBPM"."BPM501"."ATQTY",   
+         "PBBPM"."BPM501"."ATAMT"    ,
+	 case when "PBBPM"."BPM501"."ACUST" in
+		('L10500','L20600','L11100','L11700','L20700','L11400','L10502','L16000','L11200',
+		'L19000','L28000','L27200','L11702','L11701','L27500','L10305' ) 
+	 then "PBBPM"."BPM515"."MCMCD"      else 0 end
+    FROM "PBBPM"."BPM501",   
+         "PBBPM"."BPM515" 
+//, ( select z.vsrno from 
+//			( select g.vndr,g.scgubun,g.vsrno from pbpur.pur101 g,pbinv.inv903 h
+//				where g.vsrno = h.bvsrno group by g.vndr,g.scgubun,g.vsrno ) y, pbpur.pur101 z
+//		where z.comltd = '01' and z.scgubun = 'C' and z.vndr = y.vndr ) C
+   WHERE ( "PBBPM"."BPM501"."COMLTD" = "PBBPM"."BPM515"."COMLTD" ) and  
+         ( "PBBPM"."BPM501"."AYEAR"  = "PBBPM"."BPM515"."MYEAR" ) and  
+         ( "PBBPM"."BPM501"."APLANT" = "PBBPM"."BPM515"."MPLANT" ) and  
+         ( "PBBPM"."BPM501"."ADIV"   = "PBBPM"."BPM515"."MDIV" ) and  
+         ( "PBBPM"."BPM501"."APDCD"  = "PBBPM"."BPM515"."MMDCD" ) and  
+         ( "PBBPM"."BPM501"."AMDNO" = "PBBPM"."BPM515"."MMDNO" ) and  
+         ( "PBBPM"."BPM501"."SEQGB" = "PBBPM"."BPM515"."MSEQGB" ) and
+			( "PBBPM"."BPM501"."AREV" = "PBBPM"."BPM515"."MBREV" ) and
+			( "PBBPM"."BPM501"."ACODE" = "PBBPM"."BPM515"."MGUBUN" ) and  
+         ( "PBBPM"."BPM501"."ADECD" = "PBBPM"."BPM515"."MUSGE" ) and ( "PBBPM"."BPM501"."ACUST" like 'E%' ) and
+         ( ( "PBBPM"."BPM501"."AYEAR" = '2010' ) AND  
+         ( "PBBPM"."BPM501"."ACODE" = 'A' ) AND
+			( "PBBPM"."BPM501"."AREV" = '0B' ))
+ORDER BY "MYEAR",   
+         "MPLANT",   
+         "MDIV",   
+         "MMDCD",   
+         "MMDNO",   
+         "MSEQGB",   
+        "ADECD",   
+	"ACUST"
+;
+
+
+// 품목별재료비 구버전
+SELECT   
+	"PBBPM"."BPMT24"."WPLANT",   
+	"PBBPM"."BPMT24"."WDVSN",   
+	"PBBPM"."BPMT24"."WITNO",    
+	"PBBPM"."BPMT24"."WPLAN",   
+	"PBBPM"."BPMT24"."WCLSS",   
+	"PBBPM"."BPMT24"."WSRCE",   
+	"PBBPM"."BPMT24"."WPDCD",   
+	"PBBPM"."BPMT24"."WBOMUM",
+	"PBBPM"."BPMT24"."WPURUM", 
+	"PBBPM"."BPMT24"."WCONV", 
+	"PBBPM"."BPMT24"."WCODE",   
+	"PBBPM"."BPMT24"."WPAY",   
+	"PBBPM"."BPMT24"."WVDNO",  
+	"PBBPM"."BPMT24"."WVDKIND", 
+	"PBBPM"."BPMT24"."WCURR",   
+	"PBBPM"."BPMT24"."WVHDKDTC",
+	"PBBPM"."BPMT24"."WVHDNO5",
+	"PBBPM"."BPMT24"."WCOSTD0A",
+	"PBBPM"."BPMT24"."WCOSTOLD",
+	"PBBPM"."BPMT24"."WCOST",   
+	"PBBPM"."BPMT24"."WCOSTW", 
+	"PBBPM"."BPMT24"."WRCPCST",    
+	"PBBPM"."BPMT24"."WCOSTYR",
+	"PBBPM"."BPMT24"."WCOSTBOM",
+	"PBBPM"."BPMT24"."WRCPCSTBOM",
+	"PBBPM"."BPMT24"."WCOSTYRBOM",
+	"PBBPM"."BPMT24"."WUSE",   
+	"PBBPM"."BPMT24"."WQTY1",   
+	"PBBPM"."BPMT24"."WQTY2",   
+	"PBBPM"."BPMT24"."WQTY3",   
+	"PBBPM"."BPMT24"."WQTY4",   
+	"PBBPM"."BPMT24"."WQTY5",   
+	"PBBPM"."BPMT24"."WQTY6",   
+	"PBBPM"."BPMT24"."WQTY7",   
+	"PBBPM"."BPMT24"."WQTY8",   
+	"PBBPM"."BPMT24"."WQTY9",   
+	"PBBPM"."BPMT24"."WQTY10",   
+	"PBBPM"."BPMT24"."WQTY11",   
+	"PBBPM"."BPMT24"."WQTY12",   
+	"PBBPM"."BPMT24"."WYOU",   
+	"PBBPM"."BPMT24"."WKANBAN" 
+FROM "PBBPM"."BPMT24"
+ORDER BY "PBBPM"."BPMT24"."WPLANT",   
+	"PBBPM"."BPMT24"."WDVSN",   
+	"PBBPM"."BPMT24"."WITNO",
+  "PBBPM"."BPMT24"."WVDNO";
+  
+// 품목별재료비 신버전
+SELECT   
+	"PBBPM"."BPM516"."WPLANT",   
+	"PBBPM"."BPM516"."WDVSN",   
+	"PBBPM"."BPM516"."WITNO",    
+	"PBBPM"."BPM516"."WPLAN",   
+	"PBBPM"."BPM516"."WCLSS",   
+	"PBBPM"."BPM516"."WSRCE",   
+	"PBBPM"."BPM516"."WPDCD",   
+	"PBBPM"."BPM516"."WBOMUM",
+	"PBBPM"."BPM516"."WPURUM", 
+	"PBBPM"."BPM516"."WCONV", 
+	"PBBPM"."BPM516"."WCODE",   
+	"PBBPM"."BPM516"."WPAY",   
+	"PBBPM"."BPM516"."WVDNO",  
+	"PBBPM"."BPM516"."WVDKIND", 
+	"PBBPM"."BPM516"."WCURR",   
+	"PBBPM"."BPM516"."WVHDKDTC",
+	"PBBPM"."BPM516"."WVHDNO5",
+	"PBBPM"."BPM516"."WCOSTD0A",
+	"PBBPM"."BPM516"."WCOSTOLD",
+	"PBBPM"."BPM516"."WCOST",   
+	"PBBPM"."BPM516"."WCOSTW", 
+	"PBBPM"."BPM516"."WRCPCST",    
+	"PBBPM"."BPM516"."WCOSTYR",
+	"PBBPM"."BPM516"."WCOSTBOM",
+	"PBBPM"."BPM516"."WRCPCSTBOM",
+	"PBBPM"."BPM516"."WCOSTYRBOM",
+	"PBBPM"."BPM516"."WUSE",   
+	"PBBPM"."BPM516"."WQTY1",   
+	"PBBPM"."BPM516"."WQTY2",   
+	"PBBPM"."BPM516"."WQTY3",   
+	"PBBPM"."BPM516"."WQTY4",   
+	"PBBPM"."BPM516"."WQTY5",   
+	"PBBPM"."BPM516"."WQTY6",   
+	"PBBPM"."BPM516"."WQTY7",   
+	"PBBPM"."BPM516"."WQTY8",   
+	"PBBPM"."BPM516"."WQTY9",   
+	"PBBPM"."BPM516"."WQTY10",   
+	"PBBPM"."BPM516"."WQTY11",   
+	"PBBPM"."BPM516"."WQTY12",   
+	"PBBPM"."BPM516"."WYOU",   
+	"PBBPM"."BPM516"."WKANBAN" 
+FROM "PBBPM"."BPM516"
+WHERE "PBBPM"."BPM516"."COMLTD" = '01' AND "PBBPM"."BPM516"."XYEAR" = '2010' AND
+  "PBBPM"."BPM516"."WREV" = '0B' AND "PBBPM"."BPM516"."WGUBUN" = 'A'
+ORDER BY "PBBPM"."BPM516"."WPLANT",   
+	"PBBPM"."BPM516"."WDVSN",   
+	"PBBPM"."BPM516"."WITNO",
+  "PBBPM"."BPM516"."WVDNO";
+  
+//품목별재료비 구매_유상검증
+SELECT WPLANT,WDVSN,WITNO,WVDNO,WUSE,WCOST,WCOSTW,WQTY1
+FROM PBBPM.BPMT25
+ORDER BY WPLANT,WDVSN,WITNO,WVDNO,WUSE;

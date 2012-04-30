@@ -1,0 +1,23 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "BOM\\bom003.pbl" "";
+@end;
+@begin Objects
+ "BOM\\d_report_indented.srd" "BOM\\bom003.pbl";
+ "BOM\\d_report_royaltylist.srd" "BOM\\bom003.pbl";
+ "BOM\\w_bom111i.srw" "BOM\\bom003.pbl";
+ "BOM\\w_bom114i.srw" "BOM\\bom003.pbl";
+ "BOM\\w_bom118i.srw" "BOM\\bom003.pbl";
+ "BOM\\d_bom118i_retrieve.srd" "BOM\\bom003.pbl";
+ "BOM\\d_exchange.srd" "BOM\\bom003.pbl";
+ "BOM\\d_report_indcost.srd" "BOM\\bom003.pbl";
+ "BOM\\w_bom115u.srw" "BOM\\bom003.pbl";
+ "BOM\\w_bom117u.srw" "BOM\\bom003.pbl";
+ "BOM\\d_report_knockdown.srd" "BOM\\bom003.pbl";
+ "BOM\\d_report_partlist.srd" "BOM\\bom003.pbl";
+ "BOM\\d_report_costlist.srd" "BOM\\bom003.pbl";
+ "BOM\\w_exchange.srw" "BOM\\bom003.pbl";
+ "BOM\\d_report_indented_est.srd" "BOM\\bom003.pbl";
+ "BOM\\menubom.srm" "BOM\\bom003.pbl";
+ "BOM\\d_report_costlist_all.srd" "BOM\\bom003.pbl";
+@end;

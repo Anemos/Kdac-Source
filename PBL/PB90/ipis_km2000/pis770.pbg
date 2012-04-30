@@ -1,0 +1,9 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "ipis_km2000\\pis770.pbl" "";
+@end;
+@begin Objects
+ "ipis_km2000\\dw_goal.srd" "ipis_km2000\\pis770.pbl";
+ "ipis_km2000\\dw_basis.srd" "ipis_km2000\\pis770.pbl";
+ "ipis_km2000\\w_pisf014.srw" "ipis_km2000\\pis770.pbl";
+@end;

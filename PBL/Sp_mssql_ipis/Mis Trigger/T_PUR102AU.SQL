@@ -1,0 +1,21 @@
+CREATE TRIGGER PBIPIS.T_PUR102AU
+   AFTER UPDATE ON PBPUR.PUR102
+   REFERENCING NEW ROW AS NR
+               OLD ROW AS OR
+   FOR EACH ROW
+   MODE DB2SQL
+WHEN
+    (NR.DEPT = 'D' AND
+    (NR.VSRNO <> OR.VSRNO OR NR.INSIDE <> OR.INSIDE OR
+     NR.KBCD  <> OR.KBCD  OR NR.VANCD  <> OR.VANCD  OR
+     NR.JSCD  <> OR.JSCD  OR NR.XSTOP  <> OR.XSTOP ) )
+BEGIN
+  INSERT INTO PBIPIS.PDPUR102 (CHGDATE, CHGCD, VSRNO, INSIDE, KBCD,
+                               VANCD, JSCD,   XSTOP,
+                               STSCD,   DOWNDATE)
+    VALUES (CHAR(CURRENT TIMESTAMP), 'R', NR.VSRNO, NR.INSIDE,
+                               NR.KBCD, NR.VANCD, NR.JSCD,  NR.XSTOP,
+                               'N', ' ') ;
+END
+
+

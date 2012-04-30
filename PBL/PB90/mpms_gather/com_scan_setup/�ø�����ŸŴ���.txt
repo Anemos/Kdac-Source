@@ -1,0 +1,63 @@
+시리얼 통신으로 프로그램 실행하는 방법
+
+1. 실행파일로 환경을 구축한다.
+   path = c:\windows\system32
+   regsvr32 c:\kdac\mpms_gather\MSCOMM32.OCX
+2. OLE Customer Control Object을 생성한다.
+3. 생성된 Object의 속성을 설정한다.
+  If ole_ComScanner.object.PortOpen = True Then
+	  ole_ComScanner.object.PortOpen = False
+  End If
+
+  ole_ComScanner.object.CommPort = 1
+  ole_ComScanner.object.Settings = "9600,n,8,1"
+  ole_ComScanner.object.RThreshold = 1
+  ole_ComScanner.object.PortOpen = True
+4. oncomm event에서 비지니스 로직을 수행한다.
+  string barcode
+  GraphicObject which_control
+
+  sleep(0.5)  // 정보를 이벤트에서 받아들일수 있는 시간
+  barcode = ole_comscanner.object.input
+
+  Choose case gi_page_index
+	case 3
+		// 실적조회
+		//w_mpsg090i.TriggerEvent("ue_line_select")
+	case 4
+		// 작업일보
+		//w_mpsg080i.TriggerEvent("ue_line_select")
+	case else
+		// 간판 입력창에 Focus	
+		IF IsValid(w_mpsg030i) THEN
+		
+			// 실적등록화면 최상위로
+			w_mpsg030i.BringToTop = TRUE
+		
+			// 실적등록의 LINE선택 이벤트
+			w_mpsg030i.TriggerEvent("ue_line_select")
+		
+			// 간판번호 입력창의 초기화및 FOCUS
+			w_mpsg030i.em_kb_no.text = ''
+			w_mpsg030i.em_kb_no.SetFocus()
+		ELSE
+			// 실적등록 Open
+			Open(w_mpsg030i)
+		END IF
+		
+		which_control = GetFocus()
+		IF TypeOf(which_control) = EditMask! THEN
+			w_mpsg030i.em_kb_no.text = barcode
+			IF w_mpsg030i.wf_transaction_select() THEN
+				// 해당간판 등록
+				Open(w_mpsg050u)
+			ELSE
+				// 해당간판 오류 표시
+				OpenWithParm(w_mpsg013b,"작업장을 확인하십시요")
+		
+				// 갱신
+				w_mpsg030i.em_kb_no.text = ''
+				w_mpsg030i.em_kb_no.SetFocus()
+			END IF
+		END IF
+  end choose
