@@ -26,3 +26,4 @@ where a.itemcode = b.itemcode and a.qty1 <> b.qty1
 order by 1
 
 -- what's up
+-- 글씨. 유티에프 8로 한글 인코딩했는디 왜 제목이 찌그러져 보일까?
