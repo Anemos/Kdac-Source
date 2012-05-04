@@ -14,7 +14,7 @@ GO
 /*     품번별 LPI 및 작업효율 조회    */
 /**************************************/
 
-CREATE PROCEDURE sp_pism080i_02_print
+CREATE PROCEDURE [dbo].[sp_pism080i_02_print]
   @ps_area  Char(1),    -- 지역
   @ps_div   Char(1),    -- 공장
   @ps_wc    VarChar(5),   -- 조

@@ -8,6 +8,6 @@ RCPT to:<kskim@kdac.co.kr>
 DATA
 354 Enter mail, end with "." on a line by itself
 Message body suppressed.
-250 2.0.0 Message accepted for delivery (q3SFooO00A11)
+250 2.0.0 Message accepted for delivery (q43Nbpu00C31)
 Quit
 221 2.0.0 closing connection
