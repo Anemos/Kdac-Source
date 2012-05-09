@@ -53,8 +53,8 @@ select OrderNo = aa.OrderNo,
 into #order_tmp
 from torder aa
 where aa.OrderNo like @ps_orderno and aa.OrderDept like @ps_deptcode and
-  aa.startdate <= @ld_todt and aa.enddate is not null and
-  aa.enddate >= @ld_fromdt and aa.enddate <= @ld_todt
+  convert(varchar(10),aa.startdate,102) <= @ps_applyto and aa.enddate is not null and
+  convert(varchar(10),aa.enddate,102) >= @ps_applyfrom and convert(varchar(10),aa.enddate,102) <= @ps_applyto
   
 --summary standardtime
 select OrderNo = bb.OrderNo,
