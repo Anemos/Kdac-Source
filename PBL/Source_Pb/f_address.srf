@@ -1,0 +1,35 @@
+$PBExportHeader$f_address.srf
+$PBExportComments$우편번호로 주소 찾기
+global type f_address from function_object
+end type
+
+forward prototypes
+global function string f_address (string a_s_zipno)
+end prototypes
+
+global function string f_address (string a_s_zipno);//////  우편번호로 주소 찾아오는 함수  /////////////////////
+// (1) Argument 우편번호					                   //
+// (2) 해당 우편번호를 못 찾으면 Zero Space,              //
+//     정상이면 해당 주소를 Return                        //
+//////////////////////////////  1998.06.              //////
+string l_s_addr_nm1, l_s_addr_nm2, l_s_addr_nm3, l_s_addr_nm4, l_s_juso
+
+  SELECT "PBCOMMON"."COMM220"."ADDR_NM1",   "PBCOMMON"."COMM220"."ADDR_NM2",   
+  			"PBCOMMON"."COMM220"."ADDR_NM3",   "PBCOMMON"."COMM220"."ADDR_NM4"  
+    INTO :l_s_addr_nm1,  			:l_s_addr_nm2,
+         :l_s_addr_nm3,				:l_s_addr_nm4   
+    FROM "PBCOMMON"."COMM220"  
+   WHERE "PBCOMMON"."COMM220"."ZIP_CD" = :a_s_zipno	USING	sqlca   ;
+
+if	sqlca.sqlcode	=	100 or sqlca.sqlcode	=	0	then
+	l_s_juso		=	trim(l_s_addr_nm1) + " " + trim(l_s_addr_nm2) +	" " + trim(l_s_addr_nm3)
+	if f_spacechk(trim(l_s_addr_nm4)) = 0  then
+		l_s_juso	=	l_s_juso + " " + trim(l_s_addr_nm4)
+	end if
+else
+	l_s_juso	=	''
+end if
+
+return l_s_juso
+end function
+

@@ -1,0 +1,100 @@
+$PBExportHeader$d_tmm410i_06_tablet.srd
+$PBExportComments$¾÷Ã¼º°¼ö¼ö·áÇöÈ²
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 2 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 9 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=376 color="536870912" )
+summary(height=76 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=orderdept dbname="ORDERDEPT" )
+ column=(type=char(50) updatewhereclause=yes name=dname dbname="DNAME" )
+ column=(type=decimal(0) updatewhereclause=yes name=sum_test dbname="SUM_TEST" )
+ column=(type=decimal(0) updatewhereclause=yes name=sum_measure dbname="SUM_MEASURE" )
+ column=(type=long updatewhereclause=yes name=sum_guage dbname="SUM_GUAGE" )
+ retrieve="SELECT TMP_SUM.ORDERDEPT AS ORDERDEPT,
+	TMP_SUM.DNAME AS DNAME,
+	SUM(TMP_SUM.SUM_TEST) AS SUM_TEST,
+	SUM(TMP_SUM.SUM_MEASURE) AS SUM_MEASURE,
+	SUM(TMP_SUM.SUM_GUAGE) AS SUM_GUAGE
+FROM (  SELECT ~"PBGMS~".~"TMM002~".~"ORDERDEPT~" AS ORDERDEPT,
+			~"PBGMS~".~"TMM001~".~"SUPPLIERNAME~" AS DNAME,   
+         sum(~"PBGMS~".~"TMM003~".~"FEE~") as sum_test,
+			sum(0) as sum_measure,
+			sum(0) as sum_guage
+    FROM ~"PBGMS~".~"TMM002~",   
+         ~"PBGMS~".~"TMM003~",   
+			~"PBGMS~".~"TMM001~"  
+   WHERE ( ~"PBGMS~".~"TMM002~".~"ORDERNO~" = ~"PBGMS~".~"TMM003~".~"ORDERNO~" ) and    
+			( ~"PBGMS~".~"TMM002~".~"ORDERDEPT~" = ~"PBGMS~".~"TMM001~".~"SUPPLIERCODE~" ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"INGSTATUS~" <> 'A' ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"TMGUBUN~" = 'T' ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"ORDERNO~" = ~"PBGMS~".~"TMM003~".~"ORDERNO~" ) AND
+			( ~"PBGMS~".~"TMM002~".~"DEPTGUBUN~" = '2' ) AND 
+         ( ~"PBGMS~".~"TMM002~".~"ENDDATE~" >= :ag_startdate ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"ENDDATE~" <= :ag_enddate )  
+GROUP BY ~"PBGMS~".~"TMM002~".~"ORDERDEPT~",
+			~"PBGMS~".~"TMM001~".~"SUPPLIERNAME~"
+
+UNION ALL
+
+  SELECT ~"PBGMS~".~"TMM002~".~"ORDERDEPT~" AS ORDERDEPT,
+			~"PBGMS~".~"TMM001~".~"SUPPLIERNAME~" AS DNAME, 
+			sum(0) as sum_test,
+			sum(~"PBGMS~".~"TMM003~".~"FEE~") as sum_measure,
+			sum(0) as sum_guage
+    FROM ~"PBGMS~".~"TMM002~",   
+         ~"PBGMS~".~"TMM003~",   
+			~"PBGMS~".~"TMM001~"  
+   WHERE ( ~"PBGMS~".~"TMM002~".~"ORDERNO~" = ~"PBGMS~".~"TMM003~".~"ORDERNO~" ) and    
+			( ~"PBGMS~".~"TMM002~".~"ORDERDEPT~" = ~"PBGMS~".~"TMM001~".~"SUPPLIERCODE~" ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"INGSTATUS~" <> 'A' ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"TMGUBUN~" = 'M' ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"ORDERNO~" = ~"PBGMS~".~"TMM003~".~"ORDERNO~" ) AND
+			( ~"PBGMS~".~"TMM002~".~"DEPTGUBUN~" = '2' ) AND 
+         ( ~"PBGMS~".~"TMM002~".~"ENDDATE~" >= :ag_startdate ) AND  
+         ( ~"PBGMS~".~"TMM002~".~"ENDDATE~" <= :ag_enddate )  
+GROUP BY ~"PBGMS~".~"TMM002~".~"ORDERDEPT~",
+			~"PBGMS~".~"TMM001~".~"SUPPLIERNAME~"
+
+UNION ALL
+
+	SELECT ~"PBGMS~".~"GMS013~".~"ANOPDP~" AS ORDERDEPT,
+			'' AS DNAME,
+			sum(0) as sum_test,
+			sum(0) as sum_measure,
+			sum(0) as sum_guage   
+    FROM ~"PBGMS~".~"GMS013~"
+   WHERE ( ~"PBGMS~".~"GMS013~".~"ANCMCD~" = '01' ) AND
+         ( ~"PBGMS~".~"GMS013~".~"ANYEAR~"||~"PBGMS~".~"GMS013~".~"ANMONT~" >= SUBSTRING(:ag_startdate,1,6) ) AND  
+         ( ~"PBGMS~".~"GMS013~".~"ANYEAR~"||~"PBGMS~".~"GMS013~".~"ANMONT~" <= SUBSTRING(:ag_enddate,1,6) ) AND
+			( ~"PBGMS~".~"GMS013~".~"ANECAMT~" <> 0 ) AND
+			( SUBSTRING(~"PBGMS~".~"GMS013~".~"ANOPDP~",1,1) = 'D' ) 
+GROUP BY ~"PBGMS~".~"GMS013~".~"ANOPDP~" ) TMP_SUM
+GROUP BY TMP_SUM.ORDERDEPT,
+	TMP_SUM.DNAME
+" arguments=(("ag_startdate", string),("ag_enddate", string)) )
+text(band=header alignment="2" text="Çù·Â¾÷Ã¼º°¼ö¼ö·áÇöÈ²" border="0" color="0" x="695" y="44" height="96" width="1993" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-16" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="text" border="0" color="0" x="1015" y="156" height="60" width="1170" html.valueishtml="0"  name=t_base visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="¾÷Ã¼¸í" border="0" color="16777215" x="9" y="312" height="60" width="896" html.valueishtml="0"  name=t_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½ÃÇèºÐ¼®ºñ" border="0" color="16777215" x="910" y="312" height="60" width="613" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¤¹ÐÃøÁ¤ºñ" border="0" color="16777215" x="1527" y="312" height="60" width="613" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±³Á¤°Ë»çºñ" border="0" color="16777215" x="2144" y="312" height="60" width="613" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÇÕ°è" border="0" color="16777215" x="2761" y="312" height="60" width="617" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="64" width="896" format="[general]" html.valueishtml="0"  name=dname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="910" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=sum_test visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="1527" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=sum_measure visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="2144" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=sum_guage visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="3" expression=" sum_test  +  sum_measure  +  sum_guage "border="0" color="0" x="2761" y="4" height="64" width="617" format="#,##0" html.valueishtml="0"  name=compute_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=summary alignment="1" expression="sum(sum_test for all)"border="0" color="0" x="910" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=summary alignment="1" expression="sum(sum_measure for all)"border="0" color="0" x="1527" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=summary alignment="1" expression="sum(sum_guage for all)"border="0" color="0" x="2144" y="4" height="64" width="613" format="#,##0" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=summary alignment="3" expression="sum( sum_test  +  sum_measure  +  sum_guage  for all)"border="0" color="0" x="2761" y="4" height="64" width="617" format="#,##0" html.valueishtml="0"  name=compute_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="Ãâ·ÂÀÏÀÚ:" border="0" color="0" x="2025" y="236" height="60" width="320" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression="string(today(),~"yyyy.mm.dd~")"border="0" color="0" x="2359" y="236" height="60" width="425" format="[General]" html.valueishtml="0"  name=date_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="2" expression="'Page ' + page() + ' of ' + pageCount()"border="0" color="0" x="2821" y="236" height="60" width="544" format="[general]" html.valueishtml="0"  name=page_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

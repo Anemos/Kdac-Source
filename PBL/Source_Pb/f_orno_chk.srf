@@ -1,0 +1,59 @@
+$PBExportHeader$f_orno_chk.srf
+$PBExportComments$작명번호 Check  Global Function
+global type f_orno_chk from function_object
+end type
+
+forward prototypes
+global function integer f_orno_chk (string as_orno)
+end prototypes
+
+global function integer f_orno_chk (string as_orno);///////////////////////////////////////////////////
+// * 작명번호 Check *
+//
+// Error: -1, Pass: 1
+///////////////////////////////////////////////////
+
+
+String O10-1, O10-2, O10-3, O10-4, O10-5, O10-6, O10-7, O10-8, O10-9, O10-10
+
+O10-1 = Left(as_orno, 1)
+O10-2 = Mid(as_orno, 2, 1)
+O10-3 = Mid(as_orno, 3, 1)
+O10-4 = Mid(as_orno, 4, 1)
+O10-5 = Mid(as_orno, 5, 1)
+O10-6 = Mid(as_orno, 6, 1)
+O10-7 = Mid(as_orno, 7, 1)
+O10-8 = Mid(as_orno, 8, 1)
+O10-9 = Mid(as_orno, 9, 1)
+O10-10 = Right(as_orno, 1)
+
+If Dec(O10-1) < 1 Or Dec(O10-1) > 3 Then Return -1
+If O10-2 < 'A' Or O10-2 > 'Z' Then Return -1
+If O10-3 <> '0' Then Return -1
+If Dec(O10-4) < 1 Or Dec(O10-4) > 5 Then Return -1
+If Dec(O10-5) < 0 Or Dec(O10-5) > 9 Then Return -1
+
+String O10-6Chk[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'X', 'Y', 'Z'}
+Integer i, Pass = -1
+
+For i = 1 To UpperBound(O10-6Chk)
+	If O10-6 = O10-6Chk[i] Then 
+		Pass = 1
+		Exit
+	End If
+Next
+If Pass = -1 Then Return -1
+
+If Dec(O10-7) < 0 Or Dec(O10-7) > 9 Then Return -1
+If Dec(O10-8) < 0 Or Dec(O10-8) > 9 Then Return -1
+If Dec(O10-9) < 0 Or Dec(O10-9) > 9 Then Return -1
+If Dec(O10-7) = 0 And Dec(O10-8) = 0 And Dec(O10-9) = 0 Then
+	If Dec(O10-10) < 1 Or Dec(O10-10) > 9 Then Return -1
+Else
+	If Dec(O10-10) < 0 Or Dec(O10-10) > 9 Then Return -1
+End If
+
+
+Return 1  // Check 통과~
+end function
+

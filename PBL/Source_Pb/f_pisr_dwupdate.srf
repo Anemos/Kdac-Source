@@ -1,0 +1,25 @@
+$PBExportHeader$f_pisr_dwupdate.srf
+global type f_pisr_dwupdate from function_object
+end type
+
+forward prototypes
+global function integer f_pisr_dwupdate (transaction atr_tran, datawindow adw, boolean opt)
+end prototypes
+
+global function integer f_pisr_dwupdate (transaction atr_tran, datawindow adw, boolean opt);adw.SetTransObject(atr_tran)
+If atr_tran.AutoCommit Then atr_tran.AutoCommit = False
+If adw.Update() = -1 Then Goto RollBack_
+//f_pisr_sqlchkopt(atr_tran, opt)
+Commit Using atr_tran;
+atr_tran.AutoCommit = True 
+
+Return 1
+RollBack_: 
+If opt Then
+	RollBack Using atr_tran;
+	atr_tran.AutoCommit = True 
+End If 
+
+Return -1 
+end function
+

@@ -1,0 +1,36 @@
+$PBExportHeader$f_pur040_getdept1.srf
+$PBExportComments$부서코드가져오기(dac001조건별)
+global type f_pur040_getdept1 from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getdept1 (string ls_xplant, string ls_div, string ls_dname)
+end prototypes
+
+global function string f_pur040_getdept1 (string ls_xplant, string ls_div, string ls_dname);
+////지역,공장 및 명칭유사조건으로 근접한 부서코드 찾아오기
+string  ls_dept
+
+SELECT coalesce(max(dcode),'') INTO :ls_dept
+FROM PBcommon.dac001
+WHERE duse = ''
+and   dtodt = 0
+and   substr(ddiv2,1,1) = :ls_xplant  
+and   dsys12 = :ls_div
+and   substr(dcode,3,2) = '00'
+and   dname like '%' || :ls_dname || '%';
+
+if ls_dept = '' then
+	SELECT coalesce(max(dcode),'') INTO :ls_dept
+	FROM PBcommon.dac001
+	WHERE duse = ''
+	and   dtodt = 0
+	and   substr(ddiv2,1,1) = :ls_xplant  
+	and   substr(ddiv2,2,1) = :ls_div  
+	and   substr(dcode,3,2) = '00'
+	and   dname like '%' || :ls_dname || '%';
+end if
+
+return ls_dept
+end function
+

@@ -1,0 +1,29 @@
+$PBExportHeader$f_piss_nonexam_item.srf
+global type f_piss_nonexam_item from function_object
+end type
+
+forward prototypes
+global function string f_piss_nonexam_item (string a_custcode, string a_citno, string a_itno)
+end prototypes
+
+global function string f_piss_nonexam_item (string a_custcode, string a_citno, string a_itno);string ls_nonexam = 'N',ls_return
+long ln_firstout
+
+select trim(extd) into :ls_nonexam from pbsle.sle101
+where comltd = '01'  and citno = :a_citno and itno = :a_itno and custcd = :a_custcode
+using sqlca ;
+if f_spacechk(ls_nonexam) = -1 then
+	ls_nonexam = 'N'
+end if
+//select count(*) into :ln_firstout from pbsle.sle401
+//where comltd = '01'  and citno = :a_citno and itno = :a_itno and custcd = :a_custcode
+//      and stype = 'D'
+//using sqlca ;
+//if isnull(ln_firstout) = true or ln_firstout = 0 then
+//	ls_return = ls_nonexam + 'Y'
+//else
+//	ls_return = ls_nonexam + 'N'
+//end if
+return ls_nonexam
+end function
+

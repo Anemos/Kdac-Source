@@ -1,0 +1,89 @@
+$PBExportHeader$f_pur041_setopm103.srf
+$PBExportComments$오퍼Head생성(구분,dw , msg)
+global type f_pur041_setopm103 from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setopm103 (string fs_gubun, datawindow fdw, ref string rs_msg)
+end prototypes
+
+global function integer f_pur041_setopm103 (string fs_gubun, datawindow fdw, ref string rs_msg);//오퍼Head 생성: opm103 - 2008.12.11
+
+long ll_row, ll_rcnt
+String ls_comltd, ls_purno, ls_srno, ls_srno1, ls_ofdt, ls_shdt, ls_vldt, ls_vsrno, ls_vsrno1, ls_xpay
+String ls_xremark1, ls_xremark2, ls_prt, ls_curr, ls_xplan, ls_stcd, ls_extd, ls_inptid, ls_inptdt, ls_updtid, ls_updtdt, ls_ipaddr, ls_macaddr
+String ls_bocd, ls_prtdt, ls_tlgubun , ls_tlamd, ls_diamd, ls_tod, ls_todamd, ls_sedamd
+String ls_amddesc, ls_tod1, ls_tod2, ls_ship, ls_arr , ls_insp, ls_amdgubun
+Dec{2} ld_ofamt, ld_ofamt1, ld_payamt
+
+fdw.AcceptText()
+
+For ll_row = 1 To fdw.RowCount() 
+	ls_comltd		= fdw.Object.COMLTD[ll_row] 
+	ls_purno			= fdw.Object.PURNO[ll_row] 		
+	ls_srno			= fdw.Object.SRNO[ll_row] 	
+	ls_srno1			= fdw.Object.SRNO1[ll_row] 
+	ls_ofdt			= fdw.Object.OFDT[ll_row] 
+	ls_shdt			= fdw.Object.SHDT[ll_row] 	
+	ls_vldt			= fdw.Object.VLDT[ll_row] 	
+	ls_vsrno			= fdw.Object.VSRNO[ll_row] 	
+	ls_vsrno1		= fdw.Object.VSRNO1[ll_row] 
+	ls_xpay			= fdw.Object.XPAY[ll_row] 	
+	ls_xremark1		= fdw.Object.XREMARK1[ll_row]
+	ls_xremark2		= fdw.Object.XREMARK2[ll_row]
+	ls_prt			= fdw.Object.PRT[ll_row] 	
+	ls_curr			= fdw.Object.CURR[ll_row]  		
+	ls_xplan			= fdw.Object.XPLAN[ll_row]	
+	ls_stcd			= fdw.Object.STCD[ll_row]  
+	ls_extd			= fdw.Object.EXTD[ll_row] 
+	ls_inptid		= fdw.Object.INPTID[ll_row] 
+	ls_inptdt		= fdw.Object.INPTDT[ll_row] 
+	ls_updtid		= fdw.Object.UPDTID[ll_row] 
+	ls_updtdt		= fdw.Object.UPDTDT[ll_row] 
+	ls_ipaddr		= fdw.Object.IPADDR[ll_row] 
+	ls_macaddr		= fdw.Object.MACADDR[ll_row]  
+	ls_bocd			= fdw.Object.BOCD[ll_row]
+	ls_prtdt			= fdw.Object.PRTDT[ll_row]  
+	ls_tlgubun		= fdw.Object.TLGUBUN[ll_row] 	
+	ls_tlamd			= fdw.Object.TLAMD[ll_row] 	
+	ls_diamd			= fdw.Object.DIAMD[ll_row] 
+	ls_tod			= fdw.Object.TOD[ll_row]  
+	ls_todamd		= fdw.Object.TODAMD[ll_row]
+	ls_sedamd		= fdw.Object.SEDAMD[ll_row]
+	ls_amddesc		= fdw.Object.AMDDESC[ll_row] 
+	ls_tod1			= fdw.Object.TOD1[ll_row]  
+	ls_tod2			= fdw.Object.TOD2[ll_row]  
+	ls_ship			= fdw.Object.SHIP[ll_row]	  
+	ls_arr			= fdw.Object.ARR[ll_row]
+	ld_ofamt			= fdw.Object.OFAMT[ll_row]  
+	ld_ofamt1		= fdw.Object.OFAMT1[ll_row]  	
+	ld_payamt		= fdw.Object.PAYAMT[ll_row] 
+	ls_insp			= fdw.Object.INSP[ll_row]  
+	ls_amdgubun		= fdw.Object.AMDGUBUN[ll_row]
+		
+  
+	INSERT INTO PBPUR.OPM103 (
+		COMLTD, 		PURNO,			SRNO,			SRNO1,		OFDT,		SHDT,			VLDT,			VSRNO,		VSRNO1,		XPAY,			XREMARK1,		XREMARK2,
+		PRT,			CURR,				XPLAN,		STCD,			EXTD,		INPTID,	   INPTDT,		UPDTID,		UPDTDT,		IPADDR,		MACADDR,			BOCD,
+		PRTDT,		TLGUBUN,			TLAMD,		DIAMD,		TOD,		TODAMD,		SEDAMD,		AMDDESC,		TOD1,			TOD2,			SHIP,				ARR,
+		OFAMT,		OFAMT1,			PAYAMT,		INSP ,      AMDGUBUN
+	)
+	VALUES (
+		:ls_comltd, :ls_purno, 		:ls_srno, 	:ls_srno1, :ls_ofdt, :ls_shdt, 	:ls_vldt, 	:ls_vsrno, 	:ls_vsrno1, :ls_xpay, 	:ls_xremark1, :ls_xremark2,
+		:ls_prt, 	:ls_curr,  		:ls_xplan,	:ls_stcd,  :ls_extd, :ls_inptid, :ls_inptdt, :ls_updtid, :ls_updtdt, :ls_ipaddr, :ls_macaddr,  :ls_bocd,
+		:ls_prtdt,  :ls_tlgubun, 	:ls_tlamd, 	:ls_diamd, :ls_tod,  :ls_todamd, :ls_sedamd, :ls_amddesc, :ls_tod1,  :ls_tod2,   :ls_ship, 	  :ls_arr,
+		:ld_ofamt,  :ld_ofamt1,  	:ld_payamt, :ls_insp,  :ls_amdgubun
+	)
+	USING SQLCA;
+	  
+	IF SQLCA.SQLCODE <> 0  OR SQLCA.SQLNROWS <= 0 then
+		//MessageBox('확인','오퍼Head(OPM103) 등록중, 오류발생! 급히 연락바랍니다!  ~r~n' + string(sqlca.sqlerrtext) ,Exclamation!)
+		rs_msg = '오퍼Head(OPM103) 등록중, 오류발생! [오류코드: ' + string(sqlca.sqlerrtext) +' ]'
+		Return -1
+	End If
+
+Next
+
+Return 0
+end function
+

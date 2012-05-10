@@ -1,0 +1,17 @@
+$PBExportHeader$f_disconnect.srf
+$PBExportComments$Transaction DisConnect
+global type f_disconnect from function_object
+end type
+
+forward prototypes
+global subroutine f_disconnect (transaction ag_transaction)
+end prototypes
+
+global subroutine f_disconnect (transaction ag_transaction);if	g_s_sugangfg	=	"OK"	then
+	if	ag_transaction.dbhandle()	<>	0	then
+		disconnect using 	ag_transaction;
+	end if
+end if
+
+end subroutine
+

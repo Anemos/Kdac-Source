@@ -1,0 +1,54 @@
+$PBExportHeader$df_ifst_inv101_my.srf
+$PBExportComments$양산품 체크(지역,공장,품번,자재담당)
+global type df_ifst_inv101_my from function_object
+end type
+
+forward prototypes
+global function string df_ifst_inv101_my (string ag_xplant, string ag_div, string ag_itno, ref string ag_mlan, string ag_my)
+end prototypes
+
+global function string df_ifst_inv101_my (string ag_xplant, string ag_div, string ag_itno, ref string ag_mlan, string ag_my);////////////////////////////////////////////////////////////
+//양산품 체크(자재담당)
+//			argument : 지역,공장,품번
+//			
+//			성공 : ' '
+//			실패 : '1'
+///////////////////////////////////////////////////////////
+
+//item balance db	
+IF Upper(trim(ag_my)) = 'M' Then //양산품
+  
+	SELECT "PBINV"."INV101"."MLAN"
+	 INTO :ag_mlan
+	FROM "PBINV"."INV101"  
+	WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND 
+			( "PBINV"."INV101"."MASS" = 'M') AND  	
+			( "PBINV"."INV101"."KBCD" <> 'K') AND  	
+			( "PBINV"."INV101"."SRCE" <> '01') AND  
+			( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+			( "PBINV"."INV101"."DIV" = :ag_div) AND  
+			( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+//				( "PBINV"."INV101"."COMCD" = 'N') AND 
+Else	//유상사급품
+	SELECT "PBINV"."INV101"."MLAN"
+	 INTO :ag_mlan
+	FROM "PBINV"."INV101"  
+	WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND 
+			( "PBINV"."INV101"."MASS" = 'M') AND  		
+			( "PBINV"."INV101"."KBCD" <> 'K') AND  	
+			( "PBINV"."INV101"."COMCD" = 'Y') AND 
+			( "PBINV"."INV101"."SRCE" <> '01') AND  
+			( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+			( "PBINV"."INV101"."DIV" = :ag_div) AND  
+			( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+End IF		
+
+//If sqlca.sqlcode <> 0 or f_spacechk(ag_mlan) = -1 Then
+If sqlca.sqlcode <> 0 or sqlca.sqlnrows < 1 Then
+	ag_mlan = ' '
+	Return '1'
+Else
+	Return ' '
+End IF
+end function
+

@@ -1,0 +1,36 @@
+$PBExportHeader$f_pisc_get_date_firstday_of_week.srf
+$PBExportComments$일자가 속하는 주의 월요일을 구한다. (arg string 'YYYY.MM.DD', ref string 'YYYY.MM.DD', return boolean)
+global type f_pisc_get_date_firstday_of_week from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_get_date_firstday_of_week (string fs_date, ref string rs_applydate)
+end prototypes
+
+global function boolean f_pisc_get_date_firstday_of_week (string fs_date, ref string rs_applydate);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_first_day_of_week
+//	Access		: public
+//	Arguments	: String fs_date (Format:"YYYY.MM.DD")
+//					  String ref rs_applydate
+//	Returns		: String ls_date (Format:"YYYY.MM.DD")
+//	Description	: Get firstday of Week (firstday is Monday)
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lim Jae-Keun
+// Coded Date	: 1999. 01. 09
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Date 		ld_date
+String	ls_date
+
+If IsDate(fs_date) Then
+	ld_date = Date(fs_date)
+	ld_date = RelativeDate(ld_date, - (DayNumber(ld_date) - 2))
+	
+	rs_applydate = String(ld_date, 'YYYY.MM.DD')
+
+	Return True
+Else
+	Return False
+End If
+end function
+

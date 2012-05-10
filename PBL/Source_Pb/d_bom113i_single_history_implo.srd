@@ -1,0 +1,102 @@
+$PBExportHeader$d_bom113i_single_history_implo.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=itemcode dbname="BOM001.ITEMCODE" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BOM001.PWKCT" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BOM001.PQTYM" values=" 	0.000/" )
+ column=(type=char(50) updatewhereclause=yes name=itemname dbname="ITEMNAME" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="BOM001.SPEC" )
+ column=(type=decimal(1) updatewhereclause=yes name=lotsize dbname="BOM001.LOTSIZE" values=" 	0.0/" )
+ column=(type=decimal(0) updatewhereclause=yes name=leadtime dbname="BOM001.LEADTIME" )
+ column=(type=char(2) updatewhereclause=yes name=xunit dbname="BOM001.XUNIT" )
+ column=(type=char(2) updatewhereclause=yes name=xunit1 dbname="BOM001.XUNIT1" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="BOM001.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="BOM001.SRCE" )
+ column=(type=decimal(4) updatewhereclause=yes name=convqty dbname="BOM001.CONVQTY" values=" 	0.00/" )
+ column=(type=decimal(2) updatewhereclause=yes name=costls dbname="BOM001.COSTLS" )
+ column=(type=decimal(2) updatewhereclause=yes name=costav dbname="BOM001.COSTAV" )
+ column=(type=char(1) updatewhereclause=yes name=abccd dbname="ABCCD" )
+ column=(type=decimal(2) updatewhereclause=yes name=inputdanga dbname="INPUTDANGA" values=" 	0.00/" )
+ column=(type=decimal(2) updatewhereclause=yes name=movedanga dbname="MOVEDANGA" values=" 	0.00/" )
+ column=(type=decimal(2) updatewhereclause=yes name=outdanga dbname="BOM001.OUTDANGA" values=" 	0.00/" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BOM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="PEDTE" )
+ column=(type=char(15) updatewhereclause=yes name=optionno dbname="OPTIONNO" )
+ retrieve="SELECT	~"PBPDM~".~"BOM001~".~"PPITN~" as itemcode,  
+			~"PBPDM~".~"BOM001~".~"PWKCT~",  ~"PBPDM~".~"BOM001~".~"PQTYM~",  
+			TRANSLATE(B.ITNM,' ','~"') AS ITEMNAME, TRANSLATE(B.SPEC,' ','~"') AS SPEC,
+			C.PULS AS LOTSIZE,C.PULT AS LEADTIME,
+			A.XUNIT,B.XUNIT as XUNIT1 ,B.CLS,B.SRCE,C.CONVQTY,B.COSTLS,B.COSTAV,C.ABCCD,
+			Case	When 	B.SRCE NOT IN ( '05','03',' ' ) THEN
+							Case	When 	C.CONVQTY <> 0 Then decimal(truncate(B.COSTLS / C.CONVQTY,2),8,2)  
+									Else 	B.COSTLS End 
+					Else 	0.00	End AS INPUTDANGA,
+			Case	When 	B.SRCE NOT IN ( '05','03',' ' ) THEN
+						Case 	When 	C.CONVQTY <> 0 Then decimal(truncate(CASE	WHEN	B.COSTAV	=	0	THEN	B.COSTLS ELSE B.COSTAV END / C.CONVQTY,2),8,2)   
+								Else 	CASE	WHEN	B.COSTAV	=	0	THEN	B.COSTLS ELSE B.COSTAV END End	
+					Else	0.00	End AS MOVEDANGA,
+			Case	When 	B.SRCE NOT IN ( '05','03',' ' ) THEN
+					Case	When B.OUTQTY <> 0 Then
+								Case 	When 	C.CONVQTY <> 0 Then abs(decimal(truncate(decimal(truncate(( B.OUTAMT / C.OUTQTY),2),8,2) / C.CONVQTY,2),8,2))   
+										Else 	abs(decimal(truncate(( B.OUTAMT / B.OUTQTY ),2),8,2)) End  
+							Else 	Case	When 	C.CONVQTY <> 0 Then decimal(truncate(B.COSTLS / C.CONVQTY,2),8,2)  
+									Else 	B.COSTLS End 	END 
+					Else	0.00	End AS OUTDANGA,
+			~"PBPDM~".~"BOM001~".~"PEDTM~",~"PBPDM~".~"BOM001~".~"PEDTE~", '               ' AS OptionNo
+    FROM	~"PBPDM~".~"BOM001~",~"PBINV~".~"INV002~" A,~"PBINV~".~"INV402~" B ,~"PBINV~".~"INV101~" C	 
+   WHERE PCMCD 	= '01' 		AND	PCMCD		= 	B.COMLTD	AND	B.COMLTD = 	A.COMLTD	AND	B.COMLTD = 	C.COMLTD						AND
+			PPITN 	= 	A.ITNO	AND	A.ITNO	= 	B.ITNO	AND	B.ITNO	=  C.ITNO	AND	PLANT		=	B.XPLANT						AND
+			PDVSN		= 	B.DIV		AND	C.XPLANT	=	B.XPLANT	AND 	C.DIV		= 	B.DIV		AND	B.XYEAR	=	SUBSTRING(:A_DATE,1,6)	AND
+			PLANT 	= :A_PLANT 	AND 	PDVSN 	= 	:A_DIV  	AND	PCITN 	= 	:A_ITNO  AND  
+         (( PEDTE =  ''  	and PEDTM <= :a_date )	or	( PEDTE <> ''	and PEDTM <= :a_date	and PEDTE >= :a_date ))
+			
+ 
+        
+
+
+" arguments=(("a_plant", string),("a_div", string),("a_itno", string),("a_date", string))  sort="itemcode A " )
+text(band=header alignment="2" text="±‘∞›" border="0" color="16777215" x="1001" y="0" height="72" width="594" html.valueishtml="0"  name=spec_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Á∞Ì¥‹¿ß" border="0" color="16777215" x="2528" y="0" height="72" width="251" html.valueishtml="0"  name=xunit1_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BOM¥‹¿ß" border="0" color="16777215" x="1605" y="0" height="72" width="265" html.valueishtml="0"  name=xunit_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ABC" border="0" color="16777215" x="3200" y="0" height="72" width="142" html.valueishtml="0"  name=abccd_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="√÷¡æ¿‘∞Ì¥‹∞°" border="0" color="16777215" x="4713" y="0" height="72" width="425" html.valueishtml="0"  name=inputdanga_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ãµø∆Ú±’¥‹∞°" border="0" color="16777215" x="4293" y="0" height="72" width="411" html.valueishtml="0"  name=movedanga_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫“√‚∆Ú±’¥‹∞°" border="0" color="16777215" x="3867" y="0" height="72" width="416" html.valueishtml="0"  name=outdanga_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="L/Time" border="0" color="16777215" x="3607" y="0" height="72" width="251" html.valueishtml="0"  name=leadtime_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="L/Size" border="0" color="16777215" x="3351" y="0" height="72" width="247" html.valueishtml="0"  name=lotsize_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫Ø»Ø∞Ëºˆ" border="0" color="16777215" x="2208" y="0" height="72" width="311" html.valueishtml="0"  name=convqty_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ø¯¥‹¿ß∑Æ" border="0" color="16777215" x="1879" y="0" height="72" width="320" html.valueishtml="0"  name=pqtym_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞Ë¡§" border="0" color="16777215" x="2789" y="0" height="72" width="183" html.valueishtml="0"  name=cls_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±∏¿‘º±" border="0" color="16777215" x="2981" y="0" height="72" width="210" html.valueishtml="0"  name=srce_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¡∂ƒ⁄µÂ" border="0" color="16777215" x="5147" y="0" height="72" width="247" html.valueishtml="0"  name=pwkct_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Option«∞π¯" border="0" color="16777215" x="5403" y="0" height="72" width="398" html.valueishtml="0"  name=optionno_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿˚øÎ¿œ" border="0" color="16777215" x="5810" y="0" height="72" width="274" html.valueishtml="0"  name=pedtm_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="øœ∑·¿œ" border="0" color="16777215" x="6094" y="0" height="72" width="293" html.valueishtml="0"  name=pedte_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«∞   ∏Ì" border="0" color="16777215" x="416" y="0" height="72" width="576" html.valueishtml="0"  name=itemname_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«∞  π¯" border="0" color="16777215" x="9" y="0" height="72" width="398" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="416" y="0" height="72" width="576" format="[general]" html.valueishtml="0"  name=itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="398" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1001" y="0" height="72" width="594" format="[general]" html.valueishtml="0"  name=spec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="5147" y="0" height="72" width="247" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="0" x="5403" y="0" height="72" width="398" format="[general]" html.valueishtml="0"  name=optionno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="1605" y="0" height="72" width="265" format="[general]" html.valueishtml="0"  name=xunit visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="2528" y="0" height="72" width="251" format="[general]" html.valueishtml="0"  name=xunit1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="2789" y="0" height="72" width="183" format="[general]" html.valueishtml="0"  name=cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="2981" y="0" height="72" width="210" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="3200" y="0" height="72" width="142" format="[general]" html.valueishtml="0"  name=abccd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="1879" y="0" height="72" width="320" format="#,##0.000" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="2208" y="0" height="72" width="311" format="#,##0.00" html.valueishtml="0"  name=convqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="3351" y="0" height="72" width="247" format="#,##0.0" html.valueishtml="0"  name=lotsize visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="3607" y="0" height="72" width="251" format="#,###" html.valueishtml="0"  name=leadtime visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="0" x="4713" y="0" height="72" width="425" format="#,##0.00" html.valueishtml="0"  name=inputdanga visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="4293" y="0" height="72" width="411" format="#,##0.00" html.valueishtml="0"  name=movedanga visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="3867" y="0" height="72" width="416" format="#,##0.00" html.valueishtml="0"  name=outdanga visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="0" x="5810" y="0" height="72" width="274" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="0" x="6094" y="0" height="72" width="293" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

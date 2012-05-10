@@ -1,0 +1,140 @@
+$PBExportHeader$d_pisq340u_01.srd
+$PBExportComments$WarrantyÇ° ºÐ¼® SHEET ÀÔ·Â
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TQWARRANTYSHEET.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TQWARRANTYSHEET.DIVISIONCODE" )
+ column=(type=char(10) update=yes updatewhereclause=yes key=yes name=analyzedate dbname="TQWARRANTYSHEET.ANALYZEDATE" )
+ column=(type=char(6) update=yes updatewhereclause=yes key=yes name=customercode dbname="TQWARRANTYSHEET.CUSTOMERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itemcode dbname="TQWARRANTYSHEET.ITEMCODE" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="TMSTITEM.ITEMNAME" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=seqno dbname="TQWARRANTYSHEET.SEQNO" )
+ column=(type=char(7) update=yes updatewhereclause=yes name=raisedate dbname="TQWARRANTYSHEET.RAISEDATE" )
+ column=(type=char(7) update=yes updatewhereclause=yes name=accountdate dbname="TQWARRANTYSHEET.ACCOUNTDATE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=productgroup dbname="TQWARRANTYSHEET.PRODUCTGROUP" )
+ column=(type=char(30) updatewhereclause=yes name=productgroupname dbname="TMSTPRODUCTGROUP.PRODUCTGROUPNAME" )
+ column=(type=char(25) update=yes updatewhereclause=yes name=customitemcode dbname="TQWARRANTYSHEET.CUSTOMITEMCODE" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=adaptcar dbname="TQWARRANTYSHEET.ADAPTCAR" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=modelname dbname="TQWARRANTYSHEET.MODELNAME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=carno dbname="TQWARRANTYSHEET.CARNO" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=dcrno dbname="TQWARRANTYSHEET.DCRNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=repairsite dbname="TQWARRANTYSHEET.REPAIRSITE" )
+ column=(type=long update=yes updatewhereclause=yes name=cardistance dbname="TQWARRANTYSHEET.CARDISTANCE" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=lotno dbname="TQWARRANTYSHEET.LOTNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=outdate dbname="TQWARRANTYSHEET.OUTDATE" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=repairdate dbname="TQWARRANTYSHEET.REPAIRDATE" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=badcontent dbname="TQWARRANTYSHEET.BADCONTENT" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=analyzecode dbname="TQWARRANTYSHEET.ANALYZECODE" )
+ column=(type=char(40) updatewhereclause=yes name=smallgroupname dbname="TQWARRANTYSMALL.SMALLGROUPNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=customcode dbname="TQWARRANTYSHEET.CUSTOMCODE" initial="1" values="µ¨ÆÄÀÌ	1/CUSTOMER	2/" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=outsidecustomcode dbname="TQWARRANTYSHEET.OUTSIDECUSTOMCODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=externalview dbname="TQWARRANTYSHEET.EXTERNALVIEW" values="	1/	0" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=performance dbname="TQWARRANTYSHEET.PERFORMANCE" values="	1/	0" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=size dbname="TQWARRANTYSHEET.SIZE" values="	1/	0" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=memo dbname="TQWARRANTYSHEET.MEMO" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=fieldflag dbname="TQWARRANTYSHEET.FIELDFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TQWARRANTYSHEET.LASTEMP" )
+ retrieve="  SELECT A.AREACODE,   
+         A.DIVISIONCODE,   
+         A.ANALYZEDATE,   
+         A.CUSTOMERCODE,   
+         A.ITEMCODE,   
+         C.ITEMNAME,   
+         A.SEQNO,   
+         A.RAISEDATE,   
+         A.ACCOUNTDATE,   
+         A.PRODUCTGROUP,   
+         D.PRODUCTGROUPNAME,   
+         A.CUSTOMITEMCODE,   
+         A.ADAPTCAR,   
+         A.MODELNAME,   
+         A.CARNO,   
+         A.DCRNO,   
+         A.REPAIRSITE,   
+         A.CARDISTANCE,   
+         A.LOTNO,   
+         A.OUTDATE,   
+         A.REPAIRDATE,   
+         A.BADCONTENT,   
+         A.ANALYZECODE,   
+         B.SMALLGROUPNAME,
+         A.CUSTOMCODE,   
+         A.OUTSIDECUSTOMCODE,   
+         A.EXTERNALVIEW,   
+         A.PERFORMANCE,   
+         A.SIZE,   
+         A.MEMO,
+         A.FIELDFLAG,
+			A.LASTEMP
+    FROM TQWARRANTYSHEET  A,
+         TQWARRANTYSMALL  B,
+			TMSTITEM			  C,
+			TMSTPRODUCTGROUP D
+   WHERE A.AREACODE		*= B.AREACODE 
+     AND A.DIVISIONCODE	*= B.DIVISIONCODE
+     AND A.PRODUCTGROUP	*= B.PRODUCTGROUP
+     AND A.ANALYZECODE	*= B.LARGEGROUPCODE + B.MIDDLEGROUPCODE + B.SMALLGROUPCODE
+     AND A.ITEMCODE		*= C.ITEMCODE
+     AND A.AREACODE		 *= D.AREACODE
+     AND A.DIVISIONCODE	 *= D.DIVISIONCODE
+     AND A.PRODUCTGROUP	 *= D.PRODUCTGROUP
+     AND A.AREACODE		 = :as_areacode
+     AND A.DIVISIONCODE	 = :as_divisioncode
+     AND A.ANALYZEDATE	 = :as_analyzedate
+     AND A.CUSTOMERCODE	 = :as_customercode
+" update="TQWARRANTYSHEET" updatewhere=0 updatekeyinplace=no arguments=(("as_areacode", string),("as_divisioncode", string),("as_analyzedate", string),("as_customercode", string))  sort="areacode A divisioncode A analyzedate A customercode A seqno A itemcode A " )
+text(band=header alignment="2" text="ÀÏ·Ã¹øÈ£" border="2" color="16777215" x="9" y="8" height="68" width="283" html.valueishtml="0"  name=seqno_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðµ¨¸í" border="2" color="16777215" x="3099" y="8" height="68" width="576" html.valueishtml="0"  name=modelname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Â÷´ë¹øÈ£" border="2" color="16777215" x="3685" y="8" height="68" width="293" html.valueishtml="0"  name=carno_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="DCR NO" border="2" color="16777215" x="3986" y="8" height="68" width="439" html.valueishtml="0"  name=dcrno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö¸®Àå¼Ò" border="2" color="16777215" x="4434" y="8" height="68" width="302" html.valueishtml="0"  name=repairsite_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÁÖÇà°Å¸®" border="2" color="16777215" x="4745" y="8" height="68" width="325" html.valueishtml="0"  name=cardistance_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="LOT NO" border="2" color="16777215" x="5079" y="8" height="68" width="334" html.valueishtml="0"  name=lotno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ãâ°íÀÏ" border="2" color="16777215" x="5422" y="8" height="68" width="334" html.valueishtml="0"  name=outdate_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö¸®ÀÏ" border="2" color="16777215" x="5765" y="8" height="68" width="334" html.valueishtml="0"  name=repairdate_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°í°´ºÒ·®³»¿ë" border="2" color="16777215" x="6107" y="8" height="68" width="1125" html.valueishtml="0"  name=badcontent_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÐ¼®ÄÚµå" border="2" color="16777215" x="7241" y="8" height="68" width="343" html.valueishtml="0"  name=analyzecode_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±ÍÃ¥±¸ºÐ" border="2" color="16777215" x="8645" y="8" height="68" width="334" html.valueishtml="0"  name=customcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ÜÁÖ¾÷Ã¼" border="2" color="16777215" x="8987" y="8" height="68" width="530" html.valueishtml="0"  name=outsidecustomcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ü°ü" border="2" color="16777215" x="9527" y="8" height="68" width="128" html.valueishtml="0"  name=externalview_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼º´É" border="2" color="16777215" x="9664" y="8" height="68" width="128" html.valueishtml="0"  name=performance_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ä¡¼ö" border="2" color="16777215" x="9801" y="8" height="68" width="128" html.valueishtml="0"  name=size_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºñ   °í" border="2" color="16777215" x="9938" y="8" height="68" width="1083" html.valueishtml="0"  name=memo_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÐ¼®³»¿ë" border="2" color="16777215" x="7593" y="8" height="68" width="1042" html.valueishtml="0"  name=obj_27096492 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àû¿ëÂ÷Á¾" border="2" color="16777215" x="2514" y="8" height="68" width="576" html.valueishtml="0"  name=adaptcar_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°í°´Ç°¹ø" border="2" color="16777215" x="2016" y="8" height="68" width="489" html.valueishtml="0"  name=customitemcode_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="2" color="16777215" x="302" y="8" height="68" width="398" html.valueishtml="0"  name=itemcode_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç° ¸í" border="2" color="16777215" x="709" y="8" height="68" width="626" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="2" color="16777215" x="1344" y="8" height="68" width="206" html.valueishtml="0"  name=productgroup_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º¸í" border="2" color="16777215" x="1559" y="8" height="68" width="448" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=7 alignment="2" tabsequence=10 border="2" color="0" x="9" y="0" height="76" width="283" format="[general]" html.valueishtml="0"  name=seqno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="0" tabsequence=40 border="2" color="0" x="2514" y="0" height="76" width="576" format="[general]" html.valueishtml="0"  name=adaptcar visible="1" edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="0" tabsequence=50 border="2" color="0" x="3099" y="0" height="76" width="576" format="[general]" html.valueishtml="0"  name=modelname visible="1" edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="0" tabsequence=60 border="2" color="0" x="3685" y="0" height="76" width="293" format="[general]" html.valueishtml="0"  name=carno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="0" tabsequence=70 border="2" color="0" x="3986" y="0" height="76" width="439" format="[general]" html.valueishtml="0"  name=dcrno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="0" tabsequence=80 border="2" color="0" x="4434" y="0" height="76" width="302" format="[general]" html.valueishtml="0"  name=repairsite visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="1" tabsequence=90 border="2" color="0" x="4745" y="0" height="76" width="325" format="[general]" html.valueishtml="0"  name=cardistance visible="1" editmask.mask="###,###" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=22 alignment="0" tabsequence=130 border="2" color="0" x="6107" y="0" height="76" width="1125" format="[general]" html.valueishtml="0"  name=badcontent visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=23 alignment="0" tabsequence=140 border="2" color="0" x="7241" y="0" height="76" width="343" format="[general]" html.valueishtml="0"  name=analyzecode visible="1" dddw.name=dddw_pisqtqwarrantysmalll02 dddw.displaycolumn=as_code dddw.datacolumn=as_code dddw.percentwidth=400 dddw.lines=5 dddw.limit=4 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=25 alignment="0" tabsequence=150 border="2" color="0" x="8645" y="0" height="76" width="334" format="[general]" html.valueishtml="0"  name=customcode visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=26 alignment="0" tabsequence=160 border="2" color="0" x="8987" y="0" height="76" width="530" format="[general]" html.valueishtml="0"  name=outsidecustomcode visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=21 alignment="0" tabsequence=120 border="2" color="0" x="5765" y="0" height="76" width="334" format="[general]" html.valueishtml="0"  name=repairdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=20 alignment="0" tabsequence=110 border="2" color="0" x="5422" y="0" height="76" width="334" format="[general]" html.valueishtml="0"  name=outdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="0" tabsequence=100 border="2" color="0" x="5079" y="0" height="76" width="334" format="[general]" html.valueishtml="0"  name=lotno visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=29 alignment="2" tabsequence=190 border="2" color="0" x="9801" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=size visible="1" checkbox.text="" checkbox.on="1" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=28 alignment="2" tabsequence=180 border="2" color="0" x="9664" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=performance visible="1" checkbox.text="" checkbox.on="1" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=27 alignment="2" tabsequence=170 border="2" color="0" x="9527" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=externalview visible="1" checkbox.text="" checkbox.on="1" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=30 alignment="0" tabsequence=200 border="2" color="0" x="9938" y="0" height="76" width="1083" format="[general]" html.valueishtml="0"  name=memo visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=24 alignment="0" tabsequence=32766 border="2" color="0" x="7593" y="0" height="76" width="1042" format="[general]" html.valueishtml="0"  name=smallgroupname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="0" tabsequence=30 border="2" color="0" x="2016" y="0" height="76" width="489" format="[general]" html.valueishtml="0"  name=customitemcode visible="1" edit.limit=25 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=20 border="2" color="0" x="302" y="0" height="76" width="398" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="2" color="0" x="709" y="0" height="76" width="626" format="[general]" html.valueishtml="0"  name=itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="2" color="0" x="1344" y="0" height="76" width="206" format="[general]" html.valueishtml="0"  name=productgroup visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="2" color="0" x="1559" y="0" height="76" width="448" format="[general]" html.valueishtml="0"  name=productgroupname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

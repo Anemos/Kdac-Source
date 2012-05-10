@@ -1,0 +1,186 @@
+$PBExportHeader$f_up_ipis_mis_yinv101temp.srf
+$PBExportComments$여주인터페이스 상세정보
+global type f_up_ipis_mis_yinv101temp from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_yinv101temp (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_yinv101temp (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgcd, ls_xplant, ls_div, ls_itno, ls_cls, ls_srce, ls_pdcd, ls_xunit, ls_abccd, ls_id
+string ls_costdiv, ls_xplan, ls_comcd, ls_gubun, ls_wloc, ls_mlan, ls_mass
+integer	li_cnt, li_index, li_Retcnt
+str_ipis_server lstr_ipis
+Dec{0} ld_saud
+Dec{4} ld_convqty
+
+//***AS400 접속여부 체크, 저녁8-아침8 인터페이스 저장
+li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')
+
+If li_index = -1 then
+	ag_message = "A/S400, INT 서버 연결에 실패하였습니다."
+	return -1
+End if
+
+lstr_ipis = ag_str_ipis[li_index]
+
+//*** 업무로직 적용
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_chgcd  = trim(ag_dwo.getitemstring(li_cnt,"Chgcd"))
+	ls_xplant = trim(ag_dwo.getitemstring(li_cnt,"Xplant"))
+	ls_div    = trim(ag_dwo.getitemstring(li_cnt,"Div"))
+	ls_itno   = trim(ag_dwo.getitemstring(li_cnt,"Itno"))
+	ls_Cls    = trim(ag_dwo.getitemstring(li_cnt,"Cls"))
+	ls_srce   = trim(ag_dwo.getitemstring(li_cnt,"Srce"))
+	ls_pdcd   = trim(ag_dwo.getitemstring(li_cnt,"Pdcd"))
+	ls_xunit  = trim(ag_dwo.getitemstring(li_cnt,"Xunit"))
+	ls_abccd  = trim(ag_dwo.getitemstring(li_cnt,"Abccd"))
+	ld_Convqty= ag_dwo.getitemnumber(li_cnt,"Convqty")
+	ls_wloc   = trim(ag_dwo.getitemstring(li_cnt,"Wloc"))
+	ld_Saud   = ag_dwo.getitemnumber(li_cnt,"Saud")
+	ls_Mlan   = trim(ag_dwo.getitemstring(li_cnt,"Mlan"))
+	ls_Mass   = trim(ag_dwo.getitemstring(li_cnt,"Mass"))
+	ls_id     = trim(ag_dwo.getitemstring(li_cnt,"Inptid"))	
+	
+	if f_yeo_spacechk(ls_srce)  = -1  then ls_srce = ''
+	if f_yeo_spacechk(ls_abccd)  = -1 then ls_abccd = ''
+	if f_yeo_spacechk(ls_wloc) = -1   then ls_wloc = ''
+	if f_yeo_spacechk(ls_Mlan) = -1   then ls_Mlan = ''
+	if f_yeo_spacechk(ls_Mass) = -1   then ls_Mass = ''
+	if f_yeo_spacechk(ls_id) = -1     then ls_id = ''	
+	
+	choose case ls_chgcd
+		case 'C'
+			//*** item Master Check
+			SELECT Count(itno)                                             
+			  INTO :li_retcnt                                    
+			FROM PBINV.INV101                                                             
+			WHERE comltd = '01' AND xplant = :ls_xplant and div = :ls_div and itno   = :ls_itno Using lstr_ipis.t_sqlpis;
+																												  
+			If li_retcnt > 0 then                                                          
+				ag_message = "품목상세정보 기 존재"
+				return -1                                                           
+			End if
+			
+			ls_costdiv = f_yeo_get_accdiv(ls_xplant, ls_div, ls_pdcd)		
+			ls_comcd   = f_yeo_get_comcd(ls_itno)
+			ls_xplan   = f_yeo_get_xplan(ls_itno, ls_srce)
+			
+			If ls_comcd = 'Y' Then
+				ls_Mass   = 'M'
+				ls_comcd  = 'Y'
+				ls_xplan  = '7D'
+			Elseif ls_comcd ='O' then
+				ls_Mass   = 'M'
+				ls_comcd  = 'O'
+				ls_xplan  = '7D'
+			Else
+				ls_comcd  = 'N'
+			End if
+			
+			if ls_srce = '01' then
+				ls_gubun = 'I'
+			else
+				ls_gubun = 'D'
+			End if
+			
+			UPDATE "PBINV"."INV002"  
+			  SET  "RROGB" = :ls_gubun, 
+					 "UPDTID" = :g_s_empno,  "UPDTDT" = :g_s_datetime  
+			WHERE ( "PBINV"."INV002"."COMLTD" = '01')  AND ( "PBINV"."INV002"."ITNO"   = :ls_itno)  using lstr_ipis.t_sqlpis;
+			
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "품목기본정보 DB 업데이트 error invoke"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_yinv101temp',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'품목기본정보 DB 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+			
+				
+			INSERT INTO "PBINV"."INV101" (                                                      
+				"COMLTD", "XPLANT", "DIV",     "ITNO",     "CLS",   "SRCE", "PDCD",  "XUNIT", "UNIT1",  "COSTDIV", 
+				"XPLAN",  "MLAN",   "CONVQTY", "CONVQTY1", "AUTCD", "MDNO", "WLOC",  "WCCD",  "ISCD",   "ISBOX", 
+				"NUSE",   "ABCCD",  "KBCD",    "MASS",     "IRTCD", "MAXQ", "MINQ",  "SAFT",  "SFWQ",   "ADJQTY", 
+				"ORPT",   "PULS",   "ISLS",    "PULT",     "BGQTY", "BGAMT", "INTQTY","INTAMT","OUTQTY","OUTAMT",
+				"OHUQTY", "OHRQTY", "OHSQTY",  "OHAMT",    "EXQTY", "COSTAV","COSTLS","SAUP",  "SAUD",  "IUNPR", 
+				"IUNRC",  "ISPQT",  "IPERP",   "IPEIS",    "IPERP1","PKSZ",  "SHPCD", "ILUDT", "LPDT",  "MCNO", 
+				"FOBCOST", "CURR",  "CHKCD",   "HSCD",     "TXRT",  "FSTDT", "INDUS", "COMCD", "EXTD", "INPTID", 
+				"INPTDT", "UPDTID", "UPDTDT",  "IPADDR",   "MACADDR")                                                        
+			 VALUES                                                                       
+				('01',     :ls_xplant, :ls_div,    :ls_itno, :ls_cls, :ls_srce,:ls_pdcd, :ls_xunit, ' ', :ls_costdiv,
+				 :ls_xplan,:ls_mlan,   :ld_convqty, 0,       ' ',     ' ',     :ls_wloc, 'N',       ' ', ' ',
+				 ' ',      :ls_abccd,  ' ',        :ls_mass, ' ',     0,       0,         0,        0,    0,
+				 0,        0,          0,          0,        0,       0,       0,         0,        0,    0,
+				 0,        0,          0,          0,        0,       0,       0,         0, :ld_Saud,    0,
+				 0,        0,          0,          0,        0,       0,     ' ',       ' ',      ' ',   ' ',
+				 0,      ' ',        ' ',        ' ',        0,     ' ',     ' ', :ls_comcd,       ' ',   :ls_id,
+				 :g_s_date, :ls_id, :g_s_datetime,  ' ',     ' ') Using lstr_ipis.t_sqlpis;	
+					  
+			  if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+				  ag_message = "품목상세정보 데이터 생성에 실패하였습니다."
+				  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_yinv101temp',&
+				  lstr_ipis.t_sqlpis.sqlerrtext,'품목상세정보 데이터 생성에 실패', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				  return -1
+			  end if
+			  
+		case 'U'
+			SELECT Count(itno)                                             
+			  INTO :li_retcnt                                    
+			FROM PBINV.INV101                                                             
+			WHERE comltd = '01' AND xplant = :ls_xplant and div = :ls_div and itno   = :ls_itno Using lstr_ipis.t_sqlpis;
+																												  
+			If li_retcnt < 1 then                                                          
+				ag_message = "수정할 품목상세정보 미 존재"
+				return -1                                                           
+			End if
+			
+			UPDATE PBINV.INV101                                                      
+				SET XUNIT   = :ls_xunit,
+				    CONVQTY = :ld_convqty,
+					 WLOC    = :ls_wloc,
+					 ABCCD   = :ls_abccd,
+					 MLAN    = :ls_mlan,
+					 MASS    = :ls_mass,                                                
+					 UPDTID  = :ls_id,                                                       
+					 UPDTDT  = :g_s_date                                                      
+			WHERE comltd = '01' AND xplant = :ls_xplant and div = :ls_div and itno  = :ls_itno 
+			Using lstr_ipis.t_sqlpis;
+			
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "품목상세정보 DB 업데이트 error invoke"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_yinv101temp',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'품목상세정보 DB 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if			
+			
+		case 'D'
+			SELECT Count(itno)                                             
+			  INTO :li_retcnt                                    
+			FROM PBINV.INV101                                                             
+			WHERE comltd = '01' AND xplant = :ls_xplant and div = :ls_div and itno   = :ls_itno Using lstr_ipis.t_sqlpis;
+																												  
+			If li_retcnt < 1 then                                                          
+				ag_message = "품목상세정보 미 존재"
+				return -1                                                           
+			End if
+			
+			DELETE FROM PBINV.INV101
+			WHERE comltd = '01' AND xplant = :ls_xplant and div = :ls_div and itno   = :ls_itno 
+			Using lstr_ipis.t_sqlpis; 
+			
+			if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+				ag_message = "품목상세정보 삭제에 실패하였습니다."
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_yinv101temp',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'품목상세정보 삭제 에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+
+		case else
+			  ag_message = "데이타구분 CUD에 해당하지 않습니다."
+			  return -1
+	end choose
+next
+
+return 0
+end function
+

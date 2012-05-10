@@ -1,0 +1,136 @@
+$PBExportHeader$f_lastpur_new3.srf
+$PBExportComments$종전가자동발주(종전가(D,U),업체번호), 품번, 구분)
+global type f_lastpur_new3 from function_object
+end type
+
+forward prototypes
+global function string f_lastpur_new3 (string ag_s_srno, string ag_s_dept, string ag_s_gubun)
+end prototypes
+
+global function string f_lastpur_new3 (string ag_s_srno, string ag_s_dept, string ag_s_gubun);///////////////////////////////////////////////////////////////////////////////
+//// f_lastpur_pur(ag_s_srno,ag_s_dept, ag_s_gubun)  --주관부서 (내자구매 : P , 여주, :Y)
+////     * 종전가 자동발주 - 취소일경우만 해당.
+//
+////       argument : 업체전산번호('D','U',업체전산번호)
+////						 주관부서
+////                  구분 : 
+//                             1. 발주단가
+// 									 2. 업체
+// 									 3. 발주번호
+//
+//                             ** 최종  
+// 								    4. 실단가 
+// 									 5. 단가 적용일
+// 									 6. 품의번호
+//
+//
+////       적용 : w_pur411u(구매접수발행리포트), w_pur412u(종전가자동발주)
+////////////////////////////////////////////////////////////////////////////
+
+
+String ls_vsrno="", ls_srno1 , ls_purno, ls_itno, ls_srno
+DEC{2} ld_xcost, ld_lcost, ld_dcost,   ld_fcost	
+String ls_lpurno,  ls_lpindt, ls_lrqno, ls_lsrno,  ls_lsrno1, ls_dsheet,  ls_dadjdt, ls_dcurr,  ls_xpay,  ls_vzero
+String ls_arr  , ls_fpurno		, ls_fpindt
+	  
+ag_s_srno = Upper(trim(ag_s_srno))
+ag_s_dept = Upper(trim(ag_s_dept))
+
+//구매건의 취소전산번호가 들어오므로
+// 정상전산번호 구한다음
+// 발주건의 해당 전산번호의 마지막을 구한다.
+
+SELECT RSRNO1
+	INTO :ls_srno
+FROM PBPUR.PUR302
+WHERE COMLTD = '01'
+  AND SRNO = :ag_s_srno 
+Using sqlca; 
+ 
+SELECT VSRNO, XCOST,SRNO1 , PURNO ,ITNO 
+ INTO :ls_vsrno, :ld_xcost ,:ls_srno1, :ls_purno, :ls_itno
+FROM PBPUR.PUR402
+WHERE COMLTD = '01'
+ AND SRNO = :ls_srno
+// AND PGUBU = 'C'
+ORDER BY SRNO1 DESC
+FETCH FIRST 1 ROW ONLY;
+
+//IF f_spacechk(ls_vsrno) = -1 Then
+IF sqlca.sqlcode <> 0 Then
+	ls_vsrno = ""
+	ld_xcost = 0
+	ls_srno1 = ""
+	ls_purno = ""
+	ls_itno = ""
+End IF
+IF ag_s_gubun = "1" or ag_s_gubun = "2" or ag_s_gubun = "3" Then
+	//발주단가, 업체전산번호 , 발주번호
+	//발주DB의 값만 가져오므로...
+Else
+	//발주단가
+	SELECT "PBPUR"."PUR103"."PURNO", "PBPUR"."PUR103"."PINDT", "PBPUR"."PUR103"."LCOST",   
+			"PBPUR"."PUR103"."RQNO",  "PBPUR"."PUR103"."SRNO",  "PBPUR"."PUR103"."SRNO1",   
+			"PBPUR"."PUR103"."DSHEET","PBPUR"."PUR103"."DADJDT","PBPUR"."PUR103"."DCOST",   
+			"PBPUR"."PUR103"."DCURR", "PBPUR"."PUR103"."XPAY",  "PBPUR"."PUR103"."VZERO",   
+			"PBPUR"."PUR103"."VSRNO"  , "PBPUR"."PUR103"."ARR" ,
+			"PBPUR"."PUR103"."FPURNO", "PBPUR"."PUR103"."FPINDT", "PBPUR"."PUR103"."FCOST"
+	INTO :ls_lpurno,  :ls_lpindt,  :ld_lcost,   :ls_lrqno,   :ls_lsrno,  :ls_lsrno1,   
+		  :ls_dsheet,  :ls_dadjdt,  :ld_dcost,   :ls_dcurr,   :ls_xpay,   :ls_vzero,   
+		  :ls_vsrno  , :ls_arr  ,:ls_fpurno		, :ls_fpindt , :ld_fcost	
+	 FROM "PBPUR"."PUR103"  
+	WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND
+			( "PBPUR"."PUR103"."VSRC" = 'D' ) AND  
+			( "PBPUR"."PUR103"."DEPT" = :ag_s_dept ) AND  
+			( "PBPUR"."PUR103"."VSRNO" = :ls_vsrno ) AND  
+			( "PBPUR"."PUR103"."ITNO" = :ls_itno ) 		
+	Fetch First 1 Row only Using sqlca;
+	
+	IF sqlca.sqlcode <> 0 Then
+		ls_lpurno = " " 
+		ls_lpindt = " "
+		ls_lrqno = " "
+		ls_lsrno = " "
+		ls_lsrno1 = " "
+		ld_lcost = 0.00	
+		ls_dsheet = " "
+		ls_dadjdt = " "
+		ld_dcost = 0.00
+		ls_dcurr = " "
+		ls_xpay = " "
+		ls_vzero = " "
+		ls_vsrno = " "
+		ls_arr = " "
+		ls_fpurno = " "
+		ls_fpindt = " "
+		ld_fcost = 0.00
+	End IF
+End IF	
+
+//										 1. 발주단가
+// 									 2. 업체
+// 									 3. 발주번호
+//
+//                             ** 최종  
+// 								    4. 실단가 
+// 									 5. 단가 적용일
+// 									 6. 품의번호
+
+//결과
+IF ag_s_gubun = "1" Then  //발주단가(발주DB)
+   Return String(ld_xcost,"00000000000.00")	
+ElseIF ag_s_gubun = "2" Then	//업체
+	Return ls_vsrno
+ElseIf ag_s_gubun = "3" Then //발주번호(발주DB)
+	Return ls_purno
+	
+Elseif ag_s_gubun = "4" Then // 내수용 단가
+	Return String(ld_dcost,"00000000000.00")	
+ElseIf ag_s_gubun = "5" Then //        적용일
+	Return ls_dadjdt
+ElseIf ag_s_gubun = "6" Then //        품의번호
+	Return ls_dsheet
+End If	
+
+end function
+

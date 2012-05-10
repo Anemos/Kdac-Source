@@ -1,0 +1,81 @@
+$PBExportHeader$d_bom001_110u_update_old.srd
+$PBExportComments$¿‘∑¬ Freeform DW
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=728 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=pcmcd dbname="BOM001.PCMCD" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=pcitn dbname="BOM001.PCITN" )
+ column=(type=char(8) update=yes updatewhereclause=yes key=yes name=pchdt dbname="BOM001.PCHDT" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=pqtym dbname="BOM001.PQTYM" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=pqtye dbname="BOM001.PQTYE" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=pwkct dbname="BOM001.PWKCT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=pedtm dbname="BOM001.PEDTM" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=pedte dbname="BOM001.PEDTE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pexplant dbname="BOM001.PEXPLANT" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes name=popcd dbname="BOM001.POPCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pexdv dbname="BOM001.PEXDV" initial=" " )
+ column=(type=char(8) update=yes updatewhereclause=yes name=pindt dbname="BOM001.PINDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=pemno dbname="BOM001.PEMNO" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pebst dbname="BOM001.PEBST" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=plant dbname="BOM001.PLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=pdvsn dbname="BOM001.PDVSN" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=prout dbname="BOM001.PROUT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pchcd dbname="BOM001.PCHCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=poscd dbname="BOM001.POSCD" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=ppitn dbname="BOM001.PPITN" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM001~".~"PCMCD~",
+			~"PBPDM~".~"BOM001~".~"PCITN~",   
+         ~"PBPDM~".~"BOM001~".~"PCHDT~",   
+         ~"PBPDM~".~"BOM001~".~"PQTYM~",   
+         ~"PBPDM~".~"BOM001~".~"PQTYE~",   
+         ~"PBPDM~".~"BOM001~".~"PWKCT~",   
+         ~"PBPDM~".~"BOM001~".~"PEDTM~",   
+         ~"PBPDM~".~"BOM001~".~"PEDTE~",   
+         ~"PBPDM~".~"BOM001~".~"PEXPLANT~",
+         ~"PBPDM~".~"BOM001~".~"POPCD~",   
+         ~"PBPDM~".~"BOM001~".~"PEXDV~",   
+         ~"PBPDM~".~"BOM001~".~"PINDT~",   
+         ~"PBPDM~".~"BOM001~".~"PEMNO~",   
+         ~"PBPDM~".~"BOM001~".~"PEBST~",  
+         ~"PBPDM~".~"BOM001~".~"PLANT~", 
+         ~"PBPDM~".~"BOM001~".~"PDVSN~",   
+         ~"PBPDM~".~"BOM001~".~"PROUT~",   
+         ~"PBPDM~".~"BOM001~".~"PCHCD~",   
+         ~"PBPDM~".~"BOM001~".~"POSCD~",   
+         ~"PBPDM~".~"BOM001~".~"PPITN~"  
+    FROM ~"PBPDM~".~"BOM001~"  
+   WHERE ( ~"PBPDM~".~"BOM001~".~"PCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM001~".~"PLANT~" = :a_plant ) AND  
+         ( ~"PBPDM~".~"BOM001~".~"PDVSN~" = :a_div ) AND   
+         ( ~"PBPDM~".~"BOM001~".~"PPITN~" = :a_ppitn ) AND  
+         ( ~"PBPDM~".~"BOM001~".~"PCITN~" = :a_pcitn ) AND  
+         ~"PBPDM~".~"BOM001~".~"PCHDT~" = :a_date    
+" update="PBPDM.BOM001" updatewhere=0 updatekeyinplace=no arguments=(("a_plant", string),("a_div", string),("a_ppitn", string),("a_pcitn", string),("a_date", string)) )
+text(band=detail alignment="1" text="ªÛ¿ß«∞π¯" border="0" color="33554432" x="78" y="148" height="60" width="256" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="5" color="0" x="370" y="148" height="60" width="402" format="[general]" html.valueishtml="0"  name=ppitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="«œ¿ß«∞π¯" border="0" color="33554432" x="818" y="148" height="60" width="256" html.valueishtml="0"  name=pcitn_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="1129" y="148" height="60" width="402" format="[general]" html.valueishtml="0"  name=pcitn visible="1" edit.limit=12 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=detail alignment="1" text=" ø¯¥‹¿ß∑Æ" border="0" color="33554432" x="78" y="360" height="60" width="256" html.valueishtml="0"  name=pqtym_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="1" tabsequence=20 border="5" color="0" x="370" y="360" height="60" width="402" format="[general]" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.format="####.000" edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=detail alignment="1" text="¿Ã√º¡ˆø™" border="0" color="33554432" x="1591" y="360" height="60" width="256" html.valueishtml="0"  name=pexplant_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="0" tabsequence=40 border="5" color="0" x="1883" y="360" height="60" width="402" format="[general]" html.valueishtml="0"  name=pexplant visible="1" dddw.name=dddw_dac002_bom dddw.displaycolumn=coitname dddw.datacolumn=cocode1 dddw.percentwidth=0 dddw.lines=5 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="¿Ã√º∞¯¿Â" border="0" color="33554432" x="2341" y="360" height="60" width="256" html.valueishtml="0"  name=pexdv_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=50 border="5" color="0" x="2633" y="360" height="60" width="402" format="[general]" html.valueishtml="0"  name=pexdv visible="1" dddw.name=dddw_inv092_bom dddw.displaycolumn=dac002_coitname dddw.datacolumn=div dddw.percentwidth=0 dddw.lines=5 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="≈ı¿‘√≥" border="0" color="33554432" x="818" y="360" height="60" width="256" html.valueishtml="0"  name=pwkct_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=30 border="5" color="0" x="1129" y="360" height="60" width="402" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=4 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=detail alignment="1" text="Ω√¿€¿œ" border="0" color="33554432" x="78" y="576" height="60" width="256" html.valueishtml="0"  name=pedtm_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=60 border="5" color="0" x="370" y="576" height="60" width="402" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="¡æ∑·¿œ" border="0" color="33554432" x="818" y="576" height="60" width="256" html.valueishtml="0"  name=pedte_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=70 border="5" color="0" x="1129" y="576" height="60" width="402" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="¿‘∑¬¿œ" border="0" color="33554432" x="1591" y="576" height="60" width="256" html.valueishtml="0"  name=pindt_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="5" color="0" x="1883" y="576" height="60" width="402" format="[general]" html.valueishtml="0"  name=pindt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="¿‘∑¬¿⁄" border="0" color="33554432" x="2341" y="576" height="60" width="256" html.valueishtml="0"  name=pemno_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="5" color="0" x="2633" y="576" height="60" width="402" format="[general]" html.valueishtml="0"  name=pemno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

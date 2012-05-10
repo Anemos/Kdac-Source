@@ -1,0 +1,84 @@
+$PBExportHeader$d_bom001_115u_optionchk.srd
+$PBExportComments$Royalty option check
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=rfcmcd dbname="BOM006.RFCMCD" )
+ column=(type=char(6) update=yes updatewhereclause=yes key=yes name=rfyymm dbname="BOM006.RFYYMM" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rfcust dbname="BOM006.RFCUST" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rfplant dbname="BOM006.RFPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rfdvsn dbname="BOM006.RFDVSN" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=rfcitn dbname="BOM006.RFCITN" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=rfcost dbname="BOM006.RFCOST" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rfexplant dbname="BOM006.RFEXPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rfexdv dbname="BOM006.RFEXDV" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rfselt dbname="BOM006.RFSELT" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=rfllcn dbname="BOM006.RFLLCN" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rfgubn dbname="BOM006.RFGUBN" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=rfqty dbname="BOM006.RFQTY" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=rftqty dbname="BOM006.RFTQTY" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=rfcsto dbname="BOM006.RFCSTO" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=rfopitn dbname="BOM006.RFOPITN" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=rfempno dbname="BOM006.RFEMPNO" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=rfdate dbname="BOM006.RFDATE" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM006~".~"RFCMCD~",
+			~"PBPDM~".~"BOM006~".~"RFYYMM~",   
+         ~"PBPDM~".~"BOM006~".~"RFCUST~", 
+         ~"PBPDM~".~"BOM006~".~"RFPLANT~",   
+         ~"PBPDM~".~"BOM006~".~"RFDVSN~",   
+         ~"PBPDM~".~"BOM006~".~"RFCITN~",   
+         ~"PBPDM~".~"BOM006~".~"RFCOST~",
+			~"PBPDM~".~"BOM006~".~"RFEXPLANT~",   
+         ~"PBPDM~".~"BOM006~".~"RFEXDV~",   
+         ~"PBPDM~".~"BOM006~".~"RFSELT~",   
+         ~"PBPDM~".~"BOM006~".~"RFLLCN~",   
+         ~"PBPDM~".~"BOM006~".~"RFGUBN~",
+			~"PBPDM~".~"BOM006~".~"RFQTY~", 
+			~"PBPDM~".~"BOM006~".~"RFTQTY~",
+			~"PBPDM~".~"BOM006~".~"RFCSTO~",
+			~"PBPDM~".~"BOM006~".~"RFOPITN~",
+			~"PBPDM~".~"BOM006~".~"RFEMPNO~",
+			~"PBPDM~".~"BOM006~".~"RFDATE~"
+    FROM ~"PBPDM~".~"BOM006~"  
+   WHERE ( ~"PBPDM~".~"BOM006~".~"RFCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM006~".~"RFYYMM~" = :a_date ) AND  
+         ( ~"PBPDM~".~"BOM006~".~"RFLLCN~" = :a_lowlev ) AND  
+         ((~"PBPDM~".~"BOM006~".~"RFSELT~" = 'Y') OR  
+         (~"PBPDM~".~"BOM006~".~"RFGUBN~" = 'Y'))   
+ORDER BY ~"PBPDM~".~"BOM006~".~"RFYYMM~" ASC,   
+         ~"PBPDM~".~"BOM006~".~"RFCUST~" ASC, 
+         ~"PBPDM~".~"BOM006~".~"RFPLANT~" ASC, 
+         ~"PBPDM~".~"BOM006~".~"RFDVSN~" ASC,   
+         ~"PBPDM~".~"BOM006~".~"RFCITN~" ASC   
+" update="PBPDM.BOM006" updatewhere=0 updatekeyinplace=no arguments=(("a_date", string),("a_lowlev", number)) )
+text(band=header alignment="2" text="Rfyymm" border="0" color="0" x="5" y="4" height="64" width="219" html.valueishtml="0"  name=rfyymm_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rfcust" border="0" color="0" x="229" y="4" height="64" width="169" html.valueishtml="0"  name=rfcust_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rfdvsn" border="0" color="0" x="402" y="4" height="64" width="174" html.valueishtml="0"  name=rfdvsn_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rfcitn" border="0" color="0" x="581" y="4" height="64" width="439" html.valueishtml="0"  name=rfcitn_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rfcost" border="0" color="0" x="1024" y="4" height="64" width="329" html.valueishtml="0"  name=rfcost_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="0" color="0" x="5" y="4" height="76" width="192" format="[general]" html.valueishtml="0"  name=rfyymm visible="1" edit.limit=6 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="0" color="0" x="229" y="4" height="76" width="55" format="[general]" html.valueishtml="0"  name=rfcust visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=30 border="0" color="0" x="402" y="4" height="76" width="55" format="[general]" html.valueishtml="0"  name=rfdvsn visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=40 border="0" color="0" x="581" y="4" height="76" width="439" format="[general]" html.valueishtml="0"  name=rfcitn visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=50 border="0" color="0" x="1024" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=rfcost visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1367" y="8" height="64" width="224" format="[general]" html.valueishtml="0"  name=rfexdv visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="1605" y="8" height="64" width="178" format="[general]" html.valueishtml="0"  name=rfselt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="1806" y="8" height="64" width="160" format="[general]" html.valueishtml="0"  name=rfllcn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="1984" y="8" height="64" width="165" format="[general]" html.valueishtml="0"  name=rfgubn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="2153" y="8" height="64" width="283" format="[general]" html.valueishtml="0"  name=rfcmcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="2469" y="8" height="64" width="274" format="[general]" html.valueishtml="0"  name=rfexplant visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=60 border="0" color="0" x="2743" y="0" height="64" width="1161" format="[general]" html.valueishtml="0"  name=rfqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=70 border="0" color="0" x="3904" y="0" height="64" width="1161" format="[general]" html.valueishtml="0"  name=rftqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=80 border="0" color="0" x="5065" y="0" height="64" width="1161" format="[general]" html.valueishtml="0"  name=rfcsto visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=90 border="0" color="0" x="6226" y="0" height="64" width="407" format="[general]" html.valueishtml="0"  name=rfopitn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=100 border="0" color="0" x="6633" y="0" height="64" width="165" format="[general]" html.valueishtml="0"  name=rfempno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=110 border="0" color="0" x="6798" y="0" height="64" width="219" format="[general]" html.valueishtml="0"  name=rfdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

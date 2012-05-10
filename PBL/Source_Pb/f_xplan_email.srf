@@ -1,0 +1,38 @@
+$PBExportHeader$f_xplan_email.srf
+$PBExportComments$구매담당 E-Mail알기 (내외자, 구매담당)
+global type f_xplan_email from function_object
+end type
+
+forward prototypes
+global function string f_xplan_email (string ag_di, string ag_xplan)
+end prototypes
+
+global function string f_xplan_email (string ag_di, string ag_xplan);/*  구매담당 사번
+Success   E-mail
+Fail		 1
+*/
+String ls_email=""
+
+ag_di = Upper(Trim(ag_di))
+ag_xplan = Upper(Trim(ag_di))
+IF f_spacechk(ag_xplan) = -1 Then Return '1'
+
+IF ag_di = "D" Then
+	
+	
+	
+Else
+	SELECT COITNAMEE	INTO :ls_email
+	FROM PBCOMMON.DAC002
+	WHERE COMLTD = '01'  AND COGUBUN = 'INV060'
+	  AND COCODE = :ag_xplan
+	Using sqlca;
+	
+	IF f_spacechk(ls_email) = -1 Then
+		Return '1'			
+	Else
+		Return ls_email
+	End IF
+End IF
+end function
+

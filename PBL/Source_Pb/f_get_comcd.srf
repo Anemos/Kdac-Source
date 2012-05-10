@@ -1,0 +1,30 @@
+$PBExportHeader$f_get_comcd.srf
+$PBExportComments$대상품번고객사유무상chk(as_itno)
+global type f_get_comcd from function_object
+end type
+
+forward prototypes
+global function string f_get_comcd (string as_itno)
+end prototypes
+
+global function string f_get_comcd (string as_itno);//////////////////////////////////////////////////////////
+// 품번을 받아 고객사유상유무를  Return
+//
+// Return: True, False
+//////////////////////////////////////////////////////////
+
+long ll_cnt
+String ls_comcd
+
+SELECT Distinct "COMCD"
+INTO :ls_comcd
+	FROM "PBINV"."INV101"
+WHERE "COMLTD" = '01' AND	"ITNO" = :as_itno AND "CLS" ='10' Using SQLCA ;
+		
+If SQLCA.SQLCODE <> 0 Then
+	Return ''
+Else
+	Return ls_comcd
+End if
+end function
+

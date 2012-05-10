@@ -1,0 +1,38 @@
+$PBExportHeader$uf_get_workday.srf
+$PBExportComments$Return월별총작업일수(INT)  인자: (기준년월/지역/공장) mrp403기준
+global type uf_get_workday from function_object
+end type
+
+forward prototypes
+global function integer uf_get_workday (string as_xyear, string as_xplant, string as_div)
+end prototypes
+
+global function integer uf_get_workday (string as_xyear, string as_xplant, string as_div);//////////////////////////////////////////////////////////////
+//   PBINV.MRP403 TABLE 에서   HLDAYU = '' (근무일)을 조회  //
+//   Argument - string( 기준년월, 해당지역, 해당공장)       //
+//   Return   - int   (월간총작업일수)                      //
+//                                                          //
+//    2003.11.27                      -화니                 //
+//////////////////////////////////////////////////////////////
+
+Integer ln_count
+String  ls_date, ls_date1
+
+ls_date  = as_xyear + '00'
+ls_date1 = as_xyear + '32'
+
+SELECT COUNT(*) 
+  INTO :ln_count 
+FROM   PBINV.MRP403
+WHERE  XDATE > :ls_date    AND  XDATE < :ls_date1 AND 
+       COMLTD = '01'                              AND
+       XPLANT = :as_xplant AND  DIV  = :as_div        AND
+		 HLDAY  = ''         USING sqlca ;
+
+If sqlca.sqlcode <> 0 Then
+	Return 0
+End If 
+
+Return ln_count
+end function
+

@@ -1,0 +1,66 @@
+$PBExportHeader$f_pisr_datediff.srf
+$PBExportComments$시작시간과 종료시간의 차
+global type f_pisr_datediff from function_object
+end type
+
+forward prototypes
+global function long f_pisr_datediff (string fs_datepart, datetime fdt_startdate, datetime fdt_enddate, transaction ftrn_trans)
+end prototypes
+
+global function long f_pisr_datediff (string fs_datepart, datetime fdt_startdate, datetime fdt_enddate, transaction ftrn_trans);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_datediff
+//	Access		: reorder
+//	Arguments	: String		fs_datepart		
+//					: DateTime	fdt_startdate
+//					: DateTime	fdt_enddate
+//	Returns		: long 		ll_gap 
+//	Description	: 시작시간과 종료시간의 차
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh-sang
+// Coded Date	: 2002. 10. 02
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long		ll_gap
+
+CHOOSE CASE fs_datepart
+
+CASE 'Year'
+		SELECT DATEDIFF( Year, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'Month'
+		SELECT DATEDIFF( Month, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'Week'
+		SELECT DATEDIFF( Week, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'Day'
+		SELECT DATEDIFF( Day, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'Hour'
+		SELECT DATEDIFF( Hour, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'minute'
+		SELECT DATEDIFF( minute, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE 'second'
+		SELECT DATEDIFF( second, :fdt_startdate, :fdt_enddate ) 
+		  INTO :ll_gap
+		  FROM sysusers
+		 USING ftrn_trans	;
+CASE ELSE
+END CHOOSE
+
+Return ll_gap
+end function
+

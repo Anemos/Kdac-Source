@@ -1,0 +1,56 @@
+$PBExportHeader$f_imrp_ddate.srf
+$PBExportComments$운송중재고도착예정일(이른날짜) agu(xplant,div, itno)
+global type f_imrp_ddate from function_object
+end type
+
+forward prototypes
+global function string f_imrp_ddate (string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function string f_imrp_ddate (string as_xplant, string as_div, string as_itno);///////////////////////////////////////////////////////////////////////////////////////////
+// 운송중재고중 도착예정일이 가장 빠른날을 가져온다.
+// 
+///////////////////////////////////////////////////////////////////////////////////////////
+String ls_mindate1, ls_mindate2
+
+SELECT  MIN("PBPUR"."OPM105"."ESTDT") 
+  INTO :ls_mindate1
+ FROM "PBPUR"."OPM105",   
+		"PBPUR"."OPM106"  
+WHERE ( "PBPUR"."OPM105"."COMLTD" = "PBPUR"."OPM106"."COMLTD" ) and  
+		( "PBPUR"."OPM105"."COMLTD" = "PBPUR"."OPM106"."COMLTD" ) AND  
+		( "PBPUR"."OPM105"."BLNO" = "PBPUR"."OPM106"."BLNO" ) AND  
+		( "PBPUR"."OPM105"."STCD" = '' ) AND  
+		( "PBPUR"."OPM106"."XPLANT" = :as_xplant ) AND  
+		( "PBPUR"."OPM106"."DIV" = :as_div ) AND  
+		( "PBPUR"."OPM106"."ITNO" = :as_itno ) AND  
+		( "PBPUR"."OPM105"."COMLTD" = '01' ) using sqlca;
+			
+If SQLCA.SQLCODE <> 0 Then
+   ls_mindate1 = '99999999'
+End if
+ 
+SELECT MIN("PBPUR"."OPM106"."ESTDT")
+  INTO :ls_mindate2         
+ FROM "PBPUR"."OPM106"  
+WHERE ( "PBPUR"."OPM106"."COMLTD" = '01' )      AND
+		( "PBPUR"."OPM106"."XPLANT" = :as_xplant ) AND  
+		( "PBPUR"."OPM106"."DIV" = :as_div ) AND  
+		( "PBPUR"."OPM106"."ITNO" = :as_itno ) AND  
+		( TRIM("PBPUR"."OPM106"."BLNO") = '' ) using sqlca;
+
+If SQLCA.SQLCODE <> 0 Then
+	ls_mindate2 = '99999999'
+End if
+
+if ls_mindate1 = '99999999' and ls_mindate1 = ls_mindate2 then
+	return '0'
+else
+	if ls_mindate1 > ls_mindate2 then
+		return ls_mindate2
+	else
+		return ls_mindate1
+	end if
+End if
+end function
+

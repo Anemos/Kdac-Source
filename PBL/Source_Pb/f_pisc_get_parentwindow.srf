@@ -1,0 +1,55 @@
+$PBExportHeader$f_pisc_get_parentwindow.srf
+$PBExportComments$Control이 놓여있는 window를 반환
+global type f_pisc_get_parentwindow from function_object
+end type
+
+forward prototypes
+global function window f_pisc_get_parentwindow (powerobject ago_this)
+end prototypes
+
+global function window f_pisc_get_parentwindow (powerobject ago_this);///////////////////////////////////////////////////////////////////////////////
+//
+// Function:	f_get_parentwindow
+//
+//	Purpose:		현재의 Conrol로 부터 해당 control이 놓여 있는 window를 
+//					찾기위해 사용. 이런류의 함수는 direct name참조를 피하고,
+//					point참조를 하기 위해 사용된다.
+//					control의 경우 PARENT라는 reseved word를 사용하면 놓여있는 
+//					window를 참조할수 있으나 tab control위에서는 PARENT를 사용할수가
+//					없다. 보통 그때 PARENT WINDOW를 찾조하기 위해 사용된다
+//					ex) window		lw_parent
+//					    lw_parent = f_get_parentwindow( THIS )
+//
+// Parameters:
+//					ago_this			찾기를 시작할 window control
+//
+// Returns : [window]
+//	          null			실패
+//
+//	DATE			NAME			REVISION
+// ----------------------------------------------------------------------------
+//	1996-03-4	dmshin		작성
+//
+///////////////////////////////////////////////////////////////////////////////
+WINDOW 				lw_parent		//반환할 window
+POWEROBJECT			lgo_parent
+INTEGER				li_loop_count = 1
+INTEGER				li_loop_max = 6	//어떠한 경우라도 Looping에 따지지 않기 위해
+
+//Get Parent
+lgo_parent = ago_this.GetParent()
+DO UNTIL li_loop_count >= li_loop_max
+	IF TypeOf(lgo_parent) = window!  THEN 
+		//Window Type을 발견하면 끝냄
+		lw_parent = lgo_parent
+		li_loop_count = li_loop_max
+	ELSE
+		//window type이 아니면 다음으로 
+		lgo_parent = lgo_parent.GetParent()
+		li_loop_count ++
+	END IF
+LOOP
+
+RETURN lw_parent
+end function
+

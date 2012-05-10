@@ -1,0 +1,307 @@
+$PBExportHeader$f_wip001_crud_logic.srf
+$PBExportComments$자재-재공 현재월 데이타 인터페이스
+global type f_wip001_crud_logic from function_object
+end type
+
+forward prototypes
+global function integer f_wip001_crud_logic (string ag_gubun, string ag_comltd, string ag_sliptype, string ag_srno, string ag_srno1, string ag_srno2, string ag_xplant, string ag_div, string ag_itno, string ag_cls, string ag_srce, decimal ag_convqty, string ag_xuse, string ag_rtngub, string ag_dept, string ag_vsrno, decimal ag_preqty, decimal ag_postqty, string ag_predate, string ag_postdate, integer ag_tramt, transaction ag_transaction, ref string ag_message)
+end prototypes
+
+global function integer f_wip001_crud_logic (string ag_gubun, string ag_comltd, string ag_sliptype, string ag_srno, string ag_srno1, string ag_srno2, string ag_xplant, string ag_div, string ag_itno, string ag_cls, string ag_srce, decimal ag_convqty, string ag_xuse, string ag_rtngub, string ag_dept, string ag_vsrno, decimal ag_preqty, decimal ag_postqty, string ag_predate, string ag_postdate, integer ag_tramt, transaction ag_transaction, ref string ag_message);//*********************************************************************
+//* Function Description : 재공 자재 이월전 인터페이스
+//* ag_gubun 		:  'C' = 입력, 'U' = 수정, 'D' = 삭제
+//* ag_comltd 		: 회사구분
+//* ag_sliptype 	: 전표구분
+//* ag_srno			: 전표번호
+//* ag_srno1 		: 전표번호1
+//* ag_srno2		: 전표번호2
+//* ag_xpant, ag_div, ag_itno, ag_cls, ag_srce, ag_convqty, ag_xuse, ag_rtngub, ag_dept,ag_vsrno
+//* ag_preqty		: 변경전 Tqty4 수량
+//* ag_postqty		: 변경후 Tqty4 수량
+//* ag_predate		: 변경전 Tdte4 날짜
+//* ag_postdate	: 변경후 Tdte4 날짜
+//* ag_tramt		: 금액
+//*********************************************************************
+
+string ls_plant, ls_dvsn, ls_itno, ls_vsrno, ls_cls, ls_srce
+string ls_xuse, ls_rtngub, ls_slno, ls_sqlerr, ls_nuse, ls_tdte4
+integer li_rtn, li_sqlcode
+long ll_chkcnt
+
+select xplant, div, itno, vsrno, cls, srce, xuse, rtngub, slno, tdte4
+into :ls_plant,:ls_dvsn,:ls_itno,:ls_vsrno,:ls_cls,:ls_srce, :ls_xuse, :ls_rtngub, :ls_slno, :ls_tdte4
+from pbinv.inv401
+where comltd = '01' and
+      sliptype = :ag_sliptype and
+      srno = :ag_srno and
+      srno1 = :ag_srno1 and
+      srno2 = :ag_srno2 using ag_transaction;
+
+if ag_transaction.sqlcode <> 0 and ag_gubun <> 'D' then
+	return 0
+end if
+
+if ag_xuse = '06' then //용도가 기타인 경우
+	return 0
+end if
+
+if ag_cls = '10' or ag_cls = '30' or ag_cls = '40' or ag_cls = '50' then
+	//pass
+else
+	return 0
+end if
+
+Choose Case ag_gubun
+	Case 'C'
+		choose case ag_sliptype
+			case 'IS','IP','RS'
+				if ls_xuse = '04' then
+					if ag_sliptype = 'RS' then
+						if ls_rtngub = '02' then
+							return 0
+						else
+							if ls_cls = '10' and ls_srce = '03' then
+								// Call f_wip_input_update
+								li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+								// Call f_wip_line_use_update
+								li_rtn = f_wip001_line_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							else
+								// Call f_wip_input_update
+								li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						end if
+					else
+						if ls_cls = '10' and ls_srce = '03' then
+							// Call f_wip_input_update
+							li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+							// Call f_wip_line_use_update
+							li_rtn = f_wip001_line_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						else
+							// Call f_wip_input_update
+							li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+				elseif ls_xuse = '07' then
+					// 원자재 유상불출은 재공에서 제외, 단 재공품인 경우에는 사용내역생성. 투입에서 제외
+					if ls_cls = '10' and ls_srce = '03' then
+						if ag_sliptype = 'RS' then
+							if ls_rtngub = '02' then
+								return 0
+							else
+								li_rtn = f_wip001_line_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						else
+							li_rtn = f_wip001_line_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+					// 유상업체재공을 위한 로직 추가 ( 2007.09 )
+					li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+				else
+					// Call f_wip_input_update
+					li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				end if
+			case 'RM','SM'
+				// Call f_wip_line_use_update
+				li_rtn = f_wip001_line_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+				if li_rtn = -1 then return -1
+			case 'SA','SR'
+				if ls_cls = '10' and ( ls_srce = '01' or ls_srce = '02' ) then
+					// Call f_wip_input_update
+					li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				else
+					return 0
+				end if
+			case 'RP', 'SS'
+				if mid(ls_vsrno,1,1) <> 'D' or (ag_sliptype = 'SS' and ls_srce <> '04') then
+					return 0
+				end if
+				if ls_cls = '50' and ag_sliptype = 'RP' then
+					if ls_plant = 'D' and (ls_dvsn = 'A' or ls_dvsn = 'V') then
+						//pass
+					else
+						if ls_plant = 'B' or ls_plant = 'K' then
+							SELECT NUSE INTO :ls_nuse
+							FROM PBINV.INV101
+							WHERE Comltd = '01' AND XPLANT = :ls_plant AND 
+									DIV = :ls_dvsn AND ITNO = :ls_itno
+							using ag_transaction;
+							
+							if ls_nuse <> 'Y' then
+								// Call f_wip_input_update
+								li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						else
+							// Call f_wip_input_update
+							li_rtn = f_wip001_input_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+				end if
+				// 유상사급업체 품목 추가 && BOM 데이타 존제 체크( 2007.09 )
+				// BOM001 CHECK
+				select count(*) into :ll_chkcnt from pbpdm.bom001
+					where pcmcd = :ag_comltd AND plant = :ls_plant AND
+							pdvsn = :ls_dvsn AND ppitn = :ls_itno AND
+							(( pedte = ' '  and pedtm <= :ls_tdte4 ) or
+							( pedte <> ' ' and pedtm <= :ls_tdte4 and pedte >= :ls_tdte4 ))
+					using ag_transaction;
+				if ll_chkcnt > 0 then
+					// Call f_wip_vendor_use_update
+					li_rtn = f_wip001_vendor_use_update(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				end if
+			case else
+				return 0
+		end choose
+	Case 'U'
+		if f_wip001_use_replace(ag_comltd, ag_sliptype, ag_srno, ag_srno1, ag_srno2, ls_plant, ls_dvsn , &
+				ls_slno, ls_itno, ls_xuse, ls_rtngub, ls_vsrno, ag_predate, ag_postdate, ag_preqty, ag_postqty, &
+				ag_transaction,ag_message) = 'N' then
+			return -1
+		end if
+	Case 'D'
+		choose case ag_sliptype
+			case 'IS','IP','RS'
+				if ls_xuse = '04' then
+					if ag_sliptype = 'RS' then
+						if ls_rtngub = '02' then
+							return 0
+						else
+							if ls_cls = '10' and ls_srce = '03' then
+								// 입력내역 삭제
+								li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+									ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt, &
+									ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+								// 사용내역삭제
+								li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							else
+								// 입력내역 삭제
+								li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+									ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt, &
+									ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						end if
+					else
+						if ls_cls = '10' and ls_srce = '03' then
+							// 입력내역 삭제
+							li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+								ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt, &
+								ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+							// 사용내역삭제
+							li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						else
+							// 입력내역 삭제
+							li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+								ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt, &
+								ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+				elseif ls_xuse = '07' then
+					// 원자재 유상불출은 재공에서 제외, 단 재공품인 경우에는 사용내역생성. 투입에서 제외
+					if ls_cls = '10' and ls_srce = '03' then
+						if ag_sliptype = 'RS' then
+							if ls_rtngub = '02' then
+								return 0
+							else
+								// 사용내역삭제
+								li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						else
+							// 사용내역삭제
+							li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+					// 유상사급업체 재공 적용( 2007.09 )
+					// 입력내역 삭제
+					li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+						ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt, &
+						ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				else
+					// 입력내역 삭제
+					li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+						ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				end if
+			case 'RM','SM'
+				// 사용내역삭제
+				li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+				if li_rtn = -1 then return -1
+			case 'SA','SR'
+				if ls_cls = '10' and ( ls_srce = '01' or ls_srce = '02' ) then
+					// 입력내역 삭제
+					li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+						ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				else
+					return 0
+				end if
+			case 'RP', 'SS'
+				if mid(ls_vsrno,1,1) <> 'D' or (ag_sliptype = 'SS' and ls_srce <> '04') then
+					return 0
+				end if
+				if ls_cls = '50' and ag_sliptype = 'RP' then
+					if ls_plant = 'D' and (ls_dvsn = 'A' or ls_dvsn = 'V') then
+						//pass
+					else
+						if ls_plant = 'B' or ls_plant = 'K' then
+							SELECT NUSE INTO :ls_nuse
+							FROM PBINV.INV101
+							WHERE Comltd = '01' AND XPLANT = :ls_plant AND 
+									DIV = :ls_dvsn AND ITNO = :ls_itno
+							using ag_transaction;
+							
+							if ls_nuse <> 'Y' then
+								// 입력내역 삭제
+								li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+									ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt,ag_transaction,ag_message)
+								if li_rtn = -1 then return -1
+							end if
+						else
+							// 입력내역 삭제
+							li_rtn = f_wip001_input_delete(ag_comltd,ag_sliptype,ag_xplant,ag_div, ag_itno,ag_cls, &
+								ag_srce,ag_convqty,ag_xuse,ag_rtngub,ag_dept,ag_vsrno,ag_predate,ag_preqty,ag_tramt,ag_transaction,ag_message)
+							if li_rtn = -1 then return -1
+						end if
+					end if
+				end if
+				// 유상사급업체 품목 추가 && BOM 데이타 존제 체크( 2007.09 )
+				// BOM001 CHECK
+				select count(*) into :ll_chkcnt from pbpdm.bom001
+					where pcmcd = :ag_comltd AND plant = :ag_xplant AND
+							pdvsn = :ag_div AND ppitn = :ag_itno AND
+							(( pedte = ' '  and pedtm <= :ag_predate ) or
+							( pedte <> ' ' and pedtm <= :ag_predate and pedte >= :ag_predate ))
+					using ag_transaction;
+				if ll_chkcnt > 0 then
+					// 사용내역삭제
+					li_rtn = f_wip001_use_delete(ag_comltd,ag_sliptype,ag_srno,ag_srno1,ag_srno2,ag_transaction,ag_message)
+					if li_rtn = -1 then return -1
+				end if
+			case else
+				return 0
+		end choose
+End Choose
+
+return 0
+end function
+

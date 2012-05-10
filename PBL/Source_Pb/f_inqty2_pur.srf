@@ -1,0 +1,53 @@
+$PBExportHeader$f_inqty2_pur.srf
+$PBExportComments$입고량2 건별(발주전산번호,분할발주횟수)
+global type f_inqty2_pur from function_object
+end type
+
+forward prototypes
+global function decimal f_inqty2_pur (string ag_s_srno, string ag_s_srno1)
+end prototypes
+
+global function decimal f_inqty2_pur (string ag_s_srno, string ag_s_srno1);//////////////////////////////////////////////////
+//	입고량
+//			argument: 발주전산번호 , 분할발주횟수
+//
+//			사용: 거래명세표발행(w_pur420u) , 취소발주및 재발주(w_pur419u)
+//////////////////////////////////////////////////
+
+dec{2} ln_inqty
+
+//납품 DB : 2003.06.19
+dec{2} ln_dckqt
+
+SELECT Coalesce(sum("PBINV"."INV201"."DCKQT")  , 0)
+ INTO :ln_dckqt
+ FROM "PBINV"."INV201"  
+WHERE ( "PBINV"."INV201"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV201"."SRNO" = :ag_s_srno ) AND  
+		( "PBINV"."INV201"."SRNO1" = :ag_s_srno1 ) Using sqlca ;
+
+IF sqlca.sqlcode <> 0 or isnull(ln_dckqt) Then
+	ln_dckqt = 0
+End If
+
+//자재 Trans DB
+SELECT Coalesce(sum("PBINV"."INV401"."TQTY4")  , 0)
+ INTO :ln_inqty  
+ FROM "PBINV"."INV401"  
+WHERE ( "PBINV"."INV401"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV401"."SLIPTYPE" IN ('RP','DP') ) AND  
+		( "PBINV"."INV401"."SRNO" = :ag_s_srno ) AND  
+		( "PBINV"."INV401"."SRNO1" = :ag_s_srno1 ) AND
+		( "PBINV"."INV401"."KBCD" <> 'K' ) AND
+		( "PBINV"."INV401"."RTNGUB" <> 'K' )  Using sqlca ;
+
+IF sqlca.sqlcode <> 0 or isnull(ln_inqty) Then
+	ln_inqty = 0
+End If
+
+//Return ln_inqty
+
+Return ln_inqty + ln_dckqt
+
+end function
+

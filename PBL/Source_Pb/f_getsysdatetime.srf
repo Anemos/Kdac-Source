@@ -1,0 +1,26 @@
+$PBExportHeader$f_getsysdatetime.srf
+$PBExportComments$서버의 시스템 일자,시간을 가져온다.
+global type f_getsysdatetime from function_object
+end type
+
+forward prototypes
+global function datetime f_getsysdatetime ()
+end prototypes
+
+global function datetime f_getsysdatetime ();
+//------------------------------------------------------------------------------
+// 함수명		:	f_getsysdatetime
+// 처리개요		:	서버의 시스템 일자를 가져온다.
+// 사용인수		:	
+// 반환값		:	DateTime형식의 시스템일자
+//------------------------------------------------------------------------------
+
+DateTime	ldt_sysdatetime
+
+select top 1 getdate()
+  into :ldt_sysdatetime
+  from sysusers USING SQLPIS;
+
+Return ldt_sysdatetime
+end function
+

@@ -1,0 +1,108 @@
+$PBExportHeader$f_inv401_rf_insert.srf
+$PBExportComments$외자입고(전수합격시)
+global type f_inv401_rf_insert from function_object
+end type
+
+forward prototypes
+global function integer f_inv401_rf_insert (string as_srno, string as_srno1, string as_srno2, string as_plant, string as_div, string as_itno, string as_cls, decimal ad_qty4, decimal ad_qty3, decimal ad_dcqt, decimal ad_cost, long al_amt, string as_tdte3, string as_tdte4, string as_slno, decimal ad_exch, string as_curr, string as_blno, string as_purno, string as_vndr, string as_ysrno, string as_usrid, string as_inptdt, ref string as_error, decimal ad_fobamt)
+end prototypes
+
+global function integer f_inv401_rf_insert (string as_srno, string as_srno1, string as_srno2, string as_plant, string as_div, string as_itno, string as_cls, decimal ad_qty4, decimal ad_qty3, decimal ad_dcqt, decimal ad_cost, long al_amt, string as_tdte3, string as_tdte4, string as_slno, decimal ad_exch, string as_curr, string as_blno, string as_purno, string as_vndr, string as_ysrno, string as_usrid, string as_inptdt, ref string as_error, decimal ad_fobamt);String ls_spec, ls_type, ls_itnm, ls_cdiv, ls_vdnm
+String ls_key, ls_sqltext, ls_pdcd, ls_unit, ls_srce, ls_plan, ls_mlan
+Int    li_sqlcode
+Long	 ll_Amt, ll_IntAmt
+Dec{1} ld_UQty, ld_RQty,ld_SQty,ld_IntQty
+Dec{2} ld_CostAv, ld_CostLs
+ 
+//품목Master db read(품번)
+SELECT "PBINV"."INV002"."ITNM", "PBINV"."INV002"."SPEC", "PBINV"."INV002"."XTYPE"
+  INTO :ls_itnm, :ls_spec, :ls_type
+FROM "PBINV"."INV002" 
+WHERE ( "PBINV"."INV002"."COMLTD" = '01' )     AND
+		( "PBINV"."INV002"."ITNO"   = :as_itno)  using sqlca ;
+
+// 품목재고 db read(지역/공장/품번)
+SELECT "PDCD",  "SRCE",  "XUNIT", "XPLAN", "MLAN", 
+       "OHUQTY", "OHRQTY","OHSQTY","OHAMT", "COSTAV", "COSTLS","INTQTY", "INTAMT"   
+  INTO :ls_pdcd,  :ls_srce,  :ls_unit,  :ls_plan,  :ls_mlan,
+       :ld_UQty, :ld_RQty, :ld_SQty, :ll_Amt, :ld_CostAv, :ld_CostLs, :ld_intQty, :ll_intAmt
+FROM "PBINV"."INV101" 
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND ( "PBINV"."INV101"."XPLANT" = :as_plant) AND
+		( "PBINV"."INV101"."DIV"    = :as_div) AND ( "PBINV"."INV101"."ITNO"   = :as_itno)  using sqlca ;
+
+// 원가사업장
+ls_cdiv = f_yeo_get_accdiv(as_plant, as_div, ls_pdcd)
+
+// 업체명칭
+ls_vdnm = f_yeo_vdnm_pur(as_vndr,'S','I')
+
+// 입고 trans 생성
+insert into "PBINV"."INV401"    
+		 ( "COMLTD",      "SLIPTYPE",    "SRNO",        "SRNO1",       "SRNO2",      "XPLANT",  
+			"DIV",         "COSTDIV",     "SLNO",        "ITNO",        "RVNO",       "ITNM",   
+			"SPEC",        "XTYPE",       "XUNIT",       "CLS",         "SRCE",       "PDCD",
+			"XPLAN",       "MLAN",        "RQNO",        "NQC",         "KBCD",       "DUDT",       "PURNO",   
+			"VSRNO",       "VNDR",        "VNDNM",       "XPAY",        "OTXCD",      "LCNO",
+			"LCDT",        "DEPT",        "RTNGUB",      "XUSE",        "RSVSRNO",    "ORNO",   
+			"MCHNO",       "EXFR",        "EXTO",        "RQDIV",       "BLNO",       "EXCH",
+			"CURR",        "FOBAMT",      "TDTE1",       "TDTE2",       "TDTE3",      "TDTE4",
+			"TDTE5",       "TDTE6",       "TQTY1",       "TQTY2",       "TQTY3",      "TQTY4",
+			"XCOST",       "TRAMT",       "TSHSL",       "RTCOM",       "RTQTY",      "SSSRNO",
+			"SSCOM",       "RFCD",        "CHKCD",       "TSAMT",       "TFILL",      "TCTTL",      "DSAG",
+			"MAKER",       "PJTNO",       "INVSTCD",     "INVEST",      "EXTD",       "INPTID",     "INPTDT",
+			"UPDTID",      "UPDTDT",      "IPADDR",      "MACADDR" )  
+VALUES ( '01',          'RF',          :as_srno,      :as_srno1,     :as_srno2,    :as_plant, 
+			:as_div,       :ls_cdiv,      :as_slno,      :as_itno,      ' ',          :ls_itnm,
+			:ls_spec,      :ls_type,      :ls_unit,      :as_cls,       :ls_srce,     :ls_pdcd, 
+			:ls_plan,      :ls_mlan,      ' ',           ' ',           ' ',          ' ',          :as_purno,   
+			' ',           :as_vndr,      :ls_vdnm,      ' ',           ' ',          ' ',
+			' ',           ' ',           ' ',           ' ',           ' ',          ' ',   
+			' ',           '  ',          ' ',           ' ',           :as_blno,     :ad_exch,
+			:as_curr,      :ad_fobamt,    ' ',           ' ',           :as_tdte4,    :as_tdte4,
+			' ',           ' ',           0,             0,             :ad_dcqt,     :ad_qty4,
+			:ad_cost,      :al_amt,       ' ',           ' ',           0,            ' ',
+			' ',           ' ',           '1',           0,             :as_ysrno,          0,           ' ',
+			' ',           ' ',           ' ',           ' ',           ' ',          :as_usrid,  :as_inptdt,
+			:as_usrid,           ' ',           ' ',           ' '  )  using sqlca;
+
+IF Sqlca.SqlCode = 0 THEN
+	
+	// Inv101 Update
+	
+	ld_intqty = ld_intqty + ad_qty4  // 입고수량(+) 
+	ld_Uqty   = ld_Uqty + ad_qty4    // 현재고수량 (+)
+	
+	
+	ll_intamt = ll_intamt + al_amt  // 입고금액(+) 
+	ll_amt    = ll_amt + al_amt     // 현재고금액 (+)
+	
+	ld_costls = ad_cost             // 최종입고단가 계산
+	
+	if ll_amt > 0 and (ld_uqty + ld_rqty + ld_sqty) > 0 then
+		ld_costav = truncate(ll_amt / (ld_uqty + ld_rqty + ld_sqty),2)    // 이동평균단가 계산
+	end if
+		
+	UPDATE "PBINV"."INV101"
+		SET "OHAMT"  = :ll_Amt,      "OHUQTY" = :ld_uqty,          // 현재고 수량 & 금액
+			 "INTQTY" = :ld_intQty,   "INTAMT" = :ll_intAmt,        // 입고 수량 & 금액
+			 "COSTAV" = :ld_costav,   "COSTLS" = :ld_costls,        // 이동평균단가 & 최종입고단가
+			 "ILUDT"  = :g_s_date     
+	WHERE "COMLTD" = '01' AND "XPLANT" = :as_plant AND "DIV" = :as_div AND "ITNO" = :as_Itno	Using	SQLCA ;
+	
+	IF Sqlca.SqlCode <> 0 THEN
+		as_error = "inv101 update error" 
+		Return -1
+	End if
+		
+	// Blno Update
+	f_yeo_blno_update(as_blno)	
+	
+else
+	as_error = "inv401 insert error" 
+	RETURN -1 
+
+END IF
+
+return 1 
+end function
+

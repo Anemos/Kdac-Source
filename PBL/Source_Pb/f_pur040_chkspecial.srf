@@ -1,0 +1,29 @@
+$PBExportHeader$f_pur040_chkspecial.srf
+$PBExportComments$특수문자및공백체크(한글허용)
+global type f_pur040_chkspecial from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_chkspecial (string as_string)
+end prototypes
+
+global function integer f_pur040_chkspecial (string as_string);//스트링 사이에 공백이나 특수문자 있으면 안됨 => 숫자,영문대문자,한글
+integer  ll_num
+char lc_chk
+//asc 47 '/'이하,  58 ~ 64, 91 ~ 161
+
+
+for ll_num = 1  to len(trim(as_string))
+	lc_chk = mid(as_string,ll_num,1)
+	//messagebox(string(ll_num),string(asc(lc_chk)))
+	if isnull(lc_chk) &
+	or asc(lc_chk) <= 47 & 
+	or (asc(lc_chk) >= 58 and asc(lc_chk) <= 64) &
+	or (asc(lc_chk) >= 91 and asc(lc_chk) < 161) then
+		return -1
+	end if
+next
+
+return 0
+end function
+

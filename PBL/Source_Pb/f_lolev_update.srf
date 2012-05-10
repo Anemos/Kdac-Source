@@ -1,0 +1,90 @@
+$PBExportHeader$f_lolev_update.srf
+$PBExportComments$Item Master Lolev Update ÇÔ¼ö
+global type f_lolev_update from function_object
+end type
+
+forward prototypes
+global subroutine f_lolev_update (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global subroutine f_lolev_update (string a_plant, string a_div, string a_itno);string l_s_div , l_s_pitno , l_s_citno , l_s_itno, l_s_chkitno[50,300]
+integer i , j , k , p , a_chk , l_s_lowlevel , a_level
+
+i = 0 
+j = 0 
+k = 0 
+p = 0
+
+l_s_itno = trim(a_itno)
+l_s_div   = trim(a_div)
+
+select lolevel into:a_level from PBINV.INV002
+	   where  itno = :l_s_itno using sqlca;
+
+declare bomchk_cur cursor for 
+  select "PBPDM"."BOM001"."PCITN" from "PBPDM"."BOM001"
+     where 	"PBPDM"."BOM001"."PLANT" = :a_plant AND
+	  			"PBPDM"."BOM001"."PDVSN" = :a_div AND
+	  			"PBPDM"."BOM001"."PPITN" = :l_s_itno AND  
+           ( ("PBPDM"."BOM001"."PEDTM" <= "PBPDM"."BOM001"."PEDTE" AND "PBPDM"."BOM001"."PEDTE" <> ' ' AND "PBPDM"."BOM001"."PEDTE" >= :g_s_date )
+              OR  
+           ( "PBPDM"."BOM001"."PEDTE" = ' ' AND "PBPDM"."BOM001"."PEDTM" <= :g_s_date ))
+     using SQLCA ;
+
+open bomchk_cur ;
+a_level = a_level + 1
+do while true
+   fetch bomchk_cur into :l_s_citno ;
+   if sqlca.sqlcode <> 0 then
+   	exit
+   end if
+	l_s_citno = trim(l_s_citno)
+	select lolevel into:l_s_lowlevel from PBINV.INV002
+	   where itno = :l_s_citno using sqlca;
+	if l_s_lowlevel < a_level then
+	    update PBINV.INV002 set lolevel = :a_level 
+		 	where itno = :l_s_citno  using sqlca;
+		 k = k + 1 
+       l_s_chkitno[1,k] = trim(l_s_citno)
+	end if
+loop
+close bomchk_cur ;
+
+if k = 0 then 
+	return
+end if
+
+for i = 1 to 50
+  a_level = a_level + 1	
+  for j = 1 to k
+      l_s_itno = l_s_chkitno[i,j]
+		open bomchk_cur ;
+      do while true
+        fetch bomchk_cur into: l_s_citno;
+		  if sqlca.sqlcode <> 0 then			  
+           exit
+        end if
+        l_s_citno = trim(l_s_citno)
+		  select lolevel into:l_s_lowlevel from PBINV.INV002
+		  where itno = :l_s_citno using sqlca;
+		  if l_s_lowlevel < a_level then
+			  update PBINV.INV002 set lolevel = :a_level  
+			  		where itno = :l_s_citno  using sqlca;
+			  p = p + 1
+           l_s_chkitno[i+1,p] = trim(l_s_citno)
+		  end if
+		loop
+		close bomchk_cur;
+  next 
+  if p = 0 then
+	  return
+  end if
+  k = p
+  p = 0
+next	
+return	
+	
+	
+	
+end subroutine
+

@@ -1,0 +1,41 @@
+$PBExportHeader$f_pisc_get_date_lastday_of_month.srf
+$PBExportComments$Get last day of month(arg int fi_month, int fi_year, Return integer)
+global type f_pisc_get_date_lastday_of_month from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year, ref transaction rt_transaction)
+end prototypes
+
+global function string f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year, ref transaction rt_transaction);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_lastday_of_month
+//	Access		: public
+//	Arguments	: Int	fi_month					Month(1-12)
+//					  int	fi_year					Year(1900- )
+//	Returns		: int	li_lastday_of_month	해당월의 마지막 일자
+//	Description	: 윤달의 고려하여 기준월의 마지막 일자를 구한다.(기준월의 일수)
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 29
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Int		li_lastday_of_month
+String	ls_month, ls_lastday
+
+ls_month = String(fi_year) + "." + Right('0' + String(fi_month), 2)
+
+Select Top 1 Convert(Char(8), DateAdd(DD, -1, DateAdd(MM, 1, Convert(DateTime, :ls_month + '.01'))), 112)
+  Into :ls_lastday
+  From sysusers
+Using rt_transaction;
+
+
+//li_lastday_of_month = Integer(Right(ls_lastday, 2))
+//Return the number of days in the relevant month
+
+//Return li_lastday_of_month
+
+Return ls_lastday
+
+end function
+

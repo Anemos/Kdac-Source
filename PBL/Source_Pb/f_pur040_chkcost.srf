@@ -1,0 +1,27 @@
+$PBExportHeader$f_pur040_chkcost.srf
+$PBExportComments$단가유무체크(업체,품번,단가:오류=-1)
+global type f_pur040_chkcost from function_object
+end type
+
+forward prototypes
+global function long f_pur040_chkcost (string as_vsrno, string as_itno, decimal ad_cost)
+end prototypes
+
+global function long f_pur040_chkcost (string as_vsrno, string as_itno, decimal ad_cost);
+long ll_cnt
+
+SELECT count(*) 
+INTO :ll_cnt  
+FROM "PBPUR"."PUR104"  
+WHERE ( "PBPUR"."PUR104"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR104"."VSRNO" = :as_vsrno ) AND  
+		( "PBPUR"."PUR104"."ITNO" = :as_itno ) AND  
+		( "PBPUR"."PUR104"."DCOST" = :ad_cost )   ;
+		
+if isnull(ll_cnt) or ll_cnt = 0 then
+	return -1
+else
+	return 0
+end if
+end function
+

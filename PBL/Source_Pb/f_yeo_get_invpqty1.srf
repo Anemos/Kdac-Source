@@ -1,0 +1,21 @@
+$PBExportHeader$f_yeo_get_invpqty1.srf
+$PBExportComments$구매전산번호(구매DB)를 이용한 구매요구량 산출
+global type f_yeo_get_invpqty1 from function_object
+end type
+
+forward prototypes
+global function decimal f_yeo_get_invpqty1 (string a_srno)
+end prototypes
+
+global function decimal f_yeo_get_invpqty1 (string a_srno);Dec{1} ld_rqty
+
+SELECT ("PBPUR"."PUR302"."RQTY" - "PBPUR"."PUR302"."RCNL")  INTO :ld_rqty
+  FROM  "PBPUR"."PUR302"		
+WHERE "PBPUR"."PUR302"."COMLTD" = '01' AND "PBPUR"."PUR302"."SRNO" = :a_srno using sqlca ;
+if isnull(ld_rqty) then
+	ld_rqty = 0
+end if
+// 구매요구량 return
+return ld_rqty
+end function
+

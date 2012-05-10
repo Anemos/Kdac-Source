@@ -1,0 +1,21 @@
+$PBExportHeader$f_pism_getemplabtac.srf
+global type f_pism_getemplabtac from function_object
+end type
+
+forward prototypes
+global function string f_pism_getemplabtac (string as_wday, string as_empno, ref string empworkcenter)
+end prototypes
+
+global function string f_pism_getemplabtac (string as_wday, string as_empno, ref string empworkcenter);String ls_DNGbn 
+
+  SELECT Top 1 TMHLABTAC.DGDNGBR,
+  			TMHLABTAC.DGDEPTE 
+    INTO :ls_DNGbn, :empWorkCenter 
+    FROM TMHLABTAC  
+   WHERE ( TMHLABTAC.DGEMPNO = :as_empNo ) AND  
+         ( TMHLABTAC.DGDAY = :as_wday ) using SqlPIS ;
+//         ( TMHLABTAC.DGDEPTE = :astr_mh.wc ) using SqlPIS ;
+
+Return ls_DNGbn 
+end function
+

@@ -1,0 +1,47 @@
+$PBExportHeader$d_aut322u_24.srd
+$PBExportComments$HWµî·Ï/»èÁ¦ History
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=comltd dbname="FIA030.COMLTD" )
+ column=(type=char(10) update=yes updatewhereclause=yes key=yes name=ficode dbname="FIA030.FICODE" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=fibudt dbname="FIA030.FIBUDT" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=ficucode dbname="FIA030.FICUCODE" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=fimodel dbname="FIA030.FIMODEL" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=ficoname dbname="FIA030.FICONAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=fidiv dbname="FIA030.FIDIV" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=fiusdept dbname="FIA030.FIUSDEPT" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=fiopdept dbname="FIA030.FIOPDEPT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=fiempno dbname="FIA030.FIEMPNO" )
+ retrieve="  SELECT A.~"COMLTD~",   
+         A.~"FICODE~",    
+         A.~"FIBUDT~",   
+         A.~"FICUCODE~",   
+         A.~"FIMODEL~",   
+         A.~"FICONAME~",   
+         A.~"FIDIV~",   
+         A.~"FIUSDEPT~",    
+         A.~"FIOPDEPT~",
+         A.~"FIEMPNO~"
+    FROM PBFIA.FIA030 AS A
+WHERE A.COMLTD = '01' AND
+		SUBSTR(A.FICODE,1,4) IN ('G801','G802') AND
+		A.FIBUDT BETWEEN :as_fchgdt AND :as_tchgdt  AND
+		A.FIUSDEPT LIKE :as_dept
+" update="PBFIA.FIA030" updatewhere=1 updatekeyinplace=no arguments=(("as_fchgdt", string),("as_tchgdt", string),("as_dept", string)) )
+text(band=header alignment="2" text="ÀÚ»ê¹øÈ£" border="2" color="16777215" x="9" y="0" height="76" width="288" html.valueishtml="0"  name=ficode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚ»êÃëµæÀÏ" border="2" color="16777215" x="306" y="0" height="76" width="302" html.valueishtml="0"  name=fibudt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àåºñ¹øÈ£" border="2" color="16777215" x="617" y="0" height="76" width="256" html.valueishtml="0"  name=fimodel_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ëºÎ¼­" border="2" color="16777215" x="1294" y="0" height="76" width="430" html.valueishtml="0"  name=fiusdept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸íÄª" border="2" color="16777215" x="882" y="0" height="76" width="402" html.valueishtml="0"  name=ficoname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="33554432" x="9" y="0" height="76" width="288" format="[general]" html.valueishtml="0"  name=ficode visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="2" color="33554432" x="306" y="0" height="76" width="302" format="[general]" html.valueishtml="0"  name=fibudt visible="1" editmask.mask="####/##/##" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="2" color="33554432" x="617" y="0" height="76" width="256" format="[general]" html.valueishtml="0"  name=fimodel visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="2" color="33554432" x="882" y="0" height="76" width="402" format="[general]" html.valueishtml="0"  name=ficoname visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="2" color="33554432" x="1294" y="0" height="76" width="430" format="[general]" html.valueishtml="0"  name=fiusdept visible="1" dddw.name=dddw_com000_dept dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

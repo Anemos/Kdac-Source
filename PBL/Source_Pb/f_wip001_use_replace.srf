@@ -1,0 +1,139 @@
+$PBExportHeader$f_wip001_use_replace.srf
+$PBExportComments$재공 사용량 수정(WIP001)
+global type f_wip001_use_replace from function_object
+end type
+
+forward prototypes
+global function string f_wip001_use_replace (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2, string a_xplant, string a_div, string a_slno, string a_itno, string a_xuse, string a_rtngub, string a_dept, string a_tdte4_b, string a_tdte4_a, decimal a_tqty4_b, decimal a_tqty4_a, transaction ag_transaction, ref string ag_message)
+end prototypes
+
+global function string f_wip001_use_replace (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2, string a_xplant, string a_div, string a_slno, string a_itno, string a_xuse, string a_rtngub, string a_dept, string a_tdte4_b, string a_tdte4_a, decimal a_tqty4_b, decimal a_tqty4_a, transaction ag_transaction, ref string ag_message);//***********************************************************************************
+//
+// 업체, 라인재공에 사용량수정시 하위품번의 수정사용량및 날짜 UPDATE
+// 전표타입 : 'RP', 'IS', 'RS', 'RM', 'SM'
+// WIP004에 사용수량 UPDATE
+// 인수 : 회사, 입고전표, 구매요구번호, 분할발주횟수, 분할납품회수, 지역, 공장, 거래명세표번호,
+//        입고품번, 용도, 업체코드(부서), 입고일, 입고수정일, 입고수량, 입고수정수량
+// 반환값 : 성공('Y'), 실패('N')
+//
+//***********************************************************************************
+
+decimal{1} l_n_tqty4
+decimal{4} l_n_wdchqt,l_n_wausqt1,l_n_wausqt2,l_n_wausqt3,l_n_wausqt4,l_n_wausqt5,l_n_wausqt6,l_n_wausqt7,&
+			  l_n_wausqt8,l_n_waohqt
+decimal{5} l_n_waavrg1,l_n_waavrg2
+decimal{0} l_n_wausat1,l_n_wausat2,l_n_wausat3,l_n_wausat4,l_n_wausat5,l_n_wausat6,l_n_wausat7,&
+			  l_n_wausat8,l_n_waohat1,l_n_waohat2
+decimal{2} l_n_costav
+string     l_s_itno,l_s_opcd,l_s_orct,l_s_gubun, l_s_usge
+integer    li_chk
+
+if a_slipxtype = 'RM' or a_slipxtype = 'SM' or a_slipxtype = 'IS' or a_slipxtype = 'RS' then
+	l_s_orct  = '9999'
+elseif a_slipxtype = 'RP' then
+	l_s_orct  = a_dept
+else
+	return 'N'
+end if
+
+if a_tqty4_b = a_tqty4_a  then
+	UPDATE "PBWIP"."WIP004"
+		SET WDUPDTDT = ' ',WDDATE = :A_TDTE4_A, WDUPDTID = ' '
+	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND WDPRSRTY = :A_SLIPXTYPE AND 
+			WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+			WDDATE = :A_TDTE4_B
+	USING ag_transaction ;
+	
+	return 'Y'
+end if
+
+//수량이 수정된 경우 기존의 수량에 대한 비율로 재공트랜스와 재공밸런스에 Update
+UPDATE "PBWIP"."WIP004"
+	SET WDPRQT = :A_TQTY4_A,WDCHQT = :A_TQTY4_A * WDCHQT / :A_TQTY4_B,WDUPDTDT = ' ',WDDATE = :A_TDTE4_A,
+	    WDUPDTID = ' '
+WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+		WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND  WDPRSRTY = :A_SLIPXTYPE AND 
+		WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+		WDDATE = :A_TDTE4_B
+USING ag_transaction ;
+
+Declare WIP004_Cur Cursor For
+	SELECT WDIOCD,WDUSGE,WDITNO,WDCHQT   FROM "PBWIP"."WIP004"
+	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND WDIOCD = :l_s_gubun AND 
+			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+			WDDATE = :A_TDTE4_A
+	USING ag_transaction ;
+	
+Open WIP004_Cur ;
+	do while true
+		fetch WIP004_Cur into :l_s_gubun,:l_s_usge,:l_s_itno,:l_n_wdchqt ;
+		if ag_transaction.sqlcode <> 0 then
+			exit
+		end if
+		SELECT WAAVRG1,WAUSQT1,WAUSQT2,WAUSQT3,WAUSQT4,WAUSQT5,WAUSQT6,WAUSQT7,WAUSQT8,WAOHQT INTO
+				:l_n_waavrg1,:l_n_wausqt1,:l_n_wausqt2,:l_n_wausqt3,:l_n_wausqt4,:l_n_wausqt5,
+				:l_n_wausqt6,:l_n_wausqt7,:l_n_wausqt8,:l_n_waohqt   FROM "PBWIP"."WIP001" 
+			WHERE WACMCD = :a_comltd AND WAPLANT = :a_xplant AND WADVSN = :a_div AND 
+					WAORCT = :l_s_orct AND WAITNO = :l_s_itno AND WAIOCD = :l_s_gubun
+		USING ag_transaction;
+		
+		select costav into :l_n_costav
+			from pbinv.inv101
+			where comltd = :a_comltd and xplant = :a_xplant and div = :a_div and itno = :l_s_itno
+			using ag_transaction;
+		if l_n_waavrg1 = 0 then
+			l_n_waavrg1 = l_n_costav
+		end if
+		
+		Choose Case l_s_usge
+			Case '01'
+				l_n_wausqt1 += l_n_wdchqt
+			Case '02'
+				l_n_wausqt2 += l_n_wdchqt
+			Case '03'
+				l_n_wausqt3 += l_n_wdchqt
+			Case '04'
+				l_n_wausqt4 += l_n_wdchqt
+			Case '05'
+				l_n_wausqt5 += l_n_wdchqt
+			Case '06'
+				l_n_wausqt6 += l_n_wdchqt
+			Case '07'
+				l_n_wausqt7 += l_n_wdchqt
+		End Choose
+		l_n_waohqt     -= l_n_wdchqt
+		
+		l_n_wausat1 = l_n_wausqt1 * l_n_waavrg1 
+		l_n_wausat2 = l_n_wausqt2 * l_n_waavrg1 
+		l_n_wausat3 = l_n_wausqt3 * l_n_waavrg1  
+		l_n_wausat4 = l_n_wausqt4 * l_n_waavrg1  
+		l_n_wausat5 = l_n_wausqt5 * l_n_waavrg1 
+		l_n_wausat6 = l_n_wausqt6 * l_n_waavrg1 
+		l_n_wausat7 = l_n_wausqt7 * l_n_waavrg1 
+		l_n_wausat8 = l_n_wausqt8 * l_n_waavrg1 
+		l_n_waohat1 = l_n_waohqt  * l_n_waavrg1 
+		
+		update "PBWIP"."WIP001"
+			set WAUSQT1 = :l_n_wausqt1,WAUSAT1   = :l_n_wausat1,WAUSQT2  = :l_n_wausqt2,WAUSAT2 = :l_n_wausat2,
+				 WAUSQT3 = :l_n_wausqt3,WAUSAT3   = :l_n_wausat3,WAUSQT4  = :l_n_wausqt4,WAUSAT4 = :l_n_wausat4,
+				 WAUSQT5 = :l_n_wausqt5,WAUSAT5   = :l_n_wausat5,WAUSQT6  = :l_n_wausqt6,WAUSAT6 = :l_n_wausat6,
+				 WAUSQT7 = :l_n_wausqt7,WAUSAT7   = :l_n_wausat7,WAUSQT8  = :l_n_wausqt8,WAUSAT8 = :l_n_wausat8,
+				 WAOHQT  = :l_n_waohqt ,WAOHAT1   = :l_n_waohat1,WAUPDTDT = ' '  ,
+				 WAIPADDR = ' ',WAMACADDR = ' '
+		where WACMCD = :a_comltd AND WAPLANT = :a_xplant AND WADVSN = :a_div AND 
+				WAORCT = :l_s_orct AND WAITNO = :l_s_itno AND WAIOCD = :l_s_gubun
+		using ag_transaction;
+		
+		if ag_transaction.sqlnrows < 1 then
+			ag_message = "재공밸런스 수정에러 : " + ag_transaction.sqlerrtext
+		end if
+	loop
+
+Close WIP004_Cur ;	
+
+Return 'Y'
+
+end function
+

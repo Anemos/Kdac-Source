@@ -1,0 +1,41 @@
+$PBExportHeader$f_get_accbankno.srf
+$PBExportComments$업체 계좌번호 return
+global type f_get_accbankno from function_object
+end type
+
+forward prototypes
+global function string f_get_accbankno (string a_s_comltd, string a_s_cucode, string a_s_area)
+end prototypes
+
+global function string f_get_accbankno (string a_s_comltd, string a_s_cucode, string a_s_area);string l_s_bankno
+int    l_n_rcnt
+
+SELECT max("PBACC"."ACC521"."GBANKNO") 
+INTO   :l_s_bankno
+FROM  "PBACC"."ACC521"
+WHERE "PBACC"."ACC521"."COMLTD"  = :a_s_comltd AND
+      "PBACC"."ACC521"."GCUCODE" = :a_s_cucode AND
+      "PBACC"."ACC521"."GAREA"   = :a_s_area   AND 
+		"PBACC"."ACC521"."GACCODE" >= 'A1010000' AND 
+		"PBACC"."ACC521"."GUSE"    = ''         AND
+		"PBACC"."ACC521"."GDEL"    = ''         USING SQLCA;
+if sqlca.sqlcode <> 0 then
+	l_s_bankno = ' '
+end if
+
+SELECT count(*)
+INTO   :l_n_rcnt
+FROM  "PBACC"."ACC020"
+WHERE "PBACC"."ACC020"."COMLTD" = :a_s_comltd AND
+      "PBACC"."ACC020"."CUCODE" = :a_s_cucode USING SQLCA;
+if isnull(l_n_rcnt) then
+	l_n_rcnt = 0
+end if
+if l_n_rcnt < 1 then
+	l_s_bankno = ''
+end if
+
+return l_s_bankno
+		
+end function
+

@@ -1,0 +1,14 @@
+$PBExportHeader$d_piss231i_03.srd
+$PBExportComments$출하변동관리 출력 Graph + Data
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=5 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 10 print.margin.right = 0 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=1948 color="536870912"  height.autosize=yes)
+table(column=(type=char(10) updatewhereclause=yes name=a dbname="a" )
+ unbound = "yes"arguments=(("ps_yymm", string),("ps_areacode", string),("ps_divivisoncode", string),("ps_product", string),("ps_model", string),("ps_itemcode", string)) )
+report(band=detail dataobject="d_piss231i_05" x="27" y="20" height="1644" width="4960" border="0" criteria="" nest_arguments=((" ps_yymm "),(" ps_areacode "),(" ps_divivisoncode "),(" ps_product "),(" ps_model "),(" ps_itemcode ")) trail_footer = yes  name=dw_1 visible="1"  slideup=directlyabove )
+report(band=detail dataobject="d_piss231i_01" x="27" y="1720" height="200" width="4960" border="0"  height.autosize=yes criteria="" nest_arguments=((" ps_yymm "),(" ps_areacode "),(" ps_divivisoncode "),(" ps_product "),(" ps_model "),(" ps_itemcode ")) trail_footer = yes  name=dw_2 visible="1"  slideup=directlyabove )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

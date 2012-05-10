@@ -1,0 +1,69 @@
+$PBExportHeader$f_bom_get_invdae.srf
+global type f_bom_get_invdae from function_object
+end type
+
+forward prototypes
+global function long f_bom_get_invdae (string a_plant, string a_div, string a_itno, string a_date)
+end prototypes
+
+global function long f_bom_get_invdae (string a_plant, string a_div, string a_itno, string a_date);long lc_ciac,lc_ciac2
+string	ls_srce
+//년별 레코드에서 특정월의 칼럼을 Catch
+
+select 	srce,intqty		into :ls_srce ,:lc_ciac
+	from 	pbinv.inv101 a
+where 	a.comltd 	= 	'01' 		and
+			a.xplant 	= 	:a_plant and
+			a.div    	= 	:a_div 	and
+			a.itno   	= 	:a_itno
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	return 0	
+end if 
+
+if trim(ls_srce) = ''	then
+	if mid(g_s_date,1,6) = a_date then
+		return lc_ciac
+	else
+		select coalesce(sum(a.intqty),0)	into	:lc_ciac
+			from pbinv.inv402 a
+		where a.comltd 	= 		'01' 		and
+				a.xplant 	= 		:a_plant and
+				a.div    	= 		:a_div 	and
+				a.itno   	= 		:a_itno 	and
+				a.xyear		like	:a_date	|| '%'
+		using sqlca ;
+		if sqlca.sqlcode <> 0 then
+			lc_ciac	=	0	
+		end if
+	end if	
+	return lc_ciac
+else
+	select coalesce(sum(tqty4),0) into :lc_ciac
+	from 	pbinv.inv401 a
+	where a.comltd 	= 	'01' 			and
+			a.xplant 	= 	:a_plant 	and
+			a.div    	= 	:a_div 		and
+			a.itno   	= 	:a_itno 		and
+			a.sliptype	=	'SA'			and	
+			a.tdte4  	like :a_date 	|| '%' using sqlca;
+	if sqlca.sqlcode <> 0 then
+		lc_ciac	=	0	
+	end if
+	
+	select coalesce(sum(tqty4),0) into :lc_ciac2
+		from "PBINV"."INV401" a
+	where a.comltd 	= 	'01' 			and
+			a.xplant 	= 	:a_plant 	and
+			a.div    	= 	:a_div 		and
+			a.itno   	= 	:a_itno 		and
+			a.sliptype	=	'SR'			and	
+			a.tdte4  	like :a_date 	|| '%' 
+	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		lc_ciac2	=	0	
+	end if
+	return lc_ciac - lc_ciac2
+end if
+end function
+

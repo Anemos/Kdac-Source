@@ -1,0 +1,175 @@
+$PBExportHeader$f_down_ipis_mis_sle304.srf
+global type f_down_ipis_mis_sle304 from function_object
+end type
+
+forward prototypes
+global function integer f_down_ipis_mis_sle304 (ref string fs_message, datawindow fs_dw_sle304, any fs_transaction[])
+end prototypes
+
+global function integer f_down_ipis_mis_sle304 (ref string fs_message, datawindow fs_dw_sle304, any fs_transaction[]);long 			ln_rowcount,i,ln_caqty,ln_srqty,ln_count
+string 			ls_srno,ls_return,ls_gubun = ''
+datetime 		ld_nowtime
+integer		li_index
+str_ipis_server lstr_ipis  
+
+ln_rowcount	=	fs_dw_sle304.rowcount()
+if ln_rowcount < 1 then
+	fs_message = 'S/R 취소 정보가 없습니다'
+	return -1
+end if 
+
+li_index = f_ipis_server_get_transaction(fs_transaction, fs_dw_sle304.object.xplant[1], fs_dw_sle304.object.div[1])	
+if li_index = -1 then
+	fs_message = "공장연결에 실패하였습니다."
+	return -1
+else
+	lstr_ipis = fs_transaction[li_index]
+end if
+
+Select Top 1 GetDate() Into :ld_nowtime From sysusers Using lstr_ipis.t_sqlpis;
+
+String	ls_applydate_close 
+
+DECLARE get_applydate_close PROCEDURE for sp_pisc_get_applydate_close
+@ps_areacode = '%',
+@ps_divisioncode = '%',
+@pdt_sourcedate = :ld_nowtime,
+@rs_applydate = '1' output
+Using  lstr_ipis.t_sqlpis;
+
+//exactly the parameters in the sp.
+EXECUTE get_applydate_close;
+
+//then fetch output parameters.
+FETCH get_applydate_close into :ls_applydate_close;
+CLOSE get_applydate_close;
+
+datastore	dw_tsrcancel  
+
+dw_tsrcancel	=	Create datastore
+dw_tsrcancel.dataobject		=	'd_tsrcancel_direct_interface'
+dw_tsrcancel.settransobject(lstr_ipis.t_sqlpis)
+dw_tsrcancel.reset()
+
+for i = 1 to ln_rowcount
+	ls_srno											=	''
+	ln_caqty											=	0
+	ln_srqty											=	0
+	ls_srno											=	trim(fs_dw_sle304.object.csrno[i])	
+	// 취소 S/R 입력 Process
+	if	fs_dw_sle304.object.chgcd[i]				=	'C'	then
+		ls_gubun										=	'C'
+		ln_caqty								 		=  	fs_dw_sle304.object.caqty[i]		
+		ln_srqty										=  	fs_dw_sle304.object.srqty[i]			
+		dw_tsrcancel.insertrow(0)	
+		dw_tsrcancel.object.CancelDate[i] 		=  	mid(fs_dw_sle304.object.srdt[i],1,4) + '.' + mid(fs_dw_sle304.object.srdt[i],5,2) + '.' + mid(fs_dw_sle304.object.srdt[i],7,2) 
+		dw_tsrcancel.object.Areacode[i] 		=  	fs_dw_sle304.object.xplant[i]
+		dw_tsrcancel.object.Divisioncode[i] 	=  	fs_dw_sle304.object.div[i]	
+		dw_tsrcancel.object.Srno[i] 				=  	ls_srno
+		dw_tsrcancel.object.CancelGubun[i] 	=  	'2'
+		dw_tsrcancel.object.CheckSrno[i] 		=  	trim(fs_dw_sle304.object.srno[i])	
+		dw_tsrcancel.object.Itemcode[i] 			=  	fs_dw_sle304.object.itno[i]	
+		dw_tsrcancel.object.ConfirmFlag[i] 		=  	'N'
+		dw_tsrcancel.object.CancelQty[i] 		=  	ln_caqty
+		dw_tsrcancel.object.LastEmp[i] 			= 	'SYSTEM'
+		select count(*) into :ln_count	from tloadplan
+			where	truckno	is	null	and	shipplandate	>=	:ls_applydate_close	 and
+					srno in ( select srno from tsrorder where psrno	=	:ls_srno + 'P00'	)
+		using	lstr_ipis.t_sqlpis	;
+		if	ln_count	>	0	then
+			fs_message	=	'상차계획이 입력된 S/R 입니다.( ' + ls_Srno + ' )'		
+			f_ipis_transaction_errorlog('C','','f_down_ipis_mis_sle304',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'상차계획이 입력된 S/R 입니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return	-1
+		end if
+				
+		If	trim(fs_dw_sle304.object.kitcd[i]	)	= 'P'	then // kit일때 child 처리
+			update	tsrorder 
+				set		srcancelgubun 	=	'Y',
+						cancelqty 		= 	(shiporderqty / :ln_srqty)	*	:ln_caqty,
+						shipremainqty 	= 	shipremainqty - (shiporderqty / :ln_srqty)	*	:ln_caqty,
+						shipendgubun 	= 	'Y'
+			where		psrno				=	:ls_srno	+	'P00'	and	pcgubun = 'C'
+			using lstr_ipis.t_sqlpis ;
+			if	lstr_ipis.t_sqlpis.sqlnrows	<	1	then
+				fs_message	=	'취소할 S/R 정보(Kit 자품목) 가 없습니다.( ' + ls_Srno + ' )'		
+				f_ipis_transaction_errorlog('C','','f_down_ipis_mis_sle304',&
+					lstr_ipis.t_sqlpis.sqlerrtext,'취소할 S/R 정보(Kit 자품목) 가 없습니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return	-1		
+			end if
+		end if
+		update	tsrorder 
+			set		srcancelgubun 	=	'Y',
+					cancelqty 		= 	:ln_caqty,
+					shipremainqty 	= 	case	when shipremainqty - :ln_caqty < 0 then 0
+													else   shipremainqty - :ln_caqty
+											end ,
+					shipendgubun 	= 	'Y'
+		where		srno = :ls_srno	+	'P00'
+		using 		lstr_ipis.t_sqlpis ;
+		if	lstr_ipis.t_sqlpis.SQLNRows	<	1	then
+			fs_message	=	'취소할 S/R 정보가 없습니다.( ' + ls_Srno + ' )'		
+			f_ipis_transaction_errorlog('C','','f_down_ipis_mis_sle304',&
+			lstr_ipis.t_sqlpis.sqlerrtext,'취소할 S/R 정보가 없습니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return	-1		
+		end if
+	//	취소 S/R 삭제 Process	 
+	elseif fs_dw_sle304.object.chgcd[i]	= 	'D'	then
+		select count(*)	into	:ln_count from tsrcancel 
+			where	srno = :ls_srno
+		using	lstr_ipis.t_sqlpis	;
+		If ln_count > 0	then
+			delete from tsrcancel 
+				where srno = :ls_srno
+			using	lstr_ipis.t_sqlpis ;
+		else
+			fs_message	=	'삭제할 취소 S/R 정보가 없습니다.( ' + ls_Srno + ' )'		
+			f_ipis_transaction_errorlog('D','','f_down_ipis_mis_sle304',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'삭제할 취소 S/R 정보가 없습니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return	-1			
+		end if
+		If	trim(fs_dw_sle304.object.kitcd[i])	= 'P'	then // kit일때 child 처리
+			update	tsrorder 
+				set		srcancelgubun 	=	'N',
+						cancelqty 		= 	0,
+						shipendgubun 	= 	case	when shipremainqty + cancelqty = 0 then 'Y'
+														else 'N'
+												end
+			where	psrno		=	:ls_srno	+	'P00'	and	pcgubun = 'C'
+			using lstr_ipis.t_sqlpis ;
+			if	lstr_ipis.t_sqlpis.sqlnrows	<	1	then
+				fs_message	=	'삭제할 취소 S/R 정보(Kit자품목)가 없습니다.( ' + ls_Srno + ' )'		
+				f_ipis_transaction_errorlog('D','','f_down_ipis_mis_sle304',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'삭제할 취소 S/R 정보(Kit자품목)가 없습니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return	-1		
+			end if
+		end if
+		update	tsrorder 
+			set		srcancelgubun 	=	'N',
+					cancelqty 		= 	0,
+					shipremainqty 	= 	shipremainqty + cancelqty,
+					shipendgubun 	= 	case	when shipremainqty + cancelqty = 0 then 'Y'
+														else 'N'
+											end
+		where	srno = :ls_srno	+	'P00'
+		using lstr_ipis.t_sqlpis ;
+		if	lstr_ipis.t_sqlpis.sqlnrows	<	1	then
+			fs_message	=	'삭제할 취소 S/R 정보가 없습니다.( ' + ls_Srno + ' )'		
+			f_ipis_transaction_errorlog('D','','f_down_ipis_mis_sle304',&
+			lstr_ipis.t_sqlpis.sqlerrtext,'삭제할 취소 S/R 정보가 없습니다.( ' + ls_Srno + ' )', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return	-1		
+		end if
+	end if
+next 
+if ls_gubun	=	'C'	then
+	dw_tsrcancel.accepttext()
+	if dw_tsrcancel.update() <> 1 then
+		fs_message	=	 '취소 S/R  등록 오류  ' +  lstr_ipis.t_sqlpis.sqlerrtext
+		f_ipis_transaction_errorlog('C','','f_down_ipis_mis_sle304',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'취소 S/R  등록 오류  ', g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if
+end if
+return 0
+end function
+

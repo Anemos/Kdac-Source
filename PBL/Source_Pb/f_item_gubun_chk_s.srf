@@ -1,0 +1,32 @@
+$PBExportHeader$f_item_gubun_chk_s.srf
+$PBExportComments$간접재 구분 등록여부 Chk
+global type f_item_gubun_chk_s from function_object
+end type
+
+forward prototypes
+global function integer f_item_gubun_chk_s (string as_itno)
+end prototypes
+
+global function integer f_item_gubun_chk_s (string as_itno);//////////////////////////////////////////////////////////
+// * 품목 Master DB의 간접재 구분 등록된 Item인지 Check *
+//
+// Return: -1(Error), 1(간접재)
+//////////////////////////////////////////////////////////
+
+String	ls_Gubun
+
+SELECT GUBUN INTO :ls_Gubun
+	FROM PBINV.INV002
+WHERE COMLTD = '01' AND ITNO = :as_itno  Using SQLCA ;
+
+If ls_Gubun = "" Then
+	Return -1
+Else
+	If ls_Gubun = '0' Then    // 간접재.
+		Return 1
+	Else
+		Return -1
+	End If
+End If
+end function
+

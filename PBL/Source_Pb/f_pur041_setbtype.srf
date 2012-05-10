@@ -1,0 +1,69 @@
+$PBExportHeader$f_pur041_setbtype.srf
+$PBExportComments$업종등록및수정
+global type f_pur041_setbtype from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setbtype (string as_vsrno, string as_itno, string as_btype)
+end prototypes
+
+global function integer f_pur041_setbtype (string as_vsrno, string as_itno, string as_btype);//
+//	RETURN  1 	: 성공
+//			 -1
+//
+long ll_row,ll_rcnt
+
+select count(*)
+into :ll_rcnt
+from pbpur.pur120
+where pbpur.pur120.comltd = '01'
+  and pbpur.pur120.vsrno = :as_vsrno
+  and pbpur.pur120.itno = :as_itno ;
+
+ if ll_rcnt > 0 then
+	 update pbpur.pur120
+	 set btype = :as_btype, updtdt = :g_s_date, updtid = :g_s_empno
+	 where comltd = '01'
+	 and   vsrno = :as_vsrno
+	 and   itno  = :as_itno 
+	  ;
+ else
+	//업종기본정보등록pur120
+	INSERT INTO "PBPUR"."PUR120"  
+         ( "COMLTD",   
+           "VSRNO",   
+           "ITNO",   
+           "BTYPE",   
+           "EXTD",   
+           "INPTID",   
+           "INPTDT",   
+           "UPDTID",   
+           "UPDTDT",   
+           "IPADDR",   
+           "MACADDR" )  
+  VALUES ( '01',   
+           :as_vsrno,   
+           :as_itno,   
+           :as_btype,   
+           ' ',   
+           :g_s_empno,   
+           :g_s_date,   
+           ' ',   
+           ' ',   
+           :g_s_ipaddr,   
+           ' '  ) ;
+end if
+//업체단가 업체발주율에 1
+update pbpur.pur103
+	 set xrate = 1
+	 where comltd = '01'
+	 and   vsrno = :as_vsrno
+	 and   itno  = :as_itno 
+	 
+	 ;
+return 1
+
+  
+ 
+end function
+

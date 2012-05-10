@@ -1,0 +1,19 @@
+$PBExportHeader$p_mpms_down_exe.srj
+$PBExportComments$Generated Application Executable Project
+EXE:C:\kdac\mpms_gather\mpms_down.exe,,0,0
+CMP:1,0,0,2,0,0
+COM:Sybase, Inc.
+DES:Sybase, Inc. Product File
+CPY:
+PRD:Powerbuilder Enterprise Series
+VER:Version 8.0.2 Build 9506
+PBD:C:\kdac\mpms_gather\mpms_down.pbl,,1
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,u_progress_bar,u
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,w_download,w
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,f_download,f
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,mpms_down,a
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,w_system_error,w
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,f_centerwindow,f
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,f_set_window_title,f
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,w_connect,w
+OBJ:C:\kdac\mpms_gather\mpms_down.pbl,f_get_downfile,f

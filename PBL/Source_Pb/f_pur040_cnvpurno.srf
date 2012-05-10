@@ -1,0 +1,53 @@
+$PBExportHeader$f_pur040_cnvpurno.srf
+$PBExportComments$외자발주전환(new<=>old)
+global type f_pur040_cnvpurno from function_object
+end type
+
+forward prototypes
+global function string f_pur040_cnvpurno (string as_purno, string as_srno, integer ai_type)
+end prototypes
+
+global function string f_pur040_cnvpurno (string as_purno, string as_srno, integer ai_type);////////////////////////////////////////////////
+// : 발주번호전환
+////////////////////////////////////////////////
+ string ls_purno, ls_srno
+ long ll_srno
+ if isnumber(mid(as_purno,2,1)) then
+	 ai_type = 2
+ else
+	 ai_type = 1
+ end if
+ Choose case ai_type
+	case 1      // new => old
+		  if mid(as_purno,5,2) = '10' then
+			  ls_purno = 'X'
+		  elseif mid(as_purno,5,2) = '11' then
+			  ls_purno = 'Y'
+		  elseif mid(as_purno,5,2) = '12' then
+			  ls_purno = 'Z'
+		  else
+			  ls_purno = mid(as_purno,6,1)
+		  end if
+		  ls_purno = trim(mid(as_purno,1,1) + 'I' + mid(as_purno,2,2) + mid(as_purno,4,1) &
+						 + ls_purno + mid(as_purno,8,3)) + as_srno
+		
+	case 2  //old => new  VI102X001 =>  V102100001
+		  if mid(as_purno,6,1) = 'X' then
+			  ls_purno = '10'
+		  elseif mid(as_purno,6,1) = 'Y' then
+			  ls_purno = '11'
+		  elseif mid(as_purno,6,1) = 'Z' then
+			  ls_purno = '12'
+		  else
+			  ls_purno =  '0' + mid(as_purno,6,1)
+		  end if
+		  ll_srno = long(mid(as_purno,7,3))				 
+		  ls_purno = mid(as_purno,1,1) +  mid(as_purno,3,2) + mid(as_purno,5,1) + &
+						  ls_purno + string(ll_srno, "0000")
+		  as_srno = mid(as_purno,10,1)				 
+End choose
+Return ls_purno
+
+
+end function
+

@@ -1,0 +1,68 @@
+$PBExportHeader$d_comm110his_01.srd
+$PBExportComments$AutoDownµî·Ï
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=4 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(4) update=yes updatewhereclause=yes key=yes name=menu_cd dbname="COMM110HIS.MENU_CD" )
+ column=(type=char(30) update=yes updatewhereclause=yes key=yes name=input_date dbname="COMM110HIS.INPUT_DATE" )
+ column=(type=char(30) update=yes updatewhereclause=yes key=yes name=confirm_date dbname="COMM110HIS.CONFIRM_DATE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=input_flag dbname="COMM110HIS.INPUT_FLAG" values="ÀÔ·Â	A/¼öÁ¤	R/»èÁ¦	D/" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=win_id dbname="COMM110HIS.WIN_ID" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=win_nm dbname="COMM110HIS.WIN_NM" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=win_rpt dbname="COMM110HIS.WIN_RPT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=win_st dbname="COMM110HIS.WIN_ST" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=inpt_id dbname="COMM110HIS.INPT_ID" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ip_addr dbname="COMM110HIS.IP_ADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=mac_addr dbname="COMM110HIS.MAC_ADDR" )
+ column=(type=char(4) updatewhereclause=yes name=menu_cd_old dbname="COMM110HIS.MENU_CD_OLD" )
+ column=(type=char(1) updatewhereclause=yes name=sel_chk dbname="SEL_CHK" values="	Y/	N" )
+ retrieve="SELECT 	~"PBCOMMON~".~"COMM110HIS~".~"MENU_CD~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"INPUT_DATE~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"CONFIRM_DATE~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"INPUT_FLAG~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"WIN_ID~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"WIN_NM~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"WIN_RPT~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"WIN_ST~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"INPT_ID~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"IP_ADDR~",   
+			~"PBCOMMON~".~"COMM110HIS~".~"MAC_ADDR~",~"PBCOMMON~".~"COMM110HIS~".~"MENU_CD_OLD~",
+			'Y' AS SEL_CHK  
+FROM 	~"PBCOMMON~".~"COMM110HIS~"   
+WHERE	Trim(~"PBCOMMON~".~"COMM110HIS~".~"CONFIRM_DATE~")	like	:as_gubun	
+	and	Trim(~"PBCOMMON~".~"COMM110HIS~".~"INPT_ID~")				like	:as_inputid	
+" update="PBCOMMON.COMM110HIS" updatewhere=1 updatekeyinplace=no arguments=(("as_gubun", string),("as_inputid", string))  sort="confirm_date D input_date D inpt_id A " )
+text(band=header alignment="2" text="ÇÁ·Î±×·¥ ID" border="0" color="16777215" x="2542" y="0" height="72" width="407" html.valueishtml="0"  name=win_id_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÇÁ·Î±×·¥ ¸íÄª" border="0" color="16777215" x="2958" y="0" height="72" width="882" html.valueishtml="0"  name=win_nm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ãâ·Â±¸ºÐ" border="0" color="16777215" x="3849" y="0" height="72" width="306" html.valueishtml="0"  name=win_rpt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÇÁ·Î±×·¥»óÅÂ" border="0" color="16777215" x="4165" y="0" height="72" width="416" html.valueishtml="0"  name=win_st_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="IP ÁÖ¼Ò" border="0" color="16777215" x="4590" y="0" height="72" width="846" html.valueishtml="0"  name=ip_addr_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸Þ´º ID" border="0" color="16777215" x="2245" y="0" height="72" width="288" html.valueishtml="0"  name=menu_cd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Â ÀÎ ÀÏ ½Ã " border="0" color="16777215" x="384" y="0" height="72" width="562" html.valueishtml="0"  name=confirm_date_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»ÀÚ" border="0" color="16777215" x="1545" y="0" height="72" width="430" html.valueishtml="0"  name=inpt_id_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½ÂÀÎ¿äÃ»ÀÏ½Ã" border="0" color="16777215" x="955" y="0" height="72" width="581" html.valueishtml="0"  name=input_date_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»±¸ºÐ" border="0" color="16777215" x="1984" y="0" height="72" width="251" html.valueishtml="0"  name=input_flag_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼±ÅÃ" border="0" color="16777215" x="9" y="0" height="72" width="165" html.valueishtml="0"  name=sel_chk_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ø¹ø" border="0" color="16777215" x="183" y="0" height="72" width="192" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=detail alignment="2" text="" border="0" color="16777215" x="9" y="0" height="72" width="165" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="4590" y="0" height="72" width="846" format="[general]" html.valueishtml="0"  name=ip_addr visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2542" y="0" height="72" width="407" format="[general]" html.valueishtml="0"  name=win_id visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="2958" y="0" height="72" width="882" format="[general]" html.valueishtml="0"  name=win_nm visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="2245" y="0" height="72" width="288" format="[general]" html.valueishtml="0"  name=menu_cd visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="3849" y="0" height="72" width="306" format="[general]" html.valueishtml="0"  name=win_rpt visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="4165" y="0" height="72" width="416" format="[general]" html.valueishtml="0"  name=win_st visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="384" y="0" height="72" width="562" format="[general]" html.valueishtml="0"  name=confirm_date visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="955" y="0" height="72" width="581" format="[general]" html.valueishtml="0"  name=input_date visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="1545" y="0" height="72" width="430" format="[general]" html.valueishtml="0"  name=inpt_id visible="1" dddw.name=dddw_comm311i_updtid_01 dddw.displaycolumn=penamek dddw.datacolumn=peempno dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1984" y="0" height="72" width="251" format="[general]" html.valueishtml="0"  name=input_flag visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="0" height="72" width="165" format="[general]" html.valueishtml="0"  name=sel_chk visible="1~tif( as_gubun = '',1,0)" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression="getrow()"border="0" color="33554432" x="183" y="0" height="72" width="192" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

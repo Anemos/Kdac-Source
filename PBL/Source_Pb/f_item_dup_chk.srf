@@ -1,0 +1,28 @@
+$PBExportHeader$f_item_dup_chk.srf
+$PBExportComments$품목 중복 Check   Global Function
+global type f_item_dup_chk from function_object
+end type
+
+forward prototypes
+global function integer f_item_dup_chk (string as_itno)
+end prototypes
+
+global function integer f_item_dup_chk (string as_itno);////////////////////////////////////////////////
+// * 품목재고 DB에 이미 등록된 Item인지 Check *
+//
+// Return: -1(중복)    1(미등록)
+////////////////////////////////////////////////
+
+String	ls_itno
+
+SELECT ITNO INTO :ls_itno
+	FROM PBINV.INV101
+WHERE COMLTD = '01' AND XPLANT = 'D' AND DIV = 'F' AND ITNO = :as_itno  Using SQLCA ;
+
+If ls_itno = "" Then
+	Return 1
+Else
+	Return -1
+End If
+end function
+

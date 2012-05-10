@@ -1,0 +1,66 @@
+$PBExportHeader$f_lab_datechk.srf
+$PBExportComments$辟公老扁霖 1老 check(积魂流)
+global type f_lab_datechk from function_object
+end type
+
+forward prototypes
+global function integer wf_juhucnt (string a_s_empno, string a_s_date)
+global function boolean f_lab_datechk (string as_damdang, string as_date)
+end prototypes
+
+global function integer wf_juhucnt (string a_s_empno, string a_s_date);int l_n_juhucnt
+
+return l_n_juhucnt
+
+end function
+
+global function boolean f_lab_datechk (string as_damdang, string as_date);string ls_ddate, ls_date, ls_time
+int i, li_dayafter
+
+f_sysdate()
+
+ls_time = Mid(g_s_time,1,2)
+
+select detc
+into :li_dayafter
+from pbper.peraut
+where pid   = 'ACNLAB'     and
+		level  = 'U'         and
+		tyear  = ''          and
+		status = ''    using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	li_dayafter = 0
+End if
+
+if ls_time >= '17' then
+	li_dayafter -= 1
+end if	
+
+ls_ddate = g_s_date
+
+if li_dayafter = 0 then
+   ls_date = g_s_date
+else	
+	for i = 1 to li_dayafter
+		select ghdt
+		into :ls_date
+		from delabo.labmaa
+		where ghdt < :ls_ddate and gdiv = :as_damdang and ghgb = ''
+		order by ghdt desc 
+		fetch first 1 rows only using sqlcc;
+		ls_ddate = ls_date
+	next 
+end if
+
+if f_spacechk(ls_date) = -1 then return false
+
+if ls_date <= as_date then
+	return true
+else
+	return false
+End if
+
+
+end function
+

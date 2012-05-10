@@ -1,0 +1,36 @@
+$PBExportHeader$f_pisc_win_move.srf
+$PBExportComments$Response or Child Window Move for center align(arg window fw_win, string fs_size, Return none)
+global type f_pisc_win_move from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_win_move (window fw_win, string fs_size)
+end prototypes
+
+global function boolean f_pisc_win_move (window fw_win, string fs_size);Long	ll_parent_x, ll_parent_y, ll_parent_w, ll_parent_h, ll_x, ll_y
+
+If Not IsValid(fw_win) Then
+	Return False
+End If
+
+ll_parent_x		= Long(Trim(Mid(fs_size,  1, 10)))
+ll_parent_y		= Long(Trim(Mid(fs_size, 11, 10)))
+ll_parent_w		= Long(Trim(Mid(fs_size, 21, 10)))
+ll_parent_h 	= Long(Trim(Mid(fs_size, 31, 10)))
+
+If ll_parent_w < fw_win.Width Or ll_parent_h < fw_win.Height Then
+	f_pisc_win_center_move(fw_win)
+	fw_win.Show()
+	Return True
+End If
+
+ll_x	= ll_parent_x + ((ll_parent_w - fw_win.Width) / 2)
+ll_y	= ll_parent_y + ((ll_parent_h - fw_win.Height) / 2)
+
+fw_win.Move(ll_x, ll_y)
+
+fw_win.Show()
+
+Return True
+end function
+

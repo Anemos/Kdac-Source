@@ -1,0 +1,23 @@
+$PBExportHeader$d_seq_select_code.srd
+$PBExportComments$dddw을 위한 제품군 조회
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(10) update=yes updatewhereclause=yes key=yes name=codegubun dbname="TSeqMstCode.CodeGubun" )
+ column=(type=char(10) update=yes updatewhereclause=yes key=yes name=codeid dbname="TSeqMstCode.CodeId" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=codename dbname="TSeqMstCode.CodeName" )
+ column=(type=char(60) updatewhereclause=yes name=displayname dbname="DisplayName" )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"TSeqMstCode~" ) COLUMN(NAME=~"TSeqMstCode.CodeGubun~") COLUMN(NAME=~"TSeqMstCode.CodeId~") COLUMN(NAME=~"TSeqMstCode.CodeName~") COMPUTE(NAME=~"TSeqMstCode.CodeName + TSeqMstCode.CodeId as DisplayName~")WHERE(    EXP1 =~"TSeqMstCode.CodeGubun~"   OP =~"=~"    EXP2 =~":a_codegubun~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"TSeqMstCode.CodeId~"   OP =~"like~"    EXP2 =~":a_code~" ) ) ARG(NAME = ~"a_codegubun~" TYPE = string)  ARG(NAME = ~"a_code~" TYPE = string) " update="TSeqMstCode" updatewhere=1 updatekeyinplace=no arguments=(("a_codegubun", string),("a_code", string)) )
+text(band=header alignment="2" text="코드구분" border="6" color="8388608" x="9" y="12" height="60" width="370" html.valueishtml="0"  name=codegubun_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="코드" border="6" color="8388608" x="389" y="12" height="60" width="393" html.valueishtml="0"  name=codeid_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="코드명" border="6" color="8388608" x="791" y="12" height="60" width="987" html.valueishtml="0"  name=codename_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="4" height="56" width="370" format="[general]" html.valueishtml="0"  name=codegubun visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="16711680" x="389" y="4" height="56" width="393" format="[general]" html.valueishtml="0"  name=codeid visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="33554432" x="791" y="4" height="56" width="987" format="[general]" html.valueishtml="0"  name=codename visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="codegubun")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

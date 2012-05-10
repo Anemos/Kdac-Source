@@ -1,0 +1,17 @@
+$PBExportHeader$f_piss_getdate_close.srf
+$PBExportComments$지역 공장별 마감 고려한 일자 가져오기
+global type f_piss_getdate_close from function_object
+end type
+
+forward prototypes
+global function string f_piss_getdate_close (string fs_areacode, string fs_divisioncode)
+end prototypes
+
+global function string f_piss_getdate_close (string fs_areacode, string fs_divisioncode);string ls_applydate_close
+
+ls_applydate_close =	f_pisc_get_date_applydate_close("%", "%",f_pisc_get_date_nowtime())
+
+return ls_applydate_close
+
+end function
+

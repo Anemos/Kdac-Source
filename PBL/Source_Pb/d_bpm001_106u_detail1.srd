@@ -1,0 +1,47 @@
+$PBExportHeader$d_bpm001_106u_detail1.srd
+$PBExportComments$상위품번의 호환부품번
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=BPM001_pcitn dbname="BPM001.PCITN" )
+ column=(type=char(15) updatewhereclause=yes name=BPM001_ppitn dbname="BPM001.PPITN" )
+ column=(type=char(8) updatewhereclause=yes name=BPM001_pedtm dbname="BPM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=BPM001_pedte dbname="BPM001.PEDTE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM001~".~"PCITN~",   
+         ~"PBBPM~".~"BPM001~".~"PPITN~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTM~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTE~"  
+    FROM ~"PBBPM~".~"BPM001~",   
+         ~"PBBPM~".~"BPM003~"  
+   WHERE ( ~"PBBPM~".~"BPM001~".~"PCMCD~" = ~"PBBPM~".~"BPM003~".~"OCMCD~" ) and
+			( ~"PBBPM~".~"BPM001~".~"PCITN~" = ~"PBBPM~".~"BPM003~".~"OFITN~" ) and  
+			( ~"PBBPM~".~"BPM001~".~"PDVSN~" = ~"PBBPM~".~"BPM003~".~"ODVSN~" ) and
+         ( ~"PBBPM~".~"BPM001~".~"PLANT~" = ~"PBBPM~".~"BPM003~".~"OPLANT~" ) and
+			( ~"PBBPM~".~"BPM001~".~"PCMCD~" = '01' ) AND
+         ( ~"PBBPM~".~"BPM001~".~"PDVSN~" = :a_div ) AND  
+			( ~"PBBPM~".~"BPM001~".~"PLANT~" = :a_plant ) AND
+         ( ~"PBBPM~".~"BPM003~".~"OPITN~" = :a_itno ) AND  
+         ( (~"PBBPM~".~"BPM001~".~"PEDTM~" <= ~"PBBPM~".~"BPM001~".~"PEDTE~" AND ~"PBBPM~".~"BPM001~".~"PEDTE~" <> ' ' AND ~"PBBPM~".~"BPM001~".~"PEDTE~" >= :a_date )
+          OR  
+         ( ~"PBBPM~".~"BPM001~".~"PEDTE~" = ' ' ))
+GROUP BY ~"PBBPM~".~"BPM001~".~"PPITN~",   
+         ~"PBBPM~".~"BPM001~".~"PCITN~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTM~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTE~"  
+ORDER BY ~"PBBPM~".~"BPM001~".~"PCITN~" ASC,   
+         ~"PBBPM~".~"BPM001~".~"PPITN~" ASC   
+" arguments=(("a_plant", string),("a_div", string),("a_itno", string),("a_date", string)) )
+text(band=header alignment="2" text="상위품번" border="2" color="16777215" x="530" y="4" height="60" width="466" html.valueishtml="0"  name=BPM001_ppitn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="적용일" border="2" color="16777215" x="1001" y="4" height="60" width="311" html.valueishtml="0"  name=BPM001_pedtm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="완료일" border="2" color="16777215" x="1317" y="4" height="60" width="311" html.valueishtml="0"  name=BPM001_pedte_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="호환부품번" border="2" color="16777215" x="0" y="4" height="60" width="526" html.valueishtml="0"  name=BPM001_pcitn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="2" color="0" x="0" y="0" height="68" width="526" format="[general]" html.valueishtml="0"  name=BPM001_pcitn visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="530" y="0" height="68" width="466" format="[general]" html.valueishtml="0"  name=BPM001_ppitn visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="2" color="0" x="1001" y="0" height="68" width="311" format="[general]" html.valueishtml="0"  name=BPM001_pedtm visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="2" color="0" x="1317" y="0" height="68" width="311" format="[general]" html.valueishtml="0"  name=BPM001_pedte visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="BPM001_pcitn	BPM001_ppitn")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

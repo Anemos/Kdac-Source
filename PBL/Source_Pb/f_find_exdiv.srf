@@ -1,0 +1,58 @@
+$PBExportHeader$f_find_exdiv.srf
+global type f_find_exdiv from function_object
+end type
+
+forward prototypes
+global function string f_find_exdiv (string a_xplant, string a_dvsn, string a_itno, string a_date, decimal a_cost, string a_update)
+end prototypes
+
+global function string f_find_exdiv (string a_xplant, string a_dvsn, string a_itno, string a_date, decimal a_cost, string a_update);string return_value,l_s_plant,l_s_div,l_s_srce,l_s_year,l_s_month
+dec{3} l_s_cost
+int    l_n_cnt
+
+l_s_cost = a_cost
+l_s_year = mid(a_date,1,4)
+l_s_month = mid(a_date,5,2)
+a_itno = trim(a_itno)
+a_dvsn = trim(a_dvsn)
+declare Find_Exdiv cursor for
+select "PBPDM"."BOM001"."PLANT" , "PBPDM"."BOM001"."PDVSN" from "PBPDM"."BOM001"
+  where "PBPDM"."BOM001"."PCITN" = :A_ITNO AND "PBPDM"."BOM001"."PCMCD" = :G_S_COMPANY AND
+		  "PBPDM"."BOM001"."PEXDV" = :A_DVSN AND "PBPDM"."BOM001"."PEXPLANT" = :A_XPLANT AND
+		  ( ( "PBPDM"."BOM001"."PEDTE" = ' '  and "PBPDM"."BOM001"."PEDTM" <= :a_date ) or  
+			 ( "PBPDM"."BOM001"."PEDTE" <> ' ' and "PBPDM"."BOM001"."PEDTM" <= :a_date and "PBPDM"."BOM001"."PEDTE" >= :a_date ))
+group by "PBPDM"."BOM001"."PLANT" , "PBPDM"."BOM001"."PDVSN"
+using sqlca;
+open Find_Exdiv ;  
+do while true
+	fetch Find_Exdiv into :l_s_plant,:l_s_div;
+	if sqlca.sqlcode <> 0 then 
+	  exit
+	end if
+	return_Value += l_s_div
+	if a_update = '1' then
+		l_s_srce = mid(f_bom_get_balance(l_s_plant,l_s_div,a_itno),6,2)
+		select count(*) into : l_n_cnt from "PBPDM"."BOM010"
+		  WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and ADVSN = :l_s_div and & 
+				  AITNO = :a_itno AND APLANT = :l_s_plant
+		using sqlca;
+	
+		if l_n_cnt = 0 then
+			insert into "PBPDM"."BOM010"
+				values (:g_s_company,:l_s_year,:l_s_month,:l_s_plant,:l_s_div,:a_itno,'10',:l_s_srce,:l_s_cost) 
+			using sqlca;
+		else
+			update "PBPDM"."BOM010"
+				set acost = acost + :l_s_cost
+			where acmcd = :g_s_company and ayear = :l_s_year and amont = :l_s_month and & 
+					advsn = :l_s_div and aitno = :a_itno and aplant = :l_s_plant
+			using sqlca;
+		end if 
+	end if
+loop
+close Find_Exdiv ;
+
+return return_value
+
+end function
+

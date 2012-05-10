@@ -1,0 +1,33 @@
+$PBExportHeader$f_yeo_spacedel.srf
+$PBExportComments$space Á¦°Å function
+global type f_yeo_spacedel from function_object
+end type
+
+forward prototypes
+global function string f_yeo_spacedel (string ag_text)
+end prototypes
+
+global function string f_yeo_spacedel (string ag_text);////////////////////////////////////////////////////////////
+//								f_spacedel
+//								input  => string data
+//								output => string data
+////////////////////////////////////////////////////////////
+
+int 	 l_n_length, l_n_count
+string l_n_outtext
+
+if isNull(ag_text) = True then
+	l_n_outtext = ""
+else
+	l_n_length = len(ag_text)
+	
+	for l_n_count = 1 to l_n_length
+		if mid(ag_text,l_n_count,1) <> " " then
+			l_n_outtext = l_n_outtext + mid(ag_text,l_n_count,1)
+		end if
+	next
+end if
+
+return l_n_outtext
+end function
+

@@ -1,0 +1,50 @@
+$PBExportHeader$f_pur040_rgbset.srf
+$PBExportComments$컬럼색상변경(오류시 yellow)
+global type f_pur040_rgbset from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_rgbset (string ag_s_column, integer ag_n_number, integer ag_n_color, datawindow ag_dw_1)
+end prototypes
+
+global function integer f_pur040_rgbset (string ag_s_column, integer ag_n_number, integer ag_n_color, datawindow ag_dw_1);//****************************************//
+// err_chk기록확인후 컬럼색변경 함수삽입  //
+// 주의! 컬럼속성을 일치시켜야함 => rgb값말고 실제값을 사용해야함 SKY: 15780518  //transparent 투명:553648127,2005.07.06
+//dark gray  8421504
+// 15780518 ,        16777215 ,    12632256  ,                           65535
+//	  sky               white         light gray(2006.09사용값)           yellow
+//rgb(160,200,239)  (255,255,255)  (192,192,192)  (255,255,0) CREAM(255,255,239)  
+// 사용가능,불가능 투명 및 라이트 그레이 if( stcd <> 'A',553648127,12632256)
+//if(isRowNew(),15780518,553648127) sky, 투명
+
+
+string l_s_command
+long 	 l_l_color = 16777215 //	white
+
+// Argument
+// ag_s_column = column 명, 
+// ag_n_error = error 여부 1:error 0:not error
+// ag_n_color  = column 색상( 1 = Sky[160,200,239]:YELLOW, 2 = White[255,255,255]:YELLOW, 3 = GRAY:YELLOW )
+// ag_dw_1  = datawindow명
+
+
+ag_dw_1.setredraw(False)
+if ag_n_color 	= 	1	then
+	l_s_command	=	ag_s_column + ".Background.Color = '" + "15780518" &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," & 
+					+ 	" rgb(255,255,0), rgb(160,200,239))'"    //sky    
+elseif ag_n_color 	= 	2	then
+	l_s_command	=	ag_s_column + ".Background.Color = '" + "16777215" &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," &
+					+  " rgb(255,255,0), rgb(255,255,255))'"    //white
+else
+	l_s_command	=	ag_s_column + ".Background.Color = '" + "12632256" &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," &
+					+  " rgb(255,255,0), rgb(192,192,192))'"     //light gray, silver
+end if
+
+ag_dw_1.Modify(l_s_command)
+ag_dw_1.setredraw(True)
+return 0
+end function
+

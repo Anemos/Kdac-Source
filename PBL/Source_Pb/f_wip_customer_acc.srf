@@ -1,0 +1,58 @@
+$PBExportHeader$f_wip_customer_acc.srf
+$PBExportComments$고객사유상사급공제분 회계생성 함수
+global type f_wip_customer_acc from function_object
+end type
+
+forward prototypes
+global function integer f_wip_customer_acc (string ag_year, string ag_month)
+end prototypes
+
+global function integer f_wip_customer_acc (string ag_year, string ag_month);// return  0 - success, 1 - 삭제 error, 2 - 입력건 없음 , 3 - 입력시 error 
+string ls_adjdate, ls_postdate, ls_currentdate
+string ls_xplant, ls_div, ls_pdcd, ls_sldiv
+integer li_rowcnt, li_cnt
+dec{0} lc_slamtw
+datastore ds_cost_pcc951
+
+ls_adjdate = ag_year + ag_month                                       //마감월
+
+ds_cost_pcc951 = create datastore                  			              
+ds_cost_pcc951.dataobject = "d_wip_customer_pcc951"
+ds_cost_pcc951.settransobject(sqlca)
+
+li_rowcnt = ds_cost_pcc951.retrieve('01',ls_adjdate)
+if li_rowcnt > 1 then
+	for li_cnt = 1 to li_rowcnt
+		ls_xplant = ds_cost_pcc951.getitemstring(li_cnt,"xplant")
+		ls_div = ds_cost_pcc951.getitemstring(li_cnt,"div")
+		ls_pdcd = ds_cost_pcc951.getitemstring(li_cnt,"pdcd")
+		lc_slamtw = ds_cost_pcc951.getitemnumber(li_cnt,"bgat")
+		ls_sldiv = ls_xplant + f_get_accdiv(ls_xplant, ls_div, ls_pdcd)
+		
+		DELETE FROM PBACC.PCC951
+		WHERE COMLTD = '01' AND SLYEAR = :ag_year AND SLMONTH = :ag_month AND SLGUBUN = '02' AND
+			SLDIV = :ls_sldiv AND SLPRCD = :ls_pdcd
+		using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return 1
+		end if
+		
+		INSERT INTO PBACC.PCC951( COMLTD, SLYEAR, SLMONTH, SLGUBUN, SLDIV, SLPRCD, SLAMTW,
+			XPLANT, DIV, EXTD, INPTID, INPTDT, UPDTID, UPDTDT, IPADDR, MACADDR )
+		VALUES('01', :ag_year, :ag_month, '02', :ls_sldiv, :ls_pdcd, :lc_slamtw, 
+			:ls_xplant, :ls_div, ' ', :g_s_empno, :g_s_datetime, 'WIP', :g_s_datetime, :g_s_ipaddr, :g_s_macaddr)
+		using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return 3
+		end if
+	next
+else
+	return 2
+end if
+
+destroy ds_cost_pcc951
+return 0
+
+
+end function
+

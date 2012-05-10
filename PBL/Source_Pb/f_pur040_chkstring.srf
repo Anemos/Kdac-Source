@@ -1,0 +1,16 @@
+$PBExportHeader$f_pur040_chkstring.srf
+$PBExportComments$문자null체크('0'리턴)
+global type f_pur040_chkstring from function_object
+end type
+
+forward prototypes
+global function string f_pur040_chkstring (string as_data)
+end prototypes
+
+global function string f_pur040_chkstring (string as_data);if isnull(as_data) then
+	return  ''
+else
+	return trim(as_data)
+end if
+end function
+

@@ -1,0 +1,35 @@
+$PBExportHeader$f_wip001_input_update.srf
+$PBExportComments$재공 라인 업체 투입 함수
+global type f_wip001_input_update from function_object
+end type
+
+forward prototypes
+global function integer f_wip001_input_update (string a_comltd, string a_sliptype, string a_srno, string a_srno1, string a_srno2, transaction ag_transaction, ref string ag_message)
+end prototypes
+
+global function integer f_wip001_input_update (string a_comltd, string a_sliptype, string a_srno, string a_srno1, string a_srno2, transaction ag_transaction, ref string ag_message);//재공 투입 프로시저 호출
+decimal{0} lc_sqlcode
+string ls_sqlerrtext, ls_time
+
+ls_time = mid(g_s_time,1,2) + mid(g_s_time,4,2) + mid(g_s_time,7,2)
+
+ DECLARE up_wip_14 PROCEDURE FOR PBWIP.SP_WIP_14  
+         A_COMLTD = :a_comltd,   
+         A_PRSRTY = :a_sliptype,   
+         A_PRSRNO = :a_srno,   
+         A_PRSRNO1 = :a_srno1,   
+         A_PRSRNO2 = :a_srno2,   
+         A_IPADDR = :g_s_ipaddr,   
+         A_MACADDR = :g_s_macaddr,   
+         A_INPTID = :g_s_empno,   
+         A_INPTDT = :g_s_date  using ag_transaction;
+ execute up_wip_14;
+ 
+if ag_transaction.sqlcode <> -1 then
+	return 0
+else
+	ag_message = "재공투입 에러 : " + ag_transaction.sqlerrtext
+	return -1
+end if
+end function
+

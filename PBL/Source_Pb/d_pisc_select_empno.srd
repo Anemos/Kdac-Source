@@ -1,0 +1,25 @@
+$PBExportHeader$d_pisc_select_empno.srd
+$PBExportComments$dddw¿ª ¿ß«— ¡÷/æﬂ ¡∂»∏
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=tmstemp_empno dbname="TMSTEMP.EmpNo" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_empname dbname="TMSTEMP.EmpName" )
+ column=(type=char(5) updatewhereclause=yes name=tmstemp_deptcode dbname="TMSTEMP.DeptCode" )
+ column=(type=char(40) updatewhereclause=yes name=tmstdept_deptname dbname="TMSTDEPT.DeptName" )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"TMSTEMP~" )  TABLE(NAME=~"TMSTDEPT~" ) COLUMN(NAME=~"TMSTEMP.EmpNo~") COLUMN(NAME=~"TMSTEMP.EmpName~") COLUMN(NAME=~"TMSTEMP.DeptCode~") COLUMN(NAME=~"TMSTDEPT.DeptName~")    JOIN (LEFT=~"TMSTEMP.DeptCode~"    OP =~"=~"RIGHT=~"TMSTDEPT.DeptCode~" )WHERE(    EXP1 =~"TMSTEMP.EmpName~"   OP =~"like~"    EXP2 =~":a_name~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"TMSTEMP.RetireGubun~"   OP =~"=~"    EXP2 =~"'N'~" ) ) ARG(NAME = ~"a_name~" TYPE = string) " arguments=(("a_name", string))  sort="tmstemp_empno A " )
+text(band=header alignment="2" text="ªÁ π¯" border="0" color="16777215" x="9" y="0" height="72" width="238" html.valueishtml="0"  name=tmstemp_empno_t visible="1"  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ã ∏ß" border="0" color="16777215" x="256" y="0" height="72" width="302" html.valueishtml="0"  name=tmstemp_empname_t visible="1"  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫Œ º≠ ∏Ì" border="0" color="16777215" x="567" y="0" height="72" width="1184" html.valueishtml="0"  name=tmstdept_deptname_t visible="1"  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="238" format="[general]" html.valueishtml="0"  name=tmstemp_empno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="256" y="0" height="72" width="302" format="[general]" html.valueishtml="0"  name=tmstemp_empname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="567" y="0" height="72" width="1184" format="[general]" html.valueishtml="0"  name=tmstdept_deptname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="∏º¿∫ ∞ÌµÒ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

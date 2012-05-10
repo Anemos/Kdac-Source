@@ -1,0 +1,59 @@
+$PBExportHeader$f_truncate_pura.srf
+$PBExportComments$해당문자열을 특정길이만큼 잘라내기(한글고려)
+global type f_truncate_pura from function_object
+end type
+
+forward prototypes
+global function string f_truncate_pura (string fs_string, long fn_length)
+end prototypes
+
+global function string f_truncate_pura (string fs_string, long fn_length);/*
+ *	f_turncate_pura (문자열,길이) 특정길이 만큼 잘라내기
+	
+ *	Argument		string	fn_string
+					long		fn_length					
+ *	Return  string
+*/
+Long ll_row
+
+fs_string = trim(fs_string)
+
+IF len(fs_string) > fn_length then
+	ll_row = len(fs_string)
+	Do while true 
+		if ll_row <= fn_length then
+			exit
+		end if
+		if asc(mid(fs_string,ll_row,1)) > 161 then  //두바이트문자다 2byte shift 이동
+			ll_row = ll_row - 2
+		else
+			ll_row = ll_row - 1
+		end if
+	Loop
+	fs_string = mid(fs_string,1,ll_row)
+End IF
+
+Return fs_string
+
+
+
+/*
+ls_addr = trim(dw_2.object.addr[1])
+		if len(ls_addr) > 53 then
+			ll_row = len(ls_addr)
+			Do while true 
+				if ll_row <= 53 then
+					exit
+				end if
+				if asc(mid(ls_addr,ll_row,1)) > 161 then  //두바이트문자다 2byte shift 이동
+			      ll_row = ll_row - 2
+				else
+					ll_row = ll_row - 1
+				end if
+			Loop
+			ls_addr = mid(ls_addr,1,ll_row)
+		end if
+
+*/
+end function
+

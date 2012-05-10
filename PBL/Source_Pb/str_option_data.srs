@@ -1,0 +1,10 @@
+$PBExportHeader$str_option_data.srs
+$PBExportComments$호환등록 검증용 구조체
+global type str_option_data from structure
+	string		str_plant
+	string		str_dvsn
+	string		str_opitn
+	string		str_ofitn
+	string		str_applydate
+end type
+

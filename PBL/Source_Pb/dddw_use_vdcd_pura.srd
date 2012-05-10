@@ -1,0 +1,30 @@
+$PBExportHeader$dddw_use_vdcd_pura.srd
+$PBExportComments$사용업체 (외주개발,여주생산)
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(64) updatewhereclause=yes name=com_vndnm dbname="COM_VNDNM" )
+ column=(type=char(50) updatewhereclause=yes name=vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(8) updatewhereclause=yes name=vsrno dbname="PUR101.VSRNO" )
+ column=(type=char(1) updatewhereclause=yes name=temp dbname="TEMP" )
+ retrieve="SELECT TRIM(~"PBPUR~".~"PUR101~".~"VNDNM~") || '  [ ' ||~"PBPUR~".~"PUR101~".~"VSRNO~"||' ]' AS COM_VNDNM,
+       ~"PBPUR~".~"PUR101~".~"VNDNM~" AS VNDNM,            
+		 ~"PBPUR~".~"PUR101~".~"VSRNO~" AS VSRNO  , ' ' as temp       
+FROM ~"PBPUR~".~"PUR101~"
+WHERE ~"PBPUR~".~"PUR101~".~"COMLTD~" = '01'
+ AND ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S'
+ AND ~"PBPUR~".~"PUR101~".~"DIGUBUN~" = 'D'
+ORDER BY 1
+" )
+text(band=header alignment="2" text="업체명" border="0" color="16777215" x="9" y="0" height="60" width="992" html.valueishtml="0"  name=vndnm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체전산번호" border="0" color="16777215" x="1010" y="0" height="60" width="407" html.valueishtml="0"  name=vsrno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체/업체전산번호" border="0" color="16777215" x="1426" y="0" height="60" width="1271" html.valueishtml="0"  name=com_vndnm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="992" format="[general]" html.valueishtml="0"  name=vndnm visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1010" y="0" height="72" width="407" format="[general]" html.valueishtml="0"  name=vsrno visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="1426" y="0" height="72" width="1271" format="[general]" html.valueishtml="0"  name=com_vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,44 @@
+$PBExportHeader$f_chg_kubho_name.srf
+$PBExportComments$과거급호명칭을 현재명칭으로변경
+global type f_chg_kubho_name from function_object
+end type
+
+forward prototypes
+global function string f_chg_kubho_name (string ag_odkubho, string ag_oddate, string ag_odclass)
+end prototypes
+
+global function string f_chg_kubho_name (string ag_odkubho, string ag_oddate, string ag_odclass);//////////////f_chg_kubho_name( odkubho , oddate )
+
+string  ls_rtn , ls_kubho1 , ls_kubho2
+
+ls_kubho1 = mid(ag_odkubho ,1,2)
+ls_kubho2 = mid(ag_odkubho ,3,2)
+if ( ag_oddate >=  '20040101'  ) or &
+   (ls_kubho1 = '63' or ls_kubho1 = '64' or ls_kubho1 = '65' or &
+	 ls_kubho1 = '66' or ls_kubho1 = '69' or ls_kubho1 = '80' or ls_kubho1 = '90' ) then
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 into  :ls_rtn
+    FROM "PBCOMMON"."DAC002"  
+    WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER346' AND
+          "PBCOMMON"."DAC002"."COCODE"  = :ag_odkubho
+	 using sqlcc ;
+	 
+	
+else
+	 choose case ls_kubho1
+		case '69'
+			ls_rtn = '선임' + ls_kubho2
+		case '73'
+			ls_rtn = '지도' + ls_kubho2
+		case '72'
+			ls_rtn = '전문' + ls_kubho2
+		case '71'
+			ls_rtn = '일반' + ls_kubho2
+		case else
+			ls_rtn = ag_odkubho
+	end choose
+end if
+
+return  ls_rtn
+end function
+

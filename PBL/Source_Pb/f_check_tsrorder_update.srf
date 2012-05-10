@@ -1,0 +1,49 @@
+$PBExportHeader$f_check_tsrorder_update.srf
+global type f_check_tsrorder_update from function_object
+end type
+
+forward prototypes
+global function string f_check_tsrorder_update (string fs_srno, integer fs_qty, transaction fs_transaction)
+end prototypes
+
+global function string f_check_tsrorder_update (string fs_srno, integer fs_qty, transaction fs_transaction);string 		ls_return
+integer	ln_count,ln_qty
+
+select shipremainqty into :ln_qty	from tsrorder
+	where	srno	=	:fs_srno	 
+using	fs_transaction	;
+if	ln_qty	>	fs_qty	then
+	return	'해당 S/R의 출하잔량이 요청수량보다 작습니다'
+end if
+
+ln_qty	=	0
+
+String		ls_applydate_close
+DateTime	ld_nowtime
+
+Select Top 1 GetDate() Into :ld_nowtime From sysusers Using fs_transaction ;
+
+DECLARE get_applydate_close PROCEDURE for sp_pisc_get_applydate_close
+@ps_areacode = '%',
+@ps_divisioncode = '%',
+@pdt_sourcedate = :ld_nowtime,
+@rs_applydate = '1' output
+Using fs_transaction;
+
+//exactly the parameters in the sp.
+EXECUTE get_applydate_close;
+
+//then fetch output parameters.
+FETCH get_applydate_close into :ls_applydate_close;
+CLOSE get_applydate_close;
+
+select sum(truckloadqty) into :ln_qty	from tloadplan
+	where	srno	=	:fs_srno	and	truckno	is	null	and	shipplandate	>=	:ls_applydate_close
+using	fs_transaction	;
+if	ln_qty	>	fs_qty	then
+	return	'해당 S/R은 이미 상차계획이 완료된 건입니다'
+end if
+
+return ''
+end function
+

@@ -1,0 +1,67 @@
+$PBExportHeader$f_pisc_retrieve_dddw_workcenter.srf
+$PBExportComments$dddw을 조회하는 함수 - 조
+global type f_pisc_retrieve_dddw_workcenter from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_retrieve_dddw_workcenter (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_workcenter, boolean fb_allflag, ref string rs_workcenter, ref string rs_workcentername)
+end prototypes
+
+global subroutine f_pisc_retrieve_dddw_workcenter (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_workcenter, boolean fb_allflag, ref string rs_workcenter, ref string rs_workcentername);/*
+	Function		:	f_pisc_retrieve_dddw_workcenter
+	Access		:	public
+	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+						string			fs_areacode				조회하고자 하는 지역
+						string			fs_divisioncode		조회하고자 하는 공장 코드
+						string			fs_workcenter			조회하고자 하는 조 코드 (일반적으로 '%' 을 사용하도록)
+						boolean			fb_allflag				조회된 조 정보가 2개 이상의 Record 일 경우
+																		True : '전체' 항목 삽입 (조코드는 '%', 조명은 '전체')
+																		False : '전체' 항목 미 삽입
+						string			rs_workcenter		선택된 조 코드 (reference)
+						string			rs_workcentername	선택된 조 명 (reference)
+	Returns		: none
+	Description	: 조을 선택하기 위한 DDDW 을 조회하기 위하여
+   Company		: DAEWOO Information System Co., Ltd. IAS
+   Author		: Kim Jin-Su
+   Coded Date	: 2002.09.04
+*/
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode, fs_workcenter)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_workcenter = ''
+		rs_workcentername = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_workcenter		= Trim(ldwc_1.GetItemString(1, 'workcenter'))
+		rs_workcentername	= Trim(ldwc_1.GetItemString(1, 'workcentername'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_workcenter)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'workcentername', 30)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_workcenter		= Trim(ldwc_1.GetItemString(1, 'workcenter'))
+			rs_workcentername	= Trim(ldwc_1.GetItemString(1, 'workcentername'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_workcenter)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'workcentername', 30)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'workcenter', 'ALL')
+			ldwc_1.Setitem(1, 'workcentername', '전체')
+	//		ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_workcenter = '%'
+			rs_workcentername = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'workcentername', 30)
+		End If
+	End If
+End If
+end subroutine
+

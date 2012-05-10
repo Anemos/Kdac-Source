@@ -1,0 +1,46 @@
+$PBExportHeader$f_get_h108cnt.srf
+$PBExportComments$영세율 count 가져오기
+global type f_get_h108cnt from function_object
+end type
+
+forward prototypes
+global function decimal f_get_h108cnt (string ag_company, string ag_wkcd, string ag_fdt, string ag_tdt, string ag_area, string ag_gubun)
+end prototypes
+
+global function decimal f_get_h108cnt (string ag_company, string ag_wkcd, string ag_fdt, string ag_tdt, string ag_area, string ag_gubun);int l_n_count
+dec l_n_fornamt, l_n_orgamt
+
+ SELECT  count(*) ,  
+         sum( "PBACC"."ACC100"."SLFORNAMT" ) ,
+			sum( "PBACC"."ACC100"."SLORIGAMT" )   
+			into  :l_n_count,:l_n_fornamt,:l_n_orgamt
+    FROM "PBACC"."ACC100"  
+   WHERE ( "PBACC"."ACC100"."COMLTD" = :ag_company ) AND  
+         ( "PBACC"."ACC100"."SLAREA" = :ag_wkcd ) AND  
+         ( "PBACC"."ACC100"."SLACDATE" between :ag_fdt  and :ag_tdt ) AND  
+         ( "PBACC"."ACC100"."SLDIV" = 'DA' ) AND  
+         ( "PBACC"."ACC100"."SLACCODE" ='H1080104' ) AND  
+         ( "PBACC"."ACC100"."SLDRCR" = '2' ) AND  
+         ( "PBACC"."ACC100"."SLOSSTS" <> '1' )    and 
+         (SUBSTR("PBACC"."ACC100"."SLMANAGE1",1,1) = :ag_area)
+using sqlca;
+
+if sqlca.sqlcode <> 0 or (isnull(l_n_fornamt) and isnull(l_n_orgamt)) then
+
+	l_n_count =0
+	l_n_fornamt=0
+	l_n_orgamt=0
+end if 
+
+if ag_gubun = 'C' then
+	return l_n_count
+elseif ag_gubun ='F' then
+	return l_n_fornamt
+elseif ag_gubun ='O' then
+	return l_n_orgamt
+else
+	return 0
+end if 
+ 
+end function
+

@@ -1,0 +1,101 @@
+$PBExportHeader$d_pism_routing_miss.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 2 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=104 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tmhwcitem_areacode dbname="TMHWCITEM.AreaCode" )
+ column=(type=char(15) updatewhereclause=yes name=tmstarea_areaname dbname="TMSTAREA.AreaName" )
+ column=(type=char(1) updatewhereclause=yes name=tmhwcitem_divisioncode dbname="TMHWCITEM.DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=tmstdivision_divisionname dbname="TMSTDIVISION.DivisionName" )
+ column=(type=char(5) updatewhereclause=yes name=tmhwcitem_workcenter dbname="TMHWCITEM.WorkCenter" )
+ column=(type=char(30) updatewhereclause=yes name=tmstworkcenter_workcentername dbname="TMSTWORKCENTER.WorkCenterName" )
+ column=(type=char(1) updatewhereclause=yes name=tmstworkcenter_workcentergubun1 dbname="TMSTWORKCENTER.WorkcenterGubun1" )
+ column=(type=char(1) updatewhereclause=yes name=tmstworkcenter_workcentergubun2 dbname="TMSTWORKCENTER.WorkCenterGubun2" )
+ column=(type=char(12) updatewhereclause=yes name=tmhwcitem_itemcode dbname="TMHWCITEM.ItemCode" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.Itemname" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemspec dbname="TMSTITEM.ItemSpec" )
+ column=(type=char(7) updatewhereclause=yes name=tmhwcitem_sublinecode dbname="TMHWCITEM.subLineCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmhwcitem_sublineno dbname="TMHWCITEM.subLineNo" )
+ column=(type=decimal(0) updatewhereclause=yes name=tmhwcitem_seq dbname="TMHWCITEM.Seq" )
+ column=(type=char(30) updatewhereclause=yes name=tmhwcitem_wcitemgroup dbname="TMHWCITEM.wcItemGroup" )
+ column=(type=char(1) updatewhereclause=yes name=tmhwcitem_useflag dbname="TMHWCITEM.UseFlag" )
+ column=(type=char(6) updatewhereclause=yes name=tmhwcitem_lastemp dbname="TMHWCITEM.LastEmp" )
+ column=(type=datetime updatewhereclause=yes name=tmhwcitem_lastdate dbname="TMHWCITEM.LastDate" )
+ retrieve="  SELECT A.AreaCode,   
+			C.AreaName, 
+         A.DivisionCode,   
+			D.DivisionName, 
+         A.WorkCenter,   
+			B.WorkCenterName, 
+			B.WorkcenterGubun1,	
+			B.WorkCenterGubun2, 
+         A.ItemCode,   
+			E.Itemname, 
+			E.ItemSpec, 
+         A.subLineCode,   
+         A.subLineNo,   
+         A.Seq,   
+         A.wcItemGroup,   
+         A.UseFlag,   
+         A.LastEmp,   
+         A.LastDate  
+    FROM TMHWCITEM A, 
+			TMSTWORKCENTER B, 
+			TMSTAREA C,
+			TMSTDIVISION D, 
+			TMSTITEM	E 
+ Where ( A.AreaCode *= B.Areacode ) And 
+		 ( A.DivisionCode *= B.DivisionCode ) And 
+		 ( A.Workcenter *= B.WorkCenter ) And   
+		 ( A.AreaCode = C.Areacode ) And 
+		 ( A.Areacode = D.AreaCode ) And 
+		 ( A.DivisionCode = D.DivisionCode ) And 
+		 ( A.itemCode = E.ItemCode ) And 
+		Not Exists ( SELECT AreaCode,   
+										DivisionCode,   
+										WorkCenter,   
+										ApplyDate,   
+										ItemCode,   
+										SubLineCode,   
+										SubLineNo  
+								 FROM TMSTROUTING
+								WHERE ( AreaCode = A.AreaCode ) AND  
+										( DivisionCode = A.DivisionCode ) AND  
+										( WorkCenter = A.WorkCenter ) AND  
+										( ItemCode = A.ItemCode ) AND  
+										( SubLineCode = A.SubLineCode ) AND  
+										( SubLineNo = A.SubLineNo ) ) AND  
+/*   									( ApplyDate = ( SELECT max(ApplyDate)  
+															 FROM VROUTBASICTIME 
+															WHERE ( AreaCode = A.AreaCode ) AND  
+															 ( DivisionCode = A.DivisionCode ) AND  
+															 ( WorkCenter = A.WorkCenter ) AND  
+													  ( ItemCode = A.ItemCode ) And 
+													  ( subLineCode = A.subLineCode ) And
+													  ( subLineNo = A.subLineNo ) And 
+													  ( ApplyDate <= '2002.12.16' ) ) ) ) And */
+		 A.useFlag <> '3'  "  sort="tmhwcitem_workcenter A tmhwcitem_wcitemgroup A tmhwcitem_itemcode A tmhwcitem_sublinecode A tmhwcitem_sublineno A " )
+group(level=1 header.height=84 trailer.height=0 by=("tmhwcitem_workcenter" ) header.color="536870912" trailer.color="536870912" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="489" y="20" height="60" width="480" format="[general]" html.valueishtml="0"  name=tmstdivision_divisionname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="20" height="60" width="480" format="[general]" html.valueishtml="0"  name=tmstarea_areaname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header.1 id=5 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="76" width="238" format="[general]" html.valueishtml="0"  name=tmhwcitem_workcenter visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=header.1 x1="5" y1="76" x2="3323" y2="76"  name=l_2 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=header.1 id=6 alignment="0" tabsequence=32766 border="0" color="0" x="320" y="4" height="76" width="850" format="[general]" html.valueishtml="0"  name=tmstworkcenter_workcentername visible="1" edit.limit=30 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header.1 id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1243" y="4" height="76" width="64" format="[general]" html.valueishtml="0"  name=tmstworkcenter_workcentergubun1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header.1 id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1353" y="4" height="76" width="78" format="[general]" html.valueishtml="0"  name=tmstworkcenter_workcentergubun2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=header.1 x1="5" y1="0" x2="3323" y2="0"  name=l_3 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="76" width="850" format="[general]" html.valueishtml="0"  name=tmhwcitem_wcitemgroup visible="1" edit.limit=30 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="3017" y="4" height="76" width="219" format="[general]" html.valueishtml="0"  name=tmhwcitem_sublinecode visible="1" edit.limit=7 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="3269" y="4" height="76" width="55" format="[general]" html.valueishtml="0"  name=tmhwcitem_sublineno visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="887" y="4" height="76" width="361" format="[general]" html.valueishtml="0"  name=tmhwcitem_itemcode visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="1266" y="4" height="76" width="846" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2130" y="4" height="76" width="864" format="[general]" html.valueishtml="0"  name=tmstitem_itemspec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="tmhwcitem_wcitemgroup")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,7 @@
+$PBExportHeader$s_gms_rtnsort.srs
+$PBExportComments$정열리턴 Structure
+global type s_gms_rtnsort from structure
+	string		rtnsort
+	string		dspsort
+end type
+

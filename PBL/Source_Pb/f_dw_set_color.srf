@@ -1,0 +1,44 @@
+$PBExportHeader$f_dw_set_color.srf
+$PBExportComments$datawindow column의 색을 설정
+global type f_dw_set_color from function_object
+end type
+
+forward prototypes
+global subroutine f_dw_set_color (datawindow adw_1, string as_column, string as_expression, long al_color_true, long al_color_false)
+end prototypes
+
+global subroutine f_dw_set_color (datawindow adw_1, string as_column, string as_expression, long al_color_true, long al_color_false);///////////////////////////////////////////////////////////////////////
+//
+//    Function: f_dw_set_color
+//
+//     Purpose: column의 글자색을 특정 평가식(조건식)에 따라 바꾸고 
+//					 싶을때.
+//
+//   Arguments:  adw_1     		- 대상 Datawindow
+//               as_column     	- 대상 column name
+//               as_expression 	- column의 색을 결정할 평가식
+//               al_color_true   - 평가식의 결과가 true일때의 색
+//               al_color_false  - 평가식의 결과가 false일때의 색
+//
+//     Returns:  [none]
+//
+// Log : 
+//
+//   DATE         WHO        WHAT
+//  --------     -----      -------------------------------------------
+//
+////////////////////////////////////////////////////////////////////////
+STRING	ls_txt
+STRING	ls_resp
+
+//조건식을 column에다 적용한다
+ls_txt = as_column + ".color = ~"0~~t if(" + as_expression + "," + &
+						String(al_color_true) + "," + String(al_color_false) + ")~""
+
+ls_resp = adw_1.Modify(ls_txt)
+
+IF ls_resp <> "" THEN 
+	Messagebox("f_dw_set_color",ls_resp + "~r~n" + ls_txt)
+END IF
+end subroutine
+

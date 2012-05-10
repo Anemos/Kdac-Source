@@ -1,0 +1,56 @@
+$PBExportHeader$f_pur041_setacc023.srf
+$PBExportComments$경리업체등록및수정(ACC023)
+global type f_pur041_setacc023 from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setacc023 (string as_vndr, string as_prnm, string as_addr)
+end prototypes
+
+global function integer f_pur041_setacc023 (string as_vndr, string as_prnm, string as_addr);//f_pur041_setacc023 : acc023_update (대표자명, 주소) : extend db
+
+long ll_row
+as_vndr = trim(as_vndr)	//2009.01.16
+
+//경리업체 존재여부 체크
+  SELECT count(*)
+  INTO :ll_row  
+  FROM "PBACC"."ACC023"  
+  WHERE "PBACC"."ACC023"."COMLTD" = '01' 
+    and "PBACC"."ACC023"."CUCODE" = :as_vndr 
+  USING SQLCA;
+  
+ //if isnull(ll_row) = false and ll_row > 0 then
+IF ll_row > 0 then  //2009.01.16
+  
+	  UPDATE "PBACC"."ACC023"  
+     SET "CUREPNAME" = :as_prnm,   
+         "CUADDR"    = :as_addr  
+	  WHERE "PBACC"."ACC023"."COMLTD" = '01' and 
+	        "PBACC"."ACC023"."CUCODE" = :as_vndr   
+     USING SQLCA;
+	  //2009.01.16
+	  if SQLCA.SQLCODE <> 0 OR SQLCA.SQLNROWS <= 0 THEN	
+			messagebox('확인','경리업체EXTEND(ACC023) 수정중 오류발생, 연락주세요! [에러내용 : ' + string(sqlca.sqlerrtext) +' ]')
+			RETURN -1
+	  end if
+	  //END : 2009.01.16		
+Else
+
+	INSERT INTO "PBACC"."ACC023"  
+				( "COMLTD",			    "CUCODE",              "CUREPNAME",              "CUADDR"			)   
+	VALUES ( '01',          
+				:as_vndr,              
+				:as_prnm,              
+				:as_addr   
+				  ) USING SQLCA ;
+	//if sqlca.sqlcode <> 0 then
+	if SQLCA.SQLCODE <> 0 OR SQLCA.SQLNROWS <= 0 THEN	//2009.01.16
+		messagebox('확인','경리업체EXTEND정보(ACC023) 입력오류! 급히 연락바랍니다!  ~r~n[에러내용 : ' + string(sqlca.sqlerrtext) +' ]' ,Exclamation!)
+		return -1
+	end if
+End IF
+
+return 1
+end function
+

@@ -1,0 +1,56 @@
+$PBExportHeader$f_relative_date_per.srf
+$PBExportComments$날짜간개월수(frdt, todt) return 00-년 00-개월 00-일
+global type f_relative_date_per from function_object
+end type
+
+forward prototypes
+global function string f_relative_date_per (string as_frdt, string as_todt)
+end prototypes
+
+global function string f_relative_date_per (string as_frdt, string as_todt);///////////////////////////////////////////////////////////
+//  날짜간 년,개월,일수를 계산
+// from : 2008-04-01 ~ to:2009-05-02
+//  1년 1개월 1일 : 010101 를 Return..
+////////////////////////////////////////////////////////////
+Integer li_day, li_month, li_frday, li_today, li_year
+
+if as_frdt > as_todt then
+	return ''
+End if
+
+li_frday = dec(Mid(as_frdt,7,2))
+li_today = dec(Mid(as_todt,7,2))
+
+if li_frday > li_today  then
+	li_day     = DaysAfter(date(string(uf_add_month(mid(as_todt,1,6), -1)+mid(as_frdt,7,2), '@@@@-@@-@@')), date(string( as_todt,'@@@@-@@-@@')))
+	li_month   = dec(Mid(as_todt,1,4))*12 + dec(Mid(as_todt,5,2)) -1 - ( dec(Mid(as_frdt,1,4))*12 + dec(Mid(as_frdt,5,2)))
+else
+	li_day     = li_today - li_frday
+	li_month   = dec(Mid(as_todt,1,4))*12 + dec(Mid(as_todt,5,2)) - ( dec(Mid(as_frdt,1,4))*12 + dec(Mid(as_frdt,5,2)))
+End if
+
+if li_month >= 12 then
+	li_year = truncate(li_month / 12,0)
+	li_month = Mod( li_month , 12 )
+end if
+
+return string(li_year,'00')+string(li_month,'00') + string(li_day,'00')
+
+//ls_yyyy = Left(as_yymm,4)
+//ls_mm   = Mid(as_yymm,5,2)
+//
+//li_add_mm   = Mod(al_mm,  12)    //Add 월
+//li_add_yyyy = Int(Truncate(al_mm / 12, 0)) + Int((Dec(ls_mm) + li_add_mm) / 12)    //Add 년
+//ls_yyyy     = String(Dec(ls_yyyy) + li_add_yyyy)                     //계산된 년
+//ls_mm       = String(Mod((Dec(ls_mm) + li_add_mm) , 12), '00')       //계산된 월
+//
+//IF ls_mm   = '00' THEN
+//	ls_mm   = '12'
+//	ls_yyyy = String(Dec(ls_yyyy) - 1)
+//END IF
+//ls_date     = ls_yyyy + ls_mm
+//Return ls_date
+
+//DaysAfter(2003-12-29, 2004-01-03)
+end function
+

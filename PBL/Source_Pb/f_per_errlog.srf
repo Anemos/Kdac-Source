@@ -1,0 +1,63 @@
+$PBExportHeader$f_per_errlog.srf
+$PBExportComments$System error log를 가져온다.(cud, functname, etc-errortext)
+global type f_per_errlog from function_object
+end type
+
+forward prototypes
+global subroutine f_per_errlog (string ag_chgcd, string ag_funname, string ag_etc)
+end prototypes
+
+global subroutine f_per_errlog (string ag_chgcd, string ag_funname, string ag_etc);///////////////////////////////////////////////
+//					인사급여 에러 로그~             //
+///////////////////////////////////////////////
+string ls_winid, ls_errtext, ls_chgcd, ls_etc
+long ll_row, ll_row2
+Window lw_sheet
+
+lw_Sheet = w_frame.GetActiveSheet( )
+//string(lw_Sheet.classname( ))
+ls_winid = ClassName(lw_Sheet) 
+
+ls_errtext = sqlcc.sqlerrtext
+ls_etc = ag_etc
+
+if len(ls_errtext) > 240 then
+	ll_row = len(ls_errtext)
+	Do while true 
+		if ll_row <= 240 then
+			exit
+		end if
+		if asc(mid(ls_errtext,ll_row,1)) >= 161 then  //두바이트문자다 2byte shift 이동
+			ll_row = ll_row - 2
+		else
+			ll_row = ll_row - 1
+		end if
+	Loop
+	ls_errtext = mid(ls_errtext,1,ll_row)
+end if
+
+if len(ls_etc) > 450 then
+	ll_row2 = len(ls_etc)
+	Do while true 
+		if ll_row2 <= 450 then
+			exit
+		end if
+		if asc(mid(ls_etc,ll_row2,1)) >= 161 then  //두바이트문자다 2byte shift 이동
+			ll_row2 = ll_row2 - 2
+		else
+			ll_row2 = ll_row2 - 1
+		end if
+	Loop
+	ls_etc = mid(ls_etc,1,ll_row2)
+end if
+
+
+ls_chgcd = upper(ag_chgcd)
+
+INSERT INTO PBPER.PERERRLOG (CHGDATE, CHGCD, WINID, FUNNAME, ERRTXT, 
+		ETC, EMPNO, STCD, IPADDR, MACADDR)
+	VALUES (CHAR(CURRENT TIMESTAMP), :ls_chgcd, :ls_winid, :ag_funname, :ls_errtext, 
+		:ls_etc, :g_s_empno, 'I', :g_s_ipaddr, :g_s_macaddr )
+using sqlcc;
+end subroutine
+

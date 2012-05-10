@@ -1,0 +1,42 @@
+$PBExportHeader$d_pisq131i_03.srd
+$PBExportComments$수입검사 불량율(EXCEL DOWN-수량별)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tqqcresult_areacode dbname="TQQCRESULT.AREACODE" )
+ column=(type=char(5) updatewhereclause=yes name=tqqcresult_suppliercode dbname="TQQCRESULT.SUPPLIERCODE" )
+ column=(type=char(50) updatewhereclause=yes name=tmstsupplier_supplierkorname dbname="TMSTSUPPLIER.SUPPLIERKORNAME" )
+ column=(type=long updatewhereclause=yes name=inqty dbname="InQty" )
+ column=(type=long updatewhereclause=yes name=badqty dbname="BadQty" )
+ column=(type=decimal(2) updatewhereclause=yes name=badrate dbname="BadRate" )
+ retrieve="SELECT A.AREACODE,A.SUPPLIERCODE,B.SUPPLIERKORNAME,
+InQty		= isnull(sum(A.SUPPLIERDELIVERYQTY), 0)	,
+BadQty		= isnull(sum(A.BADQTY), 0)				,
+BadRate		= cast(isnull((cast(SUM(A.BADQTY) as float) / cast(sum(A.SUPPLIERDELIVERYQTY) as float)) * 100, 0) as numeric(15,2))
+FROM TQQCRESULT A left outer join tmstsupplier B
+	on A.suppliercode = B.suppliercode
+WHERE A.AREACODE      =  :ag_area
+  AND A.DIVISIONCODE  =  :ag_division
+  AND A.QCDATE        >= :ag_fromdt
+	AND A.QCDATE        <= :ag_todt
+GROUP BY A.AREACODE,A.SUPPLIERCODE,B.SUPPLIERKORNAME
+ORDER BY (cast(SUM(A.BADQTY) as float) / cast(sum(A.SUPPLIERDELIVERYQTY) as float)) * 100   DESC, A.SUPPLIERCODE" arguments=(("ag_area", string),("ag_division", string),("ag_fromdt", string),("ag_todt", string)) )
+text(band=header alignment="2" text="업체코드" border="0" color="16777215" x="9" y="4" height="60" width="288" html.valueishtml="0"  name=tqqcresult_suppliercode_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체명" border="0" color="16777215" x="306" y="4" height="60" width="983" html.valueishtml="0"  name=tmstsupplier_supplierkorname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="입고" border="0" color="16777215" x="1298" y="4" height="60" width="247" html.valueishtml="0"  name=inqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="불량" border="0" color="16777215" x="1554" y="4" height="60" width="288" html.valueishtml="0"  name=badqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="불량율" border="0" color="16777215" x="1851" y="4" height="60" width="430" html.valueishtml="0"  name=badrate_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="68" width="288" format="[general]" html.valueishtml="0"  name=tqqcresult_suppliercode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="306" y="4" height="68" width="983" format="[general]" html.valueishtml="0"  name=tmstsupplier_supplierkorname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1298" y="4" height="68" width="247" format="[general]" html.valueishtml="0"  name=inqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1554" y="4" height="68" width="288" format="[general]" html.valueishtml="0"  name=badqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1851" y="4" height="68" width="430" format="[general]" html.valueishtml="0"  name=badrate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

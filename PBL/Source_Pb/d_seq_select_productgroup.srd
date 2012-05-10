@@ -1,0 +1,24 @@
+$PBExportHeader$d_seq_select_productgroup.srd
+$PBExportComments$dddw을 위한 제품군 조회
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 grid.columnmove=no selected.mouse=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no name=divisioncode dbname="DivisionCode" )
+ column=(type=char(20) updatewhereclause=no name=divisionname dbname="DivisionName" )
+ column=(type=char(2) updatewhereclause=no name=productgroup dbname="ProductGroup" )
+ column=(type=char(100) updatewhereclause=no name=productname dbname="ProductName" )
+ column=(type=char(100) updatewhereclause=no name=displayname dbname="DisplayName" )
+ procedure="1 execute dbo.sp_seq_select_productgroup;1 @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_productgroup = :ps_productgroup" arguments=(("ps_areacode", string),("ps_divisioncode", string),("ps_productgroup", string)) )
+text(band=header alignment="2" text="공장" border="6" color="8388608" x="9" y="12" height="56" width="462" html.valueishtml="0"  name=obj_7450440 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="제품군" border="6" color="8388608" x="480" y="12" height="56" width="270" html.valueishtml="0"  name=productgroup_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="제품군 명" border="6" color="8388608" x="759" y="12" height="56" width="768" html.valueishtml="0"  name=productgroupname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="16711680" x="480" y="4" height="56" width="270" format="[general]" html.valueishtml="0"  name=productgroup visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="759" y="4" height="56" width="768" format="[general]" html.valueishtml="0"  name=productname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="56" width="462" format="[general]" html.valueishtml="0"  name=divisionname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+
+sparse(names="divisionname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

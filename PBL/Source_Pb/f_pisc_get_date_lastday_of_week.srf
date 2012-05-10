@@ -1,0 +1,34 @@
+$PBExportHeader$f_pisc_get_date_lastday_of_week.srf
+$PBExportComments$일자가 속하는 주의 일요일을 구한다. (arg string 'YYYY.MM.DD', ref string 'YYYY.MM.DD'm return boolean)
+global type f_pisc_get_date_lastday_of_week from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_get_date_lastday_of_week (string fs_date, ref string rs_applydate)
+end prototypes
+
+global function boolean f_pisc_get_date_lastday_of_week (string fs_date, ref string rs_applydate);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_lastday_of_week
+//	Access		: public
+//	Arguments	: String fs_date (Format:"YYYY.MM.DD")
+//					  String ref rs_applydate (Format:"YYYY.MM.DD")
+// Returns		: Boolean
+//	Description	: Get Last Day of Week (firstday is Sunday)
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lim Jae-Keun
+// Coded Date	: 1999. 01. 09
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Date		ld_date
+
+If IsDate(fs_date) Then
+	ld_date = Date(fs_date)
+	ld_date = RelativeDate(ld_date, (DayNumber(ld_date) + 4 ))
+	rs_applydate = String(ld_date, 'YYYY.MM.DD')
+	
+	Return True
+Else
+	Return False
+End If
+end function
+

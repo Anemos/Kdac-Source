@@ -1,0 +1,55 @@
+$PBExportHeader$d_pisr050b_06.srd
+$PBExportComments$간판별 발행 조정 Dw
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=136 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(11) updatewhereclause=yes name=partkbno dbname="PartKBNo" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=yes name=suppliercode dbname="SupplierCode" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(1) updatewhereclause=yes name=reprintflag dbname="RePrintFlag" )
+ column=(type=char(1) updatewhereclause=yes name=partkbgubun dbname="PartKBGubun" values="정규	N/임시	T/" )
+ column=(type=char(1) updatewhereclause=yes name=kbactivegubun dbname="KBActiveGubun" )
+ column=(type=char(1) updatewhereclause=yes name=partkbstatus dbname="PartKBStatus" )
+ column=(type=long updatewhereclause=yes name=rackqty dbname="RackQty" )
+ column=(type=datetime updatewhereclause=yes name=partordertime dbname="PartOrderTime" )
+ column=(type=datetime updatewhereclause=yes name=partforecasttime dbname="PartForeCastTime" )
+ column=(type=datetime updatewhereclause=yes name=partreceipttime dbname="PartReceiptTime" )
+ column=(type=datetime updatewhereclause=yes name=partincometime dbname="PartIncomeTime" )
+ column=(type=char(1) updatewhereclause=yes name=orderchangeflag dbname="OrderChangeFlag" )
+ column=(type=datetime updatewhereclause=yes name=changeforecasttime dbname="ChangeForeCastTime" )
+ column=(type=char(1) updatewhereclause=yes name=prkbchk dbname="prkbChk" values="	Y/	N" )
+ procedure="1 execute dbo.sp_pisr050b_06;1 @ps_areaCode = :ps_areaCode, @ps_divCode = :ps_divCode, @ps_suppCode = :ps_suppCode, @ps_itemCode = :ps_itemCode, @as_rePrFlag = :as_rePrFlag" arguments=(("ps_areaCode", string),("ps_divCode", string),("ps_suppCode", string),("ps_itemCode", string),("as_rePrFlag", string)) )
+text(band=header alignment="2" text="
+간판번호" border="0" color="16777215" x="9" y="8" height="120" width="379" html.valueishtml="0"  name=partkbno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="간판
+구분" border="0" color="16777215" x="823" y="8" height="120" width="183" html.valueishtml="0"  name=partkbgubun_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="운용
+구분" border="0" color="16777215" x="1015" y="8" height="120" width="178" html.valueishtml="0"  name=kbactivegubun_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="수용
+수" border="0" color="16777215" x="398" y="8" height="120" width="238" html.valueishtml="0"  name=rackqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="납입
+일자/시간" border="0" color="16777215" x="2299" y="8" height="120" width="539" html.valueishtml="0"  name=partreceipttime_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고
+일자/시간" border="0" color="16777215" x="2848" y="8" height="120" width="549" html.valueishtml="0"  name=partincometime_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="출력
+선택" border="0" color="16777215" x="645" y="8" height="120" width="169" html.valueishtml="0"  name=prkbchk_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="발주
+일자/시간" border="0" color="16777215" x="1202" y="8" height="120" width="539" html.valueishtml="0"  name=partordertime_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="납입예정
+일자/시간" border="0" color="16777215" x="1751" y="8" height="120" width="539" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="379" format="[general]" html.valueishtml="0"  name=partkbno visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="823" y="8" height="76" width="183" format="[general]" html.valueishtml="0"  name=partkbgubun visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="1015" y="8" height="76" width="178" format="[general]" html.valueishtml="0"  name=kbactivegubun visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=10 border="5" color="0" x="398" y="8" height="76" width="238" format="#,##0" html.valueishtml="0" protect="0~tif( (partkbgubun = 'N' or  kbactivegubun = 'A'), 1, 0)"  name=rackqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="536870912~tif( partkbgubun = 'N' or  kbactivegubun = 'A', RGB(192,192,192), RGB(255,255,255) )" )
+column(band=detail id=16 alignment="2" tabsequence=20 border="0" color="0" x="645" y="8" height="76" width="169" format="[general]" html.valueishtml="0"  name=prkbchk visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="2299" y="8" height="76" width="539" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=partreceipttime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="0" x="2848" y="8" height="76" width="549" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=partincometime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="1202" y="8" height="76" width="539" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=partordertime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression="if( orderchangeflag = 'Y',  changeforecasttime ,  partforecasttime )"border="0" color="0" x="1751" y="8" height="76" width="539" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=compute_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

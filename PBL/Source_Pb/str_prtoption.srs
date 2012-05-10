@@ -1,0 +1,8 @@
+$PBExportHeader$str_prtoption.srs
+$PBExportComments$¿Œº‚ Option
+global type str_prtoption from structure
+	datawindow		datawindow
+	string		page
+	transaction		transaction
+end type
+

@@ -1,0 +1,35 @@
+$PBExportHeader$dddw_vndnm_tms2.srd
+$PBExportComments$업체 ( 주관부서/품번 - 품목단가 DB ) - (양산품) - 사용중
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+summary(height=8 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(8) updatewhereclause=yes name=pur103_vsrno dbname="PUR103.VSRNO" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(10) updatewhereclause=yes name=pur101_vndr dbname="PUR101.VNDR" )
+ column=(type=char(12) updatewhereclause=yes name=pur103_itno dbname="PUR103.ITNO" )
+ column=(type=char(19) updatewhereclause=yes name=updtdt dbname="PUR103.UPDTDT" )
+ retrieve="  SELECT ~"PBPUR~".~"PUR103~".~"VSRNO~",
+         ~"PBPUR~".~"PUR101~".~"VNDNM~",   
+         ~"PBPUR~".~"PUR101~".~"VNDR~",   
+         ~"PBPUR~".~"PUR103~".~"ITNO~" ,
+ 			~"PBPUR~".~"PUR103~".~"UPDTDT~" 
+    FROM ~"PBPUR~".~"PUR103~",   
+         ~"PBPUR~".~"PUR101~"  
+   WHERE ( ~"PBPUR~".~"PUR103~".~"COMLTD~" = ~"PBPUR~".~"PUR101~".~"COMLTD~" ) and  
+         ( ~"PBPUR~".~"PUR103~".~"VSRNO~" = ~"PBPUR~".~"PUR101~".~"VSRNO~" ) and  
+			( ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S' ) AND 
+			( ~"PBPUR~".~"PUR101~".~"DIGUBUN~" = 'D' ) AND 
+         ( ( ~"PBPUR~".~"PUR103~".~"VSRC~" = 'D' ) AND
+			( ~"PBPUR~".~"PUR103~".~"XSTOP~" = 'O' ) AND 
+         ( ~"PBPUR~".~"PUR103~".~"DEPT~"  = 'P' ) AND  
+         ( ~"PBPUR~".~"PUR103~".~"ITNO~" = :ag_itno ) )    
+	ORDER BY 5 DESC" arguments=(("ag_itno", string)) )
+text(band=header alignment="0" text="Pur103 Vsrno" border="0" color="0" x="9" y="4" height="60" width="279" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pur101 Vndnm" border="0" color="0" x="297" y="4" height="60" width="873" html.valueishtml="0"  name=pur101_vndnm_t visible="1"  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="6" color="0" x="9" y="0" height="68" width="279" format="[general]" html.valueishtml="0"  name=pur103_vsrno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="32571391" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="6" color="0" x="297" y="0" height="68" width="873" format="[general]" html.valueishtml="0"  name=pur101_vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="32571391" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

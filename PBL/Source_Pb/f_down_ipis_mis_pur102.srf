@@ -1,0 +1,53 @@
+$PBExportHeader$f_down_ipis_mis_pur102.srf
+$PBExportComments$업체-발주관련기본정보 ( PUR102 - TMISPUR102 공통 )
+global type f_down_ipis_mis_pur102 from function_object
+end type
+
+forward prototypes
+global function integer f_down_ipis_mis_pur102 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_down_ipis_mis_pur102 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_vsrno, ls_inside, ls_kbcd, ls_vancd, ls_jscd, ls_xstop
+integer	li_cnt, li_index
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_chgcd = trim(ag_dwo.getitemstring(li_cnt,"chgcd"))
+	ls_vsrno = trim(ag_dwo.getitemstring(li_cnt,"vsrno"))
+	ls_inside = trim(ag_dwo.getitemstring(li_cnt,"inside"))
+	if isnull(ls_inside) then ls_inside = ''
+	ls_kbcd = trim(ag_dwo.getitemstring(li_cnt,"kbcd"))
+	if isnull(ls_kbcd) then ls_kbcd = ''
+	ls_vancd = trim(ag_dwo.getitemstring(li_cnt,"vancd"))
+	if isnull(ls_vancd) then ls_vancd = ''
+	ls_jscd = trim(ag_dwo.getitemstring(li_cnt,"jscd"))
+	if isnull(ls_jscd) then ls_jscd = ''
+	ls_xstop = trim(ag_dwo.getitemstring(li_cnt,"xstop"))
+	if isnull(ls_xstop) then ls_xstop = ''
+	SELECT CHAR(CURRENT TIMESTAMP) Into :ls_chgdate FROM PBCOMMON.COMM000 FETCH FIRST 1 ROW ONLY;
+	
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'X')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+	
+	INSERT INTO TMISPUR102(CHGDATE, CHGCD, VSRNO, INSIDE, KBCD, 
+		VANCD, JSCD, XSTOP, STSCD, DOWNDATE)
+	VALUES ( :ls_chgdate,	:ls_chgcd,	:ls_vsrno,	:ls_inside, :ls_kbcd, 
+		:ls_vancd, :ls_jscd,	:ls_xstop, 'N', getdate())
+	using lstr_ipis.t_sqlpis;
+			
+	if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+		ag_message = "업체발주관련기본정보 생성시에 에러가 발생하였습니다."
+		f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_pur102',&
+			lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if					
+next
+
+return 0
+end function
+

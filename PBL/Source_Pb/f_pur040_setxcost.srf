@@ -1,0 +1,91 @@
+$PBExportHeader$f_pur040_setxcost.srf
+$PBExportComments$발주단가변경(발주,발주개정,품번,개정단가)
+global type f_pur040_setxcost from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_setxcost (string as_purno, string as_srno, string as_itno, decimal ad_xcost, integer ai_step)
+end prototypes
+
+global function integer f_pur040_setxcost (string as_purno, string as_srno, string as_itno, decimal ad_xcost, integer ai_step);////////////////////////////////////////////////
+// : 발주단가변경-발주,오퍼,B/L
+//	 적용:opm302u   
+////////////////////////////////////////////////
+
+dec ld_qty, ld_pamt
+if ai_step = 1 or ai_step = 4 then
+   UPDATE "PBPUR"."OPM102"  
+   SET "XCOST" = :ad_xcost,   
+         "PAMT" = round("PQTY1" * :ad_xcost,2),
+			"UPDTID" = :g_s_empno,
+			"UPDTDT" = :g_s_datetime,
+			"IPADDR" = :g_s_macaddr,
+			"MACADDR" = :g_s_ipaddr
+   WHERE ( "PBPUR"."OPM102"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM102"."PURNO" = :as_purno ) AND  
+         ( "PBPUR"."OPM102"."SRNO" = :as_srno ) AND  
+         ( "PBPUR"."OPM102"."ITNO" = :as_itno )   
+           ;
+	if sqlca.sqlcode <> 0 then
+		messagebox('확인','발주 DETAIL수정중 오류발생:' + as_purno + ':' + as_itno,Exclamation!)
+		return -1
+	end if
+   SELECT sum("PBPUR"."OPM102"."PAMT")  
+   INTO :ld_pamt  
+   FROM "PBPUR"."OPM102"  
+   WHERE ( "PBPUR"."OPM102"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM102"."PURNO" = :as_purno ) AND  
+         ( "PBPUR"."OPM102"."SRNO" = :as_srno )   ;
+   UPDATE "PBPUR"."OPM101"  
+   SET   "PAMT" = :ld_pamt,
+			"UPDTID" = :g_s_empno,
+			"UPDTDT" = :g_s_datetime,
+			"IPADDR" = :g_s_macaddr,
+			"MACADDR" = :g_s_ipaddr
+   WHERE ( "PBPUR"."OPM101"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM101"."PURNO" = :as_purno ) AND  
+         ( "PBPUR"."OPM101"."SRNO" = :as_srno )   ;
+	if sqlca.sqlcode <> 0 then
+		messagebox('확인','발주 HEAD수정중 오류발생:' + as_purno  ,Exclamation!)
+		return -1
+	end if		
+end if
+//offer
+if ai_step = 2 or ai_step = 4 then
+   UPDATE "PBPUR"."OPM104"  
+   SET   "XCOST" = :ad_xcost,   
+         "OFAMT" = round("OFQTY" * :ad_xcost,2),
+			"UPDTID" = :g_s_empno,
+			"UPDTDT" = :g_s_datetime,
+			"IPADDR" = :g_s_macaddr,
+			"MACADDR" = :g_s_ipaddr
+   WHERE ( "PBPUR"."OPM104"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM104"."PURNO" = :as_purno ) AND  
+         ( "PBPUR"."OPM104"."SRNO" = :as_srno ) AND  
+         ( "PBPUR"."OPM104"."ITNO" = :as_itno ) ;
+//	if sqlca.sqlcode <> 0 then
+//		messagebox('확인','OFFER DETAIL수정중 오류발생:' + as_purno + ':' + as_itno,Exclamation!)
+//		return -1
+//	end if		
+end if
+//bl
+if ai_step = 3 or ai_step = 4 then
+   UPDATE "PBPUR"."OPM106"  
+   SET   "FOBAMT" = round(("BLQTY" + "OVQTY") * :ad_xcost,2),
+			"UPDTID" = :g_s_empno,
+			"UPDTDT" = :g_s_datetime,
+			"IPADDR" = :g_s_macaddr,
+			"MACADDR" = :g_s_ipaddr
+   WHERE ( "PBPUR"."OPM106"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM106"."PURNO" = :as_purno ) AND  
+         ( "PBPUR"."OPM106"."SRNO"  = :as_srno ) AND  
+         ( "PBPUR"."OPM106"."ITNO"  = :as_itno ) ;
+//	if sqlca.sqlcode <> 0 then
+//		messagebox('확인','B/L DETAIL수정중 오류발생:' + as_purno + ':' + as_itno,Exclamation!)
+//		return -1
+//	end if		
+end if
+
+Return 0
+end function
+

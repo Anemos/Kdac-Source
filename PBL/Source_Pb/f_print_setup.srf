@@ -1,0 +1,46 @@
+$PBExportHeader$f_print_setup.srf
+$PBExportComments$print ( setting LPI, CPI, LPP )
+global type f_print_setup from function_object
+end type
+
+forward prototypes
+global subroutine f_print_setup (long id, integer lpi, integer cpi, string lpp)
+end prototypes
+
+global subroutine f_print_setup (long id, integer lpi, integer cpi, string lpp);//
+//	f_print_setup	( printer를 setting한다. KS 제어코드 )
+//
+// argument : 	1)	id,		long,		printer id
+//             2)	LPI,		int
+//					3) CPI,		int
+//					4) LPP,		int,		종이 길이 ( line per page )
+//
+
+//
+// LPI
+//
+if	lpi = 6 then
+	PrintSend(id, "~h1B" + "~h32")
+else
+	PrintSend(id, "~h1B" + "~h30")
+end if
+
+// 
+// CPI
+//
+if cpi = 10 then
+	PrintSend(id, "~h1B" + "~h71" + "~h30")
+elseif cpi = 12 then
+	PrintSend(id, "~h1B" + "~h71" + "~h31")
+elseif cpi = 13 then
+	PrintSend(id, "~h1B" + "~h71" + "~h35")
+elseif cpi = 15 then
+	PrintSend(id, "~h1B" + "~h71" + "~h34")
+end if
+
+//
+// Line(page length)
+//
+PrintSend(id, "~h1B"+ "~h43" + lpp)
+end subroutine
+

@@ -1,0 +1,43 @@
+$PBExportHeader$d_bpm001_priitem.srd
+$PBExportComments$주품목 상세정보 데이타오브젝트
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=BPM003_opitn dbname="BPM003.OPITN" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="INV101.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="INV101.SRCE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM003~".~"OPITN~",
+			~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV101~".~"CLS~",   
+         ~"PBINV~".~"INV101~".~"SRCE~"  
+    FROM ~"PBINV~".~"INV101~",
+			~"PBINV~".~"INV002~",   
+         ~"PBBPM~".~"BPM003~"  
+   WHERE ( ~"PBBPM~".~"BPM003~".~"OCMCD~"  = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+			( ~"PBINV~".~"INV101~".~"COMLTD~"  = ~"PBINV~".~"INV002~".~"COMLTD~" ) AND
+			( ~"PBBPM~".~"BPM003~".~"ODVSN~"  = ~"PBINV~".~"INV101~".~"DIV~" ) AND
+			( ~"PBBPM~".~"BPM003~".~"OPLANT~"  = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
+			( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBBPM~".~"BPM003~".~"OPITN~" ) AND 
+			( ~"PBINV~".~"INV002~".~"ITNO~" = ~"PBBPM~".~"BPM003~".~"OPITN~" ) AND
+			( ~"PBINV~".~"INV101~".~"COMLTD~" = '01' ) AND
+			( ~"PBINV~".~"INV101~".~"XPLANT~" = :a_plant ) AND 
+			( ~"PBINV~".~"INV101~".~"DIV~" = :a_whse ) AND
+			( ~"PBINV~".~"INV101~".~"PDCD~" like :a_pdcd ) AND
+         ( ( ~"PBBPM~".~"BPM003~".~"OEDTE~" <> '' and ~"PBBPM~".~"BPM003~".~"OEDTM~" <= ~"PBBPM~".~"BPM003~".~"OEDTE~" and ~"PBBPM~".~"BPM003~".~"OEDTE~" >= :a_date ) or
+           ~"PBBPM~".~"BPM003~".~"OEDTE~" = '' )   
+GROUP BY ~"PBBPM~".~"BPM003~".~"OPITN~",
+			~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV101~".~"CLS~",   
+         ~"PBINV~".~"INV101~".~"SRCE~"  
+ORDER BY ~"PBBPM~".~"BPM003~".~"OPITN~" ASC   
+" arguments=(("a_plant", string),("a_whse", string),("a_pdcd", string),("a_date", string)) )
+text(band=header alignment="2" text="품   번" border="2" color="16777215" x="5" y="4" height="60" width="526" html.valueishtml="0"  name=BPM003_opitn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품   명" border="2" color="16777215" x="535" y="4" height="60" width="741" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="2" color="0" x="5" y="0" height="76" width="526" format="[general]" html.valueishtml="0"  name=BPM003_opitn pointer="HyperLink!" visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="535" y="0" height="76" width="741" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )

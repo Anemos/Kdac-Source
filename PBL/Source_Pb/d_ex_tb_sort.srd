@@ -1,0 +1,16 @@
+$PBExportHeader$d_ex_tb_sort.srd
+$PBExportComments$dw sort
+release 5;
+datawindow(units=0 timer_interval=0 color=81576884 processing=0 print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no )
+header(height=89 color="536870912" )
+summary(height=1 color="536870912" )
+footer(height=1 color="536870912" )
+detail(height=105 color="536870912" )
+table(column=(type=char(255) updatewhereclause=yes name=col dbname="col" initial="" )
+ column=(type=char(1) updatewhereclause=yes name=direction dbname="direction" initial="A" values="오름차순	A/내림차순	D/" )
+ )
+text(band=header alignment="2" text="정렬 항목"border="6" color="0" x="10" y="8" height="73" width="1093"  name=col_t  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="-127" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="정렬방법"border="6" color="0" x="1125" y="8" height="73" width="782"  name=direction_t  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="-127" background.mode="2" background.color="67108864" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="10" y="8" height="77" width="1093" format="[general]"  name=col ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.vscrollbar=yes ddlb.useasborder=yes  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="-127" background.mode="0" background.color="67108864~tif( trim( col ) <> ~"~" , RGB(255,255,255),cf_btnface)" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="1125" y="8" height="77" width="782" format="[general]"  name=direction radiobuttons.columns=2 radiobuttons.scale=no radiobuttons.threed=yes  font.face="굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="-127" background.mode="2" background.color="67108864" )
+compute(band=header alignment="0" expression="RGB(255,255,255)"border="0" color="0" x="1925" y="16" height="77" width="261"  name=cf_btnface visible="1~t0"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="81839288" )

@@ -1,0 +1,60 @@
+$PBExportHeader$f_wip_exqty_pcc051.srf
+$PBExportComments$원가계산관리 기말 이체재공수량 생성함수
+global type f_wip_exqty_pcc051 from function_object
+end type
+
+forward prototypes
+global function integer f_wip_exqty_pcc051 (string arg_adjdate, ref string arg_message)
+end prototypes
+
+global function integer f_wip_exqty_pcc051 (string arg_adjdate, ref string arg_message);// 반환값 성공 : 0, 실패 : -1
+string ls_year, ls_month, ls_adjdate, ls_postdate
+string ls_plant, ls_dvsn, ls_pdcd, ls_prtdiv, ls_itno
+dec{0} lc_ohqt
+integer li_cnt, li_rowcnt, li_rtn
+datastore ds_cost_pcc051
+
+//원가계산관리 기말재공금액 생성 : 2007.06.20
+ls_adjdate = left(arg_adjdate,6)                                      //마감월
+ls_postdate = uf_wip_addmonth(ls_adjdate, 1)                          //이월
+ls_year 		= mid(ls_adjdate,1,4)
+ls_month 	= mid(ls_adjdate,5,2)
+
+ds_cost_pcc051 = create datastore                  			              
+ds_cost_pcc051.dataobject = "d_wip_exqty_pcc051"
+ds_cost_pcc051.settransobject(sqlca)
+
+li_rowcnt = ds_cost_pcc051.retrieve(ls_year, ls_month, mid(ls_postdate,1,4), mid(ls_postdate,5,2))
+
+for li_cnt = 1 to li_rowcnt
+	ls_plant = ds_cost_pcc051.getitemstring(li_cnt,"aplant")
+	ls_dvsn = ds_cost_pcc051.getitemstring(li_cnt,"advsn")
+	ls_pdcd = ds_cost_pcc051.getitemstring(li_cnt,"pdcd")
+	ls_itno = ds_cost_pcc051.getitemstring(li_cnt,"aeitno")
+	lc_ohqt = ds_cost_pcc051.getitemnumber(li_cnt,"ohqt")
+	
+	select count(*) into :li_rtn
+	from pbacc.pcc051
+	where comltd = '01' and pryy = :ls_year and prmm = :ls_month and
+		prtplant = :ls_plant and prtdiv = :ls_dvsn and pritno = :ls_itno
+	using sqlca;
+	
+	if li_rtn <> 1 then
+		arg_message = "이체품목이 없거나 둘이상이 존재합니다. 이체품목 : " + ls_plant + ls_dvsn + ls_itno
+		return -1
+	end if
+	
+	update pbacc.pcc051
+	set prtqtys = :lc_ohqt, updtid = :g_s_empno, updtdt = :g_s_date
+	where comltd = '01' and pryy = :ls_year and prmm = :ls_month and
+		prtplant = :ls_plant and prtdiv = :ls_dvsn and pritno = :ls_itno
+	using sqlca;
+	if sqlca.sqlnrows < 1 then
+		arg_message = "이체재공수량 업데이트시에 오류가 발생하였습니다. 에러: " + sqlca.sqlerrtext
+		return -1
+	end if
+next
+
+return 0
+end function
+

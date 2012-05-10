@@ -1,0 +1,65 @@
+$PBExportHeader$f_pisr_retrieve_dddw_area.srf
+$PBExportComments$dddw을 설정하는 함수 - 지역
+global type f_pisr_retrieve_dddw_area from function_object
+end type
+
+forward prototypes
+global subroutine f_pisr_retrieve_dddw_area (datawindow fdw_1, string fs_empno, string fs_areacode, boolean fb_allflag, ref string rs_areacode, ref string rs_areaname)
+end prototypes
+
+global subroutine f_pisr_retrieve_dddw_area (datawindow fdw_1, string fs_empno, string fs_areacode, boolean fb_allflag, ref string rs_areacode, ref string rs_areaname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_division
+//	Access		:	reorder
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_empno					조회하고자 하는 사번 (지역별/공장별 권한에 따른 조회를 위하여)
+//						string			fs_areacode				조회하고자 하는 지역
+//						boolean			fb_allflag				조회된 공장 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (공장코드는 '%', 공장명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_areacode				선택된 지역 코드 (reference)
+//						string			rs_areaname				선택된 지역 명 (reference)
+//	Returns		: none
+//	Description	: popup화면에서 기본지역을 셋팅하기위한함수
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon oh-sang
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(g_s_empno, fs_areacode)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_areacode = ''
+		rs_areaname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_areacode	= Trim(ldwc_1.GetItemString(1, 'AreaCode'))
+		rs_areaname	= Trim(ldwc_1.GetItemString(1, 'AreaName'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_areacode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'AreaName', 10)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag Then
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'AreaCode', 'ALL')
+			ldwc_1.Setitem(1, 'AreaName', '전체')
+			rs_areacode = '%'
+			rs_areaname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'AreaName', 10)
+		Else
+			rs_areacode	= Trim(ldwc_1.GetItemString(1, 'AreaCode'))
+			rs_areaname	= Trim(ldwc_1.GetItemString(1, 'AreaName'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_areacode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'AreaName', 10)			
+		End If
+	End If
+End If
+end subroutine
+

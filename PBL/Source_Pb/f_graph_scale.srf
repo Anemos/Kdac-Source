@@ -1,0 +1,95 @@
+$PBExportHeader$f_graph_scale.srf
+$PBExportComments$Graph의 Scale Setting Function(arg datawindow fdw_one, datawindow fdw_two, string fs_graph, double fdb_max, double fdb_min, Return none)
+global type f_graph_scale from function_object
+end type
+
+forward prototypes
+global subroutine f_graph_scale (datawindow fdw_one, datawindow fdw_two, string fs_graph, double fdb_max, double fdb_min)
+end prototypes
+
+global subroutine f_graph_scale (datawindow fdw_one, datawindow fdw_two, string fs_graph, double fdb_max, double fdb_min);//fdw_one	= ShareData를 위한 Primary DataWindow(Invisible) 		: DataWindow
+//fdw_two	= ShareData를 위한 Secondary DataWindow(GraphObject) 	: DataWindow
+//fs_graph	= GraphObject Name 												: String
+//fdb_max	= Maximum Value													: Double
+//fdb_min	= Minimum Value													: Double
+
+SetPointer(HourGlass!)
+string	ls_modstring
+
+fdb_max = Truncate(fdb_max, 0)
+fdb_min = Truncate(fdb_min, 0)
+
+If fdb_max < 0 Then
+	CHOOSE CASE Len(string(abs(fdb_max)))
+		CASE 1
+			fdb_max = fdb_max + 1
+		CASE 2
+			fdb_max = fdb_max + 1
+		CASE 3
+			If abs(fdb_max) <> 100 Then	fdb_max = double(Left(string(fdb_max),3)) * 10 + 10
+		CASE 4
+			fdb_max = double(Left(string(fdb_max),3)) * 100 + 100
+		CASE 5
+			fdb_max = double(Left(string(fdb_max),3)) * 1000 + 1000
+		CASE 6
+			fdb_max = double(Left(string(fdb_max),3)) * 10000 + 10000
+	END CHOOSE
+Else
+	CHOOSE CASE Len(string(fdb_max))
+		CASE 1
+			fdb_max = fdb_max + 1
+		CASE 2
+			fdb_max = fdb_max + 1
+		CASE 3
+			If fdb_max <> 100 Then	fdb_max = double(Left(string(fdb_max),2)) * 10 + 10
+		CASE 4
+			fdb_max = double(Left(string(fdb_max),2)) * 100 + 100
+		CASE 5
+			fdb_max = double(Left(string(fdb_max),2)) * 1000 + 1000
+		CASE 6
+			fdb_max = double(Left(string(fdb_max),2)) * 10000 + 10000
+	END CHOOSE
+End If
+	
+If fdb_min < 0 Then
+	CHOOSE CASE Len(string(abs(fdb_min)))
+		CASE 1
+			fdb_min = fdb_min - 1
+		CASE 2
+			fdb_min = fdb_min - 1
+		CASE 3
+			fdb_min = double(Left(string(fdb_min),3)) * 10
+		CASE 4
+			fdb_min = double(Left(string(fdb_min),3)) * 100
+		CASE 5
+			fdb_min = double(Left(string(fdb_min),3)) * 1000
+		CASE 6
+			fdb_min = double(Left(string(fdb_min),3)) * 10000
+	END CHOOSE
+Else
+	CHOOSE CASE Len(string(fdb_min))
+		CASE 1
+			fdb_min = fdb_min - 1
+			If fdb_min < 0 Then fdb_min = 0;
+		CASE 2
+			fdb_min = fdb_min - 1
+		CASE 3
+			fdb_min = double(Left(string(fdb_min),2)) * 10
+		CASE 4
+			fdb_min = double(Left(string(fdb_min),2)) * 100
+		CASE 5
+			fdb_min = double(Left(string(fdb_min),2)) * 1000
+		CASE 6
+			fdb_min = double(Left(string(fdb_min),2)) * 10000
+	END CHOOSE
+End If
+
+
+ls_modstring	=	fs_graph + ".Values.AutoScale		 = '0' " + &
+						fs_graph + ".Values.MinimumValue  = '"+string(fdb_min)+"' " + &
+						fs_graph + ".Values.MaximumValue  = '"+string(fdb_max)+"'"
+
+fdw_two.Modify(ls_modstring)
+fdw_one.ShareData(fdw_two)
+end subroutine
+

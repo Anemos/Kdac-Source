@@ -1,0 +1,36 @@
+$PBExportHeader$f_get_accdcode.srf
+$PBExportComments$부서-경비계정 return
+global type f_get_accdcode from function_object
+end type
+
+forward prototypes
+global function string f_get_accdcode (string a_s_empno)
+end prototypes
+
+global function string f_get_accdcode (string a_s_empno);string l_s_dept,l_s_acccode
+
+select "PBCOMMON"."DAC003"."PEDEPT"
+into   :l_s_dept
+from   "PBCOMMON"."DAC003"
+where  "PBCOMMON"."DAC003"."PEEMPNO" = :a_s_empno using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	l_s_dept ='' 
+end if 
+
+
+SELECT "PBCOMMON"."DAC001A"."DACCODE"
+INTO   :l_s_acccode
+FROM   "PBCOMMON"."DAC001A"
+WHERE  "PBCOMMON"."DAC001A"."DCODE" = :l_s_dept and  
+		 "PBCOMMON"."DAC001A"."DUSE" = ' '   AND  
+		 "PBCOMMON"."DAC001A"."DTODT" = 0    and
+		 "PBCOMMON"."DAC001A"."DACTTODT" = 0 using sqlca;
+
+IF sqlca.sqlcode <> 0 Then
+	l_s_acccode = 'error'
+End IF
+
+Return l_s_acccode
+end function
+

@@ -1,0 +1,22 @@
+$PBExportHeader$f_get_empnm_mrp.srf
+$PBExportComments$직원이름 Return   Global Function
+global type f_get_empnm_mrp from function_object
+end type
+
+forward prototypes
+global function string f_get_empnm_mrp (string as_empno)
+end prototypes
+
+global function string f_get_empnm_mrp (string as_empno);// 직원 이름...
+
+String	ls_Name
+
+SELECT "PENAMEK" INTO :ls_Name
+FROM "PBCOMMON"."DAC003"
+WHERE "PEEMPNO" = :as_empno	Using SQLCA ;
+
+If SQLCA.SQLCode <> 0 Then Return ""
+
+Return ls_Name
+end function
+

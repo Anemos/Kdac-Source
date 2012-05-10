@@ -1,0 +1,43 @@
+$PBExportHeader$f_deptcode_pur.srf
+$PBExportComments$부서코드 ,명, 사원명 ,지역 ,공장(사번)
+global type f_deptcode_pur from function_object
+end type
+
+forward prototypes
+global function string f_deptcode_pur (string ag_empno, string ag_gubun)
+end prototypes
+
+global function string f_deptcode_pur (string ag_empno, string ag_gubun);//////////////////////////////////////////////////////////////////////////
+//				부서코드 , 부서명, 사원이름 ,지역코드 ,공장코드 가져오기
+//          아규먼트 : 사번 
+//                     구분 - "1" : 부서코드
+//                            "2" : 부서명
+//                            "3" : 사원명
+//                            "4" : 지역
+//                            "5" : 공장
+/////////////////////////////////////////////////////////////////////////
+
+String ls_deptcd , ls_deptnm, ls_empnm ,ls_div
+
+SELECT "PBCOMMON"."DAC001"."DCODE"  ,"PBCOMMON"."DAC001"."DNAME"  ,	"PBCOMMON"."DAC003"."PENAMEK" 
+ INTO :ls_deptcd, :ls_deptnm, :ls_empnm 
+ FROM "PBCOMMON"."DAC001",   
+		"PBCOMMON"."DAC003"  
+WHERE ( "PBCOMMON"."DAC001"."DCODE" = "PBCOMMON"."DAC003"."PEDEPT" ) and  
+		( "PBCOMMON"."DAC001"."DUSE" = ' ' ) AND  
+		( "PBCOMMON"."DAC001"."DTODT" = 0 ) AND  
+		( "PBCOMMON"."DAC003"."PEEMPNO" = :ag_empno )  Using sqlca  ;
+
+IF sqlca.sqlcode <> 0 Then
+	return " "
+End IF
+
+IF ag_gubun = "1"  Then       //부서코드
+	Return ls_deptcd
+ElseIF ag_gubun = "2" Then    //부서명
+	Return ls_deptnm
+ElseIF ag_gubun = "3" Then		//사원이름
+	Return ls_empnm
+End IF
+end function
+

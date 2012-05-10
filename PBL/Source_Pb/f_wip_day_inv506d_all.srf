@@ -1,0 +1,527 @@
+$PBExportHeader$f_wip_day_inv506d_all.srf
+$PBExportComments$일일재공정보 재고테이블생성 INV506D 전공장
+global type f_wip_day_inv506d_all from function_object
+end type
+
+forward prototypes
+global function boolean f_wip_day_inv506d_all (string ag_cmcd, string ag_yymmdd, string ag_adddt)
+end prototypes
+
+global function boolean f_wip_day_inv506d_all (string ag_cmcd, string ag_yymmdd, string ag_adddt);//*******************
+//* 
+//* 성공 true, 오류 false
+
+DELETE FROM PBINV.INV506D
+WHERE COMLTD = '01' AND XYEAR = :ag_yymmdd AND XPLANT <> 'Y' AND
+	GUBUN IN ('3A','3C','3D','3E')
+using sqlca;
+
+//** 공제전 일일재공금액 생성, 라인 + 창고 ('3A'), 사외('3C')
+INSERT INTO PBINV.INV506D
+( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+SELECT tmp.cmcd, :ag_yymmdd, tmp.plant, tmp.dvsn, tmp.pdcd, tmp.iocd, 0, 0, 0,
+ sum(tmp.ohat1), sum(tmp.ohat2), sum(tmp.ohat3), '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+FROM ( 
+// 공제전
+SELECT aaa."WBCMCD" as cmcd,  
+aaa."WBPLANT" as plant,  
+aaa."WBDVSN" as dvsn,
+CASE WHEN aaa."WBIOCD" = '1' THEN '3A' ELSE '3C' END as iocd,
+SUBSTRING("PBINV"."INV101"."PDCD",1,2) as pdcd,       
+aaa."WBOHAT1" as ohat1,0 as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP002D" aaa, "PBINV"."INV101"
+WHERE  ( aaa."WBCMCD" = "PBINV"."INV101"."COMLTD" ) AND  
+  ( aaa."WBPLANT" = "PBINV"."INV101"."XPLANT" ) AND  
+  ( aaa."WBDVSN" = "PBINV"."INV101"."DIV" ) AND  
+  ( aaa."WBITNO" = "PBINV"."INV101"."ITNO" ) AND
+  ( aaa."WBCMCD" = :ag_cmcd ) AND 
+	( aaa."WBYYMMDD" = :ag_yymmdd ) AND   
+	( aaa."WBIOCD" <> '3' ) AND ("PBINV"."INV101"."CLS" IN ('10','40','50'))
+union all
+SELECT aaa."WCCMCD" as cmcd,
+aaa."WCPLANT" as plant,
+aaa."WCDVSN" as dvsn,
+'3A' as iocd,
+SUBSTRING("PBINV"."INV101"."PDCD",1,2) as pdcd,  
+aaa."WCOHAT1" as ohat1,0 as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP003D" aaa,"PBINV"."INV101"
+WHERE ( aaa."WCCMCD" = "PBINV"."INV101"."COMLTD" ) AND  
+  ( aaa."WCPLANT" = "PBINV"."INV101"."XPLANT" ) AND  
+  ( aaa."WCDVSN" = "PBINV"."INV101"."DIV" ) AND  
+  ( aaa."WCITNO" = "PBINV"."INV101"."ITNO" ) AND  
+  ( aaa."WCCMCD" = :ag_cmcd and
+		aaa."WCYYMMDD" = :ag_yymmdd )
+//공제분
+union all
+SELECT aaa."WBCMCD" as cmcd,  
+  aaa."WBPLANT" as plant,  
+  aaa."WBDVSN" as dvsn,
+  CASE WHEN aaa."WBIOCD" = '1' THEN '3A' ELSE '3C' END as iocd,
+  SUBSTRING(TMP_COST."PDCD",1,2) as pdcd,
+  0 as ohat1, DECIMAL(aaa."WBOHQT" / TMP_COST."CONVQTY" * TMP_COST."COSTAV",15,0)  as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP002D" aaa,    
+	( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+		"PBINV"."INV101"."XPLANT" AS XPLANT,
+		"PBINV"."INV101"."DIV" AS DIV,
+		"PBINV"."INV101"."ITNO" AS ITNO,
+		SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+		"PBINV"."INV101"."XUNIT" AS XUNIT,
+		"PBINV"."INV101"."CLS" AS CLS,
+		"PBINV"."INV101"."SRCE" AS SRCE,
+		"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   	CASE 	WHEN "PBPDM"."BOM016"."FCOCST" > 0 THEN "PBPDM"."BOM016"."FCOCST"
+        	WHEN "PBPDM"."BOM016"."FCMCST" > 0 THEN "PBPDM"."BOM016"."FCMCST"
+         WHEN "PBPDM"."BOM016"."FCICST" > 0 THEN "PBPDM"."BOM016"."FCICST"
+         ELSE  "PBPDM"."BOM016"."FXCOST" END AS COSTAV
+  	FROM "PBINV"."INV101",
+		"PBPDM"."BOM016"
+	WHERE ( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       	( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       	( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       	( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and
+		 	( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+			( "PBINV"."INV101"."CLS" IN ('10','40','50') ) and
+		 	( "PBINV"."INV101"."COMLTD" = :ag_cmcd ) AND
+		 	( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST  
+ WHERE ( aaa."WBCMCD" = TMP_COST."COMLTD" ) and  
+       ( aaa."WBPLANT" = TMP_COST."XPLANT" ) and  
+       ( aaa."WBDVSN" = TMP_COST."DIV" ) and  
+       ( aaa."WBITNO" = TMP_COST."ITNO" ) and
+       ( aaa."WBYYMMDD" = :ag_yymmdd ) AND   
+       ( aaa."WBIOCD" <> '3' )
+union all
+
+SELECT aaa."WCCMCD" as cmcd,
+aaa."WCPLANT" as plant,
+aaa."WCDVSN" as dvsn,
+'3A' as iocd,
+substring(TMP_COST."PDCD",1,2) as pdcd,
+0 as ohat1, DECIMAL(aaa."WCOHQT" * TMP_COST."COSTAV",15,0)  as ohat2, 0 as ohat3   
+FROM "PBWIP"."WIP003D" aaa,
+	( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+		"PBINV"."INV101"."XPLANT" AS XPLANT,
+		"PBINV"."INV101"."DIV" AS DIV,
+		"PBINV"."INV101"."ITNO" AS ITNO,
+		SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+		"PBINV"."INV101"."XUNIT" AS XUNIT,
+		"PBINV"."INV101"."CLS" AS CLS,
+		"PBINV"."INV101"."SRCE" AS SRCE,
+		"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   	"PBPDM"."BOM016"."FWCOST" AS COSTAV
+  	FROM "PBINV"."INV101",
+		"PBPDM"."BOM016"
+	WHERE ( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       	( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       	( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       	( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and 
+		 	( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+		 	( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 	( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) 
+	TMP_COST  
+ WHERE ( aaa."WCCMCD" = TMP_COST."COMLTD" ) and  
+       ( aaa."WCPLANT" = TMP_COST."XPLANT" ) and  
+       ( aaa."WCDVSN" = TMP_COST."DIV" ) and  
+       ( aaa."WCITNO" = TMP_COST."ITNO" ) and  
+			 ( aaa."WCYYMMDD" = :ag_yymmdd )
+//공제후
+union all
+SELECT aaa."WBCMCD" as cmcd,  
+aaa."WBPLANT" as plant,  
+aaa."WBDVSN" as dvsn,
+CASE WHEN aaa."WBIOCD" = '1' THEN '3A' ELSE '3C' END as iocd,
+substring("PBINV"."INV101"."PDCD",1,2) as pdcd, 
+0 as ohat1, 0 as ohat2, DECIMAL(aaa."WBOHAT1" - (aaa."WBOHQT" / "PBINV"."INV101"."CONVQTY" * IFNULL(TMP_COST."COSTAV",0)),15,0) as ohat3  
+FROM "PBWIP"."WIP002D" aaa INNER JOIN "PBINV"."INV101"
+	ON ( aaa."WBCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+      ( aaa."WBPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+      ( aaa."WBDVSN" = "PBINV"."INV101"."DIV" ) and  
+      ( aaa."WBITNO" = "PBINV"."INV101"."ITNO" ) and ("PBINV"."INV101"."CLS" IN ('10','40','50'))
+	LEFT OUTER JOIN
+	( SELECT   "PBPDM"."BOM016"."FCMCD" AS COMLTD,
+		"PBPDM"."BOM016"."FPLANT" AS XPLANT,
+		"PBPDM"."BOM016"."FDVSN" AS DIV,
+		"PBPDM"."BOM016"."FMDNO" AS ITNO,
+   	CASE 	WHEN "PBPDM"."BOM016"."FCOCST" > 0 THEN "PBPDM"."BOM016"."FCOCST"
+        	WHEN "PBPDM"."BOM016"."FCMCST" > 0 THEN "PBPDM"."BOM016"."FCMCST"
+         WHEN "PBPDM"."BOM016"."FCICST" > 0 THEN "PBPDM"."BOM016"."FCICST"
+         ELSE  "PBPDM"."BOM016"."FXCOST" END AS COSTAV
+  		FROM "PBPDM"."BOM016"
+		WHERE ( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+		 	( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 	( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST
+	ON  ( aaa."WBCMCD" = TMP_COST."COMLTD" ) and  
+       ( aaa."WBPLANT" = TMP_COST."XPLANT" ) and  
+       ( aaa."WBDVSN" = TMP_COST."DIV" ) and  
+       ( aaa."WBITNO" = TMP_COST."ITNO" )
+ WHERE ( aaa."WBCMCD" = :ag_cmcd ) and    
+		 ( aaa."WBYYMMDD" = :ag_yymmdd ) and   
+       ( aaa."WBIOCD" <> '3' )
+
+union all
+
+SELECT aaa."WCCMCD" as cmcd,
+aaa."WCPLANT" as plant,
+aaa."WCDVSN" as dvsn,
+'3A' as iocd,
+substring(TMP_COST."PDCD",1,2) as pdcd, 
+0 as ohat1, 0 as ohat2, DECIMAL(aaa."WCOHAT1" - aaa."WCOHQT" / TMP_COST."CONVQTY" * TMP_COST."COSTAV",15,0)  as ohat3   
+FROM "PBWIP"."WIP003D" aaa,
+	( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+			"PBINV"."INV101"."XPLANT" AS XPLANT,
+			"PBINV"."INV101"."DIV" AS DIV,
+			"PBINV"."INV101"."ITNO" AS ITNO,
+			SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+			"PBINV"."INV101"."CLS" AS CLS,
+			"PBINV"."INV101"."SRCE" AS SRCE,
+			"PBINV"."INV101"."XUNIT" AS XUNIT,
+			"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   		IFNULL("PBPDM"."BOM016"."FWCOST",0) AS COSTAV
+  		FROM "PBINV"."INV101" LEFT OUTER JOIN "PBPDM"."BOM016"
+			ON ( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       		( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       		( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       		( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and 
+				( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+				( "PBPDM"."BOM016"."FDATE" = :ag_adddt )
+		WHERE ( "PBINV"."INV101"."COMLTD" = :ag_cmcd ) AND
+			( "PBINV"."INV101"."SRCE" = '04' ) ) TMP_COST  
+ WHERE ( aaa."WCCMCD" = TMP_COST."COMLTD" ) and  
+       ( aaa."WCPLANT" = TMP_COST."XPLANT" ) and  
+       ( aaa."WCDVSN" = TMP_COST."DIV" ) and  
+       ( aaa."WCITNO" = TMP_COST."ITNO" ) and  
+		 ( aaa."WCYYMMDD" = :ag_yymmdd )
+) tmp
+GROUP BY tmp.cmcd, tmp.plant, tmp.dvsn, tmp.pdcd, tmp.iocd
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	messagebox("정산금액생성","일일재공금액 생성에러 : " + sqlca.sqlerrtext)
+	return false
+end if
+
+//** 공제전 일일이체금액 생성, 라인 + 창고('3D'), 사외('3E')
+INSERT INTO PBINV.INV506D
+( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+SELECT tmp.cmcd, :ag_yymmdd, tmp.plant, tmp.dvsn, tmp.pdcd, tmp.iocd, 0, 0, 0,
+ sum(tmp.ohat1), sum(tmp.ohat2), sum(tmp.ohat3), '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+FROM ( 
+//공제전
+SELECT aaa."WBCMCD" as cmcd,  
+aaa."WBPLANT" as plant,  
+aaa."WBDVSN" as dvsn,
+CASE WHEN aaa."WBIOCD" = '1' THEN '3D' ELSE '3E' END as iocd,
+substring("PBINV"."INV101"."PDCD",1,2) as pdcd,
+DECIMAL((aaa."WBOHQT" * bbb."ACOST" / "PBINV"."INV101"."CONVQTY"),15,0) as ohat1, 0 as ohat2, 0 as ohat3
+    FROM "PBWIP"."WIP002D" aaa,       
+      "PBINV"."INV101",
+			"PBPDM"."BOM010" bbb
+   WHERE ( aaa."WBCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+         ( aaa."WBPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+         ( aaa."WBDVSN" = "PBINV"."INV101"."DIV" ) and  
+         ( aaa."WBITNO" = "PBINV"."INV101"."ITNO" ) and
+			( "PBINV"."INV101"."COMLTD" = bbb."ACMCD" ) and
+			( "PBINV"."INV101"."XPLANT" = bbb."APLANT" ) and
+			( "PBINV"."INV101"."DIV" = bbb."ADVSN" ) and
+			( "PBINV"."INV101"."ITNO" = bbb."AITNO" ) and
+			( bbb."AYEAR"||bbb."AMONT" = :ag_adddt ) and
+         ( aaa."WBCMCD" = :ag_cmcd ) AND 
+			( aaa."WBYYMMDD" = :ag_yymmdd ) AND   
+			( aaa."WBIOCD" <> '3' )
+union all
+SELECT aaa."WCCMCD" as cmcd,
+aaa."WCPLANT" as plant,
+aaa."WCDVSN" as dvsn,
+'3D' as iocd,
+substring("PBINV"."INV101"."PDCD",1,2) as pdcd,
+DECIMAL((aaa."WCOHQT" * bbb."ACOST" / "PBINV"."INV101"."CONVQTY"),15,0) as ohat1, 0 as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP003D" aaa,  
+    "PBINV"."INV101",   
+		"PBPDM"."BOM010" bbb  
+   WHERE ( aaa."WCCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+         ( aaa."WCPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+         ( aaa."WCDVSN" = "PBINV"."INV101"."DIV" ) and  
+         ( aaa."WCITNO" = "PBINV"."INV101"."ITNO" ) and 
+         ( "PBINV"."INV101"."COMLTD" = bbb."ACMCD" ) and
+			( "PBINV"."INV101"."XPLANT" = bbb."APLANT" ) and
+			( "PBINV"."INV101"."DIV" = bbb."ADVSN" ) and
+			( "PBINV"."INV101"."ITNO" = bbb."AITNO" ) and
+			( bbb."AYEAR"||bbb."AMONT" = :ag_adddt ) and 
+      ( aaa."WCCMCD" = :ag_cmcd and
+			  aaa."WCYYMMDD" = :ag_yymmdd )
+union all
+//공제분
+SELECT aaa."WBCMCD" as cmcd,  
+aaa."WBPLANT" as plant,  
+aaa."WBDVSN" as dvsn,
+CASE WHEN aaa."WBIOCD" = '1' THEN '3D' ELSE '3E' END as iocd,
+substring(TMP_COST."PDCD",1,2) as pdcd,
+0 as ohat1, DECIMAL(aaa."WBOHQT" * TMP_COST."COSTAV" / TMP_COST."CONVQTY" ,15,0) as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP002D" aaa,
+		( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+		"PBINV"."INV101"."XPLANT" AS XPLANT,
+		"PBINV"."INV101"."DIV" AS DIV,
+		"PBINV"."INV101"."ITNO" AS ITNO,
+		SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+		"PBCOMMON"."DAC007"."PRNAME" AS PRNAME,
+      "PBINV"."INV002"."ITNM" AS ITNM,
+		"PBINV"."INV002"."SPEC" AS SPEC,
+		"PBINV"."INV101"."CLS" AS CLS,
+		"PBINV"."INV101"."SRCE" AS SRCE,
+		"PBINV"."INV101"."XUNIT" AS XUNIT,
+		"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   	CASE 	WHEN "PBPDM"."BOM016"."FCOCST" > 0 THEN "PBPDM"."BOM016"."FCOCST"
+        	WHEN "PBPDM"."BOM016"."FCMCST" > 0 THEN "PBPDM"."BOM016"."FCMCST"
+         WHEN "PBPDM"."BOM016"."FCICST" > 0 THEN "PBPDM"."BOM016"."FCICST"
+         ELSE  "PBPDM"."BOM016"."FXCOST" END AS COSTAV
+  	FROM "PBINV"."INV101",
+		"PBINV"."INV002",
+		"PBPDM"."BOM016",
+		"PBPDM"."BOM010",
+		"PBCOMMON"."DAC007"
+	WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV002"."COMLTD" ) and  
+       	( "PBINV"."INV101"."ITNO" = "PBINV"."INV002"."ITNO" ) and
+			( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       	( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       	( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       	( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and  
+		 	( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+			( "PBPDM"."BOM010"."ACMCD" = "PBPDM"."BOM016"."FCMCD" ) and  
+       	( "PBPDM"."BOM010"."APLANT" = "PBPDM"."BOM016"."FPLANT" ) and  
+       	( "PBPDM"."BOM010"."ADVSN" = "PBPDM"."BOM016"."FDVSN" ) and  
+       	( "PBPDM"."BOM010"."AITNO" = "PBPDM"."BOM016"."FMDNO" ) and 
+		 	( "PBPDM"."BOM010"."AYEAR"||"PBPDM"."BOM010"."AMONT" = "PBPDM"."BOM016"."FDATE" ) and
+			( "PBINV"."INV101"."COMLTD" = "PBCOMMON"."DAC007"."COMLTD" ) and  
+         ( "PBINV"."INV101"."PDCD" = "PBCOMMON"."DAC007"."PRPRCD" ) and
+		 	( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 	( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST
+ WHERE ( aaa."WBCMCD" = TMP_COST."COMLTD" ) and 
+       ( aaa."WBPLANT" = TMP_COST."XPLANT" ) and 
+       ( aaa."WBDVSN" = TMP_COST."DIV" ) and 
+       ( aaa."WBITNO" = TMP_COST."ITNO" ) and 
+       ( aaa."WBYYMMDD" = :ag_yymmdd ) and  
+		 ( aaa."WBIOCD" <> '3' )
+union all
+SELECT "PBWIP"."WIP003D"."WCCMCD" as cmcd,
+"PBWIP"."WIP003D"."WCPLANT" as plant,
+"PBWIP"."WIP003D"."WCDVSN" as dvsn,
+'3D' as iocd,
+substring(TMP_COST."PDCD",1,2) as pdcd,
+0 as ohat1, DECIMAL("PBWIP"."WIP003D"."WCOHQT" * TMP_COST."COSTAV" / TMP_COST."CONVQTY",15,0) as ohat2, 0 as ohat3
+FROM "PBWIP"."WIP003D",   
+   ( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+		"PBINV"."INV101"."XPLANT" AS XPLANT,
+		"PBINV"."INV101"."DIV" AS DIV,
+		"PBINV"."INV101"."ITNO" AS ITNO,
+		SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+		"PBCOMMON"."DAC007"."PRNAME" AS PRNAME,
+      "PBINV"."INV002"."ITNM" AS ITNM,
+		"PBINV"."INV002"."SPEC" AS SPEC,
+		"PBINV"."INV101"."CLS" AS CLS,
+		"PBINV"."INV101"."SRCE" AS SRCE,
+		"PBINV"."INV101"."XUNIT" AS XUNIT,
+		"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   	"PBPDM"."BOM016"."FWCOST" AS COSTAV
+  	FROM "PBINV"."INV101",
+		"PBINV"."INV002",
+		"PBPDM"."BOM016",
+		"PBPDM"."BOM010",
+		"PBCOMMON"."DAC007"
+	WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV002"."COMLTD" ) and   
+       	( "PBINV"."INV101"."ITNO" = "PBINV"."INV002"."ITNO" ) and
+			( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       	( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       	( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       	( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and 
+		 	( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+			( "PBPDM"."BOM010"."ACMCD" = "PBPDM"."BOM016"."FCMCD" ) and  
+       	( "PBPDM"."BOM010"."APLANT" = "PBPDM"."BOM016"."FPLANT" ) and  
+       	( "PBPDM"."BOM010"."ADVSN" = "PBPDM"."BOM016"."FDVSN" ) and  
+       	( "PBPDM"."BOM010"."AITNO" = "PBPDM"."BOM016"."FMDNO" ) and 
+		 	( "PBPDM"."BOM010"."AYEAR"||"PBPDM"."BOM010"."AMONT" = "PBPDM"."BOM016"."FDATE" ) and
+			( "PBINV"."INV101"."COMLTD" = "PBCOMMON"."DAC007"."COMLTD" ) and  
+         ( "PBINV"."INV101"."PDCD" = "PBCOMMON"."DAC007"."PRPRCD" ) and
+		 	( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 	( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST
+ WHERE ( "PBWIP"."WIP003D"."WCCMCD" = TMP_COST."COMLTD" ) and 
+       ( "PBWIP"."WIP003D"."WCPLANT" = TMP_COST."XPLANT" ) and 
+       ( "PBWIP"."WIP003D"."WCDVSN" = TMP_COST."DIV" ) and 
+       ( "PBWIP"."WIP003D"."WCITNO" = TMP_COST."ITNO" ) and 
+		 ( "PBWIP"."WIP003D"."WCYYMMDD" = :ag_yymmdd )
+union all
+//공제후
+SELECT aaa."WBCMCD" as cmcd,  
+aaa."WBPLANT" as plant,  
+aaa."WBDVSN" as dvsn,
+CASE WHEN aaa."WBIOCD" = '1' THEN '3D' ELSE '3E' END as iocd,
+substring("PBINV"."INV101"."PDCD",1,2) as pdcd,
+0 as ohat1,
+0 as ohat2,
+DECIMAL((aaa."WBOHQT" * bbb."ACOST" / "PBINV"."INV101"."CONVQTY") - (aaa."WBOHQT" * IFNULL(TMP_COST."COSTAV",0) / "PBINV"."INV101"."CONVQTY"),15,0) as ohat3
+FROM "PBWIP"."WIP002D" aaa INNER JOIN "PBINV"."INV101"
+		ON ( aaa."WBCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+         ( aaa."WBPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+         ( aaa."WBDVSN" = "PBINV"."INV101"."DIV" ) and  
+         ( aaa."WBITNO" = "PBINV"."INV101"."ITNO" )
+		INNER JOIN "PBPDM"."BOM010" bbb
+		ON ( aaa."WBCMCD" = bbb."ACMCD" ) and
+			( aaa."WBPLANT" = bbb."APLANT" ) and
+			( aaa."WBDVSN" = bbb."ADVSN" ) and
+			( aaa."WBITNO" = bbb."AITNO" ) and
+			( bbb."AYEAR"||bbb."AMONT" = :ag_adddt )
+		LEFT OUTER JOIN
+		( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+			"PBINV"."INV101"."XPLANT" AS XPLANT,
+			"PBINV"."INV101"."DIV" AS DIV,
+			"PBINV"."INV101"."ITNO" AS ITNO,
+			SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+			"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   		CASE 	WHEN "PBPDM"."BOM016"."FCOCST" > 0 THEN "PBPDM"."BOM016"."FCOCST"
+        		WHEN "PBPDM"."BOM016"."FCMCST" > 0 THEN "PBPDM"."BOM016"."FCMCST"
+         	WHEN "PBPDM"."BOM016"."FCICST" > 0 THEN "PBPDM"."BOM016"."FCICST"
+         	ELSE  "PBPDM"."BOM016"."FXCOST" END AS COSTAV
+  			FROM "PBINV"."INV101",
+			"PBPDM"."BOM016"
+			WHERE ( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       		( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       		( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       		( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and 
+		 		( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+		 		( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 		( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST
+		ON ( aaa."WBCMCD" = TMP_COST."COMLTD" ) and 
+       	( aaa."WBPLANT" = TMP_COST."XPLANT" ) and 
+       	( aaa."WBDVSN" = TMP_COST."DIV" ) and 
+       	( aaa."WBITNO" = TMP_COST."ITNO" )
+WHERE ( aaa."WBCMCD" = :ag_cmcd ) AND 
+			( aaa."WBYYMMDD" = :ag_yymmdd ) and     
+			( aaa."WBIOCD" <> '3' )
+union all
+SELECT aaa."WCCMCD" as cmcd,
+aaa."WCPLANT" as plant,
+aaa."WCDVSN" as dvsn,
+'3D' as iocd,
+substring("PBINV"."INV101"."PDCD",1,2) as pdcd,
+0 as ohat1,
+0 as ohat2,
+DECIMAL((aaa."WCOHQT" * bbb."ACOST" / "PBINV"."INV101"."CONVQTY") - (aaa."WCOHQT" * IFNULL(TMP_COST."COSTAV",0) / "PBINV"."INV101"."CONVQTY"),15,0) as ohat3
+FROM "PBWIP"."WIP003D" aaa INNER JOIN "PBINV"."INV101"
+		ON ( aaa."WCCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+         ( aaa."WCPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+         ( aaa."WCDVSN" = "PBINV"."INV101"."DIV" ) and  
+         ( aaa."WCITNO" = "PBINV"."INV101"."ITNO" )
+		INNER JOIN "PBPDM"."BOM010" bbb  
+		ON ( aaa."WCCMCD" = bbb."ACMCD" ) and
+			( aaa."WCPLANT" = bbb."APLANT" ) and
+			( aaa."WCDVSN" = bbb."ADVSN" ) and
+			( aaa."WCITNO" = bbb."AITNO" ) and
+			( bbb."AYEAR"||bbb."AMONT" = :ag_adddt )
+		LEFT OUTER JOIN
+      ( SELECT   "PBINV"."INV101"."COMLTD" AS COMLTD,
+			"PBINV"."INV101"."XPLANT" AS XPLANT,
+			"PBINV"."INV101"."DIV" AS DIV,
+			"PBINV"."INV101"."ITNO" AS ITNO,
+			SUBSTR("PBINV"."INV101"."PDCD",1,2) AS PDCD,
+			"PBINV"."INV101"."CONVQTY" AS CONVQTY,
+   		"PBPDM"."BOM016"."FWCOST" AS COSTAV
+  			FROM "PBINV"."INV101",
+				"PBPDM"."BOM016"
+			WHERE ( "PBPDM"."BOM016"."FCMCD" = "PBINV"."INV101"."COMLTD" ) and  
+       		( "PBPDM"."BOM016"."FPLANT" = "PBINV"."INV101"."XPLANT" ) and  
+       		( "PBPDM"."BOM016"."FDVSN" = "PBINV"."INV101"."DIV" ) and  
+       		( "PBPDM"."BOM016"."FMDNO" = "PBINV"."INV101"."ITNO" ) and 
+		 		( "PBPDM"."BOM016"."FGUBUN" = 'B' ) and
+		 		( "PBPDM"."BOM016"."FCMCD" = :ag_cmcd ) AND
+		 		( "PBPDM"."BOM016"."FDATE" = :ag_adddt ) ) TMP_COST
+		ON ( aaa."WCCMCD" = TMP_COST."COMLTD" ) and 
+       	( aaa."WCPLANT" = TMP_COST."XPLANT" ) and 
+       	( aaa."WCDVSN" = TMP_COST."DIV" ) and 
+       	( aaa."WCITNO" = TMP_COST."ITNO" ) 
+  WHERE ( aaa."WCCMCD" = :ag_cmcd ) and
+		  ( aaa."WCYYMMDD" = :ag_yymmdd )
+) tmp
+GROUP BY tmp.cmcd, tmp.plant, tmp.dvsn, tmp.pdcd, tmp.iocd
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	messagebox("정산금액생성에러","일일이체금액 생성에러 : " + sqlca.sqlerrtext)
+	return false
+end if
+
+//// 해당 제품군 없는 데이타 생성
+//INSERT INTO PBINV.INV506D
+//( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+//RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+//SELECT DISTINCT A.COMLTD, :ag_yymmdd, A.XPLANT, A.DIV,SUBSTRING(A.PDCD,1,2) AS PDCD, '3A', 0, 0, 0,
+// 0, 0, 0, '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+//FROM PBINV.INV101 A
+//WHERE A.COMLTD = :ag_cmcd AND A.XPLANT <> 'Y' AND A.PDCD <> '' AND 
+//NOT EXISTS ( SELECT * FROM PBINV.INV506D B 
+//	WHERE A.COMLTD = B.COMLTD AND A.XPLANT = B.XPLANT AND
+//		A.DIV = B.DIV AND SUBSTRING(A.PDCD,1,2) = SUBSTRING(B.PDCD,1,2) AND
+//		B.COMLTD = :ag_cmcd AND B.XYEAR = :ag_yymmdd AND B.GUBUN = '3A' )
+//using sqlca;
+//
+//if sqlca.sqlcode <> 0 then
+//	messagebox("정산금액생성에러","제품군 없는 레코드 3A 생성에러")
+//	return false
+//end if
+//
+//INSERT INTO PBINV.INV506D
+//( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+//RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+//SELECT DISTINCT A.COMLTD, :ag_yymmdd, A.XPLANT, A.DIV,SUBSTRING(A.PDCD,1,2) AS PDCD, '3C', 0, 0, 0,
+// 0, 0, 0, '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+//FROM PBINV.INV101 A
+//WHERE A.COMLTD = :ag_cmcd AND A.XPLANT <> 'Y' AND A.PDCD <> '' AND 
+//NOT EXISTS ( SELECT * FROM PBINV.INV506D B 
+//	WHERE A.COMLTD = B.COMLTD AND A.XPLANT = B.XPLANT AND
+//		A.DIV = B.DIV AND SUBSTRING(A.PDCD,1,2) = SUBSTRING(B.PDCD,1,2) AND
+//		B.COMLTD = :ag_cmcd AND B.XYEAR = :ag_yymmdd AND B.GUBUN = '3C' )
+//using sqlca;
+//
+//if sqlca.sqlcode <> 0 then
+//	messagebox("정산금액생성에러","제품군 없는 레코드 3C 생성에러")
+//	return false
+//end if
+//
+//INSERT INTO PBINV.INV506D
+//( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+//RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+//SELECT DISTINCT A.COMLTD, :ag_yymmdd, A.XPLANT, A.DIV,SUBSTRING(A.PDCD,1,2) AS PDCD, '3D', 0, 0, 0,
+// 0, 0, 0, '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+//FROM PBINV.INV101 A
+//WHERE A.COMLTD = :ag_cmcd AND A.XPLANT <> 'Y' AND A.PDCD <> '' AND 
+//NOT EXISTS ( SELECT * FROM PBINV.INV506D B 
+//	WHERE A.COMLTD = B.COMLTD AND A.XPLANT = B.XPLANT AND
+//		A.DIV = B.DIV AND SUBSTRING(A.PDCD,1,2) = SUBSTRING(B.PDCD,1,2) AND
+//		B.COMLTD = :ag_cmcd AND B.XYEAR = :ag_yymmdd AND B.GUBUN = '3D' )
+//using sqlca;
+//
+//if sqlca.sqlcode <> 0 then
+//	messagebox("정산금액생성에러","제품군 없는 레코드 3D 생성에러")
+//	return false
+//end if
+//
+//INSERT INTO PBINV.INV506D
+//( COMLTD,XYEAR,XPLANT,DIV,PDCD,GUBUN,PLNAMT1,PLNAMT2,PLNAMT3,
+//RSTAMT1,RSTAMT2,RSTAMT3,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+//SELECT DISTINCT A.COMLTD, :ag_yymmdd, A.XPLANT, A.DIV,SUBSTRING(A.PDCD,1,2) AS PDCD, '3E', 0, 0, 0,
+// 0, 0, 0, '', 'wip', :g_s_date, 'wip', :g_s_datetime, '', ''
+//FROM PBINV.INV101 A
+//WHERE A.COMLTD = :ag_cmcd AND A.XPLANT <> 'Y' AND A.PDCD <> '' AND 
+//NOT EXISTS ( SELECT * FROM PBINV.INV506D B 
+//	WHERE A.COMLTD = B.COMLTD AND A.XPLANT = B.XPLANT AND
+//		A.DIV = B.DIV AND SUBSTRING(A.PDCD,1,2) = SUBSTRING(B.PDCD,1,2) AND
+//		B.COMLTD = :ag_cmcd AND B.XYEAR = :ag_yymmdd AND B.GUBUN = '3E' )
+//using sqlca;
+//
+//if sqlca.sqlcode <> 0 then
+//	messagebox("정산금액생성에러","제품군 없는 레코드 3E 생성에러")
+//	return false
+//end if
+
+return true
+end function
+

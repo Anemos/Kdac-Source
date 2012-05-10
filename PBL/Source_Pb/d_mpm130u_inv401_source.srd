@@ -1,0 +1,112 @@
+$PBExportHeader$d_mpm130u_inv401_source.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=sliptype dbname="INV401.SLIPTYPE" )
+ column=(type=char(8) updatewhereclause=yes name=srno dbname="INV401.SRNO" )
+ column=(type=char(2) updatewhereclause=yes name=srno1 dbname="INV401.SRNO1" )
+ column=(type=char(2) updatewhereclause=yes name=srno2 dbname="INV401.SRNO2" )
+ column=(type=char(11) updatewhereclause=yes name=rqno dbname="INV401.RQNO" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV401.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INV401.DIV" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="INV401.ITNO" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="INV401.ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="INV401.SPEC" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="INV401.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="INV401.SRCE" )
+ column=(type=char(5) updatewhereclause=yes name=vsrno dbname="INV401.VSRNO" )
+ column=(type=char(30) updatewhereclause=yes name=vndnm dbname="INV401.VNDNM" )
+ column=(type=char(8) updatewhereclause=yes name=tdte4 dbname="INV401.TDTE4" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty4 dbname="INV401.TQTY4" initial="0" )
+ column=(type=decimal(2) updatewhereclause=yes name=xcost dbname="INV401.XCOST" initial="0" )
+ column=(type=decimal(0) updatewhereclause=yes name=tramt dbname="INV401.TRAMT" initial="0" )
+ column=(type=char(20) updatewhereclause=yes name=extd dbname="PUR302.EXTD" )
+ column=(type=char(11) updatewhereclause=yes name=purno dbname="INV401.PURNO" )
+ column=(type=char(10) updatewhereclause=yes name=extd1 dbname="PUR402.EXTD1" )
+ retrieve="SELECT ~"PBINV~".~"INV401~".~"SLIPTYPE~",
+~"PBINV~".~"INV401~".~"SRNO~",
+~"PBINV~".~"INV401~".~"SRNO1~",
+~"PBINV~".~"INV401~".~"SRNO2~",
+~"PBINV~".~"INV401~".~"RQNO~",
+~"PBINV~".~"INV401~".~"XPLANT~",
+~"PBINV~".~"INV401~".~"DIV~",
+~"PBINV~".~"INV401~".~"ITNO~",
+~"PBINV~".~"INV401~".~"ITNM~",
+~"PBINV~".~"INV401~".~"SPEC~",
+~"PBINV~".~"INV401~".~"CLS~",
+~"PBINV~".~"INV401~".~"SRCE~",
+~"PBINV~".~"INV401~".~"VSRNO~",
+~"PBINV~".~"INV401~".~"VNDNM~",
+~"PBINV~".~"INV401~".~"TDTE4~",
+~"PBINV~".~"INV401~".~"TQTY4~",
+~"PBINV~".~"INV401~".~"XCOST~",
+~"PBINV~".~"INV401~".~"TRAMT~",
+~"PBPUR~".~"PUR302~".~"EXTD~",
+~"PBINV~".~"INV401~".~"PURNO~",
+~"PBPUR~".~"PUR402~".~"EXTD~" AS EXTD1
+FROM ~"PBINV~".~"INV401~" INNER JOIN ~"PBPUR~".~"PUR402~"
+ON ( ~"PBPUR~".~"PUR402~".~"COMLTD~" = ~"PBINV~".~"INV401~".~"COMLTD~" ) and
+( ~"PBPUR~".~"PUR402~".~"SRNO~" = ~"PBINV~".~"INV401~".~"SRNO~" ) and
+( ~"PBPUR~".~"PUR402~".~"SRNO1~" = ~"PBINV~".~"INV401~".~"SRNO1~" )
+LEFT OUTER JOIN ~"PBPUR~".~"PUR302~"
+ON ( ~"PBPUR~".~"PUR302~".~"COMLTD~" = ~"PBPUR~".~"PUR402~".~"COMLTD~" ) and
+( ~"PBPUR~".~"PUR302~".~"SRNO~" = ~"PBPUR~".~"PUR402~".~"SRNO~" )
+WHERE ( ~"PBINV~".~"INV401~".~"COMLTD~" = '01' ) AND
+( ~"PBINV~".~"INV401~".~"XPLANT~" = 'D' ) AND
+( ~"PBINV~".~"INV401~".~"DIV~" = 'D' ) AND
+( ~"PBINV~".~"INV401~".~"TDTE4~" >= :a_fromdt ) AND
+( ~"PBINV~".~"INV401~".~"TDTE4~" <= :a_todt ) AND
+( ~"PBINV~".~"INV401~".~"SLIPTYPE~" in ('DP', 'RF', 'RP') ) AND
+( ~"PBINV~".~"INV401~".~"CLS~" in ('21', '90') ) AND
+( ~"PBINV~".~"INV401~".~"TQTY4~" <> 0 )" arguments=(("a_fromdt", string),("a_todt", string)) )
+text(band=header alignment="2" text="전표구분" border="0" color="33554432" x="9" y="8" height="60" width="384" html.valueishtml="0"  name=sliptype_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고번호 - 구매요구번호" border="0" color="33554432" x="402" y="8" height="60" width="1088" html.valueishtml="0"  name=srno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고번호 - 분할 발주 횟수" border="0" color="33554432" x="1499" y="8" height="60" width="1088" html.valueishtml="0"  name=srno1_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고번호 - 분할납품 횟수" border="0" color="33554432" x="2597" y="8" height="60" width="1088" html.valueishtml="0"  name=srno2_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="구매요구번호" border="0" color="33554432" x="3694" y="8" height="60" width="640" html.valueishtml="0"  name=rqno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="지역" border="0" color="33554432" x="4343" y="8" height="60" width="192" html.valueishtml="0"  name=xplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="공장" border="0" color="33554432" x="4544" y="8" height="60" width="192" html.valueishtml="0"  name=div_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품번" border="0" color="33554432" x="4745" y="8" height="60" width="389" html.valueishtml="0"  name=itno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품명" border="0" color="33554432" x="5143" y="8" height="60" width="1376" html.valueishtml="0"  name=itnm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="규격" border="0" color="33554432" x="6528" y="8" height="60" width="1376" html.valueishtml="0"  name=spec_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="계정" border="0" color="33554432" x="7913" y="8" height="60" width="192" html.valueishtml="0"  name=cls_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="구입선" border="0" color="33554432" x="8114" y="8" height="60" width="320" html.valueishtml="0"  name=srce_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="업체전산번호(입고)" border="0" color="33554432" x="8443" y="8" height="60" width="768" html.valueishtml="0"  name=vsrno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="업체명" border="0" color="33554432" x="9221" y="8" height="60" width="855" html.valueishtml="0"  name=vndnm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고일" border="0" color="33554432" x="10085" y="8" height="60" width="279" html.valueishtml="0"  name=tdte4_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고량/총량" border="0" color="33554432" x="10373" y="8" height="60" width="512" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="단가" border="0" color="33554432" x="10894" y="8" height="60" width="384" html.valueishtml="0"  name=xcost_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입출고금액" border="0" color="33554432" x="11287" y="8" height="60" width="462" html.valueishtml="0"  name=tramt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="발주 번호" border="0" color="33554432" x="12151" y="8" height="60" width="416" html.valueishtml="0"  name=purno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="60" width="384" format="[general]" html.valueishtml="0"  name=sliptype  tag="전표구분" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="402" y="8" height="60" width="1088" format="[general]" html.valueishtml="0"  name=srno  tag="입고번호 - 구매요구번호" visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="1499" y="8" height="72" width="1088" format="[general]" html.valueishtml="0"  name=srno1  tag="입고번호 - 분할 발주 횟수" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2597" y="8" height="60" width="1088" format="[general]" html.valueishtml="0"  name=srno2  tag="입고번호 - 분할납품 횟수" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="3694" y="8" height="72" width="640" format="[general]" html.valueishtml="0"  name=rqno  tag="구매요구번호" visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="4343" y="8" height="72" width="192" format="[general]" html.valueishtml="0"  name=xplant  tag="지역" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="4544" y="8" height="60" width="192" format="[general]" html.valueishtml="0"  name=div  tag="공장" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="4745" y="8" height="60" width="389" format="[general]" html.valueishtml="0"  name=itno  tag="품번" visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="5143" y="8" height="60" width="1376" format="[general]" html.valueishtml="0"  name=itnm  tag="품명" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="6528" y="8" height="60" width="1376" format="[general]" html.valueishtml="0"  name=spec  tag="규격" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="7913" y="8" height="60" width="192" format="[general]" html.valueishtml="0"  name=cls  tag="계정" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="8114" y="8" height="60" width="320" format="[general]" html.valueishtml="0"  name=srce  tag="구입선" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="8443" y="8" height="60" width="768" format="[general]" html.valueishtml="0"  name=vsrno  tag="업체전산번호(입고)" visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="33554432" x="9221" y="8" height="60" width="855" format="[general]" html.valueishtml="0"  name=vndnm  tag="업체명" visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="10085" y="8" height="60" width="279" format="[general]" html.valueishtml="0"  name=tdte4  tag="입고일" visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="33554432" x="10373" y="8" height="60" width="512" format="[General]" html.valueishtml="0"  name=tqty4  tag="입고량/총량" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="10894" y="8" height="72" width="384" format="[general]" html.valueishtml="0"  name=xcost  tag="단가" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="33554432" x="11287" y="8" height="60" width="462" format="[General]" html.valueishtml="0"  name=tramt  tag="입출고금액" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="33554432" x="12151" y="8" height="60" width="416" format="[general]" html.valueishtml="0"  name=purno  tag="발주 번호" visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=0 border="0" color="33554432" x="12585" y="0" height="60" width="311" html.valueishtml="0"  name=extd1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Pur402 Extd1" border="0" color="0" x="12581" y="4" height="76" width="315" html.valueishtml="0"  name=pur402_extd1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="0" tabsequence=0 border="0" color="33554432" x="11762" y="16" height="60" width="384" html.valueishtml="0"  name=extd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Extd" border="0" color="33554432" x="11758" y="4" height="60" width="389" html.valueishtml="0"  name=extd_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

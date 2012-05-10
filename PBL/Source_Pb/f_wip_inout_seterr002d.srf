@@ -1,0 +1,231 @@
+$PBExportHeader$f_wip_inout_seterr002d.srf
+$PBExportComments$에러항목 등록(이월전) Sub Function
+global type f_wip_inout_seterr002d from function_object
+end type
+
+forward prototypes
+global subroutine f_wip_inout_seterr002d (string arg_date, string arg_cmcd, string arg_plant, string arg_dvsn, string arg_orct, string arg_itno, datastore ds_src, datawindow dw_src, long arg_findrow, decimal arg_qty[], decimal arg_amt[], string arg_iocd)
+end prototypes
+
+global subroutine f_wip_inout_seterr002d (string arg_date, string arg_cmcd, string arg_plant, string arg_dvsn, string arg_orct, string arg_itno, datastore ds_src, datawindow dw_src, long arg_findrow, decimal arg_qty[], decimal arg_amt[], string arg_iocd);long ll_currow, ll_cntx, ll_cnty, ll_chkerr
+string ls_cls, ls_srce
+string ls_colcount
+dec{4} lc_wqty[1 to 12], lc_costav
+dec{0} lc_wbmt[1 to 13]
+
+ls_colcount = dw_src.Object.DataWindow.Column.Count
+
+ll_chkerr = 0
+//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
+lc_wqty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12),금액조정(13)
+lc_wbmt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
+select cls,srce,costav into :ls_cls, :ls_srce, :lc_costav from pbinv.inv101
+		where comltd = :arg_cmcd and xplant = :arg_plant and div = :arg_dvsn and itno = :arg_itno
+		using sqlca;
+	
+if sqlca.sqlcode <> 0 or ls_cls = '20' or ls_cls = '30' then
+	return
+end if
+
+if arg_findrow < 1 then
+	if (ls_cls = '10' and ls_srce = '03') or (ls_cls <> '10' and ls_srce = '04') then
+		arg_amt[12] = arg_amt[12] - arg_amt[2]
+		arg_amt[2] = 0
+	end if
+	ll_currow = dw_src.insertrow(0)
+	dw_src.setitem(ll_currow,"wbcmcd",arg_cmcd)
+	dw_src.setitem(ll_currow,"wbyymmdd",arg_date)
+	dw_src.setitem(ll_currow,"wbplant",arg_plant)
+	dw_src.setitem(ll_currow,"wbdvsn",arg_dvsn)
+	dw_src.setitem(ll_currow,"wborct",arg_orct)
+	dw_src.setitem(ll_currow,"wbitno",arg_itno)
+	dw_src.setitem(ll_currow,"wbiocd",arg_iocd)
+	dw_src.setitem(ll_currow,"wbavrg1",lc_costav)
+	dw_src.setitem(ll_currow,"wbavrg2",0)
+	dw_src.setitem(ll_currow,"wbbgqt", arg_qty[1])
+	dw_src.setitem(ll_currow,"wbbgat1",arg_amt[1])
+	dw_src.setitem(ll_currow,"wbbgat2",0)
+	dw_src.setitem(ll_currow,"wbinqt", arg_qty[2])
+	dw_src.setitem(ll_currow,"wbinat1",arg_amt[2])
+	dw_src.setitem(ll_currow,"wbinat2",arg_amt[3])
+	dw_src.setitem(ll_currow,"wbinat3",0)
+	dw_src.setitem(ll_currow,"wbinat4",0)
+	dw_src.setitem(ll_currow,"wbusqt1",arg_qty[3])
+	dw_src.setitem(ll_currow,"wbusat1",arg_amt[4])
+	dw_src.setitem(ll_currow,"wbusqt2",arg_qty[4])
+	dw_src.setitem(ll_currow,"wbusat2",arg_amt[5])
+	dw_src.setitem(ll_currow,"wbusqt3",arg_qty[5])
+	dw_src.setitem(ll_currow,"wbusat3",arg_amt[6])
+	dw_src.setitem(ll_currow,"wbusqt4",arg_qty[6])
+	dw_src.setitem(ll_currow,"wbusat4",arg_amt[7])
+	dw_src.setitem(ll_currow,"wbusqt5",arg_qty[7])
+	dw_src.setitem(ll_currow,"wbusat5",arg_amt[8])
+	dw_src.setitem(ll_currow,"wbusqt6",arg_qty[8])
+	dw_src.setitem(ll_currow,"wbusat6",arg_amt[9])
+	dw_src.setitem(ll_currow,"wbusqt7",arg_qty[9])
+	dw_src.setitem(ll_currow,"wbusat7",arg_amt[10])
+	dw_src.setitem(ll_currow,"wbusqt8",arg_qty[10])
+	dw_src.setitem(ll_currow,"wbusat8",arg_amt[11])
+	dw_src.setitem(ll_currow,"wbusat9",arg_amt[13])
+	dw_src.setitem(ll_currow,"wbusqta",0)
+	dw_src.setitem(ll_currow,"wbusata",0)
+	dw_src.setitem(ll_currow,"wbohqt", arg_qty[11])
+	dw_src.setitem(ll_currow,"wbohat1",arg_amt[12])
+	dw_src.setitem(ll_currow,"wbohat2",0)
+	dw_src.setitem(ll_currow,"wbscrp",0)
+	dw_src.setitem(ll_currow,"wbretn",0)
+	dw_src.setitem(ll_currow,"wbplan",' ')
+	dw_src.setitem(ll_currow,"wbipaddr",' ')
+	dw_src.setitem(ll_currow,"wbmacaddr",' ')
+	dw_src.setitem(ll_currow,"wbinptdt",' ')
+	dw_src.setitem(ll_currow,"wbupdtdt",' ')
+else
+	lc_wqty[1] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbbgqt")
+	lc_wqty[2] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbinqt")
+	lc_wqty[3] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt1")
+	lc_wqty[4] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt2")
+	lc_wqty[5] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt3")
+	lc_wqty[6] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt4")
+	lc_wqty[7] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt5")
+	lc_wqty[8] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt6")
+	lc_wqty[9] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt7")
+	lc_wqty[10] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusqt8")
+	lc_wqty[11] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbohqt")
+	lc_wbmt[1] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbbgat1")
+	lc_wbmt[2] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbinat1")
+	lc_wbmt[3] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbinat2")
+	lc_wbmt[4] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat1")
+	lc_wbmt[5] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat2")
+	lc_wbmt[6] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat3")
+	lc_wbmt[7] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat4")
+	lc_wbmt[8] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat5")
+	lc_wbmt[9] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat6")
+	lc_wbmt[10] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat7")
+	lc_wbmt[11] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat8")
+	lc_wbmt[12] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbohat1")
+	lc_wbmt[13] = ds_src.getitemdecimal(arg_findrow,"wip002d_wbusat9")
+	
+	if (ls_cls = '10' and ls_srce = '03') or (ls_cls <> '10' and ls_srce = '04') then
+		arg_amt[12] = arg_amt[12] - arg_amt[2]
+		arg_amt[2] = 0
+	end if
+	
+	if (arg_amt[1] <> lc_wbmt[1]) or (arg_amt[2] <> lc_wbmt[2]) or (arg_amt[3] <> lc_wbmt[3]) then
+		ll_chkerr = 1
+	end if
+	for ll_cntx = 1 to 12
+		if (arg_qty[ll_cntx] <> lc_wqty[ll_cntx]) or (arg_amt[ll_cntx] <> lc_wbmt[ll_cntx]) then
+//		if (arg_qty[ll_cntx] <> lc_wqty[ll_cntx]) then
+			ll_chkerr = 1
+		end if
+	next
+	if ll_chkerr = 1 then
+		ll_currow = dw_src.insertrow(0)
+		dw_src.setitem(ll_currow,"wbcmcd",ds_src.getitemstring(arg_findrow,"wip002d_wbcmcd"))
+		dw_src.setitem(ll_currow,"wbyymmdd",ds_src.getitemstring(arg_findrow,"wip002d_wbyymmdd"))
+		dw_src.setitem(ll_currow,"wbplant",ds_src.getitemstring(arg_findrow,"wip002d_wbplant"))
+		dw_src.setitem(ll_currow,"wbdvsn",ds_src.getitemstring(arg_findrow,"wip002d_wbdvsn"))
+		dw_src.setitem(ll_currow,"wborct",ds_src.getitemstring(arg_findrow,"wip002d_wborct"))
+		dw_src.setitem(ll_currow,"wbitno",ds_src.getitemstring(arg_findrow,"wip002d_wbitno"))
+		dw_src.setitem(ll_currow,"wbiocd",ds_src.getitemstring(arg_findrow,"wip002d_wbiocd"))
+		dw_src.setitem(ll_currow,"wbavrg1",ds_src.getitemdecimal(arg_findrow,"wip002d_wbavrg1"))
+		dw_src.setitem(ll_currow,"wbavrg2",ds_src.getitemdecimal(arg_findrow,"wip002d_wbavrg2"))
+		dw_src.setitem(ll_currow,"wbbgqt",lc_wqty[1])
+		dw_src.setitem(ll_currow,"wbbgat1",lc_wbmt[1])
+		dw_src.setitem(ll_currow,"wbbgat2",0)
+		dw_src.setitem(ll_currow,"wbinqt",lc_wqty[2])
+		dw_src.setitem(ll_currow,"wbinat1",lc_wbmt[2])
+		dw_src.setitem(ll_currow,"wbinat2",lc_wbmt[3])
+		dw_src.setitem(ll_currow,"wbinat3",0)
+		dw_src.setitem(ll_currow,"wbinat4",0)
+		dw_src.setitem(ll_currow,"wbusqt1",lc_wqty[3])
+		dw_src.setitem(ll_currow,"wbusat1",lc_wbmt[4])
+		dw_src.setitem(ll_currow,"wbusqt2",lc_wqty[4])
+		dw_src.setitem(ll_currow,"wbusat2",lc_wbmt[5])
+		dw_src.setitem(ll_currow,"wbusqt3",lc_wqty[5])
+		dw_src.setitem(ll_currow,"wbusat3",lc_wbmt[6])
+		dw_src.setitem(ll_currow,"wbusqt4",lc_wqty[6])
+		dw_src.setitem(ll_currow,"wbusat4",lc_wbmt[7])
+		dw_src.setitem(ll_currow,"wbusqt5",lc_wqty[7])
+		dw_src.setitem(ll_currow,"wbusat5",lc_wbmt[8])
+		dw_src.setitem(ll_currow,"wbusqt6",lc_wqty[8])
+		dw_src.setitem(ll_currow,"wbusat6",lc_wbmt[9])
+		dw_src.setitem(ll_currow,"wbusqt7",lc_wqty[9])
+		dw_src.setitem(ll_currow,"wbusat7",lc_wbmt[10])
+		dw_src.setitem(ll_currow,"wbusqt8",lc_wqty[10])
+		dw_src.setitem(ll_currow,"wbusat8",lc_wbmt[11])
+		dw_src.setitem(ll_currow,"wbusat9",lc_wbmt[13])
+		dw_src.setitem(ll_currow,"wbusqta",0)
+		dw_src.setitem(ll_currow,"wbusata",0)
+		dw_src.setitem(ll_currow,"wbohqt",lc_wqty[11])
+		dw_src.setitem(ll_currow,"wbohat1",lc_wbmt[12])
+		dw_src.setitem(ll_currow,"wbohat2",0)
+		dw_src.setitem(ll_currow,"wbscrp",ds_src.getitemdecimal(arg_findrow,"wip002d_wbscrp"))
+		dw_src.setitem(ll_currow,"wbretn",ds_src.getitemdecimal(arg_findrow,"wip002d_wbretn"))
+		dw_src.setitem(ll_currow,"wbplan",ds_src.getitemstring(arg_findrow,"wip002d_wbplan"))
+		dw_src.setitem(ll_currow,"wbipaddr",ds_src.getitemstring(arg_findrow,"wip002d_wbipaddr"))
+		dw_src.setitem(ll_currow,"wbmacaddr",ds_src.getitemstring(arg_findrow,"wip002d_wbmacaddr"))
+		dw_src.setitem(ll_currow,"wbinptdt",ds_src.getitemstring(arg_findrow,"wip002d_wbinptdt"))
+		dw_src.setitem(ll_currow,"wbupdtdt",ds_src.getitemstring(arg_findrow,"wip002d_wbupdtdt"))
+		FOR  ll_cnty = 1  TO Dec(ls_colcount)
+		  dw_src.setitemstatus(ll_currow,ll_cnty,primary!,NotModified!)
+		NEXT
+		dw_src.setitemstatus(ll_currow,0,primary!,NotModified!)
+
+		ll_currow = dw_src.insertrow(0)
+		dw_src.setitem(ll_currow,"wbcmcd",ds_src.getitemstring(arg_findrow,"wip002d_wbcmcd"))
+		dw_src.setitem(ll_currow,"wbyymmdd",ds_src.getitemstring(arg_findrow,"wip002d_wbyymmdd"))
+		dw_src.setitem(ll_currow,"wbplant",ds_src.getitemstring(arg_findrow,"wip002d_wbplant"))
+		dw_src.setitem(ll_currow,"wbdvsn",ds_src.getitemstring(arg_findrow,"wip002d_wbdvsn"))
+		dw_src.setitem(ll_currow,"wborct",ds_src.getitemstring(arg_findrow,"wip002d_wborct"))
+		dw_src.setitem(ll_currow,"wbitno",ds_src.getitemstring(arg_findrow,"wip002d_wbitno"))
+		dw_src.setitem(ll_currow,"wbiocd",ds_src.getitemstring(arg_findrow,"wip002d_wbiocd"))
+		dw_src.setitem(ll_currow,"wbavrg1",ds_src.getitemdecimal(arg_findrow,"wip002d_wbavrg1"))
+		dw_src.setitem(ll_currow,"wbavrg2",ds_src.getitemdecimal(arg_findrow,"wip002d_wbavrg2"))
+		dw_src.setitem(ll_currow,"wbbgqt", arg_qty[1])
+		dw_src.setitem(ll_currow,"wbbgat1",arg_amt[1])
+		dw_src.setitem(ll_currow,"wbbgat2",0)
+		dw_src.setitem(ll_currow,"wbinqt", arg_qty[2])
+		dw_src.setitem(ll_currow,"wbinat1",arg_amt[2])
+		dw_src.setitem(ll_currow,"wbinat2",arg_amt[3])
+		dw_src.setitem(ll_currow,"wbinat3",0)
+		dw_src.setitem(ll_currow,"wbinat4",0)
+		dw_src.setitem(ll_currow,"wbusqt1",arg_qty[3])
+		dw_src.setitem(ll_currow,"wbusat1",arg_amt[4])
+		dw_src.setitem(ll_currow,"wbusqt2",arg_qty[4])
+		dw_src.setitem(ll_currow,"wbusat2",arg_amt[5])
+		dw_src.setitem(ll_currow,"wbusqt3",arg_qty[5])
+		dw_src.setitem(ll_currow,"wbusat3",arg_amt[6])
+		dw_src.setitem(ll_currow,"wbusqt4",arg_qty[6])
+		dw_src.setitem(ll_currow,"wbusat4",arg_amt[7])
+		dw_src.setitem(ll_currow,"wbusqt5",arg_qty[7])
+		dw_src.setitem(ll_currow,"wbusat5",arg_amt[8])
+		dw_src.setitem(ll_currow,"wbusqt6",arg_qty[8])
+		dw_src.setitem(ll_currow,"wbusat6",arg_amt[9])
+		dw_src.setitem(ll_currow,"wbusqt7",arg_qty[9])
+		dw_src.setitem(ll_currow,"wbusat7",arg_amt[10])
+		dw_src.setitem(ll_currow,"wbusqt8",arg_qty[10])
+		dw_src.setitem(ll_currow,"wbusat8",arg_amt[11])
+		dw_src.setitem(ll_currow,"wbusat9",arg_amt[13])
+		dw_src.setitem(ll_currow,"wbusqta",0)
+		dw_src.setitem(ll_currow,"wbusata",0)
+		dw_src.setitem(ll_currow,"wbohqt",arg_qty[11])
+		dw_src.setitem(ll_currow,"wbohat1",arg_amt[12])
+		dw_src.setitem(ll_currow,"wbohat2",0)
+		dw_src.setitem(ll_currow,"wbscrp",ds_src.getitemdecimal(arg_findrow,"wip002d_wbscrp"))
+		dw_src.setitem(ll_currow,"wbretn",ds_src.getitemdecimal(arg_findrow,"wip002d_wbretn"))
+		dw_src.setitem(ll_currow,"wbplan",ds_src.getitemstring(arg_findrow,"wip002d_wbplan"))
+		dw_src.setitem(ll_currow,"wbipaddr",ds_src.getitemstring(arg_findrow,"wip002d_wbipaddr"))
+		dw_src.setitem(ll_currow,"wbmacaddr",ds_src.getitemstring(arg_findrow,"wip002d_wbmacaddr"))
+		dw_src.setitem(ll_currow,"wbinptdt",ds_src.getitemstring(arg_findrow,"wip002d_wbinptdt"))
+		dw_src.setitem(ll_currow,"wbupdtdt",g_s_date)
+		FOR  ll_cnty = 1  TO Dec(ls_colcount)
+		  dw_src.setitemstatus(ll_currow,ll_cnty,primary!,DataModified!)
+		NEXT
+		dw_src.setitemstatus(ll_currow,0,primary!,DataModified!)
+	end if
+end if
+end subroutine
+

@@ -1,0 +1,24 @@
+$PBExportHeader$df_date_compare.srf
+$PBExportComments$입력값과 g_s_date비교(ag_date)
+global type df_date_compare from function_object
+end type
+
+forward prototypes
+global function integer df_date_compare (string ag_date)
+end prototypes
+
+global function integer df_date_compare (string ag_date);//////////////////////////////////////////////////////
+// 현재값과 날짜비교
+//  format : yyyymmdd
+//           ag_date >= g_s_date
+//              성공 : 1
+//              실패 : -1
+/////////////////////////////////////////////////////
+
+If ag_date >= g_s_date Then
+	Return 1
+Else 
+	Return -1
+End IF
+end function
+

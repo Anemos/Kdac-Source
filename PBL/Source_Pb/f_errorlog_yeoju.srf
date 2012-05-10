@@ -1,0 +1,56 @@
+$PBExportHeader$f_errorlog_yeoju.srf
+$PBExportComments$여주납입 인터페이스 에러
+global type f_errorlog_yeoju from function_object
+end type
+
+forward prototypes
+global subroutine f_errorlog_yeoju (string fs_empcode, integer fi_interfaceid, long fl_error_code, string fl_error_text, transaction fs_transaction)
+end prototypes
+
+global subroutine f_errorlog_yeoju (string fs_empcode, integer fi_interfaceid, long fl_error_code, string fl_error_text, transaction fs_transaction);//	ErrorID		Int IDENTITY(1,1)	NOT NULL,
+//	ErrorDate	DateTime				NOT NULL,	-- GetDate()
+//	EmpNo			VarChar(10)			NOT NULL,	-- gs_empcode
+//	UserID		SmallInt				NOT NULL,	-- interface_id
+//	LoginName	VarChar(30)			NOT NULL,	-- interface_name
+//	HostID		Char(8)				NULL,			-- HOST_ID()
+//	HostName		NChar(30)			NULL,			-- HOST_NAME()
+//	ErrorCode	Int					NOT NULL,	-- error key row number
+//	ErrorText	VarChar(255)		NOT NULL,	-- error text
+
+String ls_key, ls_hostname
+integer li_cnt
+
+ls_key = "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\ComputerName\ComputerName"
+RegistryGet(ls_Key, 'ComputerName', RegString!, ls_hostname)
+
+select count(*) into :li_cnt from errorlog
+where userid = :fi_interfaceid and errorcode = :fl_error_code
+using fs_transaction;
+
+if li_cnt < 1 then
+	Insert into errorlog (ErrorDate,
+								 EmpNo,
+								 UserID,
+								 LoginName,
+								 HostID,
+								 HostName,
+								 ErrorCode,
+								 ErrorText)
+					Values ( GetDate(),
+								:fs_empcode,
+								:fi_interfaceid,
+								SYSTEM_USER,
+								HOST_ID(),
+								:ls_hostname,
+								:fl_error_code,
+								:fl_error_text) using fs_transaction;
+else
+	update errorlog
+	set errordate = GetDate(),
+		errortext = :fl_error_text
+	where userid = :fi_interfaceid and errorcode = :fl_error_code
+	using fs_transaction;
+end if
+Commit Using fs_transaction;
+end subroutine
+

@@ -1,0 +1,75 @@
+$PBExportHeader$f_set_confirm_pura.srf
+$PBExportComments$고정자산 확정및 확정취소
+global type f_set_confirm_pura from function_object
+end type
+
+forward prototypes
+global function integer f_set_confirm_pura (string ag_fasstno, string ag_empno, string ag_date, string ag_gubun)
+end prototypes
+
+global function integer f_set_confirm_pura (string ag_fasstno, string ag_empno, string ag_date, string ag_gubun);/*		해당 자산코드에 해당하는 고정자산 확정(경리팀) Update ( pur707 )	
+	
+	Argument : 
+					String 	ag_fasstno 		: 고정자산 번호
+					String   ag_empno			: 고정자산 확정자 사번
+					String   ag_date			: 고정자산 확정일자
+					String   ag_gubun       : 구분    - S : 확정
+															      C : 확정 취소
+
+   Success    1
+	Fail      -1	: 외주금형 이력(반납)
+
+*/
+ag_fasstno = Upper(Trim(ag_fasstno))
+ag_empno = Trim(ag_empno)	//사번
+ag_date = Trim(ag_date)		//확정일
+ag_gubun = Upper(Trim(ag_gubun))
+
+String ls_time
+ls_time = Left(g_s_time,2) + Mid(g_s_time,4,2) + Right(g_s_time,2)
+
+//고정자산 확정
+IF ag_gubun = "S" Then
+	
+	//외주금형 이력
+	UPDATE PBPUR.PUR707
+	SET COMPLN = :ag_empno , COMDT = :ag_date, COMTM = :ls_time, STCD = '4'
+	WHERE COMLTD = '01'
+	  AND SLIPTYPE = 'RP'
+	  //AND STCD = '3'		//팀장승인--현재 팀장승인 안함
+	  AND TRIM(PATTNO)||TRIM(PATTSER) IN 
+			(SELECT TRIM(PATTNO)||TRIM(PATTSER)
+			 FROM PBPUR.PUR708
+			 WHERE COMLTD = '01'
+				AND FASSTNO = :ag_fasstno)
+	Using sqlca ;
+	
+	IF sqlca.sqlcode <> 0 OR sqlca.SqlNRows < 1 Then
+		Return -1
+	End IF	
+	
+Else
+	//고정자산 확정취소
+	
+	//외주금형 이력
+	UPDATE PBPUR.PUR707
+	SET COMPLN = ' ', COMDT = ' ', COMTM = ' ' , STCD = '3'
+	WHERE COMLTD = '01'
+	  AND SLIPTYPE = 'RP'
+	  AND STCD = '4'	//경리고정자산 확정
+	  AND TRIM(PATTNO)||TRIM(PATTSER) IN 
+			(SELECT TRIM(PATTNO)||TRIM(PATTSER)
+			 FROM PBPUR.PUR708
+			 WHERE COMLTD = '01'
+				AND FASSTNO = :ag_fasstno)
+	Using sqlca ;
+	
+	IF sqlca.sqlcode <> 0 OR sqlca.SqlNRows < 1 Then
+		Return -1
+	End IF
+	
+End IF
+
+Return 1
+end function
+

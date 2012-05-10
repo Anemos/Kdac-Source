@@ -1,0 +1,92 @@
+$PBExportHeader$f_pur041_setpur101f.srf
+$PBExportComments$결재용 업체기본정보(구분,dw)
+global type f_pur041_setpur101f from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setpur101f (string as_gubun, datawindow adw_1, ref string as_msg)
+end prototypes
+
+global function integer f_pur041_setpur101f (string as_gubun, datawindow adw_1, ref string as_msg);////구분별로 업체정보 pur101를 pur101f에 기록처리
+long ll_row, ll_rcnt
+string  ls_wsrno
+string       ls_VSRNO,      ls_VNDR,   ls_SCGUBUN,  ls_DIGUBUN,  ls_VNDNM,     ls_VNDNM1   
+string       ls_ADDR,        ls_PRNM,       ls_NATN,    ls_TELN,   ls_TELN1,  ls_FAXN,     ls_TLXN,      ls_VPOST   
+string       ls_TOD,         ls_ARR,        ls_XAREA,   ls_EXTD,  ls_cuitem,  ls_cutype  
+
+String  ls_taxplan, ls_taxdept, ls_taxtel, ls_taxemail, ls_taxcuitem, ls_taxcutype	//2009.12.01
+//  
+//  
+//
+
+for ll_row = 1 to adw_1.rowcount()         
+	ls_VSRNO   = adw_1.object.vsrno[ll_row]
+//	ls_CHGDT   = adw_1.object.chgdt[ll_row]
+	ls_vndr    = adw_1.object.vndr[ll_row]
+	ls_scgubun   = adw_1.object.scgubun[ll_row]
+	ls_digubun    = adw_1.object.digubun[ll_row]
+	ls_vndnm    = adw_1.object.vndnm[ll_row]
+	ls_vndnm1   = adw_1.object.vndnm1[ll_row]
+	ls_addr   = adw_1.object.addr[ll_row]
+	ls_prnm   = adw_1.object.prnm[ll_row]
+	ls_natn   = adw_1.object.natn[ll_row]
+	ls_teln   = adw_1.object.teln[ll_row]
+	ls_teln1   = adw_1.object.teln1[ll_row]
+	ls_faxn   = adw_1.object.faxn[ll_row]
+	ls_tlxn   = adw_1.object.tlxn[ll_row]
+	ls_vpost   = adw_1.object.vpost[ll_row]
+	ls_tod   = adw_1.object.tod[ll_row]
+	ls_arr   = adw_1.object.arr[ll_row]
+	ls_xarea   = adw_1.object.xarea[ll_row]
+	ls_extd   = adw_1.object.extd[ll_row]
+	
+	if ls_digubun = 'D' then	//국내
+		ls_cuitem   = adw_1.object.cuitem[ll_row]		//가상컬럼
+		ls_cutype   = adw_1.object.cutype[ll_row]		//가상컬럼
+		
+		//2009.12.01
+		ls_taxplan  	= adw_1.object.taxplan[ll_row]
+		ls_taxdept		= adw_1.object.taxdept[ll_row]
+		ls_taxtel		= adw_1.object.taxtel[ll_row]
+		ls_taxemail		= adw_1.object.taxemail[ll_row]
+		ls_taxcuitem	= adw_1.object.taxcuitem[ll_row]
+		ls_taxcutype	= adw_1.object.taxcutype[ll_row]
+		//end: 2009.12.01		
+	end if
+	
+	select coalesce(max(wsrno),'00000')
+	into :ls_wsrno
+	from pbpur.pur101f
+	where comltd = '01'
+	and  vsrno = :ls_vsrno
+	and  chgdt = :g_s_date;
+	ls_wsrno = string(long(ls_wsrno) + 1,"00000")
+	
+	
+	INSERT INTO PBpur.pur101f  
+				(COMLTD,      VSRNO,      CHGDT,    wsrno,     VNDR,        SCGUBUN,    DIGUBUN,  VNDNM,     VNDNM1,   
+             ADDR,        PRNM,       NATN,              TELN,        TELN1,      FAXN,     TLXN,      VPOST,   
+             TOD,         ARR,        XAREA,             EXTD,          INPTID,   INPTDT,   UPDTID,   UPDTDT,   
+             IPADDR,      MACADDR,     GUBUN,              STCD,    DESC,   CONDT, cuitem, 	cutype,
+				 TAXPLAN,	  TAXDEPT,		TAXTEL,			TAXEMAIL,		TAXCUITEM, 		TAXCUTYPE
+				 )  
+				 
+	  VALUES ('01',      :ls_VSRNO,  :g_s_date, :ls_wsrno,  :ls_vndr, :ls_scgubun, :ls_digubun, :ls_vndnm, :ls_vndnm1,
+				 :ls_addr,    :ls_prnm,      :ls_natn,     :ls_teln,     :ls_teln1,      :ls_faxn,      :ls_tlxn,     :ls_Vpost,
+				 :ls_tod,   :ls_arr,     :ls_xarea,      :ls_extd,		 :g_s_empno,   :g_s_date,  '',    '',   
+				 :g_s_IPADDR,   :g_s_MACADDR, :as_GUBUN,   'A',   '', '',             :ls_cuitem, :ls_cutype,
+				 :ls_taxplan,	:ls_taxdept,	:ls_taxtel,	:ls_taxemail,	:ls_taxcuitem,	:ls_taxcutype				 
+				 )
+				  USING SQLCA ;
+	if SQLCA.SQLCODE <> 0  OR SQLCA.SQLNROWS <= 0 then
+		messagebox('확인','승인요청용 업체기본정보 등록중, 오류발생! 급히 연락바랍니다!  ~r~n' + string(sqlca.sqlerrtext) ,Exclamation!)
+		as_msg = '승인요청용 업체기본정보 등록중, 오류발생! (f_pur041_setpur101f) [오류코드: ' + string(sqlca.sqlerrtext) +' ]'
+		return -1
+	end if
+	////MESSAGEBOX('SQLCOCE',STRING(SQLCA.SQLCODE))		  
+	//
+next
+
+return 0
+end function
+

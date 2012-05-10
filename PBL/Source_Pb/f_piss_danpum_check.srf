@@ -1,0 +1,30 @@
+$PBExportHeader$f_piss_danpum_check.srf
+global type f_piss_danpum_check from function_object
+end type
+
+forward prototypes
+global function string f_piss_danpum_check (string a_area, string a_div, string a_itno, long a_loadqty)
+end prototypes
+
+global function string f_piss_danpum_check (string a_area, string a_div, string a_itno, long a_loadqty);dec{1} ln_invqty
+
+if isnull(sqlca.dbhandle()) or sqlca.dbhandle() <= 0 then
+	return 'F'
+end if
+
+select ohuqty - iperp1 into :ln_invqty from pbinv.inv101
+	where comltd = :g_s_company and xplant = :a_area and
+			div    = :a_div       and itno   = :a_itno using sqlca ;
+			
+if isnull(ln_invqty) then
+	ln_invqty = 0 
+end if
+
+if ln_invqty < a_loadqty then
+	return 'S'  
+end if
+
+return 'A'
+
+end function
+

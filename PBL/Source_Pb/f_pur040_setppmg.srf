@@ -1,0 +1,38 @@
+$PBExportHeader$f_pur040_setppmg.srf
+$PBExportComments$PPM GREEN기준
+global type f_pur040_setppmg from function_object
+end type
+
+forward prototypes
+global function long f_pur040_setppmg (string as_btype)
+end prototypes
+
+global function long f_pur040_setppmg (string as_btype);////////////////////////////////////////////////
+// :ppm기준
+////////////////////////////////////////////////
+  long ll_gstd,ll_rstd
+  
+  SELECT "PBPUR"."PUR122"."GSTD",   
+         "PBPUR"."PUR122"."RSTD"   
+         
+    INTO :ll_gstd,   
+         :ll_rstd   
+      
+    FROM "PBPUR"."PUR122"  
+   WHERE ( "PBPUR"."PUR122"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR122"."BTYPE" = :as_btype )   ;
+if sqlca.sqlcode <> 0 then
+	return 0
+end if
+//if al_rate >= ll_g1 then
+//   ls_grade = '1'
+//elseif al_rate >= ll_g2 then
+//	ls_grade = '2'
+//elseif al_rate >= ll_g3 then
+//	ls_grade = '3'	
+//else
+//	ls_grade = '4'	
+//end if
+Return ll_gstd
+end function
+

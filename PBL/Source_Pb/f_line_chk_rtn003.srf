@@ -1,0 +1,19 @@
+$PBExportHeader$f_line_chk_rtn003.srf
+$PBExportComments$대체 Line 코드가 RTN003 존재여부 Check
+global type f_line_chk_rtn003 from function_object
+end type
+
+forward prototypes
+global function integer f_line_chk_rtn003 (string a_cmcd, string a_plant, string a_dvsn, string a_line1, string a_line2)
+end prototypes
+
+global function integer f_line_chk_rtn003 (string a_cmcd, string a_plant, string a_dvsn, string a_line1, string a_line2);integer l_n_count
+
+select count(*) into : l_n_count from pbrtn.rtn003
+	where rccmcd  = :a_cmcd  and rcplant = :a_plant and rcdvsn  = :a_dvsn  and 
+	      rcline1 = :a_line1 and rcline2 = :a_line2 and rcedfm <= :g_s_date
+using sqlca;
+
+return l_n_count
+end function
+

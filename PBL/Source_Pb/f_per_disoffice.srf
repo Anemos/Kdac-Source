@@ -1,0 +1,33 @@
+$PBExportHeader$f_per_disoffice.srf
+$PBExportComments$담당자 사용권한 return
+global type f_per_disoffice from function_object
+end type
+
+forward prototypes
+global function string f_per_disoffice (string as_office)
+end prototypes
+
+global function string f_per_disoffice (string as_office);string ls_dis1, ls_dis2, ls_name, ls_class, ls_tel, ls_dept
+
+if f_spacechk(as_office) <> -1 then
+	SELECT penamek, pbcommon.f_codenm('01','PER306',peclass, '1'), peintel,pbcommon.f_codenm('01','DAC150',pedept, '2')  
+	 Into :ls_name, :ls_class, :ls_tel, :ls_dept
+	FROM "PBCOMMON"."DAC002", "PBPER"."PER001"  
+	WHERE ( "PBCOMMON"."DAC002"."COMLTD" = '01'        ) AND  
+			 ( "PBCOMMON"."DAC002"."COGUBUN" = 'PER007'   ) AND  
+			 ( "PBCOMMON"."DAC002"."COEXTEND" = "PBPER"."PER001"."PEEMPNO" ) AND 
+			 ( substring("PBCOMMON"."DAC002"."COCODE",1,2) = :as_office    ) AND
+			 ( substring("PBCOMMON"."DAC002"."COCODE",3,1) = '1'           ) AND
+			 ( "PBCOMMON"."DAC002"."COEDDT" = '' ) 
+	Using sqlcc;
+		 
+	if sqlcc.sqlcode <> 0 then
+		ls_dis1 = ''
+	else
+		ls_dis1 = ls_dept + " "+ ls_name +" "+f_spacedel(ls_class) + " ☎)" + trim(ls_tel) 
+	end if
+end if
+
+return ls_dis1
+end function
+

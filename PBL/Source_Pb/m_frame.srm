@@ -1,0 +1,1137 @@
+$PBExportHeader$m_frame.srm
+$PBExportComments$Kdac Frame Menu
+forward
+global type m_frame from menu
+end type
+type m_file from menu within m_frame
+end type
+type m_printerset from menu within m_file
+end type
+type m_about from menu within m_file
+end type
+type m_-1 from menu within m_file
+end type
+type m_exit from menu within m_file
+end type
+type m_file from menu within m_frame
+m_printerset m_printerset
+m_about m_about
+m_-1 m_-1
+m_exit m_exit
+end type
+type m_action from menu within m_frame
+end type
+type m_retrieve from menu within m_action
+end type
+type m_insert from menu within m_action
+end type
+type m_save from menu within m_action
+end type
+type m_delete from menu within m_action
+end type
+type m_print from menu within m_action
+end type
+type m_first from menu within m_action
+end type
+type m_prev from menu within m_action
+end type
+type m_next from menu within m_action
+end type
+type m_last from menu within m_action
+end type
+type m_preview from menu within m_action
+end type
+type m_bretrieve from menu within m_action
+end type
+type m_bcreate from menu within m_action
+end type
+type m_sep21 from menu within m_action
+end type
+type m_dretrieve from menu within m_action
+end type
+type m_dprint from menu within m_action
+end type
+type m_dchar from menu within m_action
+end type
+type m_none1 from menu within m_action
+end type
+type m_none2 from menu within m_action
+end type
+type m_sep22 from menu within m_action
+end type
+type m_search from menu within m_action
+end type
+type m_sort from menu within m_action
+end type
+type m_filter from menu within m_action
+end type
+type m_graphchange from menu within m_action
+end type
+type m_sep23 from menu within m_action
+end type
+type m_close from menu within m_action
+end type
+type m_action from menu within m_frame
+m_retrieve m_retrieve
+m_insert m_insert
+m_save m_save
+m_delete m_delete
+m_print m_print
+m_first m_first
+m_prev m_prev
+m_next m_next
+m_last m_last
+m_preview m_preview
+m_bretrieve m_bretrieve
+m_bcreate m_bcreate
+m_sep21 m_sep21
+m_dretrieve m_dretrieve
+m_dprint m_dprint
+m_dchar m_dchar
+m_none1 m_none1
+m_none2 m_none2
+m_sep22 m_sep22
+m_search m_search
+m_sort m_sort
+m_filter m_filter
+m_graphchange m_graphchange
+m_sep23 m_sep23
+m_close m_close
+end type
+type m_window from menu within m_frame
+end type
+type m_cascade from menu within m_window
+end type
+type m_tile from menu within m_window
+end type
+type m_layer from menu within m_window
+end type
+type m_tilehorizontal from menu within m_window
+end type
+type m_icon from menu within m_window
+end type
+type m_-15 from menu within m_window
+end type
+type m_toolbar from menu within m_window
+end type
+type m_window from menu within m_frame
+m_cascade m_cascade
+m_tile m_tile
+m_layer m_layer
+m_tilehorizontal m_tilehorizontal
+m_icon m_icon
+m_-15 m_-15
+m_toolbar m_toolbar
+end type
+type m_x from menu within m_frame
+end type
+global type m_frame from menu
+m_file m_file
+m_action m_action
+m_window m_window
+m_x m_x
+end type
+end forward
+
+global type m_frame from menu
+m_file m_file
+m_action m_action
+m_window m_window
+m_x m_x
+end type
+global m_frame m_frame
+
+on m_frame.create
+m_frame=this
+call super::create
+this.m_file=create m_file
+this.m_action=create m_action
+this.m_window=create m_window
+this.m_x=create m_x
+this.Item[UpperBound(this.Item)+1]=this.m_file
+this.Item[UpperBound(this.Item)+1]=this.m_action
+this.Item[UpperBound(this.Item)+1]=this.m_window
+this.Item[UpperBound(this.Item)+1]=this.m_x
+end on
+
+on m_frame.destroy
+call super::destroy
+destroy(this.m_file)
+destroy(this.m_action)
+destroy(this.m_window)
+destroy(this.m_x)
+end on
+
+type m_file from menu within m_frame
+m_printerset m_printerset
+m_about m_about
+m_-1 m_-1
+m_exit m_exit
+end type
+
+on m_file.create
+call super::create
+this.text = "K&DAC"
+this.m_printerset=create m_printerset
+this.m_about=create m_about
+this.m_-1=create m_-1
+this.m_exit=create m_exit
+this.Item[UpperBound(this.Item)+1]=this.m_printerset
+this.Item[UpperBound(this.Item)+1]=this.m_about
+this.Item[UpperBound(this.Item)+1]=this.m_-1
+this.Item[UpperBound(this.Item)+1]=this.m_exit
+end on
+
+on m_file.destroy
+call super::destroy
+destroy(this.m_printerset)
+destroy(this.m_about)
+destroy(this.m_-1)
+destroy(this.m_exit)
+end on
+
+type m_printerset from menu within m_file
+end type
+
+on m_printerset.create
+call super::create
+this.text = "프린터설정~tCtrl+P"
+this.shortcut = 336
+this.toolbaritemname = "Custom084!"
+this.toolbaritemtext = "프린터설정"
+end on
+
+event clicked;PrintSetup()
+end event
+
+on m_printerset.destroy
+call super::destroy
+end on
+
+type m_about from menu within m_file
+end type
+
+event clicked;//open(w_about)
+end event
+
+on m_about.create
+call super::create
+this.text = "&About..."
+end on
+
+on m_about.destroy
+call super::destroy
+end on
+
+type m_-1 from menu within m_file
+end type
+
+on m_-1.create
+call super::create
+this.text = "-"
+end on
+
+on m_-1.destroy
+call super::destroy
+end on
+
+type m_exit from menu within m_file
+end type
+
+on m_exit.create
+call super::create
+this.text = "KDAC종료~tAlt+X"
+this.shortcut = 600
+this.toolbaritemname = "Custom036!"
+this.toolbaritemtext = "System종료"
+this.toolbaritemspace = 3
+end on
+
+event clicked;//Open된 모든 Sheet Close "w_menu" 화면 복귀
+f_close_sheet()
+
+end event
+
+on m_exit.destroy
+call super::destroy
+end on
+
+type m_action from menu within m_frame
+m_retrieve m_retrieve
+m_insert m_insert
+m_save m_save
+m_delete m_delete
+m_print m_print
+m_first m_first
+m_prev m_prev
+m_next m_next
+m_last m_last
+m_preview m_preview
+m_bretrieve m_bretrieve
+m_bcreate m_bcreate
+m_sep21 m_sep21
+m_dretrieve m_dretrieve
+m_dprint m_dprint
+m_dchar m_dchar
+m_none1 m_none1
+m_none2 m_none2
+m_sep22 m_sep22
+m_search m_search
+m_sort m_sort
+m_filter m_filter
+m_graphchange m_graphchange
+m_sep23 m_sep23
+m_close m_close
+end type
+
+on m_action.create
+call super::create
+this.visible = false
+this.text = "처리(&A)"
+this.toolbaritembarindex = 2
+this.m_retrieve=create m_retrieve
+this.m_insert=create m_insert
+this.m_save=create m_save
+this.m_delete=create m_delete
+this.m_print=create m_print
+this.m_first=create m_first
+this.m_prev=create m_prev
+this.m_next=create m_next
+this.m_last=create m_last
+this.m_preview=create m_preview
+this.m_bretrieve=create m_bretrieve
+this.m_bcreate=create m_bcreate
+this.m_sep21=create m_sep21
+this.m_dretrieve=create m_dretrieve
+this.m_dprint=create m_dprint
+this.m_dchar=create m_dchar
+this.m_none1=create m_none1
+this.m_none2=create m_none2
+this.m_sep22=create m_sep22
+this.m_search=create m_search
+this.m_sort=create m_sort
+this.m_filter=create m_filter
+this.m_graphchange=create m_graphchange
+this.m_sep23=create m_sep23
+this.m_close=create m_close
+this.Item[UpperBound(this.Item)+1]=this.m_retrieve
+this.Item[UpperBound(this.Item)+1]=this.m_insert
+this.Item[UpperBound(this.Item)+1]=this.m_save
+this.Item[UpperBound(this.Item)+1]=this.m_delete
+this.Item[UpperBound(this.Item)+1]=this.m_print
+this.Item[UpperBound(this.Item)+1]=this.m_first
+this.Item[UpperBound(this.Item)+1]=this.m_prev
+this.Item[UpperBound(this.Item)+1]=this.m_next
+this.Item[UpperBound(this.Item)+1]=this.m_last
+this.Item[UpperBound(this.Item)+1]=this.m_preview
+this.Item[UpperBound(this.Item)+1]=this.m_bretrieve
+this.Item[UpperBound(this.Item)+1]=this.m_bcreate
+this.Item[UpperBound(this.Item)+1]=this.m_sep21
+this.Item[UpperBound(this.Item)+1]=this.m_dretrieve
+this.Item[UpperBound(this.Item)+1]=this.m_dprint
+this.Item[UpperBound(this.Item)+1]=this.m_dchar
+this.Item[UpperBound(this.Item)+1]=this.m_none1
+this.Item[UpperBound(this.Item)+1]=this.m_none2
+this.Item[UpperBound(this.Item)+1]=this.m_sep22
+this.Item[UpperBound(this.Item)+1]=this.m_search
+this.Item[UpperBound(this.Item)+1]=this.m_sort
+this.Item[UpperBound(this.Item)+1]=this.m_filter
+this.Item[UpperBound(this.Item)+1]=this.m_graphchange
+this.Item[UpperBound(this.Item)+1]=this.m_sep23
+this.Item[UpperBound(this.Item)+1]=this.m_close
+end on
+
+on m_action.destroy
+call super::destroy
+destroy(this.m_retrieve)
+destroy(this.m_insert)
+destroy(this.m_save)
+destroy(this.m_delete)
+destroy(this.m_print)
+destroy(this.m_first)
+destroy(this.m_prev)
+destroy(this.m_next)
+destroy(this.m_last)
+destroy(this.m_preview)
+destroy(this.m_bretrieve)
+destroy(this.m_bcreate)
+destroy(this.m_sep21)
+destroy(this.m_dretrieve)
+destroy(this.m_dprint)
+destroy(this.m_dchar)
+destroy(this.m_none1)
+destroy(this.m_none2)
+destroy(this.m_sep22)
+destroy(this.m_search)
+destroy(this.m_sort)
+destroy(this.m_filter)
+destroy(this.m_graphchange)
+destroy(this.m_sep23)
+destroy(this.m_close)
+end on
+
+type m_retrieve from menu within m_action
+end type
+
+on m_retrieve.create
+call super::create
+this.visible = false
+this.text = "조회~tF2"
+this.enabled = false
+this.shortcut = 113
+this.toolbaritemvisible = false
+this.toolbaritemname = "Retrieve!"
+this.toolbaritemtext = "조회"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_retrieve")
+
+end event
+
+on m_retrieve.destroy
+call super::destroy
+end on
+
+type m_insert from menu within m_action
+end type
+
+on m_insert.create
+call super::create
+this.visible = false
+this.text = "입력~tF3"
+this.enabled = false
+this.shortcut = 114
+this.toolbaritemvisible = false
+this.toolbaritemname = "Insert!"
+this.toolbaritemtext = "입력"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_insert")
+
+end event
+
+on m_insert.destroy
+call super::destroy
+end on
+
+type m_save from menu within m_action
+end type
+
+on m_save.create
+call super::create
+this.visible = false
+this.text = "저장~tF4"
+this.enabled = false
+this.shortcut = 115
+this.toolbaritemvisible = false
+this.toolbaritemname = "Save!"
+this.toolbaritemtext = "저장"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_save")
+
+end event
+
+on m_save.destroy
+call super::destroy
+end on
+
+type m_delete from menu within m_action
+end type
+
+on m_delete.create
+call super::create
+this.visible = false
+this.text = "삭제~tAlt+D"
+this.enabled = false
+this.shortcut = 580
+this.toolbaritemvisible = false
+this.toolbaritemname = "Clear!"
+this.toolbaritemtext = "삭제"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_delete")
+
+end event
+
+on m_delete.destroy
+call super::destroy
+end on
+
+type m_print from menu within m_action
+end type
+
+on m_print.create
+call super::create
+this.visible = false
+this.text = "인쇄~tAlt+P"
+this.enabled = false
+this.shortcut = 592
+this.toolbaritemvisible = false
+this.toolbaritemname = "Print!"
+this.toolbaritemtext = "인쇄"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_print")
+
+end event
+
+on m_print.destroy
+call super::destroy
+end on
+
+type m_first from menu within m_action
+end type
+
+on m_first.create
+call super::create
+this.visible = false
+this.text = "처음~tF5"
+this.enabled = false
+this.shortcut = 116
+this.toolbaritemvisible = false
+this.toolbaritemname = "VCRFirst!"
+this.toolbaritemtext = "처음"
+this.toolbaritembarindex = 2
+this.toolbaritemspace = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_first")
+
+end event
+
+on m_first.destroy
+call super::destroy
+end on
+
+type m_prev from menu within m_action
+end type
+
+on m_prev.create
+call super::create
+this.visible = false
+this.text = "이전~tF6"
+this.enabled = false
+this.shortcut = 117
+this.toolbaritemvisible = false
+this.toolbaritemname = "VCRPrior!"
+this.toolbaritemtext = "이전"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_prev")
+
+end event
+
+on m_prev.destroy
+call super::destroy
+end on
+
+type m_next from menu within m_action
+end type
+
+on m_next.create
+call super::create
+this.visible = false
+this.text = "다음~tF7"
+this.enabled = false
+this.shortcut = 118
+this.toolbaritemvisible = false
+this.toolbaritemname = "VCRNext!"
+this.toolbaritemtext = "다음"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_next")
+
+end event
+
+on m_next.destroy
+call super::destroy
+end on
+
+type m_last from menu within m_action
+end type
+
+on m_last.create
+call super::create
+this.visible = false
+this.text = "끝~tF8"
+this.enabled = false
+this.shortcut = 119
+this.toolbaritemvisible = false
+this.toolbaritemname = "VCRLast!"
+this.toolbaritemtext = "끝"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_last")
+
+end event
+
+on m_last.destroy
+call super::destroy
+end on
+
+type m_preview from menu within m_action
+end type
+
+on m_preview.create
+call super::create
+this.visible = false
+this.text = "미리보기~tAlt+V"
+this.enabled = false
+this.shortcut = 598
+this.toolbaritemvisible = false
+this.toolbaritemname = "Preview!"
+this.toolbaritemtext = "미리보기"
+this.toolbaritembarindex = 2
+this.toolbaritemspace = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_preview")
+
+end event
+
+on m_preview.destroy
+call super::destroy
+end on
+
+type m_bretrieve from menu within m_action
+end type
+
+on m_bretrieve.create
+call super::create
+this.visible = false
+this.text = "대상조회"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemname = "ViewPainter!"
+this.toolbaritemtext = "대상조회"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_bretrieve")
+
+end event
+
+on m_bretrieve.destroy
+call super::destroy
+end on
+
+type m_bcreate from menu within m_action
+end type
+
+on m_bcreate.create
+call super::create
+this.visible = false
+this.text = "자료생성"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemname = "DataPipeline!"
+this.toolbaritemtext = "자료생성"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_bcreate")
+
+end event
+
+on m_bcreate.destroy
+call super::destroy
+end on
+
+type m_sep21 from menu within m_action
+end type
+
+on m_sep21.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_sep21.destroy
+call super::destroy
+end on
+
+type m_dretrieve from menu within m_action
+end type
+
+on m_dretrieve.create
+call super::create
+this.visible = false
+this.text = "상세조회~tCtrl+F2"
+this.enabled = false
+this.shortcut = 369
+this.toolbaritemvisible = false
+this.toolbaritemname = "EditDataGrid!"
+this.toolbaritemtext = "상세조회"
+this.toolbaritembarindex = 2
+this.toolbaritemspace = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_dretrieve")
+
+end event
+
+on m_dretrieve.destroy
+call super::destroy
+end on
+
+type m_dprint from menu within m_action
+end type
+
+on m_dprint.create
+call super::create
+this.visible = false
+this.text = "화면인쇄~tCtrl+S"
+this.enabled = false
+this.shortcut = 339
+this.toolbaritemvisible = false
+this.toolbaritemname = "Custom081!"
+this.toolbaritemtext = "화면인쇄"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_dprint")
+
+end event
+
+on m_dprint.destroy
+call super::destroy
+end on
+
+type m_dchar from menu within m_action
+end type
+
+event clicked;open(w_spec_char)
+end event
+
+on m_dchar.create
+call super::create
+this.visible = false
+this.text = "특수문자~tCtrl+F10"
+this.enabled = false
+this.shortcut = 377
+this.toolbaritemvisible = false
+this.toolbaritemname = "FormatPercent!"
+this.toolbaritemtext = "특수문자"
+this.toolbaritembarindex = 2
+end on
+
+on m_dchar.destroy
+call super::destroy
+end on
+
+type m_none1 from menu within m_action
+end type
+
+on m_none1.create
+call super::create
+this.visible = false
+this.text = "none1"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemname = "Custom046!"
+this.toolbaritemtext = "none1"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_none1")
+
+end event
+
+on m_none1.destroy
+call super::destroy
+end on
+
+type m_none2 from menu within m_action
+end type
+
+on m_none2.create
+call super::create
+this.visible = false
+this.text = "none2"
+this.enabled = false
+this.toolbaritemvisible = false
+this.toolbaritemname = "Custom053!"
+this.toolbaritemtext = "none2"
+this.toolbaritembarindex = 2
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_none2")
+
+end event
+
+on m_none2.destroy
+call super::destroy
+end on
+
+type m_sep22 from menu within m_action
+end type
+
+on m_sep22.create
+call super::create
+this.visible = false
+this.text = "-"
+end on
+
+on m_sep22.destroy
+call super::destroy
+end on
+
+type m_search from menu within m_action
+end type
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_search")
+
+end event
+
+on m_search.create
+call super::create
+this.text = "찾기~tCtrl+F"
+this.shortcut = 326
+this.toolbaritemname = "Find!"
+this.toolbaritemtext = "찾기"
+this.toolbaritembarindex = 2
+end on
+
+on m_search.destroy
+call super::destroy
+end on
+
+type m_sort from menu within m_action
+end type
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_sort")
+
+end event
+
+on m_sort.create
+call super::create
+this.text = "정렬~tCtrl+S"
+this.shortcut = 339
+this.toolbaritemname = "Sort!"
+this.toolbaritemtext = "정렬"
+this.toolbaritembarindex = 2
+end on
+
+on m_sort.destroy
+call super::destroy
+end on
+
+type m_filter from menu within m_action
+end type
+
+on m_filter.create
+call super::create
+this.text = "필터~tCtrl+T"
+this.shortcut = 340
+this.toolbaritemname = "Custom090!"
+this.toolbaritemtext = "필터"
+this.toolbaritembarindex = 2
+end on
+
+on m_filter.destroy
+call super::destroy
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_filter")
+
+end event
+
+type m_graphchange from menu within m_action
+end type
+
+on m_graphchange.create
+call super::create
+this.text = "그래프변환~tCtrl+G"
+this.shortcut = 327
+this.toolbaritemname = "Graph!"
+this.toolbaritemtext = "그래프변환"
+this.toolbaritembarindex = 2
+end on
+
+on m_graphchange.destroy
+call super::destroy
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+l_s_wsheet.TriggerEvent("ue_graph_change")
+
+end event
+
+type m_sep23 from menu within m_action
+end type
+
+on m_sep23.create
+call super::create
+this.text = "-"
+end on
+
+on m_sep23.destroy
+call super::destroy
+end on
+
+type m_close from menu within m_action
+end type
+
+on m_close.create
+call super::create
+this.text = "닫기~tCtrl+W"
+this.shortcut = 343
+this.toolbaritemname = "Exit!"
+this.toolbaritemtext = "현재화면닫기"
+this.toolbaritembarindex = 2
+this.toolbaritemspace = 1
+end on
+
+on m_close.destroy
+call super::destroy
+end on
+
+event clicked;close(w_frame.GetActiveSheet())
+
+end event
+
+type m_window from menu within m_frame
+m_cascade m_cascade
+m_tile m_tile
+m_layer m_layer
+m_tilehorizontal m_tilehorizontal
+m_icon m_icon
+m_-15 m_-15
+m_toolbar m_toolbar
+end type
+
+on m_window.create
+call super::create
+this.text = "창(&W)"
+this.shifttoright = true
+this.m_cascade=create m_cascade
+this.m_tile=create m_tile
+this.m_layer=create m_layer
+this.m_tilehorizontal=create m_tilehorizontal
+this.m_icon=create m_icon
+this.m_-15=create m_-15
+this.m_toolbar=create m_toolbar
+this.Item[UpperBound(this.Item)+1]=this.m_cascade
+this.Item[UpperBound(this.Item)+1]=this.m_tile
+this.Item[UpperBound(this.Item)+1]=this.m_layer
+this.Item[UpperBound(this.Item)+1]=this.m_tilehorizontal
+this.Item[UpperBound(this.Item)+1]=this.m_icon
+this.Item[UpperBound(this.Item)+1]=this.m_-15
+this.Item[UpperBound(this.Item)+1]=this.m_toolbar
+end on
+
+on m_window.destroy
+call super::destroy
+destroy(this.m_cascade)
+destroy(this.m_tile)
+destroy(this.m_layer)
+destroy(this.m_tilehorizontal)
+destroy(this.m_icon)
+destroy(this.m_-15)
+destroy(this.m_toolbar)
+end on
+
+type m_cascade from menu within m_window
+end type
+
+on m_cascade.create
+call super::create
+this.text = "계단 배열"
+this.toolbaritemtext = "계단 배열"
+this.toolbaritemspace = 3
+end on
+
+event clicked;w_frame.ArrangeSheets(Cascade!)
+end event
+
+on m_cascade.destroy
+call super::destroy
+end on
+
+type m_tile from menu within m_window
+end type
+
+on m_tile.create
+call super::create
+this.text = "바둑판 배열"
+this.toolbaritemtext = "바둑판 배열"
+end on
+
+event clicked;w_frame.ArrangeSheets(Tile!)
+end event
+
+on m_tile.destroy
+call super::destroy
+end on
+
+type m_layer from menu within m_window
+end type
+
+on m_layer.create
+call super::create
+this.text = "층식 배열"
+this.toolbaritemtext = "층식 배열"
+end on
+
+event clicked;w_frame.ArrangeSheets(TileHorizontal!)
+end event
+
+on m_layer.destroy
+call super::destroy
+end on
+
+type m_tilehorizontal from menu within m_window
+end type
+
+on m_tilehorizontal.create
+call super::create
+this.text = "전체화면"
+this.toolbaritemtext = "전체화면"
+end on
+
+event clicked;w_frame.ArrangeSheets(Layer!)
+end event
+
+on m_tilehorizontal.destroy
+call super::destroy
+end on
+
+type m_icon from menu within m_window
+end type
+
+on m_icon.create
+call super::create
+this.text = "아이콘 정렬"
+this.toolbaritemtext = "아이콘 정렬"
+end on
+
+event clicked;w_frame.ArrangeSheets(Icons!)
+end event
+
+on m_icon.destroy
+call super::destroy
+end on
+
+type m_-15 from menu within m_window
+end type
+
+on m_-15.create
+call super::create
+this.text = "-"
+this.toolbaritemspace = 1
+end on
+
+on m_-15.destroy
+call super::destroy
+end on
+
+type m_toolbar from menu within m_window
+end type
+
+on m_toolbar.create
+call super::create
+this.text = "툴바.."
+this.toolbaritemtext = "툴바설정"
+end on
+
+event clicked;Openwithparm(w_toolbars, w_frame)
+end event
+
+on m_toolbar.destroy
+call super::destroy
+end on
+
+type m_x from menu within m_frame
+end type
+
+on m_x.create
+call super::create
+this.text = "도움말"
+this.toolbaritemname = "Help!"
+this.toolbaritembarindex = 2
+this.toolbaritemspace = 5
+this.shifttoright = true
+this.mergeoption = helpmenu!
+end on
+
+on m_x.destroy
+call super::destroy
+end on
+
+event clicked;window l_s_wsheet
+
+l_s_wsheet = w_frame.GetActiveSheet()
+g_s_winid  = l_s_wsheet.classname()
+close(w_comm312i)
+open(w_comm312i)
+
+end event
+

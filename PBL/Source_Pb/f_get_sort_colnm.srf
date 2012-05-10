@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_sort_colnm.srf
+$PBExportComments$DW Head에서 Sorting할 Column Name  Return.
+global type f_get_sort_colnm from function_object
+end type
+
+forward prototypes
+global function string f_get_sort_colnm (datawindow adw)
+end prototypes
+
+global function string f_get_sort_colnm (datawindow adw);////////////////////////////////////////////////////////////////
+// * DataWindow Header Click시 Sorting할 Column Name Return * 
+//
+////////////////////////////////////////////////////////////////
+
+String ls_Rtn
+Int	 li_Position
+
+ls_Rtn      = adw.GetObjectAtPointer( )
+li_Position = Pos( ls_Rtn, '_t', 1 )
+
+
+Return Mid( ls_Rtn, 1, li_Position - 1 )
+end function
+

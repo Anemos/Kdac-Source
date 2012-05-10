@@ -1,0 +1,57 @@
+$PBExportHeader$d_pisq112u_01.srd
+$PBExportComments$검사성적서 판정의 중복 거래명세표번호 표시(비간판용)
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes name=areacode dbname="TQBUSINESSTEMP.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=divisioncode dbname="TQBUSINESSTEMP.DIVISIONCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=slno dbname="TQBUSINESSTEMP.SLNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=deliverydate dbname="TQBUSINESSTEMP.DELIVERYDATE" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=suppliercode dbname="TQBUSINESSTEMP.SUPPLIERCODE" )
+ column=(type=char(50) updatewhereclause=yes name=tmstsupplier_supplierkorname dbname="TMSTSUPPLIER.SUPPLIERKORNAME" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itemcode dbname="TQBUSINESSTEMP.ITEMCODE" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ITEMNAME" )
+ column=(type=long update=yes updatewhereclause=yes name=supplierdeliveryqty dbname="TQBUSINESSTEMP.SUPPLIERDELIVERYQTY" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=judgeflag dbname="TQBUSINESSTEMP.JUDGEFLAG" )
+ column=(type=long update=yes updatewhereclause=yes name=goodqty dbname="TQBUSINESSTEMP.GOODQTY" )
+ column=(type=long update=yes updatewhereclause=yes name=badqty dbname="TQBUSINESSTEMP.BADQTY" )
+ retrieve="SELECT A.AREACODE,   
+		 A.DIVISIONCODE,   
+		 A.SLNO,   
+		 A.DELIVERYDATE,   
+		 A.SUPPLIERCODE,   
+       D.SUPPLIERKORNAME      ,   
+		 A.ITEMCODE,   
+       E.ITEMNAME             ,   
+		 A.SUPPLIERDELIVERYQTY,   
+		 A.JUDGEFLAG,   
+		 A.GOODQTY,   
+		 A.BADQTY  
+  FROM TQBUSINESSTEMP A,
+       TMSTSUPPLIER   D,
+       TMSTITEM       E
+ WHERE A.SUPPLIERCODE  	= D.SUPPLIERCODE 
+   AND A.ITEMCODE      	= E.ITEMCODE
+   AND A.AREACODE			= :as_AreaCode
+	AND A.DIVISIONCODE	= :as_DivisionCode
+	AND CAST(SUBSTRING(A.SLNO, 9, 4) AS INT) = CAST(:as_slno AS INT)
+	AND A.JUDGEFLAG		= '9'
+" arguments=(("as_areacode", string),("as_divisioncode", string),("as_slno", string)) )
+text(band=header alignment="2" text="거래명세표번호" border="0" color="16777215" x="9" y="8" height="68" width="462" html.valueishtml="0"  name=slno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="납품일자" border="0" color="16777215" x="480" y="8" height="68" width="347" html.valueishtml="0"  name=deliverydate_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품 번" border="0" color="16777215" x="1335" y="8" height="68" width="361" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="납품수량" border="0" color="16777215" x="2391" y="8" height="68" width="329" html.valueishtml="0"  name=supplierdeliveryqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체명" border="0" color="16777215" x="837" y="8" height="68" width="489" html.valueishtml="0"  name=obj_12166524 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품  명" border="0" color="16777215" x="1705" y="8" height="68" width="677" html.valueishtml="0"  name=obj_12168897 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="462" format="[general]" html.valueishtml="0"  name=slno visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="480" y="8" height="76" width="347" format="[general]" html.valueishtml="0"  name=deliverydate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1335" y="8" height="76" width="361" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="2391" y="8" height="76" width="329" format="#,##0" html.valueishtml="0"  name=supplierdeliveryqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="837" y="8" height="76" width="489" format="[general]" html.valueishtml="0"  name=tmstsupplier_supplierkorname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1705" y="8" height="76" width="677" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

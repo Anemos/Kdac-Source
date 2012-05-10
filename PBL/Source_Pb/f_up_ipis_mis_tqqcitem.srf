@@ -1,0 +1,90 @@
+$PBExportHeader$f_up_ipis_mis_tqqcitem.srf
+$PBExportComments$QC 대상품목
+global type f_up_ipis_mis_tqqcitem from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_tqqcitem (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_tqqcitem (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_areacode, ls_divisioncode, ls_itemcode, ls_suppliercode, ls_userid
+string ls_productgroup, ls_modelgroup, ls_applydatefrom, ls_applydateto, ls_recstatus, ls_qcgubun
+integer	li_cnt, li_index
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_recstatus = trim(ag_dwo.getitemstring(li_cnt,"recstatus"))
+	ls_itemcode	= trim(ag_dwo.getitemstring(li_cnt,"itemcode"))
+	ls_suppliercode = trim(ag_dwo.getitemstring(li_cnt,"suppliercode"))
+	ls_applydatefrom = trim(ag_dwo.getitemstring(li_cnt,"applydatefrom"))
+	ls_applydatefrom = Left(ls_applydatefrom, 4) + Mid(ls_applydatefrom, 6, 2) + Right(ls_applydatefrom, 2)
+	ls_applydateto	= trim(ag_dwo.getitemstring(li_cnt,"applydateto"))
+	ls_applydateto	= Left(ls_applydateto, 4) + Mid(ls_applydateto, 6, 2) + Right(ls_applydateto, 2)
+	ls_qcgubun	= trim(ag_dwo.getitemstring(li_cnt,"qcgubun"))
+	ls_userid	= trim(ag_dwo.getitemstring(li_cnt,"lastemp"))
+
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+	
+	If ls_recstatus = 'C' or ls_recstatus = 'U' Then		// replace or insert
+		Update	PBPUR.PUR103
+		Set		QCCD = :ls_qcgubun,
+					ADJDT = :ls_applydatefrom,
+					UPDTID = :ls_userid,
+					UPDTDT = ''
+		Where		VSRNO = :ls_suppliercode
+		And		ITNO = :ls_itemcode
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "QC대상품목 수정에 실패하였습니다."
+			f_ipis_transaction_errorlog(ls_recstatus,'','f_up_ipis_mis_pur103',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'QC대상품목 수정에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+	ElseIf ls_recstatus = 'D' Then		// delete	
+		If ls_qcgubun = 'A' Then			// 양산초도품 - 최초입고일 clear
+			Update	PBPUR.PUR103
+			Set		QCCD = '',
+						ADJDT = '',
+						FRPDT = '',
+						UPDTID = :ls_userid,
+						UPDTDT = ''
+			Where		VSRNO = :ls_suppliercode
+			And		ITNO = :ls_itemcode
+			Using lstr_ipis.t_sqlpis;
+			
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "QC대상품목 수정에 실패하였습니다."
+				f_ipis_transaction_errorlog(ls_recstatus,'','f_up_ipis_mis_pur103',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'QC대상품목 수정에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		Else
+			Update	PBPUR.PUR103
+			Set		QCCD = '',
+						ADJDT = '',
+						UPDTID = :ls_userid,
+						UPDTDT = ''
+			Where		VSRNO = :ls_suppliercode
+			And		ITNO = :ls_itemcode
+			Using lstr_ipis.t_sqlpis;
+			
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "QC대상품목 수정에 실패하였습니다."
+				f_ipis_transaction_errorlog(ls_recstatus,'','f_up_ipis_mis_pur103',&
+				lstr_ipis.t_sqlpis.sqlerrtext,'QC대상품목 수정에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		End If	
+	End If
+next
+
+return 0
+end function
+

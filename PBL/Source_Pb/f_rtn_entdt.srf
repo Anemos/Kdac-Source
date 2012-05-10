@@ -1,0 +1,19 @@
+$PBExportHeader$f_rtn_entdt.srf
+$PBExportComments$입사일자 return
+global type f_rtn_entdt from function_object
+end type
+
+forward prototypes
+global function string f_rtn_entdt (string a_s_empno)
+end prototypes
+
+global function string f_rtn_entdt (string a_s_empno);string l_s_entdt
+
+select peentdt into :l_s_entdt
+from pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+return l_s_entdt
+end function
+

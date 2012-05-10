@@ -1,0 +1,39 @@
+$PBExportHeader$f_dwobjectatpointer.srf
+$PBExportComments$마우스포인터밑의 row와 object name을 구함
+global type f_dwobjectatpointer from function_object
+end type
+
+forward prototypes
+global function integer f_dwobjectatpointer (datawindow adw_1, integer ai_row, string as_objname)
+end prototypes
+
+global function integer f_dwobjectatpointer (datawindow adw_1, integer ai_row, string as_objname);///////////////////////////////////////////////////////////////////////////////
+//   Function : f_dwobjectatpointer
+//
+//    Purpose : datawindow에서 마우스포인터밑의 row와 object(column) name을 
+//					 알고자 할때. GetObjectAtPointer 함수의 return value를 쪼개어 반환
+//
+//  Arguments : adw_1		... 마우스밑의 datawindow
+//					 ai_row		... 마우스밑의 row(ref)
+//					 as_objname	... 마우스가 놓인 object name(ref)
+//
+//    Returns : int
+//					 1 if successful, -1 if failure
+///////////////////////////////////////////////////////////////////////////////
+STRING		ls_colrow		//GetObjectAtPointer()의 Return value
+INTEGER		li_tab_pos		//'~t'의 위치
+
+ls_colrow = adw_1.GetObjectatPointer()
+IF ls_colrow = "" THEN
+	RETURN -1
+ELSE
+	li_tab_pos = Pos(ls_colrow,"~t",1)
+	//Row
+	ai_row = Integer(Mid(ls_colrow,li_tab_pos + 1))
+	//Object Name
+	as_objname = Left(ls_colrow,li_tab_pos - 1)
+	RETURN 1
+END IF
+
+end function
+

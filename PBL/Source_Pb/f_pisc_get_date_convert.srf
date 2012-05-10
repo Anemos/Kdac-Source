@@ -1,0 +1,36 @@
+$PBExportHeader$f_pisc_get_date_convert.srf
+$PBExportComments$원하는 형태의 Format으로 Date를 변경한다.(arg string fs_applydate, string fs_dateformat, ref rs_applydate, return boolean)
+global type f_pisc_get_date_convert from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_get_date_convert (string fs_applydate, string fs_dateformat, ref string rs_applydate)
+end prototypes
+
+global function boolean f_pisc_get_date_convert (string fs_applydate, string fs_dateformat, ref string rs_applydate);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_date_convert
+//	Access		: public
+//	Arguments	: String fs_applydate	Format을 변경하고자 하는 Date IsDate(fs_applydate) = True 이어야 함
+//					  String fs_dateformat	변경하고자 하는 Format
+//	Returns		: String 변경된 Date
+//	Description	: 원하는 DateFormat으로 Date를 변경한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 29
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+If Not IsDate(fs_applydate) Then
+	MessageBox("Date Format Change", "'" + fs_applydate + "' 을 날자로 변경할 수 없습니다.")
+	Return False
+End If
+
+rs_applydate = String(Date(fs_applydate), fs_dateformat)
+
+If Len(rs_applydate) > 0 Then
+	Return True
+Else
+	MessageBox("Date Format Change", "변경하고자 하는 Date Format은 지원되지 않는 Format 입니다.")
+	Return False
+End If
+end function
+

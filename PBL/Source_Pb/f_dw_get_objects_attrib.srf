@@ -1,0 +1,88 @@
+$PBExportHeader$f_dw_get_objects_attrib.srf
+$PBExportComments$Gets a list of datawindow objects and requested attributes
+global type f_dw_get_objects_attrib from function_object
+end type
+
+forward prototypes
+global function integer f_dw_get_objects_attrib (datawindow adw_arg, ref string as_obj_list[], string as_obj_type, string as_band, string attributes)
+end prototypes
+
+global function integer f_dw_get_objects_attrib (datawindow adw_arg, ref string as_obj_list[], string as_obj_type, string as_band, string attributes);///////////////////////////////////////////////////////////////////////////////
+//
+//		Function:  f_dw_get_objects_attrib
+//		 Purpose:  f_dw_get_objects()와 f_dw_get_attributes를 합쳐놓은 함수
+//               datawindow에 연결되어 있는 dataobject의 특정 band, 특정 type의
+//               object(column등) list와 해당 object의 특정 attribute의 값을 
+//               string array로 넘겨받을수 있다.
+//               넘겨지는 object name과 attribute값은 '~n'으로 구분되어진다.
+//               인수로 '*'를 넘겨서 band와 type의 구분을 하지 않을수 있다.
+//
+//						Example1: header band의 text object의 list와 그 text의 
+//                          text attribute값을 구하고자 한다면.. 
+//      							 obj_num = f_dw_get_objects_attrib(dw_1,mylist, &
+//													"text","header","text") 
+//
+//						Example2: 전체 column object의 list만을 구하고자 한다면..
+//									 obj_num = f_dw_get_objects_attrib(dw_1,mylist, &
+//													"column","*","") 
+//	
+//						Example3: summary band에 놓여 있는 전체object(column,text등)
+//                          list를 구하고자 한다면..
+//									 obj_num = f_dw_get_objects_attrib(dw_1,mylist, &
+//												  "*","summary","") 
+//
+//						Example4: dataobject내의 전object의 list와 그들의 
+//                          x,y attribute값을 구하고자 한다면..
+//									 obj_num = f_dw_get_objects_attrib(dw_1,mylist, &
+//												"*","*","x,y") 
+//
+//	     ARGUMENTS:
+//						adw_arg	 			대상datawindow control
+//						as_obj_list  		결과object string array(ref)
+//						as_obj_type  		찾을 object type
+//						as_band      		찾을 datawindow band
+//						as_attributes 		찾을 object attribute
+//
+//      Log:
+//
+//			Who				When				What
+//-----------------------------------------------------------------------------
+//			Powersoft 							initial version
+//			Powersoft		10/1/93			Added capability to return attributes
+//			dmshim			1997-06-08		한글설명추가
+//
+///////////////////////////////////////////////////////////////////////////////
+STRING	ls_obj_string		//datawindow전체 object string
+STRING	ls_obj_holder		//비교를 위해 object하나씩에 해당하는 부분을 잘라냄
+INTEGER	li_count = 0		//찾은 object 갯수
+INTEGER	li_i					//For-Next문을 위한 temp var.
+
+//datawindow전체 object list를 구함
+ls_obj_string = Describe(adw_arg,"datawindow.objects")
+
+//비교를 위해 한object에 대한 부분을 잘라냄('~t'로 구분됨)
+ls_obj_holder = f_get_token(ls_obj_string,'~t')
+DO WHILE len(ls_obj_holder) > 0
+	IF ((Describe(adw_arg,ls_obj_holder+".type") = as_obj_type) OR (as_obj_type = "*")) AND &
+		((Describe(adw_arg,ls_obj_holder+".band") = as_band) OR (as_band = "*")) THEN
+		//type과 band가 일치하면, 찾았다!
+		li_count++
+		as_obj_list[li_count] = ls_obj_holder
+	END IF
+	//다음 object에 대한 부분을 잘라냄
+	ls_obj_holder = f_get_token(ls_obj_string,'~t')
+LOOP
+
+//attribute가 요구되었으면
+IF len(attributes) > 0 THEN
+	FOR li_i = 1 TO li_count
+		//구성: 'object name' + '~n' + 'attribute value'
+		as_obj_list[li_i] = as_obj_list[li_i] + '~n' + &
+								f_dw_get_attributes(adw_arg,as_obj_list[li_i],attributes)
+	NEXT
+END IF
+
+//찾은 object갯수를 반환
+RETURN li_count
+end function
+

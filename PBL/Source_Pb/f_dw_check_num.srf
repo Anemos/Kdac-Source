@@ -1,0 +1,108 @@
+$PBExportHeader$f_dw_check_num.srf
+$PBExportComments$칼럼값(number)의 입력값 및 널여부를 체크하여 메세지를 뿌린다. // ONE column for ONE row
+global type f_dw_check_num from function_object
+end type
+
+forward prototypes
+global function integer f_dw_check_num (datawindow adw_1, integer ai_row, string as_col_nm, boolean ab_essent_fg, integer ai_check_div)
+end prototypes
+
+global function integer f_dw_check_num (datawindow adw_1, integer ai_row, string as_col_nm, boolean ab_essent_fg, integer ai_check_div);string	ls_data, ls_col_type,ls_message,ls_mod, ls_err_fg = 'N'
+double	li_data
+
+ls_col_type = adw_1.Describe(as_col_nm+".ColType")
+
+If ls_col_type <> "number" and ls_col_type <> "long" and left(ls_col_type,7) <> "decimal" then
+	messagebox ("오류","숫자타입만 Check가능합니다.")
+	adw_1.setredraw(true)
+	return 0
+end if
+	
+li_data = adw_1.getitemnumber(ai_row,as_col_nm)
+
+if ab_essent_fg then
+	ls_mod = as_col_nm + ".tag"
+	ls_message = adw_1.Describe(ls_mod) + '에 값이 입력되지 않았습니다.'
+	
+	if isnull(adw_1.Describe(ls_mod)) then ls_message = as_col_nm + '에 값이 입력되지 않았습니다.'
+	
+	CHOOSE CASE ai_check_div
+		CASE 0		// > 0
+			if	isnull(li_data) or li_data <= 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE 1		// >= 0
+			if	isnull(li_data) or li_data < 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE 2		// 0을 포함한 minus허용
+			if	isnull(li_data) then
+				ls_err_fg = 'Y'
+			end if
+		CASE 3		// 0을 제외한 minus허용
+			if	isnull(li_data) or li_data = 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE ELSE
+			messagebox ("오류",string(ai_check_div) + " - Check 구분오류입니다.")
+			adw_1.setredraw(true)
+			return 0
+	END CHOOSE
+	
+	if ls_err_fg = 'Y' then
+		adw_1.setfocus()
+		adw_1.ScrollToRow(ai_row)
+		adw_1.SetColumn(as_col_nm)
+		messagebox ("오류",ls_message)
+		adw_1.setredraw(true)
+		return 0  // FAI
+	end if
+	
+	return 1
+end if
+
+if ab_essent_fg = false then
+	ls_mod = as_col_nm + ".tag"
+	ls_message = adw_1.Describe(ls_mod) + '에 값이 올바르게 입력되지 않았습니다.'
+	
+	if isnull(adw_1.Describe(ls_mod)) then ls_message = as_col_nm + '에 값이 올바르게 입력되지 않았습니다.'
+	
+	if isnull(li_data) then 
+		adw_1.setitem(ai_row, as_col_nm, 0)
+		return 1
+	end if
+	
+	CHOOSE CASE ai_check_div
+		CASE 0		// > 0
+			if	li_data <= 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE 1		// >= 0
+			if	li_data < 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE 2		// 0을 포함한 minus허용
+			ls_err_fg = 'N'
+		CASE 3		// 0을 제외한 minus허용
+			if	li_data = 0 then
+				ls_err_fg = 'Y'
+			end if
+		CASE ELSE
+			messagebox ("오류",string(ai_check_div) + " - Check 구분오류입니다.")
+			adw_1.setredraw(true)
+			return 0
+	END CHOOSE
+	
+	if ls_err_fg = 'Y' then
+		adw_1.setfocus()
+		adw_1.ScrollToRow(ai_row)
+		adw_1.SetColumn(as_col_nm)
+		messagebox ("오류",ls_message)
+		adw_1.setredraw(true)
+		return 0  // FAI
+	end if
+	
+	return 1
+end if
+end function
+

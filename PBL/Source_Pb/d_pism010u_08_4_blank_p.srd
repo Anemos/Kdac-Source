@@ -1,0 +1,57 @@
+$PBExportHeader$d_pism010u_08_4_blank_p.srd
+$PBExportComments$작업일보(근태구분별 공수) - Report (4)
+release 7;
+datawindow(units=3 timer_interval=0 color=1090519039 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 635 print.margin.right = 635 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no rows_per_detail = 4 )
+header(height=1534 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=529 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=compute_0001 dbname="compute_0001" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=mhgubun dbname="TMHCODE.MHGubun" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=mhcode dbname="TMHCODE.MHCode" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=mhname dbname="TMHCODE.MHName" )
+ column=(type=long update=yes updatewhereclause=yes name=printsq dbname="TMHCODE.PrintSq" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=inputflag dbname="TMHCODE.inputFlag" )
+ retrieve="SELECT 1 , B.MHGubun ,
+	   B.MHCode ,
+	   B.MHName ,
+	   B.PrintSq,
+	   B.inputFlag 
+ FROM TMHCODE B 
+WHERE ( B.MHGubun = 'K' ) And 
+		( B.UseFlag = '1' ) 
+Union 
+SELECT 2, B.MHGubun ,
+	   B.MHCode ,
+	   B.MHName ,
+	   B.PrintSq,
+	   B.inputFlag 
+ FROM TMHCODE B 
+WHERE ( B.MHGubun = 'K' ) And 
+		( B.UseFlag = '1' ) 
+Union 
+SELECT 3, B.MHGubun ,
+	   B.MHCode ,
+	   B.MHName ,
+	   B.PrintSq,
+	   B.inputFlag 
+ FROM TMHCODE B 
+WHERE ( B.MHGubun = 'K' ) And 
+		( B.UseFlag = '1' ) 
+Order By 1, 5  
+" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="2275" y="158" height="1322" width="687" format="[general]" row_in_detail=4  name=mhname_4 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1534" y="158" height="1322" width="687" format="[general]" row_in_detail=3  name=mhname_3 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="793" y="158" height="1322" width="687" format="[general]" row_in_detail=2  name=mhname_2 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="26" y="158" height="1322" width="687" format="[general]" row_in_detail=1  name=mhname_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="계" border="0" color="0" x="3042" y="158" height="396" width="740"  name=t_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=header x1="740" y1="0" x2="740" y2="1825"  name=l_1 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="1481" y1="0" x2="1481" y2="1825"  name=l_2 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="2222" y1="0" x2="2222" y2="1825"  name=l_3 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="2963" y1="0" x2="2963" y2="1825"  name=l_4 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2963" y1="0" x2="2963" y2="609"  name=l_16 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2222" y1="0" x2="2222" y2="609"  name=l_15 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1481" y1="0" x2="1481" y2="609"  name=l_14 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="740" y1="0" x2="740" y2="609"  name=l_13 pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

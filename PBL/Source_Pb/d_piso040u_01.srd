@@ -1,0 +1,102 @@
+$PBExportHeader$d_piso040u_01.srd
+$PBExportComments$라인마스터
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=136 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no name=areacode dbname="AreaCode" )
+ column=(type=char(15) updatewhereclause=no name=areaname dbname="AreaName" )
+ column=(type=char(1) updatewhereclause=no name=divisioncode dbname="DivisionCode" )
+ column=(type=char(15) updatewhereclause=no name=divisionname dbname="DivisionName" )
+ column=(type=char(5) updatewhereclause=no name=workcenter dbname="WorkCenter" )
+ column=(type=char(30) updatewhereclause=no name=workcentername dbname="WorkCenterName" )
+ column=(type=char(1) updatewhereclause=no name=linecode dbname="LineCode" )
+ column=(type=char(10) updatewhereclause=no name=lineshortname dbname="LineShortName" )
+ column=(type=char(30) updatewhereclause=no name=linefullname dbname="LineFullName" )
+ column=(type=char(2) updatewhereclause=no name=lineid dbname="LineID" )
+ column=(type=char(1) updatewhereclause=no name=linegubun dbname="LineGubun" )
+ column=(type=char(1) updatewhereclause=no name=kbuseflag dbname="KBUseFlag" )
+ column=(type=char(1) updatewhereclause=no name=nextrouting dbname="NextRouting" )
+ column=(type=char(1) updatewhereclause=no name=supplygubun dbname="SupplyGubun" )
+ column=(type=char(5) updatewhereclause=no name=hostworkcenter dbname="HostWorkCenter" )
+ column=(type=char(1) updatewhereclause=no name=hostlinecode dbname="HostLineCode" )
+ column=(type=long updatewhereclause=no name=capaqty dbname="CapaQty" )
+ column=(type=long updatewhereclause=no name=shiftcount dbname="ShiftCount" )
+ column=(type=long updatewhereclause=no name=shifttime dbname="ShiftTime" )
+ column=(type=decimal(1) updatewhereclause=no name=cycletime dbname="CycleTime" )
+ column=(type=long updatewhereclause=no name=jphqty dbname="JPHQty" )
+ column=(type=long updatewhereclause=no name=displaycount dbname="DisplayCount" )
+ column=(type=char(1) updatewhereclause=no name=maxcyclegubun dbname="MaxCycleGubun" )
+ column=(type=long updatewhereclause=no name=cyclecount dbname="CycleCount" )
+ column=(type=char(6) updatewhereclause=no name=lastemp dbname="LastEmp" )
+ column=(type=datetime updatewhereclause=no name=lastdate dbname="LastDate" )
+ procedure="1 execute dbo.sp_piso040u_01;1 @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_workcenter = :ps_workcenter, @ps_linecode = :ps_linecode" arguments=(("ps_areacode", string),("ps_divisioncode", string),("ps_workcenter", string),("ps_linecode", string)) )
+text(band=header alignment="2" text="지역
+코드" border="0" color="16777215" x="9" y="12" height="120" width="160"  name=areacode_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+지역명" border="0" color="16777215" x="178" y="12" height="120" width="315"  name=areaname_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="공장
+코드" border="0" color="16777215" x="503" y="12" height="120" width="165"  name=divisioncode_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+공장명" border="0" color="16777215" x="677" y="12" height="120" width="366"  name=divisionname_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="조
+코드" border="0" color="16777215" x="1051" y="12" height="120" width="224"  name=workcenter_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+조명" border="0" color="16777215" x="1285" y="12" height="120" width="658"  name=workcentername_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="라인
+코드" border="0" color="16777215" x="1952" y="12" height="120" width="174"  name=linecode_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+라인단축명" border="0" color="16777215" x="2135" y="12" height="120" width="389"  name=lineshortname_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+라인명" border="0" color="16777215" x="2533" y="12" height="120" width="850"  name=linefullname_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="라인
+ID" border="0" color="16777215" x="3392" y="12" height="120" width="169"  name=lineid_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="라인
+구분" border="0" color="16777215" x="3570" y="12" height="120" width="201"  name=linegubun_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="간판
+사용" border="0" color="16777215" x="3781" y="12" height="120" width="206"  name=kbuseflag_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="외주
+구분" border="0" color="16777215" x="3995" y="12" height="120" width="302"  name=supplygubun_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="생산
+능력" border="0" color="16777215" x="4306" y="12" height="120" width="197"  name=capaqty_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="교대
+횟수" border="0" color="16777215" x="4512" y="12" height="120" width="160"  name=shiftcount_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="교대
+시간" border="0" color="16777215" x="4681" y="12" height="120" width="169"  name=shifttime_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="SetUp
+시간" border="0" color="16777215" x="4859" y="12" height="120" width="192"  name=cycletime_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="시간당
+생산량" border="0" color="16777215" x="5061" y="12" height="120" width="251"  name=jphqty_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="간판
+조회매수" border="0" color="16777215" x="5321" y="12" height="120" width="288"  name=displaycount_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="최다Cycle
+여부" border="0" color="16777215" x="5618" y="12" height="120" width="416"  name=maxcyclegubun_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="평준화
+Cycle" border="0" color="16777215" x="6043" y="12" height="120" width="247"  name=cyclecount_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="178" y="4" height="56" width="315" format="[general]"  name=areaname edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="677" y="4" height="56" width="366" format="[general]"  name=divisionname edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1285" y="4" height="56" width="658" format="[general]"  name=workcentername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="2135" y="4" height="56" width="389" format="[general]"  name=lineshortname edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="2533" y="4" height="56" width="850" format="[general]"  name=linefullname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="3392" y="4" height="56" width="169" format="[general]"  name=lineid edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="5321" y="4" height="56" width="288" format="#,##0"  name=displaycount edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="0" x="5618" y="4" height="56" width="416" format="[general]~tIf ( maxcyclegubun  = 'Y', '최다Cycle', '변경Cycle')"  name=maxcyclegubun edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="0" x="6043" y="4" height="56" width="247" format="[general]"  name=cyclecount edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="4" height="56" width="160" format="[general]"  name=areacode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="503" y="4" height="56" width="165" format="[general]"  name=divisioncode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="1051" y="4" height="56" width="224" format="[general]"  name=workcenter edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="1952" y="4" height="56" width="174" format="[general]"  name=linecode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="3570" y="4" height="56" width="201" format="[general]~tIf ( linegubun  = 'A', '조립', '가공')"  name=linegubun edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="3781" y="4" height="56" width="206" format="[general]~tIf ( kbuseflag  = 'Y', '사용', '미사용')"  name=kbuseflag edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="3995" y="4" height="56" width="302" format="[general]~tIf ( supplygubun  = 'Y', '외주라인', '사내라인')"  name=supplygubun edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="4306" y="4" height="56" width="197" format="#,##0"  name=capaqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="4512" y="4" height="56" width="160" format="#,##0"  name=shiftcount edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="4681" y="4" height="56" width="169" format="#,##0"  name=shifttime edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="4859" y="4" height="56" width="192" format="#,##0"  name=cycletime edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="5061" y="4" height="56" width="251" format="#,##0"  name=jphqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="areacode	areaname	divisioncode	divisionname	workcenter	workcentername")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

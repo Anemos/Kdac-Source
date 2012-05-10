@@ -1,0 +1,46 @@
+$PBExportHeader$f_get_sumiunrc_tms.srf
+$PBExportComments$품번별 총 미입고량 구하기(부서,업체,품번)
+global type f_get_sumiunrc_tms from function_object
+end type
+
+forward prototypes
+global function decimal f_get_sumiunrc_tms (string as_dept, string as_vsrno, string as_itno)
+end prototypes
+
+global function decimal f_get_sumiunrc_tms (string as_dept, string as_vsrno, string as_itno);//////////////////////////////////////////////////
+// 품번별 미입고량 총합계 구하기
+// 	argument : 부서, 업체전산번호, 품번
+//
+//		적용 : 검수입고벌크
+///////////////////////////////////////////////////
+
+String ls_Srno, ls_Srno1
+Dec{1} ld_Pqty, ld_Pcnlt, ld_SumUnrc, ld_Qty
+
+Declare pur402_cur Cursor For
+  SELECT "PBPUR"."PUR402"."SRNO",  "PBPUR"."PUR402"."SRNO1",   
+         "PBPUR"."PUR402"."PQTY",  "PBPUR"."PUR402"."PCNLT"  
+    FROM "PBPUR"."PUR402"  
+   WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR402"."DEPT" = :as_dept ) AND  
+         ( "PBPUR"."PUR402"."VSRNO" = :as_vsrno ) AND  
+         ( "PBPUR"."PUR402"."ITNO" = :as_itno ) AND 
+			( "PBPUR"."PUR402"."STCD" = ' ' ) AND 
+			( "PBPUR"."PUR402"."PPRT" = '4' )	Using SQLCA ;
+Open pur402_cur;
+	Do While True
+		Fetch pur402_cur INTO :ls_Srno, :ls_Srno1, :ld_Pqty, :ld_Pcnlt ; 
+		IF sqlca.sqlcode <> 0 Then Exit
+						
+		ld_Qty = ld_Pqty - ld_Pcnlt - f_Get_RPqty_Tms( ls_Srno, ls_Srno1 )
+		ld_SumUnrc += ld_Qty
+   Loop
+Close pur402_cur;
+
+IF SQLCA.SQLCode <> 0 Then
+	ld_SumUnrc = 0
+End IF
+
+Return ld_SumUnrc
+end function
+

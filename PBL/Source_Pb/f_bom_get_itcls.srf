@@ -1,0 +1,20 @@
+$PBExportHeader$f_bom_get_itcls.srf
+$PBExportComments$계정을 가져오는 함수
+global type f_bom_get_itcls from function_object
+end type
+
+forward prototypes
+global function string f_bom_get_itcls (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global function string f_bom_get_itcls (string a_plant, string a_div, string a_itno);string l_s_it
+
+select cls into:l_s_it from pbinv.inv101
+where  comltd = '01' and xplant = :a_plant and div = :a_div and itno = :a_itno using sqlca;
+if sqlca.sqlcode <> 0 then
+	l_s_it = " "
+end if
+return l_s_it
+
+end function
+

@@ -1,0 +1,95 @@
+$PBExportHeader$f_wip_cost_asitem.srf
+$PBExportComments$전장 AS품 현재공을 0으로 만드는 함수
+global type f_wip_cost_asitem from function_object
+end type
+
+forward prototypes
+global function integer f_wip_cost_asitem (string arg_date)
+end prototypes
+
+global function integer f_wip_cost_asitem (string arg_date);string ls_nextdt, ls_nextyy, ls_nextmm, ls_curyy, ls_curmm, ls_itno, ls_orct
+dec{4} lc_qty
+dec{0} lc_amt
+
+ls_nextdt = uf_wip_addmonth(arg_date,1)
+ls_nextyy = mid(ls_nextdt,1,4)
+ls_nextmm = mid(ls_nextdt,5,2)
+ls_curyy = mid(arg_date,1,4)
+ls_curmm = mid(arg_date,5,2)
+
+declare wipchk_cur cursor for 
+   SELECT "PBWIP"."WIP002"."WBITNO",
+			 "PBWIP"."WIP002"."WBORCT",
+			 "PBWIP"."WIP002"."WBBGQT",   
+          "PBWIP"."WIP002"."WBBGAT1"  
+   FROM "PBWIP"."WIP002"  
+   WHERE ( "PBWIP"."WIP002"."WBCMCD" = '01' ) AND  
+         ( "PBWIP"."WIP002"."WBPLANT" = 'D' ) AND  
+         ( "PBWIP"."WIP002"."WBDVSN" = 'A' ) AND
+			( "PBWIP"."WIP002"."WBIOCD" IN ('1','2') ) AND
+			( "PBWIP"."WIP002"."WBYEAR" = :ls_nextyy ) AND
+			( "PBWIP"."WIP002"."WBMONTH" = :ls_nextmm ) AND
+         ( {fn substring("PBWIP"."WIP002"."WBITNO",2,1)} = 'S' ) AND  
+         ( "PBWIP"."WIP002"."WBITNO" <> 'PS0270' ) AND
+			NOT ( "PBWIP"."WIP002"."WBBGQT" = 0 AND "PBWIP"."WIP002"."WBBGAT1" = 0 )
+			using sqlca;
+
+open wipchk_cur ;
+  do while true
+	fetch wipchk_cur into :ls_itno,:ls_orct,:lc_qty,:lc_amt;
+	if sqlca.sqlcode <> 0 then			  
+		exit
+	end if
+
+	UPDATE "PBWIP"."WIP002"  
+     SET "WBUSQT8" = "WBUSQT8" + :lc_qty,   
+         "WBUSAT8" = "WBUSAT8" + :lc_amt  
+   	WHERE ( "PBWIP"."WIP002"."WBCMCD" = '01' ) AND  
+         	( "PBWIP"."WIP002"."WBPLANT" = 'D' ) AND  
+         	( "PBWIP"."WIP002"."WBDVSN" = 'A' ) AND 
+				( "PBWIP"."WIP002"."WBIOCD" IN ('1','2') ) AND
+         	( "PBWIP"."WIP002"."WBORCT" = :ls_orct ) AND  
+         	( "PBWIP"."WIP002"."WBITNO" = :ls_itno ) AND  
+         	( "PBWIP"."WIP002"."WBYEAR" = :ls_curyy ) AND  
+         	( "PBWIP"."WIP002"."WBMONTH" = :ls_curmm )   
+           	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return -1
+	end if
+  loop
+close wipchk_cur ;
+
+UPDATE "PBWIP"."WIP002"  
+     SET "WBBGQT" = 0,   
+         "WBBGAT1" = 0 
+   WHERE ( "PBWIP"."WIP002"."WBCMCD" = '01' ) AND  
+         ( "PBWIP"."WIP002"."WBPLANT" = 'D' ) AND  
+         ( "PBWIP"."WIP002"."WBDVSN" = 'A' ) AND
+			( "PBWIP"."WIP002"."WBIOCD" IN ('1','2') ) AND
+			( "PBWIP"."WIP002"."WBYEAR" = :ls_nextyy ) AND
+			( "PBWIP"."WIP002"."WBMONTH" = :ls_nextmm ) AND
+         ( {fn substring("PBWIP"."WIP002"."WBITNO",2,1)} = 'S' ) AND  
+         ( "PBWIP"."WIP002"."WBITNO" <> 'PS0270' ) AND
+			NOT ( "PBWIP"."WIP002"."WBBGQT" = 0 AND "PBWIP"."WIP002"."WBBGAT1" = 0 )
+			using sqlca;
+
+UPDATE "PBWIP"."WIP001"  
+     SET "WABGQT" = 0,   
+         "WABGAT1" = 0 
+   WHERE ( "PBWIP"."WIP001"."WACMCD" = '01' ) AND  
+         ( "PBWIP"."WIP001"."WAPLANT" = 'D' ) AND  
+         ( "PBWIP"."WIP001"."WADVSN" = 'A' ) AND
+			( "PBWIP"."WIP001"."WAIOCD" IN ('1','2') ) AND
+         ( {fn substring("PBWIP"."WIP001"."WAITNO",2,1)} = 'S' ) AND  
+         ( "PBWIP"."WIP001"."WAITNO" <> 'PS0270' ) AND
+			NOT ( "PBWIP"."WIP001"."WABGQT" = 0 AND "PBWIP"."WIP001"."WABGAT1" = 0 )
+			using sqlca;
+if sqlca.sqlcode <> 0 then
+	return -1
+else
+	return 0
+end if
+
+RETURN 0
+end function
+

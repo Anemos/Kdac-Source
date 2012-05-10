@@ -1,0 +1,149 @@
+$PBExportHeader$d_bom302i_partlist_fta_allproduct.srd
+$PBExportComments$¿øÀç·á¸í¼¼¼­(FTA) ÀüÁ¦Ç°
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=bom115_zplant dbname="BOM115.ZPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=bom115_zdiv dbname="BOM115.ZDIV" )
+ column=(type=char(12) updatewhereclause=yes name=bom115_zmdno dbname="BOM115.ZMDNO" )
+ column=(type=char(12) updatewhereclause=yes name=bom115_zitno dbname="BOM115.ZITNO" )
+ column=(type=char(50) updatewhereclause=yes name=bom115_zdesc dbname="BOM115.ZDESC" )
+ column=(type=decimal(3) updatewhereclause=yes name=bom115_zunitqty dbname="BOM115.ZUNITQTY" )
+ column=(type=char(2) updatewhereclause=yes name=inv402_zcls dbname="BOM115.ZCLS" )
+ column=(type=char(2) updatewhereclause=yes name=bom115_zsrce dbname="BOM115.ZSRCE" )
+ column=(type=decimal(6) updatewhereclause=yes name=zrcpcost dbname="ZRCPCOST" )
+ column=(type=decimal(0) updatewhereclause=yes name=zrcpwon dbname="ZRCPWON" )
+ column=(type=char(50) updatewhereclause=yes name=d_zpvend dbname="BOM115.ZPVEND" )
+ column=(type=char(1) updatewhereclause=yes name=hscode dbname="HSCODE" )
+ column=(type=char(1) updatewhereclause=yes name=orgincode dbname="ORGINCODE" )
+ column=(type=decimal(0) updatewhereclause=yes name=bom115_zserial dbname="BOM115.ZSERIAL" )
+ column=(type=char(1) updatewhereclause=yes name=bom115_zcalc dbname="ZCALC" )
+ column=(type=char(4) updatewhereclause=yes name=bom115_zwkct dbname="BOM115.ZWKCT" )
+ column=(type=char(10) updatewhereclause=yes name=bom115_zlevel dbname="BOM115.ZLEVEL" )
+ column=(type=char(8) updatewhereclause=yes name=d_zpvsrno dbname="BOM115.ZPVSRNO" )
+ retrieve="SELECT A.ZPLANT AS ZPLANT, 
+	A.ZDIV AS ZDIV, 
+	A.ZMDNO AS ZMDNO, 
+	A.ZITNO AS ZITNO, 
+	A.ZDESC AS ZDESC, 
+	A.ZUNITQTY AS ZUNITQTY, 
+	C.CLS AS ZCLS, 
+	A.ZSRCE AS ZSRCE,
+	CASE WHEN :ag_gubun = 'B' AND A.ZCOMCD = 'Y' THEN
+		0
+	ELSE
+		CASE WHEN A.ZMOVCOST <> 0 THEN 
+			CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCMOVCOST ELSE A.ZMOVCOST END
+		ELSE
+			CASE WHEN A.ZRCPCOST <> 0 THEN 
+				CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCRCPCOST ELSE A.ZRCPCOST END
+			ELSE
+				CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCOUTCOST ELSE A.ZOUTCOST END
+			END
+		END
+	END AS ZRCPCOST, 
+	CASE WHEN :ag_gubun = 'B' AND A.ZCOMCD = 'Y' THEN
+		0
+	ELSE
+		DECIMAL((CASE WHEN A.ZMOVCOST <> 0 THEN 
+						CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCMOVCOST ELSE A.ZMOVCOST END
+					ELSE
+						CASE WHEN A.ZRCPCOST <> 0 THEN 
+							CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCRCPCOST ELSE A.ZRCPCOST END
+						ELSE
+							CASE WHEN A.ZYGCHK = 'Y' THEN A.ZSCOUTCOST ELSE A.ZOUTCOST END
+						END
+					END) * A.ZUNITQTY,15,0)
+	END AS ZRCPWON,
+	D.ZPVEND AS ZPVEND,
+	'' AS HSCODE,
+	'' AS ORGINCODE,
+	A.ZSERIAL AS ZSERIAL,
+	CASE WHEN C.SRCE = '03' THEN 'N' ELSE 'Y' END AS ZCALC,
+	A.ZWKCT,
+	A.ZLEVEL,
+	D.ZPVSRNO AS ZPVSRNO
+FROM PBPDM.BOM115 A INNER JOIN PBINV.INV402 C
+	ON A.ZCMCD = C.COMLTD AND A.ZDATE = C.XYEAR AND
+		A.ZEXPLANT = C.XPLANT AND A.ZEXDIV = C.DIV AND
+		A.ZITNO = C.ITNO
+	LEFT OUTER JOIN ( SELECT DISTINCT ZCMCD, ZDATE, ZEXPLANT, ZEXDIV, ZITNO, ZPVSRNO, ZPVEND FROM PBPDM.BOM113
+		WHERE ZCMCD = '01' AND ZDATE = :ag_yyyymm AND ZPVEND <> '') D
+	ON A.ZCMCD = D.ZCMCD AND A.ZDATE = D.ZDATE AND A.ZEXPLANT = D.ZEXPLANT AND 
+		A.ZEXDIV = D.ZEXDIV AND A.ZITNO = D.ZITNO
+WHERE A.ZCMCD = '01' AND A.ZDATE = :ag_yyyymm AND A.ZPLANT = :ag_plant AND 
+   A.ZDIV = :ag_dvsn AND A.ZMDNO LIKE :ag_mdno" arguments=(("ag_yyyymm", string),("ag_plant", string),("ag_dvsn", string),("ag_mdno", string),("ag_gubun", string))  sort="bom115_zplant A bom115_zdiv A bom115_zmdno A bom115_zserial A " )
+group(level=1 header.height=0 trailer.height=192 by=("BOM115_zplant" , "BOM115_zdiv" , "BOM115_zmdno" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="¼ö·®" border="0" color="16777215" x="3982" y="8" height="60" width="233" html.valueishtml="0"  name=bom115_zunitqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°¡°Ý" border="0" color="16777215" x="4224" y="8" height="60" width="416" html.valueishtml="0"  name=zrcpwon_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1326" y="8" height="60" width="859" html.valueishtml="0"  name=bom115_zdesc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="2194" y="8" height="60" width="165" html.valueishtml="0"  name=inv402_zcls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="2368" y="8" height="60" width="183" html.valueishtml="0"  name=bom115_zsrce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ø»êÁö" border="0" color="16777215" x="3077" y="8" height="60" width="334" html.valueishtml="0"  name=orgincode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="HS No." border="0" color="16777215" x="2560" y="8" height="60" width="507" html.valueishtml="0"  name=hscode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌµ¿Æò±Õ´Ü°¡" border="0" color="16777215" x="3419" y="8" height="60" width="553" html.valueishtml="0"  name=zrcpcost_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="942" y="8" height="60" width="375" html.valueishtml="0"  name=bom115_zitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðµ¨" border="0" color="16777215" x="558" y="8" height="60" width="375" html.valueishtml="0"  name=bom115_zmdno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÅõÀÔÃ³" border="0" color="16777215" x="6117" y="8" height="60" width="251" html.valueishtml="0"  name=bom115_zwkct_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç·áºñ" border="0" color="16777215" x="6377" y="8" height="60" width="201" html.valueishtml="0"  name=bom115_zcalc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿¬¹ø" border="0" color="16777215" x="9" y="8" height="60" width="187" html.valueishtml="0"  name=bom115_zserial_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Level" border="0" color="16777215" x="206" y="8" height="60" width="343" html.valueishtml="0"  name=bom115_zlevel_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°ø±ÞÀÚ" border="0" color="16777215" x="4649" y="8" height="60" width="933" html.valueishtml="0"  name=d_zpvend_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾÷Ã¼ÄÚµå" border="0" color="16777215" x="5591" y="8" height="60" width="517" html.valueishtml="0"  name=d_zpvsrno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="0" x="4224" y="0" height="72" width="416" format="#,##0" html.valueishtml="0"  name=zrcpwon visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1326" y="0" height="72" width="859" format="[general]" html.valueishtml="0"  name=bom115_zdesc visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="2194" y="0" height="72" width="165" format="[general]" html.valueishtml="0"  name=inv402_zcls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="2368" y="0" height="72" width="183" format="[general]" html.valueishtml="0"  name=bom115_zsrce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="2" tabsequence=10 border="0" color="0" x="2560" y="0" height="72" width="507" format="[general]" html.valueishtml="0"  name=hscode visible="1" editmask.mask="XXXXXXXXXX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=13 alignment="2" tabsequence=20 border="0" color="0" x="3077" y="0" height="72" width="334" format="[general]" html.valueishtml="0"  name=orgincode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=detail alignment="0" expression="if(  BOM115_zsrce <> '01' and  BOM115_zcalc = 'Y',  zrcpwon , 0 )"border="0" color="0" x="6587" y="0" height="72" width="251" format="[GENERAL]" html.valueishtml="0"  name=comp_in visible="0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="0" expression="if(  BOM115_zsrce = '01' and  BOM115_zcalc = 'Y',  zrcpwon , 0 )"border="0" color="0" x="6848" y="0" height="72" width="251" format="[GENERAL]" html.valueishtml="0"  name=comp_out visible="0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="3982" y="0" height="72" width="233" format="[general]" html.valueishtml="0"  name=bom115_zunitqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="3419" y="0" height="72" width="553" format="#,##0.000" html.valueishtml="0"  name=zrcpcost visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="942" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=bom115_zitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="558" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=bom115_zmdno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="0" x="6117" y="0" height="72" width="251" format="[general]" html.valueishtml="0"  name=bom115_zwkct visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="6377" y="0" height="72" width="201" format="[general]" html.valueishtml="0"  name=bom115_zcalc visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="187" format="[general]" html.valueishtml="0"  name=bom115_zserial visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="0" x="206" y="0" height="72" width="343" format="[general]" html.valueishtml="0"  name=bom115_zlevel visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="4649" y="0" height="72" width="933" format="[general]" html.valueishtml="0"  name=d_zpvend visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="0" x="5591" y="0" height="72" width="517" format="[general]" html.valueishtml="0"  name=d_zpvsrno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression="sum(comp_in for group 1)"border="0" color="0" x="4224" y="0" height="60" width="416" format="#,##0" html.valueishtml="0"  name=compute_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression="sum(comp_out for group 1)"border="0" color="0" x="4224" y="64" height="60" width="416" format="#,##0" html.valueishtml="0"  name=compute_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression="sum((comp_in + comp_out) for group 1)"border="0" color="0" x="4224" y="128" height="60" width="416" format="#,##0" html.valueishtml="0"  name=compute_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="³»ÀÚ" border="0" color="0" x="3982" y="0" height="60" width="233" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="558" y="0" height="60" width="375" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="942" y="0" height="60" width="375" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="1326" y="0" height="60" width="859" html.valueishtml="0"  name=t_8 visible="1"  font.face="±¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2194" y="0" height="60" width="165" html.valueishtml="0"  name=t_9 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2368" y="0" height="60" width="183" html.valueishtml="0"  name=t_10 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2560" y="0" height="60" width="507" html.valueishtml="0"  name=t_11 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3077" y="0" height="60" width="334" html.valueishtml="0"  name=t_12 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3419" y="0" height="60" width="553" html.valueishtml="0"  name=t_13 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="¿ÜÀÚ" border="0" color="0" x="3982" y="64" height="60" width="233" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="558" y="64" height="60" width="375" html.valueishtml="0"  name=t_15 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="942" y="64" height="60" width="375" html.valueishtml="0"  name=t_16 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="1326" y="64" height="60" width="859" html.valueishtml="0"  name=t_17 visible="1"  font.face="" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2194" y="64" height="60" width="165" html.valueishtml="0"  name=t_18 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2368" y="64" height="60" width="183" html.valueishtml="0"  name=t_19 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2560" y="64" height="60" width="507" html.valueishtml="0"  name=t_20 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3077" y="64" height="60" width="334" html.valueishtml="0"  name=t_21 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3419" y="64" height="60" width="553" html.valueishtml="0"  name=t_22 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="ÇÕ°è" border="0" color="0" x="3982" y="128" height="60" width="233" html.valueishtml="0"  name=t_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3419" y="128" height="60" width="553" html.valueishtml="0"  name=t_31 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="3077" y="128" height="60" width="334" html.valueishtml="0"  name=t_30 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2560" y="128" height="60" width="507" html.valueishtml="0"  name=t_29 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2368" y="128" height="60" width="183" html.valueishtml="0"  name=t_28 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="2194" y="128" height="60" width="165" html.valueishtml="0"  name=t_27 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="1326" y="128" height="60" width="859" html.valueishtml="0"  name=t_26 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="942" y="128" height="60" width="375" html.valueishtml="0"  name=t_25 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="558" y="128" height="60" width="375" html.valueishtml="0"  name=t_24 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

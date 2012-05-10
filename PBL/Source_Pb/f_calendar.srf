@@ -1,0 +1,44 @@
+$PBExportHeader$f_calendar.srf
+$PBExportComments$날짜 선택 // Call w_calendar
+global type f_calendar from function_object
+end type
+
+forward prototypes
+global function string f_calendar (string as_date, integer ai_type)
+end prototypes
+
+global function string f_calendar (string as_date, integer ai_type);////////////////////////////////////////////////////////////
+//
+//     달력함수 -  f_calendar(<스트링형 날짜>)
+//
+//	parameter : 1. string  : yyyy-mm-dd, yyyy/mm/dd, yyyymmdd, yymmdd
+//             2. integer : return되는 값의 type  (1 or 2)
+// return    : 스트링의 yyyy-mm-dd 
+// (예1) em_1.Text = f_calendar(em_1.Text, 1) -  yyyy/mm/dd 값을 return
+// (예2) dw_1.Object.emp_id[1] = f_calendar(dw_1.Object.emp_id[1], 2) - yyyymmdd값을 return
+//
+// 이건 edit mask or datawindow를 double click할 때, 날짜를 선택할 수 있는
+// response window - 'rw_calendar' 를 부를 수 있는 함수다.
+//
+// return값은 달력에서 선택한 날짜이다.
+//
+////////////////////////////////////////////////////////////
+
+window	win
+string	ls_date
+
+OpenWithParm(win, as_date ,"w_calendar")
+ls_date = Message.StringParm  // Return Value Type from Window : string 'yyyy-mm-dd'
+
+if ls_date = '' then
+	if as_date = '0000/00/00' then as_date = ''
+	return as_date				// 원래값을 return
+end if
+
+if ai_type = 2 then			// yyyymmdd값으로 setting
+	ls_date = string(date(ls_date),'yyyymmdd')
+end if
+
+return ls_date					// 정상처리된 날짜값을 return
+end function
+

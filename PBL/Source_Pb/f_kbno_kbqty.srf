@@ -1,0 +1,24 @@
+$PBExportHeader$f_kbno_kbqty.srf
+$PBExportComments$¼ö¿ë¼ö
+global type f_kbno_kbqty from function_object
+end type
+
+forward prototypes
+global function decimal f_kbno_kbqty (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno)
+end prototypes
+
+global function decimal f_kbno_kbqty (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno);
+Dec{1} ld_kbqty
+
+SELECT "KBQTY" INTO :ld_kbqty
+ FROM "PBINV"."INV604" A
+WHERE A."COMLTD" = '01'         AND A."XPLANT" = :as_xplant AND A."DIV" = :as_div AND A."ITNO" = :as_itno AND
+      A."XPLANT1" = :as_xplant1 AND A."DIV1"   = :as_div1   Using SQLCA ;
+		
+If Sqlca.SqlCode <> 0 Then 
+	Return 0
+end if
+	
+Return ld_kbqty
+end function
+

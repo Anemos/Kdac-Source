@@ -1,0 +1,24 @@
+$PBExportHeader$f_days_of_month.srf
+$PBExportComments$월의 일수를 리턴해 준다.
+global type f_days_of_month from function_object
+end type
+
+forward prototypes
+global function integer f_days_of_month (string as_month)
+end prototypes
+
+global function integer f_days_of_month (string as_month);int ii
+string ls_yy, ls_mm, ls_date
+
+ls_yy = Left(as_month, 4)
+ls_mm = Right(as_month, 2)
+
+ii = 27
+DO WHILE ii <= 32
+	ls_date = ls_yy + '-' + ls_mm + '-' + String(ii, '00')
+	IF Not IsDate(ls_date) THEN RETURN ii - 1
+	ii++
+LOOP
+
+end function
+

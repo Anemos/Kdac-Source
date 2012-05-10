@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_inv101_rtn.srf
+global type f_get_inv101_rtn from function_object
+end type
+
+forward prototypes
+global function s_inv101_info f_get_inv101_rtn (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global function s_inv101_info f_get_inv101_rtn (string a_plant, string a_div, string a_itno);s_inv101_info st_data
+
+select a.itnm,a.spec,b.cls,b.srce,b.pdcd,b.xunit,b.convqty,b.abccd,b.costav,b.costls,b.bgqty,b.bgamt,b.intqty,b.intamt,b.outqty,b.outamt,b.ohuqty,b.ohamt
+ into :st_data.itnm,:st_data.spec,:st_data.cls,:st_data.srce,:st_data.pdcd,:st_data.xunit,:st_data.convqty,:st_data.abccd,
+      :st_data.costav,:st_data.costls,:st_data.bgqty,:st_data.bgamt,:st_data.intqty,:st_data.intamt,:st_data.outqty,
+	  :st_data.outamt,:st_data.ohuqty,:st_data.ohamt
+	from pbinv.inv002 a , pbinv.inv101 b
+where a.itno = :a_itno and b.xplant = :a_plant and b.div = :a_div and b.itno = :a_itno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	st_data.errcode = 1
+else
+	st_data.errcode = 0
+end if
+
+return st_data
+end function
+

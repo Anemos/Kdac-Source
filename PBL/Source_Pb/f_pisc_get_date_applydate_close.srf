@@ -1,0 +1,41 @@
+$PBExportHeader$f_pisc_get_date_applydate_close.srf
+$PBExportComments$월마감 일자를 고려한 기준일자를 구한다.(return string 'YYYY.MM.DD')
+global type f_pisc_get_date_applydate_close from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_date_applydate_close (string fs_areacode, string fs_divisioncode, datetime fdt_datetime)
+end prototypes
+
+global function string f_pisc_get_date_applydate_close (string fs_areacode, string fs_divisioncode, datetime fdt_datetime);//****************************************************************************************************************
+//	Function			:	f_pisc_get_date_applydate_close
+//	Description		:	기준일 구한다. - 월마감 일자를 고려한 기준일을 구한다.
+//	Arguments		:	fs_areacode
+//							fs_divisioncode
+//							fdt_datetime	=>	Time to get applydate
+//	Returns			:	None
+//	Notes				:	
+//	Initial			:	2002. 09. 17
+//	Author	BY		:	Kim Jin-Su
+// Company			:	Daewoo Information System Co., Ltd. IAS
+//****************************************************************************************************************
+String	ls_applydate
+
+//Declare syntax in script.
+DECLARE get_applydate_close PROCEDURE for sp_pisc_get_applydate_close
+@ps_areacode = :fs_areacode,
+@ps_divisioncode = :fs_divisioncode,
+@pdt_sourcedate = :fdt_datetime,
+@rs_applydate = '1' output
+Using SQLCA;
+
+//exactly the parameters in the sp.
+EXECUTE get_applydate_close;
+
+//then fetch output parameters.
+FETCH get_applydate_close into :ls_applydate;
+CLOSE get_applydate_close;
+
+Return	ls_applydate
+end function
+

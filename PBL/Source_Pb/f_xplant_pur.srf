@@ -1,0 +1,47 @@
+$PBExportHeader$f_xplant_pur.srf
+$PBExportComments$지역(사번,지역)
+global type f_xplant_pur from function_object
+end type
+
+forward prototypes
+global subroutine f_xplant_pur (string as_empno, ref string as_deptcode, ref string as_xplant, ref string as_div)
+end prototypes
+
+global subroutine f_xplant_pur (string as_empno, ref string as_deptcode, ref string as_xplant, ref string as_div);////////////////////////////////////////////////////////////////////////////
+//사번에 해당되는 부서코드,지역,공장
+//
+//		arguement : string      as_empno
+//                ref string  as_deptcdoe
+//                ref string  as_xplant
+//                ref string  as_div
+//
+//////////////////////////////////////////////////////////////////////////////
+String deptcode, xplant,div
+SELECT "PBCOMMON"."DAC003"."PEDEPT" , "PBCOMMON"."DAC003"."PEAREA"  ,"PBCOMMON"."DAC001"."DDIV5"  
+ INTO :deptcode, :xplant, :div
+// INTO :as_deptcode  , :as_xplant , :as_div  
+FROM "PBCOMMON"."DAC001", "PBCOMMON"."DAC003"  
+WHERE ( "PBCOMMON"."DAC001"."DCODE" = "PBCOMMON"."DAC003"."PEDEPT" ) and  
+	  ( ( "PBCOMMON"."DAC001"."DUSE" = ' ' ) AND  
+	  ( "PBCOMMON"."DAC001"."DTODT" = 0 ) AND  
+	  ( "PBCOMMON"."DAC003"."PEEMPNO" = :as_empno ) ) Using sqlca;
+//deptcode
+as_deptcode = deptcode
+//지역
+Choose Case xplant
+	Case "1"		//대구
+		as_xplant = "D"	
+	Case "2" 	//서울
+		as_xplant = "S"
+	Case "3"  	//진천
+		as_xplant = "J"
+	Case "4" 	//군산
+		as_xplant = "K"
+	Case "Y" 	//여주
+		as_xplant = "Y"
+End Choose
+//div
+as_div = div
+
+end subroutine
+

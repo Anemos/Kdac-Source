@@ -1,0 +1,46 @@
+$PBExportHeader$f_get_iunrc_tms.srf
+$PBExportComments$미입고량(가)  (전산번호,전산번호) 발주량 - 입고량
+global type f_get_iunrc_tms from function_object
+end type
+
+forward prototypes
+global function decimal f_get_iunrc_tms (string as_srno, string as_srno1)
+end prototypes
+
+global function decimal f_get_iunrc_tms (string as_srno, string as_srno1);//////////////////////////////////////////////////
+//	미입고량(가)
+//			argument: 발주전산번호, 분할발주횟수
+//
+//			사용: 검수입고 수정 ( 미입고량(실) )
+//////////////////////////////////////////////////
+
+Dec{1} ld_Pqty
+
+//발주 DB
+SELECT "PBPUR"."PUR402"."PQTY" - "PBPUR"."PUR402"."PCNLT"  
+ INTO :ld_Pqty
+ FROM "PBPUR"."PUR402"  
+WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR402"."SRNO" = :as_srno ) AND  
+		( "PBPUR"."PUR402"."SRNO1" = :as_srno1 )AND 
+		( "PBPUR"."PUR402"."PGUBU" = ' ' )   Using sqlca;		
+		
+IF SQLCA.SQLCode <> 0 Then Return 0
+
+Dec{1}	ld_Rpqty
+
+//자재 Trans DB
+SELECT SUM("PBINV"."INV401"."TQTY4")  
+ INTO :ld_Rpqty  
+ FROM "PBINV"."INV401"  
+WHERE ( "PBINV"."INV401"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV401"."SLIPTYPE" = 'RP' ) AND  
+		( "PBINV"."INV401"."SRNO" = :as_srno ) AND  
+		( "PBINV"."INV401"."SRNO1" = :as_srno1 ) Using sqlca ;
+
+IF sqlca.sqlcode <> 0 Or IsNull( ld_Rpqty ) Then Return 0
+
+
+Return ld_Pqty - ld_Rpqty
+end function
+

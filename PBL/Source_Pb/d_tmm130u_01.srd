@@ -1,0 +1,43 @@
+$PBExportHeader$d_tmm130u_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=toolid dbname="TMM009.TOOLID" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=toolname dbname="TMM009.TOOLNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=tmgubun dbname="TMM009.TMGUBUN" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TMM009.LASTEMP" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=lastdate dbname="TMM009.LASTDATE" )
+ column=(type=long updatewhereclause=yes name=del_check dbname="TMM009.DEL_CHECK" )
+ retrieve="  SELECT ~"PBGMS~".~"TMM009~".~"TOOLID~",   
+         ~"PBGMS~".~"TMM009~".~"TOOLNAME~",   
+         ~"PBGMS~".~"TMM009~".~"TMGUBUN~",   
+         ~"PBGMS~".~"TMM009~".~"LASTEMP~",   
+         ~"PBGMS~".~"TMM009~".~"LASTDATE~",
+			TMP_CHECK.DEL_CHECK  
+    FROM ~"PBGMS~".~"TMM009~" ,
+	( SELECT  ~"PBGMS~".~"TMM009~".~"TOOLID~" AS TOOLID, 
+			SUM(CASE WHEN IFNULL(~"PBGMS~".~"TMM003~".~"TOOLID~",'') = '' THEN 0 ELSE 1 END) AS DEL_CHECK
+		FROM  ~"PBGMS~".~"TMM009~" LEFT OUTER JOIN ~"PBGMS~".~"TMM003~"
+			ON ~"PBGMS~".~"TMM009~".~"TOOLID~" = ~"PBGMS~".~"TMM003~".~"TOOLID~"
+		GROUP BY ~"PBGMS~".~"TMM009~".~"TOOLID~" ) TMP_CHECK
+	WHERE ~"PBGMS~".~"TMM009~".~"TOOLID~" = TMP_CHECK.TOOLID
+" update="PBGMS.TMM009" updatewhere=1 updatekeyinplace=no )
+text(band=header alignment="2" text="ÀåºñÄÚµå" border="0" color="16777215" x="9" y="8" height="60" width="329" html.valueishtml="0"  name=toolid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àåºñ¸í" border="0" color="16777215" x="347" y="8" height="60" width="1632" html.valueishtml="0"  name=toolname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Ã/Ãø±¸ºÐ" border="0" color="16777215" x="1989" y="8" height="60" width="462" html.valueishtml="0"  name=tmgubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ" border="0" color="16777215" x="2459" y="8" height="60" width="329" html.valueishtml="0"  name=lastemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏ" border="0" color="16777215" x="2798" y="8" height="60" width="992" html.valueishtml="0"  name=lastdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="4" height="72" width="329" format="[general]" html.valueishtml="0" protect="0~tif(  del_check > 0, 1, 0)"  name=toolid visible="1" editmask.mask="!!" editmask.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2459" y="4" height="72" width="329" format="[general]" html.valueishtml="0"  name=lastemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2798" y="4" height="72" width="992" format="[general]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="33554432" x="347" y="4" height="72" width="1632" format="[general]" html.valueishtml="0" protect="0~tif(  del_check > 0, 1, 0)"  name=toolname visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="33554432" x="1989" y="4" height="72" width="462" format="[general]" html.valueishtml="0" protect="0~tif(  del_check > 0, 1, 0)"  name=tmgubun visible="1" dddw.name=d_tmm_select_codemaster dddw.displaycolumn=codename dddw.datacolumn=cocode dddw.percentwidth=300 dddw.lines=2 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes dddw.autoretrieve=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,105 @@
+$PBExportHeader$d_pisr011i_01.srd
+$PBExportComments$간판검색리스트(품번) - 지역,공장,품번
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=136 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=yes name=suppliercode dbname="SupplierCode" )
+ column=(type=char(50) updatewhereclause=yes name=supplierkorname dbname="SupplierKorName" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(10) updatewhereclause=yes name=applyfrom dbname="ApplyFrom" )
+ column=(type=char(1) updatewhereclause=yes name=parttype dbname="PartType" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag dbname="ChangeFlag" )
+ column=(type=char(4) updatewhereclause=yes name=partmodelid dbname="PartModelID" )
+ column=(type=char(2) updatewhereclause=yes name=partid dbname="PartID" )
+ column=(type=char(1) updatewhereclause=yes name=usecentergubun dbname="UseCenterGubun" )
+ column=(type=char(30) updatewhereclause=yes name=usecenternm dbname="UseCenterNm" )
+ column=(type=char(5) updatewhereclause=yes name=usecenter dbname="UseCenter" )
+ column=(type=char(1) updatewhereclause=yes name=costgubun dbname="CostGubun" values="유상	Y/무상	N/" )
+ column=(type=long updatewhereclause=yes name=rackqty dbname="RackQty" )
+ column=(type=char(5) updatewhereclause=yes name=rackcode dbname="RackCode" )
+ column=(type=char(1) updatewhereclause=yes name=stockgubun dbname="StockGubun" )
+ column=(type=char(4) updatewhereclause=yes name=receiptlocation dbname="ReceiptLocation" )
+ column=(type=long updatewhereclause=yes name=mailboxno dbname="MailBoxNo" )
+ column=(type=decimal(1) updatewhereclause=yes name=safetystock dbname="SafetyStock" )
+ column=(type=char(1) updatewhereclause=yes name=useflag dbname="UseFlag" values="Y	Y/	N/" )
+ column=(type=char(1) updatewhereclause=yes name=autoreorderflag dbname="AutoReorderFlag" )
+ column=(type=char(1) updatewhereclause=yes name=kbuseflag dbname="KBUseFlag" )
+ column=(type=char(10) updatewhereclause=yes name=changedate dbname="ChangeDate" )
+ column=(type=char(11) updatewhereclause=yes name=normalkbsn dbname="NormalKBSN" )
+ column=(type=char(11) updatewhereclause=yes name=tempkbsn dbname="TempKBSN" )
+ column=(type=long updatewhereclause=yes name=partkbprintcount dbname="PartKBPrintCount" )
+ column=(type=long updatewhereclause=yes name=partkbactivecount dbname="PartKBActiveCount" )
+ column=(type=long updatewhereclause=yes name=partkbplancount dbname="PartKBPlanCount" )
+ column=(type=char(6) updatewhereclause=yes name=lastemp dbname="LastEmp" )
+ column=(type=datetime updatewhereclause=yes name=lastdate dbname="LastDate" )
+ procedure="1 execute dbo.sp_pisr011i_01;1 @ps_areaCode = :ps_areaCode, @ps_divCode = :ps_divCode, @ps_itemCode = :ps_itemCode" arguments=(("ps_areaCode", string),("ps_divCode", string),("ps_itemCode", string)) )
+text(band=header alignment="2" text="부품
+구분" border="0" color="16777215" x="9" y="8" height="120" width="224" html.valueishtml="0"  name=parttype_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="업체
+코드" border="0" color="16777215" x="1573" y="8" height="120" width="270" html.valueishtml="0"  name=suppliercode_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+업체명" border="0" color="16777215" x="1851" y="8" height="120" width="658" html.valueishtml="0"  name=supplierkorname_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+품번" border="0" color="16777215" x="242" y="8" height="120" width="357" html.valueishtml="0"  name=itemcode_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+품명" border="0" color="16777215" x="608" y="8" height="120" width="667" html.valueishtml="0"  name=itemname_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="적용
+시작일" border="0" color="16777215" x="2519" y="8" height="120" width="357" html.valueishtml="0"  name=applyfrom_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+배번호" border="0" color="16777215" x="1285" y="8" height="120" width="279" html.valueishtml="0"  name=partmodelid_s visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+사용처" border="0" color="16777215" x="2885" y="8" height="120" width="581" html.valueishtml="0"  name=usecenternm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="유무상
+구분" border="0" color="16777215" x="3474" y="8" height="120" width="224" html.valueishtml="0"  name=costgubun_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+수용수" border="0" color="16777215" x="3707" y="8" height="120" width="219" html.valueishtml="0"  name=rackqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="MailBox
+No" border="0" color="16777215" x="4576" y="8" height="120" width="274" html.valueishtml="0"  name=mailboxno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="안전
+재고일" border="0" color="16777215" x="4859" y="8" height="120" width="238" html.valueishtml="0"  name=safetystock_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="사용
+중단" border="0" color="16777215" x="5106" y="8" height="120" width="178" html.valueishtml="0"  name=useflag_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="정규간판
+최종S/N" border="0" color="16777215" x="5294" y="8" height="120" width="302" html.valueishtml="0"  name=normalkbsn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="임시간판
+최종S/N" border="0" color="16777215" x="5605" y="8" height="120" width="283" html.valueishtml="0"  name=tempkbsn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="간판
+발행매수" border="0" color="16777215" x="5897" y="8" height="120" width="302" html.valueishtml="0"  name=partkbprintcount_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="간판
+운용매수" border="0" color="16777215" x="6208" y="8" height="120" width="283" html.valueishtml="0"  name=partkbactivecount_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="익월운용
+예상매수" border="0" color="16777215" x="6501" y="8" height="120" width="293" html.valueishtml="0"  name=partkbplancount_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+용기코드" border="0" color="16777215" x="3936" y="8" height="120" width="293" html.valueishtml="0"  name=rackcode_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+저장위치" border="0" color="16777215" x="4238" y="8" height="120" width="329" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="224" format="[general]" html.valueishtml="0"  name=parttype visible="1" dddw.name=dddw_rparttypel_01 dddw.displaycolumn=parttype_name dddw.datacolumn=parttype_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="1573" y="8" height="76" width="270" format="[general]" html.valueishtml="0"  name=suppliercode visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1851" y="8" height="76" width="658" format="[general]" html.valueishtml="0"  name=supplierkorname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="242" y="8" height="76" width="357" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="608" y="8" height="76" width="667" format="[general]" html.valueishtml="0"  name=itemname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="2519" y="8" height="76" width="357" format="[general]" html.valueishtml="0"  name=applyfrom visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="128" x="1285" y="8" height="76" width="279" format="[general]" html.valueishtml="0"  name=partmodelid visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="2885" y="8" height="76" width="581" format="[general]" html.valueishtml="0"  name=usecenternm visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="3474" y="8" height="76" width="224" format="[general]" html.valueishtml="0"  name=costgubun visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="0" x="3707" y="8" height="76" width="219" format="[general]" html.valueishtml="0"  name=rackqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="0" x="4576" y="8" height="76" width="274" format="[general]" html.valueishtml="0"  name=mailboxno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="2" tabsequence=32766 border="0" color="0" x="4859" y="8" height="76" width="238" format="[general]" html.valueishtml="0"  name=safetystock visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="2" tabsequence=32766 border="0" color="0" x="5106" y="8" height="76" width="178" format="[general]" html.valueishtml="0"  name=useflag visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="2" tabsequence=32766 border="0" color="0" x="5294" y="8" height="76" width="302" format="[general]" html.valueishtml="0"  name=normalkbsn visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="2" tabsequence=32766 border="0" color="0" x="5605" y="8" height="76" width="283" format="[general]" html.valueishtml="0"  name=tempkbsn visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=28 alignment="2" tabsequence=32766 border="0" color="0" x="5897" y="8" height="76" width="302" format="[general]" html.valueishtml="0"  name=partkbprintcount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="2" tabsequence=32766 border="0" color="0" x="6208" y="8" height="76" width="283" format="[general]" html.valueishtml="0"  name=partkbactivecount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="2" tabsequence=32766 border="0" color="0" x="6501" y="8" height="76" width="293" format="[general]" html.valueishtml="0"  name=partkbplancount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="0" x="3936" y="8" height="76" width="293" format="[general]" html.valueishtml="0"  name=rackcode visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression="if(   stockgubun = 'L' , left(   receiptlocation , 2 ) + '-' + mid(   receiptlocation , 3, 1 ) + '-' + mid(    receiptlocation ,4,1),  if(   stockgubun = 'W' , left(   receiptlocation , 1 ) + '-' + mid(   receiptlocation , 2, 1 ) + '-' + mid(    receiptlocation ,3,1), ' ' ) ) "border="0" color="0" x="4238" y="8" height="76" width="329" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="parttype	itemcode	itemname	partmodelid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

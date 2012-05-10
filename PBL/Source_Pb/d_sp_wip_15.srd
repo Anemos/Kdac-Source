@@ -1,0 +1,34 @@
+$PBExportHeader$d_sp_wip_15.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=xplant dbname="BOM001.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="BOM001.DIV" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="BOM001.ITNO" )
+ column=(type=char(1) updatewhereclause=yes name=errchk dbname="ERRCHK" )
+ retrieve="SELECT DISTINCT XPLANT, DIV, ITNO, 'N' AS ERRCHK
+FROM PBPDM.BOM001 INNER JOIN PBINV.INV101
+  ON PCMCD = COMLTD AND PPITN = ITNO AND XPLANT = PLANT AND DIV = PDVSN
+WHERE COMLTD = '01' AND XPLANT = :a_plant AND DIV LIKE :a_dvsn AND
+  CLS = '30' AND ( PEDTE = '' OR PEDTE >= :a_fromdt) AND XPLANT <> 'Y'
+
+UNION ALL
+
+SELECT DISTINCT TMP.XPLANT,TMP.DIV,TMP.ITNO,'N' AS ERRCHK FROM PBPDM.BOM001 AA,
+( SELECT DISTINCT XPLANT,DIV,ITNO,CLS,SRCE FROM PBPDM.BOM001 INNER JOIN PBINV.INV101
+    ON PCMCD = COMLTD AND PCITN = ITNO AND XPLANT = PLANT AND DIV = PDVSN
+  WHERE COMLTD = '01' AND XPLANT = :a_plant AND DIV LIKE :a_dvsn AND 
+    SRCE IN ('03','04') AND PEDTE <> '' AND PEDTE < :a_todt AND XPLANT <> 'Y' ) TMP
+WHERE AA.PCMCD = '01' AND AA.PLANT = TMP.XPLANT AND
+AA.PDVSN = TMP.DIV AND AA.PPITN = TMP.ITNO AND 
+(AA.PEDTE = '' OR AA.PEDTE >= :a_fromdt)" arguments=(("a_plant", string),("a_dvsn", string),("a_fromdt", string),("a_todt", string))  sort="xplant A div A itno A " )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="242" y="0" height="76" width="219" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="535" y="4" height="76" width="178" format="[general]" html.valueishtml="0"  name=div visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="809" y="4" height="76" width="384" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1193" y="0" height="76" width="146" format="[general]" html.valueishtml="0"  name=errchk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

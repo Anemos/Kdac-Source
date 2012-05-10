@@ -1,0 +1,48 @@
+$PBExportHeader$dddw_plandiv_rtn_02.srd
+$PBExportComments$°øÅëÄÚµåDB ÄÚµå DDDW
+release 8;
+datawindow(units=0 timer_interval=0 color=15793151 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(10) updatewhereclause=yes name=cocode dbname="DAC002.COCODE" )
+ column=(type=char(30) updatewhereclause=yes name=coitname dbname="DAC002.COITNAME" )
+ column=(type=char(10) updatewhereclause=yes name=cocode1 dbname="COCODE1" )
+ column=(type=char(10) updatewhereclause=yes name=cocode2 dbname="COCODE2" )
+ column=(type=char(10) updatewhereclause=yes name=cocode3 dbname="COCODE3" )
+ column=(type=char(10) updatewhereclause=yes name=cocode4 dbname="COCODE4" )
+ column=(type=char(10) updatewhereclause=yes name=cocode5 dbname="COCODE5" )
+ column=(type=char(10) updatewhereclause=yes name=cocode6 dbname="COCODE6" )
+ column=(type=char(10) updatewhereclause=yes name=cocode7 dbname="COCODE7" )
+ column=(type=char(10) updatewhereclause=yes name=cocode8 dbname="COCODE8" )
+ column=(type=char(10) updatewhereclause=yes name=cocode9 dbname="COCODE9" )
+ retrieve="  SELECT ~"PBCOMMON~".~"DAC002~".~"COCODE~",   
+         ~"PBCOMMON~".~"DAC002~".~"COITNAME~",   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,1)} as cocode1,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,2)} as cocode2,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,3)} as cocode3,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,4)} as cocode4,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,5)} as cocode5,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,6)} as cocode6,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,7)} as cocode7,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,8)} as cocode8,   
+         {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,9)} as cocode9  
+    FROM ~"PBCOMMON~".~"DAC002~"  
+   WHERE ( ~"PBCOMMON~".~"DAC002~".~"COMLTD~" = '01' ) AND  
+         ( ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = :l_s_gubun )   
+ORDER BY 1 ASC   
+" arguments=(("l_s_gubun", string)) )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="1221" y="12" height="64" width="50" format="[general]" html.valueishtml="0"  name=cocode1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1289" y="12" height="64" width="110" format="[general]" html.valueishtml="0"  name=cocode2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1417" y="12" height="64" width="128" format="[general]" html.valueishtml="0"  name=cocode3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1559" y="12" height="64" width="160" format="[general]" html.valueishtml="0"  name=cocode4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1742" y="12" height="64" width="137" format="[general]" html.valueishtml="0"  name=cocode5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1879" y="12" height="64" width="165" format="[general]" html.valueishtml="0"  name=cocode6 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="2043" y="12" height="64" width="192" format="[general]" html.valueishtml="0"  name=cocode7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2235" y="12" height="64" width="215" format="[general]" html.valueishtml="0"  name=cocode8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2450" y="12" height="64" width="242" format="[general]" html.valueishtml="0"  name=cocode9 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="882" y="8" height="76" width="302" format="[general]" html.valueishtml="0"  name=cocode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="68" width="809" format="[general]" html.valueishtml="0"  name=coitname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

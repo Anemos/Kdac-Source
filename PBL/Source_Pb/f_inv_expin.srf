@@ -1,0 +1,236 @@
+$PBExportHeader$f_inv_expin.srf
+$PBExportComments$외자정보입력(여주 Interface)
+global type f_inv_expin from function_object
+end type
+
+forward prototypes
+global function integer f_inv_expin (string as_gubun, string as_slno, string as_xplant, string as_div, string as_itno, string as_tdte4, string as_srno, string as_usrid, string as_inptdt, ref string as_error)
+end prototypes
+
+global function integer f_inv_expin (string as_gubun, string as_slno, string as_xplant, string as_div, string as_itno, string as_tdte4, string as_srno, string as_usrid, string as_inptdt, ref string as_error);//**************************************************
+// 여주공장 입고정보 Interface                      
+// INV201 DELETE => INV401 UPDATE -> INV101 UPDATE => PUR402 UPDATE 재공함수 CALL  
+//**************************************************
+
+// 입력시 변수선언 
+String  ls_column, ls_errcd, ls_gubun, ls_date, ls_comp, ls_itno, ls_slno, ls_cls, ls_vndr, ls_unit, & 
+        ls_date1, ls_jscd, ls_dnr, ls_plant, ls_div, ls_rvno, ls_itnm, ls_spec, ls_purno, ls_vsrno, ls_stcd, &
+		  ls_srno, ls_srno1, ls_srno2, ls_dudt, ls_dsag, ls_srce, ls_type, ls_lcno, ls_mdno, ls_msgcd, ls_sqltext, &
+		  ls_invc, ls_tdte4, ls_tdte3, ls_rqno, ls_curr, ls_blno
+String  ls_dte5, ls_pdcd, ls_plan, ls_mlan, ls_rqdiv, ls_kplnt
+Integer ii, li_Rows, li_rtn, li_prc_rtn, li_cnt, li_sqlcode, li_return
+Long    ll_row, ll_amt 
+Dec{1}  ld_drct, ld_dcqt, ld_qty4, ld_qty3
+Dec{2}  ld_saud, ld_cost, ld_fobamt
+Dec{4}  ld_exch
+// 삭제시 변수선언 
+String  ls_dsrno, ls_dsrno1, ls_dsrno2, ls_sltype
+Long    ll_tramt, ll_amt1, ll_IntAmt, ll_outamt
+Dec{1}  ld_tqty4, ld_ohuqty, ld_Uqty, ld_Rqty, ld_Sqty, ld_IntQty, ld_OutQty, ld_Qty
+Dec{2}  ld_CostAv
+
+string ls_orgsql, ls_newsql  
+
+//datastore 선언
+Datastore ds_Retr201, ds_trans_01   
+
+If as_gubun = 'A' Then // 외자입고정보 입력
+   
+	//INV201 delete 용 DataStore Open
+	ds_Retr201 = create datastore                  			              
+	ds_Retr201.dataobject = "d_invdomin_01"
+	ds_Retr201.settransobject(sqlca)
+	ls_orgsql = ds_Retr201.getsqlselect()
+   ls_newsql = ls_orgsql + &
+	            " AND ( ~"PBINV~".~"INV101~".~"SRCE~" = '01') AND ~"PBINV~".~"INV101~".~"CLS~" IN ('10', '20', '35') " 
+	
+	ds_Retr201.setsqlselect(ls_newsql)
+
+	ds_Retr201.Retrieve(as_slno, as_xplant, as_div, as_itno)
+	li_Rows = ds_Retr201.RowCount()
+	
+	If li_Rows = 0 Then 
+		as_error = "납품정보가 조회된 데이타가 없음."
+		Return -1 // 조회된 데이타가 없음.
+	End if
+	
+	For ii=1 To li_Rows
+		
+		ls_srno  = ds_Retr201.object.inv201_srno[ii]
+		ls_srno1 = ds_Retr201.object.inv201_srno1[ii]
+		ls_srno2 = ds_Retr201.object.inv201_srno2[ii]
+		
+		// 입고정보 유무 check
+		SELECT  count(*) 	 INTO :li_cnt
+		 FROM "PBINV"."INV401"  
+		WHERE "PBINV"."INV401"."COMLTD" = '01' AND "PBINV"."INV401"."SRNO" = :ls_srno AND "PBINV"."INV401"."SLIPTYPE" = 'RP' AND
+				"PBINV"."INV401"."SRNO1"  = :ls_srno1 AND "PBINV"."INV401"."SRNO2" = :ls_srno2 using sqlca  ;
+		if li_cnt > 0 then
+			as_error = "입고정보가 존재함."
+			return -1
+		end if	
+	
+		//	입고수량 CHECK   
+		ld_qty4 = ds_Retr201.object.inv201_dexqt[ii]   // 합격량
+		ld_qty3 = ds_Retr201.object.inv201_ndexqt[ii]  // 불합격량
+		ld_dcqt = ds_Retr201.object.inv201_dckqt[ii]   // 납품량
+		ll_amt  = ds_Retr201.object.inv201_dcamt[ii]
+	 	
+		 // 입고단가 계산(= 금액 / 수량)
+	 	ld_cost  = ll_amt / ld_qty4
+		
+		 // 외자 Overage 일때 
+		ls_itno  = ds_Retr201.object.inv201_itno[ii]
+		ls_purno = ds_Retr201.object.inv201_purno[ii]
+		ls_comp  = ds_Retr201.object.inv201_comp[ii]
+		ls_invc  = ds_Retr201.object.inv201_invc[ii]
+		
+		if ls_comp <> 'O' then  //전수품..
+			if ld_qty4 > 0 and ld_qty3 > 0 then
+				as_error = "수량을 재확인하십시오"
+				return -1
+			end if
+		else
+			if (ld_qty4 + ld_qty3) <> ld_dcqt then
+				as_error = "합격량 + 불합격량 <> 납품량"
+				return -1
+			end if
+		end if
+		
+		// 입고일자	check (월마감시/중간마감시)
+		ls_tdte4 = as_tdte4
+		
+		if f_yeo_online(ls_tdte4,' ') = -1 then
+			as_error = "마감일이 지나서 입력 불가"
+			return -1
+		End if
+	 
+		 // Window value => Db field
+		 ls_plant = ds_Retr201.object.inv201_xplant[ii]  // 지역
+		 ls_div   = ds_Retr201.object.inv201_div[ii]     // 공장
+		 ls_rvno  = ds_Retr201.object.inv201_rvno[ii]    // reversion
+		 ls_slno  = ds_Retr201.object.inv201_slno[ii]    // 전표번호
+		 ls_itno  = ds_Retr201.object.inv201_itno[ii]    // 품번 
+		 ls_itnm  = ds_Retr201.object.inv002_itnm[ii]    // 품명
+		 ls_spec  = ds_Retr201.object.inv002_spec[ii]    // 규격
+		 ls_unit  = ds_Retr201.object.inv101_xunit[ii]   // 단위
+		 ls_cls   = ds_Retr201.object.inv101_cls[ii]     // 계정
+		 ls_srce  = ds_Retr201.object.inv101_srce[ii]    // 구입선
+		 ls_tdte3 = ds_Retr201.object.inv201_dckdt[ii]   // 납품일
+		 ls_vndr  = ds_Retr201.object.inv201_vndr[ii]    // 업체코드
+		 ls_vsrno = f_yeo_vsrno_pur(ls_vndr,'S','I')
+		 ls_blno  = ds_Retr201.object.inv201_blno[ii]    // b/l no
+		 ls_purno = ds_Retr201.object.inv201_purno[ii]   // 발주번호
+		 ls_rqno  = ds_Retr201.object.inv201_rqno[ii]    // 구매요구번호
+		 ld_exch  = ds_Retr201.object.inv201_exch[ii]    // 환율
+		 ls_curr  = ds_Retr201.object.inv201_curr[ii]    // 통화단위 
+		 ld_fobamt = ds_Retr201.object.inv201_fobamt[ii]
+		 
+		 // 입고정보 생성
+		if ld_qty3 = ld_dcqt then       // 전수불합격일경우
+			 li_return = f_inv401_rfss_insert(ls_srno,ls_srno1,ls_srno2,ls_plant,ls_div,ls_itno,ls_cls,ld_qty4,ld_qty3, &
+				ld_dcqt,ld_cost,ll_amt,ls_tdte3,ls_tdte4,ls_slno,ld_exch,ls_curr,ls_blno,ls_purno,ls_vndr,as_srno, as_usrid, as_inptdt, as_error, ld_fobamt)
+			if li_return = -1 then
+//				as_error = "전수불합격일경우 Trans & Balane 생성 에러"
+				Return -1
+			End if
+			
+		else                            //합격일경우
+	  		li_return = f_inv401_rf_insert(ls_srno,ls_srno1,ls_srno2,ls_plant,ls_div,ls_itno,ls_cls,ld_qty4,ld_qty3, &
+				ld_dcqt,ld_cost,ll_amt,ls_tdte3,ls_tdte4,ls_slno,ld_exch,ls_curr,ls_blno,ls_purno,ls_vndr,as_srno, as_usrid, as_inptdt,as_error,ld_fobamt)
+			if li_return = -1 then
+//				as_error = "전수합격일경우 Trans & Balane 생성 에러"
+				Return -1
+			End if
+			
+		end if
+	   
+		DELETE FROM "PBINV"."INV201"
+		WHERE "COMLTD" = '01' AND "SRNO" = :ls_srno AND	"SRNO1" = :ls_srno1 AND "SRNO2" = :ls_srno2  Using sqlca;
+		
+	Next
+	destroy ds_Retr201
+End if
+	
+If as_gubun = 'D' Then // 외자입고정보 삭제
+
+	ds_trans_01 = create datastore                  			              
+	ds_trans_01.dataobject = "d_inv_out_01"
+	ds_trans_01.settransobject(sqlca)
+	
+	ds_trans_01.Retrieve('Rf', as_xplant, as_div, as_itno, as_srno)
+	li_Rows = ds_trans_01.RowCount()
+	
+	If li_Rows = 0 Then
+		as_error = "외자입고 삭제할 데이타가 없음"
+		Return -1 // 조회된 데이타가 없음.
+	End if
+	For ii=1 To li_Rows
+		
+		// 입고일자	check (월마감시/중간마감시)
+		ls_date  = ds_trans_01.object.tdte4[ii]
+		ls_vsrno = ds_trans_01.object.vsrno[ii]
+		ls_jscd  = f_yeo_vndr_jscd1('D',ls_vsrno)
+		if f_yeo_online(ls_date,ls_jscd) = -1 then
+			as_error = "마감일이 지나서 입력 불가"
+			Return -1
+		End If
+		
+		ls_srno  = ds_trans_01.object.srno[ii]
+		ls_srno1 = ds_trans_01.object.srno1[ii]
+		ls_srno2 = ds_trans_01.object.srno2[ii]	
+		ld_qty4  = ds_trans_01.object.tqty4[ii]      //수량
+		ll_amt1  = ds_trans_01.object.tramt[ii]      //금액
+
+		SELECT "OHUQTY", "OHAMT", "COSTAV", "INTQTY", "INTAMT" INTO :ld_Qty, :ll_Amt, :ld_CostAv, :ld_intQty, :ll_intAmt
+		  FROM "PBINV"."INV101"
+		WHERE "COMLTD" = '01' AND "XPLANT" = :as_xplant AND "DIV" = :as_div AND "ITNO" = :as_Itno	Using	SQLCA ;
+		
+		If SQLCA.SQLCode <> 0 Then 
+			RollBack Using SQLCA ;
+			as_error = "품목재고 테이블 조회 불가"
+			Return -1
+		End If
+		
+		// 입고수량(+) & 현재고수량 (+)
+		ld_intqty = ld_intqty - ld_qty4
+		ld_qty    = ld_qty - ld_qty4
+		
+		if ld_qty < 0 then
+			as_error = "품목재고 (-)발생, 삭제할 수 없음!"
+			Return -1			
+		End if
+		
+		// 입고금액(+) & 현재고금액 (+)
+		ll_intamt = ll_intamt - ll_amt1
+		ll_amt    = ll_amt - ll_amt1
+		
+		// 이동평균단가 계산
+		ld_costav = ll_amt / ld_qty
+			
+		UPDATE "PBINV"."INV101"
+			SET "OHAMT" = :ll_Amt,     "OHUQTY" = :ld_Qty,   "INTQTY" = :ld_intQty, "INTAMT" = :ll_intAmt, 
+				 "COSTAV" = :ld_costav, "ILUDT"  = :as_tdte4
+		WHERE "COMLTD" = '01' AND "XPLANT" = :as_xplant AND "DIV" = :as_div AND "ITNO" = :as_Itno	Using	SQLCA ;
+		
+		// trans 삭제
+		DELETE FROM "PBINV"."INV401" 
+		WHERE "COMLTD" = '01'       AND "SLIPTYPE" = 'RF' AND "SRNO" = :ls_srno AND 
+	    	  "SRNO1"  = :ls_srno1 AND "SRNO2"    = :ls_srno2  using sqlca ;
+		
+		If SQLCA.SQLCode <> 0 Then 
+			RollBack Using SQLCA ;
+			as_error = "품목재고 테이블 Update 실패"
+			Return -1
+		End If		
+			
+	Next	
+	
+	destroy ds_trans_01
+
+End if
+
+Return 0
+
+end function
+

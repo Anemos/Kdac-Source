@@ -1,0 +1,36 @@
+$PBExportHeader$d_piso401u_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TMSTPARTKB.AreaCode" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TMSTPARTKB.DivisionCode" )
+ column=(type=char(5) update=yes updatewhereclause=yes key=yes name=suppliercode dbname="TMSTPARTKB.SupplierCode" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="TMSTPARTKB.ItemCode" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=applyfrom dbname="TMSTPARTKB.ApplyFrom" )
+ column=(type=char(1) updatewhereclause=yes name=chk dbname="chk" values="	Y/	N" )
+ retrieve="  SELECT TMSTPARTKB.AreaCode,   
+         TMSTPARTKB.DivisionCode,   
+         TMSTPARTKB.SupplierCode,   
+         TMSTPARTKB.ItemCode,   
+         TMSTPARTKB.ApplyFrom,
+			' ' as chk 
+    FROM TMSTPARTKB  
+   WHERE ( TMSTPARTKB.AreaCode = :a_area ) AND  
+         ( TMSTPARTKB.DivisionCode = :a_division ) AND
+			( TMSTPARTKB.UseFlag = 'N' )  
+            
+" update="TMSTPARTKB" updatewhere=1 updatekeyinplace=no arguments=(("a_area", string),("a_division", string))  sort="itemcode A suppliercode A " )
+text(band=header alignment="2" text="¾÷Ã¼" border="0" color="16777215" x="9" y="8" height="68" width="453" html.valueishtml="0"  name=suppliercode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="471" y="8" height="68" width="416" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àû¿ëÀÏ" border="0" color="16777215" x="896" y="8" height="68" width="430" html.valueishtml="0"  name=applyfrom_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë" border="0" color="16777215" x="1335" y="8" height="68" width="114" html.valueishtml="0"  name=chk_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="8" height="72" width="453" format="[general]" html.valueishtml="0"  name=suppliercode visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=20 border="0" color="33554432" x="471" y="8" height="72" width="416" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=30 border="0" color="33554432" x="896" y="8" height="72" width="430" format="[general]" html.valueishtml="0"  name=applyfrom visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1335" y="8" height="72" width="114" format="[general]" html.valueishtml="0"  name=chk visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,93 @@
+$PBExportHeader$f_pism_calcdaily.srf
+$PBExportComments$작업일보 세부공수 집계
+global type f_pism_calcdaily from function_object
+end type
+
+forward prototypes
+global function integer f_pism_calcdaily (string as_area, string as_div, string as_wc, string as_wday)
+end prototypes
+
+global function integer f_pism_calcdaily (string as_area, string as_div, string as_wc, string as_wday);/*****************************/
+/*     작업일보 공수 집계    */
+/*****************************/ 
+
+
+// 평가제외 무급 
+
+	Update TMHDAILY 
+	   Set excunpaidMH = IsNull(A.excunpaidMH,0), 
+			 LastEmp = 'Y' 
+	  From ( Select EmpGubun, Sum(IsNull(subMH,0)) as excunpaidMH From TMHDAILYDETAIL B, TMHCODE C
+		 Where ( B.mhGubun = C.mhGubun ) And ( B.mhCode = C.mhCode ) And
+		       ( ( B.AreaCode = :as_area ) And ( B.DivisionCode = :as_div ) And 
+		         ( B.WorkCenter = :as_wc ) And ( B.WorkDay = :as_wday ) And 
+		         ( B.mhGubun = 'K' ) And ( C.mhLevel = 3 ) ) Group By B.EmpGubun ) A 
+ 	 Where ( TMHDAILY.AreaCode = :as_area ) And ( TMHDAILY.DivisionCode = :as_div ) And
+	       ( TMHDAILY.WorkCenter = :as_wc ) And ( TMHDAILY.WorkDay = :as_wday ) And 
+	       ( TMHDAILY.EmpGubun = A.EmpGubun ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+// 평가제외 유급 
+
+	Update TMHDAILY 
+	   Set excpaidMH = IsNull(A.excpaidMH,0), 
+			 LastEmp = 'Y' 
+	  From ( Select EmpGubun, Sum(IsNull(subMH,0)) as excpaidMH From TMHDAILYDETAIL B, TMHCODE C
+		 Where ( B.mhGubun = C.mhGubun ) And ( B.mhCode = C.mhCode ) And
+		       ( ( B.AreaCode = :as_area ) And ( B.DivisionCode = :as_div ) And 
+		         ( B.WorkCenter = :as_wc ) And ( B.WorkDay = :as_wday ) And 
+		         ( B.mhGubun = 'S' ) And ( C.mhLevel = 3 ) ) Group By B.EmpGubun ) A 
+ 	 Where ( TMHDAILY.AreaCode = :as_area ) And ( TMHDAILY.DivisionCode = :as_div ) And
+	       ( TMHDAILY.WorkCenter = :as_wc ) And ( TMHDAILY.WorkDay = :as_wday ) And 
+	       ( TMHDAILY.EmpGubun = A.EmpGubun )  Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+	
+// 유급근태사고 
+
+	Update TMHDAILY 
+	   Set gunteMH = IsNull(A.gunteMH,0), 
+			 LastEmp = 'Y' 
+	  From ( Select EmpGubun, Sum(IsNull(subMH,0)) as gunteMH From TMHDAILYDETAIL B, TMHCODE C
+		 Where ( B.mhGubun = C.mhGubun ) And ( B.mhCode = C.mhCode ) And
+		       ( ( B.AreaCode = :as_area ) And ( B.DivisionCode = :as_div ) And 
+		         ( B.WorkCenter = :as_wc ) And ( B.WorkDay = :as_wday ) And 
+		         ( B.mhGubun = 'B' ) And ( C.mhLevel = 3 ) ) Group By B.EmpGubun ) A 
+ 	 Where ( TMHDAILY.AreaCode = :as_area ) And ( TMHDAILY.DivisionCode = :as_div ) And
+	       ( TMHDAILY.WorkCenter = :as_wc ) And ( TMHDAILY.WorkDay = :as_wday ) And 
+	       ( TMHDAILY.EmpGubun = A.EmpGubun ) Using SqlPIS ;   
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+// 일보사고 
+
+	Update TMHDAILY 
+	   Set ilboMH = IsNull(A.ilboMH,0), 
+			 LastEmp = 'Y' 
+	  From ( Select EmpGubun, Sum(IsNull(subMH,0)) as ilboMH From TMHDAILYDETAIL B, TMHCODE C
+		 Where ( B.mhGubun = C.mhGubun ) And ( B.mhCode = C.mhCode ) And
+		       ( ( B.AreaCode = :as_area ) And ( B.DivisionCode = :as_div ) And 
+		         ( B.WorkCenter = :as_wc ) And ( B.WorkDay = :as_wday ) And 
+		         ( B.mhGubun = 'G' ) And ( C.mhLevel = 3 ) ) Group By B.EmpGubun ) A 
+ 	 Where ( TMHDAILY.AreaCode = :as_area ) And ( TMHDAILY.DivisionCode = :as_div ) And
+	       ( TMHDAILY.WorkCenter = :as_wc ) And ( TMHDAILY.WorkDay = :as_wday ) And 
+	       ( TMHDAILY.EmpGubun = A.EmpGubun ) Using SqlPIS ;   
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+// 총투입공수, 실투입공수 재계산 
+
+  UPDATE TMHDAILY 
+     SET totInMH = isNull( totmh, 0 ) - ( isNull( excunpaidmh, 0 ) + isNull( excpaidmh, 0 ) ), 
+         ActInMH = ( isNull( totmh, 0 ) - ( isNull( excunpaidmh, 0 ) + isNull( excpaidmh, 0 ) ) ) - 
+		   ( isNull( guntemh, 0 ) + isNull( ilbomh, 0 ) + isNull( bugamh, 0 ) ), 
+			LastEmp = 'Y' 
+   WHERE ( TMHDAILY.AreaCode = :as_area ) AND  
+         ( TMHDAILY.DivisionCode = :as_div ) AND  
+         ( TMHDAILY.WorkCenter = :as_wc ) AND  
+         ( TMHDAILY.WorkDay = :as_wday ) Using SqlPIS ;  
+
+Return 1
+
+Exit_pr:
+
+Return -1
+end function
+

@@ -1,0 +1,109 @@
+$PBExportHeader$d_wip044i_work_02.srd
+$PBExportComments$√¢∞Ì¿Á∞¯¿« æ˜√º≈ı¿‘
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=60 color="536870912" )
+summary(height=76 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(8) updatewhereclause=yes name=tdte4 dbname="INV401.TDTE4" )
+ column=(type=char(14) updatewhereclause=yes name=srno dbname="SRNO" )
+ column=(type=char(2) updatewhereclause=yes name=xunit dbname="INV401.XUNIT" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="INV401.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="INV401.SRCE" )
+ column=(type=char(2) updatewhereclause=yes name=xuse dbname="INV401.XUSE" )
+ column=(type=decimal(2) updatewhereclause=yes name=qty dbname="QTY" )
+ column=(type=char(15) updatewhereclause=yes name=itno dbname="INV401.ITNO" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV401.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INV401.DIV" )
+ column=(type=decimal(0) updatewhereclause=yes name=amt dbname="AMT" )
+ retrieve="	SELECT  	~"PBINV~".~"INV401~".~"TDTE4~",
+		  		~"PBINV~".~"INV401~".~"SLIPTYPE~" || ~"PBINV~".~"INV401~".~"SRNO~" || 
+        		~"PBINV~".~"INV401~".~"SRNO1~"    || ~"PBINV~".~"INV401~".~"SRNO2~" AS SRNO,
+        ~"PBINV~".~"INV401~".~"XUNIT~" ,
+        ~"PBINV~".~"INV401~".~"CLS~" ,
+        ~"PBINV~".~"INV401~".~"SRCE~" ,
+        ~"PBINV~".~"INV401~".~"XUSE~" ,
+			CASE ~"PBINV~".~"INV401~".~"SLIPTYPE~"
+				WHEN 'RS' THEN (-1) * (DECIMAL(~"PBINV~".~"INV401~".~"TQTY4~",15,2))
+				ELSE DECIMAL(~"PBINV~".~"INV401~".~"TQTY4~",15,2)
+		  		END  as QTY,
+        ~"PBINV~".~"INV401~".~"ITNO~",
+        ~"PBINV~".~"INV401~".~"XPLANT~",
+        ~"PBINV~".~"INV401~".~"DIV~",
+        	CASE ~"PBINV~".~"INV401~".~"CLS~"
+				WHEN '10' THEN  
+					CASE ~"PBINV~".~"INV401~".~"SLIPTYPE~"
+						WHEN 'RS' THEN (-1) * ~"PBINV~".~"INV401~".~"TRAMT~"
+						ELSE ~"PBINV~".~"INV401~".~"TRAMT~"
+					END
+				ELSE 0
+			END as AMT  
+   FROM ~"PBINV~".~"INV401~"   
+	WHERE ~"PBINV~".~"INV401~".~"SLIPTYPE~" IN (:a_slip) AND
+			~"PBINV~".~"INV401~".~"COMLTD~" = :a_cmcd AND
+			~"PBINV~".~"INV401~".~"XPLANT~" = :a_plant AND
+			~"PBINV~".~"INV401~".~"DIV~" = :a_dvsn AND
+			~"PBINV~".~"INV401~".~"ITNO~" = :a_itno AND
+			NOT (~"PBINV~".~"INV401~".~"SLIPTYPE~" = 'RS' AND ~"PBINV~".~"INV401~".~"RTNGUB~" = '02' ) AND
+			{fn substring(~"PBINV~".~"INV401~".~"TDTE4~",1,6)} = :a_date AND
+			~"PBINV~".~"INV401~".~"VSRNO~" = :a_orct
+
+UNION ALL
+
+	SELECT 	~"PBWIP~".~"WIP003~".~"WCYEAR~"||~"PBWIP~".~"WIP003~".~"WCMONTH~",
+				' ',
+				' ',
+		 		~"PBWIP~".~"WIP003~".~"WCITCL~",
+				~"PBWIP~".~"WIP003~".~"WCSRCE~",
+				' ',
+				0,
+				~"PBWIP~".~"WIP003~".~"WCITNO~",
+				~"PBWIP~".~"WIP003~".~"WCPLANT~",
+				~"PBWIP~".~"WIP003~".~"WCDVSN~",
+				CASE ~"PBWIP~".~"WIP003~".~"WCUSQT2~"
+					WHEN 0 THEN 0
+					ELSE DECIMAL((AAA.QTY1 / DECIMAL(~"PBWIP~".~"WIP003~".~"WCUSQT2~",15,1)) * ~"PBWIP~".~"WIP003~".~"WCUSAT2~",15,0)
+				END AS AMT1
+	FROM ~"PBWIP~".~"WIP003~", (SELECT SUM( CASE ~"PBINV~".~"INV401~".~"SLIPTYPE~"
+														WHEN 'RS' THEN (-1) * ~"PBINV~".~"INV401~".~"TQTY4~"
+														ELSE ~"PBINV~".~"INV401~".~"TQTY4~"
+													END ) as QTY1
+										FROM ~"PBINV~".~"INV401~"   
+										WHERE ~"PBINV~".~"INV401~".~"SLIPTYPE~" IN ('IS','IP','RS') AND
+												~"PBINV~".~"INV401~".~"COMLTD~" = :a_cmcd AND
+												~"PBINV~".~"INV401~".~"XPLANT~" = :a_plant AND
+												~"PBINV~".~"INV401~".~"DIV~" = :a_dvsn AND
+												~"PBINV~".~"INV401~".~"ITNO~" = :a_itno AND
+												{fn substring(~"PBINV~".~"INV401~".~"TDTE4~",1,6)} = :a_date AND
+												~"PBINV~".~"INV401~".~"VSRNO~" = :a_orct
+										) AAA
+	WHERE ~"PBWIP~".~"WIP003~".~"WCCMCD~" = :a_cmcd AND
+			~"PBWIP~".~"WIP003~".~"WCPLANT~" = :a_plant AND
+			~"PBWIP~".~"WIP003~".~"WCDVSN~" = :a_dvsn AND
+			~"PBWIP~".~"WIP003~".~"WCITNO~" = :a_itno AND
+			~"PBWIP~".~"WIP003~".~"WCYEAR~"||~"PBWIP~".~"WIP003~".~"WCMONTH~" = :a_date" arguments=(("a_slip", stringlist),("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_itno", string),("a_date", string),("a_orct", string))  sort="tdte4 A " )
+text(band=header alignment="2" text="¿¸ «• π¯ »£" border="2" color="16777215" x="439" y="0" height="60" width="512" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="≈ı¿‘¿œ¿⁄" border="2" color="16777215" x="5" y="0" height="60" width="430" html.valueishtml="0"  name=t_3 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±∏¿‘º±" border="2" color="16777215" x="2459" y="0" height="60" width="238" html.valueishtml="0"  name=t_6 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿⁄¿Á¥‹¿ß" border="2" color="16777215" x="1925" y="0" height="60" width="288" html.valueishtml="0"  name=t_4 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞Ë ¡§" border="2" color="16777215" x="2217" y="0" height="60" width="238" html.valueishtml="0"  name=t_5 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="≈ı  ¿‘  ºˆ  ∑Æ" border="2" color="16777215" x="2702" y="0" height="60" width="622" html.valueishtml="0"  name=t_7 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="≈ı  ¿‘  ±›  æ◊" border="2" color="16777215" x="3328" y="0" height="60" width="622" html.valueishtml="0"  name=t_8 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="øÎ  µµ" border="2" color="16777215" x="1472" y="0" height="60" width="448" html.valueishtml="0"  name=t_2 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«∞π¯" border="2" color="16777215" x="955" y="0" height="60" width="512" html.valueishtml="0"  name=itno_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="439" y="0" height="64" width="512" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="2" color="0" x="5" y="0" height="64" width="430" format="[general]" html.valueishtml="0"  name=tdte4 visible="1" editmask.mask="XXXX.XX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="2" color="0" x="1472" y="0" height="64" width="448" format="[general]" html.valueishtml="0"  name=xuse visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="2" color="0" x="1925" y="0" height="64" width="288" format="[general]" html.valueishtml="0"  name=xunit visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="2" color="0" x="2217" y="0" height="64" width="238" format="[general]" html.valueishtml="0"  name=cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="2" color="0" x="2459" y="0" height="64" width="238" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="2" color="0" x="2702" y="0" height="64" width="622" format="[general]" html.valueishtml="0"  name=qty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="2" color="0" x="3328" y="0" height="64" width="622" format="[general]" html.valueishtml="0"  name=amt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="2" color="0" x="955" y="0" height="64" width="512" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(qty for all)"border="2" color="0" x="2702" y="4" height="64" width="622" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(amt for all)"border="2" color="0" x="3328" y="4" height="64" width="622" format="[general]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=summary alignment="1" text="«’∞Ë : " border="0" color="0" x="2391" y="4" height="64" width="288" html.valueishtml="0"  name=t_9 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="10789024" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

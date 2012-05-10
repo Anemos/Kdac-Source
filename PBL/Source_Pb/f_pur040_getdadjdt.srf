@@ -1,0 +1,31 @@
+$PBExportHeader$f_pur040_getdadjdt.srf
+$PBExportComments$내자단가적용일(부서,업체,품번)pur103
+global type f_pur040_getdadjdt from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getdadjdt (string as_dept, string as_vsrno, string as_itno)
+end prototypes
+
+global function string f_pur040_getdadjdt (string as_dept, string as_vsrno, string as_itno);////////////////////////////////////////////////
+// : 발주단가적용일가져오기
+//	argument : 부서, 업체,품번
+// 
+////////////////////////////////////////////////
+string ls_temp
+
+  SELECT "PBPUR"."PUR103"."DADJDT"
+    INTO :ls_temp
+    FROM "PBPUR"."PUR103"  
+   WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR103"."VSRC" = 'D' ) AND  
+         ( "PBPUR"."PUR103"."DEPT" = :as_dept ) AND  
+         ( "PBPUR"."PUR103"."VSRNO" = :as_vsrno ) AND  
+         ( "PBPUR"."PUR103"."ITNO" = :as_itno )   ;
+IF isnull(ls_temp) then
+  Return ''
+else
+  Return ls_temp
+end if
+end function
+

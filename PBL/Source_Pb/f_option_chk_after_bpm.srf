@@ -1,0 +1,32 @@
+$PBExportHeader$f_option_chk_after_bpm.srf
+$PBExportComments$Option DB 존재 유무 Check
+global type f_option_chk_after_bpm from function_object
+end type
+
+forward prototypes
+global function string f_option_chk_after_bpm (string a_plant, string a_div, string a_itno, string a_date)
+end prototypes
+
+global function string f_option_chk_after_bpm (string a_plant, string a_div, string a_itno, string a_date);string 	ls_itno = ''
+integer 	ln_cnt
+
+select 	count(*) into :ln_cnt from "PBBPM"."BPM003"
+  where 	oplant = :a_plant and odvsn = :a_div and opitn = :a_itno AND  
+     	(( trim("PBBPM"."BPM003"."OEDTE") =  ''  and "PBBPM"."BPM003"."OEDTM" <= :a_date ) or  
+		(  trim("PBBPM"."BPM003"."OEDTE") <> ''  and "PBBPM"."BPM003"."OEDTM" <= :a_date  and "PBBPM"."BPM003"."OEDTE" >= :a_date ))
+using sqlca;
+if ln_cnt 	> 0 then
+	ls_itno 	= trim(a_itno)
+	return 	ls_itno
+end if
+select 	opitn into :ls_itno from "PBBPM"."BPM003"
+  where 	oplant = :a_plant and odvsn = :a_div and ofitn = :a_itno AND  
+      (( trim("PBBPM"."BPM003"."OEDTE") =  ''  and "PBBPM"."BPM003"."OEDTM" <= :a_date ) or  
+		(  trim("PBBPM"."BPM003"."OEDTE") <> ''  and "PBBPM"."BPM003"."OEDTM" <= :a_date  and "PBBPM"."BPM003"."OEDTE" >= :a_date ))
+using sqlca;
+if f_spacechk(ls_itno) <> -1 then
+	return ls_itno
+end if      
+return 	ls_itno
+end function
+

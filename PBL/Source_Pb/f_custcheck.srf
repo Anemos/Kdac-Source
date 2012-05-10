@@ -1,0 +1,30 @@
+$PBExportHeader$f_custcheck.srf
+$PBExportComments$고객사유상 업체 CHECK
+global type f_custcheck from function_object
+end type
+
+forward prototypes
+global function integer f_custcheck (string as_plant, string as_div, string as_vsrno, string as_dsag)
+end prototypes
+
+global function integer f_custcheck (string as_plant, string as_div, string as_vsrno, string as_dsag);/******************************************************************/
+/* control (inv903)에서   해당월 여부 check                       */
+/* Argument value arg_key : 지역/공장/업체/사급업체               */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Int li_cnt
+
+SELECT count(*)  INTO :li_cnt
+ FROM  "PBINV"."INV903"
+WHERE "PBINV"."INV903"."COMLTD" = '01'     AND "PBINV"."INV903"."XPLANT" = :as_plant AND 
+      "PBINV"."INV903"."DIV"    = :as_div  AND "PBINV"."INV903"."AVSRNO" = :as_vsrno AND
+		"PBINV"."INV903"."BVSRNO" = :as_dsag using sqlca;
+if li_cnt < 0 then 
+	return -1
+end if
+
+return 1
+
+end function
+

@@ -1,0 +1,8 @@
+$PBExportHeader$str_sort.srs
+$PBExportComments$Structure for Sort & Suppress (window size, option, datawindow)
+global type str_sort from structure
+	long		ll_x
+	long		ll_y
+	datawindow		ldw
+end type
+

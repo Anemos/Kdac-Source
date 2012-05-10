@@ -1,0 +1,17 @@
+$PBExportHeader$dddw_exutcode.srd
+$PBExportComments$환율등록기준 외화단위 DDDW
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(3) updatewhereclause=yes name=exut dbname="DAC005.EXUT" )
+ retrieve="  SELECT distinct ~"PBCOMMON~".~"DAC005~".~"EXUT~"  
+    FROM ~"PBCOMMON~".~"DAC005~"  
+   WHERE ~"PBCOMMON~".~"DAC005~".~"COMLTD~" = :a_s_compy and
+         ~"PBCOMMON~".~"DAC005~".~"EXDATE~" between :a_s_frdt and :a_s_todt 
+ORDER BY ~"PBCOMMON~".~"DAC005~".~"EXUT~" ASC   
+" arguments=(("a_s_compy", string),("a_s_frdt", string),("a_s_todt", string)) )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="5" y="4" height="72" width="101"  name=exut  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

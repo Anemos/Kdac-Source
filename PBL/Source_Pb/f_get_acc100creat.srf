@@ -1,0 +1,55 @@
+$PBExportHeader$f_get_acc100creat.srf
+$PBExportComments$ÀüÇ¥ DB RECORD CREATION
+global type f_get_acc100creat from function_object
+end type
+
+forward prototypes
+global function decimal f_get_acc100creat (string a_s_company, string a_s_div, string a_s_date)
+end prototypes
+
+global function decimal f_get_acc100creat (string a_s_company, string a_s_div, string a_s_date);dec l_n_slipno
+
+if a_s_div = '1' then
+	a_s_div = 'DA'
+elseif a_s_div = '2' then
+	a_s_div = 'DU'
+end if
+
+select "PBACC"."ACC110"."SLSLIPNO"  into :l_n_slipno
+from   "PBACC"."ACC110" 
+where  "PBACC"."ACC110"."COMLTD"   = :a_s_company and
+       "PBACC"."ACC110"."SLDIV"    = :a_s_div     and
+		 "PBACC"."ACC110"."SLACDATE" = :a_s_date    using sqlca ;
+if sqlca.sqlcode <> 0 or isnull(l_n_slipno) then
+	l_n_slipno = 0
+end if
+
+if l_n_slipno = 0 then
+	l_n_slipno = 1
+	insert into "PBACC"."ACC110"  
+				( "COMLTD",      "SLDIV",       "SLACDATE",       "SLSLIPNO",         "EXTD",
+				  "INPTID",      "INPTDT",      "UPDTID",         "UPDTDT",           "IPADDR",
+				  "MACADDR" )  
+	  values ( :g_s_company,  :a_s_div,      :a_s_date,        :l_n_slipno,        '',
+	           :g_s_empno,    :g_s_datetime, '',              '',                :g_s_ipaddr,
+				  :g_s_macaddr  )  using sqlca;
+else
+	l_n_slipno ++
+	update "PBACC"."ACC110"
+	set    "SLSLIPNO" = :l_n_slipno,
+	       "UPDTID"   = :g_s_empno,  "UPDTDT"  = :g_s_datetime,
+			 "IPADDR"   = :g_s_ipaddr, "MACADDR" = :g_s_macaddr
+	where  "PBACC"."ACC110"."COMLTD"   = :a_s_company and
+       	 "PBACC"."ACC110"."SLDIV"    = :a_s_div     and
+		    "PBACC"."ACC110"."SLACDATE" = :a_s_date    using sqlca ;
+end if
+if sqlca.sqlcode <> 0 then
+	rollback using sqlca;
+	return 0
+else
+	commit using sqlca;	
+end if
+
+return l_n_slipno
+end function
+

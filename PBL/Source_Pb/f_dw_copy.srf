@@ -1,0 +1,46 @@
+$PBExportHeader$f_dw_copy.srf
+$PBExportComments$dw의현재 row들을 모두 복사(메뉴의 복사기능)
+global type f_dw_copy from function_object
+end type
+
+forward prototypes
+global function boolean f_dw_copy (datawindow adw_copy)
+end prototypes
+
+global function boolean f_dw_copy (datawindow adw_copy);// 용    도 : 메뉴의 복사 기능을 구현한다.(복사원본 데이타윈도의 모든 row를 복사)
+// Argument : datawindow  adw_copy(복사기능을 실행할 datawindow)
+// Return   : None
+
+datastore lds_copy
+long ll_row
+int li_return
+
+ll_row = adw_copy.rowcount()
+//row가 없는 경우 return
+If ll_row < 1 Then return false
+
+adw_copy.setredraw(false)
+
+//Copy할 datastore 생성
+lds_copy = create datastore
+lds_copy.dataobject = adw_copy.dataobject
+//원본Copy
+adw_copy.RowsCopy(1,adw_copy.rowcount(), Primary!, lds_copy, 1, Primary!)
+//Insertrow
+adw_copy.Reset()
+//추가된 row에 Copy
+li_return = lds_copy.RowsCopy(1,lds_copy.rowcount(), Primary!, adw_copy, 1, Primary!)
+destroy lds_copy
+//set focus
+adw_copy.setfocus()
+adw_copy.Scrolltorow(ll_row)
+adw_copy.Setrow(ll_row)
+adw_copy.setredraw(true)
+If li_return = -1 Then
+	return false
+Elseif li_return = 1 Then
+	return true
+End if
+
+end function
+

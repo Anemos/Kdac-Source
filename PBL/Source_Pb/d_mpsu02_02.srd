@@ -1,0 +1,503 @@
+$PBExportHeader$d_mpsu02_02.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=144 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=mps002_btype dbname="MPS002.BTYPE" )
+ column=(type=char(15) updatewhereclause=yes name=mps002_bitno dbname="MPS002.BITNO" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd01 dbname="MPS002.BQTYD01" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd01 dbname="MPS002.BCSTD01" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd01 dbname="MPS002.BAMTD01" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye01 dbname="MPS002.BQTYE01" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste01 dbname="MPS002.BCSTE01" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte01 dbname="MPS002.BAMTE01" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd02 dbname="MPS002.BQTYD02" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd02 dbname="MPS002.BCSTD02" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd02 dbname="MPS002.BAMTD02" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye02 dbname="MPS002.BQTYE02" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste02 dbname="MPS002.BCSTE02" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte02 dbname="MPS002.BAMTE02" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd03 dbname="MPS002.BQTYD03" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd03 dbname="MPS002.BCSTD03" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd03 dbname="MPS002.BAMTD03" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye03 dbname="MPS002.BQTYE03" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste03 dbname="MPS002.BCSTE03" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte03 dbname="MPS002.BAMTE03" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd04 dbname="MPS002.BQTYD04" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd04 dbname="MPS002.BCSTD04" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd04 dbname="MPS002.BAMTD04" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye04 dbname="MPS002.BQTYE04" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste04 dbname="MPS002.BCSTE04" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte04 dbname="MPS002.BAMTE04" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd05 dbname="MPS002.BQTYD05" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd05 dbname="MPS002.BCSTD05" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd05 dbname="MPS002.BAMTD05" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye05 dbname="MPS002.BQTYE05" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste05 dbname="MPS002.BCSTE05" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte05 dbname="MPS002.BAMTE05" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd06 dbname="MPS002.BQTYD06" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd06 dbname="MPS002.BCSTD06" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd06 dbname="MPS002.BAMTD06" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye06 dbname="MPS002.BQTYE06" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste06 dbname="MPS002.BCSTE06" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte06 dbname="MPS002.BAMTE06" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd07 dbname="MPS002.BQTYD07" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd07 dbname="MPS002.BCSTD07" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd07 dbname="MPS002.BAMTD07" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye07 dbname="MPS002.BQTYE07" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste07 dbname="MPS002.BCSTE07" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte07 dbname="MPS002.BAMTE07" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd08 dbname="MPS002.BQTYD08" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd08 dbname="MPS002.BCSTD08" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd08 dbname="MPS002.BAMTD08" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye08 dbname="MPS002.BQTYE08" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste08 dbname="MPS002.BCSTE08" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte08 dbname="MPS002.BAMTE08" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd09 dbname="MPS002.BQTYD09" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd09 dbname="MPS002.BCSTD09" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd09 dbname="MPS002.BAMTD09" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye09 dbname="MPS002.BQTYE09" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste09 dbname="MPS002.BCSTE09" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte09 dbname="MPS002.BAMTE09" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd10 dbname="MPS002.BQTYD10" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd10 dbname="MPS002.BCSTD10" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd10 dbname="MPS002.BAMTD10" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye10 dbname="MPS002.BQTYE10" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste10 dbname="MPS002.BCSTE10" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte10 dbname="MPS002.BAMTE10" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd11 dbname="MPS002.BQTYD11" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd11 dbname="MPS002.BCSTD11" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd11 dbname="MPS002.BAMTD11" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye11 dbname="MPS002.BQTYE11" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste11 dbname="MPS002.BCSTE11" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte11 dbname="MPS002.BAMTE11" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtyd12 dbname="MPS002.BQTYD12" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcstd12 dbname="MPS002.BCSTD12" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamtd12 dbname="MPS002.BAMTD12" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps002_bqtye12 dbname="MPS002.BQTYE12" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bcste12 dbname="MPS002.BCSTE12" )
+ column=(type=decimal(2) updatewhereclause=yes name=mps002_bamte12 dbname="MPS002.BAMTE12" )
+ column=(type=decimal(1) updatewhereclause=yes name=mps001_asfsd dbname="MPS001.ASFSD" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_asfsq dbname="MPS001.ASFSQ" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_altsz dbname="MPS001.ALTSZ" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_abmbq dbname="MPS001.ABMBQ" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_apdqa dbname="MPS001.APDQA" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_apdqr dbname="MPS001.APDQR" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_aslqr dbname="MPS001.ASLQR" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_aslqa dbname="MPS001.ASLQA" )
+ column=(type=decimal(0) updatewhereclause=yes name=mps001_aohqt dbname="MPS001.AOHQT" )
+ column=(type=char(4) updatewhereclause=yes name=mps001_alnmn dbname="MPS001.ALNMN" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="INV101.PDCD" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty01 dbname="QTY01" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty02 dbname="QTY02" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty03 dbname="QTY03" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty04 dbname="QTY04" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty05 dbname="QTY05" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty06 dbname="QTY06" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty07 dbname="QTY07" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty08 dbname="QTY08" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty09 dbname="QTY09" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty10 dbname="QTY10" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty11 dbname="QTY11" )
+ column=(type=decimal(0) updatewhereclause=yes name=qty12 dbname="QTY12" )
+ retrieve="  SELECT ~"PBMPS~".~"MPS002~".~"BTYPE~",   
+         ~"PBMPS~".~"MPS002~".~"BITNO~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD01~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD01~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD01~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE01~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE01~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE01~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD02~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD02~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD02~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE02~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE02~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE02~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD03~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD03~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD03~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE03~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE03~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE03~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD04~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD04~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD04~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE04~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE04~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE04~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD05~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD05~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD05~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE05~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE05~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE05~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD06~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD06~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD06~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE06~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE06~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE06~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD07~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD07~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD07~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE07~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE07~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE07~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD08~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD08~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD08~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE08~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE08~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE08~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD09~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD09~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD09~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE09~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE09~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE09~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD10~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD10~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD10~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE10~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE10~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE10~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD11~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD11~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD11~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE11~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE11~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE11~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD12~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTD12~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTD12~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYE12~",   
+         ~"PBMPS~".~"MPS002~".~"BCSTE12~",   
+         ~"PBMPS~".~"MPS002~".~"BAMTE12~",   
+         ~"PBMPS~".~"MPS001~".~"ASFSD~",   
+         ~"PBMPS~".~"MPS001~".~"ASFSQ~",   
+         ~"PBMPS~".~"MPS001~".~"ALTSZ~",   
+         ~"PBMPS~".~"MPS001~".~"ABMBQ~",   
+         ~"PBMPS~".~"MPS001~".~"APDQA~",   
+         ~"PBMPS~".~"MPS001~".~"APDQR~",   
+         ~"PBMPS~".~"MPS001~".~"ASLQR~",   
+         ~"PBMPS~".~"MPS001~".~"ASLQA~",   
+         ~"PBMPS~".~"MPS001~".~"AOHQT~",   
+         ~"PBMPS~".~"MPS001~".~"ALNMN~",   
+         ~"PBINV~".~"INV101~".~"PDCD~",   
+         ~"PBMPS~".~"MPS002~".~"BQTYD01~" + ~"PBMPS~".~"MPS002~".~"BQTYE01~" as qty01,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD02~" + ~"PBMPS~".~"MPS002~".~"BQTYE02~" as qty02,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD03~" + ~"PBMPS~".~"MPS002~".~"BQTYE03~" as qty03,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD04~" + ~"PBMPS~".~"MPS002~".~"BQTYE04~" as qty04,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD05~" + ~"PBMPS~".~"MPS002~".~"BQTYE05~" as qty05,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD06~" + ~"PBMPS~".~"MPS002~".~"BQTYE06~" as qty06,
+			~"PBMPS~".~"MPS002~".~"BQTYD07~" + ~"PBMPS~".~"MPS002~".~"BQTYE07~" as qty07,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD08~" + ~"PBMPS~".~"MPS002~".~"BQTYE08~" as qty08,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD09~" + ~"PBMPS~".~"MPS002~".~"BQTYE09~" as qty09,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD10~" + ~"PBMPS~".~"MPS002~".~"BQTYE10~" as qty10,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD11~" + ~"PBMPS~".~"MPS002~".~"BQTYE11~" as qty11,   
+         ~"PBMPS~".~"MPS002~".~"BQTYD12~" + ~"PBMPS~".~"MPS002~".~"BQTYE12~" as qty12  
+    FROM ~"PBMPS~".~"MPS001~",   
+         ~"PBMPS~".~"MPS002~",   
+         ~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBMPS~".~"MPS001~".~"ACMCD~" = ~"PBMPS~".~"MPS002~".~"BCMCD~" ) and  
+         ( ~"PBMPS~".~"MPS001~".~"APLANT~" = ~"PBMPS~".~"MPS002~".~"BPLANT~" ) and  
+         ( ~"PBMPS~".~"MPS001~".~"ADVSN~" = ~"PBMPS~".~"MPS002~".~"BDVSN~" ) and  
+         ( ~"PBMPS~".~"MPS001~".~"AITNO~" = ~"PBMPS~".~"MPS002~".~"BITNO~" ) and  
+         ( ~"PBMPS~".~"MPS002~".~"BCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( ~"PBMPS~".~"MPS002~".~"BPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and  
+         ( ~"PBMPS~".~"MPS002~".~"BDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBMPS~".~"MPS002~".~"BITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and  
+         ( ( ~"PBMPS~".~"MPS002~".~"BCMCD~" 	= :a_comltd ) AND  
+         ( ~"PBMPS~".~"MPS002~".~"BPLANT~"	= :a_xplant ) AND  
+         ( ~"PBMPS~".~"MPS002~".~"BDVSN~" 	= :a_dvsn ) AND  
+         ( ~"PBMPS~".~"MPS002~".~"BYEAR~"  	= substring(:a_date,1,4) ) AND  
+         ( ~"PBMPS~".~"MPS002~".~"BMONTH~"  	= substring(:a_date,5,2) ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" 		like :a_pdcd ) )    
+" arguments=(("a_comltd", string),("a_xplant", string),("a_dvsn", string),("a_pdcd", string),("a_date", string)) )
+text(band=header alignment="2" text="Mps002
+Btype" border="0" color="0" x="9" y="8" height="128" width="210" html.valueishtml="0"  name=mps002_btype_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bitno" border="0" color="0" x="229" y="8" height="128" width="439" html.valueishtml="0"  name=mps002_bitno_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd01" border="0" color="0" x="677" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd01" border="0" color="0" x="1015" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd01" border="0" color="0" x="1353" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye01" border="0" color="0" x="1691" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste01" border="0" color="0" x="2030" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte01" border="0" color="0" x="2368" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte01_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd02" border="0" color="0" x="2706" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd02" border="0" color="0" x="3045" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd02" border="0" color="0" x="3383" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye02" border="0" color="0" x="3721" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste02" border="0" color="0" x="4059" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte02" border="0" color="0" x="4398" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte02_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd03" border="0" color="0" x="4736" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd03" border="0" color="0" x="5074" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd03" border="0" color="0" x="5413" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye03" border="0" color="0" x="5751" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste03" border="0" color="0" x="6089" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte03" border="0" color="0" x="6427" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte03_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd04" border="0" color="0" x="6766" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd04" border="0" color="0" x="7104" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd04" border="0" color="0" x="7442" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye04" border="0" color="0" x="7781" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste04" border="0" color="0" x="8119" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte04" border="0" color="0" x="8457" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte04_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd05" border="0" color="0" x="8795" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd05" border="0" color="0" x="9134" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd05" border="0" color="0" x="9472" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye05" border="0" color="0" x="9810" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste05" border="0" color="0" x="10149" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte05" border="0" color="0" x="10487" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte05_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd06" border="0" color="0" x="10825" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd06" border="0" color="0" x="11163" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd06" border="0" color="0" x="11502" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye06" border="0" color="0" x="11840" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste06" border="0" color="0" x="12178" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte06" border="0" color="0" x="12517" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte06_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd07" border="0" color="0" x="12855" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd07" border="0" color="0" x="13193" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd07" border="0" color="0" x="13531" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye07" border="0" color="0" x="13870" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste07" border="0" color="0" x="14208" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte07" border="0" color="0" x="14546" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte07_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd08" border="0" color="0" x="14885" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd08" border="0" color="0" x="15223" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd08" border="0" color="0" x="15561" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye08" border="0" color="0" x="15899" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste08" border="0" color="0" x="16238" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte08" border="0" color="0" x="16576" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte08_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd09" border="0" color="0" x="16914" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd09" border="0" color="0" x="17253" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd09" border="0" color="0" x="17591" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye09" border="0" color="0" x="17929" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste09" border="0" color="0" x="18267" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte09" border="0" color="0" x="18606" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte09_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd10" border="0" color="0" x="18944" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd10" border="0" color="0" x="19282" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd10" border="0" color="0" x="19621" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye10" border="0" color="0" x="19959" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste10" border="0" color="0" x="20297" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte10" border="0" color="0" x="20635" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte10_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd11" border="0" color="0" x="20974" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd11" border="0" color="0" x="21312" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd11" border="0" color="0" x="21650" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye11" border="0" color="0" x="21989" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste11" border="0" color="0" x="22327" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte11" border="0" color="0" x="22665" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte11_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtyd12" border="0" color="0" x="23003" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtyd12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcstd12" border="0" color="0" x="23342" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcstd12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamtd12" border="0" color="0" x="23680" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamtd12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bqtye12" border="0" color="0" x="24018" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bqtye12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bcste12" border="0" color="0" x="24357" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bcste12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps002
+Bamte12" border="0" color="0" x="24695" y="8" height="128" width="329" html.valueishtml="0"  name=mps002_bamte12_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Asfsd" border="0" color="0" x="25033" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_asfsd_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Asfsq" border="0" color="0" x="25371" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_asfsq_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Altsz" border="0" color="0" x="25710" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_altsz_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Abmbq" border="0" color="0" x="26048" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_abmbq_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Apdqa" border="0" color="0" x="26386" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_apdqa_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Apdqr" border="0" color="0" x="26725" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_apdqr_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Aslqr" border="0" color="0" x="27063" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_aslqr_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Aslqa" border="0" color="0" x="27401" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_aslqa_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Aohqt" border="0" color="0" x="27739" y="8" height="128" width="329" html.valueishtml="0"  name=mps001_aohqt_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Mps001
+Alnmn" border="0" color="0" x="28078" y="8" height="128" width="210" html.valueishtml="0"  name=mps001_alnmn_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="力前" border="0" color="0" x="28297" y="8" height="64" width="137" html.valueishtml="0"  name=inv101_pdcd_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty01" border="0" color="0" x="28443" y="4" height="76" width="1152" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Qty02" border="0" color="0" x="29605" y="4" height="76" width="1152" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Qty03" border="0" color="0" x="30766" y="4" height="76" width="1152" html.valueishtml="0"  name=t_4 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Qty04" border="0" color="0" x="31927" y="4" height="76" width="1152" html.valueishtml="0"  name=t_5 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Qty05" border="0" color="0" x="33088" y="4" height="76" width="1152" html.valueishtml="0"  name=t_6 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Qty06" border="0" color="0" x="34249" y="4" height="76" width="1152" html.valueishtml="0"  name=t_7 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="210" format="[general]" html.valueishtml="0"  name=mps002_btype visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="229" y="8" height="76" width="439" format="[general]" html.valueishtml="0"  name=mps002_bitno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="0" x="677" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="1015" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="1353" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="1691" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="2030" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2368" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="2706" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="0" x="3045" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="0" x="3383" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="3721" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="4059" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="0" x="4398" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="4736" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="0" x="5074" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="5413" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="5751" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="6089" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="6427" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="6766" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="7104" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="0" color="0" x="7442" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="0" x="7781" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="0" x="8119" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="0" x="8457" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="1" tabsequence=32766 border="0" color="0" x="8795" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=28 alignment="1" tabsequence=32766 border="0" color="0" x="9134" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="1" tabsequence=32766 border="0" color="0" x="9472" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="1" tabsequence=32766 border="0" color="0" x="9810" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="1" tabsequence=32766 border="0" color="0" x="10149" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=32 alignment="1" tabsequence=32766 border="0" color="0" x="10487" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=33 alignment="1" tabsequence=32766 border="0" color="0" x="10825" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="1" tabsequence=32766 border="0" color="0" x="11163" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=35 alignment="1" tabsequence=32766 border="0" color="0" x="11502" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=36 alignment="1" tabsequence=32766 border="0" color="0" x="11840" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="0" color="0" x="12178" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=38 alignment="1" tabsequence=32766 border="0" color="0" x="12517" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=39 alignment="1" tabsequence=32766 border="0" color="0" x="12855" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=40 alignment="1" tabsequence=32766 border="0" color="0" x="13193" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=41 alignment="1" tabsequence=32766 border="0" color="0" x="13531" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=42 alignment="1" tabsequence=32766 border="0" color="0" x="13870" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=43 alignment="1" tabsequence=32766 border="0" color="0" x="14208" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=44 alignment="1" tabsequence=32766 border="0" color="0" x="14546" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=45 alignment="1" tabsequence=32766 border="0" color="0" x="14885" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=46 alignment="1" tabsequence=32766 border="0" color="0" x="15223" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=47 alignment="1" tabsequence=32766 border="0" color="0" x="15561" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=48 alignment="1" tabsequence=32766 border="0" color="0" x="15899" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=49 alignment="1" tabsequence=32766 border="0" color="0" x="16238" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=50 alignment="1" tabsequence=32766 border="0" color="0" x="16576" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=51 alignment="1" tabsequence=32766 border="0" color="0" x="16914" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=52 alignment="1" tabsequence=32766 border="0" color="0" x="17253" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=53 alignment="1" tabsequence=32766 border="0" color="0" x="17591" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=54 alignment="1" tabsequence=32766 border="0" color="0" x="17929" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=55 alignment="1" tabsequence=32766 border="0" color="0" x="18267" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=56 alignment="1" tabsequence=32766 border="0" color="0" x="18606" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=57 alignment="1" tabsequence=32766 border="0" color="0" x="18944" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=58 alignment="1" tabsequence=32766 border="0" color="0" x="19282" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=59 alignment="1" tabsequence=32766 border="0" color="0" x="19621" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=60 alignment="1" tabsequence=32766 border="0" color="0" x="19959" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=61 alignment="1" tabsequence=32766 border="0" color="0" x="20297" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=62 alignment="1" tabsequence=32766 border="0" color="0" x="20635" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=63 alignment="1" tabsequence=32766 border="0" color="0" x="20974" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=64 alignment="1" tabsequence=32766 border="0" color="0" x="21312" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=65 alignment="1" tabsequence=32766 border="0" color="0" x="21650" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=66 alignment="1" tabsequence=32766 border="0" color="0" x="21989" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=67 alignment="1" tabsequence=32766 border="0" color="0" x="22327" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=68 alignment="1" tabsequence=32766 border="0" color="0" x="22665" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=69 alignment="1" tabsequence=32766 border="0" color="0" x="23003" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtyd12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=70 alignment="1" tabsequence=32766 border="0" color="0" x="23342" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcstd12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=71 alignment="1" tabsequence=32766 border="0" color="0" x="23680" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamtd12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=72 alignment="1" tabsequence=32766 border="0" color="0" x="24018" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bqtye12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=73 alignment="1" tabsequence=32766 border="0" color="0" x="24357" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bcste12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=74 alignment="1" tabsequence=32766 border="0" color="0" x="24695" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps002_bamte12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=75 alignment="1" tabsequence=32766 border="0" color="0" x="25033" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_asfsd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=76 alignment="1" tabsequence=32766 border="0" color="0" x="25371" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_asfsq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=77 alignment="1" tabsequence=32766 border="0" color="0" x="25710" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_altsz visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=78 alignment="1" tabsequence=32766 border="0" color="0" x="26048" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_abmbq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=79 alignment="1" tabsequence=32766 border="0" color="0" x="26386" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_apdqa visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=80 alignment="1" tabsequence=32766 border="0" color="0" x="26725" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_apdqr visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=81 alignment="1" tabsequence=32766 border="0" color="0" x="27063" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_aslqr visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=82 alignment="1" tabsequence=32766 border="0" color="0" x="27401" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_aslqa visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=83 alignment="1" tabsequence=32766 border="0" color="0" x="27739" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=mps001_aohqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=84 alignment="0" tabsequence=32766 border="0" color="0" x="28078" y="8" height="76" width="210" format="[general]" html.valueishtml="0"  name=mps001_alnmn visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=85 alignment="2" tabsequence=32766 border="0" color="0" x="28297" y="8" height="76" width="137" format="[general]" html.valueishtml="0"  name=inv101_pdcd  tag="力前" visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=86 alignment="0" tabsequence=32766 border="0" color="0" x="28443" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty01 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=87 alignment="0" tabsequence=32766 border="0" color="0" x="29605" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty02 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=88 alignment="0" tabsequence=32766 border="0" color="0" x="30766" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty03 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=89 alignment="0" tabsequence=32766 border="0" color="0" x="31927" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty04 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=90 alignment="0" tabsequence=32766 border="0" color="0" x="33088" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty05 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=91 alignment="0" tabsequence=32766 border="0" color="0" x="34249" y="0" height="64" width="1152" format="[general]" html.valueishtml="0"  name=qty06 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=92 alignment="0" tabsequence=0 border="0" color="0" x="35415" y="0" height="64" width="1152" html.valueishtml="0"  name=qty07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty07" border="0" color="0" x="35410" y="4" height="76" width="1157" html.valueishtml="0"  name=qty07_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=93 alignment="0" tabsequence=0 border="0" color="0" x="36581" y="0" height="64" width="1152" html.valueishtml="0"  name=qty08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty08" border="0" color="0" x="36576" y="4" height="76" width="1157" html.valueishtml="0"  name=qty08_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=94 alignment="0" tabsequence=0 border="0" color="0" x="37746" y="0" height="64" width="1152" html.valueishtml="0"  name=qty09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty09" border="0" color="0" x="37742" y="4" height="76" width="1157" html.valueishtml="0"  name=qty09_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=95 alignment="0" tabsequence=0 border="0" color="0" x="38912" y="0" height="64" width="1152" html.valueishtml="0"  name=qty10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty10" border="0" color="0" x="38907" y="4" height="76" width="1157" html.valueishtml="0"  name=qty10_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=96 alignment="0" tabsequence=0 border="0" color="0" x="40078" y="0" height="64" width="1152" html.valueishtml="0"  name=qty11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty11" border="0" color="0" x="40073" y="4" height="76" width="1157" html.valueishtml="0"  name=qty11_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=97 alignment="0" tabsequence=0 border="0" color="0" x="41243" y="0" height="64" width="1152" html.valueishtml="0"  name=qty12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Qty12" border="0" color="0" x="41239" y="4" height="76" width="1157" html.valueishtml="0"  name=qty12_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

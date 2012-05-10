@@ -1,0 +1,31 @@
+$PBExportHeader$f_get_slipchange.srf
+$PBExportComments$update 전표수정 history 유지
+global type f_get_slipchange from function_object
+end type
+
+forward prototypes
+global function string f_get_slipchange (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_gubun, string a_s_chgfld, string a_s_bef, string a_s_aft)
+end prototypes
+
+global function string f_get_slipchange (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_gubun, string a_s_chgfld, string a_s_bef, string a_s_aft);
+f_sysdate()
+
+insert into "PBACC"."ACC140"  
+			( "COMLTD",       "SLAREA",    "SLACDATE",   "SLSLIPNO",   "SLCDNO",
+			  "SLPAGENO",     "SLSERNO",   "HISDATE",    "HISTIME",    "HISGUBUN",
+			  "HISFIELD",     "HISBEF",    "HISAFT",     "EXTD",       "INPTID",
+			  "INPTDT",       "UPDTID",    "UPDTDT",     "IPADDR",     "MACADDR" )
+  values ( :a_s_compy,     :a_s_area,   :a_s_acdate,  :a_n_slipno,  :a_n_cdno,
+           :a_n_pageno,    :a_n_serno,  :g_s_date,    :g_s_time,    :a_s_gubun,
+			  :a_s_chgfld,    :a_s_bef,    :a_s_aft,     '',          :g_s_empno,
+			  :g_s_datetime,  '',         '',          :g_s_ipaddr,  :g_s_macaddr  )  using sqlca;
+if sqlca.sqlcode <> 0 then
+	rollback using sqlca;
+	return 'e'
+else
+	commit using sqlca;	
+end if
+
+return ' '
+end function
+

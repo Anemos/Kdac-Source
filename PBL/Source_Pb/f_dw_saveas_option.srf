@@ -1,0 +1,193 @@
+$PBExportHeader$f_dw_saveas_option.srf
+$PBExportComments$datawindow을 화일로저장하는 option을 결정
+global type f_dw_saveas_option from function_object
+end type
+
+forward prototypes
+global function integer f_dw_saveas_option (ref datawindow adw_source)
+end prototypes
+
+global function integer f_dw_saveas_option (ref datawindow adw_source);///////////////////////////////////////////////////////////////////////////////
+//
+//		Function:  f_dw_saveas_lookup
+//	              powerbuilder의 saveas funtion은 datawindow의 원 source data를
+//               여러format의 화일로 저장해준다. 그러나 datawindow의 column의
+//               edit style이 dddw나 ddlb등으로 되어 있고 원source data는 
+//               코드나 이를 한글설명등으로 보이고 있는 경우에, 이 설명들을 
+//               화일로 저장할수는 없다. 본 함수는 그러한 경우에 원source data인
+//               코드가 아닌 설명을 화일로 저장해 준다.그리고, 관련된
+//               header band의 text object가 있을시 이의 text attribute를 
+//               column의 해더로 사용하여 화일로 저장한다.
+//               column과 header와의 연결은 'column name' + 4자리,
+//               'column name' + 2자리, 'column name'순으로 확인한다
+//					
+//	     ARGUMENTS:
+//						adw_source 		대상datawindow control
+//
+//      RETURN: [integer] 			
+//						1					정상종료
+//						-1					취소나 오류
+//
+//      Log:
+//
+//			Who				When				What
+//-----------------------------------------------------------------------------
+//			dmshin			1997-05-09		initial.
+//
+///////////////////////////////////////////////////////////////////////////////
+INTEGER			li_i
+INTEGER			li_j
+LONG				ll_rowcount		//Source의 RowCount
+STRING			ls_col_name[]	//Column정보 (Column Name + '~n' + Column Type)
+STRING			ls_col_type[]	//Column Type정보
+STRING			ls_col_header[]
+INTEGER			li_columns		//Column의 갯수
+INTEGER			li_headers		//Header의 갯수
+STRING			ls_column_name
+INTEGER			li_return
+STRING			ls_pathname
+STRING			ls_filename
+STRING			ls_filter
+STRING			ls_separator
+STRING			ls_extention
+STRING			ls_line
+STRING			ls_header[]
+INTEGER			li_filenum
+STRING			ls_header_text[]
+STRING			ls_header_name
+STRING			ls_data
+STRING			ls_eval_string
+STRING			ls_displayval
+
+SetPointer(HourGlass!)
+
+OpenWithParm( w_dw_saveas_option_r, adw_source)
+
+//Get Message parameter
+li_return = Message.DoubleParm
+
+IF li_return = 1 THEN
+// 2001.11.14 - w_dw_saveas_option_r 에서 처리하고 온다...
+//	//원래 데이터 그대로 저장
+//	RETURN adw_source.SaveAs()
+
+ELSEIF li_return = 2 THEN
+	//코드를 눈에 보이는대로 저장
+	//Get Saveas File Name & Format	
+	IF GetFileSaveName ( "화일로 저장", ls_pathname, ls_filename , &
+										"TXT", &
+										"Tab-separated columns (*.TXT),*.TXT," + &
+										"Comma-separated values (*.CSV),*.CSV" ) < 1 THEN
+		RETURN -1
+		
+	END IF
+										
+	SetPointer(HourGlass!)										
+										
+	//Format에 따라
+	ls_extention = Right(Upper(ls_filename),3)
+	IF ls_extention = "TXT" THEN
+		ls_separator = "~t"
+	ELSEIF ls_extention = "CSV" THEN
+		ls_separator = ","
+	ELSE
+		ls_separator = "~t"		
+	END IF
+	
+	//Get Column Info
+	li_columns = f_dw_get_objects_attrib( adw_source, ls_col_type, "column","*","coltype" )	
+	
+	ll_rowcount = adw_source.RowCount()
+	FOR li_i = 1 TO li_columns
+		//Get Column Name & Type
+		ls_col_name[li_i] = f_get_token( ls_col_type[li_i],"~n")
+		ls_col_header[li_i] = ls_col_name[li_i]
+		//Data Type
+		IF Pos(ls_col_type[li_i],"(",1) > 0 THEN
+			ls_col_type[li_i] = Left( ls_col_type[li_i] , Pos(ls_col_type[li_i],"(",1) - 1 )
+		END IF
+	NEXT
+	
+	//Get Header Info(한글명을 찾기위해)
+	li_headers = f_dw_get_objects_attrib( adw_source, ls_header, "text","header","text" )
+
+	FOR li_i = 1 TO li_headers
+		//Header에 있는 Text를 구한다 
+		ls_header_name =  f_get_token(ls_header[li_i],'~n') 		
+		ls_column_name = Left(ls_header_name,Len(ls_header_name) - 4)
+		ls_column_name = adw_source.Describe( ls_column_name + ".name")
+		//그런 이름의 column이 없으면 CONTINUE
+		IF ls_column_name = "!" THEN 
+			//두번째 확인
+			ls_column_name = Left(ls_header_name,Len(ls_header_name) - 2)
+			ls_column_name = adw_source.Describe( ls_column_name + ".name")
+			IF ls_column_name = "!" THEN 
+				//세번째 확인
+				ls_column_name = ls_header_name
+				ls_column_name = adw_source.Describe( ls_column_name + ".name")				
+				IF ls_column_name = "!" THEN CONTINUE
+			END IF
+		END IF
+		//Column의 헤더로 저장
+		FOR li_j = 1 TO li_columns
+			IF ls_column_name = ls_col_name[li_j] THEN
+				ls_col_header[li_j] = ls_header[li_i]
+				EXIT
+			END IF
+		NEXT		
+	NEXT
+			
+	//File Open
+	li_filenum = FileOpen( ls_pathname ,LineMode! ,Write!, LockReadWrite!,Replace!)
+	
+	//해더
+	FOR li_i = 1 TO li_columns
+		//Get data
+		ls_data = ls_col_header[li_i]
+		IF IsNull(ls_data) THEN ls_data = ""		
+		IF li_i = li_columns THEN
+			ls_line += ls_data 
+		ELSE
+			ls_line += ls_data + ls_separator
+		END IF
+	NEXT
+	//File Write
+	FileWrite( li_filenum, ls_line )			
+
+	//데이터
+	FOR li_i = 1 TO ll_rowcount
+		ls_line = ""
+		FOR li_j = 1 TO li_columns
+			//Get Display Value
+			ls_eval_string = "evaluate('LookUpDisplay(" + ls_col_name[li_j] &
+																	+ ")'," + String(li_i) + ")"
+			ls_displayval = adw_source.Describe(ls_eval_string)
+			ls_data = ls_displayval
+			IF IsNull(ls_data) THEN ls_data = ""
+			IF li_j = li_columns THEN
+				ls_line += ls_data
+			ELSE
+				ls_line += ls_data + ls_separator
+			END IF
+		NEXT
+		//File Write
+		FileWrite( li_filenum, ls_line )		
+	NEXT
+	//File Close
+	FileClose(li_filenum)
+
+//* 여기서부터 양준모가 추가 (2001.6.18) 
+ElseIF li_return = 3 Then
+// 2001.11.14 - w_dw_saveas_option_r 에서 처리하고 온다...	
+//	OpenWithParm(w_xc_user_column_r, adw_source)
+	 
+//여기까지 준모가,,,*/ 
+	
+ELSE
+	//Cancel
+	RETURN -1
+END IF
+
+RETURN 1
+end function
+

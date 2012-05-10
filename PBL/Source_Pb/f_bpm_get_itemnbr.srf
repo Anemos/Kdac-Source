@@ -1,0 +1,26 @@
+$PBExportHeader$f_bpm_get_itemnbr.srf
+$PBExportComments$invdaa db 에서 품번을 가져오는 함수
+global type f_bpm_get_itemnbr from function_object
+end type
+
+forward prototypes
+global function string f_bpm_get_itemnbr (string ag_year, string ag_revno, string ag_plant, string ag_div, string ag_item)
+end prototypes
+
+global function string f_bpm_get_itemnbr (string ag_year, string ag_revno, string ag_plant, string ag_div, string ag_item);string ls_itemnbr
+
+SELECT 	"PBBPM"."BPM503"."ITNO" 
+	INTO 	:ls_itemnbr
+   FROM 	"PBBPM"."BPM503"    
+   WHERE "PBBPM"."BPM503"."XYEAR" 	= :ag_year 		AND
+	      "PBBPM"."BPM503"."XYEAR" 	= :ag_revno 		AND
+			"PBBPM"."BPM503"."XPLANT" 	= :ag_plant AND 
+			"PBBPM"."BPM503"."DIV" 		= :ag_div  	AND  
+			"PBBPM"."BPM503"."ITNO" 	= :ag_item  
+using sqlca ; 
+if sqlca.sqlcode <> 0 then
+	ls_itemnbr = " "
+end if
+return	trim(ls_itemnbr)
+end function
+

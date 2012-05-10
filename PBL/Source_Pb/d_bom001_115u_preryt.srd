@@ -1,0 +1,62 @@
+$PBExportHeader$d_bom001_115u_preryt.srd
+$PBExportComments$royalty - bomt02·Î ºÎÅÍ display royalty
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=4 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=bomt02_rcmcd dbname="BOMT02.RCMCD" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=bomt02_ryear dbname="BOMT02.RYEAR" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=bomt02_rmonth dbname="BOMT02.RMONTH" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=bomt02_rcust dbname="BOMT02.RCUST" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=bomt02_rplant dbname="BOMT02.RPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=bomt02_rdiv dbname="BOMT02.RDIV" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=bomt02_rmdno dbname="BOMT02.RMDNO" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=bomt02_rcost dbname="BOMT02.RCOST" )
+ column=(type=char(4) updatewhereclause=yes name=acc300_slprcd dbname="ACC300.SLPRCD" )
+ column=(type=char(30) updatewhereclause=yes name=dac002_coitname dbname="DAC002.COITNAME" )
+ column=(type=char(2) updatewhereclause=yes name=acc300_sldiv dbname="ACC300.SLDIV" )
+ retrieve="  SELECT ~"PBPDM~".~"BOMT02~".~"RCMCD~",
+			~"PBPDM~".~"BOMT02~".~"RYEAR~",   
+         ~"PBPDM~".~"BOMT02~".~"RMONTH~",   
+         ~"PBPDM~".~"BOMT02~".~"RCUST~",
+			~"PBPDM~".~"BOMT02~".~"RPLANT~",    
+         ~"PBPDM~".~"BOMT02~".~"RDIV~",   
+         ~"PBPDM~".~"BOMT02~".~"RMDNO~",   
+         ~"PBPDM~".~"BOMT02~".~"RCOST~",   
+         ~"PBACC~".~"ACC300~".~"SLPRCD~",   
+         ~"PBCOMMON~".~"DAC002~".~"COITNAME~",
+			~"PBACC~".~"ACC300~".~"SLDIV~"  
+    FROM ~"PBPDM~".~"BOMT02~" INNER JOIN ~"PBACC~".~"ACC300~"
+		ON ( ~"PBPDM~".~"BOMT02~".~"RCMCD~"  = ~"PBACC~".~"ACC300~".~"COMLTD~" ) AND
+			( ~"PBPDM~".~"BOMT02~".~"RPLANT~" || ~"PBPDM~".~"BOMT02~".~"RDIV~"  = ~"PBACC~".~"ACC300~".~"SLDIV~" ) AND
+			( ~"PBPDM~".~"BOMT02~".~"RMDNO~" = ~"PBACC~".~"ACC300~".~"SLITNO~" )   
+         LEFT OUTER JOIN ~"PBCOMMON~".~"DAC002~"  
+		ON ( ~"PBPDM~".~"BOMT02~".~"RCMCD~"  = ~"PBCOMMON~".~"DAC002~".~"COMLTD~" ) AND
+			( ~"PBPDM~".~"BOMT02~".~"RCUST~" = ~"PBCOMMON~".~"DAC002~".~"COCODE~" )
+   WHERE ( ~"PBPDM~".~"BOMT02~".~"RCMCD~" = '01' ) AND 
+         ( ~"PBPDM~".~"BOMT02~".~"RYEAR~"||~"PBPDM~".~"BOMT02~".~"RMONTH~" = :a_refdate ) AND  
+         ( ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'DAC170' )   
+ORDER BY ~"PBPDM~".~"BOMT02~".~"RCUST~" ASC,   
+         ~"PBPDM~".~"BOMT02~".~"RDIV~" ASC   
+" update="PBPDM.BOMT02" updatewhere=0 updatekeyinplace=no arguments=(("a_refdate", string)) )
+text(band=header alignment="2" text="¸ðµ¨" border="2" color="16777215" x="754" y="4" height="60" width="416" html.valueishtml="0"  name=bomt02_rmdno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðµ¨¸í" border="2" color="16777215" x="1179" y="4" height="60" width="827" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¦ Àç·áºñ" border="2" color="16777215" x="2016" y="4" height="60" width="366" html.valueishtml="0"  name=bomt02_rcost_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾÷Ã¼¸í" border="2" color="16777215" x="9" y="4" height="60" width="325" html.valueishtml="0"  name=dacmab_coitname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="2" color="16777215" x="549" y="4" height="60" width="197" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¾÷ºÎ" border="0" color="16777215" x="343" y="4" height="60" width="197" html.valueishtml="0"  name=acc300_sldiv_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="0" expression="mid(f_bom_get_itemname( bomt02_rmdno ),1 ,30)"border="0" color="0" x="1179" y="0" height="68" width="827" format="[GENERAL]" html.valueishtml="0"  name=com_itname visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2016" y="0" height="68" width="366" format="[general]" html.valueishtml="0"  name=bomt02_rcost visible="1" editmask.mask="###,###" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="754" y="0" height="68" width="416" format="[general]" html.valueishtml="0"  name=bomt02_rmdno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="2" expression="mid(  acc300_slprcd  ,1, 2 ) "border="0" color="0" x="549" y="0" height="68" width="197" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="68" width="325" format="[general]" html.valueishtml="0"  name=dac002_coitname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="343" y="0" height="68" width="197" format="[general]" html.valueishtml="0"  name=acc300_sldiv visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="dac002_coitname	acc300_sldiv	compute_1")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

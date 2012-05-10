@@ -1,0 +1,154 @@
+$PBExportHeader$f_wip_create_cutoff.srf
+$PBExportComments$연간라인재공실사후 재공이력 데이타 생성
+global type f_wip_create_cutoff from function_object
+end type
+
+forward prototypes
+global function boolean f_wip_create_cutoff (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, string a_day, string a_hour)
+end prototypes
+
+global function boolean f_wip_create_cutoff (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, string a_day, string a_hour);//***********************************************************************************
+//
+// 연간라인실사후 CUTOFF 이후 재공사용이력 데이타 생성
+// 1. CUT OFF 일시 이후에 생성된 재공이력데이타 이동 ( 50/04, 10/03 입고/반출이력 제외 )
+// 2. 제품(30)에 대한 50/04품번에 대한 사용수량 만큼 업체입고이력생성 및 업체반출이력생성
+//
+//***********************************************************************************
+string ls_year, ls_month, ls_fromdt, ls_todt, ls_datetype, ls_stringtype
+long ll_rowcnt, ll_cnt, ll_chkcnt
+string ls_sliptype, ls_srno, ls_srno1, ls_srno2, ls_wditno
+dec{4} lc_comqty, lc_tqty4
+datastore ds_create_cutoff_50, ds_create_cutoff_03
+
+ds_create_cutoff_50 = create datastore									
+ds_create_cutoff_50.dataobject = "d_wip_create_cutoff_50"
+ds_create_cutoff_50.settransobject(sqlca)
+
+ds_create_cutoff_03 = create datastore									
+ds_create_cutoff_03.dataobject = "d_wip_create_cutoff_03"
+ds_create_cutoff_03.settransobject(sqlca)
+
+ls_year = mid(a_adjdt,1,4)
+ls_month = mid(a_adjdt,5,2)
+ls_fromdt = a_adjdt + '01'
+ls_todt = a_adjdt + '31'
+ls_datetype = string(ls_fromdt,"@@@@-@@-@@") + " " + a_hour + ":00:00"
+ls_stringtype = a_hour + "0000"
+
+DELETE FROM PBWIP.WIP016
+WHERE WDCMCD = :a_cmcd AND WDPLANT = :a_plant 
+	AND WDDVSN = :a_dvsn 
+	AND WDDATE >= :ls_fromdt AND WDDATE <= :ls_todt
+using sqlca;
+
+ls_fromdt = a_adjdt + a_day
+
+INSERT INTO PBWIP.WIP016( WDCMCD,WDSLTY,WDSRNO,WDPLANT,WDDVSN,
+ WDIOCD,WDITNO,WDRVNO,WDDESC,WDSPEC,WDUNIT,WDITCL,WDSRCE,WDUSGE,
+ WDPDCD,WDSLNO,WDPRSRTY,WDPRSRNO,WDPRSRNO1,WDPRSRNO2,WDPRNO,
+ WDPRDPT,WDCHDPT,WDDATE,WDPRQT,WDCHQT,WDIPADDR,WDMACADDR,
+ WDINPTID,WDUPDTID,WDINPTDT,WDINPTTM,WDUPDTDT )
+SELECT AA.WDCMCD,AA.WDSLTY,AA.WDSRNO,AA.WDPLANT,AA.WDDVSN,
+ AA.WDIOCD,AA.WDITNO,AA.WDRVNO,AA.WDDESC,AA.WDSPEC,AA.WDUNIT,AA.WDITCL,AA.WDSRCE,AA.WDUSGE,
+ AA.WDPDCD,AA.WDSLNO,AA.WDPRSRTY,AA.WDPRSRNO,AA.WDPRSRNO1,AA.WDPRSRNO2,AA.WDPRNO,
+ AA.WDPRDPT,AA.WDCHDPT,AA.WDDATE,AA.WDPRQT,AA.WDCHQT,AA.WDIPADDR,AA.WDMACADDR,
+ AA.WDINPTID,AA.WDUPDTID,AA.WDINPTDT,AA.WDINPTTM,AA.WDUPDTDT
+FROM PBWIP.WIP004 AA INNER JOIN PBINV.INV101 BB
+	ON AA.WDCMCD = BB.COMLTD AND AA.WDPLANT = BB.XPLANT AND AA.WDDVSN = BB.DIV AND AA.WDPRNO = BB.ITNO
+WHERE AA.WDCMCD = :a_cmcd AND AA.WDPLANT = :a_plant 
+	AND AA.WDDVSN = :a_dvsn 
+	AND AA.WDDATE >= :ls_fromdt AND AA.WDDATE <= :ls_todt
+	AND ( ( AA.WDINPTDT > :ls_fromdt OR AA.WDINPTDT = '' ) OR ( AA.WDINPTDT = :ls_fromdt AND AA.WDINPTTM >= :ls_stringtype ) )
+	AND AA.WDIOCD = '1' AND AA.WDSLTY <> 'WR'
+	AND BB.SRCE <> '03' AND BB.CLS <> '50'
+using sqlca;
+
+// 사내외주가공품 (50/04) 에 대한 처리
+ll_rowcnt = ds_create_cutoff_50.retrieve(a_cmcd,a_plant,a_dvsn,ls_fromdt,ls_todt)
+if ll_rowcnt < 1 then
+	return true
+end if
+
+for ll_cnt = 1 to ll_rowcnt
+	ls_wditno = ds_create_cutoff_50.getitemstring(ll_cnt,"wditno")
+	lc_comqty = ds_create_cutoff_50.getitemnumber(ll_cnt,"com_qty")
+	
+	select sliptype, srno, srno1, srno2, tqty4 into :ls_sliptype, :ls_srno, :ls_srno1, :ls_srno2, :lc_tqty4
+	from pbinv.inv401
+	where comltd = :a_cmcd and xplant = :a_plant and div = :a_dvsn and
+		itno  = :ls_wditno and sliptype = 'RP' and tdte4 >= :ls_fromdt and tdte4 <= :ls_todt
+	fetch first 1 row only using sqlca;
+	
+	INSERT INTO PBWIP.WIP016( WDCMCD,WDSLTY,WDSRNO,WDPLANT,WDDVSN,
+	 WDIOCD,WDITNO,WDRVNO,WDDESC,WDSPEC,WDUNIT,WDITCL,WDSRCE,WDUSGE,
+	 WDPDCD,WDSLNO,WDPRSRTY,WDPRSRNO,WDPRSRNO1,WDPRSRNO2,WDPRNO,
+	 WDPRDPT,WDCHDPT,WDDATE,WDPRQT,WDCHQT,WDIPADDR,WDMACADDR,
+	 WDINPTID,WDUPDTID,WDINPTDT,WDINPTTM,WDUPDTDT )
+	select wdcmcd,wdslty,wdsrno,wdplant,wddvsn,
+ 	wdiocd,wditno,wdrvno,wddesc,wdspec,wdunit,wditcl,wdsrce,wdusge,
+ 	wdpdcd,wdslno,wdprsrty,wdprsrno,wdprsrno1,wdprsrno2,wdprno,
+ 	wdprdpt,wdchdpt,wddate,wdprqt,wdchqt,wdipaddr,wdmacaddr,
+ 	wdinptid,wdupdtid,wdinptdt,wdinpttm,wdupdtdt
+	from pbwip.wip004
+	where wdcmcd = :a_cmcd and wdplant = :a_plant and wddvsn = :a_dvsn and
+		wddate >= :ls_fromdt and wddate <= :ls_todt and
+		wdprsrty = :ls_sliptype and wdprsrno = :ls_srno and wdprsrno1 = :ls_srno1 and wdprsrno2 = :ls_srno2
+	using sqlca;
+	
+	if sqlca.sqlcode = 0 then
+		UPDATE pbwip.wip016
+			SET WDPRQT = :lc_comqty,WDCHQT = :lc_comqty * WDCHQT / :lc_tqty4
+		WHERE WDPRNO = :ls_wditno AND WDCMCD = :a_cmcd AND 
+			WDPLANT = :a_plant AND WDDVSN = :a_dvsn AND
+			WDPRSRTY = :ls_sliptype AND WDPRSRNO = :ls_srno AND WDPRSRNO1 = :ls_srno1 AND WDPRSRNO2 = :ls_srno2 
+		using sqlca;
+	end if
+	
+next
+
+// 재공품(10/03)에 대한 처리
+ll_rowcnt = ds_create_cutoff_03.retrieve(a_cmcd,a_plant,a_dvsn,ls_fromdt,ls_todt)
+if ll_rowcnt < 1 then
+	return true
+end if
+
+for ll_cnt = 1 to ll_rowcnt
+	ls_wditno = ds_create_cutoff_03.getitemstring(ll_cnt,"wditno")
+	lc_comqty = ds_create_cutoff_03.getitemnumber(ll_cnt,"com_qty")
+	
+	select sliptype, srno, srno1, srno2, tqty4 into :ls_sliptype, :ls_srno, :ls_srno1, :ls_srno2, :lc_tqty4
+	from pbinv.inv401
+	where comltd = :a_cmcd and xplant = :a_plant and div = :a_dvsn and
+		itno  = :ls_wditno and sliptype = 'IS' and tdte4 >= :ls_fromdt and tdte4 <= :ls_todt
+	fetch first 1 row only using sqlca;
+	
+	INSERT INTO PBWIP.WIP016( WDCMCD,WDSLTY,WDSRNO,WDPLANT,WDDVSN,
+	 WDIOCD,WDITNO,WDRVNO,WDDESC,WDSPEC,WDUNIT,WDITCL,WDSRCE,WDUSGE,
+	 WDPDCD,WDSLNO,WDPRSRTY,WDPRSRNO,WDPRSRNO1,WDPRSRNO2,WDPRNO,
+	 WDPRDPT,WDCHDPT,WDDATE,WDPRQT,WDCHQT,WDIPADDR,WDMACADDR,
+	 WDINPTID,WDUPDTID,WDINPTDT,WDINPTTM,WDUPDTDT )
+	select wdcmcd,wdslty,wdsrno,wdplant,wddvsn,
+ 	wdiocd,wditno,wdrvno,wddesc,wdspec,wdunit,wditcl,wdsrce,wdusge,
+ 	wdpdcd,wdslno,wdprsrty,wdprsrno,wdprsrno1,wdprsrno2,wdprno,
+ 	wdprdpt,wdchdpt,wddate,wdprqt,wdchqt,wdipaddr,wdmacaddr,
+ 	wdinptid,wdupdtid,wdinptdt,wdinpttm,wdupdtdt
+	from pbwip.wip004
+	where wdcmcd = :a_cmcd and wdplant = :a_plant and wddvsn = :a_dvsn and
+		wddate >= :ls_fromdt and wddate <= :ls_todt and
+		wdprsrty = :ls_sliptype and wdprsrno = :ls_srno and wdprsrno1 = :ls_srno1 and wdprsrno2 = :ls_srno2
+	using sqlca;
+	
+	if sqlca.sqlcode = 0 then
+		UPDATE pbwip.wip016
+			SET WDPRQT = :lc_comqty,WDCHQT = :lc_comqty * WDCHQT / :lc_tqty4
+		WHERE WDPRNO = :ls_wditno AND WDCMCD = :a_cmcd AND 
+			WDPLANT = :a_plant AND WDDVSN = :a_dvsn AND
+			WDPRSRTY = :ls_sliptype AND WDPRSRNO = :ls_srno AND WDPRSRNO1 = :ls_srno1 AND WDPRSRNO2 = :ls_srno2 
+		using sqlca;
+	end if
+	
+next
+
+return true
+end function
+

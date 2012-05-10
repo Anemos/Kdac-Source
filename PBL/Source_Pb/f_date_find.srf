@@ -1,0 +1,30 @@
+$PBExportHeader$f_date_find.srf
+$PBExportComments$주어진 기간 전(후)의 날짜를 구한다.(외부함수)
+global type f_date_find from function_object
+end type
+
+forward prototypes
+global function string f_date_find (string as_date, integer ai_term, integer ai_div)
+end prototypes
+
+global function string f_date_find (string as_date, integer ai_term, integer ai_div);//기간 해당일 - 기간term 전후의 날짜를 구한다.(div = 1:일수, 2:주수, 3:개월수)
+//
+//        Return : String 해당 일자 (div에 따라 일수, 주수, 월수 해당일)
+//
+//        Example :
+//                 string rtn
+//
+//                 rtn = gf_date_find(sle_1.text,integer(sle_2.text), 1);
+//                 sle_15.text = rtn  // 일수 적용
+//                 rtn = gf_date_find(sle_1.text,integer(sle_2.text), 2);
+//                 sle_16.text = rtn  // 주수 적용
+//                 rtn = gf_date_find(sle_1.text,integer(sle_2.text), 3);
+//                 sle_17.text = rtn  // 개월수 적용
+
+string ls_rtn
+
+ls_rtn =  ef_dateproc( as_date , " ", ai_term, ai_div, 8)
+
+return ls_rtn
+end function
+

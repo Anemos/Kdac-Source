@@ -1,0 +1,32 @@
+$PBExportHeader$f_pur040_getxcost.srf
+$PBExportComments$외자발주단가외(업체,품번,외자품번,적용일,품의,통화)pur103
+global type f_pur040_getxcost from function_object
+end type
+
+forward prototypes
+global function decimal f_pur040_getxcost (string as_vsrno, string as_itno, ref string as_itno1, ref string as_eadjdt, ref string as_esheet, ref string as_ecurr)
+end prototypes
+
+global function decimal f_pur040_getxcost (string as_vsrno, string as_itno, ref string as_itno1, ref string as_eadjdt, ref string as_esheet, ref string as_ecurr);////////////////////////////////////////////////
+// : 발주단가가져오기
+//	argument : 업체,품번
+// 적용:opm302u   
+////////////////////////////////////////////////
+
+dec ld_xcost
+
+  SELECT "PBPUR"."PUR103"."ECOST", "PBPUR"."PUR103"."ITNO1","PBPUR"."PUR103"."EADJDT","PBPUR"."PUR103"."ESHEET","PBPUR"."PUR103"."ECURR" 
+    INTO :ld_xcost, :as_itno1, :as_eadjdt, :as_esheet, :as_ecurr  
+    FROM "PBPUR"."PUR103"  
+   WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR103"."VSRC" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."DEPT" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."VSRNO" = :as_vsrno ) AND  
+         ( "PBPUR"."PUR103"."ITNO" = :as_itno )   ;
+
+
+IF isnull(ld_xcost) Then ld_xcost = 0 
+
+Return ld_xcost
+end function
+

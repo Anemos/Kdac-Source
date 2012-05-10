@@ -1,0 +1,41 @@
+$PBExportHeader$f_pisc_get_date_shift_close.srf
+$PBExportComments$월마감 일자를 고려한 주/야 을 구한다.(return string 'A' 주간, 'B'야간)
+global type f_pisc_get_date_shift_close from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_date_shift_close (string fs_areacode, string fs_divisioncode, datetime fdt_datetime)
+end prototypes
+
+global function string f_pisc_get_date_shift_close (string fs_areacode, string fs_divisioncode, datetime fdt_datetime);//****************************************************************************************************************
+//	Function			:	f_pisc_get_date_shift
+//	Description		:	주/야 구분을구한다.
+//	Arguments		:	fs_areacode
+//							fs_divisioncode
+//							fdt_datetime	=>	Time to get applydate
+//	Returns			:	None
+//	Notes				:	
+//	Initial			:	2002. 09. 17
+//	Author	BY		:	Kim Jin-Su
+// Company			:	Daewoo Information System Co., Ltd. IAS
+//****************************************************************************************************************
+String	ls_shift_close
+
+//Declare syntax in script.
+DECLARE get_shift_close PROCEDURE for sp_pisc_get_shift_close
+@ps_areacode = :fs_areacode,
+@ps_divisioncode = :fs_divisioncode,
+@pdt_sourcedate = :fdt_datetime,
+@rs_shift = '1' output
+Using SQLPIS;
+
+//exactly the parameters in the sp.
+EXECUTE get_shift_close;
+
+//then fetch output parameters.
+FETCH get_shift_close into :ls_shift_close;
+CLOSE get_shift_close;
+
+Return	ls_shift_close
+end function
+

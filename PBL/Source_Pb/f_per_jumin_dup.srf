@@ -1,0 +1,40 @@
+$PBExportHeader$f_per_jumin_dup.srf
+$PBExportComments$주민번호 중복 check(per001, pay701)
+global type f_per_jumin_dup from function_object
+end type
+
+forward prototypes
+global function string f_per_jumin_dup (string ag_jumin)
+end prototypes
+
+global function string f_per_jumin_dup (string ag_jumin);string  ls_rtn
+int ln_cnt1 = 0 ,ln_cnt2 = 0
+
+select count(*)
+into :ln_cnt1
+from pbper.per001
+where trim(pebirthdt||pesex||peresno)  = :ag_jumin
+using sqlcc;
+if sqlcc.sqlcode  <> 0 then
+	return '1'
+end if
+
+if ln_cnt1 > 0  then
+	return '2'
+end if
+
+select count(*)
+into :ln_cnt2
+from pbpay.pay701
+where trim(pebirthdt||pesex||peresno)  = :ag_jumin
+using sqlcc;
+if sqlcc.sqlcode  <> 0 then
+	return '1'
+end if
+if ln_cnt1 > 0  then
+	return '3'
+end if
+
+return '0'
+end function
+

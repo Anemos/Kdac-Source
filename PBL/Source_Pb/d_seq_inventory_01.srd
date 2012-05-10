@@ -1,0 +1,67 @@
+$PBExportHeader$d_seq_inventory_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=tseqmstitem_itemcode dbname="TSeqMstItem.Itemcode" )
+ column=(type=char(30) updatewhereclause=yes name=tmstcustitem_custitemname dbname="TMSTCUSTITEM.CustItemName" )
+ column=(type=char(6) updatewhereclause=yes name=tseqmstitem_customercode dbname="TSeqMstItem.CustomerCode" )
+ column=(type=char(15) updatewhereclause=yes name=tseqmstitem_customeritemcode dbname="TSeqMstItem.CustomerItemCode" )
+ column=(type=char(3) updatewhereclause=yes name=tseqmstitem_partid dbname="TSeqMstItem.PartId" )
+ column=(type=long updatewhereclause=yes name=compute_0006 dbname="compute_0006" )
+ column=(type=long updatewhereclause=yes name=compute_0007 dbname="compute_0007" )
+ column=(type=long updatewhereclause=yes name=compute_0008 dbname="compute_0008" )
+ column=(type=long updatewhereclause=yes name=compute_0009 dbname="compute_0009" )
+ retrieve="  SELECT TSeqMstItem.Itemcode,   
+         TMSTCUSTITEM.CustItemName,   
+         TSeqMstItem.CustomerCode,   
+         TSeqMstItem.CustomerItemCode,   
+         TSeqMstItem.PartId,   
+         sum(TSeqTrans.InQty),   
+         sum(TSeqTrans.ProdQty),   
+         sum(TSeqTrans.ShipQty),
+         sum(TSeqTrans.InQty) + sum(TSeqTrans.ProdQty) - sum(TSeqTrans.ShipQty)   
+    FROM TMSTCUSTITEM,   
+         TSeqMstItem,   
+         TSeqTrans  
+   WHERE ( TSeqMstItem.CustomerCode = TMSTCUSTITEM.CustCode ) and  
+         ( TSeqMstItem.CustomerItemCode = TMSTCUSTITEM.CustItemCode ) and  
+         ( TSeqMstItem.AreaCode = TSeqTrans.AreaCode ) and  
+         ( TSeqMstItem.DivisionCode = TSeqTrans.DivisionCode ) and  
+         ( TSeqMstItem.Itemcode = TSeqTrans.ItemCode ) and  
+         ( TSeqMstItem.PartId = TSeqTrans.PartId )  and
+   		( TSeqMstItem.AreaCode = :a_areacode ) and  
+         ( TSeqMstItem.DivisionCode = :a_divisioncode ) and  
+         ( TSeqMstItem.productgroup = :a_productgroup ) and 
+         ( TSeqMstItem.customerItemcode like :a_itemcode ) and   
+			( TSeqTrans.tracedate like :a_date ) 
+   group by TSeqMstItem.Itemcode,   
+         TMSTCUSTITEM.CustItemName,   
+         TSeqMstItem.CustomerCode,   
+         TSeqMstItem.CustomerItemCode,   
+         TSeqMstItem.PartId
+" arguments=(("a_date", string),("a_areacode", string),("a_divisioncode", string),("a_productgroup", string),("a_itemcode", string))  sort="tseqmstitem_customercode A tseqmstitem_customeritemcode A tseqmstitem_itemcode A tseqmstitem_partid A " )
+text(band=header alignment="2" text="½Äº° ID" border="0" color="16777215" x="1989" y="0" height="72" width="261" html.valueishtml="0"  name=partid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÔ°í¼ö·®" border="0" color="16777215" x="2258" y="0" height="72" width="379" html.valueishtml="0"  name=inputqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ý»ê¼ö·®" border="0" color="16777215" x="2647" y="0" height="72" width="375" html.valueishtml="0"  name=prdqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ¼ö·®" border="0" color="16777215" x="3031" y="0" height="72" width="389" html.valueishtml="0"  name=shipqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç°í¼ö·®" border="0" color="16777215" x="3429" y="0" height="72" width="407" html.valueishtml="0"  name=invqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç° ¸í" border="0" color="16777215" x="1298" y="0" height="72" width="681" html.valueishtml="0"  name=itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="KDACÇ°¹ø" border="0" color="16777215" x="805" y="0" height="72" width="485" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³Ç°¹ø" border="0" color="16777215" x="325" y="0" height="72" width="471" html.valueishtml="0"  name=tseqmstitem_customeritemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³" border="0" color="16777215" x="9" y="0" height="72" width="306" html.valueishtml="0"  name=tseqmstitem_customercode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="1298" y="0" height="72" width="681" format="[general]" html.valueishtml="0"  name=tmstcustitem_custitemname visible="1" edit.limit=30 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1989" y="0" height="72" width="261" format="[general]" html.valueishtml="0"  name=tseqmstitem_partid visible="1" edit.limit=3 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="2258" y="0" height="72" width="379" format="[general]" html.valueishtml="0"  name=compute_0006 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="2647" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=compute_0007 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="3031" y="0" height="72" width="389" format="[general]" html.valueishtml="0"  name=compute_0008 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="3429" y="0" height="72" width="407" format="[general]" html.valueishtml="0"  name=compute_0009 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="805" y="0" height="72" width="485" format="[general]" html.valueishtml="0"  name=tseqmstitem_itemcode visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="325" y="0" height="72" width="471" format="[general]" html.valueishtml="0"  name=tseqmstitem_customeritemcode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="306" format="[general]" html.valueishtml="0"  name=tseqmstitem_customercode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="tseqmstitem_customercode	tseqmstitem_customeritemcode	tseqmstitem_itemcode	tmstcustitem_custitemname	tseqmstitem_partid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

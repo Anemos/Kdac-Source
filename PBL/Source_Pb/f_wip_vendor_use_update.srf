@@ -1,0 +1,59 @@
+$PBExportHeader$f_wip_vendor_use_update.srf
+$PBExportComments$업체사용량 계산(WIP001)
+global type f_wip_vendor_use_update from function_object
+end type
+
+forward prototypes
+global function integer f_wip_vendor_use_update (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2)
+end prototypes
+
+global function integer f_wip_vendor_use_update (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2);//***********************************************************************************
+//
+// 사급완성품 입고시점에 업체재공에 대한 하위품번의 사용량 계산
+// WIP004에 사용수량 UPDATE - 업체무상입고 사용
+// 인수 : 체크, 회사, 입고전표, 구매요구번호, 분할발주횟수, 분할납품회수
+// 반환값 : 성공(0), 실패(-1)
+//
+//***********************************************************************************
+string ls_time, ls_mysql, ls_sqlerrtext
+integer li_chk
+decimal lc_sqlcode
+
+select count(*) into :li_chk
+	from pbwip.wip004
+	where wdcmcd = :a_comltd and wdprsrty = :a_slipxtype and wdprsrno = :a_srno and
+			wdprsrno1 = :a_srno1 and wdprsrno2 = :a_srno2  using sqlca;
+if li_chk > 0 then
+	return -1
+end if
+
+	DECLARE up_wip07 PROCEDURE FOR PBWIP.SP_WIP_07  
+		A_COMLTD = :g_s_company,   
+		A_PRSRTY = :a_slipxtype,   
+		A_PRSRNO = :a_srno,   
+		A_PRSRNO1 = :a_srno1,   
+		A_PRSRNO2 = :a_srno2,   
+		A_IPADDR = :g_s_ipaddr,   
+		A_MACADDR = :g_s_macaddr,   
+		A_INPTID = :g_s_empno,   
+		A_INPTDT = :g_s_date,   
+		A_INPTTM = :g_s_datetime  using sqlca;
+	
+	execute up_wip07;
+	
+//delete temp table
+ls_mysql = " DROP TABLE QTEMP.BOMTEMP01"
+Execute Immediate :ls_mysql using sqlca;
+
+if sqlca.sqlcode <> -1 then
+	return 0
+else
+	return -1
+end if
+
+			
+	
+
+
+end function
+

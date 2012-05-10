@@ -1,0 +1,218 @@
+$PBExportHeader$d_pisq110u_02.srd
+$PBExportComments$°Ë»ç¼ºÀû¼­ ÆÇÁ¤(ºñ°£ÆÇ¿ë-µðÅ×ÀÏ)
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=140 color="536870912" )
+table(column=(type=long updatewhereclause=yes key=yes name=tqqcstandarddetail_orderno dbname="ORDERNO" )
+ column=(type=char(20) updatewhereclause=yes name=tqqcstandarddetail_qcitem dbname="QCITEM" )
+ column=(type=char(1) updatewhereclause=yes name=tqqcstandarddetail_decisionrank dbname="DECISIONRANK" )
+ column=(type=char(40) updatewhereclause=yes name=tqqcstandarddetail_itemspecquality dbname="ITEMSPECQUALITY" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="DIVISIONCODE" )
+ column=(type=char(5) update=yes updatewhereclause=yes key=yes name=suppliercode dbname="SUPPLIERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=deliveryno dbname="DELIVERYNO" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="ITEMCODE" )
+ column=(type=char(8) update=yes updatewhereclause=yes key=yes name=supplierlotno dbname="SUPPLIERLOTNO" )
+ column=(type=long update=yes updatewhereclause=yes name=orderno dbname="ORDERNO" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx1 dbname="SUPPLIERMEASUREMENTX1" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx2 dbname="SUPPLIERMEASUREMENTX2" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx3 dbname="SUPPLIERMEASUREMENTX3" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx4 dbname="SUPPLIERMEASUREMENTX4" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx5 dbname="SUPPLIERMEASUREMENTX5" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx6 dbname="SUPPLIERMEASUREMENTX6" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx7 dbname="SUPPLIERMEASUREMENTX7" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx8 dbname="SUPPLIERMEASUREMENTX8" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx9 dbname="SUPPLIERMEASUREMENTX9" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx10 dbname="SUPPLIERMEASUREMENTX10" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementx dbname="SUPPLIERMEASUREMENTX" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurementr dbname="SUPPLIERMEASUREMENTR" )
+ column=(type=number update=yes updatewhereclause=yes name=suppliermeasurements dbname="SUPPLIERMEASUREMENTS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=supplierflagresult dbname="SUPPLIERFLAGRESULT" values="Á¤»ó	Y/ºÒ·®	N/" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx1 dbname="QCMEASUREMENTX1" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx2 dbname="QCMEASUREMENTX2" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx3 dbname="QCMEASUREMENTX3" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx4 dbname="QCMEASUREMENTX4" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx5 dbname="QCMEASUREMENTX5" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx6 dbname="QCMEASUREMENTX6" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx7 dbname="QCMEASUREMENTX7" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx8 dbname="QCMEASUREMENTX8" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx9 dbname="QCMEASUREMENTX9" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx10 dbname="QCMEASUREMENTX10" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementx dbname="QCMEASUREMENTX" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurementr dbname="QCMEASUREMENTR" )
+ column=(type=number update=yes updatewhereclause=yes name=qcmeasurements dbname="QCMEASUREMENTS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=qcflagresult dbname="QCFLAGRESULT" values="Á¤»ó	Y/ºÒ·®	N/" )
+ retrieve="  SELECT B.ORDERNO,   
+         B.QCITEM,   
+         B.DECISIONRANK,   
+         B.ITEMSPECQUALITY,   
+         A.AREACODE,   
+         A.DIVISIONCODE,   
+         A.SUPPLIERCODE,   
+         A.DELIVERYNO,   
+         A.ITEMCODE,   
+         A.SUPPLIERLOTNO,   
+         A.ORDERNO,   
+         A.SUPPLIERMEASUREMENTX1,   
+         A.SUPPLIERMEASUREMENTX2,   
+         A.SUPPLIERMEASUREMENTX3,   
+         A.SUPPLIERMEASUREMENTX4,   
+         A.SUPPLIERMEASUREMENTX5,   
+         A.SUPPLIERMEASUREMENTX6,   
+         A.SUPPLIERMEASUREMENTX7,   
+         A.SUPPLIERMEASUREMENTX8,   
+         A.SUPPLIERMEASUREMENTX9,   
+         A.SUPPLIERMEASUREMENTX10,   
+         A.SUPPLIERMEASUREMENTX,   
+         A.SUPPLIERMEASUREMENTR,   
+         A.SUPPLIERMEASUREMENTS,   
+         A.SUPPLIERFLAGRESULT,   
+         A.QCMEASUREMENTX1,   
+         A.QCMEASUREMENTX2,   
+         A.QCMEASUREMENTX3,   
+         A.QCMEASUREMENTX4,   
+         A.QCMEASUREMENTX5,   
+         A.QCMEASUREMENTX6,   
+         A.QCMEASUREMENTX7,   
+         A.QCMEASUREMENTX8,   
+         A.QCMEASUREMENTX9,   
+         A.QCMEASUREMENTX10,   
+         A.QCMEASUREMENTX,   
+         A.QCMEASUREMENTR,   
+         A.QCMEASUREMENTS,   
+         A.QCFLAGRESULT  
+	FROM TQQCRESULTDETAIL   A,
+         (	SELECT AREACODE, DIVISIONCODE,SUPPLIERCODE,ITEMCODE,ORDERNO,
+					QCITEM, DECISIONRANK, ITEMSPECQUALITY
+			FROM TQQCSTANDARDDETAIL
+			WHERE AREACODE = :AS_AREACODE AND DIVISIONCODE = :AS_DIVISIONCODE AND
+					SUPPLIERCODE = :AS_SUPPLIERCODE AND ITEMCODE = :AS_ITEMCODE AND
+					STANDARDREVNO = :AS_REVNO ) B
+   WHERE A.AREACODE             = B.AREACODE
+     AND A.DIVISIONCODE         = B.DIVISIONCODE
+     AND A.SUPPLIERCODE         = B.SUPPLIERCODE
+     AND A.ITEMCODE             = B.ITEMCODE
+     AND A.ORDERNO				  = B.ORDERNO
+     AND A.AREACODE             = :as_areacode
+     AND A.DIVISIONCODE         = :as_divisioncode
+     AND A.SUPPLIERCODE         = :as_suppliercode
+     AND A.DELIVERYNO           = :as_deliveryno
+     AND A.ITEMCODE             = :as_itemcode
+     AND A.SUPPLIERLOTNO        = :as_supplierlotno 
+
+UNION ALL
+
+  SELECT B.ORDERNO,   
+         B.QCITEM,   
+         B.DECISIONRANK,   
+         B.ITEMSPECQUALITY,   
+         A.AREACODE,   
+         A.DIVISIONCODE,   
+         A.SUPPLIERCODE,   
+         A.DELIVERYNO,   
+         A.ITEMCODE,   
+         A.SUPPLIERLOTNO,   
+         A.ORDERNO,   
+         A.SUPPLIERMEASUREMENTX1,   
+         A.SUPPLIERMEASUREMENTX2,   
+         A.SUPPLIERMEASUREMENTX3,   
+         A.SUPPLIERMEASUREMENTX4,   
+         A.SUPPLIERMEASUREMENTX5,   
+         A.SUPPLIERMEASUREMENTX6,   
+         A.SUPPLIERMEASUREMENTX7,   
+         A.SUPPLIERMEASUREMENTX8,   
+         A.SUPPLIERMEASUREMENTX9,   
+         A.SUPPLIERMEASUREMENTX10,   
+         A.SUPPLIERMEASUREMENTX,   
+         A.SUPPLIERMEASUREMENTR,   
+         A.SUPPLIERMEASUREMENTS,   
+         A.SUPPLIERFLAGRESULT,   
+         A.QCMEASUREMENTX1,   
+         A.QCMEASUREMENTX2,   
+         A.QCMEASUREMENTX3,   
+         A.QCMEASUREMENTX4,   
+         A.QCMEASUREMENTX5,   
+         A.QCMEASUREMENTX6,   
+         A.QCMEASUREMENTX7,   
+         A.QCMEASUREMENTX8,   
+         A.QCMEASUREMENTX9,   
+         A.QCMEASUREMENTX10,   
+         A.QCMEASUREMENTX,   
+         A.QCMEASUREMENTR,   
+         A.QCMEASUREMENTS,   
+         A.QCFLAGRESULT 
+    FROM TQQCRESULTDETAIL   A,
+         (	SELECT AREACODE, DIVISIONCODE,SUPPLIERCODE,ITEMCODE,ORDERNO,
+					QCITEM, DECISIONRANK, ITEMSPECQUALITY
+			FROM TQQCSTANDARDCHANGEDETAIL
+			WHERE AREACODE = :AS_AREACODE AND DIVISIONCODE = :AS_DIVISIONCODE AND
+					SUPPLIERCODE = :AS_SUPPLIERCODE AND ITEMCODE = :AS_ITEMCODE AND
+					STANDARDREVNO = :AS_REVNO ) B
+   WHERE A.AREACODE             = B.AREACODE
+     AND A.DIVISIONCODE         = B.DIVISIONCODE
+     AND A.SUPPLIERCODE         = B.SUPPLIERCODE
+     AND A.ITEMCODE             = B.ITEMCODE
+     AND A.ORDERNO				  = B.ORDERNO
+     AND A.AREACODE             = :as_areacode
+     AND A.DIVISIONCODE         = :as_divisioncode
+     AND A.SUPPLIERCODE         = :as_suppliercode
+     AND A.DELIVERYNO           = :as_deliveryno
+     AND A.ITEMCODE             = :as_itemcode
+     AND A.SUPPLIERLOTNO        = :as_supplierlotno 
+" update="TQQCRESULTDETAIL" updatewhere=0 updatekeyinplace=no arguments=(("as_areacode", string),("as_divisioncode", string),("as_suppliercode", string),("as_deliveryno", string),("as_itemcode", string),("as_supplierlotno", string),("as_revno", string))  sort="tqqcstandarddetail_orderno A " )
+text(band=header alignment="2" text="¼øÀ§" border="2" color="16777215" x="0" y="8" height="60" width="192" html.valueishtml="0"  name=tqqcstandarddetail_orderno_s visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»çÇ×¸ñ" border="2" color="16777215" x="197" y="8" height="60" width="398" html.valueishtml="0"  name=tqqcstandarddetail_qcitem_s visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô°Ý ¹× Æ¯¼º" border="2" color="16777215" x="891" y="8" height="60" width="946" html.valueishtml="0"  name=tqqcstandarddetail_itemspecquality_s visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X1" border="2" color="16777215" x="1842" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X2" border="2" color="16777215" x="2030" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X3" border="2" color="16777215" x="2217" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx3_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X4" border="2" color="16777215" x="2405" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx4_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X5" border="2" color="16777215" x="2592" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx5_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X6" border="2" color="16777215" x="2779" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx6_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X7" border="2" color="16777215" x="2967" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx7_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X8" border="2" color="16777215" x="3154" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx8_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X9" border="2" color="16777215" x="3342" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx9_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X10" border="2" color="16777215" x="3529" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx10_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="X" border="2" color="16777215" x="3717" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementx_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="R" border="2" color="16777215" x="3904" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurementr_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="S" border="2" color="16777215" x="4091" y="8" height="60" width="183" html.valueishtml="0"  name=suppliermeasurements_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÇÁ¤" border="2" color="16777215" x="4279" y="8" height="60" width="197" html.valueishtml="0"  name=supplierflagresult_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°áÁ¡°è±Þ" border="2" color="16777215" x="599" y="8" height="60" width="288" html.valueishtml="0"  name=tqqcstandarddetail_decisionrank_s visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="2" color="0" x="0" y="4" height="64" width="192" format="[general]" html.valueishtml="0"  name=tqqcstandarddetail_orderno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="197" y="4" height="64" width="398" format="[general]" html.valueishtml="0"  name=tqqcstandarddetail_qcitem visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="2" color="0" x="891" y="4" height="64" width="946" format="[general]" html.valueishtml="0"  name=tqqcstandarddetail_itemspecquality visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=39 alignment="0" tabsequence=110 border="2" color="16711680" x="4279" y="72" height="64" width="197" format="[general]" html.valueishtml="0"  name=qcflagresult visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.useasborder=yes ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="2" color="0" x="599" y="4" height="64" width="288" format="[general]" html.valueishtml="0"  name=tqqcstandarddetail_decisionrank visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="0" tabsequence=32766 border="2" color="0" x="4279" y="4" height="64" width="197" format="[General]" html.valueishtml="0"  name=supplierflagresult visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=36 alignment="1" tabsequence=32766 border="2" color="16711680" x="3717" y="72" height="64" width="183" format="~tif ( qcmeasurementx = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=qcmeasurementx visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="2" color="16711680" x="3904" y="72" height="64" width="183" format="#,##0.000~tif ( qcmeasurementr = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=qcmeasurementr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=38 alignment="1" tabsequence=32766 border="2" color="16711680" x="4091" y="72" height="64" width="183" format="~tif ( qcmeasurements = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=qcmeasurements visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="2" color="0" x="3717" y="4" height="64" width="183" format="#,##0.00~tif (  suppliermeasurementx = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=suppliermeasurementx visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="2" color="0" x="3904" y="4" height="64" width="183" format="#,##0.00~tif (  suppliermeasurementr = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=suppliermeasurementr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="2" color="0" x="4091" y="4" height="64" width="183" format="#,##0.00~tif (  suppliermeasurements = 0 , '###', '#,##0.####')" html.valueishtml="0"  name=suppliermeasurements visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="1" tabsequence=40 border="2" color="16711680" x="2405" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=30 alignment="1" tabsequence=50 border="2" color="16711680" x="2592" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=31 alignment="1" tabsequence=60 border="2" color="16711680" x="2779" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx6 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=32 alignment="1" tabsequence=70 border="2" color="16711680" x="2967" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=33 alignment="1" tabsequence=80 border="2" color="16711680" x="3154" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=35 alignment="1" tabsequence=100 border="2" color="16711680" x="3529" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=34 alignment="1" tabsequence=90 border="2" color="16711680" x="3342" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx9 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=26 alignment="1" tabsequence=10 border="2" color="16711680" x="1842" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=27 alignment="1" tabsequence=20 border="2" color="16711680" x="2030" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=28 alignment="1" tabsequence=30 border="2" color="16711680" x="2217" y="72" height="64" width="183" format="[General]" html.valueishtml="0"  name=qcmeasurementx3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="2" color="0" x="1842" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="2" color="0" x="2030" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="2" color="0" x="2217" y="4" height="64" width="183" format="[general]" html.valueishtml="0"  name=suppliermeasurementx3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="2" color="0" x="2405" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="2" color="0" x="2592" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="2" color="0" x="2779" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx6 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="2" color="0" x="2967" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="2" color="0" x="3154" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="2" color="0" x="3342" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx9 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="2" color="0" x="3529" y="4" height="64" width="183" format="" html.valueishtml="0"  name=suppliermeasurementx10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

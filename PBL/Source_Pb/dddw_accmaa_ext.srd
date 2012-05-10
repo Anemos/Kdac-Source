@@ -1,0 +1,13 @@
+$PBExportHeader$dddw_accmaa_ext.srd
+$PBExportComments$계정과목 ext dw
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=acnamek dbname="acnamek" )
+ )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="0" x="5" y="0" height="76" width="965" format="[general]" html.valueishtml="0"  name=acnamek visible="1" dddw.name=dddw_accmaa dddw.displaycolumn=acnamek dddw.datacolumn=accode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

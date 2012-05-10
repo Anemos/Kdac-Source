@@ -1,0 +1,36 @@
+$PBExportHeader$f_pisc_dw_rowset.srf
+$PBExportComments$행번호로 지정.
+global type f_pisc_dw_rowset from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_dw_rowset (datawindow adw_target, long al_row, string as_column_name)
+end prototypes
+
+global subroutine f_pisc_dw_rowset (datawindow adw_target, long al_row, string as_column_name);/**********************************************************************************
+* FUNCTION NAME: wf_row_setting
+* 기능         : 데이타윈도우의 특정행의 특정컬럼으로 지정
+* Version      : 1.0 							
+* 작성일       : 1997.01.25
+* 작성자       : 배 홍 길
+* INPUT ARG    : 1) adw_target(DATAWINDOW) : 행을 지정할 datawindow name
+*              : 2) al_row(LONG)           : 지정할 행번호
+*              : 3) as_column_name(STRING) : 지정할 컬럼명 
+* RETURN       : NONE
+* 기능 개요    : 특정데이타윈도우의 특정행의 특정컬럼으로 커서 및 포커스를 이동.
+*              : as_column_name = "" 이면 컬럼은 지정하지 않는다.
+***********************************************************************************/
+
+IF adw_target.RowCount() > 0 THEN 
+	adw_target.SetReDraw(FALSE)
+	adw_target.SelectRow(0, FALSE)
+	adw_target.SetRow(al_row)
+	IF as_column_name <> "" THEN adw_target.SetColumn(as_column_name)
+	adw_target.ScrollToRow(al_row)
+	adw_target.SelectRow(al_row, TRUE)
+	adw_target.SetFocus()
+	adw_target.SetReDraw(TRUE)
+END IF
+
+end subroutine
+

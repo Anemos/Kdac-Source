@@ -1,0 +1,26 @@
+$PBExportHeader$d_pisq610u_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(6) update=yes updatewhereclause=yes key=yes name=codegroup dbname="TWCODEMASTER.CodeGroup" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=groupname dbname="TWCODEMASTER.GroupName" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=cocode dbname="TWCODEMASTER.CoCode" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=cocodename dbname="TWCODEMASTER.CoCodeName" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TWCODEMASTER.LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TWCODEMASTER.LastDate" )
+ retrieve="PBSELECT(TABLE(NAME=~"TWCODEMASTER~") COLUMN(NAME=~"TWCODEMASTER.CodeGroup~")COLUMN(NAME=~"TWCODEMASTER.GroupName~")COLUMN(NAME=~"TWCODEMASTER.CoCode~")COLUMN(NAME=~"TWCODEMASTER.CoCodeName~")COLUMN(NAME=~"TWCODEMASTER.LastEmp~")COLUMN(NAME=~"TWCODEMASTER.LastDate~"))" update="TWCODEMASTER" updatewhere=1 updatekeyinplace=no )
+text(band=header alignment="2" text="그룹코드" border="0" color="16777215" x="9" y="8" height="60" width="361" html.valueishtml="0"  name=codegroup_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="그룹코드명" border="0" color="16777215" x="379" y="8" height="60" width="1138" html.valueishtml="0"  name=groupname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="세부코드" border="0" color="16777215" x="1527" y="8" height="60" width="320" html.valueishtml="0"  name=cocode_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="세부코드명" border="0" color="16777215" x="1856" y="8" height="60" width="1285" html.valueishtml="0"  name=cocodename_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="4" height="76" width="361" format="[general]" html.valueishtml="0"  name=codegroup visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="33554432" x="379" y="4" height="76" width="1138" format="[general]" html.valueishtml="0"  name=groupname visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="33554432" x="1527" y="4" height="76" width="320" format="[general]" html.valueishtml="0"  name=cocode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="0" color="33554432" x="1856" y="4" height="76" width="1285" format="[general]" html.valueishtml="0"  name=cocodename visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+
+sparse(names="codegroup	groupname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,7 @@
+$PBExportHeader$str_mpms_return.srs
+$PBExportComments$검색후 리턴문자열( 품번,품명,규격)
+global type str_mpms_return from structure
+	string		code
+	string		name
+	string		nicname
+end type

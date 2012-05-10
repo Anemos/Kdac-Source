@@ -1,0 +1,42 @@
+$PBExportHeader$f_error_box.srf
+$PBExportComments$Opens window w_error_box passing the current window title and an error message.
+global type f_error_box from function_object
+end type
+
+forward prototypes
+global subroutine f_error_box (string as_title, string as_msg)
+end prototypes
+
+global subroutine f_error_box (string as_title, string as_msg);///////////////////////////////////////////////////////////////////////////////
+//
+// Function:	f_error_box
+//
+//	Purpose:		MessageBox만으로 불출분한 경우에 사용(출력기능포함)
+//					보통 출력이 필요한 Error Message등을 보일때 사용
+//
+// Parameters:
+//					as_title			w_error_box_p의 title
+//					as_msg 	 		w_error_box_p에 보일 Message
+//
+// Returns : None
+//
+//	DATE			NAME			REVISION
+// ----------------------------------------------------------------------------
+// Powersoft Corporation	INITIAL VERSION
+//	1996-03-4	dmshin		한글화
+//
+///////////////////////////////////////////////////////////////////////////////
+IF Handle(w_error_box_p) = 0 THEN
+	//아직 Open되어 있지 않다면 Open
+	Open(w_error_box_p)
+	w_error_box_p.title 		 	= as_title
+	w_error_box_p.mle_msg.text = as_msg
+ELSE
+	//이미 Open되어 있다면 Title과 Message만 추가해줌
+	//Message추가
+	w_error_box_p.mle_msg.text = w_error_box_p.mle_msg.text + "~r~n~n" + as_msg
+	//추가된 부분으로 Messsage표시부분(mle)을 Scroll
+	w_error_box_p.mle_msg.scroll(w_error_box_p.mle_msg.linecount() - 10)
+END IF
+end subroutine
+

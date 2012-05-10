@@ -1,0 +1,28 @@
+$PBExportHeader$dddw_rtngub_i.srd
+$PBExportComments$¹Ý³³±¸ºÐ DropDown DataWindow
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(10) updatewhereclause=yes name=code dbname="CODE" )
+ column=(type=char(30) updatewhereclause=yes name=coitname dbname="COITNAME" )
+ retrieve="SELECT ' ' as code,' ' as coitname
+  FROM ~"PBCOMMON~".~"COMM000~"
+
+union
+
+  SELECT {fn left(~"PBCOMMON~".~"DAC002~".~"COCODE~", 2)} as code,   
+         ~"PBCOMMON~".~"DAC002~".~"COITNAME~"  
+    FROM ~"PBCOMMON~".~"DAC002~"  
+   WHERE ( ~"PBCOMMON~".~"DAC002~".~"COMLTD~" = '01' ) AND  
+         ( ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'INV380' )   
+ORDER BY 1 ASC   
+" )
+text(band=header alignment="0" text="Coitname" border="0" color="0" x="9" y="4" height="76" width="334" html.valueishtml="0"  name=coitname_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Code" border="0" color="0" x="352" y="4" height="60" width="160" html.valueishtml="0"  name=code_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="6" color="0" x="9" y="8" height="76" width="334" format="[general]" html.valueishtml="0"  name=coitname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=1 alignment="0" tabsequence=0 border="6" color="0" x="357" y="8" height="76" width="155" html.valueishtml="0"  name=code visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

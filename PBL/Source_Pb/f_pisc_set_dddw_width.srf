@@ -1,0 +1,49 @@
+$PBExportHeader$f_pisc_set_dddw_width.srf
+$PBExportComments$Modify PercentWidth of Column has dddw edit style(arg datawindow fdw_parent, string fs_parent_column, datawindowchild fdwc_child, string fs_child_column, int fi_line, Return none)
+global type f_pisc_set_dddw_width from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_set_dddw_width (datawindow fdw_parent, string fs_parent_column, datawindowchild fdwc_child, string fs_child_column, integer fi_line)
+end prototypes
+
+global subroutine f_pisc_set_dddw_width (datawindow fdw_parent, string fs_parent_column, datawindowchild fdwc_child, string fs_child_column, integer fi_line);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisc_set_dddw_width
+//	Access		: public
+//	Arguments	: DataWindow			fdw_parent			Edit Column를 가지고 있는 Parent DataWindow
+//					  string					fs_parent_column	dropdowndatawindow style로 Edit를 수행할 Column Name
+//					  DataWindowChild		fdwc_child			Parent Column의 GetChild()
+//					  string					fs_child_column	Child DataWindow(DDDW)의 Display 영역의 마지막 Column Name
+//					  Integer				fi_line				Drop Down 하고자 하는 Line의 갯수
+//	Returns		: none(ParentDataWindow Modify)
+//	Description	: DDDW를 이용하여 Data의 입력을 하고자 할때 DDDW DataWindow의 Percent Width를 적당한 Size로 바꾼다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 06. 10
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long		ll_parent_width, ll_child_width, ll_row_count
+String	ls_modstring = '', ls_parent_width, ls_percent_width
+
+ll_parent_width	= Long(fdw_parent.Describe(fs_parent_column + ".Width"))
+//fi_line				= Long(fdw_parent.Describe(fs_parent_column + "dddw.Line"))
+
+// List Property를 Default(0)로 Setting하면 6 Row를 DropDown한다.
+If fi_line = 0 Then fi_line = 30
+ll_row_count		= fdwc_child.RowCount()
+
+If fi_line >= ll_row_count Then
+	ll_child_width		= Long(fdwc_child.Describe(fs_child_column + ".X")) + &
+							  Long(fdwc_child.Describe(fs_child_column + ".Width"))
+Else
+//	ls_modstring		= fs_parent_column + ".DDDW.VScrollbar=Yes "
+	
+	ll_child_width		= Long(fdwc_child.Describe(fs_child_column + ".X")) + &
+							  Long(fdwc_child.Describe(fs_child_column + ".Width")) + 100
+End If
+ls_percent_width	= String(Ceiling(ll_child_width * 100 / ll_parent_width))
+
+ls_modstring	= ls_modstring + fs_parent_column + ".dddw.PercentWidth =" + ls_percent_width + &
+							fs_parent_column + ".dddw.lines =" + String(fi_line)
+fdw_parent.Modify(ls_modstring)
+end subroutine
+

@@ -1,0 +1,150 @@
+$PBExportHeader$d_pism_as400_labtac.srd
+$PBExportComments$HOST 근태내역 DownLoad 를 위한 임시DataWindow
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=4 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=dgempno dbname="LABTAC.DGEMPNO" )
+ column=(type=char(4) updatewhereclause=yes name=dgyy dbname="LABTAC.DGYY" )
+ column=(type=char(2) updatewhereclause=yes name=dgmm dbname="LABTAC.DGMM" )
+ column=(type=char(2) updatewhereclause=yes name=dgdd dbname="LABTAC.DGDD" )
+ column=(type=char(1) updatewhereclause=yes name=dgdiv dbname="LABTAC.DGDIV" )
+ column=(type=char(4) updatewhereclause=yes name=dgdepte dbname="LABTAC.DGDEPTE" )
+ column=(type=char(1) updatewhereclause=yes name=dgempgb dbname="LABTAC.DGEMPGB" )
+ column=(type=char(1) updatewhereclause=yes name=dgdaygb dbname="LABTAC.DGDAYGB" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgtimer dbname="LABTAC.DGTIMER" )
+ column=(type=char(1) updatewhereclause=yes name=dgcd1r dbname="LABTAC.DGCD1R" )
+ column=(type=char(1) updatewhereclause=yes name=dgcd2r dbname="LABTAC.DGCD2R" )
+ column=(type=char(1) updatewhereclause=yes name=dgcd3r dbname="LABTAC.DGCD3R" )
+ column=(type=char(1) updatewhereclause=yes name=dgdngbr dbname="LABTAC.DGDNGBR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgotr dbname="LABTAC.DGOTR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgntr dbname="LABTAC.DGNTR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgjor dbname="LABTAC.DGJOR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgsangr dbname="LABTAC.DGSANGR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgjuhur dbname="LABTAC.DGJUHUR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dghumur dbname="LABTAC.DGHUMUR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgspcr dbname="LABTAC.DGSPCR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgjir dbname="LABTAC.DGJIR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgoor dbname="LABTAC.DGOOR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgpor dbname="LABTAC.DGPOR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgjtr dbname="LABTAC.DGJTR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dggunbor dbname="LABTAC.DGGUNBOR" )
+ column=(type=decimal(1) updatewhereclause=yes name=dgmur dbname="LABTAC.DGMUR" )
+ column=(type=char(2) updatewhereclause=yes name=dgclass dbname="LABTAC.DGCLASS" )
+ column=(type=char(8) updatewhereclause=yes name=dgindt dbname="LABTAC.DGINDT" )
+ column=(type=char(6) updatewhereclause=yes name=dgintime dbname="LABTAC.DGINTIME" )
+ column=(type=char(6) updatewhereclause=yes name=dginusr dbname="LABTAC.DGINUSR" )
+ column=(type=char(8) updatewhereclause=yes name=dgupdt dbname="LABTAC.DGUPDT" )
+ column=(type=char(6) updatewhereclause=yes name=dguptime dbname="LABTAC.DGUPTIME" )
+ column=(type=char(6) updatewhereclause=yes name=dgupusr dbname="LABTAC.DGUPUSR" )
+ column=(type=char(1) updatewhereclause=yes name=compute_0034 dbname="compute_0034" )
+ retrieve="  SELECT ~"DELABO~".~"LABTAC~".~"DGEMPNO~",   
+         ~"DELABO~".~"LABTAC~".~"DGYY~",
+			~"DELABO~".~"LABTAC~".~"DGMM~",
+			~"DELABO~".~"LABTAC~".~"DGDD~",   
+         ~"DELABO~".~"LABTAC~".~"DGDIV~",   
+         ~"DELABO~".~"LABTAC~".~"DGDEPTE~",   
+         ~"DELABO~".~"LABTAC~".~"DGEMPGB~",   
+         ~"DELABO~".~"LABTAC~".~"DGDAYGB~",   
+         ~"DELABO~".~"LABTAC~".~"DGTIMER~",   
+         ~"DELABO~".~"LABTAC~".~"DGCD1R~",   
+         ~"DELABO~".~"LABTAC~".~"DGCD2R~",   
+         ~"DELABO~".~"LABTAC~".~"DGCD3R~",   
+         ~"DELABO~".~"LABTAC~".~"DGDNGBR~",   
+         ~"DELABO~".~"LABTAC~".~"DGOTR~",   
+         ~"DELABO~".~"LABTAC~".~"DGNTR~",   
+         ~"DELABO~".~"LABTAC~".~"DGJOR~",   
+         ~"DELABO~".~"LABTAC~".~"DGSANGR~",   
+         ~"DELABO~".~"LABTAC~".~"DGJUHUR~",   
+         ~"DELABO~".~"LABTAC~".~"DGHUMUR~",   
+         ~"DELABO~".~"LABTAC~".~"DGSPCR~",   
+         ~"DELABO~".~"LABTAC~".~"DGJIR~",   
+         ~"DELABO~".~"LABTAC~".~"DGOOR~",   
+         ~"DELABO~".~"LABTAC~".~"DGPOR~",   
+         ~"DELABO~".~"LABTAC~".~"DGJTR~",   
+         ~"DELABO~".~"LABTAC~".~"DGGUNBOR~",   
+         ~"DELABO~".~"LABTAC~".~"DGMUR~",   
+         ~"DELABO~".~"LABTAC~".~"DGCLASS~",   
+         ~"DELABO~".~"LABTAC~".~"DGINDT~",   
+         ~"DELABO~".~"LABTAC~".~"DGINTIME~",   
+         ~"DELABO~".~"LABTAC~".~"DGINUSR~",   
+         ~"DELABO~".~"LABTAC~".~"DGUPDT~",   
+         ~"DELABO~".~"LABTAC~".~"DGUPTIME~",   
+         ~"DELABO~".~"LABTAC~".~"DGUPUSR~",
+			'' 
+    FROM ~"DELABO~".~"LABTAC~"  
+   WHERE ( ~"DELABO~".~"LABTAC~".~"DGYY~" = '2003' ) AND  
+			( ~"DELABO~".~"LABTAC~".~"DGMM~" = '01' ) And 
+			( ~"DELABO~".~"LABTAC~".~"DGDD~" in ( '11' ) ) And 
+			( ~"DELABO~".~"LABTAC~".~"DGDEPTE~" in ( '422J' ) ) 
+	Order By ~"DELABO~".~"LABTAC~".~"DGMM~", ~"DELABO~".~"LABTAC~".~"DGDD~" 
+--         ( ~"DELABO~".~"LABTAC~".~"DGDEPTE~" in ('731G', '731H', '731I', '731J', '731K', '731L', '732K', '732L', '732N',
+--														 '732P', '732Q', '732R', '7351', '7353', '7354', '7A12', '860A', '860C', 
+--														 '860D' ) )"  sort="dgdepte A dgyy A dgmm A dgdd A " )
+text(band=header alignment="2" text="Dgempno" border="0" color="0" x="9" y="8" height="64" width="347"  name=dgempno_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgntr" border="0" color="0" x="3963" y="8" height="64" width="329"  name=dgntr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgjor" border="0" color="0" x="4302" y="8" height="64" width="329"  name=dgjor_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgsangr" border="0" color="0" x="3625" y="8" height="64" width="329"  name=dgsangr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgjuhur" border="0" color="0" x="4640" y="8" height="64" width="329"  name=dgjuhur_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dghumur" border="0" color="0" x="4978" y="8" height="64" width="329"  name=dghumur_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgspcr" border="0" color="0" x="5317" y="8" height="64" width="329"  name=dgspcr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgjir" border="0" color="0" x="5655" y="8" height="64" width="329"  name=dgjir_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgoor" border="0" color="0" x="5993" y="8" height="64" width="329"  name=dgoor_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgpor" border="0" color="0" x="6331" y="8" height="64" width="329"  name=dgpor_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgjtr" border="0" color="0" x="1289" y="8" height="64" width="329"  name=dgjtr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dggunbor" border="0" color="0" x="6670" y="8" height="64" width="329"  name=dggunbor_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgmur" border="0" color="0" x="7008" y="8" height="64" width="329"  name=dgmur_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgclass" border="0" color="0" x="7346" y="8" height="64" width="215"  name=dgclass_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgindt" border="0" color="0" x="7570" y="8" height="64" width="379"  name=dgindt_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgintime" border="0" color="0" x="7959" y="8" height="64" width="283"  name=dgintime_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dginusr" border="0" color="0" x="8251" y="8" height="64" width="261"  name=dginusr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgupdt" border="0" color="0" x="8521" y="8" height="64" width="334"  name=dgupdt_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dguptime" border="0" color="0" x="8864" y="8" height="64" width="251"  name=dguptime_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgupusr" border="0" color="0" x="9125" y="8" height="64" width="219"  name=dgupusr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="00034" border="0" color="0" x="9353" y="8" height="64" width="160"  name=compute_0034_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgdiv" border="0" color="0" x="1079" y="8" height="64" width="201"  name=dgdiv_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgdepte" border="0" color="0" x="366" y="8" height="64" width="219"  name=dgdepte_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgempgb" border="0" color="0" x="1627" y="8" height="64" width="251"  name=dgempgb_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgdaygb" border="0" color="0" x="1888" y="8" height="64" width="233"  name=dgdaygb_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgtimer" border="0" color="0" x="2130" y="8" height="64" width="329"  name=dgtimer_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgcd1r" border="0" color="0" x="2469" y="8" height="64" width="187"  name=dgcd1r_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgcd2r" border="0" color="0" x="2665" y="8" height="64" width="187"  name=dgcd2r_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgcd3r" border="0" color="0" x="2862" y="8" height="64" width="187"  name=dgcd3r_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgdngbr" border="0" color="0" x="3058" y="8" height="64" width="219"  name=dgdngbr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dgotr" border="0" color="0" x="3287" y="8" height="64" width="329"  name=dgotr_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="347" format="[general]"  name=dgempno edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="3963" y="8" height="76" width="329" format="[general]"  name=dgntr edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="0" x="4302" y="8" height="76" width="329" format="[general]"  name=dgjor edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="3625" y="8" height="76" width="329" format="[general]"  name=dgsangr edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="4640" y="8" height="76" width="329" format="[general]"  name=dgjuhur edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="4978" y="8" height="76" width="329" format="[general]"  name=dghumur edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="5317" y="8" height="76" width="329" format="[general]"  name=dgspcr edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="5655" y="8" height="76" width="329" format="[general]"  name=dgjir edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="5993" y="8" height="76" width="329" format="[general]"  name=dgoor edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="0" color="0" x="6331" y="8" height="76" width="329" format="[general]"  name=dgpor edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="0" x="1289" y="8" height="76" width="329" format="[general]"  name=dgjtr edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="0" x="6670" y="8" height="76" width="329" format="[general]"  name=dggunbor edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="0" x="7008" y="8" height="76" width="329" format="[general]"  name=dgmur edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="0" tabsequence=32766 border="0" color="0" x="7346" y="8" height="76" width="215" format="[general]"  name=dgclass edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=28 alignment="0" tabsequence=32766 border="0" color="0" x="7570" y="8" height="76" width="379" format="[general]"  name=dgindt edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="0" tabsequence=32766 border="0" color="0" x="7959" y="8" height="76" width="283" format="[general]"  name=dgintime edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="0" tabsequence=32766 border="0" color="0" x="8251" y="8" height="76" width="261" format="[general]"  name=dginusr edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="0" tabsequence=32766 border="0" color="0" x="8521" y="8" height="76" width="334" format="[general]"  name=dgupdt edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=32 alignment="0" tabsequence=32766 border="0" color="0" x="8864" y="8" height="76" width="251" format="[general]"  name=dguptime edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=33 alignment="0" tabsequence=32766 border="0" color="0" x="9125" y="8" height="76" width="219" format="[general]"  name=dgupusr edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="0" tabsequence=32766 border="0" color="0" x="9353" y="8" height="76" width="160" format="[general]"  name=compute_0034 edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1079" y="8" height="76" width="201" format="[general]"  name=dgdiv edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="366" y="8" height="76" width="219" format="[general]"  name=dgdepte edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1627" y="8" height="76" width="251" format="[general]"  name=dgempgb edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1888" y="8" height="76" width="233" format="[general]"  name=dgdaygb edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="2130" y="8" height="76" width="329" format="[general]"  name=dgtimer edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2469" y="8" height="76" width="187" format="[general]"  name=dgcd1r edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2665" y="8" height="76" width="187" format="[general]"  name=dgcd2r edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="2862" y="8" height="76" width="187" format="[general]"  name=dgcd3r edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="3058" y="8" height="76" width="219" format="[general]"  name=dgdngbr edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="0" x="3287" y="8" height="76" width="329" format="[general]"  name=dgotr edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression=" dgyy  + '.' +  dgmm + '.' +  dgdd "border="0" color="0" x="594" y="8" height="76" width="475" format="[GENERAL]"  name=compute_1  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

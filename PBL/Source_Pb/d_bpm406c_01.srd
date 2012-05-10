@@ -1,0 +1,90 @@
+$PBExportHeader$d_bpm406c_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=96 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=chgdate dbname="BPM512.CHGDATE" )
+ column=(type=char(4) updatewhereclause=yes name=xyear dbname="BPM512.XYEAR" )
+ column=(type=char(50) updatewhereclause=yes name=errgubun dbname="BPM512.ERRGUBUN" )
+ column=(type=char(15) updatewhereclause=yes name=errmdno dbname="BPM512.ERRMDNO" )
+ column=(type=char(15) updatewhereclause=yes name=erritno dbname="BPM512.ERRITNO" )
+ column=(type=char(50) updatewhereclause=yes name=bpm502_itnm dbname="BPM502.ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=bpm502_spec dbname="BPM502.SPEC" )
+ column=(type=char(1) updatewhereclause=yes name=errplant dbname="BPM512.ERRPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=errdiv dbname="BPM512.ERRDIV" )
+ column=(type=char(10) updatewhereclause=yes name=errvndsr dbname="BPM512.ERRVNDSR" )
+ column=(type=char(3) updatewhereclause=yes name=errcur dbname="BPM512.ERRCUR" )
+ column=(type=char(2) updatewhereclause=yes name=errunit1 dbname="BPM512.ERRUNIT1" )
+ column=(type=char(2) updatewhereclause=yes name=errunit2 dbname="BPM512.ERRUNIT2" )
+ column=(type=char(1) updatewhereclause=yes name=errchge dbname="BPM512.ERRCHGE" )
+ column=(type=char(2) updatewhereclause=yes name=errplan dbname="BPM512.ERRPLAN" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=errconfirm dbname="BPM512.ERRCONFIRM" values="	Y/	N" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updtid dbname="BPM512.UPDTID" )
+ column=(type=long updatewhereclause=yes key=yes name=errlogid dbname="BPM512.ERRLOGID" )
+ column=(type=char(2) updatewhereclause=yes name=errcls dbname="BPM512.ERRCLS" )
+ column=(type=char(2) updatewhereclause=yes name=errsrce dbname="BPM512.ERRSRCE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM512~".~"CHGDATE~",   
+         ~"PBBPM~".~"BPM512~".~"XYEAR~",   
+         ~"PBBPM~".~"BPM512~".~"ERRGUBUN~",   
+         ~"PBBPM~".~"BPM512~".~"ERRMDNO~",   
+         ~"PBBPM~".~"BPM512~".~"ERRITNO~", 
+			~"PBBPM~".~"BPM502~".~"ITNM~",
+			~"PBBPM~".~"BPM502~".~"SPEC~",
+         ~"PBBPM~".~"BPM512~".~"ERRPLANT~",   
+         ~"PBBPM~".~"BPM512~".~"ERRDIV~",   
+         ~"PBBPM~".~"BPM512~".~"ERRVNDSR~",   
+         ~"PBBPM~".~"BPM512~".~"ERRCUR~",   
+         ~"PBBPM~".~"BPM512~".~"ERRUNIT1~",   
+         ~"PBBPM~".~"BPM512~".~"ERRUNIT2~",   
+         ~"PBBPM~".~"BPM512~".~"ERRCHGE~",   
+         ~"PBBPM~".~"BPM512~".~"ERRPLAN~",   
+         ~"PBBPM~".~"BPM512~".~"ERRCONFIRM~",   
+         ~"PBBPM~".~"BPM512~".~"UPDTID~",   
+         ~"PBBPM~".~"BPM512~".~"ERRLOGID~",   
+         ~"PBBPM~".~"BPM512~".~"ERRCLS~",   
+         ~"PBBPM~".~"BPM512~".~"ERRSRCE~"  
+    FROM ~"PBBPM~".~"BPM512~" LEFT OUTER JOIN ~"PBBPM~".~"BPM502~"
+		ON ~"PBBPM~".~"BPM512~".~"XYEAR~" = ~"PBBPM~".~"BPM502~".~"XYEAR~" AND 
+			~"PBBPM~".~"BPM512~".~"ERRITNO~" = ~"PBBPM~".~"BPM502~".~"ITNO~" AND
+			~"PBBPM~".~"BPM512~".~"REVNO~" = ~"PBBPM~".~"BPM502~".~"REVNO~"
+   WHERE ( ~"PBBPM~".~"BPM512~".~"XYEAR~" = :ag_xyear ) AND  ( ~"PBBPM~".~"BPM512~".~"REVNO~" = :ag_revno ) AND 
+         ( ~"PBBPM~".~"BPM512~".~"ERRCONFIRM~" <> 'Y' )    
+" update="PBBPM.BPM512" updatewhere=0 updatekeyinplace=yes arguments=(("ag_xyear", string),("ag_revno", string)) )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="3680" y="8" height="68" width="261" html.valueishtml="0"  name=errplant_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="3950" y="8" height="68" width="192" html.valueishtml="0"  name=errdiv_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾÷Ã¼" border="0" color="16777215" x="4151" y="8" height="68" width="352" html.valueishtml="0"  name=errvndsr_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È¯À²" border="0" color="16777215" x="4512" y="8" height="68" width="197" html.valueishtml="0"  name=errcur_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BOM´ÜÀ§" border="0" color="16777215" x="4718" y="8" height="68" width="261" html.valueishtml="0"  name=errunit1_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç±Þ¿Ï¼ºÇ°(Y/N)" border="0" color="16777215" x="5431" y="8" height="68" width="503" html.valueishtml="0"  name=updtid_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ý¼ºÀÏÀÚ" border="0" color="16777215" x="9" y="8" height="68" width="782" html.valueishtml="0"  name=chgdate_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸¸Å´ÜÀ§" border="0" color="16777215" x="4987" y="8" height="68" width="261" html.valueishtml="0"  name=errunit2_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È®ÀÎ" border="6" color="128" x="5257" y="16" height="56" width="165" html.valueishtml="0"  name=errconfirm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="3301" y="8" height="68" width="146" html.valueishtml="0"  name=errcls_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="3456" y="8" height="68" width="215" html.valueishtml="0"  name=errsrce_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="1929" y="8" height="68" width="512" html.valueishtml="0"  name=erritno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="2450" y="8" height="68" width="841" html.valueishtml="0"  name=bpm502_itnm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿¡·¯±¸ºÐ" border="0" color="16777215" x="800" y="8" height="68" width="818" html.valueishtml="0"  name=errgubun_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´ç" border="0" color="16777215" x="1627" y="8" height="68" width="288" html.valueishtml="0"  name=errplan_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="84" width="782" format="[general]" html.valueishtml="0"  name=chgdate visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="800" y="4" height="84" width="818" format="[general]" html.valueishtml="0"  name=errgubun visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="5431" y="4" height="84" width="503" format="[general]" html.valueishtml="0"  name=updtid visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=20 border="0" color="33554432" x="5257" y="4" height="84" width="165" format="[general]" html.valueishtml="0"  name=errconfirm visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=yes checkbox.threed=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="3680" y="4" height="84" width="261" format="[general]" html.valueishtml="0"  name=errplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="3950" y="4" height="84" width="192" format="[general]" html.valueishtml="0"  name=errdiv visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="4151" y="4" height="84" width="352" format="[general]" html.valueishtml="0"  name=errvndsr visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="4512" y="4" height="84" width="197" format="[general]" html.valueishtml="0"  name=errcur visible="1" edit.limit=3 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="4718" y="4" height="84" width="261" format="[general]" html.valueishtml="0"  name=errunit1 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="33554432" x="4987" y="4" height="84" width="261" format="[general]" html.valueishtml="0"  name=errunit2 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="33554432" x="3301" y="4" height="84" width="146" format="[general]" html.valueishtml="0"  name=errcls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="33554432" x="3456" y="4" height="84" width="215" format="[general]" html.valueishtml="0"  name=errsrce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1929" y="4" height="84" width="512" format="[general]" html.valueishtml="0"  name=erritno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="2450" y="4" height="84" width="841" format="[general]" html.valueishtml="0"  name=bpm502_itnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=10 border="0" color="33554432" x="1627" y="4" height="84" width="288" format="[general]" html.valueishtml="0"  name=errplan visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

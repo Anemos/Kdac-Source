@@ -1,0 +1,29 @@
+$PBExportHeader$f_get_pindt_tms.srf
+$PBExportComments$惯林老 Return (惯林锅龋)
+global type f_get_pindt_tms from function_object
+end type
+
+forward prototypes
+global function string f_get_pindt_tms (string as_purno)
+end prototypes
+
+global function string f_get_pindt_tms (string as_purno);/////////////////////////////////
+// * 惯林老 Return *
+//
+/////////////////////////////////
+
+
+String ls_PIndt
+
+//惯林Head DB : 惯林老 
+SELECT "PBPUR"."PUR401"."PINDT"  
+ INTO :ls_PIndt  
+ FROM "PBPUR"."PUR401"  
+WHERE ( "PBPUR"."PUR401"."COMLTD" = :g_s_company ) AND  
+		( "PBPUR"."PUR401"."PURNO" = :as_Purno ) 		Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then Return ""
+
+Return ls_PIndt
+end function
+

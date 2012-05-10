@@ -1,0 +1,27 @@
+$PBExportHeader$f_pisc_get_date_nowtime.srf
+$PBExportComments$Get Current ServerTime - (arg none, return datetime ldt_now)
+global type f_pisc_get_date_nowtime from function_object
+end type
+
+forward prototypes
+global function datetime f_pisc_get_date_nowtime ()
+end prototypes
+
+global function datetime f_pisc_get_date_nowtime ();///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_nowtime
+//	Access		: public
+//	Arguments	: None
+//	Returns		: DateTime ldt_now		현재시각
+//	Description	: DataWindow의 SetItem(row, 'lastdate', ldt_now)를 위한 Server Time를 Return한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 20
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+DateTime ldt_now
+
+Select Top 1 GetDate() Into :ldt_now From sysusers;
+
+Return ldt_now
+end function
+

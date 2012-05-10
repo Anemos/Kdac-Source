@@ -1,0 +1,28 @@
+$PBExportHeader$f_check_sle501_trg.srf
+global type f_check_sle501_trg from function_object
+end type
+
+forward prototypes
+global function string f_check_sle501_trg (string fs_srno, string fs_srno1, string fs_srno2)
+end prototypes
+
+global function string f_check_sle501_trg (string fs_srno, string fs_srno1, string fs_srno2);
+sqlca.autocommit	=	false
+
+UPDATE PBSLE.SLE501                                                       
+SET SLNO = 'AAA',                                             
+	 SJCD = 'A',                                                                                             
+	 UPDTID = '960165',                                                       
+	 UPDTDT = :g_s_date                                                      
+WHERE COMLTD = '01' AND CSRNO =:fs_srno and CSRNO1= :fs_srno1 and CSRNO2=:fs_srno2 
+Using sqlca ;
+
+if sqlca.sqlnrows < 1 then
+	messagebox("A",SQLCA.SQLERRTEXT)
+end if
+
+sqlca.autocommit	=	true
+return ''
+
+end function
+

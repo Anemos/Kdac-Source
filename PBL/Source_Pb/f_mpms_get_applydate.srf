@@ -1,0 +1,35 @@
+$PBExportHeader$f_mpms_get_applydate.srf
+global type f_mpms_get_applydate from function_object
+end type
+
+forward prototypes
+global function string f_mpms_get_applydate (datetime fdt_datetime)
+end prototypes
+
+global function string f_mpms_get_applydate (datetime fdt_datetime);//****************************************************************************************************************
+//	Function			:	f_mpms_get_applydate
+//	Description		:	기준일 구한다.
+//	Arguments		:	fdt_datetime	=>	Time to get applydate
+//	Returns			:	None
+//	Notes				:	
+//	Initial			:	2002. 09. 17
+//	Author	BY		:	Kim Jin-Su
+// Company			:	Daewoo Information System Co., Ltd. IAS
+//****************************************************************************************************************
+String	ls_applydate
+
+//Declare syntax in script.
+DECLARE get_applydate PROCEDURE for sp_mpms_get_applydate
+@pdt_sourcedate = :fdt_datetime,
+@rs_applydate = '1' output
+Using sqlca;
+
+//exactly the parameters in the sp.
+EXECUTE get_applydate;
+
+//then fetch output parameters.
+FETCH get_applydate into :ls_applydate;
+CLOSE get_applydate;
+
+Return	ls_applydate
+end function

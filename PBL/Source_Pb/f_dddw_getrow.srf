@@ -1,0 +1,24 @@
+$PBExportHeader$f_dddw_getrow.srf
+$PBExportComments$dddw 의 Getrow가져오기
+global type f_dddw_getrow from function_object
+end type
+
+forward prototypes
+global function long f_dddw_getrow (datawindow adw, long ai_row, string as_col, string as_cols)
+end prototypes
+
+global function long f_dddw_getrow (datawindow adw, long ai_row, string as_col, string as_cols);Datawindowchild dddw_child
+long ll_row,i
+string ls_col
+
+adw.getchild(as_col,dddw_child)
+
+If dddw_child.RowCount() < 1 then Return 0
+
+ll_row = dddw_child.find( as_col + " = '"  + as_cols + "'"  , 1, dddw_child.RowCount())
+
+return ll_row
+
+
+end function
+

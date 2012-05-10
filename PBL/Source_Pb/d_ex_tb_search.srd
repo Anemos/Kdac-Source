@@ -1,0 +1,23 @@
+$PBExportHeader$d_ex_tb_search.srd
+$PBExportComments$dw search
+release 7;
+datawindow(units=0 timer_interval=0 color=81576884 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(255) updatewhereclause=no name=col dbname="col" )
+ column=(type=char(10) updatewhereclause=no name=operator dbname="operator" initial="=" values="=	=/>	>/<	</<>	<>/>=	>=/<=	<=/like	like/not like	not like/" )
+ column=(type=char(40) updatewhereclause=no name=search_text dbname="search_text" )
+ column=(type=char(3) updatewhereclause=no name=and_or dbname="and_or" initial="AND" values="and	AND/or	OR/" )
+ )
+text(band=header alignment="2" text="Ã£À» Ç×¸ñ" border="6" color="0" x="9" y="4" height="64" width="699"  name=col_t  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="Ã£À» ³»¿ë" border="6" color="0" x="727" y="4" height="64" width="1024"  name=direction_t  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="¿¬°á " border="6" color="0" x="1769" y="4" height="64" width="416"  name=t_1  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="79741120" )
+compute(band=header alignment="0" expression="RGB(255,255,255)"border="0" color="0" x="2199" y="12" height="60" width="261" format="[general]"  name=cf_btnface visible="1~t0"  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="79741120" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="23" y="8" height="72" width="686" format="[general]"  name=col ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.vscrollbar=yes ddlb.useasborder=yes  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="0" background.color="79741120~tif( trim( col ) <> ~"~" , RGB(255,255,255),cf_btnface)" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="731" y="8" height="72" width="297" format="[general]"  name=operator ddlb.limit=0 ddlb.allowedit=no ddlb.case=lower ddlb.useasborder=yes  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="0" background.color="81839288~tif( trim( col ) <> ~"~" , RGB(255,255,255),cf_btnface)" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="5" color="0" x="1047" y="8" height="72" width="709" format="[general]"  name=search_text edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="0" background.color="81576884~tif( trim( col ) <> ~"~" , RGB(255,255,255),cf_btnface)" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="5" color="0" x="1783" y="8" height="72" width="398" format="[general]"  name=and_or radiobuttons.columns=2 radiobuttons.scale=no radiobuttons.threed=yes  font.face="±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="79741120" )
+htmltable(border="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

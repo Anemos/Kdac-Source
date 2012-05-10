@@ -1,0 +1,43 @@
+$PBExportHeader$f_pur040_setgrade.srf
+$PBExportComments$품질지수 DI등급결정
+global type f_pur040_setgrade from function_object
+end type
+
+forward prototypes
+global function string f_pur040_setgrade (string as_pkind, long al_rate)
+end prototypes
+
+global function string f_pur040_setgrade (string as_pkind, long al_rate);////////////////////////////////////////////////
+// :납기준수율로 등급체크
+////////////////////////////////////////////////
+  long ll_g1, ll_g2,ll_g3,ll_g4,ll_gstd,ll_rstd
+  string ls_grade  
+  SELECT "PBPUR"."PUR124"."GSTD",   
+         "PBPUR"."PUR124"."RSTD"   
+         
+    INTO :ll_gstd,   
+         :ll_rstd   
+      
+    FROM "PBPUR"."PUR124"  
+   WHERE ( "PBPUR"."PUR124"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR124"."PKIND" = :as_pkind )   ;
+if sqlca.sqlcode <> 0 then
+	return ' '
+end if
+//if al_rate >= ll_g1 then
+//   ls_grade = '1'
+//elseif al_rate >= ll_g2 then
+//	ls_grade = '2'
+//elseif al_rate >= ll_g3 then
+//	ls_grade = '3'	
+//else
+//	ls_grade = '4'	
+//end if
+if al_rate >= ll_gstd then
+   return 'G'
+else
+	return 'R'
+end if
+Return ls_grade
+end function
+

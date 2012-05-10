@@ -1,0 +1,39 @@
+$PBExportHeader$d_bom_bom018.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes name=xcmcd dbname="BOM018.XCMCD" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xinemp dbname="BOM018.XINEMP" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xplemp dbname="BOM018.XPLEMP" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xmacaddr dbname="BOM018.XMACADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xipaddr dbname="BOM018.XIPADDR" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xindt dbname="BOM018.XINDT" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_penamek_input dbname="BOM018.PENAMEK_INPUT" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_penamek_pl dbname="BOM018.PENAMEK_PL" )
+ retrieve="SELECT  ~"PBPDM~".~"BOM018~".~"XCMCD~" ,
+           ~"PBPDM~".~"BOM018~".~"XINEMP~" ,
+           ~"PBPDM~".~"BOM018~".~"XPLEMP~" ,
+           ~"PBPDM~".~"BOM018~".~"XMACADDR~" ,
+           ~"PBPDM~".~"BOM018~".~"XIPADDR~" ,
+           ~"PBPDM~".~"BOM018~".~"XINDT~" ,
+           ~"DAC003_a~".~"PENAMEK~" as penamek_input ,
+           ~"DAC003_b~".~"PENAMEK~" as penamek_pl     
+        FROM ~"PBPDM~".~"BOM018~" ,
+           ~"PBCOMMON~".~"DAC003~" ~"DAC003_a~" ,
+           ~"PBCOMMON~".~"DAC003~" ~"DAC003_b~"     
+        WHERE ( ~"PBPDM~".~"BOM018~".~"XINEMP~" = ~"DAC003_a~".~"PEEMPNO~" ) and          ( ~"PBPDM~".~"BOM018~".~"XPLEMP~" = ~"DAC003_b~".~"PEEMPNO~" ) and          ( ( ~"PBPDM~".~"BOM018~".~"XINEMP~" = :ag_empno ) )  " arguments=(("ag_empno", string)) )
+text(band=header alignment="2" text="¿‘∑¬¿œ¿⁄" border="0" color="16777215" x="786" y="0" height="72" width="430" html.valueishtml="0"  name=xindt_t visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¥„¥Á PL" border="0" color="16777215" x="402" y="0" height="72" width="375" html.valueishtml="0"  name=dac003_penamek_pl_t visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¥„¥Á¿⁄" border="0" color="16777215" x="9" y="0" height="72" width="384" html.valueishtml="0"  name=dac003_penamek_input_t visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="786" y="0" height="72" width="430" format="[general]" html.valueishtml="0"  name=xindt visible="1" editmask.mask="XXXX.XX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="402" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=dac003_penamek_pl visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="384" format="[general]" html.valueishtml="0"  name=dac003_penamek_input visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

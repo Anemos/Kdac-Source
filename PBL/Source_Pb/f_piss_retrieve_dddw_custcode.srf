@@ -1,0 +1,69 @@
+$PBExportHeader$f_piss_retrieve_dddw_custcode.srf
+$PBExportComments$출하-dddw을 조회하는 함수 - 거래처 마스터
+global type f_piss_retrieve_dddw_custcode from function_object
+end type
+
+forward prototypes
+global subroutine f_piss_retrieve_dddw_custcode (datawindow fdw_1, string fs_custcode, string fs_custname, boolean fb_allflag, ref string rs_custcode, string rs_custname)
+end prototypes
+
+global subroutine f_piss_retrieve_dddw_custcode (datawindow fdw_1, string fs_custcode, string fs_custname, boolean fb_allflag, ref string rs_custcode, string rs_custname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_piss_retrieve_dddw_custcode
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_custcode			   조회하고자 하는 코드 그룹
+//						string			fs_custname			   조회하고자 하는 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 코드 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (코드는 '%', 코드명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_custcode			   선택된 코드 그룹 (reference)
+//						string			rs_custname			   선택된 코드 명 (reference)
+//	Returns		: none
+//	Description	: 거래처마스터을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_custcode)
+	ll_rowcount = ldwc_1.RowCount()
+	If (ll_rowcount < 1)  Then
+//	   fdw_1.GetChild('DDDWCode', ldwc_1)
+	   ldwc_1.InsertRow(1)
+	   rs_custcode			= ''
+	   rs_custname			= ''
+		ldwc_1.Setitem(1, 'custcode', '')
+		ldwc_1.Setitem(1, 'custname', '')
+		fdw_1.Setitem(1, 'DDDWCode','')		
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'custname', 20)		
+	ElseIf ll_rowcount	= 1 Then
+		rs_custcode		= Trim(ldwc_1.GetItemString(1, 'custcode'))
+		rs_custname		= Trim(ldwc_1.GetItemString(1, 'custname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_custcode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'custname', 20)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_custcode		= Trim(ldwc_1.GetItemString(1, 'custcode'))
+			rs_custname		= Trim(ldwc_1.GetItemString(1, 'custname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_custcode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'custname', 20)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'custcode', 'ALL')
+			ldwc_1.Setitem(1, 'custname', '전체')
+			rs_custcode			= '%'
+			rs_custname			= 'ALL'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'custname', 20)
+		End If
+	End If
+End If
+end subroutine
+

@@ -1,0 +1,26 @@
+$PBExportHeader$f_bpm_check_ingflag.srf
+$PBExportComments$사업계획완료여부 검사함수
+global type f_bpm_check_ingflag from function_object
+end type
+
+forward prototypes
+global function string f_bpm_check_ingflag (string ag_year, string ag_revno, string ag_winid)
+end prototypes
+
+global function string f_bpm_check_ingflag (string ag_year, string ag_revno, string ag_winid);//*******************************************
+//* 사업계획과 관련된 상태 => 사업계획완료여부(ingflag)
+//* 1. 사업계획이 미완료인 경우에는 언제든지 작업을 진행 및 재작업할수 있다.
+//* 2. 사업계획기 완료된 경우에는 해당작업은 조회만 할수 있다.
+//* 3. 해당작업은 진행 및 재작업할 경우에는 관련된 연관작업이 진행상태로 강제변경된다.
+//*  완료 'C', 진행 'G'
+string ls_ingflag, ls_taskstatus
+
+SELECT IFNULL(INGFLAG,'C') INTO :ls_ingflag
+FROM PBBPM.BPM519
+WHERE COMLTD = :g_s_company AND XYEAR = :ag_year AND 
+		REVNO = :ag_revno AND WINDOWID = :ag_winid
+using sqlca;
+
+return ls_ingflag
+end function
+

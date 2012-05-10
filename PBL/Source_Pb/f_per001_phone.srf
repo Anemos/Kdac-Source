@@ -1,0 +1,34 @@
+$PBExportHeader$f_per001_phone.srf
+$PBExportComments$집전화, 사내연락처, 핸드폰번호 return
+global type f_per001_phone from function_object
+end type
+
+forward prototypes
+global function string f_per001_phone (string a_s_empno, string a_s_gubun)
+end prototypes
+
+global function string f_per001_phone (string a_s_empno, string a_s_gubun);string ls_name1 , ls_name2 , ls_name3
+
+select petel, peintel, pecphone
+into :ls_name1 , :ls_name2 , :ls_name3
+from pbper.per001
+where pbper.per001.peempno = :a_s_empno
+using sqlcc;
+
+
+if sqlcc.sqlcode <> 0 then
+	return ''
+End if
+
+choose case a_s_gubun
+	case '1'       /////집명
+		return ls_name1
+	case '2'       /////사내명
+		return ls_name2
+	case '3'       /////핸드폰명
+		return ls_name3
+end choose
+
+
+end function
+

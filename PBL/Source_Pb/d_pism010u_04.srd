@@ -1,0 +1,24 @@
+$PBExportHeader$d_pism010u_04.srd
+$PBExportComments$작업일보(Status 및 특기사항) - Freeform
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=156 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no key=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=no key=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=no key=yes name=workcenter dbname="WorkCenter" )
+ column=(type=char(10) updatewhereclause=no key=yes name=workday dbname="WorkDay" )
+ column=(type=char(1) update=yes updatewhereclause=no name=dailystatus dbname="DailyStatus" )
+ column=(type=datetime update=yes updatewhereclause=no name=inputtime dbname="InputTime" )
+ column=(type=char(6) update=yes updatewhereclause=no name=inputemp dbname="inputemp" )
+ column=(type=char(100) update=yes updatewhereclause=no name=remark dbname="Remark" )
+ column=(type=char(6) update=yes updatewhereclause=no name=lastemp dbname="LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=no name=lastdate dbname="lastdate" )
+ procedure="1 execute dbo.sp_pism010u_04;1 @ps_area = :ps_area, @ps_div = :ps_div, @ps_wc = :ps_wc, @ps_wday = :ps_wday" update="TMHDAILYSTATUS" updatewhere=0 updatekeyinplace=yes arguments=(("ps_area", string),("ps_div", string),("ps_wc", string),("ps_wday", string)) )
+text(band=detail alignment="2" text="특기
+사항" border="6" color="0" x="9" y="8" height="136" width="197"  name=remark_t  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=10 border="5" color="0" x="224" y="8" height="132" width="1394" format="[general]" protect="0~tif(isNull( workday ), 1, 0)"  name=remark edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes  font.face="굴림체" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif(isNull( workday ), rgb(192,192,192), rgb(255,255,255))" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="1664" y="48" height="76" width="384" format="[shortdate] [time]"  name=lastdate edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

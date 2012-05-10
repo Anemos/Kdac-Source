@@ -1,0 +1,37 @@
+$PBExportHeader$f_color_protect.srf
+$PBExportComments$Color로 Protect Set   Global Function
+global type f_color_protect from function_object
+end type
+
+forward prototypes
+global subroutine f_color_protect (datawindow adw_target)
+end prototypes
+
+global subroutine f_color_protect (datawindow adw_target);//////////////////////////////////////////////////////////////////
+// * 색깔에 따라 Protect 설정 *
+//
+//
+// 회색: 12632256(설정), 그외: (해제)       박병주 (2002.5.23)
+//////////////////////////////////////////////////////////////////
+
+
+Dec{0}	ld_ColCnt
+
+ld_ColCnt = Dec(adw_target.Object.DataWindow.Column.Count)
+
+
+Long   ll_Col, ll_BGcolor
+String ls_ModString
+
+For ll_Col = 1 To ld_ColCnt
+	If adw_target.Describe('#' + String(ll_Col) + '.Protect') = '?' Then Continue // Protect속성값이 없으면 다음칼럼으로...
+	
+	ll_BGcolor = Dec(adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color'))
+	
+	ls_ModString = "#" + String(ll_Col) + ".Protect = '" + &
+						"0 ~t if(" + String(ll_BGcolor) + " = 12632256, 1, 0)'"        // 회색
+			
+	adw_target.Modify(ls_ModString)	
+Next
+end subroutine
+

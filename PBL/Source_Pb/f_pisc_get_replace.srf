@@ -1,0 +1,55 @@
+$PBExportHeader$f_pisc_get_replace.srf
+$PBExportComments$Performs a search and replace on all occureances within a string
+global type f_pisc_get_replace from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_replace (string as_source, string as_look_for, string as_replace_with)
+end prototypes
+
+global function string f_pisc_get_replace (string as_source, string as_look_for, string as_replace_with);///////////////////////////////////////////////////////////////////////////////
+//
+// Function:	f_global_replace
+//
+//	Purpose:		as_source로 넘어온 문자열에서 as_look_for를 찾아 
+//					as_replace_with로 대치한다.
+//	 			
+//					example1: 
+//						ls_a = "우리나라대한민국"
+//						ls_c = f_get_token( ls_a,"민국", "미국" )
+//						(ls_a = "우리나라대한민국", ls_c = "우리나라대한미국" )
+//
+// Parameters:
+//					as_source				대상 문자열
+//					as_look_for				바뀌어질 문장
+//					as_replace_with		바꿀 문장
+//
+// Returns : [string]
+//
+//	DATE			NAME			REVISION
+// ----------------------------------------------------------------------------
+// PowerSoft					Initial
+//	1996-03-4	dmshin		작성
+//
+///////////////////////////////////////////////////////////////////////////////
+INT 	li_start_pos = 1
+INT	li_len_look_for		//찾을부분의 길이
+
+li_len_look_for = Len(as_look_for)
+
+//처음으로 나오는 as_look_for의 위치를 찾는다
+li_start_pos = Pos(as_source, as_look_for, li_start_pos)
+
+//as_look_for를 찾지 못할때 까지..반복
+DO WHILE li_start_pos > 0
+	//찾은 as_look_for를 as_replace_with로 바꾼다
+	as_source = Replace(as_source, li_start_pos, & 
+								li_len_look_for, as_replace_with)
+	//as_look_for의 다음 위치를 찾는다.
+	li_start_pos = Pos(as_source, as_look_for, li_start_pos + Len(as_replace_with))
+LOOP
+
+//바뀐 문자열을 반환
+RETURN as_source
+end function
+

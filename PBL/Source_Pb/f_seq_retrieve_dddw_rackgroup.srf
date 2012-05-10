@@ -1,0 +1,66 @@
+$PBExportHeader$f_seq_retrieve_dddw_rackgroup.srf
+$PBExportComments$dddw 을 조회하는 함수 - 랙그룹
+global type f_seq_retrieve_dddw_rackgroup from function_object
+end type
+
+forward prototypes
+global subroutine f_seq_retrieve_dddw_rackgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, string fs_rackgroup, boolean fb_allflag, ref string rs_rackgroup, ref string rs_rackgroupname)
+end prototypes
+
+global subroutine f_seq_retrieve_dddw_rackgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, string fs_rackgroup, boolean fb_allflag, ref string rs_rackgroup, ref string rs_rackgroupname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_rackgroup
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드
+//						string			fs_productgroup		조회하고자 하는 제품군 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 랙그룹 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (랙그룹코드는 '%', 랙그룹명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_rackgroup		선택된 랙그룹 코드 (reference)
+//						string			rs_rackgroupname	선택된 랙그룹 명 (reference)
+//	Returns		: none
+//	Description	: 랙그룹을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode, fs_productgroup, fs_rackgroup)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_rackgroup = ''
+		rs_rackgroupname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_rackgroup		= Trim(ldwc_1.GetItemString(1, 'rackgroup'))
+		rs_rackgroupname	= Trim(ldwc_1.GetItemString(1, 'rackgroupname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_rackgroup)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'rackgroupname', 30)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_rackgroup		= Trim(ldwc_1.GetItemString(1, 'rackgroup'))
+			rs_rackgroupname	= Trim(ldwc_1.GetItemString(1, 'rackgroupname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_rackgroup)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'rackgroupname', 30)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'rackgroup', 'ALL')
+			ldwc_1.Setitem(1, 'rackgroupname', '전체')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_rackgroup = '%'
+			rs_rackgroupname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'rackgroupname', 30)
+		End If
+	End If
+End If
+end subroutine

@@ -1,0 +1,69 @@
+$PBExportHeader$f_get_slno.srf
+$PBExportComments$거래명세표번호부여(지역/공장/내자/계정/년월)
+global type f_get_slno from function_object
+end type
+
+forward prototypes
+global function string f_get_slno (string ag_key)
+end prototypes
+
+global function string f_get_slno (string ag_key);string ls_year  //년월 비교
+long    li_ctlno //일련번호
+string ls_slno  //결과  
+
+// 년월과 일련번호 받아오기
+SELECT "PBINV"."INV403"."XYEAR1", "PBINV"."INV403"."SRNO"  
+    INTO :ls_year, :li_ctlno
+FROM "PBINV"."INV403"  
+WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV403"."CKEY" = :ag_key ) Using sqlca ;
+  
+if sqlca.sqlcode = 0 then
+	if ls_year  = left(g_s_date,6) then   // 년월 같으면 일련번호 증가
+	   li_ctlno = li_ctlno + 1	
+	   UPDATE "PBINV"."INV403"  
+	   SET    "SRNO"  = :li_ctlno  
+	   WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
+			   ( "PBINV"."INV403"."CKEY" = :ag_key ) Using sqlca;
+	   if sqlca.sqlcode <> 0 then
+// 		rollback using sqlca;
+	   else
+//			commit using sqlca;
+	   end if
+   else 
+		ls_year = left(g_s_date,6)		  //다른면 년월 부여 , 일련번호 부여
+		li_ctlno = 1
+		UPDATE "PBINV"."INV403"  
+	   SET    "XYEAR1" = :ls_year,   
+		 	    "SRNO"  = :li_ctlno  
+	   WHERE ("PBINV"."INV403"."COMLTD" = '01')  AND  
+			   ("PBINV"."INV403"."CKEY" = :ag_key) Using sqlca;
+	   if sqlca.sqlcode <> 0 then
+//			rollback using sqlca;
+	   else
+//			commit using sqlca;
+	   end if
+	end if
+elseif sqlca.sqlcode = 100 then //DATA NOT FOUND
+		 ls_year = left(g_s_date,6)
+		 li_ctlno = 1 
+		 INSERT INTO "PBINV"."INV403"  
+		  ( "COMLTD",   "CKEY",   "SRNO",   "JSCD",   "FROMDT",   "TODT",   "XYEAR",      "XYEAR1",   
+			 "RPFL",     "ISFL",   "RMRT",   "EXDTC",  "VANCD",    "PGMID",  "XCOMMENT",   "EXTD",   
+			 "INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",   "IPADDR",   "MACADDR" )  
+		 VALUES ( '01', :ag_key, :li_ctlno, ' ',     ' ',        ' ',      ' ',           :ls_year,   
+			 	     ' ', ' ',      ' ',      ' ',      ' ',        ' ',     ' ',           ' ',   
+		   :g_s_empno, :g_s_datetime, :g_s_empno, :g_s_datetime, :g_s_ipaddr, :g_s_macaddr ) Using sqlca ;
+		 if sqlca.sqlcode <> 0 then
+//		    rollback using sqlca;
+   	 else
+//	 	    commit using sqlca;
+	    end if
+else
+  messagebox("sql문장 오류","sql문장 오류")
+  return '0'
+end if
+ls_slno = ag_key + string(li_ctlno,"0000")
+return ls_slno
+end function
+

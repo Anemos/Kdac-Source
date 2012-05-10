@@ -1,0 +1,37 @@
+$PBExportHeader$d_comm104u_03.srd
+$PBExportComments$ÇÁ·Î±×·¥Á¶È¸
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes key=yes name=menu_cd dbname="COMM110.MENU_CD" )
+ column=(type=char(10) updatewhereclause=yes name=win_id dbname="COMM110.WIN_ID" )
+ column=(type=char(30) updatewhereclause=yes name=win_nm dbname="COMM110.WIN_NM" )
+ column=(type=char(10) updatewhereclause=yes name=win_rpt dbname="COMM110.WIN_RPT" )
+ column=(type=char(1) updatewhereclause=yes name=win_st dbname="COMM110.WIN_ST" values=" °³¹ß¿Ï·á	Y/ °³¹ßÁß	N/" )
+ retrieve="SELECT  ~"PBCOMMON~".~"COMM110~".~"MENU_CD~" ,
+        ~"PBCOMMON~".~"COMM110~".~"WIN_ID~" ,
+        ~"PBCOMMON~".~"COMM110~".~"WIN_NM~" ,
+        ~"PBCOMMON~".~"COMM110~".~"WIN_RPT~" ,
+        ~"PBCOMMON~".~"COMM110~".~"WIN_ST~"     
+   FROM ~"PBCOMMON~".~"COMM110~"      
+  WHERE {fn substring (~"PBCOMMON~".~"COMM110~".~"MENU_CD~", 1, 2)} = :ag_menu_cd2  
+ ORDER BY ~"PBCOMMON~".~"COMM110~".~"MENU_CD~"          ASC  " update="PBCOMMON.COMM110" updatewhere=0 updatekeyinplace=no arguments=(("ag_menu_cd2", string)) )
+text(band=header alignment="2" text="Window ¸í" border="0" color="16777215" x="718" y="0" height="72" width="910" html.valueishtml="0"  name=win_nm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Window Ãâ·ÂID" border="0" color="16777215" x="1637" y="0" height="72" width="512" html.valueishtml="0"  name=win_rpt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Window »óÅÂ" border="0" color="16777215" x="2158" y="0" height="72" width="389" html.valueishtml="0"  name=win_st_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1637" y="0" height="72" width="512" format="[general]" html.valueishtml="0"  name=win_rpt  tag="Ãâ·Â Window¸í" visible="1" edit.limit=10 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="2158" y="0" height="72" width="389" format="[general]" html.valueishtml="0"  name=win_st  tag="Window »óÅÂ" visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="256" format="[general]" html.valueishtml="0"  name=menu_cd  tag="MenuÄÚµå" visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="274" y="0" height="72" width="434" format="[general]" html.valueishtml="0"  name=win_id  tag="Window ID" visible="1" edit.limit=10 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="718" y="0" height="72" width="910" format=" [general]" html.valueishtml="0"  name=win_nm  tag="Window ¸í" visible="1" edit.limit=20 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Window ID" border="0" color="16777215" x="274" y="0" height="72" width="434" html.valueishtml="0"  name=win_id_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Menu" border="0" color="16777215" x="9" y="0" height="72" width="256" html.valueishtml="0"  name=menu_cd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

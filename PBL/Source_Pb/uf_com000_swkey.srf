@@ -1,0 +1,37 @@
+$PBExportHeader$uf_com000_swkey.srf
+$PBExportComments$SW KEY 전산번호 자동부여
+global type uf_com000_swkey from function_object
+end type
+
+forward prototypes
+global function integer uf_com000_swkey (string arg_yy, string arg_mm, ref string arg_csrno)
+end prototypes
+
+global function integer uf_com000_swkey (string arg_yy, string arg_mm, ref string arg_csrno);/******************************************************************/
+/* S/R Detail(SLE302)에서 년/월중 최대전산번호를 가져온다         */
+/* Argument value arg_yy     : 년도                               */
+/*          value arg_mm     : 월                                 */
+/*          ref   arg_csrno  : 전산번호                           */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Decimal ld_csrno
+
+SELECT VALUE(MAX(DEC(SUBSTR("SWKEY",4,6))),0) + 1
+  INTO :ld_csrno
+  FROM "PBCOMMON"."COMM812"
+ WHERE "COMLTD" = '01' AND
+		 SUBSTR("SWKEY",1,1)  = :arg_yy  AND
+		 SUBSTR("SWKEY",2,2)  = :arg_mm;
+
+arg_csrno = String(ld_csrno,'000000')
+
+IF Sqlca.Sqlcode <> 0  THEN
+   messagebox("확인", "정보시스템팀으로 연락바랍니다." + sqlca.sqlerrtext) 
+	RETURN -1
+END IF
+
+RETURN 1
+
+end function
+

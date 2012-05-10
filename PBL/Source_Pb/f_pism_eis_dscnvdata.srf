@@ -1,0 +1,121 @@
+$PBExportHeader$f_pism_eis_dscnvdata.srf
+global type f_pism_eis_dscnvdata from function_object
+end type
+
+forward prototypes
+global function integer f_pism_eis_dscnvdata (datastore ads_eiscnv)
+end prototypes
+
+global function integer f_pism_eis_dscnvdata (datastore ads_eiscnv);Integer li_buffer 
+Long ll_row
+DWBuffer l_buf
+DWItemStatus l_rowstatus
+String ls_sqlaction, ls_tbName, ls_PrimaryData, &
+		 ls_AreaCode, ls_divCode, ls_WorkCenter, ls_WorkDay, ls_dailyStatus 
+
+ls_tbName = ads_EIScnv.Describe("Datawindow.table.updatetable")
+ls_tbName = Upper(ls_tbName); If ls_tbName = '' Then Return -1 
+			
+li_buffer = 0
+ll_row = 0
+Do WHILE TRUE
+	IF ll_Row = 0 THEN
+		li_buffer++
+		CHOOSE CASE li_buffer
+			CASE 1
+				l_buf = delete!
+			CASE 2 
+				l_buf = primary!
+			CASE 3
+				l_buf = filter!
+			CASE 4
+				EXIT
+		END CHOOSE
+	END IF
+	IF l_buf = delete! THEN
+		IF ll_row >= ads_EIScnv.DeletedCount() THEN
+			ll_row = 0
+			CONTINUE
+		END IF
+		ll_row++
+	ELSE
+		ll_row = ads_EIScnv.GetNextModified(ll_row,l_buf)
+		IF ll_row <= 0 THEN CONTINUE
+	END IF
+	// SQL¹® °áÁ¤
+	IF l_buf = delete! THEN
+		ls_sqlaction = "DELETE"
+	ELSE
+		l_rowstatus = ads_EIScnv.GetItemStatus(ll_row, 0, l_buf)
+		CHOOSE CASE l_rowstatus
+			CASE newmodified!
+				ls_sqlaction = "INSERT"
+			CASE datamodified!
+				ls_sqlaction = "UPDATE"
+			CASE ELSE
+				CONTINUE
+		END CHOOSE				
+	END IF
+	
+//	Choose Case ls_tbName 
+//		Case 'TMHDAILYDETAIL', 'TMHDAILYSUB'  
+//			ls_AreaCode = ads_EIScnv.Object.areacode.Primary[ll_row]
+//			ls_divCode  = ads_EIScnv.Object.divisioncode.Primary[ll_row] 
+//			ls_Workcenter = ads_EIScnv.Object.workcenter.Primary[ll_row] 
+//			ls_WorkDay = ads_EIScnv.Object.workday.Primary[ll_row] 
+//			
+//			ls_dailyStatus = f_pism_getdailystatus(ls_AreaCode, ls_divCode, ls_Workcenter, ls_WorkDay) 
+//		Case Else
+//			ls_dailyStatus = '1' 
+//	End Choose 
+
+	CHOOSE CASE ls_sqlaction
+		CASE "INSERT", "UPDATE" 
+
+//			If ls_dailyStatus = '1' Then 
+				ads_EIScnv.SetItem(ll_row, "lastemp", 'Y')
+				ads_EIScnv.SetItem(ll_row, "lastdate", f_pisc_get_date_nowtime())
+//			End If 
+
+//			IF l_buf = primary! THEN
+
+	CASE "DELETE"
+			//modify("datawindow.table.updatetable = {apple}")
+			
+//			If ls_dailyStatus = '1' Then 
+				Choose Case ls_tbName 
+					Case 'TMHDAILYDETAIL' 
+						ls_primaryData  = ads_EIScnv.Object.areacode.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.divisioncode.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.workcenter.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.workday.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.empgubun.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.mhgubun.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.mhcode.Delete.original[ll_row]
+						
+					Case 'TMHDAILYSUB' 
+						
+						ls_primaryData  = ads_EIScnv.Object.areacode.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.divisioncode.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.workcenter.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.workday.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.mhgubun.Delete.original[ll_row] + '/'
+						ls_primaryData += ads_EIScnv.Object.mhcode.Delete.original[ll_row] + '/'
+						ls_primaryData += Trim(String(ads_EIScnv.Object.seqno.Delete.original[ll_row])) 
+	
+					Case Else
+				End Choose 
+				
+				If ls_PrimaryData <> '' Then 
+					INSERT INTO TDELETE ( TableName, DeleteData, DeleteTime, LastEmp )  
+						  VALUES ( :ls_tbName, :ls_PrimaryData, getdate(), :g_s_empno) Using SqlPIS ;
+					f_pism_sqlchkopt(False) 
+				End If 
+//			End IF 
+			
+	END CHOOSE 
+LOOP
+
+Return 1 
+end function
+

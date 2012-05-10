@@ -1,0 +1,69 @@
+$PBExportHeader$f_m_selectrow.srf
+$PBExportComments$<<< Bulk 입력용 >>> 박병주의 Multi-Select
+global type f_m_selectrow from function_object
+end type
+
+forward prototypes
+global subroutine f_m_selectrow (datawindow adw_dw, long al_row, long al_prerow)
+end prototypes
+
+global subroutine f_m_selectrow (datawindow adw_dw, long al_row, long al_prerow);////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * 다중 Row 선택... * <<< Bulk 입력용 >>> 
+//
+// 사용상 주의점 : 1. 이함수를 사용하게 되면 해당 DataWindow의 모든 Row가 Modified상태를 가집니다.
+//                 2. 따라서 반드시 해당 DataWindow의 모든 Row가 저장될경우(Bulk Insert)에 사용하십시요.
+//                      ---> 이경고를 무시할 경우~  저장시 황당한 꼴을 당하게 될것입니다.
+//                 3. 조회해서 수정 저장할 경우에는 f_M2_SelectRow 함수를 사용하십시요.                   
+//                 4. 그러나, 많은량의 Data를 조회시(1000건 이상) f_M2_SelectRow도 사용하지 마십시요.
+//                    화면이 일시 정지한것처럼 느껴집니다. --;
+//                    단순 조회시에는 역쉬 자체함수인 SelectRow함수가 최고임다~
+//
+// 장점 : 보기가 좋다. 앗싸!
+// 단점 : 1. 파워빌더가 지원안하는걸 자체함수로 해결하다보니 DataWindow 설정이 조금 번거롭습니다. --;
+//        2. 지원(SelectRow)함수보다 속도가 떨어집니다.(당근) ^^;
+//
+// adw_dw:    DataWindow
+// al_row:    Clicked Row
+// al_prerow: Previously Clicked Row      2002.8.21 박병주
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+If al_Row <= 0 Then Return
+
+adw_dw.SetReDraw( False )
+
+Long ll_i
+
+If KeyDown(KeyShift!) Then
+	
+	If al_preRow > 0 Then
+		For ll_i = 1 To adw_dw.RowCount( )
+			adw_dw.Object.Row_Up[ll_i] = 0
+		Next
+		
+		For ll_i = Min(al_Row, al_preRow) To Max(al_Row, al_preRow)
+			adw_dw.Object.Row_Up[ll_i] = 1
+		Next
+	Else
+		adw_dw.Object.Row_Up[al_Row] = 1
+	End If
+	
+ElseIf KeyDown(KeyControl!) Then
+	
+	If adw_dw.Object.Row_Up[al_Row] = 1 Then
+		adw_dw.Object.Row_Up[al_Row] = 0
+	Else
+		adw_dw.Object.Row_Up[al_Row] = 1
+	End If
+	
+Else	
+	For ll_i = 1 To adw_dw.RowCount( )
+		adw_dw.Object.Row_Up[ll_i] = 0			
+	Next
+		
+	adw_dw.Object.Row_Up[al_Row] = 1
+End If
+
+adw_dw.SetReDraw( True )
+end subroutine
+

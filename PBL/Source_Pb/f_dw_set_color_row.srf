@@ -1,0 +1,61 @@
+$PBExportHeader$f_dw_set_color_row.srf
+$PBExportComments$datawindow의 특정row의 글자색을 설정
+global type f_dw_set_color_row from function_object
+end type
+
+forward prototypes
+global subroutine f_dw_set_color_row (datawindow adw_1, string as_expression, long al_color_true, long al_color_false)
+end prototypes
+
+global subroutine f_dw_set_color_row (datawindow adw_1, string as_expression, long al_color_true, long al_color_false);///////////////////////////////////////////////////////////////////////
+//
+//    Function: f_dw_set_color_row
+//
+//     Purpose: row의 글자색을 특정 평가식(조건식)에 따라 바꾸고 
+//					 싶을때.
+//
+//   Arguments:  adw_1     		- 대상 Datawindow
+//               as_expression 	- row의 색을 결정할 평가식
+//               al_color_true   - 평가식의 결과가 true일때의 색
+//               al_color_false  - 평가식의 결과가 false일때의 색
+//
+//     Returns:  [none]
+//
+// Log : 
+//
+//   DATE         WHO        WHAT
+//  --------     -----      -------------------------------------------
+//
+////////////////////////////////////////////////////////////////////////
+STRING		ls_txt				//Modify String
+STRING		ls_resp				//Modify()의 return value
+STRING		ls_objects[]		//전체 column object list
+STRING		ls_column			//column name
+INTEGER		li_num_objects		//전체column object 갯수
+INTEGER		li_i				
+
+//글자색을 결정할 평가식(조건식)
+as_expression = ".color = ~"0~~t if(" + as_expression + "," + &
+				  String(al_color_true) + "," + String( al_color_false)+ ")~""
+
+//대상 datawindow의 전체 column object list와 갯수를 구함
+li_num_objects = f_dw_get_objects(adw_1,ls_objects,"column","*")
+
+FOR li_i = 1 TO li_num_objects
+	//하나의 column name을 취함
+	ls_column = ls_objects[li_i]
+
+	//column이 visible한 경우만 글자색 설정
+	IF "1" = adw_1.Describe(ls_column+".Visible") THEN
+		ls_txt = ls_txt + " "+ ls_column + as_expression
+	END IF
+NEXT
+
+//Modify
+ls_resp = adw_1.Modify(ls_txt)
+
+IF ls_resp <> "" THEN 
+	MessageBox("f_dw_set_color_row", ls_resp + "~r~n"+ ls_txt)
+END IF
+end subroutine
+

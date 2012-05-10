@@ -1,0 +1,12 @@
+$PBExportHeader$str_cmms_partkb.srs
+$PBExportComments$외주간판 PK
+global type str_cmms_partkb from structure
+	string		areacode
+	string		divcode
+	string		suppcode
+	string		itemcode
+	integer		flag
+	string		applydate
+	string		remark
+end type
+

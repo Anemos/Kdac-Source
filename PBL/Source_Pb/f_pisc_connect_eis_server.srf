@@ -1,0 +1,48 @@
+$PBExportHeader$f_pisc_connect_eis_server.srf
+global type f_pisc_connect_eis_server from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_connect_eis_server (ref transaction rt_source)
+end prototypes
+
+global function boolean f_pisc_connect_eis_server (ref transaction rt_source);// Host¿Í IPIS server connection check
+
+UnsignedLong	ul_handle1
+Boolean			lb_connect
+Int li_error = 0
+
+if isvalid(rt_source) then
+	ul_handle1 = rt_source.DBHandle()
+	If isnull(ul_handle1) then ul_handle1 = 0
+else
+	ul_handle1 = 0
+end if
+
+If ul_handle1 > 0 Then
+		Return True	
+Else
+	f_pisc_disconnect_eis_server(rt_source)
+
+	//rt_source will be the source transaction
+	rt_source = Create Transaction
+	
+	rt_source.ServerName = ProfileString(gs_inifile,'DATABASE_EIS',"ServerName",	" ")
+	rt_source.DBMS       = ProfileString(gs_inifile,'DATABASE_EIS',"DBMS",			" ")
+	rt_source.Database   = ProfileString(gs_inifile, "DATABASE_EIS", "DataBase",         " ")
+	rt_source.LogID      = ProfileString(gs_inifile,'DATABASE_EIS',"LogId",			" ")
+	rt_source.LogPass    = trim(ProfileString(gs_inifile,'DATABASE_EIS',"LogPass",		" "))
+	rt_source.DbParm     = "appname='EIS for KDAC', host='eis_server', CommitOnDisconnect='No'"
+	rt_source.AutoCommit = True
+
+	Connect Using rt_source;
+	If rt_source.sqlcode <> 0 then 
+		Messagebox("Source Connect Error", rt_source.sqlerrtext)
+		li_error = rt_source.sqlcode
+		return false
+	End If
+	
+	Return true
+End If	
+end function
+

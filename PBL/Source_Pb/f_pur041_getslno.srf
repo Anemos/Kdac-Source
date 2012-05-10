@@ -1,0 +1,80 @@
+$PBExportHeader$f_pur041_getslno.srf
+$PBExportComments$거래명세번호가져오기(부서)
+global type f_pur041_getslno from function_object
+end type
+
+forward prototypes
+global function string f_pur041_getslno (string as_dept)
+end prototypes
+
+global function string f_pur041_getslno (string as_dept);//////////////////////////////////////////////////
+// 거래명세표(증빙서서) 번호 구하기
+//		- 검수입고시 자동 부여
+//    - xxxx - xxx - xxxx
+//      부서코드 - 년월 - 시리얼
+/////////////////////////////////////////////////
+
+String ls_xyear //년월 비교
+long  ln_ctlno //일련번호
+string ls_rqno //rqno + 부서코드
+string ls_return //결과 
+
+ls_rqno = trim(mid(as_dept,1,2) + '00' + mid(g_s_date,4,3))
+// Control DB
+SELECT "PBINV"."INV403"."XYEAR1", "PBINV"."INV403"."SRNO"  
+    INTO :ls_xyear, :ln_ctlno
+ FROM "PBINV"."INV403"  
+WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV403"."CKEY" = :ls_rqno ) Using sqlca ;  
+		
+IF sqlca.sqlcode = 0 Then
+  IF ls_xyear = left(g_s_date,6) Then   // 년월 같으면 일련번호 증가
+	  ln_ctlno = ln_ctlno + 1	   
+  Else
+	 ls_xyear = left(g_s_date,6)		//다른면 년월 부여 , 일련번호 부여
+	 ln_ctlno = 1	 
+  End IF
+
+// Control DB
+ UPDATE "PBINV"."INV403"  
+  SET "XYEAR1" = :ls_xyear,   
+		"SRNO" = :ln_ctlno  
+ WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
+		 ( "PBINV"."INV403"."CKEY" = :ls_rqno ) Using sqlca;		 
+ IF sqlca.sqlcode <> 0 Then
+	Rollback using sqlca;
+	MessageBox("SQL error/" +string(sqlca.sqlcode), SQLCA.SQLErrText)
+	Return "er"
+ End IF
+
+ ls_return = mid(as_dept,1,2) + '00'  + mid(g_s_date,4,3) + string(ln_ctlno,"0000")
+	
+ElseIF sqlca.sqlcode = 100 Then //DATA NOT FOUND
+	ls_return =  mid(as_dept,1,2) + '00'  + mid(g_s_date,4,3) + string(1,"0000")//전표번호
+	ls_xyear  = left(g_s_date,6)
+	ln_ctlno  = 1
+	// Control DB
+   INSERT INTO "PBINV"."INV403"  
+    ( "COMLTD",   "CKEY",   "SRNO",   "JSCD",   "FROMDT",   "TODT",   "XYEAR",      "XYEAR1",   
+      "RPFL",     "ISFL",   "RMRT",   "EXDTC",  "VANCD",    "PGMID",  "XCOMMENT",   "EXTD",   
+      "INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",   "IPADDR",   "MACADDR" )  
+   VALUES ( '01',      :ls_rqno,  :ln_ctlno, ' ',     ' ',        ' ',     ' ',    :ls_xyear,   
+           ' ',       ' ',       ' ',       ' ',     ' ',        ' ',     ' ',           ' ',   
+    :g_s_empno, :g_s_datetime, :g_s_empno, :g_s_datetime, :g_s_ipaddr, :g_s_macaddr ) Using sqlca ;
+
+   IF sqlca.sqlcode <> 0 Then
+	   Rollback using sqlca;
+		MessageBox("SQL error/" +string(sqlca.sqlcode), SQLCA.SQLErrText)
+		Return "ERROR"
+   End IF
+Else
+	MessageBox("SQL error/" +string(sqlca.sqlcode), SQLCA.SQLErrText)
+	return 'ERROR'
+End IF
+if isnull(ls_return) then
+	ls_return = ''
+end if
+return ls_return
+
+end function
+

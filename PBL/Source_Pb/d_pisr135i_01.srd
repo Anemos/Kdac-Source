@@ -1,0 +1,84 @@
+$PBExportHeader$d_pisr135i_01.srd
+$PBExportComments$사급품반출증발행현황
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=136 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=no name=divisioncode dbname="DivisionCode" )
+ column=(type=char(11) updatewhereclause=no name=buybackno dbname="BuyBackNo" )
+ column=(type=char(5) updatewhereclause=no name=buybackdept dbname="BuyBackDept" )
+ column=(type=char(5) updatewhereclause=no name=buybacksupplier dbname="BuyBackSupplier" )
+ column=(type=char(6) updatewhereclause=no name=buybackemp dbname="BuyBackEmp" )
+ column=(type=datetime updatewhereclause=no name=buybacktime dbname="BuyBackTime" )
+ column=(type=char(10) updatewhereclause=no name=buybackdate dbname="BuyBackDate" )
+ column=(type=char(6) updatewhereclause=no name=approvalemp dbname="ApprovalEmp" )
+ column=(type=datetime updatewhereclause=no name=approvaltime dbname="ApprovalTime" )
+ column=(type=char(20) updatewhereclause=no name=carno dbname="CarNo" )
+ column=(type=char(10) updatewhereclause=no name=takingname dbname="TakingName" )
+ column=(type=char(6) updatewhereclause=no name=outemp dbname="OutEmp" )
+ column=(type=datetime updatewhereclause=no name=outtime dbname="OutTime" )
+ column=(type=char(1) updatewhereclause=no name=statusflag dbname="StatusFlag" values="입력	A/확정요청	1/확정	2/승인요청	3/승인	C/" )
+ column=(type=char(50) updatewhereclause=no name=remark01 dbname="Remark01" )
+ column=(type=char(50) updatewhereclause=no name=remark02 dbname="Remark02" )
+ column=(type=char(6) updatewhereclause=no name=lastemp dbname="LastEmp" )
+ column=(type=datetime updatewhereclause=no name=lastdate dbname="LastDate" )
+ column=(type=char(10) updatewhereclause=no name=supplierno dbname="SupplierNo" )
+ column=(type=char(50) updatewhereclause=no name=supplierkorname dbname="SupplierKorName" )
+ column=(type=char(1) updatewhereclause=no name=backcheck dbname="BackCheck" values="수작업	R/직반출	D/사내반출	C/정상반출	A/" )
+ procedure="1 execute dbo.sp_pisr135i_01;1 @ps_areacode = :ps_areacode, @ps_divcode = :ps_divcode, @ps_deptcode = :ps_deptcode, @ps_suppcode = :ps_suppcode, @ps_applyfrom = :ps_applyfrom, @ps_applyto = :ps_applyto" arguments=(("ps_areacode", string),("ps_divcode", string),("ps_deptcode", string),("ps_suppcode", string),("ps_applyfrom", string),("ps_applyto", string))  sort="buybacktime D " )
+text(band=header alignment="2" text="반출부서
+코드" border="0" color="16777215" x="1179" y="8" height="120" width="293" html.valueishtml="0"  name=buybackdept_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반출처
+코드" border="0" color="16777215" x="1481" y="8" height="120" width="229" html.valueishtml="0"  name=buybacksupplier_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="작성자
+사번" border="0" color="16777215" x="2368" y="8" height="120" width="265" html.valueishtml="0"  name=buybackemp_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="작성
+일자/시간" border="0" color="16777215" x="2642" y="8" height="120" width="576" html.valueishtml="0"  name=buybacktime_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="발행일자
+" border="0" color="16777215" x="3227" y="8" height="120" width="347" html.valueishtml="0"  name=buybackdate_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="승인자
+사번" border="0" color="16777215" x="3584" y="8" height="120" width="261" html.valueishtml="0"  name=approvalemp_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="승인
+일자/시간" border="0" color="16777215" x="3854" y="8" height="120" width="553" html.valueishtml="0"  name=approvaltime_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="차량번호
+" border="0" color="16777215" x="4416" y="8" height="120" width="530" html.valueishtml="0"  name=carno_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="인수자
+" border="0" color="16777215" x="4955" y="8" height="120" width="320" html.valueishtml="0"  name=takingname_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="정문통과
+코드" border="0" color="16777215" x="5285" y="8" height="120" width="329" html.valueishtml="0"  name=outemp_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="정문통과
+일자/시간" border="0" color="16777215" x="5623" y="8" height="120" width="603" html.valueishtml="0"  name=outtime_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="승인자의견
+" border="0" color="16777215" x="6985" y="4" height="120" width="759" html.valueishtml="0"  name=remark02_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반출처명
+" border="0" color="16777215" x="1719" y="8" height="120" width="640" html.valueishtml="0"  name=supplierkorname_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="상태
+" border="0" color="16777215" x="9" y="8" height="120" width="329" html.valueishtml="0"  name=statusflag_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반출사유및특기사항
+" border="0" color="16777215" x="6235" y="8" height="120" width="741" html.valueishtml="0"  name=remark01_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1179" y="8" height="76" width="293" format="[general]" html.valueishtml="0"  name=buybackdept visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="1481" y="8" height="76" width="229" format="[general]" html.valueishtml="0"  name=buybacksupplier visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="2368" y="8" height="76" width="265" format="[general]" html.valueishtml="0"  name=buybackemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="2642" y="8" height="76" width="576" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=buybacktime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="3227" y="8" height="76" width="347" format="[general]" html.valueishtml="0"  name=buybackdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="3584" y="8" height="76" width="261" format="[general]" html.valueishtml="0"  name=approvalemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="3854" y="8" height="76" width="553" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=approvaltime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="4416" y="8" height="76" width="530" format="[general]" html.valueishtml="0"  name=carno visible="1" edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="4955" y="8" height="76" width="320" format="[general]" html.valueishtml="0"  name=takingname visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="0" x="5285" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=outemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="5623" y="8" height="76" width="603" format="yyyy.mm.dd hh:mm" html.valueishtml="0"  name=outtime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="329" format="[general]" html.valueishtml="0"  name=statusflag visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="6235" y="8" height="76" width="741" format="[general]" html.valueishtml="0"  name=remark01 visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="0" x="6985" y="8" height="76" width="759" format="[general]" html.valueishtml="0"  name=remark02 visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="0" x="1719" y="8" height="76" width="640" format="[general]" html.valueishtml="0"  name=supplierkorname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="695" y="8" height="76" width="475" format="@@@@-@@@-@@@@" html.valueishtml="0"  name=buybackno visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="2" tabsequence=0 border="0" color="0" x="352" y="8" height="76" width="338" html.valueishtml="0"  name=backcheck visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="발행번호
+" border="0" color="16777215" x="695" y="8" height="120" width="475" html.valueishtml="0"  name=buybackno_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반출구분" border="0" color="16777215" x="347" y="8" height="120" width="343" html.valueishtml="0"  name=backcheck_t visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

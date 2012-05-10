@@ -1,0 +1,98 @@
+$PBExportHeader$f_chk_bom.srf
+$PBExportComments$BOM Looping Check ÇÔ¼ö
+global type f_chk_bom from function_object
+end type
+
+forward prototypes
+global function integer f_chk_bom (string a_plant, string a_div, string a_pitno, string a_citno)
+end prototypes
+
+global function integer f_chk_bom (string a_plant, string a_div, string a_pitno, string a_citno);string  l_s_pitno , l_s_citno , l_s_itno[50,300], l_s_chkit
+integer i , j , k , p , a_chk ,l_n_cnt
+
+i = 0 
+j = 0 
+k = 0 
+p = 0
+
+l_s_chkit = trim(a_citno)
+l_s_pitno = trim(a_pitno)
+a_chk = 0
+
+select count(*) into : l_n_cnt from "PBINV"."INV101"
+  where   "PBINV"."INV101"."XPLANT" = :a_plant and
+          "PBINV"."INV101"."DIV" = :a_div and "PBINV"."INV101"."ITNO" = :l_s_chkit and
+			 "PBINV"."INV101"."CLS" IN ('10','20','40','50') 
+using sqlca;
+
+// if l_n_cnt = 0 and a_div <> 'N' then
+if l_n_cnt = 0  then
+	a_chk = 1
+   return a_chk
+end if
+
+
+declare bomchk_cur cursor for 
+  select "PBPDM"."BOM001"."PPITN" from "PBPDM"."BOM001"
+     where "PBPDM"."BOM001"."PCITN" = :l_s_pitno and
+           "PBPDM"."BOM001"."PDVSN" = :a_div AND  
+			  "PBPDM"."BOM001"."PLANT" = :a_plant AND  
+           ( ("PBPDM"."BOM001"."PEDTM" <= "PBPDM"."BOM001"."PEDTE" AND "PBPDM"."BOM001"."PEDTE" <> ' ' AND "PBPDM"."BOM001"."PEDTE" >= :g_s_date )
+             OR  
+           ( "PBPDM"."BOM001"."PEDTE" = ' ' AND "PBPDM"."BOM001"."PEDTM" <= :g_s_date ))
+
+     using SQLCA ;
+
+open bomchk_cur ;
+  do while true
+    fetch bomchk_cur into :l_s_citno ;
+    if sqlca.sqlcode <> 0 then
+		exit
+	 end if 
+	 i = 1
+    k = k + 1
+    l_s_itno[i,k] = trim(l_s_citno)
+	 if l_s_itno[i,k] = l_s_chkit then
+		 close bomchk_cur ;
+       a_chk = 1
+       return a_chk
+    end if
+  loop
+close bomchk_cur ;
+if k < 1 then
+	close bomchk_cur ;
+	a_chk = 0 
+	return a_chk
+end if
+
+///  First Step Finish
+  
+for i = 1 to 50
+  for j = 1 to k
+      l_s_pitno = l_s_itno[i,j]
+		open bomchk_cur ;
+      do while true
+        fetch bomchk_cur into: l_s_citno;
+		  if sqlca.sqlcode <> 0 then			  
+           exit
+        end if
+        p = p + 1
+        l_s_itno[i+1,p] = trim(l_s_citno)
+        if l_s_itno[i+1,p] = l_s_chkit then
+           close bomchk_cur ;
+			  a_chk = 1
+           return a_chk
+        end if
+      loop
+		close bomchk_cur;
+  next 
+  if p = 0 then
+	  return a_chk
+  end if
+  k = p
+  p = 0
+next
+return a_chk
+ 
+end function
+

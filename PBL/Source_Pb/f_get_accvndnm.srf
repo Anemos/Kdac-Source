@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_accvndnm.srf
+$PBExportComments$¾÷Ã¼¸íÄª return
+global type f_get_accvndnm from function_object
+end type
+
+forward prototypes
+global function string f_get_accvndnm (string a_s_company, string a_vsrno)
+end prototypes
+
+global function string f_get_accvndnm (string a_s_company, string a_vsrno);string l_s_vndnm
+
+SELECT "PBACC"."ACC020"."CUNAME"  
+  INTO :l_s_vndnm
+FROM   "PBACC"."ACC020" 
+WHERE  "PBACC"."ACC020"."COMLTD" = :a_s_company and
+       "PBACC"."ACC020"."CUCODE" = :a_vsrno     using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_vndnm = " "
+end if
+ 
+return l_s_vndnm
+ 
+end function
+

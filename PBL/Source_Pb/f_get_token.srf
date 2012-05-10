@@ -1,0 +1,55 @@
+$PBExportHeader$f_get_token.srf
+$PBExportComments$General string parser
+global type f_get_token from function_object
+end type
+
+forward prototypes
+global function string f_get_token (ref string as_source, string as_separator)
+end prototypes
+
+global function string f_get_token (ref string as_source, string as_separator);///////////////////////////////////////////////////////////////////////////////
+//
+// Function:	f_get_token
+//
+//	Purpose:		대상 문자열(as_source)중에서 구분자(as_separator)앞까지를 
+//					잘라낼때 사용한다.대상 문자열에 구분자가 없으면 전체 문자열을
+//					반환한다. 
+//					인수로 넘어온 대상 문자열(as_source)는 반환문자열과 구분자가 
+//					빠짐체로 반환된다
+//	 			
+//					example1: 
+//						ls_a = "우리나라~t대한민국"
+//						ls_c = f_get_token( ls_a,"~t" )
+//						(ls_a = "대한민국", ls_c = "우리나라" )
+//
+// Parameters:
+//					as_source			대상 문자열
+//					as_separator		구분자
+//
+// Returns : [string]
+//
+//	DATE			NAME			REVISION
+// ----------------------------------------------------------------------------
+// PowerSoft					Initial
+//	1996-03-4	dmshin		작성
+//
+///////////////////////////////////////////////////////////////////////////////
+INTEGER		li_p			//구분자의 맨처음 위치
+STRING		ls_ret		//반환할 문자열
+
+//대상(source) 문자열내의 구분자(seperator)의 위치를 구한다
+li_p = Pos(as_source, as_separator)	
+
+IF li_p = 0 THEN					// 구분자(seperator)가 없으면, 
+	ls_ret = as_source			// 넘어온 대상문자열을 그대로 반환하고
+	as_source = ""					// 원 문자열은 공백으로 만든다
+ELSE
+	//구분자가 있으면,구분자전까지의 문자열을 반환하고
+	ls_ret = Left(as_source, li_p - 1)	
+   //원 문자열을 구분자 이후부터의 문자열로 만든다
+	as_source = Right(as_source, Len(as_source) - li_p - Len(as_separator) + 1)
+END IF
+
+RETURN ls_ret
+end function
+

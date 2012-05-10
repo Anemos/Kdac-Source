@@ -1,0 +1,18 @@
+$PBExportHeader$d_piss360u_01.srd
+$PBExportComments$ÇöÇ°Ç¥Ãë¼Ò
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(12) updatewhereclause=yes name=itemcode dbname="itemcode" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="itemname" )
+ procedure="1 execute dbo.sp_piss360u_01;1 @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_productgroup = :ps_productgroup, @ps_modelgroup = :ps_modelgroup, @ps_itemcode = :ps_itemcode" arguments=(("ps_areacode", string),("ps_divisioncode", string),("ps_productgroup", string),("ps_modelgroup", string),("ps_itemcode", string)) )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="9" y="8" height="60" width="475" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="494" y="8" height="60" width="1330" html.valueishtml="0"  name=itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="60" width="475" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="494" y="4" height="60" width="1330" format="[general]" html.valueishtml="0"  name=itemname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

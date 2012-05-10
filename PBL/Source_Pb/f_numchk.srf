@@ -1,0 +1,35 @@
+$PBExportHeader$f_numchk.srf
+$PBExportComments$숫자 Check
+global type f_numchk from function_object
+end type
+
+forward prototypes
+global function integer f_numchk (string ag_value)
+end prototypes
+
+global function integer f_numchk (string ag_value);///////////////////////////////////////////////////////////////
+// 기능 : Check Item이 Non-Numeric or Null or "" 이면 -1 return
+//        				  정상이면         0 return
+//
+//        input : string
+///////////////////////////////////////////////////////////////
+int l_n_forcnt
+
+if isNull(ag_value)    = True  or  &
+   Len(Trim(ag_value)) = 0     then
+   Return -1
+end if
+
+// Asc("0") => 48, Asc("9") => 57
+For l_n_forcnt = 1 to len(ag_value)
+	if (Asc(mid(ag_value, l_n_forcnt, 1)) > 47	and &
+		 Asc(mid(ag_value, l_n_forcnt, 1)) < 58)	then
+		continue
+	else
+		return -1
+	end if
+next
+
+return 0
+end function
+

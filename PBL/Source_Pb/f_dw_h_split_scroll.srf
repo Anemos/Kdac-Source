@@ -1,0 +1,36 @@
+$PBExportHeader$f_dw_h_split_scroll.srf
+$PBExportComments$ GRID로 생성된 Datawinodw Control에 대해 특정 column부터 화면을 Split시키는 것이다.
+global type f_dw_h_split_scroll from function_object
+end type
+
+forward prototypes
+global subroutine f_dw_h_split_scroll (datawindow adw_1, string as_column)
+end prototypes
+
+global subroutine f_dw_h_split_scroll (datawindow adw_1, string as_column);///////////////////////////////////////////////////////////////////////////////
+//
+//  Function : f_dw_h_split_scroll
+//
+//   Purpose : GRID로 생성된 Datawinodw Control에 대해 특정 column부터
+//	            화면을 Split시키는 것이다.
+//
+// Arguments : adw_1		 			- 대상 datawindow
+//					as_column 			- split시킬 column
+//
+//   Returns : [none]
+//
+//       Log :
+//             DATE        WHO           WHAT
+//            ------      -----     -------------------------------------------
+//					1996-09-05	dmshin		작성
+//
+//////////////////////////////////////////////////////////////////////////
+STRING		ls_x
+
+ls_x = adw_1.Describe(as_column + ".x")
+
+adw_1.Modify("DataWindow.HorizontalScrollSplit=" + ls_x)
+
+
+end subroutine
+

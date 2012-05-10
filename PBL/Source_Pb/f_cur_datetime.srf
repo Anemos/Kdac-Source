@@ -1,0 +1,21 @@
+$PBExportHeader$f_cur_datetime.srf
+$PBExportComments$현재 날짜와 시간 Return (Server 기준)
+global type f_cur_datetime from function_object
+end type
+
+forward prototypes
+global function string f_cur_datetime ()
+end prototypes
+
+global function string f_cur_datetime ();datetime ld_datetime
+
+select current_timestamp into :ld_datetime
+from   "PBCOMMON"."COMM000" using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	select current_timestamp into :ld_datetime from comm122 using sqlpis ;
+end if
+
+Return string(ld_datetime,'YYYY-MM-DD HH:MM:SS')
+end function
+

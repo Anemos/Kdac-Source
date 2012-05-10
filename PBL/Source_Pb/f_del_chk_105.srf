@@ -1,0 +1,30 @@
+$PBExportHeader$f_del_chk_105.srf
+$PBExportComments$간판진행 간판번호인지 .Check
+global type f_del_chk_105 from function_object
+end type
+
+forward prototypes
+global function integer f_del_chk_105 (string as_kbno)
+end prototypes
+
+global function integer f_del_chk_105 (string as_kbno);//////////////////////////////////////////////////
+// * 삭제할려는 품번이 간판진행품목인지 Check *
+//
+//	Return: 1(진행), 0(미진행)
+//////////////////////////////////////////////////
+
+
+Int    li_Rtn, li_cnt
+SELECT COUNT(*) INTO :li_cnt
+  FROM "PBINV"."INV105"
+WHERE "COMLTD" = '01'   AND "KBNO" = :as_kbno AND "STCD"   = 'A'  Using SQLCA ;
+
+If SQLCA.SQLCode <> 0 Then Return 0
+
+If li_cnt <= 0 Then
+	Return 0
+Else
+	Return 1
+End If
+end function
+

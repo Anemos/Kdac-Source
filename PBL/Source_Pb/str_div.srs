@@ -1,0 +1,7 @@
+$PBExportHeader$str_div.srs
+$PBExportComments$°øÀå Structure Object
+global type str_div from structure
+	string		xdiv[]
+	string		runcd
+end type
+

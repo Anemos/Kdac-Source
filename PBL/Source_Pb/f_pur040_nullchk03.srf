@@ -1,0 +1,38 @@
+$PBExportHeader$f_pur040_nullchk03.srf
+$PBExportComments$전체row,null값을 char = ' ', number = 0 Setting(datawindow)
+global type f_pur040_nullchk03 from function_object
+end type
+
+forward prototypes
+global subroutine f_pur040_nullchk03 (datawindow arg_dw)
+end prototypes
+
+global subroutine f_pur040_nullchk03 (datawindow arg_dw);//저장할려고 하는 Datawindow의 Column중에 Null값이 있으면 Space OR 0으로 Setting
+String     ls_colcount, ls_value, ls_coltype
+Long       ll_row = 0, ii, ll_rowcount
+Any        la_colvalue
+
+ls_colcount = arg_dw.Object.DataWindow.Column.Count
+ll_rowcount = arg_dw.RowCount()
+For ll_row = 1 to ll_rowcount
+	FOR  ii = 1  TO Dec(ls_colcount)
+     ls_coltype  = arg_dw.Describe("#" + String(ii) + ".ColType")
+     ls_coltype  = LEFT(ls_coltype,3)
+	  CHOOSE CASE Upper(ls_coltype)
+		  CASE "CHA"          //Char는 Space로 Setting
+           la_colvalue = arg_dw.GetItemString(ll_row, ii)
+			  IF IsNull(la_colvalue) THEN
+				  arg_dw.SetItem(ll_row,ii,'')
+			  END IF
+		  CASE "NUM", "DEC"   //Number는 0으로 Setting
+           la_colvalue = arg_dw.GetItemDecimal(ll_row, ii)
+			  IF IsNull(la_colvalue) THEN
+				  arg_dw.SetItem(ll_row,ii,0)
+			  END IF
+	  END CHOOSE
+	NEXT
+Next
+
+
+end subroutine
+

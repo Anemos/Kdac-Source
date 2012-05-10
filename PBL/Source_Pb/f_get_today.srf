@@ -1,0 +1,31 @@
+$PBExportHeader$f_get_today.srf
+$PBExportComments$Get today(날자 변경 시각을 고려한 일자) - (arg string fs_plantcode, Return string)
+global type f_get_today from function_object
+end type
+
+forward prototypes
+global function string f_get_today (string fs_plantcode)
+end prototypes
+
+global function string f_get_today (string fs_plantcode);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_today
+//	Access		: public
+//	Arguments	: String fs_plantcode	ModuleCode
+//	Returns		: String ls_today		적용일자
+//	Description	: 날자 변경 시각을 고려하여 현재의 적용일자를 계산한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 20
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+String	ls_today
+
+SetNull(ls_today)
+
+Select	distinct Convert(Char(8), GetDate(), 112)
+  Into	:ls_today From sysusers
+  using sqlcmms;
+ 
+Return ls_today
+end function
+

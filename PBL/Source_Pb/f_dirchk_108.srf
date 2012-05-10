@@ -1,0 +1,31 @@
+$PBExportHeader$f_dirchk_108.srf
+$PBExportComments$간판진행 간판번호인지 .Check
+global type f_dirchk_108 from function_object
+end type
+
+forward prototypes
+global function integer f_dirchk_108 (string as_xplant, string as_div, string as_itno, string as_stop, string as_dircd)
+end prototypes
+
+global function integer f_dirchk_108 (string as_xplant, string as_div, string as_itno, string as_stop, string as_dircd);//////////////////////////////////////////////////
+// * 해당품번에 대한 직반출품목 및 중단 품목수 *
+//
+//	Return: 해당품목수
+//////////////////////////////////////////////////
+
+
+Int   li_cnt
+
+SELECT COUNT(*) INTO :li_cnt
+  FROM "PBINV"."INV108"
+WHERE "COMLTD" = '01'   AND "XPLANT" = :as_xplant 
+	AND "DIV" = :as_div  AND "ITNO" = :as_itno
+	AND "STOP" LIKE :as_stop || '%' AND "KBCD" <> 'K'
+	AND "DIRCD" LIKE :as_dircd || '%' 
+	Using SQLCA ;
+
+If SQLCA.SQLCode <> 0 Then Return 0
+
+return li_cnt
+end function
+

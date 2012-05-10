@@ -1,0 +1,186 @@
+$PBExportHeader$d_pism010u_01_1p.srd
+$PBExportComments$작업일보 - Report (갑지용)
+release 7;
+datawindow(units=3 timer_interval=0 color=1090519039 processing=0 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 635 print.margin.right = 635 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no rows_per_detail = 2 )
+header(height=1957 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=1296 color="536870912" )
+detail(height=19393 color="536870912"  height.autosize=yes)
+table(column=(type=char(1) updatewhereclause=yes name=tmhdaily_areacode dbname="TMHDAILY.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmhdaily_divisioncode dbname="TMHDAILY.DivisionCode" )
+ column=(type=char(5) updatewhereclause=yes name=tmhdaily_workcenter dbname="TMHDAILY.WorkCenter" )
+ column=(type=char(10) updatewhereclause=yes name=tmhdaily_workday dbname="TMHDAILY.WorkDay" )
+ column=(type=char(1) updatewhereclause=yes name=tmhdaily_empgubun dbname="TMHDAILY.EmpGubun" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_totmh dbname="TMHDAILY.totMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_jungsimh dbname="TMHDAILY.jungsiMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_msuppmh dbname="TMHDAILY.mSuppMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_psuppmh dbname="TMHDAILY.pSuppMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_etcmh dbname="TMHDAILY.etcMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_etcmsuppmh dbname="TMHDAILY.etcmSuppMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_etcpsuppmh dbname="TMHDAILY.etcpSuppMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_excunpaidmh dbname="TMHDAILY.excunpaidMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_excpaidmh dbname="TMHDAILY.excpaidMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_totinmh dbname="TMHDAILY.totInMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_guntemh dbname="TMHDAILY.gunteMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_ilbomh dbname="TMHDAILY.ilboMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_bugamh dbname="TMHDAILY.bugaMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhdaily_actinmh dbname="TMHDAILY.ActInMH" )
+ column=(type=char(6) updatewhereclause=yes name=tmhdaily_lastemp dbname="TMHDAILY.LastEmp" )
+ column=(type=datetime updatewhereclause=yes name=tmhdaily_lastdate dbname="TMHDAILY.LastDate" )
+ column=(type=char(100) updatewhereclause=yes name=tmhdailystatus_remark dbname="TMHDAILYSTATUS.Remark" )
+ retrieve="  SELECT A.AreaCode,   
+         A.DivisionCode,   
+         A.WorkCenter,   
+         A.WorkDay,   
+         A.EmpGubun,   
+         A.totMH, 
+         A.jungsiMH,   
+         A.mSuppMH,   
+         A.pSuppMH,   
+         A.etcMH,   
+         A.etcmSuppMH,   
+         A.etcpSuppMH,   
+         A.excunpaidMH,   
+         A.excpaidMH,   
+         A.totInMH,   
+         A.gunteMH,   
+         A.ilboMH,   
+         A.bugaMH,   
+         A.ActInMH, 
+			A.LastEmp, 
+			A.LastDate, 
+			B.Remark 
+    FROM TMHDAILY A, 
+			TMHDAILYSTATUS B 
+   WHERE ( A.AreaCode = B.AreaCode ) And 
+			( A.DivisionCode = B.DivisionCode ) And 
+			( A.WorkCenter = B.WorkCenter ) And 
+			( A.workDay = B.WorkDay ) And 
+			( ( A.AreaCode = :as_area ) AND  
+           ( A.DivisionCode = :as_div ) AND  
+           ( A.WorkCenter = :as_wc ) AND  
+           ( A.WorkDay = :as_wday ) ) 
+" arguments=(("as_area", string),("as_div", string),("as_wc", string),("as_wday", string)) )
+text(band=header alignment="2" text="작  업  일  보" border="0" color="0" x="12435" y="105" height="873" width="7778"  name=t_24  font.face="굴림체" font.height="-22" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+groupbox(band=header text=""border="2" color="0" x="26246" y="158" height="1772" width="1481"  name=gb_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="조 장" border="2" color="0" x="26246" y="158" height="396" width="1481"  name=t_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+groupbox(band=header text=""border="2" color="0" x="27754" y="158" height="1772" width="1481"  name=gb_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="직 장" border="2" color="0" x="27754" y="158" height="396" width="1481"  name=t_4  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+groupbox(band=header text=""border="2" color="0" x="29262" y="158" height="1772" width="1481"  name=gb_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="과 장" border="2" color="0" x="29262" y="158" height="396" width="1481"  name=t_5  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+groupbox(band=header text=""border="2" color="0" x="31141" y="158" height="1772" width="1481"  name=gb_4  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="입 력" border="2" color="0" x="31141" y="158" height="396" width="1481"  name=t_6  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="
+결
+
+재" border="2" color="0" x="25664" y="158" height="1772" width="555"  name=t_7  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+report(band=header dataobject="d_pism010u_01p_title" x="0" y="211" height="1693" width="6905" border="0" criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday ")) trail_footer = yes  name=dw_6  slideup=directlyabove )
+text(band=detail alignment="2" text="총원*8" border="0" color="0" x="1640" y="1508" height="343" width="926"  name=t_14  font.face="굴림체" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="정규" border="0" color="0" x="1719" y="873" height="396" width="740"  name=t_15  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="파견,지원" border="0" color="0" x="2804" y="768" height="343" width="1402"  name=t_104  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="받
+음" border="0" color="0" x="3624" y="1270" height="793" width="661"  name=t_30  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="해
+줌" border="0" color="0" x="2725" y="1270" height="793" width="661"  name=t_29  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="정시공수(a)" border="0" color="0" x="1719" y="133" height="396" width="2460"  name=t_22  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="구 분" border="0" color="0" x="264" y="1006" height="396" width="1031"  name=t_11  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="정 규" border="0" color="0" x="264" y="2382" height="343" width="1084"  name=t_8  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="20452" y1="715" x2="30427" y2="715"  name=l_30 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="일보사고공수(h)" border="0" color="0" x="25638" y="238" height="396" width="2778"  name=t_21  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="기 타" border="0" color="0" x="264" y="2937" height="343" width="1084"  name=t_9  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="계" border="0" color="0" x="264" y="3493" height="343" width="1084"  name=t_10  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1561" y1="27" x2="1561" y2="3890"  name=l_11 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1508" y1="27" x2="1508" y2="3890"  name=l_12 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2619" y1="609" x2="2619" y2="3890"  name=l_13 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3492" y1="1191" x2="3492" y2="3890"  name=l_14 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="0" x2="0" y2="3890"  name=l_9 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="23574" y1="27" x2="23574" y2="3890"  name=l_23 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="30427" y1="27" x2="30427" y2="3890"  name=l_24 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism010u_08_8_p" x="23627" y="741" height="3148" width="6773" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday "),("'G'")) trail_footer = yes  name=dw_4  slideup=directlyabove )
+line(band=detail x1="19288" y1="27" x2="19288" y2="3890"  name=l_21 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="정시
+외
+공수
+(b)" border="0" color="0" x="4445" y="397" height="1587" width="740"  name=t_12  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="총
+보유
+공수
+(c=
+a+b)" border="0" color="0" x="5371" y="186" height="2037" width="926"  name=t_13  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="6350" y1="715" x2="19288" y2="715"  name=l_29 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="평가제외 무급공수(d)" border="0" color="0" x="6482" y="238" height="396" width="3651"  name=t_18  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="평가제외 유급공수(e)" border="0" color="0" x="13017" y="238" height="396" width="3810"  name=t_19  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="5265" y1="27" x2="5265" y2="3890"  name=l_16 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="6350" y1="27" x2="6350" y2="3890"  name=l_17 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="10212" y1="27" x2="10212" y2="3890"  name=l_20 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism010u_08_11_p" x="10265" y="741" height="3148" width="8995" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday "),("'S'")) trail_footer = yes  name=dw_2  slideup=directlyabove )
+report(band=detail dataobject="d_pism010u_08_4_p" x="6376" y="741" height="3148" width="3836" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday "),("'K'")) trail_footer = yes  name=dw_1  slideup=directlyabove )
+line(band=detail x1="4365" y1="27" x2="4365" y2="3890"  name=l_15 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1587" y1="582" x2="4365" y2="582"  name=l_18 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2619" y1="1164" x2="4365" y2="1164"  name=l_19 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="20425" y1="27" x2="20425" y2="3890"  name=l_22 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="유급근태사고공수(g)" border="0" color="0" x="20505" y="212" height="370" width="3042"  name=t_20  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism010u_08_3_p" x="20478" y="741" height="3148" width="3095" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday "),("'B'")) trail_footer = yes  name=dw_3  slideup=directlyabove )
+text(band=detail alignment="2" text="부가
+작업
+공수
+(i)" border="0" color="0" x="30559" y="186" height="2037" width="740"  name=t_33  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="31406" y1="27" x2="31406" y2="3890"  name=l_25 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="0" x2="32623" y2="0"  name=l_2 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="3361" x2="32623" y2="3361"  name=l_28 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="2805" x2="32623" y2="2805"  name=l_27 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="2249" x2="32623" y2="2249"  name=l_1 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="3890" x2="32623" y2="3890"  name=l_31 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="32623" y1="27" x2="32623" y2="3890"  name=l_26 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="총
+투입
+공수
+(f=c
+-(d+
+e))" border="0" color="0" x="19367" y="133" height="2090" width="978"  name=t_17  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="실
+투입
+공수
+(j=
+f-(g+
+h+i)" border="0" color="0" x="31485" y="133" height="2090" width="1084"  name=t_35  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism010u_03_1p" x="0" y="3969" height="15160" width="22304" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_wday ")) trail_footer = yes  name=dw_5  slideup=directlyabove )
+text(band=detail alignment="2" text="특  기  사  항" border="0" color="0" x="24579" y="16854" height="343" width="5715"  name=t_45  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="32623" y1="16775" x2="32623" y2="19341"  name=l_125 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="22383" y1="16775" x2="22383" y2="19341"  name=l_124 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="22410" y1="16775" x2="32623" y2="16775"  name=l_122 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="22410" y1="17225" x2="32596" y2="17225"  name=l_123 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="22410" y1="19341" x2="32623" y2="19341"  name=l_126 pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="0" color="0" x="22516" y="17463" height="1772" width="9974" format="[general]" row_in_detail=1  name=tmhdailystatus_remark_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism010u_06_p" x="22357" y="3969" height="9551" width="10292" border="0"  height.autosize=yes criteria="" nest_arguments=((" tmhdaily_areacode "),(" tmhdaily_divisioncode "),(" tmhdaily_workcenter "),(" tmhdaily_workday ")) trail_footer = yes  name=dw_7  slideup=directlyabove )
+report(band=detail dataobject="d_pism010u_05_p" x="22357" y="13573" height="3175" width="10292" border="0"  height.autosize=yes criteria="" nest_arguments=((" tmhdaily_areacode "),(" tmhdaily_divisioncode "),(" tmhdaily_workcenter "),(" tmhdaily_workday ")) trail_footer = yes  name=dw_8  slideup=directlyabove )
+text(band=footer alignment="0" text="◈유휴MH 사유코드       : U1.자재결품 대기         U2.검사대기               U3.설비고장(CODE기록)      U4.동력중단       U5.공정대기     U6.작업지시대기     U7.공구대기 및 수리" border="0" color="0" x="105" y="238" height="343" width="28098"  name=t_55  font.face="굴림체" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+bitmap(band=footer filename="bmp\logo4.gif" x="28389" y="635" height="582" width="4127" border="0"  name=p_1 )
+text(band=footer alignment="0" text="▣부가작업MH 사유코드   : F1.불량선별 및 REPAIR    F2.라인크레임품 REPAIR    F3.라인이설 및 설비교체    F4.LAY-OUT변경    F5.계획정비" border="0" color="0" x="105" y="582" height="343" width="28098"  name=t_56  font.face="굴림체" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=footer alignment="0" text="⊙능률저하MH 사유코드   : Z1.준비교체시간          Z2.공정불량품 REPAIR 작업" border="0" color="0" x="105" y="953" height="343" width="28098"  name=t_57  font.face="굴림체" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="1613" y="2408" height="343" width="952" format="#,##0.0" row_in_detail=1  name=tmhdaily_jungsimh_1 visible="1~tif( tmhdaily_jungsimh = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="1613" y="2964" height="343" width="952" format="#,##0.0" row_in_detail=2  name=tmhdaily_jungsimh_2 visible="1~tif( tmhdaily_jungsimh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_jungsimh ), 0,    tmhdaily_jungsimh ))"border="0" color="0" x="1613" y="3493" height="343" width="952" format="#,##0.0"  name=tot_jungsimh visible="1~tif( tot_jungsimh = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_msuppmh ), 0,     tmhdaily_msuppmh ))"border="0" color="0" x="2698" y="3493" height="343" width="767" format="#,##0.0"  name=tot_msuppmh visible="1~tif( tot_msuppmh = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2698" y="2964" height="343" width="740" format="#,##0.0" row_in_detail=2  name=tmhdaily_msuppmh_2 visible="1~tif(  tmhdaily_msuppmh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2698" y="2408" height="343" width="740" format="#,##0.0" row_in_detail=1  name=tmhdaily_msuppmh_1 visible="1~tif(  tmhdaily_msuppmh = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="3571" y="2408" height="343" width="740" format="#,##0.0" row_in_detail=1  name=tmhdaily_psuppmh_1 visible="1~tif(  tmhdaily_psuppmh = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="3571" y="2964" height="343" width="740" format="#,##0.0" row_in_detail=2  name=tmhdaily_psuppmh_2 visible="1~tif(  tmhdaily_psuppmh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_psuppmh ), 0,    tmhdaily_psuppmh ))"border="0" color="0" x="3545" y="3493" height="343" width="767" format="#,##0.0"  name=tot_psuppmh visible="1~tif( tot_psuppmh = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression=" tot_etcmh1  +  tot_etcmh2 "border="0" color="0" x="4418" y="3493" height="343" width="793" format="#,##0.0"  name=tot_etcmh visible="1~tif( tot_etcmh = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="if(isNull(  tmhdaily_etcmh[1] ), 0,   tmhdaily_etcmh[1] ) + ( if(isNull(  tmhdaily_etcpsuppmh[1] ), 0,   tmhdaily_etcpsuppmh[1] ) - if(isNull(  tmhdaily_etcmsuppmh[1] ), 0,   tmhdaily_etcmsuppmh[1] ) ) "border="0" color="0" x="4418" y="2964" height="343" width="793" format="#,##0.0"  name=tot_etcmh2 visible="1~tif( tot_etcmh2 = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="if(isNull(  tmhdaily_etcmh ), 0,   tmhdaily_etcmh ) + ( if(isNull(  tmhdaily_etcpsuppmh ), 0,   tmhdaily_etcpsuppmh ) - if(isNull(  tmhdaily_etcmsuppmh ), 0,   tmhdaily_etcmsuppmh ) ) "border="0" color="0" x="4418" y="2408" height="343" width="793" format="#,##0.0"  name=tot_etcmh1 visible="1~tif( tot_etcmh1 = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="if(isNull(  tmhdaily_jungsimh ), 0,   tmhdaily_jungsimh ) + ( if(isNull(  tmhdaily_psuppmh ), 0,   tmhdaily_psuppmh ) - if(isNull(  tmhdaily_msuppmh ), 0,   tmhdaily_msuppmh ) )  + if(isNull( tot_etcmh1 ), 0,  tot_etcmh1 )"border="0" color="0" x="5318" y="2408" height="343" width="978" format="#,##0.0"  name=calc_totmh1  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="if(isNull(  tmhdaily_jungsimh[1] ), 0,   tmhdaily_jungsimh[1] ) + ( if(isNull(  tmhdaily_psuppmh[1] ), 0,   tmhdaily_psuppmh[1] ) - if(isNull(  tmhdaily_msuppmh[1] ), 0,   tmhdaily_msuppmh[1] ) )  + if(isNull( tot_etcmh2 ), 0,  tot_etcmh2 )"border="0" color="0" x="5318" y="2964" height="343" width="978" format="#,##0.0"  name=calc_totmh2 visible="1~tif( calc_totmh2 = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression=" calc_totmh1  +  calc_totmh2 "border="0" color="0" x="5318" y="3493" height="343" width="978" format="#,##0.0"  name=tot_totmh  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="19341" y="2408" height="343" width="1005" format="#,##0.0" row_in_detail=1  name=tmhdaily_totinmh_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="19341" y="2964" height="343" width="1005" format="#,##0.0" row_in_detail=2  name=tmhdaily_totinmh_2 visible="1~tif( tmhdaily_totinmh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_totinmh ), 0,    tmhdaily_totinmh ))"border="0" color="0" x="19341" y="3493" height="343" width="1031" format="#,##0.0"  name=tot_totinmh  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="30480" y="2408" height="343" width="873" format="#,##0.0" row_in_detail=1  name=tmhdaily_bugamh_1 visible="1~tif( tmhdaily_bugamh = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="31458" y="2408" height="343" width="1084" format="#,##0.0" row_in_detail=1  name=tmhdaily_actinmh_1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="31458" y="2964" height="343" width="1084" format="#,##0.0" row_in_detail=2  name=tmhdaily_actinmh_2 visible="1~tif( tmhdaily_actinmh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="30480" y="2964" height="343" width="873" format="#,##0.0" row_in_detail=2  name=tmhdaily_bugamh_2 visible="1~tif( tmhdaily_bugamh[1] = 0, 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_bugamh ), 0,    tmhdaily_bugamh ))"border="0" color="0" x="30480" y="3493" height="343" width="873" format="#,##0.0"  name=tot_bugamh visible="1~tif( tot_bugamh = 0, 0, 1 )"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="sum( if(isNull(   tmhdaily_actinmh ), 0,    tmhdaily_actinmh ))"border="0" color="0" x="31458" y="3493" height="343" width="1084" format="#,##0.0"  name=tot_actinmh  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

@@ -1,0 +1,93 @@
+$PBExportHeader$f_wip_knockdown.srf
+global type f_wip_knockdown from function_object
+end type
+
+forward prototypes
+global function integer f_wip_knockdown (string a_xplant, string a_div, string a_itno, string a_date, decimal a_qty, datawindow arg_dw)
+end prototypes
+
+global function integer f_wip_knockdown (string a_xplant, string a_div, string a_itno, string a_date, decimal a_qty, datawindow arg_dw);string l_s_plant,l_s_div,l_s_itno,l_s_pitno,l_s_wkct, l_s_opcd
+string ls_itnm, ls_cls, ls_srce, ls_pdcd, ls_xunit 
+dec{4} l_n_qty1, lc_convqty, lc_pqty
+long ll_cnt, ll_currow
+
+// 모품번 변환계수 적용
+SELECT CONVQTY INTO :lc_convqty FROM PBINV.INV101
+WHERE COMLTD = :g_s_company AND XPLANT = :a_xplant AND
+		DIV = :a_div AND ITNO = :a_itno
+		using sqlca;
+		
+lc_pqty = a_qty * lc_convqty
+
+// bom temp db 생성
+//f_creation_bom_after(a_date,a_xplant,a_div,a_itno,'H','Y')
+DECLARE up_wip_16 PROCEDURE FOR PBWIP.SP_WIP_16 
+         A_COMLTD = :g_s_company,   
+         A_PLANT = :a_xplant,   
+         A_DVSN = :a_div,   
+         A_ITNO = :a_itno,   
+         A_DATE = :a_date,   
+         A_CHK = 'H',
+			A_DELCHK = 'Y'	using sqlca;
+Execute up_wip_16;
+Close up_wip_16;
+
+// 호환 부품번의 하위품목 제외한 품번들 Find 	
+declare Wip_001 Cursor for
+	select topcd,tplnt,tdvsn,tpitn,tcitn,tqty1,twkct from qtemp.bomtemp02,pbinv.inv101
+		where tcmcd = :g_s_company and tplnt = :a_xplant and tdvsn = :a_div and 
+				tcmcd = comltd and tplnt = xplant and tdvsn = div and tcitn = itno and
+				( cls = '10' or cls = '40' or cls = '50') and srce <> '03' and topcd <> '2'
+	using sqlca ;
+
+open Wip_001 ;
+	do while true
+		fetch Wip_001 into :l_s_opcd,:l_s_plant,:l_s_div,:l_s_pitno,:l_s_itno,:l_n_qty1,:l_s_wkct ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if
+		if l_s_wkct = '8888' then
+			continue
+		end if
+		
+		SELECT "PBINV"."INV002"."ITNM",   
+         	"PBINV"."INV101"."CLS",   
+         	"PBINV"."INV101"."SRCE",   
+         	"PBINV"."INV101"."PDCD",   
+         	"PBINV"."INV101"."XUNIT",   
+         	"PBINV"."INV101"."CONVQTY"  
+    	INTO :ls_itnm,:ls_cls,:ls_srce,:ls_pdcd,:ls_xunit,:lc_convqty  
+    	FROM "PBINV"."INV002",   
+         	"PBINV"."INV101"  
+   	WHERE ( "PBINV"."INV002"."COMLTD" = "PBINV"."INV101"."COMLTD" ) and  
+         	( "PBINV"."INV002"."ITNO" = "PBINV"."INV101"."ITNO" ) and  
+         	( ( "PBINV"."INV101"."COMLTD" = :g_s_company ) AND  
+         	( "PBINV"."INV101"."XPLANT" = :l_s_plant  ) AND  
+         	( "PBINV"."INV101"."DIV" = :l_s_div ) AND  
+         	( "PBINV"."INV101"."ITNO" = :l_s_itno ) )   
+				using sqlca;
+
+		if ls_srce = '03' then
+			continue
+		end if
+		
+		ll_currow = arg_dw.insertrow(0)
+		arg_dw.setitem(ll_currow,"plant",l_s_plant)
+		arg_dw.setitem(ll_currow,"dvsn", l_s_div)
+		arg_dw.setitem(ll_currow,"pitno", a_itno )
+		arg_dw.setitem(ll_currow,"citno", l_s_itno)
+		arg_dw.setitem(ll_currow,"citnm",ls_itnm)
+		arg_dw.setitem(ll_currow,"itcl",ls_cls)
+		arg_dw.setitem(ll_currow,"srce",ls_srce)
+		arg_dw.setitem(ll_currow,"pdcd",mid(ls_pdcd,1,2))
+		arg_dw.setitem(ll_currow,"unit",ls_xunit)
+		arg_dw.setitem(ll_currow,"convqty",lc_convqty)
+		arg_dw.setitem(ll_currow,"qty",(l_n_qty1 / lc_convqty))
+		arg_dw.setitem(ll_currow,"pqty", a_qty )
+		arg_dw.setitem(ll_currow,"cqty", lc_pqty * (l_n_qty1 / lc_convqty))
+	loop
+close wip_001;
+
+return 0	
+end function
+

@@ -1,0 +1,91 @@
+$PBExportHeader$d_piss090u_04_1.srd
+$PBExportComments$»óÂ÷°èÈ¹(ÀÌÃ¼)
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=140 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(11) updatewhereclause=yes name=srno dbname="SRNo" )
+ column=(type=long updatewhereclause=yes name=truckorder dbname="TruckOrder" )
+ column=(type=char(1) updatewhereclause=yes name=custname dbname="custName" )
+ column=(type=char(1) updatewhereclause=yes name=custcode dbname="CustCode" )
+ column=(type=long updatewhereclause=yes name=shiporderqty dbname="ShipOrderQty" )
+ column=(type=char(10) updatewhereclause=yes name=applydate dbname="ApplyDate" )
+ column=(type=char(10) updatewhereclause=yes name=requiredate dbname="RequireDate" )
+ column=(type=char(10) updatewhereclause=yes name=applyfrom dbname="Applyfrom" )
+ column=(type=char(2) updatewhereclause=yes name=shipyard dbname="ShipYard" )
+ column=(type=long updatewhereclause=yes name=shipeditno dbname="ShipEditNo" )
+ column=(type=char(1) updatewhereclause=yes name=srgubun dbname="SRGubun" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=yes name=modelid dbname="ModelID" )
+ column=(type=long updatewhereclause=yes name=shipremainqty dbname="ShipRemainQty" )
+ column=(type=long updatewhereclause=yes name=truckloadqty dbname="TruckLoadQty" )
+ column=(type=long updatewhereclause=yes name=truckdansuqty dbname="TruckDansuQty" )
+ column=(type=long updatewhereclause=yes name=rackqty dbname="RackQty" )
+ column=(type=char(30) updatewhereclause=yes name=shipgubunname dbname="ShipGubunName" )
+ column=(type=char(1) updatewhereclause=yes name=shipendgubun dbname="ShipEndGubun" )
+ column=(type=char(15) updatewhereclause=yes name=truckno dbname="TruckNo" )
+ column=(type=char(1) updatewhereclause=yes name=shipgubun dbname="shipgubun" )
+ column=(type=char(11) updatewhereclause=yes name=checksrno dbname="checksrno" )
+ column=(type=char(1) updatewhereclause=yes name=kitgubun dbname="kitgubun" )
+ procedure="1 execute dbo.sp_piss090u_04;1 @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_applydate = :ps_applydate" arguments=(("ps_areacode", string),("ps_divisioncode", string),("ps_applydate", string)) )
+data("S","00000007", 0,"J","S", 1000,"2002.12.25","2002.11.06","2002.11.06",null  0,"M","531891","COL.-T200(KE)","KE", 1000, 0, 0, 44,"ÀÌÃ¼","N","","M","00000007","N",) 
+group(level=1 header.height=0 trailer.height=0 by=("srno" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="
+SR¹øÈ£" border="0" color="16777215" x="9" y="16" height="120" width="329" html.valueishtml="0"  name=srno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Â÷·®
+¼ø¹ø" border="0" color="16777215" x="347" y="16" height="120" width="155" html.valueishtml="0"  name=truckorder_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÇ·Ú
+Áö¿ª" border="0" color="16777215" x="654" y="16" height="120" width="142" html.valueishtml="0"  name=custname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÇ·Ú
+°øÀå" border="0" color="16777215" x="805" y="16" height="120" width="146" html.valueishtml="0"  name=custcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+³³Ç°¿ä±¸ÀÏ" border="0" color="16777215" x="1102" y="16" height="120" width="343" html.valueishtml="0"  name=applyfrom_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ
+Æí¼ö" border="0" color="16777215" x="1454" y="16" height="120" width="165" html.valueishtml="0"  name=shipeditno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Ç°¸í" border="0" color="16777215" x="1627" y="16" height="120" width="357" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Ç°¸í" border="0" color="16777215" x="1993" y="16" height="120" width="434" html.valueishtml="0"  name=itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Äº°
+ID" border="0" color="16777215" x="2437" y="16" height="120" width="142" html.valueishtml="0"  name=modelid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="RACK
+¼ö·®" border="0" color="16777215" x="2903" y="16" height="120" width="183" html.valueishtml="0"  name=truckloadqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Â¥Åõ¸®
+¼ö·®" border="0" color="16777215" x="3095" y="16" height="120" width="197" html.valueishtml="0"  name=truckdansuqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+ÃâÇÏ±¸ºÐ" border="0" color="16777215" x="3301" y="16" height="120" width="850" html.valueishtml="0"  name=shipgubunname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Shipendgubun" border="0" color="16777215" x="4599" y="16" height="60" width="210" html.valueishtml="0"  name=shipendgubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ
+ÀÜ·®" border="0" color="16777215" x="2587" y="16" height="120" width="160" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»óÂ÷
+¼ö·®" border="0" color="16777215" x="2757" y="16" height="120" width="137" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÒÃâ
+°øÀå" border="0" color="16777215" x="512" y="16" height="120" width="133" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ
+Àå¼Ò" border="0" color="16777215" x="960" y="16" height="120" width="133" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1102" y="4" height="76" width="343" format="[general]" html.valueishtml="0"  name=applyfrom visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="1454" y="4" height="76" width="165" format="[general]" html.valueishtml="0"  name=shipeditno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="1627" y="4" height="76" width="357" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="1993" y="4" height="76" width="434" format="[general]" html.valueishtml="0"  name=itemname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="2437" y="4" height="76" width="142" format="[general]" html.valueishtml="0"  name=modelid visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="2903" y="4" height="76" width="183" format="[general]" html.valueishtml="0"  name=truckloadqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="3095" y="4" height="76" width="197" format="[general]" html.valueishtml="0"  name=truckdansuqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="0" x="3301" y="4" height="76" width="850" format="[general]" html.valueishtml="0"  name=shipgubunname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="shipremainqty - Sum(   truckloadqty *  rackqty  +   truckdansuqty  for group 1 )"border="0" color="0" x="2587" y="4" height="76" width="160" format="[GENERAL]" html.valueishtml="0"  name=ss visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="truckloadqty  *  rackqty  +  truckdansuqty "border="0" color="0" x="2757" y="4" height="76" width="137" format="[GENERAL]" html.valueishtml="0"  name=truckplan visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression=" shipremainqty  - (truckloadqty * rackqty  + truckdansuqty)"border="0" color="0" x="4160" y="4" height="76" width="210" format="[GENERAL]" html.valueishtml="0"  name=shipremainqty1 visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="shipremainqty   -  truckplan "border="0" color="0" x="4379" y="4" height="76" width="210" format="[GENERAL]" html.valueishtml="0"  name=remainqty visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression=" remainqty   -  truckplan "border="0" color="0" x="4599" y="4" height="76" width="210" format="[GENERAL]" html.valueishtml="0"  name=shipendflag visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="960" y="4" height="76" width="133" format="[general]" html.valueishtml="0"  name=shipyard_1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="347" y="4" height="76" width="155" format="[general]" html.valueishtml="0"  name=truckorder visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="512" y="4" height="76" width="133" format="[general]" html.valueishtml="0"  name=divisioncode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="654" y="4" height="76" width="142" format="[general]" html.valueishtml="0"  name=custname visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="805" y="4" height="76" width="146" format="[general]" html.valueishtml="0"  name=custcode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

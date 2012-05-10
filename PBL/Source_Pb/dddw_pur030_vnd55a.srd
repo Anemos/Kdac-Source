@@ -1,0 +1,46 @@
+$PBExportHeader$dddw_pur030_vnd55a.srd
+$PBExportComments$¾÷Ã¼¸í,ÄÚµå,»ç¾÷ÀÚ¹øÈ£(¿©ÁÖ±¸¸Å'Y')
+release 9;
+datawindow(units=0 timer_interval=0 color=79741120 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=compute_0001 dbname="compute_0001" )
+ column=(type=char(50) updatewhereclause=yes name=vndnm dbname="VNDNM" initial=" " )
+ column=(type=char(8) updatewhereclause=yes name=vsrno dbname="VSRNO" initial=" " )
+ column=(type=char(10) updatewhereclause=yes name=vndr dbname="VNDR" initial=" " )
+ column=(type=char(20) updatewhereclause=yes name=natn dbname="NATN" )
+ retrieve=" SELECT 1,'' as vndnm,'' as vsrno,'' as vndr, '' as natn	
+ FROM ~"PBPUR~".~"PURDUM~"
+ union	  
+ SELECT 2,~"PBPUR~".~"PUR101~".~"VNDNM~",   
+         ~"PBPUR~".~"PUR101~".~"VSRNO~",   
+         ~"PBPUR~".~"PUR101~".~"VNDR~", 
+         ~"PBPUR~".~"PUR101~".~"NATN~" 
+ FROM ~"PBPUR~".~"PUR101~",   
+      ~"PBPUR~".~"PUR102~"  
+ WHERE ( ~"PBPUR~".~"PUR101~".~"COMLTD~" = ~"PBPUR~".~"PUR102~".~"COMLTD~" ) and  
+         ( ~"PBPUR~".~"PUR102~".~"VSRNO~" = ~"PBPUR~".~"PUR101~".~"VSRNO~" ) and  
+         ( ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S' ) AND  
+         ( ~"PBPUR~".~"PUR101~".~"DIGUBUN~" = 'D' ) AND  
+         ( ~"PBPUR~".~"PUR101~".~"COMLTD~" = '01' ) AND  
+         (~"PBPUR~".~"PUR102~".~"DEPT~" = 'Y')
+        
+ ORDER BY 1,5 ASC   
+" )
+text(band=header alignment="0" text="Compute 0001" border="0" color="0" x="9" y="4" height="76" width="983" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Compute 0002" border="0" color="0" x="1001" y="4" height="76" width="302" html.valueishtml="0"  name=t_3 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="978" y="4" height="76" width="320" format="[general]" html.valueishtml="0"  name=vndr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="1568" y="4" height="76" width="965" format="[general]" html.valueishtml="0"  name=vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="1317" y="4" height="76" width="242" format="[general]" html.valueishtml="0"  name=vsrno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression="vsrno + if(trim(vsrno) = '', '',' : ') + vndnm"border="0" color="0" x="2683" y="4" height="76" width="727" format="[GENERAL]" html.valueishtml="0"  name=compute_cd_n_nm visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression=" vndnm    + if(trim(vsrno) = '', '',' : ') + vndr + if(trim(vsrno) = '', '',' : ')  + vsrno "border="0" color="0" x="3415" y="4" height="76" width="654" format="[GENERAL]" html.valueishtml="0"  name=compute_nm_n_cd visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression="natn   + if(trim(vsrno) = '', '',' : ') + vsrno + if(trim(vsrno) = '', '',' : ')  + vndr "border="0" color="0" x="4690" y="4" height="76" width="773" format="[GENERAL]" html.valueishtml="0"  name=compute_snm_cd visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression=" vndr  + if(trim(vndr) = '', '',': ')  + vndnm  + if(trim(vndr) = '', '',': ') + vsrno"border="0" color="0" x="4073" y="4" height="76" width="599" format="[GENERAL]" html.valueishtml="0"  name=c_vndr_vndnm_vsrno visible="1~t0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="14" y="4" height="76" width="955" format="[general]" html.valueishtml="0"  name=natn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

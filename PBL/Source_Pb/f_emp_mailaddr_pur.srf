@@ -1,0 +1,71 @@
+$PBExportHeader$f_emp_mailaddr_pur.srf
+$PBExportComments$직원 Email Address Return   Global Function
+global type f_emp_mailaddr_pur from function_object
+end type
+
+forward prototypes
+global function string f_emp_mailaddr_pur (string as_empno, string as_gubun)
+end prototypes
+
+global function string f_emp_mailaddr_pur (string as_empno, string as_gubun);//////////////////////////////////////////
+// 메일주소...
+//		argument : as_empno   - 사번('1') , 부서코드('2')
+//               as_gubun   - '1'  : 입력자
+//                            '2'  : 입력자의 팀장
+////////////////////////////////////////////////////
+String	MailAddress
+as_empno = Trim(as_empno)
+
+IF as_gubun = '1' Then	
+	SELECT PEMAIL INTO :MailAddress
+	FROM PBCOMMON.DAC003
+	WHERE PEEMPNO = :as_empno Using sqlca;
+	
+   //2004.11.11 추가
+	MailAddress = Trim(MailAddress)
+	
+	If Len(MailAddress) < 1 Then 	
+		MessageBox("Error", " 이메일 주소가 잘못되었습니다.")
+		Return "" 
+	End If
+
+Else
+	SELECT PEMAIL INTO :MailAddress
+	FROM PBCOMMON.DAC003
+	WHERE PEJIKCHEK = '3'
+	  AND PEOUT <> '*'
+  	  AND PEDEPT = :as_empno Using sqlca ;
+	
+	//2004.11.11 추가
+	MailAddress = Trim(MailAddress)
+	If Len(MailAddress) < 1 Then 
+		MessageBox("Error", " 팀장 이메일 주소가 잘못되었습니다.")
+		Return "" 
+	End If
+	
+End IF	
+
+//2004.11.11 추가  --> 2006.04.04 보완
+String ls_mail
+Long ln_pos
+ln_pos = Pos(MailAddress, "@")
+
+IF ln_pos = 0 Then	
+	//MailAddress += "@kdac.co.kr"
+	MessageBox("메일주소오류"  ,"메일주소가 잘못되었습니다.(@kdac.co.kr Missing) 메일주소 : " + MailAddress)
+	Return ""
+Else
+	ls_mail = Mid(MailAddress, ln_pos , Len(MailAddress) - (ln_pos - 1) )
+		
+	IF Upper(ls_mail) <> "@KDAC.CO.KR" THEN		
+		MessageBox("메일주소오류","메일주소가 잘못되었습니다.(외부메일주소 사용!) 메일주소 : " + MailAddress)
+		Return ""		
+	END IF
+End IF
+//
+
+//If SQLCA.SQLCode <> 0 Then Return ""
+
+Return MailAddress
+end function
+

@@ -1,0 +1,35 @@
+$PBExportHeader$f_get_vendor02.srf
+$PBExportComments$업체코드로 사업자번호와 업체명찾기
+global type f_get_vendor02 from function_object
+end type
+
+forward prototypes
+global function string f_get_vendor02 (string a_comltd, string a_vsrno)
+end prototypes
+
+global function string f_get_vendor02 (string a_comltd, string a_vsrno);///////////////////////////////////////////////////////
+// 사업자번호와 업체명 가져오기
+//          argument : 회사구분코드( a_comltd )
+//							  업체전산번호( a_vsrno )
+//				return   : 사업자등록번호 ( ls_vndr )
+//							: 업체명 ( ls_vndnm )
+//////////////////////////////////////////////////////
+string ls_vndr, ls_vndnm
+  
+  SELECT "PBPUR"."PUR101"."VNDR",   
+         "PBPUR"."PUR101"."VNDNM"  
+    INTO :ls_vndr,   
+         :ls_vndnm  
+    FROM "PBPUR"."PUR101"  
+   WHERE ( "PBPUR"."PUR101"."COMLTD" = :a_comltd ) AND 
+			( "PBPUR"."PUR101"."SCGUBUN" = 'S' ) AND
+         ( "PBPUR"."PUR101"."VSRNO" = :a_vsrno ) using sqlca  ;
+
+if sqlca.sqlcode = 0 then
+	return string(trim(ls_vndr),"@@@@@@@@@@") + ls_vndnm
+else
+	return ""
+end if
+
+end function
+

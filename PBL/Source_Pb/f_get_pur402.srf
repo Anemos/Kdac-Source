@@ -1,0 +1,22 @@
+$PBExportHeader$f_get_pur402.srf
+$PBExportComments$구매번호/발주번호 return
+global type f_get_pur402 from function_object
+end type
+
+forward prototypes
+global function string f_get_pur402 (string as_srno, string as_srno1)
+end prototypes
+
+global function string f_get_pur402 (string as_srno, string as_srno1);string ls_purno
+
+SELECT "PBPUR"."PUR402"."PURNO"  INTO :ls_purno
+  FROM "PBPUR"."PUR402" 
+WHERE "PBPUR"."PUR402"."COMLTD" = '01'      AND "PBPUR"."PUR402"."SRNO" = :as_srno AND 
+      "PBPUR"."PUR402"."SRNO1"  = :as_srno1 using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	ls_purno = ' '
+end if
+return ls_purno
+end function
+

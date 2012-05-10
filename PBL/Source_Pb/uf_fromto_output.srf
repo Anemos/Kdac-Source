@@ -1,0 +1,60 @@
+$PBExportHeader$uf_fromto_output.srf
+$PBExportComments$해당주차(일요일~~토요일날짜산출)
+global type uf_fromto_output from function_object
+end type
+
+forward prototypes
+global function string uf_fromto_output (string as_year, integer ai_weekafter)
+end prototypes
+
+global function string uf_fromto_output (string as_year, integer ai_weekafter);/////////////////////////////////////////////////////////////////
+//////// * 년을 기준으로 해당주차 시작과끝일 산출       * ///////
+//////// * Argument : as_year, ai_weekafter             * ///////
+//////// * Return   : ls_fromto(string)                 * ///////
+//////// * 주차는 365/7 < 53 이므로 53주을 넘을수 없다. *////////
+/////////////////////////////////////////////////////////////////
+
+
+Date ld_first, ld_last, ld_sun, ld_from, ld_to
+String ls_dayname, ls_fromto
+integer li_ret
+
+ld_first = Date(as_year + '-01-01') // 해당년의  1월  1일
+ld_last  = Date(as_year + '-12-31') // 해당년의 12월 31일
+ls_dayname = Dayname(ld_first) // 해당년의 1월 1일의 요일명
+ld_sun = ld_first
+
+if ai_weekafter > 53 then
+	return ""
+end if
+
+
+// 최초의 일요일 찾기
+IF Upper(ls_dayname) <> 'SUNDAY' THEN 
+	DO UNTIL Upper(ls_dayname) = 'SUNDAY'
+	ld_sun = RelativeDate(ld_sun, 1) // 하루씩 증가
+	ls_dayname = Dayname(ld_sun)
+	LOOP
+	
+	ld_from = RelativeDate(ld_sun, (ai_weekafter - 2) * 7)       //해당주차 시작일(일요일)
+	ld_to   = RelativeDate(ld_sun, ((ai_weekafter - 2) * 7) + 6) //해당주차 마지막(토요일)
+	
+ELSE
+	ld_from = RelativeDate(ld_sun, (ai_weekafter -1) * 7)
+	ld_to   = RelativeDate(ld_sun, ((ai_weekafter -1) * 7) + 6 )
+	
+END IF
+
+if Year(ld_from) < Year(ld_first) then //전년 12월달이 1주차에 걸쳐 있으면 1월1일을 1주차시작일로 
+	ld_from = ld_first
+end if
+
+if Year(ld_to) > Year(ld_last) then  //내년 1월달이 마지막주차에 걸쳐 있으면 12월31일을 마지막일로
+	ld_to = ld_last
+end if
+   
+ls_fromto = string(ld_from, "MM.DD") + "-" + string(ld_to, "MM.DD") 
+
+Return ls_fromto
+end function
+

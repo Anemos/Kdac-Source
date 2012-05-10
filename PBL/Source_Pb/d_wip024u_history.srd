@@ -1,0 +1,60 @@
+$PBExportHeader$d_wip024u_history.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=wip004_wdslty dbname="WIP004.WDSLTY" )
+ column=(type=char(10) updatewhereclause=yes name=wip004_wdsrno dbname="WIP004.WDSRNO" )
+ column=(type=char(8) updatewhereclause=yes name=wip004_wddate dbname="WIP004.WDDATE" )
+ column=(type=char(100) updatewhereclause=yes name=wip005_weremk dbname="WIP005.WEREMK" )
+ column=(type=char(1) updatewhereclause=yes name=wip004_wdplant dbname="WIP004.WDPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wip004_wddvsn dbname="WIP004.WDDVSN" )
+ column=(type=char(15) updatewhereclause=yes name=wip004_wditno dbname="WIP004.WDITNO" )
+ column=(type=char(5) updatewhereclause=yes name=wip004_wdchdpt dbname="WIP004.WDCHDPT" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" initial="0" )
+ column=(type=decimal(4) updatewhereclause=yes name=chqt dbname="CHQT" )
+ retrieve="  SELECT ~"PBWIP~".~"WIP004~".~"WDSLTY~",   
+         ~"PBWIP~".~"WIP004~".~"WDSRNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDDATE~",   
+         ~"PBWIP~".~"WIP005~".~"WEREMK~",   
+         ~"PBWIP~".~"WIP004~".~"WDPLANT~",   
+         ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
+         ~"PBWIP~".~"WIP004~".~"WDITNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDCHDPT~",   
+         ~"PBINV~".~"INV101~".~"CONVQTY~",   
+         DECIMAL(~"PBWIP~".~"WIP004~".~"WDCHQT~"/~"PBINV~".~"INV101~".~"CONVQTY~",15,4) AS CHQT  
+    FROM ~"PBWIP~".~"WIP004~",   
+         ~"PBWIP~".~"WIP005~",   
+         ~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = ~"PBWIP~".~"WIP005~".~"WECMCD~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDSLTY~" = ~"PBWIP~".~"WIP005~".~"WESLTY~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDSRNO~" = ~"PBWIP~".~"WIP005~".~"WESRNO~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBWIP~".~"WIP004~".~"WDITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and  
+         ( ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = :ag_cmcd ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = :ag_plant ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = :ag_dvsn ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDCHDPT~" = :ag_wccd ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDITNO~" = :ag_itno ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDDATE~" >= :ag_firstdate )  AND ( ~"PBWIP~".~"WIP004~".~"WDDATE~" <= :ag_lastdate ) )   
+ORDER BY ~"PBWIP~".~"WIP004~".~"WDDATE~" DESC   
+" arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string),("ag_wccd", string),("ag_itno", string),("ag_firstdate", string),("ag_lastdate", string)) )
+text(band=header alignment="2" text="사용일자" border="2" color="16777215" x="439" y="0" height="60" width="361" html.valueishtml="0"  name=wddate_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="수량" border="2" color="16777215" x="805" y="0" height="60" width="448" html.valueishtml="0"  name=wdchqt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="사유" border="2" color="16777215" x="1257" y="0" height="60" width="3200" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="전산번호" border="2" color="16777215" x="0" y="0" height="60" width="434" html.valueishtml="0"  name=wdsrno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="0" y="0" height="72" width="82" format="[general]" html.valueishtml="0"  name=wip004_wdslty  tag="전산번호 구분" visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="439" y="0" height="72" width="361" format="[general]" html.valueishtml="0"  name=wip004_wddate  tag="사용일자(Parent전표일자)" visible="1" editmask.mask="XXXX.XX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="0" x="805" y="0" height="72" width="448" format="[general]" html.valueishtml="0"  name=chqt visible="1" editmask.mask="###,##0.00" editmask.imemode=0 editmask.focusrectangle=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1257" y="0" height="72" width="3200" format="[general]" html.valueishtml="0"  name=wip005_weremk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="87" y="0" height="72" width="347" format="[general]" html.valueishtml="0"  name=wip004_wdsrno  tag="전산번호" visible="1" edit.limit=10 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,37 @@
+$PBExportHeader$f_mrp_requiredsum.srf
+$PBExportComments$년월/지역/공장/품반 => Return 외자mrp 3개월 총소요량
+global type f_mrp_requiredsum from function_object
+end type
+
+forward prototypes
+global function decimal f_mrp_requiredsum (string as_xyear, string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_mrp_requiredsum (string as_xyear, string as_xplant, string as_div, string as_itno);DEC{1} ld_qty1, ld_qty2, ld_qty3, ld_qty4, ld_lotsize, ld_qty
+
+SELECT A.WPLNQ1, A.WPLNQ2, A.WPLNQ3, A.WPLNQ4, B.PULS 
+ INTO :ld_qty1, :ld_qty2, :ld_qty3, :ld_qty4, :ld_lotsize
+FROM PBINV.MRP202 A, PBINV.INV101 B
+WHERE A.COMLTD ='01' AND A.XYEAR = :as_xyear AND 
+      A.COMLTD = B.COMLTD AND A.XPLANT = B.XPLANT AND A.DIV = B.DIV AND  A.ITNO = B.ITNO And
+      A.XPLANT = :as_xplant AND A.DIV = : as_div AND
+		A.ITNO   = :as_itno Using SQLCA; 
+
+If SQLCA.SQLCODE <> 0 Then
+   Return 0
+End if
+
+ld_qty = Truncate((ld_qty1+ld_qty2+ld_qty3+ld_qty4)*3, 1)
+
+IF Mod(ld_qty, ld_lotsize) = 0 Then
+	ld_qty = ld_qty
+else 
+	ld_qty = ld_qty +(ld_lotsize - Mod(ld_qty, ld_lotsize))
+End if
+	
+Return ld_qty
+	
+
+
+end function
+

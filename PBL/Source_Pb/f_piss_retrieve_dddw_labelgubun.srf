@@ -1,0 +1,69 @@
+$PBExportHeader$f_piss_retrieve_dddw_labelgubun.srf
+$PBExportComments$dddw을 조회하는 함수 - 라벨구분
+global type f_piss_retrieve_dddw_labelgubun from function_object
+end type
+
+forward prototypes
+global subroutine f_piss_retrieve_dddw_labelgubun (datawindow fdw_1, string fs_area, string fs_division, boolean fb_allflag, ref string rs_labelcode, string rs_labelname)
+end prototypes
+
+global subroutine f_piss_retrieve_dddw_labelgubun (datawindow fdw_1, string fs_area, string fs_division, boolean fb_allflag, ref string rs_labelcode, string rs_labelname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_piss_retrieve_dddw_labelgubun
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_area			   	조회하고자 지역
+//						string			fs_division			   조회하고자 공장
+//						boolean			fb_allflag				조회된 코드 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (코드는 '%', 코드명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_labelcode			   선택된 코드 그룹 (reference)
+//						string			rs_labelname			   선택된 코드 명 (reference)
+//	Returns		: none
+//	Description	: 거래처마스터을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kisskim
+// Coded Date	: 2005.08.19
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_area, fs_division)
+	ll_rowcount = ldwc_1.RowCount()
+	If (ll_rowcount < 1)  Then
+//	   fdw_1.GetChild('DDDWCode', ldwc_1)
+	   ldwc_1.InsertRow(1)
+	   rs_labelcode			= ''
+	   rs_labelname			= ''
+		ldwc_1.Setitem(1, 'labelcode', '')
+		ldwc_1.Setitem(1, 'labelname', '')
+		fdw_1.Setitem(1, 'DDDWCode','')		
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'labelname', 20)		
+	ElseIf ll_rowcount	= 1 Then
+		rs_labelcode		= Trim(ldwc_1.GetItemString(1, 'labelcode'))
+		rs_labelname		= Trim(ldwc_1.GetItemString(1, 'labelname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_labelcode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'labelname', 20)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_labelcode		= Trim(ldwc_1.GetItemString(1, 'labelcode'))
+			rs_labelname		= Trim(ldwc_1.GetItemString(1, 'labelname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_labelcode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'labelname', 20)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'labelcode', 'ALL')
+			ldwc_1.Setitem(1, 'labelname', '전체')
+			rs_labelcode			= '%'
+			rs_labelname			= 'ALL'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'labelname', 20)
+		End If
+	End If
+End If
+end subroutine
+

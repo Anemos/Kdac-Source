@@ -1,0 +1,58 @@
+$PBExportHeader$d_comm101u_01_open.srd
+$PBExportComments$Program µî·Ï
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes key=yes name=menu_cd dbname="COMM110.MENU_CD" )
+ column=(type=char(10) updatewhereclause=yes name=win_id dbname="COMM110.WIN_ID" )
+ column=(type=char(30) updatewhereclause=yes name=win_nm dbname="COMM110.WIN_NM" )
+ column=(type=char(10) updatewhereclause=yes name=win_rpt dbname="COMM110.WIN_RPT" initial=" " )
+ column=(type=char(1) updatewhereclause=yes name=win_st dbname="COMM110.WIN_ST" initial="Y" values="°³¹ß¿Ï·á	Y/°³¹ßÁß	N/" )
+ column=(type=char(6) updatewhereclause=yes name=inpt_id dbname="COMM110.INPT_ID" initial=" " )
+ column=(type=char(19) updatewhereclause=yes name=inpt_dt dbname="COMM110.INPT_DT" initial=" " )
+ column=(type=char(6) updatewhereclause=yes name=updt_id dbname="COMM110.UPDT_ID" initial=" " )
+ column=(type=char(19) updatewhereclause=yes name=updt_dt dbname="COMM110.UPDT_DT" initial=" " )
+ column=(type=char(30) updatewhereclause=yes name=ip_addr dbname="COMM110.IP_ADDR" initial=" " )
+ column=(type=char(30) updatewhereclause=yes name=mac_addr dbname="COMM110.MAC_ADDR" initial=" " )
+ column=(type=char(1) updatewhereclause=yes name=cp_chk dbname="cp_chk" )
+ retrieve="  SELECT MENU_CD,   
+         WIN_ID,   
+         WIN_NM,   
+         WIN_RPT,   
+         WIN_ST,   
+         INPT_ID,   
+         INPT_DT,   
+         UPDT_ID,   
+         UPDT_DT,   
+         IP_ADDR,   
+         MAC_ADDR,   
+         '' as cp_chk  
+    FROM COMM110  
+   WHERE {fn substring(MENU_CD,2,3)} = '000' and menu_cd <> '0000'   
+ 
+" update="COMM110" updatewhere=0 updatekeyinplace=no  sort="menu_cd A " )
+text(band=header alignment="2" text="À©µµ¿ì£É£Ä" border="0" color="16777215" x="439" y="0" height="72" width="343" html.valueishtml="0"  name=win_cd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="À©µµ¿ì¸í" border="0" color="16777215" x="791" y="0" height="72" width="805" html.valueishtml="0"  name=win_nm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÁøÇà»óÅÂ" border="0" color="16777215" x="1605" y="0" height="72" width="361" html.valueishtml="0"  name=win_stat_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Run PARM" border="0" color="16777215" x="1975" y="0" height="72" width="334" html.valueishtml="0"  name=win_rpt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚID" border="0" color="16777215" x="2318" y="0" height="72" width="297" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏÀÚ" border="0" color="16777215" x="2624" y="0" height="72" width="709" html.valueishtml="0"  name=t_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸Þ´ºÄÚµå" border="0" color="16777215" x="146" y="0" height="72" width="283" html.valueishtml="0"  name=menu_cd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="No." border="0" color="16777215" x="9" y="0" height="72" width="128" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="791" y="0" height="72" width="805" format="[general]" html.valueishtml="0"  name=win_nm visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="439" y="0" height="72" width="343" format="[general]" html.valueishtml="0"  name=win_id visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=5 alignment="2" tabsequence=40 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="1605" y="0" height="72" width="361" format="[general]" html.valueishtml="0"  name=win_st visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.autohscroll=yes ddlb.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=4 alignment="2" tabsequence=50 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="1975" y="0" height="72" width="334" format="[general]" html.valueishtml="0"  name=win_rpt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="2318" y="0" height="72" width="297" format="[general]" html.valueishtml="0"  name=updt_id visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="2624" y="0" height="72" width="709" format="[general]" html.valueishtml="0"  name=updt_dt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="0" color="0~tif (currentRow() = getrow(),rgb(255,0,0),rgb(0,0,0))" x="146" y="0" height="72" width="283" format="[general]" html.valueishtml="0"  name=menu_cd visible="1" edit.limit=4 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=detail alignment="2" expression="getrow()"border="0" color="16777215" x="9" y="0" height="72" width="128" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

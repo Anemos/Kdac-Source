@@ -1,0 +1,83 @@
+$PBExportHeader$f_bom_xplan_email.srf
+$PBExportComments$BOM 사급대상품 단가 Warning메일 발송함수
+global type f_bom_xplan_email from function_object
+end type
+
+forward prototypes
+global subroutine f_bom_xplan_email (string ag_empno)
+end prototypes
+
+global subroutine f_bom_xplan_email (string ag_empno);//***************************
+//* 품목별 구매담당자에게 사급단가확인메일 발송.
+//***************************
+datastore lds_datastore, lds_getemail
+long ll_rowcnt_mail, ll_rowcnt_detail, ll_cnt_mail, ll_cnt_detail
+string ls_emailcontent, ls_email, ls_emailtitle
+string ls_xplan, ls_xplan_empno
+string ls_xchtime, ls_xpitno, ls_cls, ls_srce, ls_itnm, ls_xitno, ls_xdesc
+
+lds_getemail = create datastore
+lds_getemail.DataObject = 'd_bom_xplan_email'
+lds_getemail.SetTransObject(SQLCA)
+
+lds_datastore = create datastore
+lds_datastore.DataObject	= 'd_bom_xplan_bom017'
+lds_datastore.SetTransObject(SQLCA)
+
+ll_rowcnt_mail = lds_getemail.retrieve(ag_empno)
+
+for ll_cnt_mail = 1 to ll_rowcnt_mail
+	ls_xplan = lds_getemail.getitemstring(ll_cnt_mail,"inv101_xplan")
+	ls_xplan_empno = lds_getemail.getitemstring(ll_cnt_mail,"dac002_coitnamee")
+	ls_email = lds_getemail.getitemstring(ll_cnt_mail,"dac003_pemail")
+	
+	if len(trim(ls_email)) <= 10 then
+		SELECT C.COITNAMEE, D.PEMAIL INTO :ls_xplan_empno, :ls_email
+		FROM PBCOMMON.DAC002 C INNER JOIN PBCOMMON.DAC003 D
+			ON C.COITNAMEE = D.PEEMPNO
+		WHERE C.COMLTD = '01' AND C.COGUBUN = 'INV050' AND C.COCODE = '99' 
+		using sqlca;
+	end if
+	
+	ll_rowcnt_detail	= lds_datastore.Retrieve(ag_empno, ls_xplan)
+	ls_emailtitle = "<br><b>####### 사급품목 BOM변경 내역통보 #######</b><br>"
+	ls_emailcontent = ""
+	for ll_cnt_detail = 1 to ll_rowcnt_detail
+		ls_xchtime = lds_datastore.getitemstring(ll_cnt_detail,"bom017_xchtime")
+		ls_xpitno = lds_datastore.getitemstring(ll_cnt_detail,"bom017_xpitno")
+		ls_xitno = lds_datastore.getitemstring(ll_cnt_detail,"bom017_xitno")
+		ls_cls = lds_datastore.getitemstring(ll_cnt_detail,"inv101_cls")
+		ls_srce = lds_datastore.getitemstring(ll_cnt_detail,"inv101_srce")
+		ls_itnm = lds_datastore.getitemstring(ll_cnt_detail,"inv002_itnm")
+		ls_xdesc = lds_datastore.getitemstring(ll_cnt_detail,"bom017_xdesc")
+		ls_emailcontent = ls_emailcontent + "   => 변경일자 : " + ls_xchtime + ",  상위품목: " &
+					+ ls_xpitno + ",  계정: " + ls_cls + ",  구입선: " + ls_srce &
+					+ ",  품명: " + ls_itnm + " <br>" &
+					+ "하위품목 " + ls_xitno + " 의 변경내용은 " + ls_xdesc + " 입니다.<br>"
+		
+		lds_datastore.setitem(ll_cnt_detail,"bom017_xmailflag",'Y')
+		lds_datastore.setitem(ll_cnt_detail,"bom017_xplanemp",ls_xplan_empno)
+		if len(trim(ls_email)) <= 10 then
+			lds_datastore.setitem(ll_cnt_detail,"bom017_xcontents","구매담당자가 정해지지 않았거나, 메일주소가 존재하지 않습니다.")
+		else
+			lds_datastore.setitem(ll_cnt_detail,"bom017_xcontents", ls_xchtime + ", " + ls_xitno)
+		end if
+	next
+	lds_datastore.accepttext()
+	if lds_datastore.update() <> 1 then
+		messagebox("체크에러",string(sqlca.sqlcode) + sqlca.sqlerrtext)
+	end if
+	
+	ls_emailcontent = ls_emailcontent + " 구매담당자는 상위사급품목의 단가를 확인해 보시기 바랍니다."
+	if len(trim(ls_email)) > 10 then
+		if f_SendMail_bom( 'html', trim(ls_email), "사급품목 BOM변경 세부내역통보", ls_emailtitle + ls_emailcontent, "" ) = 1 then
+			// pass
+		end if
+	end if
+	lds_datastore.reset()
+next
+
+destroy lds_datastore
+destroy lds_getemail
+end subroutine
+

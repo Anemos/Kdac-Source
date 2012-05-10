@@ -1,0 +1,169 @@
+$PBExportHeader$d_pisq130i_02.srd
+$PBExportComments$¼öÀÔ°Ë»ç ºÒ·®À²(¿ùº° ºÒ·®À²-LOTº°)
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=332 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=as_areacode dbname="AS_AREACODE" )
+ column=(type=long updatewhereclause=yes name=as_i11 dbname="AS_I11" )
+ column=(type=long updatewhereclause=yes name=as_i10 dbname="AS_I10" )
+ column=(type=long updatewhereclause=yes name=as_i09 dbname="AS_I09" )
+ column=(type=long updatewhereclause=yes name=as_i08 dbname="AS_I08" )
+ column=(type=long updatewhereclause=yes name=as_i07 dbname="AS_I07" )
+ column=(type=long updatewhereclause=yes name=as_i06 dbname="AS_I06" )
+ column=(type=long updatewhereclause=yes name=as_i05 dbname="AS_I05" )
+ column=(type=long updatewhereclause=yes name=as_i04 dbname="AS_I04" )
+ column=(type=long updatewhereclause=yes name=as_i03 dbname="AS_I03" )
+ column=(type=long updatewhereclause=yes name=as_i02 dbname="AS_I02" )
+ column=(type=long updatewhereclause=yes name=as_i01 dbname="AS_I01" )
+ column=(type=long updatewhereclause=yes name=as_i00 dbname="AS_I00" )
+ column=(type=long updatewhereclause=yes name=as_b11 dbname="AS_B11" )
+ column=(type=long updatewhereclause=yes name=as_b10 dbname="AS_B10" )
+ column=(type=long updatewhereclause=yes name=as_b09 dbname="AS_B09" )
+ column=(type=long updatewhereclause=yes name=as_b08 dbname="AS_B08" )
+ column=(type=long updatewhereclause=yes name=as_b07 dbname="AS_B07" )
+ column=(type=long updatewhereclause=yes name=as_b06 dbname="AS_B06" )
+ column=(type=long updatewhereclause=yes name=as_b05 dbname="AS_B05" )
+ column=(type=long updatewhereclause=yes name=as_b04 dbname="AS_B04" )
+ column=(type=long updatewhereclause=yes name=as_b03 dbname="AS_B03" )
+ column=(type=long updatewhereclause=yes name=as_b02 dbname="AS_B02" )
+ column=(type=long updatewhereclause=yes name=as_b01 dbname="AS_B01" )
+ column=(type=long updatewhereclause=yes name=as_b00 dbname="AS_B00" )
+ retrieve="SELECT AS_AREACODE, ISNULL(SUM(M_I11), 0) AS AS_I11, ISNULL(SUM(M_I10), 0) AS AS_I10, ISNULL(SUM(M_I09), 0) AS AS_I09, ISNULL(SUM(M_I08), 0) AS AS_I08, ISNULL(SUM(M_I07), 0) AS AS_I07, ISNULL(SUM(M_I06), 0) AS AS_I06, ISNULL(SUM(M_I05), 0) AS AS_I05, ISNULL(SUM(M_I04), 0) AS AS_I04, ISNULL(SUM(M_I03), 0) AS AS_I03, ISNULL(SUM(M_I02), 0) AS AS_I02, ISNULL(SUM(M_I01), 0) AS AS_I01, ISNULL(SUM(M_I00), 0) AS AS_I00,
+                    ISNULL(SUM(M_B11), 0) AS AS_B11, ISNULL(SUM(M_B10), 0) AS AS_B10, ISNULL(SUM(M_B09), 0) AS AS_B09, ISNULL(SUM(M_B08), 0) AS AS_B08, ISNULL(SUM(M_B07), 0) AS AS_B07, ISNULL(SUM(M_B06), 0) AS AS_B06, ISNULL(SUM(M_B05), 0) AS AS_B05, ISNULL(SUM(M_B04), 0) AS AS_B04, ISNULL(SUM(M_B03), 0) AS AS_B03, ISNULL(SUM(M_B02), 0) AS AS_B02, ISNULL(SUM(M_B01), 0) AS AS_B01, ISNULL(SUM(M_B00), 0) AS AS_B00
+ FROM (
+		SELECT A.AREACODE AS AS_AREACODE,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_to), 102) THEN count(*) END AS M_I11,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -10, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -10, :as_qcdate_to), 102) THEN count(*) END AS M_I10,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -09, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -09, :as_qcdate_to), 102) THEN count(*) END AS M_I09,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -08, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -08, :as_qcdate_to), 102) THEN count(*) END AS M_I08,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -07, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -07, :as_qcdate_to), 102) THEN count(*) END AS M_I07,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -06, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -06, :as_qcdate_to), 102) THEN count(*) END AS M_I06,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -05, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -05, :as_qcdate_to), 102) THEN count(*) END AS M_I05,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -04, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -04, :as_qcdate_to), 102) THEN count(*) END AS M_I04,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -03, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -03, :as_qcdate_to), 102) THEN count(*) END AS M_I03,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -02, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -02, :as_qcdate_to), 102) THEN count(*) END AS M_I02,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -01, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -01, :as_qcdate_to), 102) THEN count(*) END AS M_I01,
+				 CASE WHEN                                       :as_qcdate_fm        <= A.QCDATE AND A.QCDATE <=                                       :as_qcdate_to        THEN count(*) END AS M_I00,
+				 0                                                                                                                                                                           AS M_B11,
+				 0                                                                                                                                                                           AS M_B10,
+				 0                                                                                                                                                                           AS M_B09,
+				 0                                                                                                                                                                           AS M_B08,
+				 0                                                                                                                                                                           AS M_B07,
+				 0                                                                                                                                                                           AS M_B06,
+				 0                                                                                                                                                                           AS M_B05,
+				 0                                                                                                                                                                           AS M_B04,
+				 0                                                                                                                                                                           AS M_B03,
+				 0                                                                                                                                                                           AS M_B02,
+				 0                                                                                                                                                                           AS M_B01,
+				 0                                                                                                                                                                           AS M_B00
+		  FROM TQQCRESULT  A
+       WHERE A.AREACODE	    =	   :as_areacode
+         AND A.DIVISIONCODE =	   :as_divisioncode
+         AND A.SUPPLIERCODE LIKE :as_suppliercode
+         AND A.ITEMCODE     LIKE :as_itemcode
+         AND A.QCDATE		 >=   CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_fm), 102)
+         AND A.QCDATE		 <=   :as_qcdate_to
+		 GROUP BY A.AREACODE, A.QCDATE
+
+        UNION ALL
+	
+		SELECT A.AREACODE AS AS_AREACODE,
+				 0                                                                                                                                                                           AS M_I11,
+				 0                                                                                                                                                                           AS M_I10,
+				 0                                                                                                                                                                           AS M_I09,
+				 0                                                                                                                                                                           AS M_I08,
+				 0                                                                                                                                                                           AS M_I07,
+				 0                                                                                                                                                                           AS M_I06,
+				 0                                                                                                                                                                           AS M_I05,
+				 0                                                                                                                                                                           AS M_I04,
+				 0                                                                                                                                                                           AS M_I03,
+				 0                                                                                                                                                                           AS M_I02,
+				 0                                                                                                                                                                           AS M_I01,
+				 0                                                                                                                                                                           AS M_I00,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_to), 102) THEN count(*) END AS M_B11,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -10, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -10, :as_qcdate_to), 102) THEN count(*) END AS M_B10,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -09, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -09, :as_qcdate_to), 102) THEN count(*) END AS M_B09,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -08, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -08, :as_qcdate_to), 102) THEN count(*) END AS M_B08,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -07, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -07, :as_qcdate_to), 102) THEN count(*) END AS M_B07,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -06, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -06, :as_qcdate_to), 102) THEN count(*) END AS M_B06,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -05, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -05, :as_qcdate_to), 102) THEN count(*) END AS M_B05,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -04, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -04, :as_qcdate_to), 102) THEN count(*) END AS M_B04,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -03, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -03, :as_qcdate_to), 102) THEN count(*) END AS M_B03,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -02, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -02, :as_qcdate_to), 102) THEN count(*) END AS M_B02,
+				 CASE WHEN CONVERT(CHAR(10), DATEADD(month, -01, :as_qcdate_fm), 102) <= A.QCDATE AND A.QCDATE <= CONVERT(CHAR(10), DATEADD(month, -01, :as_qcdate_to), 102) THEN count(*) END AS M_B01,
+				 CASE WHEN                                       :as_qcdate_fm        <= A.QCDATE AND A.QCDATE <=                                       :as_qcdate_to        THEN count(*) END AS M_B00
+		  FROM TQQCRESULT  A
+       WHERE A.AREACODE	    =	   :as_areacode
+         AND A.DIVISIONCODE =	   :as_divisioncode
+         AND A.SUPPLIERCODE LIKE :as_suppliercode
+         AND A.ITEMCODE     LIKE :as_itemcode
+         AND A.QCDATE		 >=   CONVERT(CHAR(10), DATEADD(month, -11, :as_qcdate_fm), 102)
+         AND A.QCDATE		 <=   :as_qcdate_to
+         AND A.JUDGEFLAG    IN   ('2', '3')
+       GROUP BY A.AREACODE, A.QCDATE
+) AS TMP
+GROUP BY AS_AREACODE
+" arguments=(("as_areacode", string),("as_divisioncode", string),("as_suppliercode", string),("as_itemcode", string),("as_qcdate_fm", string),("as_qcdate_to", string)) )
+text(band=detail alignment="2" text="  ´©  °è  " border="2" color="16777215" x="4210" y="8" height="76" width="329"  name=t_5  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=detail alignment="2" text="" border="2" color="16777215" x="9" y="8" height="76" width="192"  name=t_2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 11)"border="2" color="16777215" x="206" y="8" height="76" width="329" format="[General]"  name=compute_4  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 10)"border="2" color="16777215" x="539" y="8" height="76" width="329" format="[GENERAL]"  name=compute_5  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 9)"border="2" color="16777215" x="873" y="8" height="76" width="329" format="[GENERAL]"  name=compute_6  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 8)"border="2" color="16777215" x="1207" y="8" height="76" width="329" format="[GENERAL]"  name=compute_7  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 6)"border="2" color="16777215" x="1874" y="8" height="76" width="329" format="[GENERAL]"  name=compute_9  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 5)"border="2" color="16777215" x="2208" y="8" height="76" width="329" format="[GENERAL]"  name=compute_10  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 4)"border="2" color="16777215" x="2542" y="8" height="76" width="329" format="[GENERAL]"  name=compute_11  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 3)"border="2" color="16777215" x="2875" y="8" height="76" width="329" format="[GENERAL]"  name=compute_12  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 2)"border="2" color="16777215" x="3209" y="8" height="76" width="329" format="[GENERAL]"  name=compute_13  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 1)"border="2" color="16777215" x="3543" y="8" height="76" width="329" format="[GENERAL]"  name=compute_14  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 0)"border="2" color="16777215" x="3877" y="8" height="76" width="329" format="[GENERAL]"  name=compute_15  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="f_monthcalc(as_qcdate_fm, 7)"border="2" color="16777215" x="1541" y="8" height="76" width="329" format="[GENERAL]"  name=compute_8  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="2" color="0" x="206" y="88" height="76" width="329" format="[general]"  name=as_i11 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="2" color="0" x="2875" y="88" height="76" width="329" format="[general]"  name=as_i03 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="2" color="0" x="539" y="88" height="76" width="329" format="[general]"  name=as_i10 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="2" color="0" x="873" y="88" height="76" width="329" format="[general]"  name=as_i09 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="2" color="0" x="1207" y="88" height="76" width="329" format="[general]"  name=as_i08 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="2" color="0" x="1541" y="88" height="76" width="329" format="[general]"  name=as_i07 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="2" color="0" x="1874" y="88" height="76" width="329" format="[general]"  name=as_i06 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="2" color="0" x="2208" y="88" height="76" width="329" format="[general]"  name=as_i05 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="2" color="0" x="2542" y="88" height="76" width="329" format="[general]"  name=as_i04 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="2" color="0" x="3877" y="88" height="76" width="329" format="[general]"  name=as_i00 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="2" color="0" x="3543" y="88" height="76" width="329" format="[general]"  name=as_i01 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="2" color="0" x="3209" y="88" height="76" width="329" format="[general]"  name=as_i02 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="as_i11 +  as_i10  +  as_i09 +  as_i08 +  as_i07 +  as_i06 +  
+as_i05 +  as_i04 +  as_i03 +  as_i02 +  as_i01 +  as_i00"border="2" color="0" x="4210" y="88" height="76" width="329" format="###,##0"  name=compute_2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="2" color="0" x="206" y="168" height="76" width="329" format="[general]"  name=as_b11 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="2" color="0" x="3877" y="168" height="76" width="329" format="[general]"  name=as_b00 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="2" color="0" x="3543" y="168" height="76" width="329" format="[general]"  name=as_b01 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="2" color="0" x="3209" y="168" height="76" width="329" format="[general]"  name=as_b02 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="2" color="0" x="2875" y="168" height="76" width="329" format="[general]"  name=as_b03 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i00 = 0, 0, as_b00 / as_i00 * 100)"border="2" color="16711680" x="3877" y="248" height="76" width="329" format="###,##0.00"  name=compute_26  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i01 = 0, 0, as_b01 / as_i01 * 100)"border="2" color="16711680" x="3543" y="248" height="76" width="329" format="###,##0.00"  name=compute_25  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i02 = 0, 0, as_b02 / as_i02 * 100)"border="2" color="16711680" x="3209" y="248" height="76" width="329" format="###,##0.00"  name=compute_24  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i03 = 0, 0, as_b03 / as_i03 * 100)"border="2" color="16711680" x="2875" y="248" height="76" width="329" format="###,##0.00"  name=compute_23  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i11 = 0, 0, as_b11 / as_i11 * 100)"border="2" color="16711680" x="206" y="248" height="76" width="329" format="###,##0.00"  name=compute_3  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="2" color="0" x="539" y="168" height="76" width="329" format="[general]"  name=as_b10 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i10 = 0, 0, as_b10 / as_i10 * 100)"border="2" color="16711680" x="539" y="248" height="76" width="329" format="###,##0.00"  name=compute_16  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="2" color="0" x="873" y="168" height="76" width="329" format="[general]"  name=as_b09 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i09 = 0, 0, as_b09 / as_i09 * 100)"border="2" color="16711680" x="873" y="248" height="76" width="329" format="###,##0.00"  name=compute_17  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="2" color="0" x="1207" y="168" height="76" width="329" format="[general]"  name=as_b08 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i08 = 0, 0, as_b08 / as_i08 * 100)"border="2" color="16711680" x="1207" y="248" height="76" width="329" format="###,##0.00"  name=compute_18  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="2" color="0" x="1541" y="168" height="76" width="329" format="[general]"  name=as_b07 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i07 = 0, 0, as_b07 / as_i07 * 100)"border="2" color="16711680" x="1541" y="248" height="76" width="329" format="###,##0.00"  name=compute_19  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="2" color="0" x="1874" y="168" height="76" width="329" format="[general]"  name=as_b06 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i06 = 0, 0, as_b06 / as_i06 * 100)"border="2" color="16711680" x="1874" y="248" height="76" width="329" format="###,##0.00"  name=compute_20  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="2" color="0" x="2208" y="168" height="76" width="329" format="[general]"  name=as_b05 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i05 = 0, 0, as_b05 / as_i05 * 100)"border="2" color="16711680" x="2208" y="248" height="76" width="329" format="###,##0.00"  name=compute_21  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="2" color="0" x="2542" y="168" height="76" width="329" format="[general]"  name=as_b04 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if (as_i04 = 0, 0, as_b04 / as_i04 * 100)"border="2" color="16711680" x="2542" y="248" height="76" width="329" format="###,##0.00"  name=compute_22  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="as_b11 +  as_b10  +  as_b09 +  as_b08 +  as_b07 +  as_b06 +  
+as_b05 +  as_b04 +  as_b03 +  as_b02 +  as_b01 +  as_b00"border="2" color="0" x="4210" y="168" height="76" width="329" format="###,##0"  name=compute_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="compute_1 / compute_2 * 100"border="2" color="16711680" x="4210" y="248" height="76" width="329" format="###,##0.00"  name=compute_27  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="ºÒ·®À²" border="2" color="16711680" x="9" y="248" height="76" width="192"  name=t_4  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="2" text="ºÒ·®" border="2" color="0" x="9" y="168" height="76" width="192"  name=t_3  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="2" text="ÀÔ°í" border="2" color="0" x="9" y="88" height="76" width="192"  name=t_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

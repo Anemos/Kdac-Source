@@ -1,0 +1,32 @@
+$PBExportHeader$f_pur_getxplantdiv.srf
+$PBExportComments$사번의지역/공장가져오기
+global type f_pur_getxplantdiv from function_object
+end type
+
+forward prototypes
+global subroutine f_pur_getxplantdiv (ref string ls_xplant, ref string ls_div)
+end prototypes
+
+global subroutine f_pur_getxplantdiv (ref string ls_xplant, ref string ls_div);////지역,공장 없으면 전장
+SELECT 
+//         EMP_NO,   
+//         USESTS,   
+         coalesce(max(AUTAREA),'D'),   //지역  
+//       AUTPLNT,   //담당
+         coalesce(max(AUTDIV),'A')    //공장
+//       AUTEXT1    //주관부서
+//       AUTEXT2  
+//    INTO :is_xplant, :is_area, :is_div, :is_dept   
+ INTO :ls_xplant, :ls_div
+ FROM  PBCOMMON.COMM121  
+ WHERE EMP_NO = :g_s_empno   ;
+if ls_xplant = '' then
+	ls_xplant = 'D'
+end if
+if ls_div = '' then
+	ls_div = 'A'
+end if
+
+return 
+end subroutine
+

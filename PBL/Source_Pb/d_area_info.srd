@@ -1,0 +1,19 @@
+$PBExportHeader$d_area_info.srd
+$PBExportComments$지역과 공장정보
+release 8;
+datawindow(units=0 timer_interval=0 color=32827087 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=240 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=area_name dbname="area_name" )
+ column=(type=char(30) updatewhereclause=yes name=workcenter_name dbname="workcenter_name" )
+ )
+bitmap(band=detail filename="bmp\bullet.gif" x="96" y="32" height="52" width="59" border="0"  name=p_1 visible="1" )
+bitmap(band=detail filename="bmp\bullet.gif" x="96" y="152" height="52" width="59" border="0"  name=p_2 visible="1" )
+text(band=detail alignment="2" text="Tool 명 :" border="0" color="22099723" x="187" y="12" height="92" width="384" html.valueishtml="0"  name=area_name_t visible="1"  font.face="Century Gothic" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="품     명 :" border="0" color="22099723" x="187" y="132" height="92" width="384" html.valueishtml="0"  name=workcenter_name_t visible="1"  font.face="Century Gothic" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="128" x="590" y="12" height="92" width="2176" format="[general]" html.valueishtml="0"  name=area_name visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Century Gothic" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="128" x="590" y="132" height="92" width="2176" format="[general]" html.valueishtml="0"  name=workcenter_name visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Century Gothic" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,40 @@
+$PBExportHeader$df_inv101_comcd.srf
+$PBExportComments$고개사 유상사급품 여부체크 (지역,공장,품번)
+global type df_inv101_comcd from function_object
+end type
+
+forward prototypes
+global function integer df_inv101_comcd (string ag_xplant, string ag_div, string ag_itno)
+end prototypes
+
+global function integer df_inv101_comcd (string ag_xplant, string ag_div, string ag_itno);////////////////////////////////////////////////////////////
+//고객사 유상여부 체크
+//			argument : 지역,공장,품번
+//			
+//			성공 : 1
+//			실패 : -1
+///////////////////////////////////////////////////////////
+Long ln_cnt
+//item balance db	
+SELECT count(*)
+ INTO :ln_cnt
+FROM "PBINV"."INV101"  
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND 
+		( "PBINV"."INV101"."MASS" = 'M') AND  		
+		( "PBINV"."INV101"."KBCD" <> 'K') AND  	
+		( "PBINV"."INV101"."COMCD" = 'Y') AND 
+		( "PBINV"."INV101"."SRCE" <> '01') AND  
+		( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+		( "PBINV"."INV101"."DIV" = :ag_div) AND  
+		( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+		
+IF ln_cnt > 0 Then
+	Return 1
+Else
+	Return -1
+End If
+
+
+
+end function
+

@@ -1,0 +1,20 @@
+$PBExportHeader$f_connect.srf
+$PBExportComments$Transaction Connect
+global type f_connect from function_object
+end type
+
+forward prototypes
+global subroutine f_connect (transaction ag_transaction)
+end prototypes
+
+global subroutine f_connect (transaction ag_transaction);////////////////////////////////////////////
+//      DB Connect						     		//
+//		input = > Transaction            			//
+////////////////////////////////////////////
+
+if	ag_transaction.dbhandle()	=	0	then
+	connect using 	ag_transaction	;
+end if
+
+end subroutine
+

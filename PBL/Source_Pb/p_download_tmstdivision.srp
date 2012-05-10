@@ -1,0 +1,10 @@
+$PBExportHeader$p_download_tmstdivision.srp
+$PBExportComments$download tmstdivision
+PIPELINE(source_connect=CA/400,destination_connect=ipis,type=create,commit=100,errors=100)
+SOURCE(name="DAC002",COLUMN(type=char,name="COCODE",dbtype="CHAR()(10)",nulls_allowed=no)
+ COLUMN(type=char,name="COFLNAME",dbtype="CHAR()(50)",nulls_allowed=no)
+ COLUMN(type=char,name="COITNAMEE",dbtype="CHAR()(30)",nulls_allowed=no))
+RETRIEVE(statement="SELECT ~"PBCOMMON~".~"DAC002~".~"COCODE~",              ~"PBCOMMON~".~"DAC002~".~"COFLNAME~",              ~"PBCOMMON~".~"DAC002~".~"COITNAMEE~"        FROM ~"PBCOMMON~".~"DAC002~"   	where ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'DAC030'  ")
+DESTINATION(name="tmisdivision",COLUMN(type=char,name="COCODE",dbtype="char(10)",nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="COFLNAME",dbtype="char(50)",nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="COITNAMEE",dbtype="char(30)",nulls_allowed=no,initial_value="spaces"))

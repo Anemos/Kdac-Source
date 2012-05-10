@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_convqty.srf
+$PBExportComments$변환계수 return
+global type f_get_convqty from function_object
+end type
+
+forward prototypes
+global function decimal f_get_convqty (string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_get_convqty (string as_xplant, string as_div, string as_itno);//////////////////////////////////////////////////////////
+// 지역/공장/품번을 받아 품목 재고Table의 변환계수를 Return
+//
+//////////////////////////////////////////////////////////
+
+Dec{4} ld_convqty
+
+SELECT "CONVQTY" INTO :ld_convqty
+	FROM "PBINV"."INV101"
+WHERE "COMLTD" = '01' AND	"XPLANT" = :as_xplant AND "DIV" = :as_div AND	"ITNO" = :as_itno	 Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then
+	Return 0
+End If
+
+Return ld_convqty
+end function
+

@@ -1,0 +1,169 @@
+$PBExportHeader$f_wip_use_replace02.srf
+$PBExportComments$재공 사용량 수정(WIP002)
+global type f_wip_use_replace02 from function_object
+end type
+
+forward prototypes
+global function string f_wip_use_replace02 (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2, string a_xplant, string a_div, string a_slno, string a_itno, string a_xuse, string a_rtngubun, string a_dept, string a_tdte4_b, string a_tdte4_a, decimal a_tqty4_b, decimal a_tqty4_a, string a_applydate)
+end prototypes
+
+global function string f_wip_use_replace02 (string a_comltd, string a_slipxtype, string a_srno, string a_srno1, string a_srno2, string a_xplant, string a_div, string a_slno, string a_itno, string a_xuse, string a_rtngubun, string a_dept, string a_tdte4_b, string a_tdte4_a, decimal a_tqty4_b, decimal a_tqty4_a, string a_applydate);//***********************************************************************************
+//
+// 업체, 라인재공에 사용량수정시 하위품번의 수정사용량및 날짜 UPDATE
+// 전표타입 : 'RP', 'IS', 'RS', 'RM', 'SM'
+// WIP004에 사용수량 UPDATE
+// 인수 : 회사, 입고전표, 구매요구번호, 분할발주횟수, 분할납품회수, 지역, 공장, 거래명세표번호,
+//        입고품번, 용도, 업체코드(부서), 입고일, 입고수정일, 입고수량, 입고수정수량
+// 반환값 : 성공('Y'), 실패('N')
+//
+//***********************************************************************************
+
+decimal{1} l_n_tqty4
+decimal{4} l_n_wdchqt,l_n_wbusqt1,l_n_wbusqt2,l_n_wbusqt3,l_n_wbusqt4,l_n_wbusqt5,l_n_wbusqt6,l_n_wbusqt7,&
+			  l_n_wbusqt8,l_n_wbusqta,l_n_wbohqt
+decimal{5} l_n_wbavrg1,l_n_wbavrg2
+decimal{0} l_n_wbusat1,l_n_wbusat2,l_n_wbusat3,l_n_wbusat4,l_n_wbusat5,l_n_wbusat6,l_n_wbusat7,&
+			  l_n_wbusat8,l_n_wbusat9,l_n_wbusata,l_n_wbohat1,l_n_wbohat2
+decimal{2} l_n_costav
+string     l_s_itno,l_s_opcd,l_s_orct,l_s_gubun, ls_adjdate, ls_rundate, l_s_usge
+integer li_chk
+
+if a_slipxtype = 'RM' or a_slipxtype = 'SM' or a_slipxtype = 'IS' or a_slipxtype = 'RS' then
+	l_s_orct  = '9999'
+elseif a_slipxtype = 'RP' then
+	l_s_orct  = a_dept
+else
+	return 'N'
+end if
+
+ls_adjdate = a_applydate
+ls_rundate = uf_wip_addmonth(ls_adjdate,1)
+
+if a_tqty4_b = a_tqty4_a then
+	UPDATE "PBWIP"."WIP004"
+		SET WDUPDTDT = ' ',WDDATE = :A_TDTE4_A,
+			 WDUPDTID = ' '
+	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND
+			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+			WDDATE = :A_TDTE4_B
+	USING SQLCA ;
+	if sqlca.sqlcode <> 0 then
+		f_errorlog_insert(sqlca.sqlcode, sqlca.sqlerrtext)
+		return 'N'
+	end if
+else
+	//수량이 수정된 경우 기존의 수량에 대한 비율로 재공트랜스와 재공밸런스에 Update
+	UPDATE "PBWIP"."WIP004"
+		SET WDPRQT = :A_TQTY4_A,WDCHQT = :A_TQTY4_A * WDCHQT / :A_TQTY4_B,WDUPDTDT = ' ',WDDATE = :A_TDTE4_A,
+			 WDUPDTID = ' '
+	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND
+			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+			 WDDATE = :A_TDTE4_B
+	USING SQLCA ;
+end if
+
+Declare WIP004_Cur Cursor For
+	SELECT WDIOCD,WDUSGE,WDITNO,WDCHQT   FROM "PBWIP"."WIP004"
+	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND WDIOCD = :l_s_gubun AND 
+			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
+			 WDDATE = :A_TDTE4_A
+	USING SQLCA ;
+	
+Open WIP004_Cur ;
+	do while true
+		fetch WIP004_Cur into :l_s_gubun,:l_s_usge,:l_s_itno,:l_n_wdchqt ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if
+		SELECT WBAVRG1,WBUSQT1,WBUSQT2,WBUSQT3,WBUSQT4,WBUSQT5,WBUSQT6,WBUSQT7,WBUSQT8,WBUSQTA INTO
+				:l_n_wbavrg1,:l_n_wbusqt1,:l_n_wbusqt2,:l_n_wbusqt3,:l_n_wbusqt4,:l_n_wbusqt5,
+				:l_n_wbusqt6,:l_n_wbusqt7,:l_n_wbusqt8,:l_n_wbusqta   FROM "PBWIP"."WIP002" 
+			WHERE WBCMCD = :a_comltd AND WBPLANT = :a_xplant AND WBDVSN = :a_div AND 
+					WBORCT = :l_s_orct AND WBITNO = :l_s_itno AND WBIOCD = :l_s_gubun AND WBYEAR||WBMONTH = :ls_adjdate
+		USING SQLCA;
+		
+		select costav into :l_n_costav
+			from pbinv.inv402
+			where comltd = :a_comltd and xplant = :a_xplant and div = :a_div and 
+					itno = :l_s_itno and xyear = :ls_adjdate
+			using sqlca;
+		if l_n_wbavrg1 = 0 then
+			l_n_wbavrg1 = l_n_costav
+		end if
+		
+		if ls_adjdate < mid(a_tdte4_a,1,6) then
+			Choose Case l_s_usge
+				Case '01'
+					l_n_wbusqt1 -= l_n_wdchqt
+				Case '02'
+					l_n_wbusqt2 -= l_n_wdchqt
+				Case '03'
+					l_n_wbusqt3 -= l_n_wdchqt
+				Case '04'
+					l_n_wbusqt4 -= l_n_wdchqt
+				Case '05'
+					l_n_wbusqt5 -= l_n_wdchqt
+				Case '06'
+					l_n_wbusqt6 -= l_n_wdchqt
+				Case '07'
+					l_n_wbusqt7 -= l_n_wdchqt
+			End Choose
+		else
+			Choose Case l_s_usge
+				Case '01'
+					l_n_wbusqt1 += l_n_wdchqt
+				Case '02'
+					l_n_wbusqt2 += l_n_wdchqt
+				Case '03'
+					l_n_wbusqt3 += l_n_wdchqt
+				Case '04'
+					l_n_wbusqt4 += l_n_wdchqt
+				Case '05'
+					l_n_wbusqt5 += l_n_wdchqt
+				Case '06'
+					l_n_wbusqt6 += l_n_wdchqt
+				Case '07'
+					l_n_wbusqt7 += l_n_wdchqt
+			End Choose
+		end if
+		l_n_wbohqt     -= l_n_wdchqt
+		
+		l_n_wbusat1 = l_n_wbusqt1 * l_n_wbavrg1 
+		l_n_wbusat2 = l_n_wbusqt2 * l_n_wbavrg1 
+		l_n_wbusat3 = l_n_wbusqt3 * l_n_wbavrg1  
+		l_n_wbusat4 = l_n_wbusqt4 * l_n_wbavrg1  
+		l_n_wbusat5 = l_n_wbusqt5 * l_n_wbavrg1 
+		l_n_wbusat6 = l_n_wbusqt6 * l_n_wbavrg1 
+		l_n_wbusat7 = l_n_wbusqt7 * l_n_wbavrg1 
+		l_n_wbusat8 = l_n_wbusqt8 * l_n_wbavrg1
+		l_n_wbusata = l_n_wbusqta * l_n_wbavrg1
+		l_n_wbohat1 = l_n_wbohqt  * l_n_wbavrg1 
+		
+		//마감월 UPDATE
+		update "PBWIP"."WIP002"
+			set WBUSQT1 = :l_n_wbusqt1,WBUSAT1 = :l_n_wbusat1,WBUSQT2 = :l_n_wbusqt2,WBUSAT2 = :l_n_wbusat2,
+			 	WBUSQT3 = :l_n_wbusqt3,WBUSAT3 = :l_n_wbusat3,WBUSQT4 = :l_n_wbusqt4,WBUSAT4 = :l_n_wbusat4,
+			 	WBUSQT5 = :l_n_wbusqt5,WBUSAT5 = :l_n_wbusat5,WBUSQT6 = :l_n_wbusqt6,WBUSAT6 = :l_n_wbusat6,
+			 	WBUSQT7 = :l_n_wbusqt7,WBUSAT7 = :l_n_wbusat7,WBUSQT8 = :l_n_wbusqt8,WBUSAT8 = :l_n_wbusat8,
+			 	WBUSAT9 = :l_n_wbusat9,WBUSQTA = :l_n_wbusqta,WBUSATA = :l_n_wbusata
+			where WBCMCD = :a_comltd AND WBPLANT = :a_xplant AND WBDVSN = :a_div AND 
+					WBORCT = :l_s_orct AND WBITNO = :a_itno AND WBIOCD = :l_s_gubun AND WBYEAR||WBMONTH = :ls_adjdate
+					using sqlca;
+		
+		//현재공 UPDATE
+		update "PBWIP"."WIP002"
+			set WBBGQT = :l_n_wbohqt,WBBGAT1 = :l_n_wbohat1
+			where WBCMCD = :a_comltd AND WBPLANT = :a_xplant AND WBDVSN = :a_div AND 
+					WBORCT = :l_s_orct AND WBITNO = :a_itno AND WBIOCD = :l_s_gubun AND WBYEAR||WBMONTH = :ls_rundate
+					using sqlca;
+		
+	loop
+Close WIP004_Cur ;	
+
+Return 'Y'
+
+end function
+

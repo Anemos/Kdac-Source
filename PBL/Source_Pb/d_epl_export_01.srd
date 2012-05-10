@@ -1,0 +1,53 @@
+$PBExportHeader$d_epl_export_01.srd
+$PBExportComments$BOM Àü°³ DW
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes key=yes name=parentitem dbname="EPLT03.PARENTITEM" )
+ column=(type=char(15) updatewhereclause=yes key=yes name=childitem dbname="EPLT03.CHILDITEM" )
+ column=(type=datetime updatewhereclause=yes name=changedate dbname="EPLT03.CHANGEDATE" )
+ column=(type=char(15) updatewhereclause=yes name=ecnnumber dbname="EPLT03.ECNNUMBER" )
+ column=(type=decimal(3) updatewhereclause=yes name=eqty dbname="EPLT03.EQTY" )
+ column=(type=char(8) updatewhereclause=yes key=yes name=startdate dbname="EPLT03.STARTDATE" )
+ column=(type=char(8) updatewhereclause=yes key=yes name=enddate dbname="EPLT03.ENDDATE" )
+ column=(type=char(16) updatewhereclause=yes name=drawingnumber dbname="EPLT03.DRAWINGNUMBER" )
+ column=(type=char(255) updatewhereclause=yes name=remark dbname="EPLT03.REMARK" )
+ retrieve="SELECT 	~"CSEPL~".~"EPLT03~".~"PARENTITEM~",   
+			~"CSEPL~".~"EPLT03~".~"CHILDITEM~",   
+			~"CSEPL~".~"EPLT03~".~"CHANGEDATE~",   
+			~"CSEPL~".~"EPLT03~".~"ECNNUMBER~",   
+			~"CSEPL~".~"EPLT03~".~"EQTY~",   
+			~"CSEPL~".~"EPLT03~".~"STARTDATE~",   
+			~"CSEPL~".~"EPLT03~".~"ENDDATE~",   
+			~"CSEPL~".~"EPLT03~".~"DRAWINGNUMBER~",   
+			~"CSEPL~".~"EPLT03~".~"REMARK~"
+FROM 	~"CSEPL~".~"EPLT03~"   
+WHERE	~"CSEPL~".~"EPLT03~".~"PARENTITEM~" = :ag_parentitem and ( :ag_checkdate Between ~"CSEPL~".~"EPLT03~".~"STARTDATE~" and ~"CSEPL~".~"EPLT03~".~"ENDDATE~" )
+	" update="CSEPL.EPLT03" updatewhere=1 updatekeyinplace=no arguments=(("ag_parentitem", string),("ag_checkdate", string)) )
+text(band=header alignment="0" text="Parentitem" border="0" color="0" x="9" y="4" height="76" width="471" html.valueishtml="0"  name=parentitem_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Childitem" border="0" color="0" x="489" y="4" height="76" width="471" html.valueishtml="0"  name=childitem_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Changedate" border="0" color="0" x="969" y="4" height="76" width="919" html.valueishtml="0"  name=changedate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Ecnnumber" border="0" color="0" x="1897" y="4" height="76" width="471" html.valueishtml="0"  name=ecnnumber_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Eqty" border="0" color="0" x="2377" y="4" height="76" width="1367" html.valueishtml="0"  name=eqty_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Startdate" border="0" color="0" x="3753" y="4" height="76" width="247" html.valueishtml="0"  name=startdate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Enddate" border="0" color="0" x="4009" y="4" height="76" width="247" html.valueishtml="0"  name=enddate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Drawingnumber" border="0" color="0" x="4265" y="4" height="76" width="503" html.valueishtml="0"  name=drawingnumber_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Remark" border="0" color="0" x="4777" y="4" height="76" width="4379" html.valueishtml="0"  name=remark_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=parentitem visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="489" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=childitem visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="969" y="0" height="76" width="919" format="[shortdate] [time]" html.valueishtml="0"  name=changedate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1897" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=ecnnumber visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="2377" y="0" height="76" width="1367" format="[general]" html.valueishtml="0"  name=eqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="3753" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=startdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="4009" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=enddate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="4265" y="0" height="76" width="503" format="[general]" html.valueishtml="0"  name=drawingnumber visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="4777" y="0" height="76" width="4379" format="[general]" html.valueishtml="0"  name=remark visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

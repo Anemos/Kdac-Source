@@ -1,0 +1,29 @@
+$PBExportHeader$f_pod_exist.srf
+$PBExportComments$p/o detail 존재유무 CHECK
+global type f_pod_exist from function_object
+end type
+
+forward prototypes
+global function integer f_pod_exist (string as_purno, string as_srno, string as_itno)
+end prototypes
+
+global function integer f_pod_exist (string as_purno, string as_srno, string as_itno);/******************************************************************/
+/* control (opm102)에서   P/O Detail  존재여부 check              */
+/* Argument value arg_key : 발주번호/개정 serl/ 품번              */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Int li_cnt
+
+SELECT count(*)  INTO :li_cnt 
+ FROM  "PBPUR"."OPM102"
+WHERE "PBPUR"."OPM102"."COMLTD" = '01'     AND "PBPUR"."OPM102"."PURNO" = :as_purno AND
+      "PBPUR"."OPM102"."SRNO"   = :as_srno AND "PBPUR"."OPM102"."ITNO"  = :as_itno using sqlca;
+if li_cnt <= 0 then 
+	return -1
+end if
+
+return 1
+
+end function
+

@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_xtype_s.srf
+$PBExportComments$前格Type  Return   Global Function
+global type f_get_xtype_s from function_object
+end type
+
+forward prototypes
+global function string f_get_xtype_s (string ag_itno)
+end prototypes
+
+global function string f_get_xtype_s (string ag_itno);//////////////////////////////////////////////////
+// 前锅阑 罐酒 前格 Master 狼 前格 Type阑 Return
+//
+//////////////////////////////////////////////////
+
+
+String ls_Xtype
+
+
+SELECT XTYPE INTO :ls_Xtype
+	FROM PBINV.INV002
+WHERE COMLTD = :g_s_company AND 
+		ITNO = :ag_itno	Using SQLCA ;
+
+		
+Return ls_Xtype
+end function
+

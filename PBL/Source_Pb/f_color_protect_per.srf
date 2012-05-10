@@ -1,0 +1,45 @@
+$PBExportHeader$f_color_protect_per.srf
+$PBExportComments$Color로 Protect Set   Global Function
+global type f_color_protect_per from function_object
+end type
+
+forward prototypes
+global subroutine f_color_protect_per (datawindow adw_target)
+end prototypes
+
+global subroutine f_color_protect_per (datawindow adw_target);//////////////////////////////////////////////////////////////////
+// * 색깔에 따라 Protect 설정 *
+//
+//
+// 회색: 12632256(설정), 그외: (해제)       박병주 (2002.5.23)
+//////////////////////////////////////////////////////////////////
+
+Long   ll_Col, ll_BGcolor, ll_Rowcnt, ll_Row
+String ls_ModString, ls_Color_Syntax, ls_Color
+Dec{0}	ld_ColCnt
+
+ld_ColCnt = Dec(adw_target.Object.DataWindow.Column.Count)
+ll_RowCnt = adw_target.RowCount()
+
+For ll_Row = 1 To ll_RowCnt
+	For ll_Col = 1 To ld_ColCnt
+		If adw_target.Describe('#' + String(ll_Col) + '.Protect') = '?' Then Continue // Protect속성값이 없으면 다음칼럼으로...
+		
+		ls_Color_Syntax = adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color')
+		
+		If Pos( ls_Color_Syntax, 'if', 1 ) = 0 Then
+			ls_Color = ls_Color_Syntax
+		Else				
+			ls_Color_Syntax = Mid( ls_Color_Syntax, Pos( ls_Color_Syntax, 'if', 1 ) )
+			ls_Color_Syntax = Left( ls_Color_Syntax, Len(ls_Color_Syntax) - 1 )			
+			ls_Color = adw_target.Describe( "Evaluate('" + ls_Color_Syntax +"', " + String(ll_Row) + ")" )		
+		End If
+	
+		ls_ModString = "#" + String(ll_Col) + ".Protect = '" + &
+							"0 ~t if(" + ls_Color + " = 12632256, 1, 0)'"        // 회색
+				
+		adw_target.Modify(ls_ModString)	
+	Next
+Next
+end subroutine
+

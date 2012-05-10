@@ -1,0 +1,26 @@
+$PBExportHeader$f_to_datetype.srf
+$PBExportComments$날짜(String)를 Date형식으로 변환    Global Function
+global type f_to_datetype from function_object
+end type
+
+forward prototypes
+global function string f_to_datetype (string ag_string)
+end prototypes
+
+global function string f_to_datetype (string ag_string);/////////////////////////////////////////
+// 날짜(String)를 Date형식으로 변환
+//
+/////////////////////////////////////////
+
+
+String ls_yyyy, ls_mm, ls_dd, ls_Rtn
+
+ls_yyyy = Left(ag_string, 4)
+ls_mm	  = Mid(ag_string, 5, 2)
+ls_dd	  = Right(ag_string, 2)
+
+ls_Rtn  = ls_yyyy + '-' + ls_mm + '-' + ls_dd
+
+Return ls_Rtn
+end function
+

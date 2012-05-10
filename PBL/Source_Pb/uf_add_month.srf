@@ -1,0 +1,28 @@
+$PBExportHeader$uf_add_month.srf
+$PBExportComments$Add Month
+global type uf_add_month from function_object
+end type
+
+forward prototypes
+global function string uf_add_month (string as_yymm, long al_mm)
+end prototypes
+
+global function string uf_add_month (string as_yymm, long al_mm);String  ls_date, ls_yyyy, ls_mm
+Integer li_add_yyyy, li_add_mm
+
+ls_yyyy = Left(as_yymm,4)
+ls_mm   = Mid(as_yymm,5,2)
+
+li_add_mm   = Mod(al_mm,  12)    //Add 월
+li_add_yyyy = Int(Truncate(al_mm / 12, 0)) + Int((Dec(ls_mm) + li_add_mm) / 12)    //Add 년
+ls_yyyy     = String(Dec(ls_yyyy) + li_add_yyyy)                     //계산된 년
+ls_mm       = String(Mod((Dec(ls_mm) + li_add_mm) , 12), '00')       //계산된 월
+
+IF ls_mm   = '00' THEN
+	ls_mm   = '12'
+	ls_yyyy = String(Dec(ls_yyyy) - 1)
+END IF
+ls_date     = ls_yyyy + ls_mm
+Return ls_date
+end function
+

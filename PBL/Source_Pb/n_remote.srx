@@ -1,0 +1,14 @@
+$PBExportHeader$n_remote.srx
+$PBExportComments$현장관리_메시지 전송 오브젝트
+global type n_remote from nonvisualobject
+public:
+// public instance variables
+// events
+end type
+
+forward prototypes
+public:
+   // public scripts from n_remote
+   subroutine of_ref_n_main_in_shared (string argstext)
+end prototypes
+

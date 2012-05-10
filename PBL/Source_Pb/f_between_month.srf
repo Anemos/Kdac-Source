@@ -1,0 +1,32 @@
+$PBExportHeader$f_between_month.srf
+global type f_between_month from function_object
+end type
+
+forward prototypes
+global function string f_between_month (string ag_from, string ag_to)
+end prototypes
+
+global function string f_between_month (string ag_from, string ag_to);string  ls_rtn 
+long  ll_fyy , ll_fmm , ll_tyy , ll_tmm
+
+
+
+if ag_from = '' or isnull(ag_from) or ag_to = '' or isnull(ag_to) then
+	
+	ls_rtn = '0'
+	return ls_rtn
+end if
+
+
+
+ll_fyy  = 12 * long(mid(ag_from,1,4))
+ll_fmm  = long(mid(ag_from,5,2))
+
+ll_tyy  = 12 * long(mid(ag_to,1,4))
+ll_tmm  = long(mid(ag_to,5,2))
+
+ls_rtn  = string( ll_tyy + ll_tmm - ll_fyy - ll_fmm)
+
+return ls_rtn
+end function
+

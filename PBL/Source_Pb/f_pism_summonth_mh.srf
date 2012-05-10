@@ -1,0 +1,110 @@
+$PBExportHeader$f_pism_summonth_mh.srf
+$PBExportComments$월별 공수집계
+global type f_pism_summonth_mh from function_object
+end type
+
+forward prototypes
+global function integer f_pism_summonth_mh (string as_area, string as_div, string as_wc, string as_smonth)
+end prototypes
+
+global function integer f_pism_summonth_mh (string as_area, string as_div, string as_wc, string as_smonth);// 사용안함 !@! 
+
+Decimal{1} ld_unuseMH, ld_actMH, ld_effDownMH, ld_basicMH 
+
+  Delete TMHMONTH_S 
+   Where ( AreaCode = :as_area ) And 
+	 ( DivisionCode = :as_div ) And 
+	 ( WorkCenter = :as_wc ) And 
+	 ( sMonth = :as_sMonth ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+Insert INTO TMHMONTH_S  
+         ( AreaCode, DivisionCode, WorkCenter, sMonth, totMH, jungsiMH, mSuppMH, pSuppMH, etcMH,   
+           etcmSuppMH, etcpSuppMH, excunpaidMH, excpaidMH, totInMH, gunteMH, ilboMH, bugaMH, ActInMH ) 
+  SELECT A.AreaCode, A.DivisionCode, A.WorkCenter,   
+         substring(A.WorkDay, 1, 7),   
+         Sum(IsNull(A.totMH,0)),   
+         Sum(IsNull(A.jungsiMH,0)),   
+         Sum(IsNull(A.mSuppMH,0)),   
+         Sum(IsNull(A.pSuppMH,0)),   
+         Sum(IsNull(A.etcMH,0)),   
+         Sum(IsNull(A.etcmSuppMH,0)),   
+         Sum(IsNull(A.etcpSuppMH,0)),   
+         Sum(IsNull(A.excunpaidMH,0)),   
+         Sum(IsNull(A.excpaidMH,0)),   
+         Sum(IsNull(A.totInMH,0)),   
+         Sum(IsNull(A.gunteMH,0)),   
+         Sum(IsNull(A.ilboMH,0)),   
+         Sum(IsNull(A.bugaMH,0)), 
+	 Sum(IsNull(A.ActInMH,0)) 
+    FROM TMHDAILY A, TMHDAILYSTATUS B 
+   Where ( A.AreaCode = B.AreaCode ) And 
+	 ( A.DivisionCode = B.DivisionCode ) And 
+	 ( A.WorkCenter = B.WorkCenter ) And 
+	 ( A.WorkDay = B.WorkDay ) And 
+	 ( ( A.AreaCode = :as_area ) And 
+	   ( A.DivisionCode = :as_div ) And 
+	   ( A.WorkCenter = :as_wc ) And 
+	   ( substring(A.WorkDay, 1, 7) = :as_sMonth ) And 
+	   ( IsNull(B.DailyStatus,'0') = '1' ) ) 
+Group By A.AreaCode, A.DivisionCode, A.WorkCenter,   
+         substring(A.WorkDay, 1, 7) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+ Select Sum(IsNull(A.UnuseMH,0)), 
+	     Sum(IsNull(A.ActMH,0)) 
+		Into :ld_unuseMH, :ld_actMH 
+   From TMHMONTHPROD_S A 
+  Where ( ( A.AreaCode = :as_area ) And 
+		  ( A.DivisionCode = :as_div ) And 
+		  ( A.WorkCenter = :as_wc ) And 
+		  ( A.sMonth = :as_sMonth ) ) Using SqlPIS ;
+	  	If IsNull(ld_unuseMH) Then ld_unuseMH = 0 
+		If IsNull(ld_actMH) Then ld_actMH = 0 
+ 
+  SELECT Sum(IsNull(A.subMH,0)) Into :ld_effDownMH 
+    FROM TMHDAILYSUB A, TMHDAILYSTATUS B 
+   WHERE ( A.AreaCode = B.AreaCode ) AND 
+	 ( A.DivisionCode = B.DivisionCode ) AND  
+	 ( A.WorkCenter = B.WorkCenter ) AND 
+	 ( A.WorkDay = B.WorkDay ) AND 
+	 ( ( A.AreaCode = :as_area ) And 
+	   ( A.DivisionCode = :as_div ) And 
+	   ( A.WorkCenter = :as_wc ) And 
+ 	   ( substring(A.WorkDay, 1, 7) = :as_sMonth ) And 
+	   ( IsNull(B.DailyStatus,'0') = '1' ) And 
+ 	   ( mhGubun = 'Z' ) )  Using SqlPIS ;
+		If IsNull(ld_effDownMH) Then ld_effDownMH = 0 
+		
+  Select round( Sum( BasicTime * ( IsNull(A.daypQty,0) + IsNull(A.nightpQty,0) ) / 3600 ) , 1) 
+  			Into :ld_basicMH 
+    From TMHREALPROD A, TMHDAILYSTATUS B 
+   Where ( A.AreaCode = B.AreaCode ) AND 
+  	 ( A.DivisionCode = B.DivisionCode ) AND  
+	 ( A.WorkCenter = B.WorkCenter ) AND 
+	 ( A.WorkDay = B.WorkDay ) AND 
+	 ( ( A.AreaCode = :as_area ) And 
+	   ( A.DivisionCode = :as_div ) And 
+	   ( A.WorkCenter = :as_wc ) And
+	   ( substring(A.WorkDay, 1, 7) = :as_sMonth ) And 
+	   ( IsNull(B.DailyStatus,'0') = '1' ) )  Using SqlPIS ;
+		If IsNull(ld_basicMH) Then ld_basicMH = 0 
+
+	Update TMHMONTH_S 
+	   Set UnuseMH 		= IsNull(:ld_unuseMH,0),
+	       ActMH   		= IsNull(:ld_actMH,0),
+	       effDownMH		= IsNull(:ld_effDownMH,0), 
+	       BasicMH   		= IsNull(:ld_basicMH,0) 
+	 Where ( AreaCode 	= :as_area ) And 
+	       ( DivisionCode = :as_div ) And 
+	       ( WorkCenter = :as_wc ) And 
+	       ( sMonth = :as_sMonth ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+Return 1 
+
+Exit_pr: 
+
+Return -1 
+end function
+

@@ -1,0 +1,42 @@
+$PBExportHeader$f_checkdwstatus.srf
+$PBExportComments$데이타윈도우의 상태를 검사하는 함수
+global type f_checkdwstatus from function_object
+end type
+
+forward prototypes
+global subroutine f_checkdwstatus (datawindow adw_datawindow, long al_row)
+end prototypes
+
+global subroutine f_checkdwstatus (datawindow adw_datawindow, long al_row);
+//------------------------------------------------------------------------------
+// 함수명		:	f_CheckDWStatus
+// 처리개요		:	데이타윈도우의 상태를 검사한다.
+// 사용인수		:	Datawindow	:	adw_datawindow	:	i	:	사용중인 데이타윈도우
+//						Long			:	al_row			:	i	:	선택된 행수
+// 반환값		:	
+// 개발언어		:	Power Builder Enterprise Ver 7.0
+//------------------------------------------------------------------------------
+
+DwItemStatus 	ldws_status
+
+// 데이타윈도우의 상태를 구한다.
+//
+ldws_status = adw_datawindow.GetItemStatus (al_row, 0, Primary!)
+
+CHOOSE CASE ldws_status
+	CASE New!
+		MessageBox ("f_CheckDWStatus", "New")
+	CASE NewModified!
+		MessageBox ("f_CheckDWStatus", "NewModified")
+	CASE NotModified!
+		MessageBox ("f_CheckDWStatus", "NotModified")
+	CASE DataModified!
+		MessageBox ("f_CheckDWStatus", "DataModified")
+END CHOOSE
+
+//------------------------------------------------------------------------------
+// End of Script
+//------------------------------------------------------------------------------
+
+end subroutine
+

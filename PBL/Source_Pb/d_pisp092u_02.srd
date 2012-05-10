@@ -1,0 +1,57 @@
+$PBExportHeader$d_pisp092u_02.srd
+$PBExportComments$조립 지시 - 미준수간판 등록 - 등록된 간판 정보
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=128 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=64 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(10) updatewhereclause=no name=prddate dbname="PrdDate" )
+ column=(type=char(1) updatewhereclause=no name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=no name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=no name=workcenter dbname="WorkCenter" )
+ column=(type=char(1) updatewhereclause=no name=linecode dbname="LineCode" )
+ column=(type=char(12) updatewhereclause=no name=itemcode dbname="ItemCode" )
+ column=(type=char(100) updatewhereclause=no name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=no name=modelid dbname="ModelID" )
+ column=(type=char(1) updatewhereclause=no name=productgubun dbname="ProductGubun" )
+ column=(type=char(10) updatewhereclause=no name=productgubunname dbname="ProductGubunName" )
+ column=(type=char(11) updatewhereclause=no name=kbno dbname="KBNo" )
+ column=(type=char(10) updatewhereclause=no name=kbreleasedate dbname="KBReleaseDate" )
+ column=(type=long updatewhereclause=no name=kbreleaseseq dbname="KBReleaseSeq" )
+ column=(type=long updatewhereclause=no name=rackqty dbname="RackQty" )
+ column=(type=char(10) updatewhereclause=no name=codegroup dbname="CodeGroup" )
+ column=(type=char(30) updatewhereclause=no name=codegroupname dbname="CodeGroupName" )
+ column=(type=char(10) updatewhereclause=no name=codeid dbname="CodeID" )
+ column=(type=char(100) updatewhereclause=no name=codename dbname="CodeName" )
+ column=(type=char(1) updatewhereclause=no name=checkflag dbname="CheckFlag" values="	Y/	N" )
+ column=(type=long updatewhereclause=no name=sortorder dbname="SortOrder" )
+ procedure="1 execute dbo.sp_pisp092u_02;1 @ps_prddate = :ps_prddate, @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_workcenter = :ps_workcenter, @ps_linecode = :ps_linecode, @ps_codegroup = :ps_codegroup, @ps_codeid = :ps_codeid" arguments=(("ps_prddate", string),("ps_areacode", string),("ps_divisioncode", string),("ps_workcenter", string),("ps_linecode", string),("ps_codegroup", string),("ps_codeid", string)) )
+text(band=header alignment="2" text="
+품번" border="0" color="16777215" x="9" y="12" height="112" width="288"  name=itemcode_t  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+품명" border="0" color="16777215" x="306" y="12" height="112" width="631"  name=itemname_t  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+식별ID" border="0" color="16777215" x="946" y="12" height="112" width="229"  name=modelid_t  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+간판번호" border="0" color="16777215" x="1184" y="12" height="112" width="402"  name=kbno_t  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+수용수" border="0" color="16777215" x="1595" y="12" height="112" width="165"  name=rackqty_t  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+미준수 간판 원인" border="0" color="16777215" x="1769" y="12" height="112" width="800"  name=obj_9867268  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="0" tabsequence=10 border="0" color="8388608" x="9" y="4" height="60" width="288" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=50 border="0" color="0" x="1595" y="4" height="60" width="165" format="#,##0"  name=rackqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=40 border="0" color="16711680" x="1184" y="4" height="60" width="402" format="[general]"  name=kbno edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=30 border="0" color="8388736" x="946" y="4" height="60" width="229" format="[general]"  name=modelid edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=20 border="0" color="0" x="306" y="4" height="60" width="631" format="[general]"  name=itemname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=60 border="0" color="0" x="1769" y="4" height="60" width="800" format="[general]"  name=codename edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=footer alignment="2" text="" border="0" color="8388608" x="9" y="4" height="56" width="288"  name=t_1  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="간판 매수: " border="0" color="8388608" x="306" y="4" height="56" width="631"  name=t_2  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="2" text="" border="0" color="8388608" x="946" y="4" height="56" width="229"  name=t_3  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=footer alignment="1" expression="RowCount() + ' 매'"border="0" color="8388608" x="1184" y="4" height="56" width="402" format="[GENERAL]"  name=compute_1  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=footer alignment="1" expression="sum(rackqty)"border="0" color="8388608" x="1595" y="4" height="56" width="165" format="#,##0"  name=compute_2  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="2" text="" border="0" color="8388608" x="1769" y="4" height="56" width="800"  name=t_8  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+
+sparse(names="itemcode	itemname	modelid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

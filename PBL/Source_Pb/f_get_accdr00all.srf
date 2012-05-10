@@ -1,0 +1,411 @@
+$PBExportHeader$f_get_accdr00all.srf
+$PBExportComments$필수입력사항 전체editing 여부 return
+global type f_get_accdr00all from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr00all (string a_acdate, string a_accode, string a_opaccode, decimal a_cdno, string a_div, decimal a_amt, string a_dept, string a_cucodegb, string a_cucode, string a_user, string a_manage1, string a_manage2, string a_befdt, decimal a_befamt, string a_fromdt, string a_todt, decimal a_dtcnt, decimal a_origamt, decimal a_rate, decimal a_qty, string a_utcode, decimal a_utprice, decimal a_fornamt, string a_fornut, decimal a_exrate, string a_bankcode, string a_pdcd, string a_deci)
+end prototypes
+
+global function string f_get_accdr00all (string a_acdate, string a_accode, string a_opaccode, decimal a_cdno, string a_div, decimal a_amt, string a_dept, string a_cucodegb, string a_cucode, string a_user, string a_manage1, string a_manage2, string a_befdt, decimal a_befamt, string a_fromdt, string a_todt, decimal a_dtcnt, decimal a_origamt, decimal a_rate, decimal a_qty, string a_utcode, decimal a_utprice, decimal a_fornamt, string a_fornut, decimal a_exrate, string a_bankcode, string a_pdcd, string a_deci);string l_s_daccode, l_s_rtn, l_s_drcr, l_s_1, l_s_2, l_s_3, l_s_4, l_s_5, l_s_6, l_s_7, l_s_8, l_s_9, &
+		 l_s_10, l_s_11, l_s_12, l_s_13, l_s_14, l_s_15, l_s_16, l_s_17, l_s_18, l_s_19, l_s_20,l_s_code
+int    l_n_rcnt
+
+if a_cdno < 51 then
+	select "PBACC"."ACC010"."ACDRIN01", "PBACC"."ACC010"."ACDRIN02",
+			 "PBACC"."ACC010"."ACDRIN03", "PBACC"."ACC010"."ACDRIN04",
+			 "PBACC"."ACC010"."ACDRIN05", "PBACC"."ACC010"."ACDRIN06",
+			 "PBACC"."ACC010"."ACDRIN07", "PBACC"."ACC010"."ACDRIN08",
+			 "PBACC"."ACC010"."ACDRIN09", "PBACC"."ACC010"."ACDRIN10",
+			 "PBACC"."ACC010"."ACDRIN11", "PBACC"."ACC010"."ACDRIN12",
+			 "PBACC"."ACC010"."ACDRIN13", "PBACC"."ACC010"."ACDRIN14",
+			 "PBACC"."ACC010"."ACDRIN15", "PBACC"."ACC010"."ACDRIN16",
+			 "PBACC"."ACC010"."ACDRIN17", "PBACC"."ACC010"."ACDRIN18",
+			 "PBACC"."ACC010"."ACDRIN19", "PBACC"."ACC010"."ACDRIN20"
+	into   :l_s_1, :l_s_2, :l_s_3, :l_s_4, :l_s_5, :l_s_6, :l_s_7, :l_s_8, :l_s_9,
+			 :l_s_10, :l_s_11, :l_s_12, :l_s_13, :l_s_14, :l_s_15, :l_s_16, :l_s_17,
+			 :l_s_18, :l_s_19, :l_s_20
+	from   "PBACC"."ACC010"
+	where  "PBACC"."ACC010"."COMLTD" = :g_s_company and
+			 "PBACC"."ACC010"."ACCODE1"||"PBACC"."ACC010"."ACCODE2"||"PBACC"."ACC010"."ACCODE3"||"PBACC"."ACC010"."ACCODE4"||"PBACC"."ACC010"."ACCODE5" = :a_accode using sqlca;
+else
+	select "PBACC"."ACC010"."ACCRIN01", "PBACC"."ACC010"."ACCRIN02",
+			 "PBACC"."ACC010"."ACCRIN03", "PBACC"."ACC010"."ACCRIN04",
+			 "PBACC"."ACC010"."ACCRIN05", "PBACC"."ACC010"."ACCRIN06",
+			 "PBACC"."ACC010"."ACCRIN07", "PBACC"."ACC010"."ACCRIN08",
+			 "PBACC"."ACC010"."ACCRIN09", "PBACC"."ACC010"."ACCRIN10",
+			 "PBACC"."ACC010"."ACCRIN11", "PBACC"."ACC010"."ACCRIN12",
+			 "PBACC"."ACC010"."ACCRIN13", "PBACC"."ACC010"."ACCRIN14",
+			 "PBACC"."ACC010"."ACCRIN15", "PBACC"."ACC010"."ACCRIN16",
+			 "PBACC"."ACC010"."ACCRIN17", "PBACC"."ACC010"."ACCRIN18",
+			 "PBACC"."ACC010"."ACCRIN19", "PBACC"."ACC010"."ACCRIN20"
+	into   :l_s_1, :l_s_2, :l_s_3, :l_s_4, :l_s_5, :l_s_6, :l_s_7, :l_s_8, :l_s_9,
+			 :l_s_10, :l_s_11, :l_s_12, :l_s_13, :l_s_14, :l_s_15, :l_s_16, :l_s_17,
+			 :l_s_18, :l_s_19, :l_s_20
+	from   "PBACC"."ACC010"
+	where  "PBACC"."ACC010"."COMLTD" = :g_s_company and
+			 "PBACC"."ACC010"."ACCODE1"||"PBACC"."ACC010"."ACCODE2"||"PBACC"."ACC010"."ACCODE3"||"PBACC"."ACC010"."ACCODE4"||"PBACC"."ACC010"."ACCODE5" = :a_accode using sqlca;
+end if
+
+if a_cdno < 51 then
+	l_s_drcr = '1'
+else
+	l_s_drcr = '2'
+end if
+
+// 부서
+if l_s_1 = 'X' then
+	if f_get_accdr01(a_accode, a_dept, a_acdate) = 'e' then
+		l_s_rtn = '1'
+	else
+		l_s_rtn = ' '
+	end if
+else
+	l_s_rtn = ' '
+end if
+
+
+// 거래처구분, 거래처코드
+if ( a_accode >= 'S1010000' and a_accode <= 'S1019999' ) and l_s_drcr = '2' then
+	if a_cucodegb = 'S' then
+		select count(*)  into :l_n_rcnt
+		from   "PBPUR"."PUR101"
+		where  "PBPUR"."PUR101"."COMLTD" = :g_s_company and
+				 "PBPUR"."PUR101"."VSRNO"  = :a_cucode    using sqlca;
+		if isnull(l_n_rcnt) then
+			l_n_rcnt = 0
+		end if
+		if l_n_rcnt = 0 then
+			l_s_rtn = l_s_rtn + ' 1'
+		else
+			l_s_rtn = l_s_rtn + '  '
+		end if
+	else
+		l_s_rtn = l_s_rtn + '11'
+	end if
+else
+	if l_s_2 = 'X' or   (f_get_acckyungbi_accode(a_accode) = 'y' and a_cdno < 50) then
+		if f_get_acccomm_kyungbi(a_accode) = 'y' then
+				if a_accode = 'M1032606' or a_accode = 'S1032606' or a_accode = 'D1052606' or &
+					a_accode = 'M1032607' or a_accode = 'S1032607' or a_accode = 'D1052607' then
+					if f_get_accdr022(a_cucode) = 'e' then
+						l_s_rtn = l_s_rtn + ' 1'
+					else
+						l_s_rtn = l_s_rtn + '  '
+					end if
+				else
+					a_cucodegb = 'D'
+					a_cucode   = a_dept
+				end if
+    elseif f_get_acckyungbi_accode(a_accode) = 'y' then
+ 			   if f_get_accdr021(a_cucode) = 'e' then
+ 					l_s_rtn = l_s_rtn + ' 1'
+ 				else
+ 					l_s_rtn = l_s_rtn + '  '
+ 				end if
+    elseif    f_spacechk(a_cucodegb)  = -1  and ( a_accode = 'H1050100' or &   
+					   ( a_accode >= 'A3030106' and   a_accode <= 'A3030108' ) or &
+	               ( a_accode >= 'A3030111' and   a_accode <= 'A3030113' ) )    then
+						 
+						select count(*)  into :l_n_rcnt
+                  from   "PBCOMMON"."DAC006"
+                  where  "PBCOMMON"."DAC006"."COMLTD" = :g_s_company and
+                         "PBCOMMON"."DAC006"."CUCODE"  = :a_cucode  using sqlca;
+                  if sqlca.sqlcode <> 0 or isnull(l_n_rcnt) then
+			            l_n_rcnt = 0
+		            end if
+		            if l_n_rcnt > 0    then
+		            	l_s_rtn = l_s_rtn + ' 1'
+		            else
+							if f_get_accdr022(a_cucode) = 'e' then
+				            l_s_rtn = l_s_rtn + ' 1'
+							else 
+		             	   l_s_rtn = l_s_rtn + '  '
+							end if 
+	            	end if
+					 
+		else
+		 if a_cucodegb = 'P' then
+			if f_get_accdr023(a_cucode) = 'e' then
+				l_s_rtn = l_s_rtn + ' 1'
+			else
+				l_s_rtn = l_s_rtn + '  '
+			end if
+		 elseif a_cucodegb = 'B' then
+			if f_get_accdr024(a_cucode) = 'e' then
+				l_s_rtn = l_s_rtn + ' 1'
+			else
+				l_s_rtn = l_s_rtn + '  '
+			end if
+		 elseif a_cucodegb = 'D' then
+			if f_get_accdr021(a_cucode) = 'e' then
+				l_s_rtn = l_s_rtn + ' 1'
+			else
+				l_s_rtn = l_s_rtn + '  '
+			end if
+		 elseif a_cucodegb ='N'then
+			  l_s_rtn = l_s_rtn + '11'  
+		 else
+				if f_get_accdr022(a_cucode) = 'e' then
+					l_s_rtn = l_s_rtn + ' 1'
+				else
+					l_s_rtn = l_s_rtn + '  '
+				end if
+			end if
+//			if f_get_acckyungbi_accode(a_accode) = 'y' then
+//				if f_get_accdr021(a_dept) = 'e' then
+//					l_s_rtn = l_s_rtn + ' 1'
+//				else
+//					l_s_rtn = l_s_rtn + '  '
+//				end if
+//			end if
+		end if
+	else
+		l_s_rtn = l_s_rtn + '  '
+	end if
+end if
+
+// 사용자사번
+if l_s_3 = 'X' then
+	if f_get_accdr023(a_user) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 관리 NO 1
+if l_s_4 = 'X' then
+	if f_get_accdr041(g_s_company, a_manage1, a_accode) = 'e' or &
+		f_get_accdr042(a_manage1, a_accode) = 'e' or &
+		f_get_accdr043(a_manage1, a_accode, l_s_drcr, a_dept, a_opaccode) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 관리 NO 2
+if l_s_5 = 'X' then
+	if f_get_accdr051(a_manage2, a_accode, a_acdate, a_div, l_s_drcr, a_dept) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	elseif a_accode = 'H1050400' then
+		  SELECT "PBACC"."ACC040"."CDCODE"  INTO  :l_s_code  
+        FROM   "PBACC"."ACC040"  
+        WHERE  "PBACC"."ACC040"."COMLTD" = :g_s_company and
+               "PBACC"."ACC040"."CRNO"   = :a_manage2   
+        using sqlca;
+
+        if  isnull(l_s_code) then
+	         l_s_code = ''
+        end if
+
+        if f_spacechk(l_s_code) = -1 or l_s_code <> a_cucode then
+	        l_s_rtn = l_s_rtn + '1'
+		  else
+			  l_s_rtn = l_s_rtn + ' '
+		  end if 
+	else
+      l_s_rtn = l_s_rtn + ' '
+	end if 
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 전일자
+if l_s_6 = 'X' then
+	if f_dateedit(a_befdt) = '        ' or &
+		mid(a_befdt,1,6) > mid(a_acdate,1,6) then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+//전금액
+if l_s_7 = 'X' then
+	if a_befamt = 0 then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// FROM DATE
+if l_s_8 = 'X' then
+	if ( ( a_accode >= 'H1010000' and a_accode <= 'H1019999' ) or &
+		  ( a_accode >= 'H1050000' and a_accode <= 'H1059999' ) ) then
+		 if mid(a_manage1,2,21) = 'CB'  or mid(a_manage1,2,21) =   'C7' then
+		    if f_dateedit(a_fromdt) = '        ' then
+			    l_s_rtn = l_s_rtn + '1'
+		    else
+			    l_s_rtn = l_s_rtn + ' '
+		    end if
+		 else
+			 l_s_rtn = l_s_rtn + ' '
+		 end if 
+	elseif ( ( a_accode >= 'A3030101' and a_accode <= 'A3030113' ) or &
+		  ( a_accode >= 'H1080101' and a_accode <= 'H1080108' ) ) then
+		if mid(a_acdate,1,6) <> mid(a_fromdt,1,6) or f_dateedit(a_fromdt) = '        '   then
+			l_s_rtn = l_s_rtn + '1'
+		else
+			l_s_rtn = l_s_rtn + ' '
+		end if 
+	else
+		if f_dateedit(a_fromdt) = '        ' then
+			l_s_rtn = l_s_rtn + '1'
+		else
+			l_s_rtn = l_s_rtn + ' '
+		end if
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// TO DATE
+if l_s_9 = 'X' then
+	if f_dateedit(a_todt) = '        ' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 일수
+if l_s_10 = 'X' then
+	if a_dtcnt < 1 then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 원금액
+if l_s_11 = 'X' then
+	if f_get_accdr11(a_accode, l_s_drcr, a_befamt, a_amt, a_origamt,a_deci) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 이율
+if l_s_12 = 'X' then
+	if a_rate = 0 then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 수량
+if l_s_13 = 'X' then
+	if a_qty = 0 then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 단위
+if l_s_14 = 'X' then
+	if f_get_accdr14(a_utcode) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 단가
+if l_s_15 = 'X' then
+	if a_utprice = 0 then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 외화금액
+if l_s_16 = 'X' then
+	if a_fornamt = 0 then
+		if f_spacechk(a_fornut) <> -1 then
+			l_s_rtn = l_s_rtn + '1'
+		else
+			l_s_rtn = l_s_rtn + ' '
+		end if
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 외화단위
+if l_s_17 = 'X' then
+	if f_spacechk(a_fornut) <> -1 then
+		if f_get_accdr17(a_fornut) = 'e' then
+			l_s_rtn = l_s_rtn + '1'
+		else
+			l_s_rtn = l_s_rtn + ' '
+		end if
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 환율
+if l_s_18 = 'X' then
+	if a_exrate = 0 then
+		if f_spacechk(a_fornut) <> -1 then
+			l_s_rtn = l_s_rtn + '1'
+		else
+			l_s_rtn = l_s_rtn + ' '
+		end if
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 은행코드
+if l_s_19 = 'X' then
+	if f_get_accdr024(a_bankcode) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+else
+	l_s_rtn = l_s_rtn + ' '
+end if
+
+// 제품군코드
+if l_s_20 = 'X' then
+	if f_get_accdr057(a_accode, a_pdcd, a_dept) = 'e' then
+		l_s_rtn = l_s_rtn + '1'
+	else
+		l_s_rtn = l_s_rtn + ' '
+	end if
+end if
+
+return l_s_rtn
+end function
+

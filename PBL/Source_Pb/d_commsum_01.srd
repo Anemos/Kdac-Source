@@ -1,0 +1,54 @@
+$PBExportHeader$d_commsum_01.srd
+$PBExportComments$½ÂÀÎÇöÈ²Á¶È¸
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 97 print.margin.bottom = 97 print.paper.source = 0 print.paper.size = 9 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(17) updatewhereclause=yes name=gubun dbname="GUBUN" )
+ column=(type=char(10) updatewhereclause=yes name=inputname dbname="INPUTNAME" )
+ column=(type=char(200) updatewhereclause=yes name=reason dbname="REASON" )
+ column=(type=long updatewhereclause=yes name=sumcount dbname="SUMCOUNT" )
+ column=(type=char(6) updatewhereclause=yes name=inpt_id dbname="INPT_ID" )
+ retrieve="select gubun,coalesce(penamek,inpt_id) as inputname,reason,sumcount,inpt_id From
+( select 'ÇÁ·Î±×·¥ °ü¸®' as gubun,inpt_id,' ' as reason,count(*)  as sumcount from comm110his
+where substr(confirm_date,1,10)	between	:ag_Fromdate and :ag_todate
+group by inpt_id
+union all
+select '»ç¿ëÀÚ °ü¸®' as gubun,inpt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2) as reason,count(*)	as sumcount from comm121his
+where substr(confirm_date,1,10)	between	:ag_Fromdate and :ag_todate
+group by inpt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2)
+union all
+select '»ç¿ë±ÇÇÑ °ü¸®' as gubun,inpt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2) as reason,count(*) as sumcount 	from comm140his
+where substr(confirm_date,1,10)	between	:ag_Fromdate and :ag_todate
+group by inpt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2)
+union all
+select 'PBD º¯°æ °ü¸®' as gubun,updt_id as inpt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2) as reason,count(*) as sumcount 	from comm702his
+where substr(confirm_date,1,10)	between	:ag_Fromdate and :ag_todate
+group by updt_id,substr(upgrade_Detail,2,posstr(upgrade_detail,']')-2) ) A left outer join pbcommon.dac003 B on a.inpt_id = b.peempno
+
+" arguments=(("ag_fromdate", string),("ag_todate", string))  sort="gubun A reason A inputname A reason A " )
+group(level=1 header.height=0 trailer.height=76 by=("gubun" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="¼ø¹ø" border="0" color="16777215" x="9" y="0" height="68" width="169" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½ÂÀÎ¿äÃ»Ç×¸ñ" border="0" color="16777215" x="187" y="0" height="68" width="430" html.valueishtml="0"  name=gubun_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º¯ °æ »ç À¯" border="0" color="16777215" x="951" y="0" height="68" width="681" html.valueishtml="0"  name=reason_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»¼ö·®" border="0" color="16777215" x="1641" y="0" height="68" width="320" html.valueishtml="0"  name=sumcount_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»ÀÚ" border="0" color="16777215" x="626" y="0" height="68" width="315" html.valueishtml="0"  name=inputname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="2" expression="getrow()"border="0" color="0" x="9" y="0" height="68" width="169" format="[general] " html.valueishtml="0"  name=compute_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="187" y="0" height="68" width="430" format="[general]" html.valueishtml="0"  name=gubun visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="951" y="0" height="68" width="681" format="[general]" html.valueishtml="0"  name=reason visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="1641" y="0" height="68" width="320" format="[general]" html.valueishtml="0"  name=sumcount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="626" y="0" height="68" width="315" format="[general]" html.valueishtml="0"  name=inputname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression="sum(sumcount for group 1)"border="0" color="16711680" x="1641" y="0" height="68" width="320" format="[general]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="~t gubun + ~" ÃÑ ¼ö·®~"" border="0" color="16711680" x="951" y="0" height="68" width="681" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="16711680" x="9" y="0" height="68" width="169" html.valueishtml="0"  name=t_5 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="16711680" x="187" y="0" height="68" width="430" html.valueishtml="0"  name=t_4 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="626" y="0" height="68" width="315" html.valueishtml="0"  name=t_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="gubun	reason")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

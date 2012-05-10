@@ -1,0 +1,82 @@
+$PBExportHeader$d_wip_option_sub.srd
+$PBExportComments$Àç°ø¹ë·±½º¿¡ Á¸ÀçÇÏ´Â È£È¯ÁÖÇ°¹ø ¿ÀºêÁ§Æ®
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=72 color="536870912" )
+summary(height=84 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=wip001_wacmcd dbname="WIP001.WACMCD" )
+ column=(type=char(1) updatewhereclause=yes name=wip001_waplant dbname="WIP001.WAPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wip001_wadvsn dbname="WIP001.WADVSN" )
+ column=(type=char(15) updatewhereclause=yes name=wip001_waitno dbname="WIP001.WAITNO" )
+ column=(type=char(5) updatewhereclause=yes name=wip001_waorct dbname="WIP001.WAORCT" )
+ column=(type=char(1) updatewhereclause=yes name=wip001_waiocd dbname="WIP001.WAIOCD" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip001_waohqt dbname="WIP001.WAOHQT" )
+ column=(type=decimal(1) updatewhereclause=yes name=inv101_outqty dbname="INV101.OUTQTY" )
+ column=(type=decimal(6) updatewhereclause=yes name=com_cost dbname="COM_COST" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip001_wausqt1 dbname="WIP001.WAUSQT1" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip001_wausqt2 dbname="WIP001.WAUSQT2" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip001_wausqt3 dbname="WIP001.WAUSQT3" )
+ column=(type=decimal(4) updatewhereclause=yes name=com_usqtsum dbname="COM_USQTSUM" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" initial="0" )
+ retrieve="  SELECT ~"PBWIP~".~"WIP001~".~"WACMCD~",   
+         ~"PBWIP~".~"WIP001~".~"WAPLANT~",   
+         ~"PBWIP~".~"WIP001~".~"WADVSN~",   
+         ~"PBWIP~".~"WIP001~".~"WAITNO~",
+			~"PBWIP~".~"WIP001~".~"WAORCT~",   
+         ~"PBWIP~".~"WIP001~".~"WAIOCD~",   
+         ~"PBWIP~".~"WIP001~".~"WAOHQT~",   
+         ~"PBINV~".~"INV101~".~"OUTQTY~",
+			pbcommon.f_if(~"PBINV~".~"INV101~".~"CLS~",'10',~"PBINV~".~"INV101~".~"COSTAV~",~"PBINV~".~"INV101~".~"COSTLS~") com_cost,   
+			~"PBWIP~".~"WIP001~".~"WAUSQT1~",
+			~"PBWIP~".~"WIP001~".~"WAUSQT2~",
+			~"PBWIP~".~"WIP001~".~"WAUSQT3~",     
+         ~"PBWIP~".~"WIP001~".~"WAUSQT1~" + ~"PBWIP~".~"WIP001~".~"WAUSQT2~" + ~"PBWIP~".~"WIP001~".~"WAUSQT3~"  as com_usqtsum,
+			~"PBINV~".~"INV101~".~"CONVQTY~"
+    FROM ~"PBPDM~".~"BOM003~",   
+         ~"PBWIP~".~"WIP001~",   
+         ~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBWIP~".~"WIP001~".~"WACMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( ~"PBWIP~".~"WIP001~".~"WAPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and  
+         ( ~"PBWIP~".~"WIP001~".~"WADVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBWIP~".~"WIP001~".~"WAITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and  
+         ( ~"PBPDM~".~"BOM003~".~"OCMCD~" = ~"PBWIP~".~"WIP001~".~"WACMCD~" ) and
+			( ~"PBPDM~".~"BOM003~".~"OPLANT~" = ~"PBWIP~".~"WIP001~".~"WAPLANT~" ) and
+			( ~"PBPDM~".~"BOM003~".~"ODVSN~" = ~"PBWIP~".~"WIP001~".~"WADVSN~" ) and
+			( ~"PBPDM~".~"BOM003~".~"OFITN~" = ~"PBWIP~".~"WIP001~".~"WAITNO~" ) and  
+         ( ( ~"PBWIP~".~"WIP001~".~"WACMCD~" = :a_cmcd  ) AND  
+         ( ~"PBWIP~".~"WIP001~".~"WAPLANT~" = :a_plant  ) AND  
+         ( ~"PBWIP~".~"WIP001~".~"WADVSN~" = :a_dvsn  ) AND
+			( ~"PBPDM~".~"BOM003~".~"OPITN~" = :a_pitno ) AND    
+         ( ~"PBWIP~".~"WIP001~".~"WAORCT~" = :a_orct ) AND
+			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2') ) AND 
+			( ~"PBINV~".~"INV101~".~"CONVQTY~" = :a_convqty ) AND 
+         ((~"PBPDM~".~"BOM003~".~"OEDTE~" = ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate ) OR
+			(~"PBPDM~".~"BOM003~".~"OEDTE~" <> ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate 
+                                          AND ~"PBPDM~".~"BOM003~".~"OEDTE~" >= :a_adjdate )))
+ORDER BY ~"PBWIP~".~"WIP001~".~"WAITNO~"
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_pitno", string),("a_adjdate", string),("a_orct", string),("a_convqty", number)) )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="0" x="5" y="4" height="64" width="439" html.valueishtml="0"  name=wip001_waitno_t visible="1"  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÀÛ¾÷Àå" border="0" color="0" x="448" y="4" height="64" width="238" html.valueishtml="0"  name=wip001_waorct_t visible="1"  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="448" y="4" height="76" width="306" format="[general]" html.valueishtml="0"  name=wip001_waorct  tag="ÀÛ¾÷Àå" visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="14" y="8" height="64" width="407" format="[general]" html.valueishtml="0"  name=wip001_waitno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2126" y="8" height="64" width="416" format="[general]" html.valueishtml="0"  name=wip001_waiocd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="768" y="8" height="64" width="485" format="[general]" html.valueishtml="0"  name=wip001_wacmcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="1266" y="4" height="64" width="439" format="[general]" html.valueishtml="0"  name=wip001_waplant visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="1719" y="8" height="64" width="402" format="[general]" html.valueishtml="0"  name=wip001_wadvsn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="2546" y="8" height="64" width="462" format="[general]" html.valueishtml="0"  name=com_usqtsum visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="3017" y="8" height="64" width="453" format="[general]" html.valueishtml="0"  name=wip001_waohqt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="3474" y="12" height="64" width="407" format="[general]" html.valueishtml="0"  name=inv101_outqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="4315" y="0" height="64" width="466" format="[general]" html.valueishtml="0"  name=wip001_wausqt1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="4805" y="4" height="64" width="507" format="[general]" html.valueishtml="0"  name=wip001_wausqt2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="5339" y="8" height="64" width="471" format="[general]" html.valueishtml="0"  name=wip001_wausqt3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="3890" y="12" height="64" width="407" format="[general]" html.valueishtml="0"  name=com_cost visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="5829" y="12" height="60" width="649" format="[general]" html.valueishtml="0"  name=inv101_convqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="0" expression="sum(com_usqtsum for all)"border="0" color="0" x="2519" y="8" height="64" width="466" format="[general]" html.valueishtml="0"  name=comp_sum visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,14 @@
+$PBExportHeader$str_pism_prt.srs
+$PBExportComments$출력전용 Structure
+global type str_pism_prt from structure
+	transaction		transaction
+	datawindow		datawindow
+	string		title
+	string		tag
+	string		dwsyntax
+	string		dataobject
+	string		prscale
+	str_pism_daily		istr_mh
+	window		parent_win
+end type
+

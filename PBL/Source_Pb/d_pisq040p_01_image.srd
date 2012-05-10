@@ -1,0 +1,97 @@
+$PBExportHeader$d_pisq040p_01_image.srd
+$PBExportComments$검사기준서 검토(헤드)
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="검사기준서" print.orientation = 1 print.margin.left = 0 print.margin.right = 0 print.margin.top = 0 print.margin.bottom = 0 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=2996 color="536870912"  height.autosize=yes)
+table(column=(type=char(1) update=yes updatewhereclause=yes name=areacode dbname="TQQCSTANDARD.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=divisioncode dbname="TQQCSTANDARD.DIVISIONCODE" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=suppliercode dbname="TQQCSTANDARD.SUPPLIERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itemcode dbname="TQQCSTANDARD.ITEMCODE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=standardrevno dbname="TQQCSTANDARD.STANDARDREVNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=chargename dbname="TQQCSTANDARD.CHARGENAME" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=enactmentdate dbname="TQQCSTANDARD.ENACTMENTDATE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=itemrank dbname="TQQCSTANDARD.ITEMRANK" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=quality dbname="TQQCSTANDARD.QUALITY" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=heattreatment dbname="TQQCSTANDARD.HEATTREATMENT" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=surfacetreatment dbname="TQQCSTANDARD.SURFACETREATMENT" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=qcconceptionreference dbname="TQQCSTANDARD.QCCONCEPTIONREFERENCE" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=badtreatment dbname="TQQCSTANDARD.BADTREATMENT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=consertdependenceflag dbname="TQQCSTANDARD.CONSERTDEPENDENCEFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=chargecode dbname="TQQCSTANDARD.CHARGECODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=chargeconsertflag dbname="TQQCSTANDARD.CHARGECONSERTFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=sanctioncode dbname="TQQCSTANDARD.SANCTIONCODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=sanctionconsertflag dbname="TQQCSTANDARD.SANCTIONCONSERTFLAG" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=consertdate dbname="TQQCSTANDARD.CONSERTDATE" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=returnreason dbname="TQQCSTANDARD.RETURNREASON" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=modifycontent dbname="TQQCSTANDARD.MODIFYCONTENT" )
+ column=(type=char(15) updatewhereclause=yes name=tmstarea_areaname dbname="TMSTAREA.AreaName" )
+ column=(type=char(15) updatewhereclause=yes name=tmstdivision_divisionname dbname="TMSTDIVISION.DivisionName" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ItemName" )
+ column=(type=char(50) updatewhereclause=yes name=tmstsupplier_supplierkorname dbname="TMSTSUPPLIER.SupplierKorName" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_as_chargename dbname="TMSTEMP.AS_CHARGENAME" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_as_sanctionname dbname="TMSTEMP.AS_SANCTIONNAME" )
+ column=(type=char(1) updatewhereclause=yes name=as_qcconceptionreference dbname="AS_QCCONCEPTIONREFERENCE" )
+ retrieve="  SELECT TQQCSTANDARD.AREACODE,   
+         TQQCSTANDARD.DIVISIONCODE,   
+         TQQCSTANDARD.SUPPLIERCODE,   
+         TQQCSTANDARD.ITEMCODE,   
+         TQQCSTANDARD.STANDARDREVNO,   
+         TQQCSTANDARD.CHARGENAME,   
+         TQQCSTANDARD.ENACTMENTDATE,   
+         TQQCSTANDARD.ITEMRANK,   
+         TQQCSTANDARD.QUALITY,   
+         TQQCSTANDARD.HEATTREATMENT,   
+         TQQCSTANDARD.SURFACETREATMENT,   
+         TQQCSTANDARD.QCCONCEPTIONREFERENCE,   
+         TQQCSTANDARD.BADTREATMENT,   
+         TQQCSTANDARD.CONSERTDEPENDENCEFLAG,   
+         TQQCSTANDARD.CHARGECODE,   
+         TQQCSTANDARD.CHARGECONSERTFLAG,   
+         TQQCSTANDARD.SANCTIONCODE,   
+         TQQCSTANDARD.SANCTIONCONSERTFLAG,   
+         TQQCSTANDARD.CONSERTDATE,   
+         TQQCSTANDARD.RETURNREASON,   
+         TQQCSTANDARD.MODIFYCONTENT,   
+         TMSTAREA.AreaName,   
+         TMSTDIVISION.DivisionName,   
+         TMSTITEM.ItemName,   
+         TMSTSUPPLIER.SupplierKorName ,
+			A.EMPNAME AS AS_CHARGENAME,
+			B.EMPNAME AS AS_SANCTIONNAME,
+			' '		 AS AS_QCCONCEPTIONREFERENCE
+    FROM TQQCSTANDARD,   
+         TMSTAREA,   
+         TMSTDIVISION,   
+         TMSTITEM,   
+         TMSTSUPPLIER,
+			TMSTEMP A,
+			TMSTEMP B
+   WHERE TQQCSTANDARD.CHARGECODE			*= A.EMPNO
+     AND TQQCSTANDARD.SANCTIONCODE		*= B.EMPNO   
+     AND TQQCSTANDARD.AREACODE			*= TMSTAREA.AreaCode 
+     AND TQQCSTANDARD.AREACODE			*= TMSTDIVISION.AreaCode 
+     AND TQQCSTANDARD.DIVISIONCODE		*= TMSTDIVISION.DivisionCode 
+     AND TQQCSTANDARD.ITEMCODE			*= TMSTITEM.ItemCode 
+     AND TQQCSTANDARD.SUPPLIERCODE		*= TMSTSUPPLIER.SupplierCode 
+     AND TQQCSTANDARD.AREACODE			= :as_areacode 
+     AND TQQCSTANDARD.DIVISIONCODE		= :as_divisioncode 
+     AND TQQCSTANDARD.SUPPLIERCODE		= :as_suppliercode 
+     AND TQQCSTANDARD.ITEMCODE			= :as_itemcode 
+     AND TQQCSTANDARD.STANDARDREVNO		= :as_standardrevno 
+ " arguments=(("as_areacode", string),("as_divisioncode", string),("as_suppliercode", string),("as_itemcode", string),("as_standardrevno", string)) )
+rectangle(band=detail x="32" y="16" height="2968" width="4878"  name=r_2 visible="1" brush.hatch="6" brush.color="16777215" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="검사착안점 및 참고" border="0" color="0" x="1330" y="352" height="52" width="581" html.valueishtml="0"  name=qcconceptionreference_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="협력업체" border="0" color="0" x="1330" y="224" height="52" width="279" html.valueishtml="0"  name=suppliercode_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1934" y1="204" x2="1934" y2="304"  name=l_13 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=25 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="228" height="52" width="809" format="[general]" html.valueishtml="0"  name=tmstsupplier_supplierkorname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="2670" y1="660" x2="2670" y2="760"  name=l_22 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="약  도" border="2" color="0" x="78" y="44" height="124" width="530" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림체" font.height="-20" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" font.underline="1" background.mode="2" background.color="16777215" )
+bitmap(band=detail filename="C:\kdac\bmp\temp.jpg" x="59" y="196" height="1576" width="3081" border="0"  name=p_1 visible="1" )
+compute(band=detail alignment="0" expression=" itemcode + '(' + tmstitem_itemname + ')'"border="0" color="0" x="1024" y="72" height="72" width="2368" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="굴림체" font.height="-12" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="품번 : " border="0" color="0" x="745" y="72" height="72" width="274" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="굴림체" font.height="-12" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="37" y1="180" x2="4905" y2="180"  name=l_1 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

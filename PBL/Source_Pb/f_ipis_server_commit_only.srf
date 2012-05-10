@@ -1,0 +1,18 @@
+$PBExportHeader$f_ipis_server_commit_only.srf
+$PBExportComments$Commit Only 처리함수
+global type f_ipis_server_commit_only from function_object
+end type
+
+forward prototypes
+global subroutine f_ipis_server_commit_only (any ag_str_ipis[])
+end prototypes
+
+global subroutine f_ipis_server_commit_only (any ag_str_ipis[]);integer li_cnt
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to UpperBound(ag_str_ipis)
+	lstr_ipis = ag_str_ipis[li_cnt]
+  	commit using lstr_ipis.t_sqlpis;
+next
+end subroutine
+

@@ -1,0 +1,90 @@
+$PBExportHeader$d_wo_report1.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(5) updatewhereclause=yes name=equip_master_cc_code dbname="cc_master.CC_CODE" )
+ column=(type=char(50) updatewhereclause=yes name=cc_master_cc_name dbname="cc_master.CC_NAME" )
+ column=(type=char(9) updatewhereclause=yes name=equip_master_equip_code dbname="cc_master.EQUIP_CODE" )
+ column=(type=char(30) updatewhereclause=yes name=equip_master_equip_name dbname="cc_master.EQUIP_NAME" )
+ column=(type=char(5) updatewhereclause=yes name=line_code dbname="cc_master.LINE_CODE" )
+ column=(type=char(30) updatewhereclause=yes name=wo_hist_wo_code dbname="cc_master.WO_CODE" )
+ column=(type=datetime updatewhereclause=yes name=wo_acc_date dbname="cc_master.WO_ACC_DATE" )
+ column=(type=datetime updatewhereclause=yes name=wo_hist_wo_end_date dbname="cc_master.WO_END_DATE" )
+ column=(type=char(255) updatewhereclause=yes name=wo_hist_wo_cause dbname="cc_master.WO_CAUSE" )
+ column=(type=char(255) updatewhereclause=yes name=wo_hist_wo_status dbname="cc_master.WO_STATUS" )
+ column=(type=char(255) updatewhereclause=yes name=wo_hist_wo_action dbname="WO_ACTION" )
+ column=(type=number updatewhereclause=yes name=wo_hist_wo_firm_time_hour dbname="cc_master.WO_FIRM_TIME_HOUR" )
+ column=(type=number updatewhereclause=yes name=wo_hist_wo_firm_time_minute dbname="cc_master.WO_FIRM_TIME_MINUTE" )
+ column=(type=number updatewhereclause=yes name=wo_hist_wo_time_hour dbname="cc_master.WO_TIME_HOUR" )
+ column=(type=number updatewhereclause=yes name=wo_hist_wo_time_minute dbname="cc_master.WO_TIME_MINUTE" )
+ column=(type=char(30) updatewhereclause=yes name=area_code dbname="cc_master.AREA_CODE" )
+ column=(type=char(30) updatewhereclause=yes name=factory_code dbname="cc_master.FACTORY_CODE" )
+ column=(type=number updatewhereclause=yes name=manhour dbname="MANHOUR" )
+ column=(type=number updatewhereclause=yes name=mansec dbname="MANSEC" )
+ retrieve="SELECT Z.CC_CODE, X.CC_NAME, Z.EQUIP_CODE, Z.EQUIP_NAME, Z.LINE_CODE,
+	Y.WO_CODE, Y.WO_ACC_DATE, Y.WO_END_DATE, Y.WO_CAUSE, Y.WO_STATUS,   
+	CONVERT(VARCHAR(500),Y.WO_ACTION) AS WO_ACTION, 	Y.WO_FIRM_TIME_HOUR, 
+	Y.WO_FIRM_TIME_MINUTE, Y.WO_TIME_HOUR, Y.WO_TIME_MINUTE, Y.AREA_CODE,   
+	Y.FACTORY_CODE,SUM(W.MANHOUR_HOUR) AS MANHOUR, SUM(W.MANHOUR_SECOND) AS MANSEC  
+FROM (
+		SELECT AREA_CODE,FACTORY_CODE,CC_CODE, EQUIP_CODE, EQUIP_NAME, LINE_CODE
+		   FROM EQUIP_MASTER
+		 WHERE AREA_CODE = :a_area AND FACTORY_CODE = :a_factory
+				AND EQUIP_CODE LIKE :a_equipcode AND ISNULL(LINE_CODE, '') LIKE :a_linecode) Z 
+	INNER JOIN 
+	(
+		SELECT WO_CODE, EQUIP_CODE, WO_ACC_DATE, WO_END_DATE, WO_CAUSE, 
+				WO_STATUS, WO_ACTION, WO_FIRM_TIME_HOUR, WO_FIRM_TIME_MINUTE,
+				WO_TIME_HOUR, WO_TIME_MINUTE, AREA_CODE, FACTORY_CODE
+		   FROM WO_HIST
+		 WHERE  AREA_CODE = :a_area AND FACTORY_CODE = :a_factory AND WO_CODE LIKE :a_wocode
+				AND CONVERT(VARCHAR(10), WO_ACC_DATE,120) BETWEEN :a_fromdt AND :a_todt) Y
+	ON Z.AREA_CODE = Y.AREA_CODE AND Z.FACTORY_CODE = Y.FACTORY_CODE AND Z.EQUIP_CODE = Y.EQUIP_CODE
+	LEFT OUTER JOIN CC_MASTER X
+	ON (Z.AREA_CODE= X.AREA_CODE OR X.AREA_CODE = 'X') AND (Z.FACTORY_CODE = X.FACTORY_CODE OR X.FACTORY_CODE = 'X') AND Z.CC_CODE = X.CC_CODE 
+	LEFT OUTER JOIN WO_EMP W
+	ON Y.AREA_CODE = W.AREA_CODE AND Y.FACTORY_CODE = W.FACTORY_CODE AND Y.WO_CODE = W.WO_CODE
+GROUP BY Z.CC_CODE, X.CC_NAME, Z.EQUIP_CODE, Z.EQUIP_NAME, Z.LINE_CODE, Y.WO_CODE, 
+			Y.WO_ACC_DATE, Y.WO_END_DATE, Y.WO_CAUSE, Y.WO_STATUS, 
+			CONVERT(VARCHAR(500),Y.WO_ACTION), Y.WO_FIRM_TIME_HOUR, 
+			Y.WO_FIRM_TIME_MINUTE, Y.WO_TIME_HOUR, Y.WO_TIME_MINUTE,
+			Y.AREA_CODE, Y.FACTORY_CODE   
+ORDER BY Y.WO_ACC_DATE desc" arguments=(("a_area", string),("a_factory", string),("a_fromdt", string),("a_todt", string),("a_equipcode", string),("a_wocode", string),("a_linecode", string))  sort="wo_acc_date D " )
+text(band=header alignment="2" text="C/C" border="6" color="33554432" x="9" y="8" height="56" width="151" html.valueishtml="0"  name=equip_master_cc_code_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="C/C∏Ì" border="6" color="33554432" x="169" y="8" height="56" width="453" html.valueishtml="0"  name=cc_master_cc_name_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¿Â∫Òπ¯»£" border="6" color="33554432" x="631" y="8" height="56" width="238" html.valueishtml="0"  name=equip_master_equip_code_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¿Â∫Ò∏Ì" border="6" color="33554432" x="878" y="8" height="56" width="549" html.valueishtml="0"  name=equip_master_equip_name_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="∞Ì¿Â¿œΩ√" border="6" color="33554432" x="2245" y="8" height="56" width="453" html.valueishtml="0"  name=wo_hist_wo_acc_date_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="øœ∑·¿œΩ√" border="6" color="33554432" x="2706" y="8" height="56" width="453" html.valueishtml="0"  name=wo_hist_wo_end_date_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="∞Ì¿Â«ˆªÛ" border="6" color="33554432" x="3168" y="8" height="56" width="1010" html.valueishtml="0"  name=wo_hist_wo_cause_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="∞Ì¿Âø¯¿Œ" border="6" color="33554432" x="4187" y="8" height="56" width="951" html.valueishtml="0"  name=wo_hist_wo_status_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¡∂ƒ°≥ªøÎ" border="6" color="33554432" x="5147" y="8" height="56" width="1024" html.valueishtml="0"  name=wo_hist_wo_action_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="∫ŒµøΩ√∞£" border="6" color="33554432" x="6181" y="8" height="56" width="242" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¡§∫ÒΩ√∞£" border="6" color="33554432" x="6432" y="8" height="56" width="242" html.valueishtml="0"  name=t_2 visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="≈ı¿‘M/H" border="6" color="33554432" x="6683" y="8" height="56" width="256" html.valueishtml="0"  name=t_3 visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¿€∏Ìπ¯»£" border="6" color="33554432" x="1755" y="8" height="56" width="480" html.valueishtml="0"  name=wo_hist_wo_code_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="∂Û¿Œƒ⁄µÂ" border="6" color="33554432" x="1435" y="8" height="56" width="311" html.valueishtml="0"  name=line_code_t visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="4187" y="8" height="68" width="951" format="[general]" html.valueishtml="0"  name=wo_hist_wo_status  tag="∞Ì¿Âø¯¿Œ" visible="1" edit.limit=255 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="5147" y="8" height="68" width="1024" format="[general]" html.valueishtml="0"  name=wo_hist_wo_action  tag="¡∂ƒ°≥ªøÎ" visible="1" edit.limit=499 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="string( wo_hist_wo_firm_time_hour )+'Ω√∞£'+ string(wo_hist_wo_firm_time_minute)+'∫–'"border="0" color="33554432" x="6181" y="8" height="68" width="242" format="[GENERAL]" html.valueishtml="0"  name=compute_1  tag="" visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="string(  wo_hist_wo_time_hour  )+'Ω√∞£'+ string( wo_hist_wo_time_minute )+'∫–'"border="0" color="33554432" x="6432" y="8" height="68" width="242" format="[GENERAL]" html.valueishtml="0"  name=compute_2  tag="" visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="string(   manhour   )+'Ω√∞£'+ string(  mansec   )+'∫–' "border="0" color="33554432" x="6683" y="8" height="68" width="256" format="[GENERAL]" html.valueishtml="0"  name=compute_3  tag="≈ı¿‘M/H" visible="1"  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="68" width="151" format="[general]" html.valueishtml="0"  name=equip_master_cc_code  tag="C/C" visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="169" y="8" height="68" width="453" format="[general]" html.valueishtml="0"  name=cc_master_cc_name  tag="C/C∏Ì" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="631" y="8" height="68" width="238" format="[general]" html.valueishtml="0"  name=equip_master_equip_code  tag="¿Â∫Òπ¯»£" visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="878" y="8" height="68" width="549" format="[general]" html.valueishtml="0"  name=equip_master_equip_name  tag="¿Â∫Ò∏Ì" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2245" y="8" height="68" width="453" format="yy-mm-dd hh:mm:dd" html.valueishtml="0"  name=wo_acc_date  tag="" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2706" y="8" height="68" width="453" format="yy-mm-dd hh:mm:dd" html.valueishtml="0"  name=wo_hist_wo_end_date  tag="" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="3168" y="8" height="68" width="1010" format="[general]" html.valueishtml="0"  name=wo_hist_wo_cause  tag="∞Ì¿Â«ˆªÛ" visible="1" edit.limit=255 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1755" y="8" height="68" width="480" format="[general]" html.valueishtml="0"  name=wo_hist_wo_code  tag="¿€∏Ìπ¯»£" visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1435" y="8" height="68" width="311" format="[general]" html.valueishtml="0"  name=line_code visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="compute_2	equip_master_cc_code	equip_master_equip_code	cc_master_cc_name	equip_master_equip_name	wo_hist_wo_cause	wo_hist_wo_action	wo_hist_wo_status	wo_hist_wo_code	compute_3	wo_acc_date	compute_1	wo_hist_wo_end_date")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

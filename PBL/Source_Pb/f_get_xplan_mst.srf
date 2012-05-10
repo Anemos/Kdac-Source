@@ -1,0 +1,28 @@
+$PBExportHeader$f_get_xplan_mst.srf
+$PBExportComments$구매담당자 (Master)   Global Function
+global type f_get_xplan_mst from function_object
+end type
+
+forward prototypes
+global function string f_get_xplan_mst (string ag_itno)
+end prototypes
+
+global function string f_get_xplan_mst (string ag_itno);///////////////////////////////////////////////////
+// 품번을 받아 품목 Master 의 구매담당자를 Return
+//
+///////////////////////////////////////////////////
+
+
+String ls_xplan
+
+
+SELECT XPLAN INTO :ls_xplan
+	FROM PBINV.INV002
+WHERE COMLTD = :g_s_company AND 
+		ITNO = :ag_itno	Using SQLCA ;
+
+If SQLCA.SQLCode <> 0 Then Return ""
+		
+Return ls_xplan
+end function
+

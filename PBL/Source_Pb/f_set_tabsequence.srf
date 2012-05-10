@@ -1,0 +1,51 @@
+$PBExportHeader$f_set_tabsequence.srf
+$PBExportComments$데이터 윈도우의 모든 컬럼을 editable하게 만든다. tabsequence를 준다.
+global type f_set_tabsequence from function_object
+end type
+
+forward prototypes
+global subroutine f_set_tabsequence (datawindow pdw, integer pl_option)
+end prototypes
+
+global subroutine f_set_tabsequence (datawindow pdw, integer pl_option);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_set_tab_sequence
+//	Access		: public
+//	Arguments	: datawindow pdw
+//					  int pl_option  0:모든 컬럼의 tabsequence를 0으로 
+//									     1:모든 컬럼의 tabsequence를 설정 editable하게 만든다.
+//	Description	: 읽기전용의 데이터윈도우에서 query mode로 전환할때 데이터 윈도우를 editable하게 만든다.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+string ls_objects
+string ls_obj
+long i
+string lc
+string ls_mod
+
+ls_objects = pdw.object.datawindow.objects
+ls_objects = ls_objects + '~t' // 마지막 컬럼을 setting하기 위하여
+
+// MessageBox('All objects in id_dw-lsit', ls_objects)
+if len(ls_objects) < 1 then return
+
+for i=1 to len(ls_objects)
+	lc = mid(ls_objects, i, 1)
+	if lc <> '~t' then
+		ls_obj = ls_obj + lc
+	else
+		// process column setting
+		if pos('_t', ls_obj) <= 0 then
+			ls_mod = ls_obj + '.TabSequence = ' + string(i * pl_option)
+			pdw.modify(ls_mod)
+		end if
+		// after processing
+		ls_obj = ''
+	end if
+next
+
+return
+
+
+end subroutine
+

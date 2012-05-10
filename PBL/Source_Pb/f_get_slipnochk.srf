@@ -1,0 +1,85 @@
+$PBExportHeader$f_get_slipnochk.srf
+$PBExportComments$누계전표번호CHK
+global type f_get_slipnochk from function_object
+end type
+
+forward prototypes
+global function string f_get_slipnochk (string a_s_dt, string a_s_emp)
+end prototypes
+
+global function string f_get_slipnochk (string a_s_dt, string a_s_emp);string l_s_div,l_s_nochk
+int l_n_count,l_n_row,l_n_slip,l_n_slipno
+
+if g_s_wkcd ='1' then
+	l_s_div ='DA'
+elseif g_s_wkcd ='2' then
+	l_s_div ='DU'
+end if 
+
+select "PBACC"."ACC110"."SLSLIPNO" 
+into :l_n_count
+from "PBACC"."ACC110"
+where "PBACC"."ACC110"."COMLTD" = :g_s_company and
+      "PBACC"."ACC110"."SLDIV" = :l_s_div and
+		"PBACC"."ACC110"."SLACDATE" = :a_s_dt 
+using sqlca;
+
+if sqlca.sqlcode <> 0 or isnull(l_n_count) then
+	l_n_count = 0
+	end if 
+	
+if l_n_count = 0 then
+	l_s_nochk =''
+	return l_s_nochk
+end if 
+
+//l_s_nochk = string(l_n_count) 
+for l_n_row = 1 to l_n_count
+	
+	select count(*) 
+	into :l_n_slip
+	from "PBACC"."ACC100"
+	where "PBACC"."ACC100"."COMLTD" = :g_s_company and
+	      "PBACC"."ACC100"."SLAREA" = :g_s_wkcd and
+			"PBACC"."ACC100"."SLACDATE" = :a_s_dt and
+			"PBACC"."ACC100"."SLSLIPNO" = :l_n_row
+			using sqlca;
+			
+	if l_n_slip > 0 then
+		 continue
+	else
+		l_s_nochk = l_s_nochk + '  ' + string(l_n_row)
+	end if 
+	
+next
+
+declare acc_cur cursor for	
+SELECT  distinct "PBACC"."ACC100"."SLSLIPNO"
+FROM "PBACC"."ACC100"  
+   WHERE ( "PBACC"."ACC100"."COMLTD" = :g_s_company ) AND  
+         ( "PBACC"."ACC100"."SLAREA" = :g_s_wkcd ) AND  
+         ( "PBACC"."ACC100"."SLACDATE" = :a_s_dt )   AND 
+         ( "PBACC"."ACC100"."SLSERNO" <> 9)    AND
+         (( "PBACC"."ACC100"."SLACCODE" ='A1050200' and "PBACC"."ACC100"."SLDRCR" = '1'and "PBACC"."ACC100"."SLOPACCODE" IN ('S1010203','S1010202','S1011203','S1011202','H1080105' )) OR
+        ( "PBACC"."ACC100"."SLACCODE" IN ('S1010203','S1010202','S1011203','S1011202','H1080105','H1080103','H1080104' )and "PBACC"."ACC100"."SLDRCR" = '2' AND SUBSTR("PBACC"."ACC100"."SLMANAGE2",1,1) <>'L')) AND 
+        ( "PBACC"."ACC100"."SLSLIPCM" ='1') AND
+        ( "PBACC"."ACC100"."SLEMPNO" = :a_s_emp) 
+      
+ORDER BY"PBACC"."ACC100"."SLSLIPNO" ;
+
+open acc_cur ;
+	do while true
+		fetch acc_cur into :l_n_slipno ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if 
+      
+		l_s_nochk = l_s_nochk + '  ' + string(l_n_slipno)
+	loop	
+close acc_cur;
+
+return l_s_nochk 
+  
+		
+end function
+

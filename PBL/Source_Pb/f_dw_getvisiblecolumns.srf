@@ -1,0 +1,49 @@
+$PBExportHeader$f_dw_getvisiblecolumns.srf
+$PBExportComments$datawindow의 visible한 column list를 구함
+global type f_dw_getvisiblecolumns from function_object
+end type
+
+forward prototypes
+global function integer f_dw_getvisiblecolumns (datawindow adw_1, ref string as_colnames[])
+end prototypes
+
+global function integer f_dw_getvisiblecolumns (datawindow adw_1, ref string as_colnames[]);////////////////////////////////////////////////////////////////////////
+//
+//   Function : f_dw_getvisiblecolumns
+//
+//    Purpose : datawindow내의 visible한 모든 column을 찾는다
+//
+//  Arguments : 	
+//					 adw_1			... 대상 datawindow
+//					 as_colnames	... visible한 column name을 반환할 string array(ref)
+//
+//    Returns : integer			... 찾은 column갯수
+//
+//        Log :
+//
+//             DATE        WHO           WHAT
+//            ------      -----     -------------------------------------
+//
+//////////////////////////////////////////////////////////////////////////
+STRING		ls_dummy_cols[]		//as_colnames를 초기화(clear)하기 위해
+INTEGER		li_i						//For-Next를 위한 temp var.
+INTEGER		li_totcols				//datawindow의 총 column 갯수
+INTEGER		li_colcount = 0		//찾은(visible)한 column 갯수
+
+//초기화(Clear)
+as_colnames = ls_dummy_cols
+
+//전체 column갯수를 구한다
+li_totcols = Integer(adw_1.Describe("datawindow.column.count"))
+
+FOR li_i = 1 to li_totcols
+	//해당 Column Id가 Visible하면 
+	IF adw_1.Describe("#" + String(li_i) + ".visible") = "1" THEN
+		li_colcount ++
+		as_colnames[li_colcount] = adw_1.Describe("#" + String(li_i) + ".name")
+	END IF
+NEXT
+
+RETURN li_colcount
+end function
+

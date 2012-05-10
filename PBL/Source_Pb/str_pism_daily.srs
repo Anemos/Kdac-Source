@@ -1,0 +1,18 @@
+$PBExportHeader$str_pism_daily.srs
+$PBExportComments$지역,공장,조,작업일자...
+global type str_pism_daily from structure
+	string		area
+	string		div
+	string		wc
+	string		wday
+	string		year
+	string		month
+	string		day
+	string		mhgbn
+	string		from_date
+	string		to_date
+	string		dailystatus
+	string		workgbn
+	long		longparm
+end type
+

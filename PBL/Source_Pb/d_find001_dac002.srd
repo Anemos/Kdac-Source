@@ -1,0 +1,32 @@
+$PBExportHeader$d_find001_dac002.srd
+$PBExportComments$ºÎ¼­ÄÚµå ¹× ¸íÄª(¸íÄª°Ë»ö)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=decimal(0) updatewhereclause=yes name=returncode2 dbname="DAC001.DACTTODT" )
+ column=(type=char(40) updatewhereclause=yes name=returncode1 dbname="DAC001.DNAME" )
+ column=(type=char(4) updatewhereclause=yes name=returncode dbname="DAC001.DCODE" )
+ retrieve="  SELECT ~"PBCOMMON~".~"DAC001~".~"DACTTODT~",   
+         ~"PBCOMMON~".~"DAC001~".~"DNAME~",   
+         ~"PBCOMMON~".~"DAC001~".~"DCODE~" 
+    FROM ~"PBCOMMON~".~"DAC001~"  
+   WHERE ( ~"PBCOMMON~".~"DAC001~".~"DNAME~" like :a_dname ) AND
+	   	( ~"PBCOMMON~".~"DAC001~".~"DUSE~" = ' ' ) AND
+	   	( ~"PBCOMMON~".~"DAC001~".~"DTODT~" = 0 ) AND
+	   	( ~"PBCOMMON~".~"DAC001~".~"DACTTODT~" = 0  ) 
+" arguments=(("a_dname", string)) )
+text(band=header alignment="2" text="Á¶ ÄÚµå" border="2" color="16777215" x="5" y="0" height="60" width="274" html.valueishtml="0"  name=dcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="2" color="0" x="5" y="0" height="60" width="274" format="[general]" html.valueishtml="0"  name=returncode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Á¶   ¸í" border="2" color="16777215" x="283" y="0" height="60" width="896" html.valueishtml="0"  name=dname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="283" y="0" height="60" width="896" format="[general]" html.valueishtml="0"  name=returncode1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Æó±âÀÏÀÚ" border="2" color="16777215" x="1184" y="0" height="60" width="325" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="2" color="0" x="1184" y="0" height="60" width="325" format="~tstring( dacttodt ,~"@@@@.@@.@@~")" html.valueishtml="0"  name=returncode2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

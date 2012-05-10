@@ -1,0 +1,106 @@
+$PBExportHeader$f_dw_get_objects.srf
+$PBExportComments$Returns requested objects on a datawindow.
+global type f_dw_get_objects from function_object
+end type
+
+forward prototypes
+global function integer f_dw_get_objects (datawindow adw_arg, ref string as_obj_list[], string as_obj_type, string as_band)
+end prototypes
+
+global function integer f_dw_get_objects (datawindow adw_arg, ref string as_obj_list[], string as_obj_type, string as_band);///////////////////////////////////////////////////////////////////////////////
+//
+//		Function:  f_dw_get_objects
+//		 Purpose:  Datawindow contorl에 연결되어 있는 DataObject내의
+//               각 band에 있는 object들(column등)의 list를 배열형태로 
+//               반환한다. return value로는 찾은 object수를 반환한다.
+//               argument중 as_obj_type의 값을 설정하여 특정type의
+//               object만 가져올수도 있다. type에 제한을 두지 않고
+//               해당 band내의 전 object를 가져올려면 as_obj_type에다 
+//               '*'를 넣어 호출한다.
+//					  band에 대한 구분을 두지않으려면, as_band에다 '*'를 넣고
+//               호출한다.
+//
+//						Example1: This will return the names of all text objects
+//		  						    in the header band of dw_1 into mylist, 
+//									 and the number of names returned into obj_num.
+//	
+//      							 obj_num = f_dw_get_objects(dw_1,mylist, &
+//													"text","header") 
+//
+//						Example2: This will return the names of all column objects
+//									 in dw_1 into mylist, and the number of names 
+//									 returned into obj_num.
+//			
+//									 obj_num = f_dw_get_objects(dw_1,mylist, &
+//													"column","*") 
+//	
+//						Example3: This will return the names of all objects in 
+//									 the summary band of dw_1 into mylist, and the
+//									 number of names returned into obj_num.
+//
+//									 obj_num = f_dw_get_objects(dw_1,mylist, &
+//												  "*","summary") 
+//
+//						Example4: This will return the names of all objects in 
+//									 dw_1  into mylist, and the number of names 
+//									 returned into obj_num.
+//
+//									 obj_num = f_dw_get_objects(dw_1,mylist, &
+//												"*","*") 
+//
+//	     ARGUMENTS:
+//						adw_arg	 		대상datawindow control
+//						as_obj_list  	결과를 넘겨줄 string array(ref)
+//						as_obj_type  	찾을 object type
+//						as_band      	찾을 band
+//      RETURN: [integer] 			찾은 Object갯수
+//
+//      Log:
+//
+//			Who				When				What
+//-----------------------------------------------------------------------------
+//			Powersoft 							initial version
+//			dmshin			1997-06-09		한글주석
+//
+///////////////////////////////////////////////////////////////////////////////
+STRING	ls_obj_string			//datawindow의 전체 object string
+STRING	ls_obj_holder			//비교를 위해 잘라낸 문자열 
+INTEGER	li_start_pos = 1		//ls_obj_string에서 찾기를 시작할 위치
+INTEGER	li_tab_pos				//비교를 위해 잘라낼 문자열위치(~t의 위치)
+INTEGER	li_count = 0			//총 찾은object수 
+STRING	ls_null[]
+
+//초기화
+as_obj_list = ls_null
+
+//datawindow에서 전체 object list를 가져옮
+ls_obj_string = Describe(adw_arg,"datawindow.objects")
+
+//비교를 위해 object하나씩을 잘라냄(잘라낼 위치는 '~t'로 구분)
+li_tab_pos =  Pos(ls_obj_string,"~t",li_start_pos)
+DO WHILE li_tab_pos > 0
+	ls_obj_holder = Mid(ls_obj_string,li_start_pos,(li_tab_pos - li_start_pos))
+	IF ((Describe(adw_arg,ls_obj_holder + ".type") = as_obj_type) OR (as_obj_type = "*")) AND &
+		((Describe(adw_arg,ls_obj_holder+".band") = as_band) OR (as_band = "*")) THEN
+			//Type과 band가 같으면, 찾았다!
+			li_count ++
+			as_obj_list[li_count] = ls_obj_holder
+	END IF
+	//다음 비교위치로 위치 이동
+	li_start_pos = li_tab_pos + 1
+	li_tab_pos =  Pos(ls_obj_string,"~t",li_start_pos)	
+LOOP 
+
+//마지막것을 비교함(위의 Do-Loop에서 마지막비교문자열은 처리가 안됨)
+ls_obj_holder = Mid(ls_obj_string,li_start_pos,Len(ls_obj_string))
+IF ((Describe(adw_arg,ls_obj_holder+".type") = as_obj_type) OR (as_obj_type = "*")) AND &
+	((Describe(adw_arg,ls_obj_holder+".band") = as_band) OR (as_band = "*")) THEN
+	//Type과 band가 같으면, 찾았다!
+	li_count ++
+	as_obj_list[li_count] = ls_obj_holder
+END IF
+
+//찾은 Object갯수 반환
+RETURN li_count
+end function
+

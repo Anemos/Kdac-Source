@@ -1,0 +1,32 @@
+$PBExportHeader$f_pur040_getrsrno.srf
+$PBExportComments$구매전산번호pur302
+global type f_pur040_getrsrno from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getrsrno (string as_purno, string as_itno)
+end prototypes
+
+global function string f_pur040_getrsrno (string as_purno, string as_itno);////////////////////////////////////////////////
+// : 구매전산번호가져오기
+//	argument : 발주,품번
+// 적용:opm302u   
+////////////////////////////////////////////////
+
+string ls_srno
+dec ld_rqty
+
+     SELECT max("PBPUR"."PUR302"."SRNO")   
+        // max("PBPUR"."PUR302"."RQTY")  
+    INTO :ls_srno   
+        // :ld_rqty  
+    FROM "PBPUR"."PUR302"  
+   WHERE ( "PBPUR"."PUR302"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR302"."EXTD" = :as_purno ) AND  
+         ( "PBPUR"."PUR302"."ITNO" = :as_itno )   ;
+
+IF isnull(ls_srno) Then ls_srno = '' 
+
+Return ls_srno
+end function
+

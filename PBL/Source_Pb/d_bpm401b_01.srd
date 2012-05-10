@@ -1,0 +1,105 @@
+$PBExportHeader$d_bpm401b_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=comltd dbname="BPM519.COMLTD" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=xyear dbname="BPM519.XYEAR" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=revno dbname="BPM519.REVNO" )
+ column=(type=char(3) update=yes updatewhereclause=yes name=seqno dbname="BPM519.SEQNO" )
+ column=(type=char(100) update=yes updatewhereclause=yes name=taskname dbname="BPM519.TASKNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=taskstatus dbname="BPM519.TASKSTATUS" values="ÁøÇà	G/¿Ï·á	C/" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=jobstart dbname="BPM519.JOBSTART" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=jobend dbname="BPM519.JOBEND" )
+ column=(type=char(20) update=yes updatewhereclause=yes key=yes name=windowid dbname="BPM519.WINDOWID" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=taskmanager dbname="BPM519.TASKMANAGER" )
+ column=(type=char(10) updatewhereclause=yes name=managername dbname="MANAGERNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ingflag dbname="BPM519.INGFLAG" values="È®Á¤	C/¹ÌÈ®Á¤	G/" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=deptcode dbname="BPM519.DEPTCODE" )
+ column=(type=char(40) updatewhereclause=yes name=deptname dbname="DEPTNAME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=jobempno dbname="BPM519.JOBEMPNO" )
+ column=(type=char(10) updatewhereclause=yes name=jobempnoname dbname="JOBEMPNONAME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=jobempno2 dbname="BPM519.JOBEMPNO2" )
+ column=(type=char(10) updatewhereclause=yes name=jobempnoname2 dbname="JOBEMPNONAME2" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ipaddr dbname="BPM519.IPADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=macaddr dbname="BPM519.MACADDR" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="BPM519.LASTEMP" )
+ column=(type=char(10) updatewhereclause=yes name=lastempname dbname="LASTEMPNAME" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=lastdate dbname="BPM519.LASTDATE" )
+ column=(type=char(3) updatewhereclause=yes name=run_mode dbname="RUN_MODE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM519~".~"COMLTD~",
+			~"PBBPM~".~"BPM519~".~"XYEAR~",  
+			~"PBBPM~".~"BPM519~".~"REVNO~", 
+         ~"PBBPM~".~"BPM519~".~"SEQNO~",   
+         ~"PBBPM~".~"BPM519~".~"TASKNAME~",   
+         ~"PBBPM~".~"BPM519~".~"TASKSTATUS~",   
+         ~"PBBPM~".~"BPM519~".~"JOBSTART~",   
+         ~"PBBPM~".~"BPM519~".~"JOBEND~",   
+         ~"PBBPM~".~"BPM519~".~"WINDOWID~",      
+         ~"PBBPM~".~"BPM519~".~"TASKMANAGER~",
+			( SELECT PENAMEK FROM PBCOMMON.DAC003 WHERE PEEMPNO = ~"PBBPM~".~"BPM519~".~"TASKMANAGER~" ) AS MANAGERNAME,
+			~"PBBPM~".~"BPM519~".~"INGFLAG~",
+			~"PBBPM~".~"BPM519~".~"DEPTCODE~",
+			( SELECT CC.DNAME FROM PBCOMMON.DAC001 CC 
+				WHERE ( CC.DCODE = ~"PBBPM~".~"BPM519~".~"DEPTCODE~" ) and ( CC.DUSE = ' ' ) and ( CC.DTODT = 0  ) and
+	      		( CC.DACTTODT = 0 )  and ( CC.DDIV2 <> '' ) ) AS DEPTNAME,
+			~"PBBPM~".~"BPM519~".~"JOBEMPNO~",
+			( SELECT PENAMEK FROM PBCOMMON.DAC003 WHERE PEEMPNO = ~"PBBPM~".~"BPM519~".~"JOBEMPNO~" ) AS JOBEMPNONAME,
+			~"PBBPM~".~"BPM519~".~"JOBEMPNO2~",
+			( SELECT PENAMEK FROM PBCOMMON.DAC003 WHERE PEEMPNO = ~"PBBPM~".~"BPM519~".~"JOBEMPNO2~" ) AS JOBEMPNONAME2,
+         ~"PBBPM~".~"BPM519~".~"IPADDR~",   
+         ~"PBBPM~".~"BPM519~".~"MACADDR~",   
+         ~"PBBPM~".~"BPM519~".~"LASTEMP~", 
+			( SELECT PENAMEK FROM PBCOMMON.DAC003 WHERE PEEMPNO = ~"PBBPM~".~"BPM519~".~"LASTEMP~" ) AS LASTEMPNAME,  
+         ~"PBBPM~".~"BPM519~".~"LASTDATE~",
+			'RUN' AS RUN_MODE
+    FROM ~"PBBPM~".~"BPM519~" 
+ WHERE ~"PBBPM~".~"BPM519~".~"COMLTD~" = '01' AND ~"PBBPM~".~"BPM519~".~"XYEAR~" = :ag_year AND ~"PBBPM~".~"BPM519~".~"REVNO~" = :ag_revno 
+ ORDER BY ~"PBBPM~".~"BPM519~".~"SEQNO~"
+" update="PBBPM.BPM519" updatewhere=0 updatekeyinplace=no arguments=(("ag_year", string),("ag_revno", string)) )
+text(band=header alignment="2" text="¼ø¹ø" border="0" color="16777215" x="9" y="4" height="68" width="174" html.valueishtml="0"  name=seqno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷¸í" border="0" color="16777215" x="192" y="4" height="68" width="974" html.valueishtml="0"  name=taskname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»óÅÂ" border="0" color="16777215" x="1175" y="4" height="68" width="274" html.valueishtml="0"  name=taskstatus_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷½ÃÀÛÀÏ½Ã" border="0" color="16777215" x="1655" y="4" height="68" width="608" html.valueishtml="0"  name=jobstart_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷¿Ï·áÀÏ½Ã" border="0" color="16777215" x="2272" y="4" height="68" width="590" html.valueishtml="0"  name=jobend_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="À©µµ¿ìID" border="0" color="16777215" x="4960" y="4" height="68" width="494" html.valueishtml="0"  name=windowid_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Ã½ºÅÛ´ã´ç" border="0" color="16777215" x="5463" y="4" height="68" width="315" html.valueishtml="0"  name=taskmanager_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ" border="0" color="16777215" x="6235" y="4" height="68" width="233" html.valueishtml="0"  name=lastemp_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏ½Ã" border="0" color="16777215" x="6747" y="4" height="68" width="663" html.valueishtml="0"  name=lastdate_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½ÇÇà" border="0" color="16777215" x="1458" y="4" height="68" width="187" html.valueishtml="0"  name=run_mode_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´ç¸í" border="0" color="16777215" x="5787" y="4" height="68" width="206" html.valueishtml="0"  name=managername_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ¸í" border="0" color="16777215" x="6478" y="4" height="68" width="261" html.valueishtml="0"  name=lastempname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È®Á¤" border="0" color="16777215" x="6002" y="4" height="68" width="224" html.valueishtml="0"  name=ingflag_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´çºÎ¼­" border="0" color="16777215" x="2871" y="4" height="68" width="315" html.valueishtml="0"  name=deptcode_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´çÀÚ(Á¤)" border="0" color="16777215" x="3666" y="4" height="68" width="315" html.valueishtml="0"  name=jobempno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ¼­¸í" border="0" color="16777215" x="3195" y="4" height="68" width="462" html.valueishtml="0"  name=deptname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´ç¸í(Á¤)" border="0" color="16777215" x="3991" y="4" height="68" width="311" html.valueishtml="0"  name=jobempnoname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´çÀÚ(ºÎ)" border="0" color="16777215" x="4311" y="4" height="68" width="320" html.valueishtml="0"  name=jobempno2_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´ç¸í(ºÎ)" border="0" color="16777215" x="4640" y="4" height="68" width="311" html.valueishtml="0"  name=jobempnoname2_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="2" tabsequence=30 border="0" color="33554432" x="1175" y="4" height="72" width="274" format="[general]" html.valueishtml="0"  name=taskstatus visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.useasborder=yes ddlb.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="33554432" x="6747" y="4" height="72" width="663" format="[general]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1655" y="4" height="72" width="608" format="[general]" html.valueishtml="0"  name=jobstart visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=24 alignment="2" tabsequence=32766 border="6" color="128" x="1458" y="8" height="64" width="187" format="[general]" html.valueishtml="0"  name=run_mode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="4" height="72" width="174" format="[general]" html.valueishtml="0"  name=seqno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=5 alignment="0" tabsequence=20 border="0" color="33554432" x="192" y="4" height="72" width="974" format="[general]" html.valueishtml="0"  name=taskname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=9 alignment="0" tabsequence=70 border="0" color="33554432" x="4960" y="4" height="72" width="494" format="[general]" html.valueishtml="0"  name=windowid visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=10 alignment="2" tabsequence=80 border="0" color="33554432" x="5463" y="4" height="72" width="315" format="[general]" html.valueishtml="0"  name=taskmanager visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="5787" y="4" height="72" width="206" format="[general]" html.valueishtml="0"  name=managername visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=22 alignment="2" tabsequence=32766 border="0" color="33554432" x="6478" y="4" height="72" width="261" format="[general]" html.valueishtml="0"  name=lastempname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=21 alignment="2" tabsequence=32766 border="0" color="33554432" x="6235" y="4" height="72" width="233" format="[general]" html.valueishtml="0"  name=lastemp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="6002" y="4" height="72" width="224" format="[general]" html.valueishtml="0"  name=ingflag visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2272" y="4" height="72" width="590" format="[general]" html.valueishtml="0"  name=jobend visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=40 border="0" color="33554432" x="2871" y="4" height="72" width="315" format="[general]" html.valueishtml="0"  name=deptcode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="33554432" x="3195" y="4" height="72" width="462" format="[general]" html.valueishtml="0"  name=deptname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="0" tabsequence=50 border="0" color="33554432" x="3666" y="4" height="72" width="315" format="[general]" html.valueishtml="0"  name=jobempno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="0" tabsequence=60 border="0" color="33554432" x="4311" y="4" height="72" width="320" format="[general]" html.valueishtml="0"  name=jobempno2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="33554432" x="3991" y="4" height="72" width="311" format="[general]" html.valueishtml="0"  name=jobempnoname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="0" color="33554432" x="4640" y="4" height="72" width="311" format="[general]" html.valueishtml="0"  name=jobempnoname2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

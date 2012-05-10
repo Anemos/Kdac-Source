@@ -1,0 +1,419 @@
+$PBExportHeader$f_down_ipis_mis_inv201.srf
+$PBExportComments$자재납품현황 ( inv201 - tqbusinesstemp )
+global type f_down_ipis_mis_inv201 from function_object
+end type
+
+forward prototypes
+global function integer f_down_ipis_mis_inv201 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_down_ipis_mis_inv201 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_xplant, ls_div, ls_slno, ls_dckdt, ls_vndr, ls_cls
+string ls_itno, ls_qccd, ls_blno, ls_stscd, ls_downdate, ls_judgeflag
+dec{0} lc_dckqt, lc_dcamt
+dec{2} lc_fobamt
+integer	li_cnt, li_index, li_chkcnt
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_chgcd = trim(ag_dwo.getitemstring(li_cnt,"chgcd"))
+	ls_xplant = trim(ag_dwo.getitemstring(li_cnt,"xplant"))
+	ls_div = trim(ag_dwo.getitemstring(li_cnt,"div"))
+	ls_slno = trim(ag_dwo.getitemstring(li_cnt,"slno"))
+	ls_dckdt = trim(ag_dwo.getitemstring(li_cnt,"dckdt"))
+	ls_vndr = trim(ag_dwo.getitemstring(li_cnt,"vndr"))
+	ls_itno = trim(ag_dwo.getitemstring(li_cnt,"itno"))
+	ls_qccd = trim(ag_dwo.getitemstring(li_cnt,"qccd"))
+	ls_blno = trim(ag_dwo.getitemstring(li_cnt,"blno"))
+	lc_dckqt = ag_dwo.getitemnumber(li_cnt,"dckqt")
+	lc_dcamt = ag_dwo.getitemnumber(li_cnt,"dcamt")
+	lc_fobamt = ag_dwo.getitemnumber(li_cnt,"fobamt")
+	
+	SELECT CLS INTO :ls_cls 
+	FROM PBINV.INV101
+  	WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND DIV = :ls_div
+        AND ITNO = :ls_itno 
+	;
+	
+	if sqlca.sqlcode <> 0 then
+		ag_message = "품목기본정보에 데이타가 없습니다.."
+		return -1
+	else
+		// 거래명세표 업무전산화에 따른 QC검사대상 계정
+		if ls_cls <> '10' and ls_cls <> '20' and ls_cls <> '35' and ls_cls <> '40' and ls_cls <> '50' then
+			continue
+		end if
+	end if
+	
+	SELECT CHAR(CURRENT TIMESTAMP) Into :ls_chgdate FROM PBCOMMON.COMM000 FETCH FIRST 1 ROW ONLY;
+
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, ls_xplant, ls_div)	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+	
+	choose case ls_chgcd
+		case 'C'
+			//*** 외자품목
+			if mid(ls_vndr,1,1) <> 'D' then
+				INSERT INTO TQQCRESULT  
+					( AREACODE,	DIVISIONCODE,	SUPPLIERCODE,		DELIVERYNO,
+					ITEMCODE,	MAKEDATE,	
+					CHARGENAME,	STANDARDREVNO,
+					SUPPLIERLOTQTY,	KBCOUNT,	SUPPLIERDELIVERYQTY,	QCMETHOD,
+					REMARK,		KDACREMARK,	
+					JUDGEFLAG,	GOODQTY,
+					BADQTY,		BADREASON,	BADMEMO,		INSPECTORCODE,
+					CONFIRMCODE,	CONFIRMFLAG,	PRINTFLAG,		QCDATE,
+					QCTIME,							QCLEADTIME,	
+					QCKBFLAG,	SLNO,
+					DELIVERYDATE,	
+					DELIVERYTIME,	LASTEMP)  
+				VALUES	( :ls_xplant,	:ls_div,	'I0000',		:ls_slno,
+					:ls_itno,		CONVERT(CHAR(10), getdate(), 102),   
+					'델파이',	'00',
+					1,		0,		:lc_dckqt,		'1',
+					:ls_vndr,	'외자품으로 자동 작성된 검사성적서입니다',
+					'1',		:lc_dckqt,
+					0,		' ',		' ',			'외자품',
+					'외자품',	'Y',		'N',			CONVERT(CHAR(10), getdate(), 102),
+					CONVERT(CHAR(8), getdate(), 108),			'0',
+					'2',		:ls_slno,
+					substring(:ls_dckdt,1,4) + '.' + substring(:ls_dckdt,5,2) + '.' + substring(:ls_dckdt,7,2),
+					'00:00:00',	'Y') 
+				using lstr_ipis.t_sqlpis;
+				if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+					ag_message = "외자품목 검사성적서 생성에 실패하였습니다."
+					f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+						lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+				
+				if ls_xplant = 'Y' then
+					INSERT INTO TPARTINREADY  
+						( AreaCode, DivisionCode, Slno, DeliveryDate, SupplierCode, ItemCode,
+						SupplierDeliveryQty, JudgeFlag, GoodQty, BadQty, Blno, SupplierDeliveryAmt, FobAmt, Incomeflag,
+						IncomeDate, TidNo, LastEmp, LastDate )
+					Values ( :ls_xplant, :ls_div, :ls_slno, :ls_dckdt, :ls_vndr, :ls_itno,
+						:lc_dckqt, '1', :lc_dckqt, 0, :ls_blno, :lc_dcamt, :lc_fobamt, 'Y',
+						null, null, 'kdac', getdate() )
+					using lstr_ipis.t_sqlpis;
+					
+					if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+						ag_message = "외자품목 여주 입고대기정보 생성에 실패하였습니다."
+						f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+							lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+						return -1
+					end if
+				end if
+			//*** 내자품목
+			else
+				select count(*) into :li_chkcnt
+				from tqbusinesstemp
+				where areacode = :ls_xplant and divisioncode = :ls_div and
+					slno = :ls_slno
+				using lstr_ipis.t_sqlpis;
+				
+				if li_chkcnt > 0 then
+					delete
+					from tqbusinesstemp
+					where areacode = :ls_xplant and divisioncode = :ls_div and
+						slno = :ls_slno
+					using lstr_ipis.t_sqlpis;
+				end if
+				
+				Insert Into TQBUSINESSTEMP
+					(AreaCode,	Divisioncode,	SlNo,		
+					DeliveryDate,
+					SupplierCode,	ItemCode,	SupplierDeliveryQty,	QCGubun,
+					JudgeFlag,	GoodQty,	BadQty,			LastEmp)
+				Values (:ls_xplant,	:ls_div,	:ls_slno,	
+					:ls_dckdt,
+					:ls_vndr,	:ls_itno,	:lc_dckqt,		:ls_qccd,
+					'9',		0,		0,			'SYSTEM')
+				using lstr_ipis.t_sqlpis;
+				
+				if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+					ag_message = "내자품목 납품정보 생성에 실패하였습니다."
+					f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+						lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+				
+				// 검사성적서 미검사 상태로 초기화
+				//해당검사성적서 미판정으로 셋팅
+				select count(*) into :li_chkcnt
+				from tqqcresult
+				WHERE areacode = :ls_xplant and
+						divisioncode = :ls_div and
+						deliveryno = :ls_slno 
+				using lstr_ipis.t_sqlpis;
+				
+  				if li_chkcnt = 1 then
+				  UPDATE TQQCRESULT  
+					SET JUDGEFLAG = '9',   
+							GOODQTY = 0,   
+							BADQTY = 0,   
+							BADREASON = ' ',   
+							BADMEMO = ' ',   
+							INSPECTORCODE = ' ',   
+							CONFIRMCODE = ' ',   
+							CONFIRMFLAG = 'N',   
+							QCDATE = null  
+					WHERE ( TQQCRESULT.AREACODE = :ls_xplant ) AND  
+							( TQQCRESULT.DIVISIONCODE = :ls_div ) AND   
+							( TQQCRESULT.DELIVERYNO = :ls_slno )   
+					using lstr_ipis.t_sqlpis;
+				end if
+				
+				if ls_xplant = 'Y' then
+					if ls_qccd = 'Q' then
+						select count(*) into :li_chkcnt
+						from tpartinready
+						where areacode = :ls_xplant and divisioncode = :ls_div and slno = :ls_slno
+						using lstr_ipis.t_sqlpis;
+						
+						if li_chkcnt > 0 then
+							delete
+							from tpartinready
+							where areacode = :ls_xplant and divisioncode = :ls_div and slno = :ls_slno
+							using lstr_ipis.t_sqlpis;
+						end if
+						// Q : 무검사
+						INSERT INTO TPARTINREADY  
+	          			( AreaCode, DivisionCode, Slno, DeliveryDate, SupplierCode, ItemCode,
+	            			SupplierDeliveryQty, JudgeFlag, GoodQty, BadQty, Incomeflag,
+	            			IncomeDate, TidNo, LastEmp, LastDate )
+	          		Values ( :ls_xplant, :ls_div, :ls_slno, :ls_dckdt, :ls_vndr, :ls_itno,
+	            		:lc_dckqt, '1', :lc_dckqt, 0, 'Y',
+	            		null, null, 'kdac', getdate() )
+						using lstr_ipis.t_sqlpis;
+						
+						if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+							ag_message = "내자 무검사품목 여주 입고대기정보 생성에 실패하였습니다."
+							f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+								lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+							return -1
+						end if
+					else
+						select count(*) into :li_chkcnt
+						from tpartdeliveryinfo
+						where areacode = :ls_xplant and divisioncode = :ls_div and slno = :ls_slno
+						using lstr_ipis.t_sqlpis;
+						
+						if li_chkcnt > 0 then
+							delete
+							from tpartdeliveryinfo
+							where areacode = :ls_xplant and divisioncode = :ls_div and slno = :ls_slno
+							using lstr_ipis.t_sqlpis;
+						end if
+						
+						Insert Into tpartdeliveryinfo
+					    (AreaCode, DivisionCode, Slno, DeliveryDate, SupplierCode, ItemCode, 
+					    	SupplierDeliveryQty, SupplierDeliveryAmt, Blno, FobAmt, QcCode, DownDate)
+            		Values (:ls_xplant,	:ls_div,	:ls_slno,	:ls_dckdt, :ls_vndr,	:ls_itno,	
+              			:lc_dckqt,		0,   ' ',    0,  :ls_qccd, getdate())
+						using lstr_ipis.t_sqlpis;
+						
+						if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+							ag_message = "내자 유검사품목 여주 납품상세정보 생성에 실패하였습니다."
+							f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+								lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+							return -1
+						end if
+					end if
+				end if
+			end if
+		case 'U'
+			if mid(ls_vndr,1,1) <> 'D' then
+				ag_message = "외자품은 납품정보를 수정할수 없습니다"
+				return -1
+			else
+				SELECT ISNULL(JudgeFlag,'') INTO :ls_judgeflag
+				FROM TQBUSINESSTEMP
+				WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+						Slno = :ls_slno
+				using lstr_ipis.t_sqlpis;
+				
+				if ls_judgeflag <> '9' then
+					ag_message = "판정이 완료된 품목으로 수정할 수 없습니다"
+					return -1
+				else
+					UPDATE TQBUSINESSTEMP
+					SET	DeliveryDate		= :ls_dckdt,
+						SupplierCode		= :ls_vndr,
+						ItemCode		= :ls_itno,
+						SupplierDeliveryQty	= :lC_dckqt,
+						LastDate = Getdate()
+					WHERE	areacode	= :ls_xplant AND	divisioncode	= :ls_div AND	
+							slno		= :ls_slno 
+					using lstr_ipis.t_sqlpis;
+					
+					if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+						ag_message = "내자품목 납품정보 수정에 실패하였습니다."
+						f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+							lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+						return -1
+					end if
+				end if
+				if ls_xplant = 'Y' then
+					if ls_qccd = 'Q' then
+						SELECT IncomeFlag INTO :ls_stscd
+						FROM TPARTINREADY
+						WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+								Slno = :ls_slno
+						using lstr_ipis.t_sqlpis;
+						
+						if ls_stscd = 'N' then
+							ag_message = "이미 입고처리된 무검사품입니다."
+							return -1
+						else
+							UPDATE TPARTINREADY
+							SET DeliveryDate = :ls_dckdt, 
+								SupplierCode = :ls_vndr, 
+								ItemCode = :ls_itno,
+	            			SupplierDeliveryQty = :lc_dckqt,
+								GoodQty = :lc_dckqt
+							WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+									Slno = :ls_slno
+							using lstr_ipis.t_sqlpis;
+							
+							if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+								ag_message = "여주 내자무검사품 입고대기정보 수정에 실패하였습니다."
+								f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+									lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+								return -1
+							end if
+						end if
+					else
+						UPDATE TPARTDELIVERYINFO
+						SET DeliveryDate = :ls_dckdt,
+							SupplierCode = :ls_vndr,
+							ItemCode = :ls_itno,
+							SupplierDeliveryQty = :lc_dckqt,
+							DownDate = getdate()
+						WHERE areacode	= :ls_xplant AND	divisioncode	= :ls_div AND	
+								slno		= :ls_slno 
+						using lstr_ipis.t_sqlpis;
+											
+						if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+							ag_message = "내자품목 여주 납품상세정보 수정에 실패하였습니다."
+							f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+								lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+							return -1
+						end if
+					end if
+				end if
+			end if
+		case 'D'
+			if mid(ls_vndr,1,1) <> 'D' then
+				DELETE TQQCRESULT
+				WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+					SupplierCode = 'I0000' AND	DeliveryNo = :ls_slno AND
+					ItemCode = :ls_itno
+				using lstr_ipis.t_sqlpis;
+				
+				if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+					ag_message = "외자품 검사성적서 삭제에 실패하였습니다."
+					f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+						lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+				
+				if ls_xplant = 'Y' then
+					SELECT IncomeFlag INTO :ls_stscd
+					FROM TPARTINREADY
+					WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+							Slno = :ls_slno
+					using lstr_ipis.t_sqlpis;
+					
+					if ls_stscd = 'N' then
+						ag_message = "이미 외자 입고처리된 무검사품입니다."
+						return -1
+					end if
+					
+					DELETE TPARTINREADY
+					WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+							Slno = :ls_slno
+					using lstr_ipis.t_sqlpis;
+					
+					if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+						ag_message = "외자 납품정보 삭제에 실패하였습니다."
+						f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+							lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+						return -1
+					end if
+				end if
+			else
+				SELECT ISNULL(JudgeFlag,'') INTO :ls_judgeflag
+				FROM TQQCRESULT
+				WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+						Slno = :ls_slno
+				using lstr_ipis.t_sqlpis;
+				
+				if lstr_ipis.t_sqlpis.sqlcode = 0 and ls_judgeflag <> '9' then
+					ag_message = "이미 판정완료된 검사품입니다."
+					return -1
+				else
+					DELETE TQBUSINESSTEMP
+					WHERE	areacode	= :ls_xplant AND	divisioncode	= :ls_div AND	
+							slno		= :ls_slno 
+					using lstr_ipis.t_sqlpis;
+					
+					if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+						ag_message = "내자품목 납품정보 삭제에 실패하였습니다."
+						f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+							lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+						return -1
+					end if
+				end if
+				if ls_xplant = 'Y' then
+					if ls_qccd = 'Q' then
+						SELECT IncomeFlag INTO :ls_stscd
+						FROM TPARTINREADY
+						WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
+								Slno = :ls_slno
+						using lstr_ipis.t_sqlpis;
+						
+						if ls_stscd = 'N' then
+							ag_message = "이미 입고처리된 무검사품입니다."
+							return -1
+						else
+							DELETE TPARTINREADY
+							WHERE areacode = :ls_xplant AND divisioncode = :ls_div AND
+									slno = :ls_slno
+							using lstr_ipis.t_sqlpis;
+							
+							if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+								ag_message = "여주 내자무검사품 입고대기정보 삭제에 실패하였습니다."
+								f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+									lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+								return -1
+							end if
+						end if
+					else
+						DELETE TPARTDELIVERYINFO
+						WHERE areacode	= :ls_xplant AND	divisioncode	= :ls_div AND	
+								slno		= :ls_slno 
+						using lstr_ipis.t_sqlpis;
+											
+						if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+							ag_message = "내자품목 여주 납품상세정보 삭제에 실패하였습니다."
+							f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv201',&
+								lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_slno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+							return -1
+						end if
+					end if
+				end if
+			end if
+		case else
+			ag_message = "데이타구분 CUD에 해당하지 않습니다."
+			return -1
+	end choose
+next
+
+return 0
+end function
+

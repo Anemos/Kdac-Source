@@ -1,0 +1,72 @@
+$PBExportHeader$f_bom_get_pastinv.srf
+$PBExportComments$지난월의 계정,구입선,자재단위,이동평균단가등을 가져오는 함수(INVDAE)
+global type f_bom_get_pastinv from function_object
+end type
+
+forward prototypes
+global function s_invdata_info f_bom_get_pastinv (string a_plant, string a_div, string a_itmnbr, string a_year, integer a_month)
+end prototypes
+
+global function s_invdata_info f_bom_get_pastinv (string a_plant, string a_div, string a_itmnbr, string a_year, integer a_month);dec{2} lc_ciucav,lc_ciucan
+decimal lc_coac,lc_coct,lc_ciac
+string l_s_yearmonth
+
+l_s_yearmonth = a_year + string(a_month,"00")
+s_invdata_info pastdata
+
+select cls, srce, xunit, costav, costls, outqty, outamt, intqty
+		 into :pastdata.it_clsb, :pastdata.it_srce, :pastdata.it_prum, :lc_ciucav,:lc_ciucan,:lc_coac,:lc_coct,&
+				:lc_ciac
+from pbinv.inv402 
+where comltd = '01' and
+		xplant = :a_plant and 
+		div = :a_div and
+		itno = :a_itmnbr and
+		xyear = :l_s_yearmonth using sqlca;
+//불출단가 계산
+if lc_coct <> 0 and lc_coac <> 0 then	
+//	pastdata.it_imasa = truncate(lc_coct[a_month] / lc_coac[a_month],2)
+	pastdata.it_imasa = abs(truncate(lc_coct / lc_coac ,2))
+else
+	pastdata.it_imasa = 0
+end if
+//pastdata.it_iucan = truncate(lc_ciucan[a_month],2)
+//pastdata.it_ucav  = truncate(lc_ciucav[a_month],2)
+pastdata.it_iucan = abs(truncate(lc_ciucan,2))
+pastdata.it_ucav  = abs(truncate(lc_ciucav,2))
+pastdata.it_mrcq  = truncate(lc_ciac,1)
+			
+select convqty,puls,pult into :pastdata.it_iumcv,:pastdata.it_lot,:pastdata.it_lead
+from "PBINV"."INV101" a
+where a.comltd = '01' and
+		a.xplant = :a_plant and
+      a.div = :a_div and
+		a.itno = :a_itmnbr using sqlca;
+if sqlca.sqlcode <> 0 then
+	pastdata.it_iumcv = 0
+	pastdata.it_iavcd = ''
+	pastdata.it_lot = 0
+	pastdata.it_lead = 0
+end if
+//get a LOT_SIZE and Lead time
+//if ls_ildcd = "M" then
+//	select imanq,iltmn into :pastdata.it_lot,:pastdata.it_lead
+//	from "PBINV"."INV101" a
+//	where a.xplant = :a_plant and
+//      a.div = :a_div and
+//		a.itno = :a_itmnbr using sqlca;
+//elseif ls_ildcd = "P" then
+//	select iordq,iltpr into :pastdata.it_lot,:pastdata.it_lead
+//	from "PBINV"."INV101" a
+//	where a.xplant = :a_plant and
+//         a.div = :a_div and
+//	   	a.itno = :a_itmnbr using sqlca;
+//else
+//	pastdata.it_lot = 0
+//	pastdata.it_lead = 0
+//end if
+//
+return pastdata
+
+end function
+

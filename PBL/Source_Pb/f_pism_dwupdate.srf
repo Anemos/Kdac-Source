@@ -1,0 +1,30 @@
+$PBExportHeader$f_pism_dwupdate.srf
+$PBExportComments$DataWindow Update (arg datawindow adw, boolean opt, return integer)
+global type f_pism_dwupdate from function_object
+end type
+
+forward prototypes
+global function integer f_pism_dwupdate (datawindow adw, boolean opt)
+end prototypes
+
+global function integer f_pism_dwupdate (datawindow adw, boolean opt);adw.SetTransObject(SqlPIS)
+If SqlPIS.AutoCommit Then SqlPIS.AutoCommit = False
+
+If f_pism_eis_dwcnvdata(adw) = -1 Then Goto Exit_pr 
+If adw.Update() = 1 Then 
+	IF opt THEN 
+		COMMIT USING  sqlPIS;
+		sqlPIS.AutoCommit = True 
+	END IF
+	Return 1
+End If
+
+Exit_pr: 
+
+RollBack Using SqlPIS;
+SqlPIS.AutoCommit = True 
+
+Return -1 	
+
+end function
+

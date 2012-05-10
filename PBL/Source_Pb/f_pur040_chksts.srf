@@ -1,0 +1,38 @@
+$PBExportHeader$f_pur040_chksts.srf
+$PBExportComments$ds상태체크(ds, row,long(buffer))
+global type f_pur040_chksts from function_object
+end type
+
+forward prototypes
+global function string f_pur040_chksts (datastore ads_1, long al_row, long al_buffer)
+end prototypes
+
+global function string f_pur040_chksts (datastore ads_1, long al_row, long al_buffer);string ls_sts, ls_buffer
+
+dwitemstatus ldws_1
+if al_buffer = 1 then
+	ls_buffer = 'primary!'
+  ldws_1 = ads_1.getitemstatus(al_row, 0, primary!)
+elseif al_buffer = 2 then
+	ldws_1 = ads_1.getitemstatus(al_row, 0, delete!)
+	ls_buffer = 'delete!'
+elseif al_buffer = 3 then
+	ldws_1 = ads_1.getitemstatus(al_row, 0, filter!)
+	ls_buffer = 'filter!'
+end if
+
+if ldws_1 = New!  then
+	ls_sts = 'New!'
+elseif ldws_1 = Newmodified! then
+	ls_sts = 'Newmodified!'
+elseif ldws_1 = datamodified! then
+	ls_sts = 'Datamodified!'
+elseif ldws_1 = Notmodified! then
+  ls_sts = 'Notmodified!'
+else
+	ls_sts = 'sts chk error'
+end if
+messagebox(ls_buffer, string(al_row) + '행: ' + ls_sts)
+return ls_sts
+end function
+

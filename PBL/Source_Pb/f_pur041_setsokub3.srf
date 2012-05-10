@@ -1,0 +1,434 @@
+$PBExportHeader$f_pur041_setsokub3.srf
+$PBExportComments$분할원재료소급입력(기긴,지역,공장,품번,업체,금액,품의,사유)
+global type f_pur041_setsokub3 from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setsokub3 (datawindow fdw, ref string rs_msg)
+end prototypes
+
+global function integer f_pur041_setsokub3 (datawindow fdw, ref string rs_msg);//외주개발 원재료 분할 일괄소급용  pur210u에사용
+//2007.05.15현재 소급함수 원재료소급뿐...
+
+/*
+	Return    	: 성공 	1
+					  실패 	-1
+					  
+	2009.08.18  : f_pur041_setsokub3 수정시 
+	              
+					  f_pur041_setsokub1 도 함께 수정요망! (IS,RS)부분 : 분할소급 UPLOAD에 적용되는 함수임.( f_pur041_setsokub1 복사본임.)
+*/
+
+String ls_sliptype, ls_srno, ls_slno, ls_xplant,	ls_div,	ls_costdiv,	ls_itno,	ls_itnm,	ls_spec,	ls_xunit,	ls_cls, 	ls_srce, ls_mlan, ls_xplan
+String ls_vsrno, ls_vndr, ls_vndnm, ls_xpay, ls_xuse, ls_dept, ls_frdt, ls_todt, ls_tdte4, ls_rtcom, ls_rfcd, ls_tfill, ls_dsag, ls_pjtno, ls_invstcd
+String ls_pdcd, ls_orno, ls_new_sliptype, ls_gubun, ls_empno, ls_otxcd
+Long ll_row
+dec {0} ld_tramt
+String ls_tdte6
+
+fdw.AcceptText()
+
+For ll_row = 1 To fdw.RowCount()	
+	ls_sliptype = Trim(fdw.Object.sliptype[ll_row])		//RP, SS만 존재
+	ls_srno		= Trim(fdw.Object.srno[ll_row])
+	ls_slno		= Trim(fdw.Object.slno[ll_row])
+	ls_xplant	= Trim(fdw.Object.xplant[ll_row])
+	ls_div		= Trim(fdw.Object.div[ll_row])
+	ls_costdiv	= Trim(fdw.Object.costdiv[ll_row])
+	
+	ls_itno		= Trim(fdw.Object.itno[ll_row])		//품번
+	ls_itnm		= Trim(fdw.Object.itnm[ll_row])
+	ls_spec		= Trim(fdw.Object.spec[ll_row])
+	ls_xunit		= Trim(fdw.Object.xunit[ll_row])
+	ls_cls		= Trim(fdw.Object.cls[ll_row])
+	ls_srce		= Trim(fdw.Object.srce[ll_row])
+	ls_pdcd		= Trim(fdw.Object.pdcd[ll_row])		//제품군
+	ls_mlan		= Trim(fdw.Object.mlan[ll_row])
+	ls_xplan		= Trim(fdw.Object.xplan[ll_row])
+	
+	ls_vsrno		= Trim(fdw.Object.vsrno[ll_row])		//업체코드
+	ls_vndr		= Trim(fdw.Object.vndr[ll_row])
+	ls_vndnm		= Trim(fdw.Object.natn[ll_row])		//업체약칭
+	ls_xpay		= Trim(fdw.Object.xpay[ll_row])		//결제조건
+	
+	ls_xuse		= Trim(fdw.Object.xuse[ll_row])		//불출용도
+	ls_dept		= Trim(fdw.Object.dept[ll_row])		//부서코드
+	
+	ls_frdt		= Trim(fdw.Object.tdte1[ll_row])
+	ls_todt		= Trim(fdw.Object.tdte2[ll_row])
+	
+	ls_tdte6		= Trim(fdw.Object.tdte4[ll_row])		//소급적용일
+	ls_tdte4		= g_s_date									//실 소급적용일:2009.09.14 천세희
+	ld_tramt		= fdw.Object.tramt[ll_row]				//소급금액
+	
+	ls_rtcom		= Trim(fdw.Object.rtcom[ll_row])		
+	ls_rfcd		= Trim(fdw.Object.rfcd[ll_row])		//사유코드
+	ls_tfill		= Trim(fdw.Object.tfill[ll_row])		//품의번호
+	
+	ls_dsag		= Trim(fdw.Object.dsag[ll_row])
+	ls_pjtno		= Trim(fdw.Object.pjtno[ll_row])
+	ls_invstcd	= Trim(fdw.Object.invstcd[ll_row])	
+	ls_empno	   = Trim(fdw.Object.inptid[ll_row])	//승인전 등록자 기록
+	ls_otxcd	   = Trim(fdw.Object.otxcd[ll_row])	//영세율구분
+	if ls_empno = '' then
+		ls_empno = g_s_empno
+	end if
+	//2010.02.04
+	ls_gubun		= Trim(fdw.Object.gubun[ll_row])		//구분: A(일반단가소급), B(분할소급UPLOAD) , U(단가소급UPLOAD)
+	IF ls_gubun = "A" Then
+		ls_gubun = "소급"
+	ElseIF ls_gubun = "B" Then
+		ls_gubun = "분할소급"
+	Else
+		ls_gubun = "소급UP"
+	End If
+	//end: 2010.02.04
+	
+	//1.지급(RP), 공제(SS)
+	INSERT INTO "PBINV"."INV401" 
+			  (  "COMLTD", 	"SLIPTYPE",   	"SRNO",   	"SRNO1",   	"SRNO2",   	"XPLANT",   "DIV",
+				  "COSTDIV", 	"SLNO",    		"ITNO",    	"RVNO",    	"ITNM",    	"SPEC",     "XTYPE",
+				  "XUNIT",   	"CLS",     		"SRCE",     "PDCD",    	"XPLAN",    "MLAN",     "RQNO",
+				  "NQC",     	"KBCD",    		"DUDT",     "PURNO",    "VSRNO",   	"VNDR",     "VNDNM",
+				  
+				  "XPAY",   	"OTXCD",    	"LCNO",     "LCDT",     "DEPT",    	"RTNGUB",   "XUSE",
+				  "RSVSRNO", 	"ORNO",   		"MCHNO",    "EXFR",    	"EXTO",     "RQDIV",   	"BLNO",
+				  "EXCH",    	"CURR",    		"FOBAMT",   "TDTE1",    "TDTE2",   	"TDTE3",    "TDTE4",
+				  
+				  "TDTE5",   	"TDTE6",   		"TQTY1",    "TQTY2",    "TQTY3",    "TQTY4",    "XCOST",
+				  "TRAMT",   	"TSHSL",    	"RTCOM",    "RTQTY",   	"SSSRNO",   "SSCOM",    "RFCD",
+				  "CHKCD",   	"TSAMT",    	"TFILL",    "TCTTL",    "DSAG",    	"MAKER",    "PJTNO",
+				  "INVSTCD",
+				  "INVEST",  	"EXTD",     	"INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",  	"IPADDR",
+				  "MACADDR" )
+	VALUES	( '01',        :ls_sliptype,  :ls_srno,    ' ',       ' ', 			:ls_xplant,   :ls_div,
+				  :ls_costdiv, :ls_slno,  		:ls_itno,    ' ',     	:ls_itnm,   :ls_spec,     ' ',
+				  :ls_xunit,   :ls_cls,   		:ls_srce,  :ls_pdcd,  	:ls_xplan,  :ls_mlan,     ' ',
+				  ' ',          ' ',       	' ',       :ls_gubun,  	:ls_vsrno,  :ls_vndr,    :ls_vndnm,
+				  
+				  :ls_xpay,     :ls_otxcd,   	' ',        ' ',     	:ls_dept,     ' ',       :ls_xuse,
+				  ' ',          ' ',       	' ',        ' ',        ' ',       	  ' ',       ' ',
+					 0,          ' ',         	0,         :ls_frdt, 	:ls_todt,     ' ',  		 :ls_tdte4,
+				  
+				  :g_s_date,   :ls_tdte6,     0,         	0,          0,         		0,           0,
+				  :ld_tramt,    ' ',       	:ls_rtcom,  0,         	' ',       	  ' ',       :ls_rfcd,
+				  '1',            0,       	:ls_tfill,  0,   			:ls_dsag,  	  ' ',       :ls_pjtno,
+				  :ls_invstcd,
+				  ' ',          ' ',    :ls_empno,    :g_s_date,     ' ',       ' ',       :g_s_ipaddr,
+				  :g_s_macaddr)    //컬럼값이 컬럼보다길면 SQL오류발생
+	USING SQLCA;
+	if SQLCA.SQLCODE <> 0  OR SQLCA.SQLNROWS <= 0 Then
+		rs_msg = "[구분/전산번호 : " + ls_sliptype + "/" + ls_srno + "] " + ls_gubun +"(INV401) 입력중 오류!  [오류내용 : " + String(SQLCA.SQLERRTEXT) + " ]"
+		Return -1
+	end if	
+	
+	
+	//----------------- 계정: 10 ~ 30 가능케 처리.------------------------------------//	
+	if ls_cls > '30'  or ls_cls < '10' then  //2007.05.03허둥까먹고 다시 역질문함....
+		CONTINUE
+	end if
+	
+	// IS-수시불출,RS-반납처리  사작함.	
+	ls_vsrno = ''  //업체전산코드무조건 비워나..2007.05.04 허봉
+	
+	//2-1. RP일경우 : IS(수시불출 생성) 
+	//2-2. SS일경우 : RS(반납 생성)
+	//공통사항
+	if ls_cls = '10' or ls_cls = '20' or ls_cls= '24' or ls_cls = '40' or ls_cls = '50' then
+		ls_invstcd = ' '
+   else
+		ls_invstcd = 'U'
+   end if
+	
+   if ls_cls = '22' then	//시설자재 : 작명번호
+	   ls_orno = '  ' + ls_xuse
+   end if
+   //end : 공통사항
+	
+	IF ls_sliptype = "RP"  Then
+		ls_new_sliptype = "IS"
+	ELSE
+		ls_new_sliptype = "RS"
+	END IF
+	
+	//2.IS(불출), RS(반납)
+	INSERT INTO "PBINV"."INV401" 
+			  (  "COMLTD", 	"SLIPTYPE",   	"SRNO",   	"SRNO1",   	"SRNO2",   	"XPLANT",   "DIV",
+				  "COSTDIV", 	"SLNO",    		"ITNO",    	"RVNO",    	"ITNM",    	"SPEC",     "XTYPE",
+				  "XUNIT",   	"CLS",     		"SRCE",     "PDCD",    	"XPLAN",    "MLAN",     "RQNO",
+				  "NQC",     	"KBCD",    		"DUDT",     "PURNO",    "VSRNO",   	"VNDR",     "VNDNM",
+				  
+				  "XPAY",   	"OTXCD",    	"LCNO",     "LCDT",     "DEPT",    	"RTNGUB",   "XUSE",
+				  "RSVSRNO", 	"ORNO",   		"MCHNO",    "EXFR",    	"EXTO",     "RQDIV",   	"BLNO",
+				  "EXCH",    	"CURR",    		"FOBAMT",   "TDTE1",    "TDTE2",   	"TDTE3",    "TDTE4",
+				  
+				  "TDTE5",   	"TDTE6",   		"TQTY1",    "TQTY2",    "TQTY3",    "TQTY4",    "XCOST",
+				  "TRAMT",   	"TSHSL",    	"RTCOM",    "RTQTY",   	"SSSRNO",   "SSCOM",    "RFCD",
+				  "CHKCD",   	"TSAMT",    	"TFILL",    "TCTTL",    "DSAG",    	"MAKER",    "PJTNO",
+				  "INVSTCD",
+				  "INVEST",  	"EXTD",     	"INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",  	"IPADDR",
+				  "MACADDR" )
+	VALUES	( '01',    :ls_new_sliptype,  :ls_srno,    '99',      '99', 			:ls_xplant,   :ls_div,
+				  :ls_costdiv, :ls_slno,  		:ls_itno,    ' ',     	:ls_itnm,   :ls_spec,     ' ',
+				  :ls_xunit,   :ls_cls,   		:ls_srce,  :ls_pdcd,  	:ls_xplan,  :ls_mlan,     ' ',
+				  ' ',          ' ',       	' ',       :ls_gubun,  	:ls_vsrno,  :ls_vndr,    :ls_vndnm,
+				  
+				  :ls_xpay,     ' ',       	' ',        ' ',     	:ls_dept,     ' ',       :ls_xuse,
+				  ' ',         :ls_orno ,    	' ',        ' ',        ' ',       	  ' ',       ' ',
+					 0,          ' ',         	0,         :ls_frdt, 	:ls_todt,     ' ',   	 :ls_tdte4,
+				  
+				  :g_s_date,   :ls_tdte6,     0,         	0,          0,         		0,           0,
+				  :ld_tramt,    ' ',       	:ls_rtcom,  0,         	' ',       	  ' ',       :ls_rfcd,
+				  '1',            0,       	:ls_tfill,  0,   			:ls_dsag,  	  ' ',       :ls_pjtno,
+				  :ls_invstcd,
+				  ' ',          ' ',    :ls_empno,  :g_s_date,     ' ',       ' ',       :g_s_ipaddr,
+				  :g_s_macaddr)    //컬럼값이 컬럼보다길면 SQL오류발생
+	USING SQLCA;
+	if SQLCA.SQLCODE <> 0  OR SQLCA.SQLNROWS <= 0 Then
+		rs_msg = "[구분/전산번호 : " + ls_new_sliptype + "/" + ls_srno + "] " + ls_gubun +"(INV401) 입력중 오류!  [오류내용 : " + String(SQLCA.SQLERRTEXT) + " ]"
+		Return -1
+	end if	
+
+//	 test  후 주석해제 
+	//balance update (INV101)
+	//if ls_cls <> '40' and ls_cls <> '50' then
+	IF trim(ls_new_sliptype) = "IS" THEN //불출
+		UPDATE PBINV.INV101
+			SET INTAMT = INTAMT + :ld_tramt,
+				 OUTAMT = OUTAMT + :ld_tramt,  
+				 UPDTID =:g_s_empno, UPDTDT= :g_s_datetime, IPADDR= :g_s_ipaddr,  MACADDR= :g_s_macaddr   
+		WHERE COMLTD  = '01'
+		  AND XPLANT  = :ls_xplant
+		  AND DIV 	  = :ls_div
+		  AND ITNO    = :ls_itno
+		USING SQLCA;
+	ELSE	//반납(RS)
+		UPDATE PBINV.INV101
+			SET INTAMT = INTAMT - :ld_tramt,
+				 OUTAMT = OUTAMT - :ld_tramt,  
+				 UPDTID =:g_s_empno, UPDTDT= :g_s_datetime, IPADDR= :g_s_ipaddr,  MACADDR= :g_s_macaddr   
+		WHERE COMLTD  = '01'
+		  AND XPLANT  = :ls_xplant
+		  AND DIV 	  = :ls_div
+		  AND ITNO    = :ls_itno
+		USING SQLCA;
+	END IF
+	
+	if SQLCA.SQLCODE <> 0  OR SQLCA.SQLNROWS <= 0 Then
+		//rs_msg = "[구분/지역/공장/품번 : " + ls_new_sliptype + "/" + ls_xplant + "/" + ls_div + "/" + ls_itno + "] BALANCE(INV101) 수정중 오류!  [오류내용 : " + String(SQLCA.SQLERRTEXT) + " ]"
+		rs_msg = "[구분/전산번호 : " + ls_new_sliptype + "/" + ls_srno + "] BALANCE(INV101) 수정중 오류!  [오류내용 : " + String(SQLCA.SQLERRTEXT) + " ]"
+		Return -1
+	end if	
+	//end if
+	 
+	//재공balance
+	IF f_wip_main_update('01', ls_new_sliptype , ls_srno, '99', '99') < 0 Then 
+		rs_msg = "[구분/전산번호 : " + ls_new_sliptype + "/" + ls_srno + "] 재공 balance 수정중 오류 [호출함수 : f_wip_main_update() ])"
+		Return -1
+	End IF		
+
+Next
+
+Return 1		//성공
+
+/*
+ls_vsrno = as_vsrno
+
+if isnull(as_tfill) then
+	as_tfill = ''
+end if
+if isnull(as_rfcd) then
+	as_rfcd = ''
+end if
+
+insert into "PBINV"."INV401" 
+					  (  "COMLTD", "SLIPTYPE",   "SRNO",   "SRNO1",   "SRNO2",   "XPLANT",   "DIV",
+						  "COSTDIV",  "SLNO",    "ITNO",    "RVNO",    "ITNM",    "SPEC",     "XTYPE",
+						  "XUNIT",   "CLS",     "SRCE",     "PDCD",    "XPLAN",    "MLAN",     "RQNO",
+						  "NQC",     "KBCD",    "DUDT",     "PURNO",    "VSRNO",   "VNDR",     "VNDNM",
+						  
+						  "XPAY",   "OTXCD",    "LCNO",     "LCDT",     "DEPT",    "RTNGUB",    "XUSE",
+						  "RSVSRNO", "ORNO",   "MCHNO",     "EXFR",    "EXTO",     "RQDIV",    "BLNO",
+						  "EXCH",    "CURR",    "FOBAMT",   "TDTE1",    "TDTE2",   "TDTE3",     "TDTE4",
+						  
+						  "TDTE5",   "TDTE6",   "TQTY1",    "TQTY2",    "TQTY3",    "TQTY4",    "XCOST",
+						  "TRAMT",   "TSHSL",    "RTCOM",    "RTQTY",   "SSSRNO",   "SSCOM",    "RFCD",
+						  "CHKCD",   "TSAMT",    "TFILL",    "TCTTL",    "DSAG",    "MAKER",    "PJTNO",
+						  "INVSTCD",
+						  "INVEST",  "EXTD",     "INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",  "IPADDR",
+						  "MACADDR" )
+			VALUES	( '01',        :ls_sliptype,  :ls_srno,    ' ',        ' ', 	:as_xplant,   :as_div,
+						  :ls_costdiv, :ls_slno,  :as_itno,    ' ',     :ls_itnm,   :ls_spec,     ' ',
+						  :ls_xunit,   :ls_cls,   :ls_srce,  :ls_pdcd,  :ls_xplan,  :ls_mlan,     ' ',
+						  ' ',          ' ',       ' ',        '소급',  :ls_vsrno,  :ls_vndr,    :ls_vndnm,
+						  
+						  :ls_xpay,     ' ',       ' ',        ' ',     :ls_dept,     ' ',       :ls_xuse,
+						  ' ',          ' ',       ' ',        ' ',        ' ',       ' ',         ' ',
+							 0,          ' ',         0,        :as_frdt, :as_todt,    ' ',       :g_s_date,
+						  
+						  ' ',          ' ',         0,          0,          0,         0,           0,
+						  :ld_tramt,    ' ',       :as_rtcom,    0,         ' ',       ' ',       :as_rfcd,
+						  '1',            0,       :as_tfill,          0,   :as_dsag,  ' ',       :as_pjtno,
+						  :ls_invstcd,
+						  ' ',          ' ',    :g_s_empno,  :g_s_date,     ' ',       ' ',       :g_s_ipaddr,
+						  :g_s_macaddr)    //컬럼값이 컬럼보다길면 SQL오류발생
+			USING SQLCA;
+if sqlca.sqlcode <> 0 then
+	messagebox('확인','소급 입력중 오류 SQLCODE:' + string(sqlca.sqlcode))
+	return -2
+end if	
+
+	//50-04금액 관리안함		
+	if ls_cls > '30'  or ls_cls < '10' then  //2007.05.03허둥까먹고 다시 역질문함....
+		return 0
+	end if
+
+// IS-수시불출,RS-반납처리
+ls_vsrno = ''  //업체전산코드무조건 비워나..2007.05.04 허봉
+	 
+	if ls_sliptype = "RP"  then
+		  //ls_xuse:불출및반납용도, ls_invstcd:전표재고상태
+		  if ls_cls = '10' or ls_cls = '20' or ls_cls= '24' or ls_cls = '40' or ls_cls = '50' then
+				ls_invstcd = ' '
+		  else
+			   ls_invstcd = 'U'
+		  end if
+		  if ls_cls = '22' then
+			  ls_orno = '  ' + ls_xuse
+		  end if
+		  insert into "PBINV"."INV401" 
+					  (  "COMLTD", "SLIPTYPE",   "SRNO",   "SRNO1",   "SRNO2",   "XPLANT",   "DIV",
+						  "COSTDIV",  "SLNO",    "ITNO",    "RVNO",    "ITNM",    "SPEC",     "XTYPE",
+						  "XUNIT",   "CLS",     "SRCE",     "PDCD",    "XPLAN",    "MLAN",     "RQNO",
+						  "NQC",     "KBCD",    "DUDT",     "PURNO",    "VSRNO",   "VNDR",     "VNDNM",
+						  
+						  "XPAY",   "OTXCD",    "LCNO",     "LCDT",     "DEPT",    "RTNGUB",    "XUSE",
+						  "RSVSRNO", "ORNO",   "MCHNO",     "EXFR",    "EXTO",     "RQDIV",    "BLNO",
+						  "EXCH",    "CURR",    "FOBAMT",   "TDTE1",    "TDTE2",   "TDTE3",     "TDTE4",
+						  
+						  "TDTE5",   "TDTE6",   "TQTY1",    "TQTY2",    "TQTY3",    "TQTY4",    "XCOST",
+						  "TRAMT",   "TSHSL",    "RTCOM",    "RTQTY",   "SSSRNO",   "SSCOM",    "RFCD",
+						  "CHKCD",   "TSAMT",    "TFILL",    "TCTTL",    "DSAG",    "MAKER",    "PJTNO",
+						  "INVSTCD",
+						  "INVEST",  "EXTD",     "INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",  "IPADDR",
+						  "MACADDR" )
+			VALUES	( '01',         'IS',     :ls_srno,    '99',        '99', 	:as_xplant,   :as_div,
+						  :ls_costdiv, :ls_slno,  :as_itno,    ' ',     :ls_itnm,   :ls_spec,     ' ',
+						  :ls_xunit,   :ls_cls,   :ls_srce,  :ls_pdcd,  :ls_xplan,  :ls_mlan,     ' ',
+						  ' ',          ' ',       ' ',        '소급',     ' ',  :ls_vndr,    :ls_vndnm,
+						  
+						  :ls_xpay,     ' ',       ' ',        ' ',     :ls_dept,     ' ',       :ls_xuse,
+						  ' ',          :ls_orno,       ' ',        ' ',        ' ',       ' ',         ' ',
+							 0,          ' ',         0,        :as_frdt, :as_todt,    ' ',       :g_s_date,
+						  
+						  ' ',          ' ',         0,          0,          0,         0,           0,
+						  :ld_tramt,    ' ',       :as_rtcom,          0,        ' ',       ' ', :as_rfcd,
+						  '1',            0,       :as_tfill,    0,        :as_dsag,  ' ',       :as_pjtno,
+						  :ls_invstcd,
+						  ' ',          ' ',    :g_s_empno,  :g_s_date, ' ',       ' ',       :g_s_ipaddr,
+						  :g_s_macaddr)    //컬럼값이 컬럼보다길면 SQL오류발생
+			USING SQLCA;
+			//balance update
+			if ls_cls <> '40' and ls_cls <> '50' then
+				update  "PBINV"."INV101"        
+				set  
+				"INTAMT" = "INTAMT" + :ld_tramt,
+				"OUTAMT" = "OUTAMT" + :ld_tramt,  
+				"UPDTID"=:g_s_empno, "UPDTDT"= :g_s_datetime, "IPADDR"= :g_s_ipaddr,  "MACADDR"= :g_s_macaddr   
+				 WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+				( "PBINV"."INV101"."XPLANT" = :as_xplant )  AND  
+				( "PBINV"."INV101"."DIV" = :as_div )        AND  
+				( "PBINV"."INV101"."ITNO" = :as_itno )     
+				 using sqlca;
+		    end if
+//			 if ls_cls <> '40' and ls_cls <> '50' then
+//				 UPDATE "PBINV"."INV402"  
+//					sET "OUTAMT"  = "OUTAMT"  + :ld_tramt,   
+//						 "INTAMT"  = "INTAMT"  + :ld_tramt,
+//						 "UPDTID"=:g_s_empno, "UPDTDT"= :g_s_datetime, "IPADDR"= :g_s_ipaddr,  "MACADDR"= :g_s_macaddr   
+//					WHERE ( "PBINV"."INV402"."COMLTD" = '01' ) AND  
+//							( "PBINV"."INV402"."XPLANT" = :as_xplant ) AND  
+//							( "PBINV"."INV402"."DIV" = :as_div ) AND  
+//							( "PBINV"."INV402"."ITNO" = :as_itno ) AND  
+//							( "PBINV"."INV402"."XYEAR" = '200311' )   
+//							  ;
+//			 end if
+			//재공balance
+			//f_pur041_wipupdate(as_xplant, as_div, as_itno, ls_dept, ld_tramt)
+			f_wip_main_update('01','IS', ls_srno, '99', '99')
+	end if  
+	
+	if ls_sliptype = "SS" then
+		  //ls_xuse:불출및반납용도, ls_invstcd:전표재고상태
+		  if ls_cls = '10' or ls_cls = '20' or ls_cls= '24' or ls_cls = '40' or ls_cls = '50' then
+				ls_invstcd = ' '
+		  else
+			ls_invstcd = 'U'
+		  end if
+		  
+		  if ls_cls = '22' then
+			  ls_orno = '  ' + ls_xuse
+		  end if
+		  insert into "PBINV"."INV401" 
+					  (  "COMLTD", "SLIPTYPE",   "SRNO",   "SRNO1",   "SRNO2",   "XPLANT",   "DIV",
+						  "COSTDIV",  "SLNO",    "ITNO",    "RVNO",    "ITNM",    "SPEC",     "XTYPE",
+						  "XUNIT",   "CLS",     "SRCE",     "PDCD",    "XPLAN",    "MLAN",     "RQNO",
+						  "NQC",     "KBCD",    "DUDT",     "PURNO",    "VSRNO",   "VNDR",     "VNDNM",
+						  
+						  "XPAY",   "OTXCD",    "LCNO",     "LCDT",     "DEPT",    "RTNGUB",    "XUSE",
+						  "RSVSRNO", "ORNO",   "MCHNO",     "EXFR",    "EXTO",     "RQDIV",    "BLNO",
+						  "EXCH",    "CURR",    "FOBAMT",   "TDTE1",    "TDTE2",   "TDTE3",     "TDTE4",
+						  
+						  "TDTE5",   "TDTE6",   "TQTY1",    "TQTY2",    "TQTY3",    "TQTY4",    "XCOST",
+						  "TRAMT",   "TSHSL",    "RTCOM",    "RTQTY",   "SSSRNO",   "SSCOM",    "RFCD",
+						  "CHKCD",   "TSAMT",    "TFILL",    "TCTTL",    "DSAG",    "MAKER",    "PJTNO",
+						  "INVSTCD",
+						  "INVEST",  "EXTD",     "INPTID",   "INPTDT",   "UPDTID",   "UPDTDT",  "IPADDR",
+						  "MACADDR" )
+			VALUES	( '01',         'RS',     :ls_srno,    '99',        '99', 	 :as_xplant,   :as_div,
+						  :ls_costdiv, :ls_slno,  :as_itno,    ' ',     :ls_itnm,   :ls_spec,     ' ',
+						  :ls_xunit,   :ls_cls,   :ls_srce,  :ls_pdcd,  :ls_xplan,  :ls_mlan,     ' ',
+						  ' ',          ' ',       ' ',        '소급',     ' ',  :ls_vndr,    :ls_vndnm,
+						  
+						  :ls_xpay,     ' ',       ' ',        ' ',     :ls_dept,     ' ',       :ls_xuse,
+						  ' ',          :ls_orno,       ' ',        ' ',        ' ',       ' ',         ' ',
+							 0,          ' ',         0,       :as_frdt, :as_todt,     ' ',       :g_s_date,
+						  
+						  ' ',          ' ',         0,          0,          0,         0,           0,
+						  :ld_tramt,    ' ',      :as_rtcom,     0,        ' ',       ' ',       :as_rfcd,
+						  '1',            0,      :as_tfill,     0,        :as_dsag,  ' ',       :as_pjtno,
+						  :ls_invstcd,
+						  ' ',          ' ',    :g_s_empno, :g_s_date,    ' ',       ' ',       :g_s_ipaddr,
+						  :g_s_macaddr)
+			USING SQLCA;
+			//balance update
+			if ls_cls <> '40' and ls_cls <> '50' then
+				update  "PBINV"."INV101"        
+				set  
+				"INTAMT" = "INTAMT" - :ld_tramt,
+				"OUTAMT" = "OUTAMT" - :ld_tramt,  
+				"UPDTID"=:g_s_empno, "UPDTDT"= :g_s_datetime, "IPADDR"= :g_s_ipaddr,  "MACADDR"= :g_s_macaddr   
+				 WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+				( "PBINV"."INV101"."XPLANT" = :as_xplant )  AND  
+				( "PBINV"."INV101"."DIV" = :as_div )        AND  
+				( "PBINV"."INV101"."ITNO" = :as_itno )     
+				 using sqlca;
+			end if	
+
+			if sqlca.sqlcode <> 0 then
+				rollback using sqlca;
+				//	uo_status.st_message.text	=  f_message("U020")	// [저장 실패] 정보시스템팀으로 연락바랍니다. 						  
+				return -2
+			end if
+			
+			//재공balance
+         f_wip_main_update('01','RS', ls_srno, '99', '99')
+	end if  
+	
+
+return 0
+
+
+*/
+end function
+

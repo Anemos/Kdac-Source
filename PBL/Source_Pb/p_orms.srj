@@ -1,0 +1,37 @@
+$PBExportHeader$p_orms.srj
+$PBExportComments$Generated Application Executable Project
+EXE:c:\kdac\pbl\pb90\orms\orms.exe,,0,1,0
+CMP:0,0,0,2,0,0
+COM:FIT
+DES:KDAC Operation Rate Monitoring System
+CPY:FIT
+PRD:ORMS
+PVS:2,0,0,1
+PVN:2,0,0,1
+FVS:2,0,0,1
+FVN:2,0,0,1
+PBD:C:\kdac\PBL\PB90\orms\orms.pbl,,1
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,f_file_convert,f
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_rate_daily,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_manage_code_sub,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_select_cycle,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_search,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_update_target,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,orms,a
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_search_time,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_search_date,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_manage_model_capa,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_main,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_check_pass,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_error,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_manage_model_list,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_rate_daily,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,f_replace_string,f
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_manage_model,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_search_model,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,uo_today_over,u
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,w_manage,w
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_select_cycle,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_calendar,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_error,d
+OBJ:C:\kdac\PBL\PB90\orms\orms.pbl,d_manage_code_main,d

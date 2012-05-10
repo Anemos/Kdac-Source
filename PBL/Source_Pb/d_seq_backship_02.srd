@@ -1,0 +1,69 @@
+$PBExportHeader$d_seq_backship_02.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tseqmstitem_areacode dbname="TSeqMstItem.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tseqmstitem_divisioncode dbname="TSeqMstItem.DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=tseqmstitem_customeritemcode dbname="TSeqMstItem.CustomerItemCode" )
+ column=(type=char(6) updatewhereclause=yes name=tseqmstitem_customercode dbname="TSeqMstItem.CustomerCode" )
+ column=(type=char(30) updatewhereclause=yes name=tmstcustitem_custitemname dbname="TMSTCUSTITEM.CustItemName" )
+ column=(type=char(15) updatewhereclause=yes name=tseqmstitem_itemcode dbname="TSeqMstItem.Itemcode" )
+ column=(type=char(3) updatewhereclause=yes name=tseqmstitem_partid dbname="TSeqMstItem.PartId" )
+ column=(type=datetime updatewhereclause=yes name=tseqshipqa_oldshiptime dbname="TSEQSHIPQA.OLDSHIPTIME" )
+ column=(type=char(12) updatewhereclause=yes name=tseqshipqa_srno dbname="TSEQSHIPQA.SRNO" )
+ column=(type=char(50) updatewhereclause=yes name=tseqmstprod_productname dbname="TSeqMstProd.ProductName" )
+ column=(type=char(1) updatewhereclause=yes name=tmstcustitem_areacode dbname="TMSTCUSTITEM.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmstcustitem_divisioncode dbname="TMSTCUSTITEM.DivisionCode" )
+ column=(type=char(3) updatewhereclause=yes name=tseqshipqa_productgroup dbname="TSEQSHIPQA.PRODUCTGROUP" )
+ column=(type=char(20) updatewhereclause=yes name=tseqshipqa_newbarcode dbname="TSEQSHIPQA.NEWBARCODE" )
+ retrieve="  SELECT TSeqMstItem.AreaCode,   
+         TSeqMstItem.DivisionCode,   
+         TSeqMstItem.CustomerItemCode,   
+         TSeqMstItem.CustomerCode,   
+         TMSTCUSTITEM.CustItemName,   
+         TSeqMstItem.Itemcode,   
+         TSeqMstItem.PartId,   
+         TSEQSHIPQA.OLDSHIPTIME,   
+         TSEQSHIPQA.SRNO,   
+         TSeqMstProd.ProductName,   
+         TMSTCUSTITEM.AreaCode,   
+         TMSTCUSTITEM.DivisionCode,   
+         TSEQSHIPQA.PRODUCTGROUP,   
+         TSEQSHIPQA.NEWBARCODE  
+    FROM TMSTCUSTITEM,   
+         TSeqMstItem,   
+         TSEQSHIPQA,   
+         TSeqMstProd  
+   WHERE ( TMSTCUSTITEM.CustCode = TSeqMstItem.CustomerCode ) and  
+         ( TMSTCUSTITEM.CustItemCode = TSeqMstItem.CustomerItemCode ) and  
+         ( TSEQSHIPQA.ITEMCODE = TSeqMstItem.CustomerItemcode ) and  
+         ( TSEQSHIPQA.PARTID = TSeqMstItem.PartId ) and  
+         ( TSeqMstItem.AreaCode = TSeqMstProd.Areacode ) and  
+         ( TSeqMstItem.DivisionCode = TSeqMstProd.Divisioncode ) and  
+         ( TSeqMstItem.ProductGroup = TSeqMstProd.ProductGroup ) and  
+         ( ( TSeqMstItem.Seqgubun = 'FA' ) AND  
+         ( TSeqMstProd.SeqGubun = 'B' ) AND  
+         ( TSEQSHIPQA.OLDSHIPTIME between :a_fromdate and :a_todate ) AND  
+         ( TSeqMstItem.AreaCode = :a_areacode ) AND  
+         ( TSeqMstItem.DivisionCode like :a_divisioncode ) AND  
+         ( TSEQSHIPQA.OLDSTATUS = '2' ) AND  
+         ( TSeqMstItem.CustomerCode = :a_custcode ) )    
+" arguments=(("a_fromdate", datetime),("a_todate", datetime),("a_areacode", string),("a_divisioncode", string),("a_custcode", string)) )
+text(band=header alignment="2" text="´ëÃ¼ÆÇÁ¤½Ã°£" border="0" color="16777215" x="910" y="0" height="72" width="654" html.valueishtml="0"  name=tseqshipqa_oldshiptime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏÃë¼ÒÀÇ·Ú¹øÈ£" border="0" color="16777215" x="1573" y="0" height="72" width="535" html.valueishtml="0"  name=tseqshipqa_srno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BackshipÁö¿ª" border="0" color="16777215" x="2117" y="0" height="72" width="430" html.valueishtml="0"  name=tmstcustitem_areacode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Backship°øÀå" border="0" color="16777215" x="2555" y="0" height="72" width="411" html.valueishtml="0"  name=tmstcustitem_divisioncode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Äº°ID" border="0" color="16777215" x="489" y="0" height="72" width="411" html.valueishtml="0"  name=tseqmstitem_partid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³ Ç°¹ø" border="0" color="16777215" x="9" y="0" height="72" width="471" html.valueishtml="0"  name=tseqmstitem_customeritemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="910" y="0" height="72" width="654" format="[shortdate] [time]" html.valueishtml="0"  name=tseqshipqa_oldshiptime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="1573" y="0" height="72" width="535" format="[general]" html.valueishtml="0"  name=tseqshipqa_srno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2117" y="0" height="72" width="430" format="[general]" html.valueishtml="0"  name=tmstcustitem_areacode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="2555" y="0" height="72" width="411" format="[general]" html.valueishtml="0"  name=tmstcustitem_divisioncode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="489" y="0" height="72" width="411" format="[general]" html.valueishtml="0"  name=tseqmstitem_partid visible="1" edit.limit=3 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="471" format="[general]" html.valueishtml="0"  name=tseqmstitem_customeritemcode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

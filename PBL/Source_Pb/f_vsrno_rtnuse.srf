@@ -1,0 +1,51 @@
+$PBExportHeader$f_vsrno_rtnuse.srf
+$PBExportComments$품번/사급업체별 반출용도 Return
+global type f_vsrno_rtnuse from function_object
+end type
+
+forward prototypes
+global function string f_vsrno_rtnuse (string as_plant, string as_div, string as_itno, string as_vsrno, string as_tdte)
+end prototypes
+
+global function string f_vsrno_rtnuse (string as_plant, string as_div, string as_itno, string as_vsrno, string as_tdte);/*******************************************************************/
+/*** 사급업체  (INV108)에서   check                              ***/
+/*** Argument value arg_key : 지역/공장/품번/사급업체/불출일     ***/
+/*** RETURN  07 : 유상                                           ***/
+/***         04 : 무상                                           ***/
+/*******************************************************************/
+String ls_use
+
+SELECT "GUBUN"  INTO :ls_use 
+ FROM  "PBINV"."INV108"
+WHERE "PBINV"."INV108"."COMLTD" = '01'    AND "PBINV"."INV108"."XPLANT" = :as_plant AND
+      "PBINV"."INV108"."DIV"    = :as_div AND "PBINV"."INV108"."ITNO"   = :as_itno  AND
+		"PBINV"."INV108"."VSRNO"  = :as_vsrno AND "PBINV"."INV108"."STRDT" <= :as_tdte AND
+		"PBINV"."INV108"."STOP" <> 'S' using sqlca;
+
+IF sqlca.sqlcode <> 0 Then
+	
+	SELECT "GUBUN"  INTO :ls_use 
+	 FROM  "PBINV"."INV109"
+	WHERE "PBINV"."INV109"."COMLTD" = '01'      AND "PBINV"."INV109"."XPLANT" = :as_plant AND
+			"PBINV"."INV109"."DIV"    = :as_div   AND "PBINV"."INV109"."ITNO"   = :as_itno  AND
+		   "PBINV"."INV109"."VSRNO"  = :as_vsrno AND "PBINV"."INV109"."TODT" >= :as_tdte AND
+		   "PBINV"."INV109"."FRDT" <= :as_tdte   using sqlca;
+	
+	If sqlca.sqlcode <> 0 Then
+		Return '00'
+	Elseif ls_use = 'Y' Then 
+		Return '07'
+	Else
+		Return '04'
+	End If
+	
+ELSEIF Trim(ls_use) = 'Y' Then 
+	Return '07'
+Else
+	Return '04'
+End If
+
+
+
+end function
+

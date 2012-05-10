@@ -1,0 +1,23 @@
+$PBExportHeader$f_pur040_getcls.srf
+$PBExportComments$계정가져오기(INV101)
+global type f_pur040_getcls from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getcls (string as_itno)
+end prototypes
+
+global function string f_pur040_getcls (string as_itno);string ls_cls
+  SELECT MAX("PBINV"."INV101"."CLS"  )
+  INTO :ls_cls  
+  FROM "PBINV"."INV101"  
+  WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+         ( "PBINV"."INV101"."ITNO" = :as_itno )   ;
+			
+if isnull(ls_cls) then
+	ls_cls = ''
+end if
+return ls_cls
+
+end function
+

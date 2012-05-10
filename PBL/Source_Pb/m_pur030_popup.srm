@@ -1,0 +1,147 @@
+$PBExportHeader$m_pur030_popup.srm
+$PBExportComments$입력,수정,삭제용 팝업
+forward
+global type m_pur030_popup from menu
+end type
+type m_popup from menu within m_pur030_popup
+end type
+type m_add from menu within m_popup
+end type
+type m_del from menu within m_popup
+end type
+type m_-0 from menu within m_popup
+end type
+type m_sort from menu within m_popup
+end type
+type m_popup from menu within m_pur030_popup
+m_add m_add
+m_del m_del
+m_-0 m_-0
+m_sort m_sort
+end type
+global type m_pur030_popup from menu
+m_popup m_popup
+end type
+end forward
+
+global type m_pur030_popup from menu
+m_popup m_popup
+end type
+global m_pur030_popup m_pur030_popup
+
+on m_pur030_popup.create
+m_pur030_popup=this
+call super::create
+this.m_popup=create m_popup
+this.Item[UpperBound(this.Item)+1]=this.m_popup
+end on
+
+on m_pur030_popup.destroy
+call super::destroy
+destroy(this.m_popup)
+end on
+
+type m_popup from menu within m_pur030_popup
+m_add m_add
+m_del m_del
+m_-0 m_-0
+m_sort m_sort
+end type
+
+on m_popup.create
+call super::create
+this.text = "팝업"
+this.m_add=create m_add
+this.m_del=create m_del
+this.m_-0=create m_-0
+this.m_sort=create m_sort
+this.Item[UpperBound(this.Item)+1]=this.m_add
+this.Item[UpperBound(this.Item)+1]=this.m_del
+this.Item[UpperBound(this.Item)+1]=this.m_-0
+this.Item[UpperBound(this.Item)+1]=this.m_sort
+end on
+
+on m_popup.destroy
+call super::destroy
+destroy(this.m_add)
+destroy(this.m_del)
+destroy(this.m_-0)
+destroy(this.m_sort)
+end on
+
+type m_add from menu within m_popup
+end type
+
+on m_add.create
+call super::create
+this.text = "입력"
+end on
+
+on m_add.destroy
+call super::destroy
+end on
+
+event clicked;Window	lw_Sheet
+
+lw_Sheet = w_frame.GetActiveSheet( )
+
+lw_Sheet.Dynamic PostEvent( 'ue_insert' ) //Post event큐의 끝에 들어감. trigger는 즉시 실행
+end event
+
+type m_del from menu within m_popup
+end type
+
+on m_del.create
+call super::create
+this.text = "삭제"
+end on
+
+on m_del.destroy
+call super::destroy
+end on
+
+event clicked;Window	lw_Sheet
+
+lw_Sheet = w_frame.GetActiveSheet( )
+
+lw_Sheet.PostEvent( 'ue_delete' ) //Post event큐의 끝에 들어감. trigger는 즉시 실행
+end event
+
+type m_-0 from menu within m_popup
+end type
+
+on m_-0.create
+call super::create
+this.text = "-"
+end on
+
+on m_-0.destroy
+call super::destroy
+end on
+
+event clicked;Window	lw_Sheet
+
+lw_Sheet = w_frame.GetActiveSheet( )
+
+lw_Sheet.PostEvent( 'ue_insert' ) //Post event큐의 끝에 들어감. trigger는 즉시 실행
+end event
+
+type m_sort from menu within m_popup
+end type
+
+on m_sort.create
+call super::create
+this.text = "정렬"
+end on
+
+on m_sort.destroy
+call super::destroy
+end on
+
+event clicked;Window	lw_Sheet
+
+lw_Sheet = w_frame.GetActiveSheet( )
+
+lw_Sheet.PostEvent( 'ue_sort' ) //Post event큐의 끝에 들어감. trigger는 즉시 실행
+end event
+

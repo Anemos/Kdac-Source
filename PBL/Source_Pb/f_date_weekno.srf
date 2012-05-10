@@ -1,0 +1,25 @@
+$PBExportHeader$f_date_weekno.srf
+$PBExportComments$해당 날짜가 당해년도의 몇번째 주인지 리턴한다.(외부함수)
+global type f_date_weekno from function_object
+end type
+
+forward prototypes
+global function integer f_date_weekno (string as_date)
+end prototypes
+
+global function integer f_date_weekno (string as_date);//주 수 - 해당 날짜가 당해년도의 몇번째 주인가를 리턴한다.
+//
+//        Return : "1" - "52" 사이의 주 수.
+//
+//        Example :
+// 
+//                  sle_7.text = gf_date_weekno(sle_4.text) + "번째 주"
+//
+
+string ls_rtn
+
+ls_rtn =  ef_dateproc( as_date , " ", 0, 0, 5)
+
+return integer(ls_rtn)
+end function
+

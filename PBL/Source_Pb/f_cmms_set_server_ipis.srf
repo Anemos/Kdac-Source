@@ -1,0 +1,67 @@
+$PBExportHeader$f_cmms_set_server_ipis.srf
+$PBExportComments$공장별 Connect 하는 서버를 설정한다.(설비관련)
+global type f_cmms_set_server_ipis from function_object
+end type
+
+forward prototypes
+global function boolean f_cmms_set_server_ipis (string fs_areacode, string fs_divisioncode)
+end prototypes
+
+global function boolean f_cmms_set_server_ipis (string fs_areacode, string fs_divisioncode);Int			li_count
+String		ls_servername, ls_computer
+
+SetNull(ls_servername)
+
+Select	Top 1
+			ServerName,
+			Count(ServerName)
+Into		:ls_servername,
+			:li_count
+From		tmstdivision
+Where		AreaCode			Like :fs_areacode			And
+			DivisionCode	Like :fs_divisioncode
+Group By ServerName
+Using	sqlpis;
+
+If li_count > 0 And IsNull(ls_servername) = False And ls_servername <> '' And Len(ls_servername) > 10 Then
+	//
+Else
+	Return False
+End If
+
+//If gs_servername <> ls_servername Then
+	DisConnect Using SQLCMMS;	
+	SQLCMMS.DBMS       = ProfileString(gs_inifile,g_s_serverarea,"DBMS",	" ")
+	SQLCMMS.ServerName = ls_servername
+	SQLCMMS.Database   = ProfileString(gs_inifile,g_s_serverarea,"Database",  " ")
+	SQLCMMS.Database   = "CMMS"
+	SQLCMMS.LogID      = ProfileString(gs_inifile,g_s_serverarea,"LogId",			" ")
+	SQLCMMS.LogPass    = ProfileString(gs_inifile,g_s_serverarea,"LogPass",		" ")
+	SQLCMMS.DbParm     = "appname='IPIS for KDAC', host='" + ls_computer + "'"
+	SQLCMMS.AutoCommit = True
+	gs_appname	= ProfileString(gs_inifile,"PARAMETER","AppName",            " ")
+	Connect Using sqlcmms;
+	
+	If sqlcmms.sqlcode <> 0 then		
+		DisConnect Using sqlcmms;
+		SQLCMMS.DBMS       = ProfileString(gs_inifile,g_s_serverarea,"DBMS",			" ")
+		SQLCMMS.ServerName = gs_servername
+		SQLCMMS.Database   = ProfileString(gs_inifile,g_s_serverarea,"Database",  " ")
+		SQLCMMS.Database   = "CMMS"
+		SQLCMMS.LogID      = ProfileString(gs_inifile,g_s_serverarea,"LogId",			" ")
+		SQLCMMS.LogPass    = ProfileString(gs_inifile,g_s_serverarea,"LogPass",		" ")
+		SQLCMMS.DbParm     = "appname='IPIS for KDAC', host='" + ls_computer + "'"
+		SQLCMMS.AutoCommit = True
+		Connect Using sqlcmms;
+		if sqlcmms.sqlcode <> 0 then
+			MessageBox("확인","선택하신 공장을 관리하는 서버와 연결하는 도중 오류가 발생했습니다.")
+			Return False
+		end if
+	End If
+	gs_servername	= ls_servername
+// End If
+Return True
+
+
+end function
+

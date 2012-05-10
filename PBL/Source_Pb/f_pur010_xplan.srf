@@ -1,0 +1,76 @@
+$PBExportHeader$f_pur010_xplan.srf
+$PBExportComments$구매담당(구분,내자외자,품번)
+global type f_pur010_xplan from function_object
+end type
+
+forward prototypes
+global function string f_pur010_xplan (string ag_runparm, string ag_di, string ag_xplant, string ag_div, string ag_itno)
+end prototypes
+
+global function string f_pur010_xplan (string ag_runparm, string ag_di, string ag_xplant, string ag_div, string ag_itno);///////////////////////////////////////////////////////////
+// 구매담당자 구하기
+//    argument :   ag_gubun  
+//                               Balance ( A,B1,B2,B3 )
+//                               Master  ( C, D )
+//						 ag_di       - 내자외자 구분
+//						 ag_xplant   - 지역		
+//					    ag_div      - 공장
+//                 ag_itno     - 품번
+//
+/////////////////////////////////////////////////////////////
+
+String ls_xplan
+
+IF Upper(trim(ag_runparm)) = 'A' or Upper(trim(ag_runparm)) = 'B1' &
+   OR  Upper(trim(ag_runparm)) = 'B2' OR Upper(trim(ag_runparm)) = 'B3' Then 
+	// Balance DB
+	IF Upper(trim(ag_di)) = 'D' Then		//내자		
+		SELECT "PBINV"."INV101"."XPLAN"    
+	    INTO  :ls_xplan
+		FROM "PBINV"."INV101"  
+		WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+				( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+				( "PBINV"."INV101"."DIV" = :ag_div) AND  
+				( "PBINV"."INV101"."SRCE" <> '01' ) AND  
+				( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+	Else	//외자
+		SELECT "PBINV"."INV101"."XPLAN"    
+	    INTO  :ls_xplan
+		FROM "PBINV"."INV101"  
+		WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+				( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+				( "PBINV"."INV101"."DIV" = :ag_div) AND  
+				( "PBINV"."INV101"."SRCE" = '01' ) AND  
+				( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+	End IF	
+	IF f_spacechk(ls_xplan) = -1 Then
+		Return ' '	//Error
+	Else
+		Return ls_xplan
+	End IF
+	
+Else // Master DB (기타품목,업무지원품)
+	IF Upper(trim(ag_di)) = 'D' Then		//내자		
+		SELECT "PBINV"."INV002"."XPLAN" 
+		 INTO :ls_xplan
+		 FROM "PBINV"."INV002"
+		WHERE "PBINV"."INV002"."COMLTD" = '01' 
+	    and "PBINV"."INV002"."RROGB" = 'D' 		
+		 and "PBINV"."INV002"."ITNO" = :ag_itno  ;
+	Else
+		SELECT "PBINV"."INV002"."XPLAN" 
+		 INTO :ls_xplan
+		 FROM "PBINV"."INV002"
+		WHERE "PBINV"."INV002"."COMLTD" = '01' 
+	    and "PBINV"."INV002"."RROGB" = 'I' 		
+		 and "PBINV"."INV002"."ITNO" = :ag_itno  ;
+	End IF	
+	IF f_spacechk(ls_xplan) = -1 Then
+		Return ' '	//Error
+	Else
+		Return ls_xplan
+	End IF
+End IF
+	
+end function
+

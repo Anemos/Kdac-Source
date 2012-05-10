@@ -1,0 +1,28 @@
+$PBExportHeader$f_bom_get_itemasa.srf
+$PBExportComments$ITEMASA에서 품명,규격,단위등을 가져오는 함수
+global type f_bom_get_itemasa from function_object
+end type
+
+forward prototypes
+global function s_itemasa_data f_bom_get_itemasa (string a_itno)
+end prototypes
+
+global function s_itemasa_data f_bom_get_itemasa (string a_itno);string ls_spec
+s_itemasa_data eureka
+
+if f_spacechk(a_itno) = -1 then
+	eureka.itname = ''
+	eureka.itunit = ''
+	eureka.itspec = ''
+	return eureka
+end if
+
+select itnm,spec,xunit into :eureka.itname,:ls_spec,:eureka.itunit
+	from "PBINV"."INV002" a
+	where a.comltd = '01' and a.itno = :a_itno using sqlca;
+	
+eureka.itspec = mid(ls_spec,1,20)
+	
+return eureka
+end function
+

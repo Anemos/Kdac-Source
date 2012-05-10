@@ -1,0 +1,26 @@
+$PBExportHeader$f_get_acccodeedt.srf
+$PBExportComments$각종코드 editing 여부 return
+global type f_get_acccodeedt from function_object
+end type
+
+forward prototypes
+global function string f_get_acccodeedt (string a_s_gubun, string a_s_code)
+end prototypes
+
+global function string f_get_acccodeedt (string a_s_gubun, string a_s_code);int    l_n_rcnt
+
+SELECT count(*)  into :l_n_rcnt  
+ FROM  "PBCOMMON"."DAC002"
+WHERE  "PBCOMMON"."DAC002"."COMLTD"  = :g_s_company and
+		 "PBCOMMON"."DAC002"."COGUBUN" = :a_s_gubun   and
+		 "PBCOMMON"."DAC002"."COCODE"  = :a_s_code    using sqlca;
+if sqlca.sqlcode <> 0 or isnull(l_n_rcnt) then
+	return 'e'
+end if
+if l_n_rcnt < 1 then
+	return 'e'
+else
+	return ''
+end if
+end function
+

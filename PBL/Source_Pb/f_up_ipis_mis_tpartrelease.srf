@@ -1,0 +1,321 @@
+$PBExportHeader$f_up_ipis_mis_tpartrelease.srf
+$PBExportComments$여주인터페이스 불출정보
+global type f_up_ipis_mis_tpartrelease from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_tpartrelease (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_tpartrelease (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgcd, ls_xplant, ls_div, ls_itno, ls_tdte4, ls_id
+string ls_itnm, ls_spec, ls_xtype, ls_rvno
+String ls_cls, ls_srce, ls_costdiv, ls_xunit, ls_xplan, ls_pdcd, ls_mlan
+String ls_srno, ls_srno1, ls_srno2
+String ls_vsrno, ls_vndr, ls_vndnm, ls_dept, ls_Jscd
+String ls_key, ls_key2, ls_xuse, ls_slno 
+String ls_invstcd, ls_pjtno, ls_tidno, ls_kbcd, ls_oinvstcd
+dec{0} ld_amt, ld_ohamt, ld_outamt
+dec{1} ld_qty, ld_outqty, ld_uqty, ld_rqty, ld_sqty, ld_oqty
+dec{2} ld_cost
+dec{4} ld_convqty
+integer li_cnt, li_index, li_Retcnt
+Boolean lb_trachk = False
+
+str_ipis_server lstr_ipis
+
+//***AS400 접속여부 체크, 저녁8-아침8 인터페이스 저장
+li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')
+
+If li_index = -1 then
+	ag_message = "A/S400, INT 서버 연결에 실패하였습니다."
+	return -1
+End if
+
+lstr_ipis = ag_str_ipis[li_index]
+
+//*** 업무로직 적용
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_chgcd   = trim(ag_dwo.getitemstring(li_cnt,"Gubun"))
+	ls_xplant  = trim(ag_dwo.getitemstring(li_cnt,"Areacode"))
+	ls_div     = trim(ag_dwo.getitemstring(li_cnt,"Divisioncode"))
+	ls_itno    = trim(ag_dwo.getitemstring(li_cnt,"Itemcode"))
+	ls_dept    = trim(ag_dwo.getitemstring(li_cnt,"Usedept"))
+	ls_xuse    = trim(ag_dwo.getitemstring(li_cnt,"Usage"))
+	ls_tdte4   = trim(ag_dwo.getitemstring(li_cnt,"Releasedate"))
+	ls_invstcd = trim(ag_dwo.getitemstring(li_cnt,"Invstatus"))
+	ld_qty     = ag_dwo.getitemnumber(li_cnt,"ReleaseQty")
+	ls_pjtno   = trim(ag_dwo.getitemstring(li_cnt,"Projectno"))
+	ls_vsrno   = trim(ag_dwo.getitemstring(li_cnt,"Suppliercode"))
+	ls_tidno   = trim(ag_dwo.getitemstring(li_cnt,"Tidno"))
+	ls_id      = trim(ag_dwo.getitemstring(li_cnt,"LastEmp"))
+	
+	ls_tidno   = Mid(ls_tidno,4,12)
+	
+	if f_yeo_spacechk(ls_dept) = -1    then ls_dept = ''
+	if f_yeo_spacechk(ls_xuse) = -1    then ls_xuse = ''
+	if f_yeo_spacechk(ls_tdte4) = -1   then ls_tdte4 = ''
+	if f_yeo_spacechk(ls_invstcd) = -1 then ls_invstcd = ''
+	if f_yeo_spacechk(ls_pjtno) = -1   then ls_pjtno = ''
+	if f_yeo_spacechk(ls_vsrno) = -1   then ls_vsrno = ''
+	if f_yeo_spacechk(ls_tidno) = -1   then ls_tidno = ''
+	if f_yeo_spacechk(ls_id) = -1      then ls_id = ''	
+	
+	
+	SELECT A."XPLAN", A."MLAN",   A."COSTAV", A."PDCD",  A."XUNIT",  B."SPEC",   B."XTYPE", B."ITNM", B."RVNO", 
+		    A."OHAMT", A."OUTQTY", A."OUTAMT",A."OHUQTY", A."OHRQTY", A."OHSQTY", A."SRCE",  A."CLS",  A."COSTDIV", A."KBCD", A."CONVQTY"
+		INTO :ls_xplan,  :ls_mlan,   :ld_cost,  :ls_pdcd, :ls_xunit, :ls_spec, :ls_xtype, :ls_itnm, :ls_rvno,
+			  :ld_ohamt,  :ld_outqty, :ld_outamt,:ld_uqty, :ld_rqty, :ld_sqty, :ls_srce, :ls_cls, :ls_costdiv, :ls_kbcd, :ld_convqty
+	FROM "PBINV"."INV101" A, "PBINV"."INV002" B
+	WHERE A."COMLTD" = B."COMLTD"   AND A."ITNO"   = B."ITNO" AND A."COMLTD" = '01' AND A."XPLANT" = :ls_xplant AND A."DIV"  = :ls_div AND 
+			A."ITNO"   = :ls_itno     Using lstr_ipis.t_sqlpis;
+	
+	If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
+      ag_message = "품목상세정보 미존재"
+		return -1                                                           
+   End if
+	
+	//*** 라인 OR 반출 업체 check	
+	If ls_xuse = '04' or ls_xuse ='07' then
+		if f_spacechk(ls_vsrno) = -1 Or Mid(ls_vsrno,1,1) <> 'D' then
+			ag_message = "반출시 업체코드가 넘겨줘야 함."
+			return -1
+		End if
+		
+		//*** 업체 Master 등록여부 Check
+		SELECT Count(*)  
+			INTO :li_Retcnt
+		FROM PBPUR.PUR101                                                             
+		WHERE COMLTD = '01' AND VSRNO = :ls_vsrno AND SCGUBUN = 'S' AND DIGUBUN ='D' Using lstr_ipis.t_sqlpis;
+		
+		If li_Retcnt <> 1 then                                                          
+			ag_message = "반출업체 Master정보 미존재"
+			return -1                                                           
+		End if
+		
+		ls_Vndr  = f_Yeo_Vndr_Pur( ls_vsrno, 'S', 'D' )
+		ls_Vndnm = f_Yeo_Vdnm_Pur( ls_vsrno, 'S', 'D' )
+	else		
+		ls_vndr  = ''
+		ls_vndnm = ''
+	End if 
+	
+	//*** 결산년월 Check
+	If ls_xuse = '07' then
+		ls_Jscd = f_yeo_Vndr_Jscd( 'Y', ls_vsrno )
+		
+		SELECT Count("ITNO")	INTO :li_Retcnt
+		  FROM "PBINV"."INV304"  
+		WHERE "COMLTD" = '01'    AND "XPLANT" = :ls_xplant AND
+				"DIV"    = :ls_div AND "ITNO"   = :ls_itno   Using lstr_ipis.t_sqlpis;
+					
+		If li_Retcnt < 1 Then          
+			ag_message = "유상사급단가 미존재"
+			Return -1
+		End If		
+	else
+		ls_jscd = ''
+	End if
+	
+	If f_Get_Ctlchk( ls_tdte4, ls_Jscd ) = -1 Then
+		ag_message = "마감이후 작업 불가"
+		return -1	
+	End If
+	
+	choose case ls_chgcd
+		case 'C'			
+			If ls_xuse <> '01' Then
+				If ls_dept <> "" Then
+					If f_yeo_dept_use(ls_dept, ls_tdte4) = -1 Then 
+						ag_message = "불출부서 : 현재사용중인 부서가 아님"
+						return -1
+					End If
+				End If
+			End If
+			
+			// Project No : Not Spaces 일때 사용부서가 연구소 & 용도는 기타불출
+			If ls_pjtno <> ""  Then
+				If f_yeo_dept_pjtno(ls_dept) = -1 Then
+					ag_message = "Project No : Not Spaces 일때 사용부서가 연구소여야 함 " 
+					return -1
+				End If
+				If ls_xuse <> '06' Then
+					ag_message = "Project No : Not Spaces 일때 불출용도는 기타불출이여야 함"
+					return -1
+				End If
+			End If
+			
+			 // 전산번호 부여
+			ls_key  = 'IS' + ls_xplant + ls_div + ls_cls + mid(g_s_date,4,3)
+			ls_srno = f_yeo_get_ctlno(ls_key, g_s_date)
+			
+			ls_srno1 = ls_xplant + ls_div
+			ls_srno2 = ls_cls
+			
+			// 전표번호 부여
+			ls_key2 = 'YX00' + mid(g_s_date,4,3)
+			ls_slno = f_yeo_get_slno(ls_key2, g_s_date)
+			
+			// 불출부서 : 원재료 정상불출시 부서코드 spaces
+			If ( (ls_xuse = '01' or ls_xuse = '04' or ls_xuse = '07') and ( ls_cls = '10' or ls_cls = '50' ) ) Then
+				ls_dept = ''
+			end if			
+			
+			If (ls_cls = '10' and ls_srce <> '05') or ls_cls = '20' or ls_cls = '24'  then
+				If ld_uqty + ld_rqty + ld_sqty = ld_qty Then                             
+				 ld_amt = ld_ohamt                                                      
+				Else                                                                           
+				 ld_amt = Truncate(ld_cost * ld_qty, 0)                                
+				End if
+			Else
+				ld_amt = 0
+			End if
+			
+			if ls_srce <> '03' then
+				// 현재고계산
+				choose case ls_invstcd
+					case 'U'
+						ld_uqty = ld_uqty - ld_qty
+					case 'R'
+						ld_uqty = ld_rqty - ld_qty
+					case 'S'
+						ld_uqty = ld_sqty - ld_qty
+					Case else
+						ld_uqty = ld_uqty - ld_qty
+				End choose
+				
+				if ld_uqty < 0 Or ld_rqty < 0 Or ld_sqty < 0 then
+					ag_message = "현재고 (-) 발생 " 
+					return -1
+				End if
+				
+				//*** 품목상세정보 ***			
+				UPDATE PBINV.INV101                                                       
+						SET OUTQTY = OUTQTY + :ld_qty,                                             
+							 OUTAMT = OUTAMT + :ld_amt,                                             
+							 OHUQTY = :ld_uqty,
+							 OHRQTY = :ld_rqty,
+							 OHSQTY = :ld_sqty,					 
+							 OHAMT  = OHAMT  - :ld_amt,                                                                                              
+							 ILUDT  = :g_s_date,
+							 UPDTID = :ls_id,                                                       
+							 UPDTDT = :g_s_date                                                      
+				WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND DIV = :ls_div AND ITNO = :ls_itno Using lstr_ipis.t_sqlpis;	
+		
+				
+				if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+					ag_message = "품목상세정보 업데이트 error invoke"
+					f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tpartrelease',&
+					lstr_ipis.t_sqlpis.sqlerrtext,'품목상세정보 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+			End if
+			
+			//*** 트렌스(입,불출) 정보 생성 ***
+			insert into "PBINV"."INV401"    
+					 ( "COMLTD",      "SLIPTYPE",    "SRNO",        "SRNO1",       "SRNO2",      "XPLANT",  
+						"DIV",         "COSTDIV",     "SLNO",        "ITNO",        "RVNO",       "ITNM",   
+						"SPEC",        "XTYPE",       "XUNIT",       "CLS",         "SRCE",       "PDCD",
+						"XPLAN",       "MLAN",        "RQNO",        "NQC",         "KBCD",       "DUDT",       "PURNO",   
+						"VSRNO",       "VNDR",        "VNDNM",       "XPAY",        "OTXCD",      "LCNO",
+						"LCDT",        "DEPT",        "RTNGUB",      "XUSE",        "RSVSRNO",    "ORNO",   
+						"MCHNO",       "EXFR",        "EXTO",        "RQDIV",       "BLNO",       "EXCH",
+						"CURR",        "FOBAMT",      "TDTE1",       "TDTE2",       "TDTE3",      "TDTE4",
+						"TDTE5",       "TDTE6",       "TQTY1",       "TQTY2",       "TQTY3",      "TQTY4",
+						"XCOST",       "TRAMT",       "TSHSL",       "RTCOM",       "RTQTY",      "SSSRNO",
+						"SSCOM",       "RFCD",        "CHKCD",       "TSAMT",       "TFILL",      "TCTTL",      "DSAG",
+						"MAKER",       "PJTNO",       "INVSTCD",     "INVEST",      "EXTD",       "INPTID",     "INPTDT",
+						"UPDTID",      "UPDTDT",      "IPADDR",      "MACADDR" )  
+			VALUES ( '01',          'IS',          :ls_srno,      :ls_srno1,     :ls_srno2,    :ls_xplant, 
+						:ls_div,       :ls_costdiv,   :ls_slno,      :ls_itno,      :ls_rvno,     :ls_itnm,
+						:ls_spec,      :ls_xtype,     :ls_xunit,     :ls_cls,       :ls_srce,     :ls_pdcd, 
+						:ls_xplan,     :ls_mlan,      ' ',           ' ',           :ls_kbcd,     ' ',            ' ',   
+						:ls_vsrno,     :ls_vndr,      :ls_vndnm,     ' ',           ' ',          ' ',
+						' ',           :ls_dept,      ' ',           :ls_xuse,      ' ',          ' ',   
+						' ',           ' ',           ' ',           ' ',           ' ',          0,
+						' ',           0,             ' ',           ' ',           ' ',          :ls_tdte4,
+						' ',           ' ',           0,             0,             0,            :ld_qty,
+						:ld_cost,      :ld_amt,       ' ',           ' ',           0,            ' ',
+						' ',           ' ',           ' ',           0,             :ls_tidno,    0,            ' ',
+						' ',           :ls_pjtno,     :ls_invstcd,   ' ',           ' ',          :ls_id,  :g_s_date,
+						:ls_id,        :g_s_datetime, ' ',   ' '  ) Using lstr_ipis.t_sqlpis;	
+						  
+			if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+			  ag_message = "Trans 데이터(불출) 생성에 실패하였습니다."
+			  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tpartrelease',&
+			  lstr_ipis.t_sqlpis.sqlerrtext,'Trans 데이터(불출) 생성에 실패', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			  return -1
+			 end if			 
+			 
+		case 'D'
+			//*** 자재불출정보 삭제 ***
+			 SELECT SRNO, SRNO1, SRNO2, TQTY4, TRAMT, INVSTCD
+			  INTO :ls_srno, :ls_srno1, :ls_srno2, :ld_oqty, :ld_amt, :ls_oinvstcd
+		    FROM PBINV.INV401
+		    WHERE COMLTD ='01'       AND SLIPTYPE = 'IS'        AND XPLANT = :ls_xplant AND DIV= :ls_div  AND 
+			      ITNO   = :ls_itno   AND TFILL  = :ls_tidno     AND TDTE4  = :ls_tdte4 Using lstr_ipis.t_sqlpis; 
+		  
+		    If lstr_ipis.t_sqlpis.sqlcode <> 0 Then
+			   ag_message = "불출정보 수정데이타 조회 오류"
+			   return -1
+		    End if
+			 
+			 if ld_qty <> ld_oqty Or ls_invstcd <> ls_oinvstcd then
+				ag_message = "삭제할 정보 불일치"
+			   return -1
+			 End if
+	  
+			 Choose Case ls_invstcd
+				 Case 'U'
+					ld_uqty = ld_uqty + ld_qty
+				 Case 'R'
+					ld_rqty = ld_rqty + ld_qty
+				 Case 'S'
+					ld_sqty = ld_sqty + ld_qty
+				 Case else
+					ld_uqty = ld_uqty + ld_qty
+			  End Choose
+			  
+			  if ls_srce <> '03' then
+				  UPDATE PBINV.INV101                                                       
+					SET OUTQTY = OUTQTY - :ld_qty,                                             
+						 OUTAMT = OUTAMT - :ld_amt,                                             
+						 OHUQTY = :ld_uqty,
+						 OHRQTY = :ld_rqty,
+						 OHSQTY = :ld_sqty,					 
+						 OHAMT  = OHAMT  + :ld_amt,                                                                                              
+						 ILUDT  = :g_s_date,                                                     
+						 UPDTID = :ls_id,                                                       
+						 UPDTDT = :g_s_date                                                      
+					WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND DIV = :ls_div AND ITNO = :ls_itno Using lstr_ipis.t_sqlpis;					
+				
+					if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+						ag_message = "Balance DB 업데이트 error invoke"
+						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tpartrelease',&
+						lstr_ipis.t_sqlpis.sqlerrtext,'Balance DB 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
+						return -1
+					end if
+					
+				End if
+					
+				DELETE FROM PBINV.INV401
+				WHERE	COMLTD	= '01'      AND SLIPTYPE ='IS'     AND SRNO = :ls_srno AND	
+						SRNO1		= :ls_srno1 AND SRNO2 = :ls_srno2
+				using lstr_ipis.t_sqlpis; 
+				
+				if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+					ag_message = "불출정보 삭제에 실패하였습니다."
+					f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tpartrelease',&
+						lstr_ipis.t_sqlpis.sqlerrtext,'불출정보 정보 삭제 에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if			
+				
+		case else
+			
+			  ag_message = "데이타구분 CUD에 해당하지 않습니다."
+			  return -1
+	end choose
+next
+
+return 0
+end function
+

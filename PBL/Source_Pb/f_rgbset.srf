@@ -1,0 +1,46 @@
+$PBExportHeader$f_rgbset.srf
+$PBExportComments$Error Checking
+global type f_rgbset from function_object
+end type
+
+forward prototypes
+global subroutine f_rgbset (string ag_s_column, integer ag_n_number, integer ag_n_color, datawindow ag_dw)
+end prototypes
+
+global subroutine f_rgbset (string ag_s_column, integer ag_n_number, integer ag_n_color, datawindow ag_dw);////////////////////////////////////////////////////////////////////////////////////////////////
+//	Error Checking 함수
+//
+//	Argument	=> ag_s_column = column 명, 												--> string
+//             ag_n_number = column 순서, 											--> integer
+//  				ag_n_color  = column 색상( 1 = sky, 2 = White , 3 = gray )  --> integer
+//					datawindow ag_dw_1														--> DataWindow
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+string l_s_command
+long 	 l_l_color1 = 15780518 ,l_l_color2 = 16777215 ,l_l_color3 = 12632256  ,l_l_color4 = 65535		,l_l_color5 = 15793151, l_l_color6 = 12639424 
+//	                 sky                     white                  gray                   yellow					 	cream      mint
+Long  l_l_color7 = 134217747	//연한 하늘
+//연한 하늘색
+//This.Modify("gr_1.backcolor=134217747")	//연한 하늘색.
+ag_dw.setredraw(False)
+IF ag_n_color 	= 	1	then   
+	//sky
+	l_s_command	=	ag_s_column + ".Background.Color = '" + String(l_l_color1) &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," & 
+					+ 	" rgb(255,255,0), rgb(160,200,239))'"
+ElseIF ag_n_color 	= 	2	then  
+	//white
+	l_s_command	=	ag_s_column + ".Background.Color = '" + String(l_l_color2) &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," &
+					+  " rgb(255,255,0), rgb(255,255,255))'"
+Else 
+	//gray									
+	l_s_command	=	ag_s_column + ".Background.Color = '" + String(l_l_color3) &            
+					+	"~tIf(mid(err_chk," + string(ag_n_number) + ", 1) =" + "~~'1~~'," &
+					+  " rgb(255,255,0), rgb(192,192,192))'"					
+End IF
+
+ag_dw.Modify(l_s_command)
+ag_dw.setredraw(True)
+end subroutine
+

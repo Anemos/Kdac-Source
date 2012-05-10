@@ -1,0 +1,72 @@
+$PBExportHeader$d_wip053u_02_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=wip006_wfitno dbname="WIP006.WFITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="WIP006.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="WIP006.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="WIP006.SRCE" )
+ column=(type=char(4) updatewhereclause=yes name=wip006_wfdept dbname="WIP006.WFDEPT" )
+ column=(type=char(1) updatewhereclause=yes name=wip006_wfstscd dbname="WIP006.WFSTSCD" )
+ column=(type=decimal(4) updatewhereclause=yes name=ohqt dbname="OHQT" )
+ column=(type=decimal(4) updatewhereclause=yes name=phqt dbname="PHQT" )
+ column=(type=char(15) updatewhereclause=yes name=wip012_wfpitno dbname="WIP006.WFPITNO" )
+ column=(type=char(2) updatewhereclause=yes name=wip012_wfpcls dbname="WIP006.WFPCLS" )
+ column=(type=char(2) updatewhereclause=yes name=wip012_wfpsrc dbname="WIP006.WFPSRC" )
+ column=(type=decimal(3) updatewhereclause=yes name=wip012_wfqty1 dbname="WIP006.WFQTY1" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip012_wfpqty dbname="WIP006.WFPQTY" )
+ column=(type=decimal(4) updatewhereclause=yes name=wip012_wfcqty dbname="WIP006.WFCQTY" )
+ retrieve="SELECT A.WFITNO,C.ITNM,B.CLS,B.SRCE,A.WFDEPT,A.WFSTSCD,
+	DECIMAL(A.WFOHQT / B.CONVQTY,15,4) AS OHQT,
+	DECIMAL(A.WFPHQT / B.CONVQTY,15,4) AS PHQT,
+	D.WFPITNO,D.WFPCLS,D.WFPSRC,D.WFQTY1,D.WFPQTY,D.WFCQTY
+FROM PBWIP.WIP006 A INNER JOIN PBINV.INV101 B
+	ON A.WFCMCD = B.COMLTD AND A.WFPLANT = B.XPLANT AND
+		A.WFDVSN = B.DIV AND A.WFITNO = B.ITNO
+	INNER JOIN PBINV.INV002 C
+	ON B.COMLTD = C.COMLTD AND B.ITNO = C.ITNO
+	LEFT OUTER JOIN PBWIP.WIP012 D
+	ON A.WFYEAR = D.WFYEAR AND A.WFMONTH = D.WFMONTH AND
+		A.WFCMCD = D.WFCMCD AND A.WFPLANT = D.WFPLANT AND
+		A.WFDVSN = D.WFDVSN AND A.WFITNO = D.WFCITNO AND A.WFDEPT = '9999'
+WHERE A.WFYEAR = :ag_year AND A.WFMONTH = :ag_month AND A.WFCMCD = :ag_cmcd AND
+	A.WFPLANT = :ag_plant AND A.WFDVSN = :ag_dvsn AND
+	( A.WFOHQT <> 0 OR A.WFPHQT <> 0 )" arguments=(("ag_year", string),("ag_month", string),("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string))  sort="wip006_wfitno A wip006_wfdept D wip006_wfstscd A " )
+text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="1422" y="8" height="60" width="256" html.valueishtml="0"  name=wip006_wfdept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="1687" y="8" height="60" width="192" html.valueishtml="0"  name=wip006_wfstscd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ý¼º¼ö·®" border="0" color="16777215" x="1888" y="8" height="60" width="443" html.valueishtml="0"  name=ohqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1422" y="4" height="64" width="256" format="[general]" html.valueishtml="0"  name=wip006_wfdept  tag="Á¶ÄÚµå" visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1687" y="4" height="64" width="192" format="[general]" html.valueishtml="0"  name=wip006_wfstscd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="1888" y="4" height="64" width="443" format="[general]" html.valueishtml="0"  name=ohqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="9" y="8" height="60" width="475" html.valueishtml="0"  name=wip006_wfitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="64" width="475" format="[general]" html.valueishtml="0"  name=wip006_wfitno  tag="Ç°¹ø" visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="494" y="8" height="60" width="549" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="1051" y="8" height="60" width="169" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="1230" y="8" height="60" width="206" html.valueishtml="0"  name=inv101_srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=0 border="0" color="33554432" x="498" y="4" height="64" width="544" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=0 border="0" color="33554432" x="1056" y="4" height="64" width="165" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=0 border="0" color="33554432" x="1234" y="4" height="64" width="201" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="2341" y="4" height="64" width="480" format="[general]" html.valueishtml="0"  name=phqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=0 border="0" color="33554432" x="2834" y="4" height="64" width="384" html.valueishtml="0"  name=wip012_wfpitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=0 border="0" color="33554432" x="3634" y="4" height="64" width="219" html.valueishtml="0"  name=wip012_wfqty1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=0 border="0" color="33554432" x="3867" y="4" height="64" width="311" html.valueishtml="0"  name=wip012_wfpqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=0 border="0" color="33554432" x="4192" y="4" height="64" width="329" html.valueishtml="0"  name=wip012_wfcqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=0 border="0" color="33554432" x="3232" y="4" height="64" width="187" html.valueishtml="0"  name=wip012_wfpcls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=0 border="0" color="33554432" x="3433" y="4" height="64" width="187" html.valueishtml="0"  name=wip012_wfpsrc visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="½Ç»ç¼ö·®" border="0" color="16777215" x="2341" y="8" height="60" width="480" html.valueishtml="0"  name=phqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðÇ°¹ø" border="0" color="16777215" x="2830" y="8" height="60" width="389" html.valueishtml="0"  name=wip012_wfpitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ð°èÁ¤" border="0" color="16777215" x="3227" y="8" height="60" width="192" html.valueishtml="0"  name=wip012_wfpcls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ð±¸ÀÔ" border="0" color="16777215" x="3429" y="8" height="60" width="192" html.valueishtml="0"  name=wip012_wfpsrc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ø´ÜÀ§" border="0" color="16777215" x="3630" y="8" height="60" width="224" html.valueishtml="0"  name=wip012_wfqty1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ð¼ö·®" border="0" color="16777215" x="3863" y="8" height="60" width="315" html.valueishtml="0"  name=wip012_wfpqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚ¼ö·®" border="0" color="16777215" x="4187" y="8" height="60" width="334" html.valueishtml="0"  name=wip012_wfcqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+
+sparse(names="wip006_wfitno	inv002_itnm	inv101_cls	inv101_srce	wip006_wfdept	wip006_wfstscd	ohqt	phqt")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

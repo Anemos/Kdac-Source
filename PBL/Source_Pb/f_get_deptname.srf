@@ -1,0 +1,66 @@
+$PBExportHeader$f_get_deptname.srf
+$PBExportComments$ºÎ¼­¸í return
+global type f_get_deptname from function_object
+end type
+
+forward prototypes
+global function string f_get_deptname (string a_s_dept, string a_s_gubun)
+end prototypes
+
+global function string f_get_deptname (string a_s_dept, string a_s_gubun);string l_s_dnm, l_s_bnm, l_s_gnm, l_s_jnm, l_s_cdnm, l_s_fnm, l_s_fnmeis, l_s_depti, l_s_div, l_s_div5
+  
+SELECT 
+"PBCOMMON"."DAC001"."DFNAME1" ,
+"PBCOMMON"."DAC001"."DFNAME2" , 
+"PBCOMMON"."DAC001"."DFNAME3" ,
+"PBCOMMON"."DAC001"."DFNAME4" , 
+"PBCOMMON"."DAC001"."DNAME", 
+"PBCOMMON"."DAC001"."DEISNAME3", 
+"PBCOMMON"."DAC001"."DINTCODE1",
+"PBCOMMON"."DAC001"."DDIV3", 
+"PBCOMMON"."DAC001"."DLEVEL1"
+    INTO :l_s_dnm, :l_s_bnm, :l_s_gnm, :l_s_jnm , :l_s_fnm, :l_s_fnmeis, :l_s_depti, :l_s_div, :l_s_div5
+    FROM "PBCOMMON"."DAC001"  
+   WHERE "PBCOMMON"."DAC001"."DCODE" = :a_s_dept
+	 AND "PBCOMMON"."DAC001"."DUSE" = ''
+	 AND "PBCOMMON"."DAC001"."DTODT" = 0
+	 AND "PBCOMMON"."DAC001"."DACTTODT" = 0
+ using sqlcc;
+ 
+if sqlca.sqlcode <> 0 then
+	l_s_dnm = ''
+	l_s_bnm = ''
+	l_s_gnm = ''
+	l_s_jnm = ''
+	l_s_fnm = ''
+	l_s_fnmeis = ''
+	l_s_depti = ''
+end if
+
+if a_s_gubun = '1' then
+   l_s_cdnm = l_s_dnm
+elseif a_s_gubun = '2' then
+	l_s_cdnm = l_s_bnm
+elseif a_s_gubun = '3' then
+	l_s_cdnm = l_s_gnm
+elseif a_s_gubun = '4' then
+	l_s_cdnm = l_s_jnm
+elseif a_s_gubun = 'A' then
+	l_s_cdnm = l_s_fnm
+elseif a_s_gubun = 'B' then
+	l_s_cdnm = l_s_fnmeis
+elseif a_s_gubun = 'C' then
+	l_s_cdnm = l_s_depti
+elseif a_s_gubun = 'D' then
+	l_s_cdnm = l_s_div
+elseif a_s_gubun = 'E' then
+	l_s_cdnm = l_s_div5
+end if
+
+if f_spacechk(l_s_cdnm) = -1 then
+	l_s_cdnm = ''
+End if
+
+return l_s_cdnm
+end function
+

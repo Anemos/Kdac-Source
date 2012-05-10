@@ -1,0 +1,38 @@
+$PBExportHeader$f_pur040_getmultidiv.srf
+$PBExportComments$multi지역,공장가져오기(INV101,레퍼런스)
+global type f_pur040_getmultidiv from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getmultidiv (string as_itno)
+end prototypes
+
+global function string f_pur040_getmultidiv (string as_itno);STRING ls_temp, ls_xplant, ls_div
+DECLARE INV101_CUR CURSOR FOR
+	 SELECT "PBINV"."INV101"."XPLANT", "PBINV"."INV101"."DIV"
+	 FROM  "PBINV"."INV101"
+	 WHERE "PBINV"."INV101"."COMLTD" = '01'  AND
+			 "PBINV"."INV101"."ITNO" = :as_itno
+	;
+
+OPEN INV101_CUR;
+	DO WHILE TRUE
+	FETCH INV101_CUR INTO :ls_xplant, :ls_div;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+	if ls_temp <> '' then
+		ls_temp = ls_temp + '/' + ls_xplant + ls_div
+	else
+		ls_temp = ls_xplant + ls_div
+	end if
+	   
+	LOOP
+CLOSE INV101_CUR;
+if isnull(ls_temp) then
+	ls_temp = ''
+end if
+return ls_temp
+
+end function
+

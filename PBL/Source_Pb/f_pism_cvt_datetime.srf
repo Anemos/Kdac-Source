@@ -1,0 +1,17 @@
+$PBExportHeader$f_pism_cvt_datetime.srf
+$PBExportComments$Datetime Çüº¯È¯
+global type f_pism_cvt_datetime from function_object
+end type
+
+forward prototypes
+global function datetime f_pism_cvt_datetime (string as_datetime, ref string cvt_day, ref string cvt_time)
+end prototypes
+
+global function datetime f_pism_cvt_datetime (string as_datetime, ref string cvt_day, ref string cvt_time);
+
+cvt_day = String(Date(Left(as_datetime, 10)), "YYYY.MM.DD")
+cvt_time = String(Time(Right(as_datetime, Len(as_datetime) - 11)), "HH:MM:SS") 
+
+Return DateTime(Date(Left(as_datetime, 10)), Time(Right(as_datetime, Len(as_datetime) - 11))) 
+end function
+

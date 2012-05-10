@@ -1,0 +1,97 @@
+$PBExportHeader$f_pisc_set_server.srf
+$PBExportComments$공장별 Connet 하는 서버를 설정한다.
+global type f_pisc_set_server from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_set_server (string fs_gubun, string fs_areacode, string fs_divisioncode)
+end prototypes
+
+global function boolean f_pisc_set_server (string fs_gubun, string fs_areacode, string fs_divisioncode);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_set_server
+//	Access		:	public
+//	Arguments	:	string		fs_gubun				지역을 변경한건지 공장을 변경한건지
+//	Returns		:	Boolean		True  - 새로운 서버와 연결 성공
+//										False - 새로운 서버와 연결 실패
+//	Description	:	공장을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		:	DAEWOO Information System Co., Ltd. IAS
+// Author		:	Kim Jin-Su
+// Coded Date	:	2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Int			li_count
+String		ls_servername, ls_computer
+
+//lds_area = create datastore
+//lds_area.DataObject = 'd_pisc_select_area'
+//lds_area.SetTransObject(SQLPIS)
+//lds_area.retrieve(g_s_empno, gs_areacode)
+
+SetNull(ls_servername)
+
+Select	Top 1
+			ServerName,
+			Count(ServerName)
+Into		:ls_servername,
+			:li_count
+From		tmstdivision
+Where		AreaCode			Like :fs_areacode			And
+			DivisionCode	Like :fs_divisioncode
+Group By ServerName
+Using	SQLPIS;
+
+If li_count > 0 And IsNull(ls_servername) = False And ls_servername <> '' And Len(ls_servername) > 10 Then
+	//
+Else
+	Return False
+End If
+
+// Win 95, 98
+RegistryGet("HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VxD\VNETSUP", "ComputerName", ls_computer)
+// Windows 2000
+//RegistryGet("HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VxD\MSTCP", "HostName", ls_computer)
+
+If gs_servername <> ls_servername Then
+	DisConnect Using SQLPIS;	
+	// connect to IPIS
+//	sqlpis = CREATE transaction
+	SQLPIS.DBMS       = ProfileString(gs_inifile,g_s_serverarea,"DBMS",			" ")
+	SQLPIS.ServerName = ls_servername
+	SQLPIS.Database   = ProfileString(gs_inifile,g_s_serverarea,"Database",		" ")
+	SQLPIS.LogID      = ProfileString(gs_inifile,g_s_serverarea,"LogId",			" ")
+	SQLPIS.LogPass    = ProfileString(gs_inifile,g_s_serverarea,"LogPass",		" ")
+	SQLPIS.DbParm     = "appname='IPIS for KDAC', host='" + ls_computer + "'"
+	SQLPIS.AutoCommit = True
+	gs_appname	= ProfileString(gs_inifile,"PARAMETER","AppName",            " ")
+
+	Connect Using SQLPIS;
+	
+	If sqlpis.sqlcode <> 0 then		
+		DisConnect Using SQLPIS;
+		SQLPIS.DBMS       = ProfileString(gs_inifile,g_s_serverarea,"DBMS",			" ")
+		SQLPIS.ServerName = ls_servername
+		SQLPIS.Database   = ProfileString(gs_inifile,g_s_serverarea,"Database",		" ")
+		SQLPIS.LogID      = ProfileString(gs_inifile,g_s_serverarea,"LogId",			" ")
+		SQLPIS.LogPass    = ProfileString(gs_inifile,g_s_serverarea,"LogPass",		" ")
+		SQLPIS.DbParm     = "appname='IPIS for KDAC', host='" + ls_computer + "'"
+		SQLPIS.AutoCommit = True
+		gs_appname	= ProfileString(gs_inifile,"PARAMETER","AppName",            " ")
+		Connect Using SQLPIS;
+		if sqlpis.sqlcode <> 0 then
+			MessageBox("확인","선택하신 공장을 관리하는 서버와 연결하는 도중 오류가 발생했습니다.")
+			Return False
+		end if
+	End If
+	gs_servername	= ls_servername
+End If
+
+window ls_sheet
+
+ls_sheet = w_frame.getactivesheet()
+
+ls_sheet.triggerevent("activate")
+
+Return True
+
+
+end function
+

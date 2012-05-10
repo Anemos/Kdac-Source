@@ -1,0 +1,39 @@
+$PBExportHeader$d_aut322u_111.srd
+$PBExportComments$HW 관리 업로드
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=84 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=empno dbname="EMPNO" )
+ column=(type=char(10) updatewhereclause=yes name=penamek dbname="PENAMEK" )
+ column=(type=char(10) updatewhereclause=yes name=chid dbname="CHID" )
+ column=(type=char(8) updatewhereclause=yes name=chgdt dbname="CHGDT" )
+ column=(type=char(4) updatewhereclause=yes name=dept dbname="DEPT" )
+ column=(type=char(40) updatewhereclause=yes name=dname dbname="DNAME" )
+ column=(type=char(4) updatewhereclause=yes name=pedept dbname="PEDEPT" )
+ column=(type=char(40) updatewhereclause=yes name=currentname dbname="CURRENTNAME" )
+ retrieve="select a.empno,b.penamek,a.chid,a.chgdt,a.dept,coalesce(c.dname,'') as dname,b.pedept,coalesce(b.currentname,'') as currentname  from pbcommon.comm810 a,
+			( select distinct peempno,pedept,penamek,dname as currentname from pbcommon.dac003,pbcommon.dac001
+				where peout <> '*' and pedept = dcode and duse = '' and dtodt = 0 and right(pedept,2) = '00'  )  b, pbcommon.dac001 c
+where a.empno = b.peempno and a.dept <> b.pedept and a.dept = c.dcode and c.duse = '' and c.dtodt = 0 " )
+text(band=header alignment="2" text="사번" border="0" color="16777215" x="9" y="4" height="76" width="366" html.valueishtml="0"  name=empno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="이름" border="0" color="16777215" x="384" y="4" height="76" width="411" html.valueishtml="0"  name=penamek_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="장비번호" border="0" color="16777215" x="805" y="4" height="76" width="453" html.valueishtml="0"  name=chid_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="적용일" border="0" color="16777215" x="1266" y="4" height="76" width="393" html.valueishtml="0"  name=chgdt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="H/W등록부서" border="0" color="16777215" x="1669" y="4" height="76" width="402" html.valueishtml="0"  name=dept_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="H/W등록부서명" border="0" color="16777215" x="2080" y="4" height="76" width="795" html.valueishtml="0"  name=dname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="인사자력등록부서" border="0" color="16777215" x="2885" y="4" height="76" width="544" html.valueishtml="0"  name=pedept_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="인사자력등록부서명" border="0" color="16777215" x="3438" y="4" height="76" width="965" html.valueishtml="0"  name=currentname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="366" format="[general]" html.valueishtml="0"  name=empno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="384" y="0" height="76" width="411" format="[general]" html.valueishtml="0"  name=penamek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="805" y="0" height="76" width="453" format="[general]" html.valueishtml="0"  name=chid visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1266" y="0" height="76" width="393" format="[general]" html.valueishtml="0"  name=chgdt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="8388608" x="1669" y="0" height="76" width="402" format="[general]" html.valueishtml="0"  name=dept visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="8388608" x="2080" y="0" height="76" width="795" format="[general]" html.valueishtml="0"  name=dname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="128" x="2885" y="0" height="76" width="544" format="[general]" html.valueishtml="0"  name=pedept visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="128" x="3438" y="0" height="76" width="965" format="[general]" html.valueishtml="0"  name=currentname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,68 @@
+$PBExportHeader$f_get_slno_rp_s.srf
+$PBExportComments$거래명세표 번호 Return
+global type f_get_slno_rp_s from function_object
+end type
+
+forward prototypes
+global function string f_get_slno_rp_s (string as_ckey)
+end prototypes
+
+global function string f_get_slno_rp_s (string as_ckey);////////////////////////////////////////////
+// * 거래명세표 번호 Return *
+//
+// 성공: 거래명세표 번호, 실패: ""
+////////////////////////////////////////////
+
+String ls_Xyear1
+Long	 ll_CtlNo
+
+// 해당 작업가능 년월과 일련번호 Get. 
+SELECT "XYEAR1", "SRNO" INTO :ls_Xyear1, :ll_CtlNo
+	FROM "PBINV"."INV403"
+WHERE "COMLTD" = '01' AND  
+		"CKEY"   = :as_Ckey  Using SQLCA ;
+
+If SQLCA.SQLCode = -1 Then      // SQL Error.
+	Return ""
+	
+ElseIf SQLCA.SQLCode = 100 Then // 해당 Row가 없음.
+	If Right( as_Ckey, 3 ) = Mid( g_s_date, 4, 3 ) Then 
+			ll_CtlNo = 1
+			ls_Xyear1 = Left( g_s_date, 6 )
+			
+			INSERT INTO "PBINV"."INV403"  
+			 ( "COMLTD",   "CKEY",   "SRNO",    "JSCD",   "FROMDT",   "TODT",   "XYEAR",      "XYEAR1",   
+			   "RPFL",     "ISFL",   "RMRT",    "EXDTC",  "VANCD",    "PGMID",  "XCOMMENT",   "EXTD",   
+			   "INPTID",   "INPTDT", "UPDTID",  "UPDTDT", "IPADDR",   "MACADDR" )  
+			VALUES
+			 ( '01',       :as_Ckey, :ll_CtlNo, ' ',      ' ',        ' ',      ' ',          :ls_Xyear1,   
+				' ',        ' ',      ' ',       ' ',      ' ',        ' ',      ' ',           ' ',   
+			   :g_s_empno, :g_s_datetime, :g_s_empno, :g_s_datetime, :g_s_ipaddr, :g_s_macaddr )  Using SQLCA ;
+			
+			If SQLCA.SQLCode <> 0 Then Return ""  // SQL(INSERT) Error.
+	Else
+		Return ""
+	End If
+	
+ElseIf SQLCA.SQLCode = 0 Then // Success.	
+	If ll_CtlNo = 9999 Then 
+		ll_CtlNo = 1
+	Else
+		ll_CtlNo ++
+	End If
+	
+	UPDATE PBINV.INV403
+		SET SRNO    = :ll_CtlNo,
+	
+			 UPDTID  = :g_s_empno,
+			 UPDTDT  = :g_s_datetime,
+			 IPADDR  = :g_s_ipaddr,
+			 MACADDR = :g_s_macaddr
+	WHERE	COMLTD = '01' AND CKEY = :as_Ckey	Using	SQLCA ;
+	
+	If SQLCA.SQLCode <> 0 Then Return ""  // SQL(UPDATE) Error.
+End If
+
+Return as_Ckey + String( ll_CtlNo, '0000' )
+end function
+

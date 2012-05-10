@@ -1,0 +1,25 @@
+$PBExportHeader$f_win_center.srf
+$PBExportComments$윈도를 중앙에 (모든 윈도에 적용)
+global type f_win_center from function_object
+end type
+
+forward prototypes
+global subroutine f_win_center (window aw_window)
+end prototypes
+
+global subroutine f_win_center (window aw_window);environment le_env
+Long ll_scr_hor, ll_scr_ver
+int li_rtn
+
+li_rtn = GetEnvironment(le_env)
+IF li_rtn <> 1 THEN RETURN
+
+ll_scr_hor = PixelsToUnits(le_env.ScreenWidth,XPixelsToUnits!)
+ll_scr_ver = PixelsToUnits(le_env.ScreenHeight,YPixelsToUnits!)
+
+aw_window.X = (ll_scr_hor - aw_window.Width) / 2
+aw_window.Y = (ll_scr_ver - aw_window.Height) / 2
+
+
+end subroutine
+

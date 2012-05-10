@@ -1,0 +1,347 @@
+$PBExportHeader$f_carry_over_linevendor.srf
+$PBExportComments$라인, 업체 이월
+global type f_carry_over_linevendor from function_object
+end type
+
+forward prototypes
+global function integer f_carry_over_linevendor (string a_cmcd, string a_plant, string a_dvsn, string a_yyyymm)
+end prototypes
+
+global function integer f_carry_over_linevendor (string a_cmcd, string a_plant, string a_dvsn, string a_yyyymm);//*************************************************************
+// 라인업체재공이월
+// 신규품번에 대한 수불 데이타도 포함
+// WIP001조회 => WIP002조회 => 데이타이동 => UPDATE
+//*************************************************************
+datastore ds_carry_01, ds_carry_02 , ds_carry_03
+long ll_cntx, ll_cnty, ll_rowcnt01, ll_rowcnt02, ll_currow, ll_totcnt, ll_totsum, ll_totcur
+string ls_nextdt, ls_yyyy, ls_mm, ls_colcount
+string ls_itno, ls_itcl, ls_srce, ls_pdcd, ls_unit, ls_type, ls_desc, ls_spec, ls_orct
+dec{4} lc_inqt, lc_usqt[1 to 8], lc_ohqt
+dec{0} lc_inamt1, lc_inamt2, lc_usamt[1 to 9], lc_ohamt
+
+// WIP001 JOIN WIP002
+ds_carry_01 = create datastore                  			              
+ds_carry_01.dataobject = "d_carry_over_01"
+ds_carry_01.settransobject(sqlca)
+// WIP001 EXCEPTION JOIN WIP002
+ds_carry_02 = create datastore                		
+ds_carry_02.dataobject = "d_carry_over_02"
+ds_carry_02.settransobject(sqlca)
+
+ds_carry_03 = create datastore                		
+ds_carry_03.dataobject = "d_wip_cost_wip002"
+ds_carry_03.settransobject(sqlca)
+
+ls_nextdt = uf_wip_addmonth(a_yyyymm,1)
+ls_yyyy = mid(ls_nextdt,1,4)
+ls_mm = mid(ls_nextdt,5,2)
+ls_colcount = ds_carry_03.Object.DataWindow.Column.Count
+//초기화
+DELETE FROM "PBWIP"."WIP002"  
+   WHERE ( "PBWIP"."WIP002"."WBCMCD" = :a_cmcd ) AND  
+         ( "PBWIP"."WIP002"."WBPLANT" = :a_plant ) AND  
+         ( "PBWIP"."WIP002"."WBDVSN" = :a_dvsn ) AND  
+         ( "PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH" = :ls_nextdt )   
+         using sqlca;
+
+ll_rowcnt01 = ds_carry_01.retrieve(a_cmcd, a_plant, a_dvsn, a_yyyymm)
+ll_rowcnt02 = ds_carry_02.retrieve(a_cmcd, a_plant, a_dvsn, a_yyyymm)
+
+ll_totcnt = 0
+ll_totsum = ll_rowcnt01 + ll_rowcnt02
+
+for ll_cntx = 1 to ll_rowcnt01
+	ls_itno = trim(ds_carry_01.getitemstring(ll_cntx,"wip001_waitno"))
+	//품목Master에서 기본정보 가져오기
+	SELECT "PBINV"."INV002"."ITNM",   
+         "PBINV"."INV002"."SPEC",   
+         "PBINV"."INV002"."XTYPE"  
+    INTO :ls_desc,   
+         :ls_spec,   
+         :ls_type  
+    FROM "PBINV"."INV002"  
+  	 WHERE ( "PBINV"."INV002"."COMLTD" = :a_cmcd ) AND  
+          ( "PBINV"."INV002"."ITNO" = :ls_itno )   using sqlca;
+	if sqlca.sqlcode <> 0 then
+		messagebox("에러", "품목마스타에 없는 품번 : " + ls_itno)
+		continue
+	end if
+	//품목재고 테이블에서 기존정보가져오기
+	SELECT "PBINV"."INV101"."CLS",   
+         "PBINV"."INV101"."SRCE",   
+         "PBINV"."INV101"."PDCD",   
+         "PBINV"."INV101"."XUNIT"  
+    INTO :ls_itcl,   
+         :ls_srce,   
+         :ls_pdcd,   
+         :ls_unit  
+    FROM "PBINV"."INV101"  
+    WHERE ( "PBINV"."INV101"."COMLTD" = :a_cmcd ) AND  
+          ( "PBINV"."INV101"."XPLANT" = :a_plant ) AND  
+          ( "PBINV"."INV101"."DIV" = :a_dvsn ) AND  
+          ( "PBINV"."INV101"."ITNO" = :ls_itno )   using sqlca;
+	if sqlca.sqlcode <> 0 then
+		messagebox("에러", "품목재고에 없는 품번 : " + ls_itno)
+		continue
+	end if
+	
+	ls_pdcd = mid(ls_pdcd,1,2)
+	ls_orct = trim(ds_carry_01.getitemstring(ll_cntx,"wip001_waorct"))
+	lc_inqt = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wainqt")
+	lc_inamt1 = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wainat1")
+	lc_inamt2 = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wainat2")
+	lc_usqt[1] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt1")
+	lc_usamt[1] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat1")
+	lc_usqt[2] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt2")
+	lc_usamt[2] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat2")
+	lc_usqt[3] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt3")
+	lc_usamt[3] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat3")
+	lc_usqt[4] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt4")
+	lc_usamt[4] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat4")
+	lc_usqt[5] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt5")
+	lc_usamt[5] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat5")
+	lc_usqt[6] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt6")
+	lc_usamt[6] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat6")
+	lc_usqt[7] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt7")
+	lc_usamt[7] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat7")
+	lc_usqt[8] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausqt8")
+	lc_usamt[8] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat8")
+	lc_usamt[9] = ds_carry_01.getitemdecimal(ll_cntx,"wip001_wausat9")
+	lc_ohqt = ds_carry_01.getitemdecimal(ll_cntx,"wip001_waohqt")
+	lc_ohamt = ds_carry_01.getitemdecimal(ll_cntx,"wip001_waohat1")
+	
+	//이월데이타 이동
+	 UPDATE "PBWIP"."WIP002"  
+     	SET "WBITCL" = :ls_itcl,"WBSRCE" = :ls_srce,"WBPDCD" = :ls_pdcd,"WBUNIT" = :ls_unit,"WBTYPE" = :ls_type,   
+          "WBDESC" = :ls_desc,"WBSPEC" = :ls_spec,"WBINQT" = :lc_inqt, "WBINAT1" = :lc_inamt1,   
+          "WBINAT2" = :lc_inamt2,"WBUSQT1" = :lc_usqt[1],"WBUSAT1" = :lc_usamt[1],"WBUSQT2" = :lc_usqt[2], 
+			 "WBUSAT2" = :lc_usamt[2],"WBUSQT3" = :lc_usqt[3],"WBUSAT3" = :lc_usamt[3],"WBUSQT4" = :lc_usqt[4],  
+			 "WBUSAT4" = :lc_usamt[4],"WBUSQT5" = :lc_usqt[4],"WBUSAT5" = :lc_usamt[5],"WBUSQT6" = :lc_usqt[6],   
+          "WBUSAT6" = :lc_usamt[6],"WBUSQT7" = :lc_usqt[7],"WBUSAT7" = :lc_usamt[7],"WBUSQT8" = :lc_usqt[8],   
+          "WBUSAT8" = :lc_usamt[8],"WBUSAT9" = :lc_usamt[9],"WBUPDTDT" = ' '  
+   	WHERE ( "PBWIP"."WIP002"."WBCMCD" = :a_cmcd ) AND  
+         	( "PBWIP"."WIP002"."WBPLANT" = :a_plant ) AND  
+         	( "PBWIP"."WIP002"."WBDVSN" = :a_dvsn ) AND  
+         	( "PBWIP"."WIP002"."WBORCT" = :ls_orct ) AND  
+         	( "PBWIP"."WIP002"."WBITNO" = :ls_itno ) AND  
+         	( "PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH" = :a_yyyymm )   
+           	using sqlca;	
+	
+	//현재공수량 이동
+	ll_currow = ds_carry_03.insertrow(0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbcmcd" , a_cmcd)
+	ds_carry_03.setitem(ll_currow,"wip002_wbplant", a_plant)
+	ds_carry_03.setitem(ll_currow,"wip002_wbdvsn", a_dvsn)
+	ds_carry_03.setitem(ll_currow,"wip002_wborct", ls_orct)
+	ds_carry_03.setitem(ll_currow,"wip002_wbitno", ls_itno)
+	ds_carry_03.setitem(ll_currow,"wip002_wbyear", ls_yyyy )
+	ds_carry_03.setitem(ll_currow,"wip002_wbmonth", ls_mm )
+	ds_carry_03.setitem(ll_currow,"wip002_wbrev" , ds_carry_01.getitemstring(ll_cntx,"wip002_wbrev"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbiocd", ds_carry_01.getitemstring(ll_cntx,"wip002_wbiocd"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbitcl", ls_itcl)
+	ds_carry_03.setitem(ll_currow,"wip002_wbsrce", ls_srce)
+	ds_carry_03.setitem(ll_currow,"wip002_wbpdcd", ls_pdcd)
+	ds_carry_03.setitem(ll_currow,"wip002_wbunit", ls_unit)
+	ds_carry_03.setitem(ll_currow,"wip002_wbtype", ls_type)
+	ds_carry_03.setitem(ll_currow,"wip002_wbdesc", ls_desc)
+	ds_carry_03.setitem(ll_currow,"wip002_wbspec", ls_spec)
+	ds_carry_03.setitem(ll_currow,"wip002_wbscrp", ds_carry_01.getitemdecimal(ll_cntx,"wip002_wbscrp"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbretn", ds_carry_01.getitemdecimal(ll_cntx,"wip002_wbretn"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgqt" , lc_ohqt)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat1", lc_ohamt)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinqt" , 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt5", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat5", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt6", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat6", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt7", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat7", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt8", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat8", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat9", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqta", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusata", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbplan", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbipaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbmacaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbinptdt", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbupdtdt", ' ')
+next
+
+for ll_cnty = 1 to ll_rowcnt02
+	ls_itno = trim(ds_carry_02.getitemstring(ll_cnty,"wip001_waitno"))
+	//품목Master에서 기본정보 가져오기
+	SELECT "PBINV"."INV002"."ITNM",   
+         "PBINV"."INV002"."SPEC",   
+         "PBINV"."INV002"."XTYPE"  
+    INTO :ls_desc,   
+         :ls_spec,   
+         :ls_type  
+    FROM "PBINV"."INV002"  
+  	 WHERE ( "PBINV"."INV002"."COMLTD" = :a_cmcd ) AND  
+          ( "PBINV"."INV002"."ITNO" = :ls_itno )   using sqlca;
+	if sqlca.sqlcode <> 0 then
+		messagebox("에러", "품목마스타에 없는 품번 : " + ls_itno)
+		continue
+	end if
+	//품목재고 테이블에서 기존정보가져오기
+	SELECT "PBINV"."INV101"."CLS",   
+         "PBINV"."INV101"."SRCE",   
+         "PBINV"."INV101"."PDCD",   
+         "PBINV"."INV101"."XUNIT"  
+    INTO :ls_itcl,   
+         :ls_srce,   
+         :ls_pdcd,   
+         :ls_unit  
+    FROM "PBINV"."INV101"  
+    WHERE ( "PBINV"."INV101"."COMLTD" = :a_cmcd ) AND  
+          ( "PBINV"."INV101"."XPLANT" = :a_plant ) AND  
+          ( "PBINV"."INV101"."DIV" = :a_dvsn ) AND  
+          ( "PBINV"."INV101"."ITNO" = :ls_itno )   using sqlca;
+	if sqlca.sqlcode <> 0 then
+		messagebox("에러", "품목재고에 없는 품번 : " + ls_itno)
+		continue
+	end if
+	//이월 데이타 입력
+	ll_currow = ds_carry_03.insertrow(0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbcmcd" , ds_carry_02.getitemstring(ll_cnty,"wip001_wacmcd"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbplant", ds_carry_02.getitemstring(ll_cnty,"wip001_waplant"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbdvsn", ds_carry_02.getitemstring(ll_cnty,"wip001_wadvsn"))
+	ds_carry_03.setitem(ll_currow,"wip002_wborct", ds_carry_02.getitemstring(ll_cnty,"wip001_waorct"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbitno", ds_carry_02.getitemstring(ll_cnty,"wip001_waitno"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbyear", mid(a_yyyymm,1,4))
+	ds_carry_03.setitem(ll_currow,"wip002_wbmonth", mid(a_yyyymm,5,2))
+	ds_carry_03.setitem(ll_currow,"wip002_wbrev" , ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbiocd", ds_carry_02.getitemstring(ll_cnty,"wip001_waiocd"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbitcl", ls_itcl)
+	ds_carry_03.setitem(ll_currow,"wip002_wbsrce", ls_srce)
+	ds_carry_03.setitem(ll_currow,"wip002_wbpdcd", mid(ls_pdcd,1,2))
+	ds_carry_03.setitem(ll_currow,"wip002_wbunit", ls_unit)
+	ds_carry_03.setitem(ll_currow,"wip002_wbtype", ls_type)
+	ds_carry_03.setitem(ll_currow,"wip002_wbdesc", ls_desc)
+	ds_carry_03.setitem(ll_currow,"wip002_wbspec", ls_spec)
+	ds_carry_03.setitem(ll_currow,"wip002_wbscrp", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wascrp"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbretn", ds_carry_02.getitemdecimal(ll_cnty,"wip001_waretn"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgqt" , 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinqt" , ds_carry_02.getitemdecimal(ll_cnty,"wip001_wainqt"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat1", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wainat1"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat2", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wainat2"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat3", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wainat3"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat4", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wainat4"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt1", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt1"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat1", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat1"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt2", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt2"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat2", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat2"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt3", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt3"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat3", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat3"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt4", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt4"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat4", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat4"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt5", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt5"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat5", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat5"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt6", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt6"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat6", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat6"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt7", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt7"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat7", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat7"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt8", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausqt8"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat8", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat8"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat9", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wausat9"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqta", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusata", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbplan", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbipaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbmacaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbinptdt", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbupdtdt", ' ')
+
+	//현재공데이타 입력
+	ll_currow = ds_carry_03.insertrow(0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbcmcd" , ds_carry_02.getitemstring(ll_cnty,"wip001_wacmcd"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbplant", ds_carry_02.getitemstring(ll_cnty,"wip001_waplant"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbdvsn", ds_carry_02.getitemstring(ll_cnty,"wip001_wadvsn"))
+	ds_carry_03.setitem(ll_currow,"wip002_wborct", ds_carry_02.getitemstring(ll_cnty,"wip001_waorct"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbitno", ds_carry_02.getitemstring(ll_cnty,"wip001_waitno"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbyear", ls_yyyy)
+	ds_carry_03.setitem(ll_currow,"wip002_wbmonth", ls_mm)
+	ds_carry_03.setitem(ll_currow,"wip002_wbrev" , ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbiocd", ds_carry_02.getitemstring(ll_cnty,"wip001_waiocd"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbitcl", ls_itcl)
+	ds_carry_03.setitem(ll_currow,"wip002_wbsrce", ls_srce)
+	ds_carry_03.setitem(ll_currow,"wip002_wbpdcd", mid(ls_pdcd,1,2))
+	ds_carry_03.setitem(ll_currow,"wip002_wbunit", ls_unit)
+	ds_carry_03.setitem(ll_currow,"wip002_wbtype", ls_type)
+	ds_carry_03.setitem(ll_currow,"wip002_wbdesc", ls_desc)
+	ds_carry_03.setitem(ll_currow,"wip002_wbspec", ls_spec)
+	ds_carry_03.setitem(ll_currow,"wip002_wbscrp", ds_carry_02.getitemdecimal(ll_cnty,"wip001_wascrp"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbretn", ds_carry_02.getitemdecimal(ll_cnty,"wip001_waretn"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbavrg2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgqt" , ds_carry_02.getitemdecimal(ll_cnty,"wip001_waohqt"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat1", ds_carry_02.getitemdecimal(ll_cnty,"wip001_waohat1"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbbgat2", ds_carry_02.getitemdecimal(ll_cnty,"wip001_waohat2"))
+	ds_carry_03.setitem(ll_currow,"wip002_wbinqt" , 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbinat4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat1", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat2", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat3", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat4", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt5", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat5", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt6", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat6", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt7", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat7", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqt8", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat8", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusat9", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusqta", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbusata", 0)
+	ds_carry_03.setitem(ll_currow,"wip002_wbplan", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbipaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbmacaddr", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbinptdt", ' ')
+	ds_carry_03.setitem(ll_currow,"wip002_wbupdtdt", ' ')
+next
+
+ds_carry_03.accepttext()
+if ds_carry_03.update() <> 1 then
+	messagebox("에러","재공이월 에러")
+	//rollback using sqlca;
+	destroy ds_carry_01
+	destroy ds_carry_02
+	destroy ds_carry_03
+	return -1
+else
+	//commit using sqlca;
+	destroy ds_carry_01
+	destroy ds_carry_02
+	destroy ds_carry_03
+	return 0
+end if
+end function
+

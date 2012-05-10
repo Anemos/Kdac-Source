@@ -1,0 +1,23 @@
+$PBExportHeader$f_mpsg_spacechk.srf
+$PBExportComments$항목 Space, Null Check
+global type f_mpsg_spacechk from function_object
+end type
+
+forward prototypes
+global function integer f_mpsg_spacechk (string ag_item)
+end prototypes
+
+global function integer f_mpsg_spacechk (string ag_item);///////////////////////////////////////////////////////////////
+// 기능 : Check Item이 Null or "" 이면 -1 return
+//        				  정상이면         0 return
+//
+//        input : string
+///////////////////////////////////////////////////////////////
+
+if isNull(ag_item)    = True  or  &
+   Len(Trim(ag_item)) = 0     then
+   Return -1
+else
+   Return 0
+end if
+end function

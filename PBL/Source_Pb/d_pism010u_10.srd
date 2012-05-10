@@ -1,0 +1,35 @@
+$PBExportHeader$d_pism010u_10.srd
+$PBExportComments$조별 작업일보 평가제외 사원등록 - Grid
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=132 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no key=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=no key=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=no key=yes name=workcenter dbname="WorkCenter" )
+ column=(type=char(30) updatewhereclause=no name=workcentername dbname="WorkCenterName" )
+ column=(type=char(6) updatewhereclause=no key=yes name=excempno dbname="excEmpNo" )
+ column=(type=char(10) updatewhereclause=no name=empname dbname="EmpName" )
+ column=(type=char(100) updatewhereclause=no name=classname dbname="ClassName" )
+ column=(type=char(1) update=yes updatewhereclause=no name=excflag dbname="excFlag" values="	1/	0" )
+ column=(type=char(6) update=yes updatewhereclause=no name=lastemp dbname="LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=no name=lastdate dbname="LastDate" )
+ procedure="1 execute dbo.sp_pism010u_10;1 @ps_area = :ps_area, @ps_div = :ps_div, @ps_stDay = :ps_stDay" update="TMHDAILYEXCEMP" updatewhere=0 updatekeyinplace=yes arguments=(("ps_area", string),("ps_div", string),("ps_stDay", string)) )
+group(level=1 header.height=0 trailer.height=4 by=("workcenter" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="조" border="2" color="16777215" x="5" y="8" height="120" width="1001"  name=t_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="MH집계
+제외사원" border="2" color="16777215" x="1010" y="8" height="120" width="667"  name=t_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="직위" border="2" color="16777215" x="1682" y="8" height="120" width="320"  name=classname_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="제외
+여부" border="2" color="16777215" x="2007" y="8" height="120" width="197"  name=excflag_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="0" expression="' [' +  workcenter + '] ' +  workcentername "border="0" color="0" x="5" y="16" height="60" width="1001" format="[GENERAL]"  name=compute_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="8388608" x="1033" y="20" height="56" width="233" format="[general]"  name=excempno edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="1280" y="20" height="56" width="384" format="[general]"  name=empname edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="1682" y="16" height="60" width="320" format="[general]"  name=classname edit.limit=100 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=10 border="0" color="0" x="2011" y="16" height="60" width="192" format="[general]"  name=excflag checkbox.text="" checkbox.on="1" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=trailer.1 x1="0" y1="0" x2="2213" y2="0"  name=l_1 pen.style="0" pen.width="5" pen.color="8421504"  background.mode="2" background.color="16777215" )
+
+sparse(names="compute_1")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

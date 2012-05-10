@@ -1,0 +1,45 @@
+$PBExportHeader$f_vdnm_pur.srf
+$PBExportComments$업체명칭(arg:업체전산번호) return
+global type f_vdnm_pur from function_object
+end type
+
+forward prototypes
+global function any f_vdnm_pur (string as_vsrno, string as_scgubun, string as_digubun)
+end prototypes
+
+global function any f_vdnm_pur (string as_vsrno, string as_scgubun, string as_digubun);///////////////////////////////////////////////////////////////
+// 업체명 가져오기
+//                  argument : 업체코드
+//////////////////////////////////////////////////////////////
+
+string ls_vdnm
+Long   ll_row
+
+SELECT "PBPUR"."PUR101"."VNDNM"  
+ INTO :ls_vdnm  
+FROM "PBPUR"."PUR101"  
+WHERE ( "PBPUR"."PUR101"."COMLTD"  = '01' ) AND  ( "PBPUR"."PUR101"."VSRNO"  = :as_vsrno) AND 
+      ( "PBPUR"."PUR101"."SCGUBUN" = :as_scgubun) AND ( "PBPUR"."PUR101"."DIGUBUN" = :as_digubun) Using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	ls_vdnm = " "
+end if
+
+if len(ls_vdnm) > 23 then
+	ll_row = len(ls_vdnm)
+	Do while true 
+		if ll_row <= 23 then
+			exit
+		end if
+		if asc(mid(ls_vdnm,ll_row,1)) >= 161 then  //두바이트문자다 2byte shift 이동
+			ll_row = ll_row - 2
+		else
+			ll_row = ll_row - 1
+		end if
+	Loop
+	ls_vdnm = mid(ls_vdnm,1,ll_row)
+end if
+ 
+return ls_vdnm
+end function
+

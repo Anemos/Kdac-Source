@@ -1,0 +1,95 @@
+$PBExportHeader$d_mpm130b_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=64 color="536870912" )
+summary(height=88 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(8) update=yes updatewhereclause=yes name=orderno dbname="TITEMSTORE.OrderNo" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=partno dbname="TITEMSTORE.PartNo" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=matcls dbname="TITEMSTORE.MatCls" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=sliptype dbname="TITEMSTORE.SlipType" )
+ column=(type=char(8) updatewhereclause=yes key=yes name=srno dbname="TITEMSTORE.Srno" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=srno1 dbname="TITEMSTORE.Srno1" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=srno2 dbname="TITEMSTORE.Srno2" )
+ column=(type=char(11) updatewhereclause=yes key=yes name=rqno dbname="TITEMSTORE.Rqno" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="TITEMSTORE.Xplant" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="TITEMSTORE.Div" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="TITEMSTORE.Itno" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="TITEMSTORE.Itnm" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="TITEMSTORE.Spec" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="TITEMSTORE.Cls" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="TITEMSTORE.Srce" )
+ column=(type=char(5) updatewhereclause=yes name=vsrno dbname="TITEMSTORE.Vsrno" )
+ column=(type=char(50) updatewhereclause=yes name=vndnm dbname="TITEMSTORE.Vndnm" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty4 dbname="TITEMSTORE.Tqty4" )
+ column=(type=char(8) updatewhereclause=yes name=tdte4 dbname="TITEMSTORE.Tdte4" )
+ column=(type=decimal(2) updatewhereclause=yes name=xcost dbname="TITEMSTORE.Xcost" )
+ column=(type=decimal(0) updatewhereclause=yes name=tramt dbname="TITEMSTORE.Tramt" )
+ column=(type=char(6) updatewhereclause=yes name=lastemp dbname="TITEMSTORE.LastEmp" )
+ column=(type=datetime updatewhereclause=yes name=lastdate dbname="TITEMSTORE.LastDate" )
+ retrieve=" SELECT TITEMSTORE.OrderNo,   
+         TITEMSTORE.PartNo, 
+			TITEMSTORE.MatCls,  
+         TITEMSTORE.SlipType, 
+			TITEMSTORE.Srno,
+			TITEMSTORE.Srno1,
+			TITEMSTORE.Srno2,
+			TITEMSTORE.Rqno, 
+			TITEMSTORE.Xplant,
+			TITEMSTORE.Div, 
+         TITEMSTORE.Itno,
+			TITEMSTORE.Itnm,
+			TITEMSTORE.Spec,
+			TITEMSTORE.Cls,
+			TITEMSTORE.Srce,
+			TITEMSTORE.Vsrno,
+			TITEMSTORE.Vndnm,   
+         TITEMSTORE.Tqty4,   
+         TITEMSTORE.Tdte4,   
+         TITEMSTORE.Xcost,   
+         TITEMSTORE.Tramt,   
+         TITEMSTORE.LastEmp,   
+         TITEMSTORE.LastDate
+    FROM TITEMSTORE  
+   WHERE ( TITEMSTORE.OrderNo like :a_orderno OR TITEMSTORE.OrderNo IS NULL ) AND
+			( TITEMSTORE.PartNo like :a_partno OR TITEMSTORE.PartNo IS NULL ) AND
+			( TITEMSTORE.Tdte4 >= :a_fromdt ) AND  
+         ( TITEMSTORE.Tdte4 <= :a_todt )  AND
+			( TITEMSTORE.MatCls in ('P','T','M') )  
+" update="TITEMSTORE" updatewhere=0 updatekeyinplace=yes arguments=(("a_orderno", string),("a_partno", string),("a_fromdt", string),("a_todt", string))  sort="orderno A partno A " )
+group(level=1 header.height=0 trailer.height=96 by=("orderno" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø" border="2" color="16777215" x="1335" y="4" height="60" width="443" html.valueishtml="0"  name=itno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="2" color="16777215" x="1783" y="4" height="60" width="219" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ý¾×" border="2" color="16777215" x="3383" y="4" height="60" width="507" html.valueishtml="0"  name=tramt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´Ü°¡" border="2" color="16777215" x="3035" y="4" height="60" width="343" html.valueishtml="0"  name=xcost_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÔ°íÀÏÀÚ" border="2" color="16777215" x="2711" y="4" height="60" width="320" html.valueishtml="0"  name=tdte4_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö·®" border="2" color="16777215" x="2528" y="4" height="60" width="178" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô°Ý" border="2" color="16777215" x="4837" y="4" height="60" width="763" html.valueishtml="0"  name=spec_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="2" color="16777215" x="4014" y="4" height="60" width="818" html.valueishtml="0"  name=itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸¸Å¹øÈ£" border="2" color="16777215" x="905" y="4" height="60" width="425" html.valueishtml="0"  name=rqno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Order No" border="2" color="16777215" x="334" y="4" height="60" width="306" html.valueishtml="0"  name=orderno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Part No" border="2" color="16777215" x="645" y="4" height="60" width="256" html.valueishtml="0"  name=partno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚÀç±¸ºÐ" border="2" color="16777215" x="5" y="4" height="60" width="325" html.valueishtml="0"  name=matcls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="1335" y="0" height="76" width="443" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="1783" y="0" height="76" width="110" format="[general]" html.valueishtml="0"  name=cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="33554432" x="3383" y="0" height="76" width="507" format="#,##0" html.valueishtml="0"  name=tramt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="33554432" x="3035" y="0" height="76" width="343" format="[general]" html.valueishtml="0"  name=xcost visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="33554432" x="2711" y="0" height="76" width="320" format="[general]" html.valueishtml="0"  name=tdte4 visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="33554432" x="2528" y="0" height="76" width="178" format="[general]" html.valueishtml="0"  name=tqty4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="905" y="0" height="76" width="425" format="[general]" html.valueishtml="0"  name=rqno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="4837" y="0" height="76" width="763" format="[general]" html.valueishtml="0"  name=spec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="4014" y="0" height="76" width="818" format="[general]" html.valueishtml="0"  name=itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=20 border="0" color="33554432" x="334" y="0" height="76" width="306" format="[general]" html.valueishtml="0"  name=orderno visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=30 border="0" color="33554432" x="645" y="0" height="76" width="256" format="[general]" html.valueishtml="0"  name=partno visible="1" edit.limit=6 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=10 border="0" color="33554432" x="5" y="0" height="76" width="325" format="[general]" html.valueishtml="0"  name=matcls visible="1" dddw.name=d_mpms_select_codemaster dddw.displaycolumn=codename dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.autoretrieve=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression="sum(tramt for group 1)"border="0" color="33554432" x="3383" y="4" height="56" width="507" format="#,##0" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="1" text="ORDERº° ÇÕ°è:" border="0" color="0" x="2857" y="8" height="56" width="485" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=summary alignment="1" expression="sum(tramt for all)"border="0" color="33554432" x="3383" y="4" height="56" width="507" format="#,##0" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=summary alignment="1" text="ÀüÃ¼ÇÕ°è:" border="0" color="0" x="2999" y="4" height="56" width="343" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=header alignment="2" text="¾÷Ã¼¸í" border="2" color="16777215" x="2007" y="4" height="60" width="517" html.valueishtml="0"  name=vndnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="33554432" x="1897" y="0" height="76" width="105" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=0 border="0" color="33554432" x="2007" y="0" height="76" width="517" html.valueishtml="0"  name=vndnm visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

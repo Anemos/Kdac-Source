@@ -1,0 +1,29 @@
+$PBExportHeader$f_inv001_ohrqty.srf
+$PBExportComments$현재고량(요수리)  Return
+global type f_inv001_ohrqty from function_object
+end type
+
+forward prototypes
+global function decimal f_inv001_ohrqty (string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_inv001_ohrqty (string as_plant, string as_div, string as_itno);//////////////////////////////////////////////////////////
+// 지역/공장/품번을 받아 품목 재고Table의 현재고를 Return
+//
+// Return: 성공(현재고량), 실패(-1)
+//////////////////////////////////////////////////////////
+
+Dec{1} ll_ohrqty
+
+
+SELECT "OHRQTY" INTO :ll_ohrqty
+	FROM "PBINV"."INV101"
+WHERE "COMLTD" = '01' AND	"XPLANT" = :as_plant AND "DIV" = :as_div AND	"ITNO" = :as_itno	 Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then
+	Return -1
+End If
+
+Return ll_ohrqty
+end function
+

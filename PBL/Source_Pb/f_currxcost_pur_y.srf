@@ -1,0 +1,125 @@
+$PBExportHeader$f_currxcost_pur_y.srf
+$PBExportComments$종전가자동발주(종전가(D,U),업체번호), 품번, 구분)
+global type f_currxcost_pur_y from function_object
+end type
+
+forward prototypes
+global function string f_currxcost_pur_y (string ag_s_vsrno, string ag_s_itno, string ag_s_gubun)
+end prototypes
+
+global function string f_currxcost_pur_y (string ag_s_vsrno, string ag_s_itno, string ag_s_gubun);/////////////////////////////////////////////////////////////////////////////
+// f_lastpur_pur(ag_s_vsrno,ag_s_itno, ag_s_gubun)  --주관부서 (내자구매 : Y )
+//     * 외주개발
+//       argument : 업체전산번호('D','U',업체전산번호)
+//						  품번
+//                  구분 : "1" - 수출용-발주번호
+//                         "2" -        발주일자
+//									"3" -	       발주단가
+//                         "4" -        구매요구번호
+//                         "5" -        발주전산번호
+//                         "6" -        발주전산번호 - 분할발주횟수
+//
+//                        "11" - 내수용-품의번호
+//								  "12" -        단가 적용일
+//                        "13" -        내수용단가
+//                        "14" -        통화단위
+//								  "15" -        운임조건
+//								  "16" -        결제조건
+//                        "17" -        영세율 
+//								  "18" - 종전가 업체전산번호
+//
+//                        "21" -수출용 -품의번호
+//								  "22" -        단가 적용일
+//                        "23" -        내수용단가
+//                        "24" -        통화단위
+//                        
+//       적용 : w_pur401u(직접재 발주입력)
+//////////////////////////////////////////////////////////////////////////
+
+String ls_lpurno, ls_lpindt, ls_lrqno, ls_lsrno, ls_lsrno1
+String ls_dsheet, ls_dadjdt, ls_dcurr, ls_arr, ls_xpay, ls_vzero,ls_vsrno, ls_esheet, ls_eadjdt, ls_ecurr
+dec{2} ln_lcost, ln_dcost, ln_ecost
+
+ag_s_vsrno = Upper(trim(ag_s_vsrno))
+ag_s_itno = Upper(trim(ag_s_itno))
+
+
+SELECT   "PBPUR"."PUR103"."PURNO", "PBPUR"."PUR103"."PINDT", "PBPUR"."PUR103"."LCOST",   
+			"PBPUR"."PUR103"."RQNO",  "PBPUR"."PUR103"."SRNO",  "PBPUR"."PUR103"."SRNO1",   
+			"PBPUR"."PUR103"."DSHEET","PBPUR"."PUR103"."DADJDT","PBPUR"."PUR103"."DCOST",   
+			"PBPUR"."PUR103"."DCURR", "PBPUR"."PUR103"."XPAY",  "PBPUR"."PUR103"."VZERO",   
+			"PBPUR"."PUR103"."VSRNO"  , "PBPUR"."PUR103"."ARR",
+			"PBPUR"."PUR103"."ESHEET","PBPUR"."PUR103"."EADJDT","PBPUR"."PUR103"."ECOST",  
+			"PBPUR"."PUR103"."ECURR" 
+INTO :ls_lpurno,  :ls_lpindt,  :ln_lcost,   :ls_lrqno,   :ls_lsrno,  :ls_lsrno1,   
+	  :ls_dsheet,  :ls_dadjdt,  :ln_dcost,   :ls_dcurr,   :ls_xpay,   :ls_vzero,   
+	  :ls_vsrno  , :ls_arr,
+	  :ls_esheet,  :ls_eadjdt,  :ln_ecost ,:ls_ecurr
+ FROM "PBPUR"."PUR103"  
+WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND
+		( "PBPUR"."PUR103"."VSRC" = 'D' ) AND  
+		( "PBPUR"."PUR103"."DEPT" = 'Y' ) AND  
+		( "PBPUR"."PUR103"."VSRNO" = :ag_s_vsrno ) AND  
+		( "PBPUR"."PUR103"."ITNO" = :ag_s_itno ) 
+Fetch First 1 Row only Using sqlca;
+
+IF sqlca.sqlcode <> 0 OR isnull(ls_xpay) Then
+	ls_lpurno = " " 
+	ls_lpindt = " "
+	ls_lrqno = " "
+	ls_lsrno = " "
+	ls_lsrno1 = " "
+	ln_lcost = 0.00	
+	ls_dsheet = " "
+	ls_dadjdt = " "
+	ln_dcost = 0.00
+	ls_dcurr = " "
+	ls_xpay = " "
+	ls_vzero = " "
+	ls_vsrno = " "
+	ls_esheet = " "
+	ls_eadjdt =  " " 
+	ln_ecost = 0 
+	ls_ecurr = " "					 
+End IF	
+
+//결과
+IF ag_s_gubun = "1" Then  //최종발주번호
+	Return ls_lpurno
+ElseIF ag_s_gubun = "2" Then  //최종 발주일자
+	Return ls_lpindt
+ElseIF ag_s_gubun = "3" Then	//최종 발주단가
+	Return String(ln_lcost,"00000000000.00")	
+ElseIF ag_s_gubun = "4" Then //최종구매요구번호
+	Return ls_lrqno
+ElseIF ag_s_gubun = "5" Then //최종 전산번호
+	Return ls_lsrno
+ElseIF ag_s_gubun = "6" Then //최종 전산번호-횟수
+	Return ls_lsrno1
+ElseIF ag_s_gubun = "11" Then //내수용-품의번호
+	Return ls_dsheet
+ElseIF ag_s_gubun = "12" Then //       단가 적용일
+	Return ls_dadjdt
+ElseIF ag_s_gubun = "13" Then //       내수용단가
+	Return String(ln_dcost,"00000000000.00")	
+ElseIF ag_s_gubun = "14" Then //			통화단위
+	Return ls_dcurr
+ElseIF ag_s_gubun = "15" Then //			운임조건
+	Return ls_arr	
+ElseIF ag_s_gubun = "16" Then //			결제조건
+	Return ls_xpay
+ElseIF ag_s_gubun = "17" Then //			영세율 
+	Return ls_vzero
+ElseIF ag_s_gubun = "18" Then //			종전가 업체전산번호
+	Return ls_vsrno	
+ElseIF ag_s_gubun = "21" Then //수출용-품의번호
+	Return ls_esheet
+ElseIF ag_s_gubun = "22" Then //       단가 적용일
+	Return ls_eadjdt
+ElseIF ag_s_gubun = "23" Then //       내수용단가
+	Return String(ln_ecost,"00000000000.00")	
+ElseIF ag_s_gubun = "24" Then //			통화단위
+	Return ls_dcurr	
+End IF	
+end function
+

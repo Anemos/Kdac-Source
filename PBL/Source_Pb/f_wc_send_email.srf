@@ -1,0 +1,38 @@
+$PBExportHeader$f_wc_send_email.srf
+$PBExportComments$메일발송함수
+global type f_wc_send_email from function_object
+end type
+
+forward prototypes
+global function integer f_wc_send_email (string a_area, string a_division, string a_deptgubun, string a_title, string a_body, string a_manageno)
+end prototypes
+
+global function integer f_wc_send_email (string a_area, string a_division, string a_deptgubun, string a_title, string a_body, string a_manageno);string ls_areacode, ls_divisioncode, ls_mail
+
+//담당자에게 메일 발송.
+DECLARE cur_getmail CURSOR FOR  
+  SELECT aa.AreaCode, aa.DivisionCode, bb.Email  
+	 FROM ( SELECT Distinct AreaCode, DivisionCode FROM TWCLAIMLIST
+				WHERE ManClaimNo = :a_manageno ) aa INNER JOIN TWEMAIL bb
+		ON aa.AreaCode = bb.AreaCode and aa.DivisionCode = bb.DivisionCode
+	WHERE aa.AreaCode LIKE :a_area and aa.DivisionCode LIKE :a_division and
+		bb.DeptGubun = :a_deptgubun and bb.UseFlag = 'Y' 
+	using sqleis;
+open cur_getmail;
+do while true
+	fetch cur_getmail into :ls_areacode, :ls_divisioncode, :ls_mail;
+	if sqleis.sqlcode <> 0 then
+		exit
+	end if
+	if f_spacechk(ls_mail) <> -1 then
+		if f_SendMail( trim(ls_mail), "보상관리번호 (" + a_manageno + ") : " + a_title, a_body, '') = 1 then
+			messagebox("알림","메일발송시에 에러가 발생하였습니다.")
+			return -1
+		end if
+	end if
+loop
+close cur_getmail;
+
+return 0
+end function
+

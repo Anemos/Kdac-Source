@@ -1,0 +1,201 @@
+$PBExportHeader$f_down_ipis_mis_inv401.srf
+$PBExportComments$공무자재 TRANS AS400->CMMS
+global type f_down_ipis_mis_inv401 from function_object
+end type
+
+forward prototypes
+global function integer f_down_ipis_mis_inv401 (string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_down_ipis_mis_inv401 (string ag_message, datawindow ag_dwo, any ag_str_ipis[]);//**********************
+//* 2007.05.08 
+//* 자재시스템 입고(1), 입고취소(2), 재고상태변경(3) -> 설비 시스템 재고 변경
+//**********************
+
+string ls_Chgcd, ls_Xplant, ls_Div, ls_SlipGubun, ls_ItNo, ls_InvStcd, ls_InvStcd1
+string ls_chgdate, ls_SlipType, ls_SrNo, ls_SrNo1, ls_SrNo2, ls_StsCd
+integer	li_TQty, li_CostAV, li_ConnIndex, li_Cnt, li_PartCnt
+
+str_ipis_server lstr_CmmsConn
+
+for li_Cnt = 1 to ag_dwo.RowCount()
+	ls_Chgcd = Upper(Trim(ag_dwo.GetItemString(li_Cnt,"chgcd")))
+	ls_Xplant = Trim(ag_dwo.GetItemString(li_Cnt,"xplant"))
+	ls_Div = Trim(ag_dwo.GetItemString(li_Cnt,"div"))
+	ls_SlipGubun = Trim(ag_dwo.GetItemString(li_Cnt,"slipGubun"))
+	ls_ItNo = Trim(ag_dwo.GetItemString(li_Cnt,"itno"))
+	ls_InvStcd = Upper(Trim(ag_dwo.GetItemString(li_Cnt,"invstcd")))
+	ls_InvStcd1 = Upper(Trim(ag_dwo.GetItemString(li_Cnt,"invstcd1")))
+	li_TQty = ag_dwo.GetItemDecimal(li_Cnt, "tqty4")
+	li_CostAV = ag_dwo.GetItemDecimal(li_Cnt, "costav")
+	
+	if IsNull(li_TQty) then li_TQty = 0
+	if Isnull(li_CostAV) then li_CostAV = 0
+	
+	// 로그테이블 생성로직
+//	ls_SlipType = Trim(ag_dwo.GetItemString(li_Cnt,"sliptype"))
+//	ls_SrNo = Trim(ag_dwo.GetItemString(li_Cnt,"srno"))
+//	ls_SrNo1 = Trim(ag_dwo.GetItemString(li_Cnt,"srno1"))
+//	ls_SrNo2 = Trim(ag_dwo.GetItemString(li_Cnt,"srno2"))
+//	ls_StsCd = Trim(ag_dwo.GetItemString(li_Cnt,"stscd"))
+//	
+//	SELECT CHAR(CURRENT TIMESTAMP) Into :ls_chgdate FROM PBCOMMON.COMM000 FETCH FIRST 1 ROW ONLY;
+//	
+//	INSERT INTO PBIPIS.PDINV401LG (CHGDATE, CHGCD, SLIPTYPE, SRNO, SRNO1, SRNO2, 
+//                                  XPLANT, DIV, ITNO, INVSTCD, TQTY4, INVSTCD1, 
+//											 SLIPGUBUN, STSCD, DOWNDATE)
+//   VALUES (:ls_chgdate, :ls_Chgcd, :ls_SlipType, :ls_SrNo,
+//				:ls_SrNo1, :ls_SrNo2, :ls_Xplant, :ls_Div, :ls_ItNo,
+//				:ls_InvStcd, :li_TQty, :ls_InvStcd1, :ls_SlipGubun, 
+//				'N', ' ') 
+//	USING SQLCA;
+	
+	//db connection 찾기
+	li_ConnIndex = f_ipis_server_get_transaction(ag_str_ipis, ls_Xplant, ls_Div)
+	if li_ConnIndex = -1 then
+		ag_message = "지역:" + ls_Xplant + " 공장:" + ls_Div + " 의 DB연결이 없읍니다."
+		return -1
+	else
+		lstr_CmmsConn = ag_str_ipis[li_ConnIndex]
+	end if
+
+	//자재 마스터 존재 유무 체크
+	SELECT COUNT(*)
+	INTO :li_PartCnt
+	FROM PART_MASTER
+	WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+	USING lstr_CmmsConn.t_sqlpis;
+	
+	if lstr_CmmsConn.t_sqlpis.sqlcode <> 0 then
+		ag_message = "지역:" + ls_Xplant + " 공장: " + ls_Div + " INNO:" + ls_ItNo + " 조회중 에러가 발생했읍니다."
+		f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401', &
+			lstr_CmmsConn.t_sqlpis.sqlerrtext, '공무자재 마스터 조회', g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if
+	
+	if li_PartCnt < 1 then
+		ag_message = "지역:" + ls_Xplant + " 공장: " + ls_Div + " INNO:" + ls_ItNo + " 마스터 정보가 없읍니다."
+		f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+				ag_message, '공무자재 마스터 조회', g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if		
+	
+	//처리구분 
+	choose case ls_Chgcd
+		//생성
+		case 'C'
+			//입고
+			if ls_SlipGubun = '1' then
+				UPDATE PART_MASTER
+				SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) + :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+					REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) + :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+					SCRAM_QTY = (CASE :ls_InvStcd WHEN 'S' THEN ISNULL(SCRAM_QTY, 0) + :li_TQty ELSE ISNULL(SCRAM_QTY, 0) END),
+					PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+				WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+				USING lstr_CmmsConn.t_sqlpis;
+			//이체
+			elseif ls_SlipGubun = '2' then
+				UPDATE PART_MASTER
+				SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) - :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+					REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) - :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+					SCRAM_QTY = (CASE :ls_InvStcd WHEN 'S' THEN ISNULL(SCRAM_QTY, 0) - :li_TQty ELSE ISNULL(SCRAM_QTY, 0) END),
+					PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+				WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+				USING lstr_CmmsConn.t_sqlpis;
+			//재고상태 변경(사용가 <-> 수리품)
+			elseif ls_SlipGubun = '3' then
+				if ls_InvStcd = 'U' And ls_InvStcd1 = 'R' then
+					UPDATE PART_MASTER
+					SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) - :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+						REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) + :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+						PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+					WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+					USING lstr_CmmsConn.t_sqlpis;
+				elseif ls_InvStcd = 'R' And ls_InvStcd1 = 'U' then
+					UPDATE PART_MASTER
+					SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) + :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+						REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) - :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+						PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+					WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+					USING lstr_CmmsConn.t_sqlpis;
+				else
+					ag_message = "구분코드(3) 재고상태 코드("+ ls_InvStcd + ", " + ls_InvStcd1 & 
+									+ ")가 유효하지 않읍니다. "
+					f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+								ag_message, '공무자재 재고상태 CHK', g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+			else
+				ag_message = "구분코드( " + ls_SlipGubun + ")가 유효하지 않읍니다. "
+				f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+							ag_message, '공무자재 처리구분 CHK', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+							
+		case 'D'
+			if ls_SlipGubun = '1' then
+				UPDATE PART_MASTER
+				SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) - :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+					REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) - :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+					SCRAM_QTY = (CASE :ls_InvStcd WHEN 'S' THEN ISNULL(SCRAM_QTY, 0) - :li_TQty ELSE ISNULL(SCRAM_QTY, 0) END),
+					PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+				WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+				USING lstr_CmmsConn.t_sqlpis;
+			
+			elseif ls_SlipGubun = '2' then
+				UPDATE PART_MASTER
+				SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) + :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+					REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) + :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+					SCRAM_QTY = (CASE :ls_InvStcd WHEN 'S' THEN ISNULL(SCRAM_QTY, 0) + :li_TQty ELSE ISNULL(SCRAM_QTY, 0) END),
+					PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+				WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+				USING lstr_CmmsConn.t_sqlpis;
+	
+			elseif ls_SlipGubun = '3' then
+				if ls_InvStcd = 'U' And ls_InvStcd1 = 'R' then
+					UPDATE PART_MASTER
+					SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) + :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+						REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) - :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+						PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+					WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+					USING lstr_CmmsConn.t_sqlpis;
+				elseif ls_InvStcd = 'R' And ls_InvStcd1 = 'U' then
+					UPDATE PART_MASTER
+					SET NORMAL_QTY = (CASE :ls_InvStcd WHEN 'U' THEN ISNULL(NORMAL_QTY, 0) - :li_TQty ELSE ISNULL(NORMAL_QTY, 0) END),
+						REPAIR_QTY = (CASE :ls_InvStcd WHEN 'R' THEN ISNULL(REPAIR_QTY, 0) + :li_TQty ELSE ISNULL(REPAIR_QTY, 0) END),
+						PART_COST = (CASE :li_CostAV WHEN 0 THEN PART_COST ELSE :li_CostAV END)
+					WHERE PART_CODE = :ls_ItNo  and AREA_CODE = :ls_Xplant and FACTORY_CODE = :ls_Div
+					USING lstr_CmmsConn.t_sqlpis;
+				else
+					ag_message = "구분코드(3) 재고상태 코드("+ ls_InvStcd + ", " + ls_InvStcd1 & 
+									+ ")가 유효하지 않읍니다. "
+					f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+								ag_message, '공무자재 재고상태 CHK', g_s_empno, g_s_ipaddr, g_s_macaddr)
+					return -1
+				end if
+			else
+				ag_message = "구분코드( " + ls_SlipGubun + ")가 유효하지 않읍니다. "
+				f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+							ag_message, '공무자재 구분코드 CHK', g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+			
+		case else
+			ag_message = "데이타처리구분 C,D에 해당하지 않읍니다."
+			f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+						ag_message, '공무자재 처리구분 CHK', g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+			
+	end choose
+
+	if lstr_CmmsConn.t_sqlpis.sqlcode <> 0 then
+		ag_message = "공무자재TRANS UPDATE중 에러가 발생했읍니다. "
+		f_ipis_transaction_errorlog(ls_Chgcd,'','f_down_ipis_mis_inv401',&
+			lstr_CmmsConn.t_sqlpis.sqlerrtext,'공무자재TRANS UPDATE 에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if
+next
+
+return 0
+end function
+

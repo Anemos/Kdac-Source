@@ -1,0 +1,18 @@
+$PBExportHeader$d_pisq_select_documentno.srd
+$PBExportComments$dddw을 위한 거래처마스터 조회
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(14) updatewhereclause=yes name=manageno dbname="ManageNo" )
+ column=(type=char(50) updatewhereclause=yes name=documentno dbname="DocumentNo" )
+ procedure="1 execute dbo.sp_pisq_select_documentno;1 "  sort="manageno A " )
+text(band=header alignment="2" text="보상관리번호" border="6" color="0" x="9" y="4" height="60" width="439" html.valueishtml="0"  name=manageno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="보상청구/확정문서 번호" border="6" color="0" x="457" y="4" height="60" width="1033" html.valueishtml="0"  name=documentno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="16711680" x="9" y="4" height="60" width="439" format="[general]" html.valueishtml="0"  name=manageno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="457" y="4" height="60" width="1033" format="[general]" html.valueishtml="0"  name=documentno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

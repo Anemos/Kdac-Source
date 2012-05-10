@@ -1,0 +1,32 @@
+$PBExportHeader$f_bom_get_balance.srf
+$PBExportComments$자재 Balance에서 계정과 구입선 가져오기
+global type f_bom_get_balance from function_object
+end type
+
+forward prototypes
+global function string f_bom_get_balance (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global function string f_bom_get_balance (string a_plant, string a_div, string a_itno);//*******************************************************
+// 반환값 : 계정(2자리) + (3자리) + 구입선(2자리)
+//*******************************************************
+string l_s_srce, l_s_clsb, l_s_slash,l_s_return
+
+SELECT cls,srce
+ INTO :l_s_clsb , :l_s_srce
+ FROM pbinv.inv101 
+WHERE comltd = '01' and xplant = :a_plant and div = :a_div and itno = :a_itno using sqlca;
+if sqlca.sqlcode <> 0 then
+	l_s_clsb = " "
+	l_s_srce = " "
+end if
+if l_s_clsb = '30' or l_s_clsb = ' ' or l_s_clsb = '35' then
+   l_s_slash = ' '
+else
+	l_s_slash = ' / '
+end if		
+l_s_return = l_s_clsb + l_s_slash + l_s_srce
+return l_s_return
+
+end function
+

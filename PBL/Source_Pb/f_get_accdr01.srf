@@ -1,0 +1,54 @@
+$PBExportHeader$f_get_accdr01.srf
+$PBExportComments$필수입력(부서) editing 여부 return
+global type f_get_accdr01 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr01 (string a_acccode, string a_dept, string a_acdate)
+end prototypes
+
+global function string f_get_accdr01 (string a_acccode, string a_dept, string a_acdate);dec    l_n_dfromdt, l_n_dacttodt
+string l_s_daccode
+
+if a_acccode = 'A1040000' or a_acccode = 'D1070000' then
+	if a_dept = 'DX00' or a_dept = 'SX00' then
+		return ' '
+	else
+		return 'e'
+	end if
+else
+	select "PBCOMMON"."DAC001"."DFROMDT", "PBCOMMON"."DAC001"."DACTTODT", "PBCOMMON"."DAC001"."DACCODE"
+   into   :l_n_dfromdt, :l_n_dacttodt, :l_s_daccode
+	from   "PBCOMMON"."DAC001"
+	where  "PBCOMMON"."DAC001"."DUSE"  = ' '    and
+	       "PBCOMMON"."DAC001"."DTODT" = 0      and
+			 "PBCOMMON"."DAC001"."DCODE" = :a_dept using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return 'e'
+	end if
+	if mid(a_acccode,1,1) <> l_s_daccode and &
+	   ( mid(a_acccode,1,4) = 'M103' or mid(a_acccode,1,4) = 'D105' or mid(a_acccode,1,4) = 'S103' ) and &
+		l_s_daccode <> 'X' then
+		return 'e'
+	end if
+//	if mid(a_acccode,1,4) = 'D105' then
+//		if a_dept = 'YX00' then
+//			return 'e'
+//		end if
+//	end if
+	if mid(a_acccode,1,4) = 'A206' and &
+		( a_dept = 'DA00' or a_dept = 'JB00' or a_dept = 'KB00' ) then
+		return 'e'
+	end if
+	if l_n_dacttodt <> 0 and ( l_n_dacttodt < dec(a_acdate) or l_n_dfromdt > dec(a_acdate) ) then
+		return 'e'
+	end if
+	if a_acccode >= 'M1030101' and a_acccode <= 'M1039999' then
+		if a_dept = 'KM00' then
+			return 'e'
+		end if
+	end if
+	return ''
+end if
+end function
+

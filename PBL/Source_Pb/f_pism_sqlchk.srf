@@ -1,0 +1,27 @@
+$PBExportHeader$f_pism_sqlchk.srf
+$PBExportComments$transaction Error Chk ( return boolean)
+global type f_pism_sqlchk from function_object
+end type
+
+forward prototypes
+global function boolean f_pism_sqlchk ()
+end prototypes
+
+global function boolean f_pism_sqlchk ();
+//IF sqlPIS.SQLCode = 100 THEN
+//	f_error_box(String(sqlPIS.SQLCode),"요청한 자료가 없습니다.")
+//	return TRUE
+//END IF
+IF sqlPIS.SQLCode = -1 THEN 
+//	f_error_box(String(sqlPIS.SQLCode),sqlPIS.SQLErrText)
+	ROLLBACK USING  sqlPIS;
+	sqlPIS.AutoCommit = True 
+	return FALSE 
+ELSE
+	COMMIT USING  sqlPIS;
+	sqlPIS.AutoCommit = True 
+	return TRUE
+END IF
+
+end function
+

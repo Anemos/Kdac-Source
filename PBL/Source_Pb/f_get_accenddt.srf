@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_accenddt.srf
+$PBExportComments$마감일자 return
+global type f_get_accenddt from function_object
+end type
+
+forward prototypes
+global function string f_get_accenddt (string a_s_company, string a_s_sys, string a_s_gb)
+end prototypes
+
+global function string f_get_accenddt (string a_s_company, string a_s_sys, string a_s_gb);string l_s_enddt
+
+SELECT "PBACC"."ACC270"."EDENDDT"  
+  INTO :l_s_enddt
+FROM   "PBACC"."ACC270" 
+WHERE  "PBACC"."ACC270"."COMLTD"  = :a_s_company and
+       "PBACC"."ACC270"."EDSYS"   = :a_s_sys     and
+		 "PBACC"."ACC270"."EDGUBUN" = :a_s_gb      using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_enddt = ' '
+end if
+ 
+return l_s_enddt
+ 
+end function
+

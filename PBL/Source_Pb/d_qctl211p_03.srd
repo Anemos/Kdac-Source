@@ -1,0 +1,73 @@
+$PBExportHeader$d_qctl211p_03.srd
+$PBExportComments$공통코드(출력)
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 2 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=yes )
+header(height=676 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=72 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=comm_cd dbname="comm210.comm_cd" )
+ column=(type=char(3) updatewhereclause=yes name=comm_rpst dbname="comm210.comm_rpst" )
+ column=(type=char(3) updatewhereclause=yes name=comm_deta dbname="comm210.comm_deta" )
+ column=(type=char(40) updatewhereclause=yes name=comm_nm1 dbname="comm210.comm_nm1" )
+ column=(type=char(20) updatewhereclause=yes name=comm_nm2 dbname="comm210.comm_nm2" )
+ column=(type=char(60) updatewhereclause=yes name=comm_nm3 dbname="comm210.comm_nm3" )
+ column=(type=char(40) updatewhereclause=yes name=comm_nm4 dbname="comm210.comm_nm4" )
+ column=(type=char(1) updatewhereclause=yes name=comm_wk dbname="comm210.comm_wk" values="공통	A/학사	B/학사	C/학사	D/행정	E/행정	F/행정	G/연구	J/대학원	L/" )
+ column=(type=char(1) updatewhereclause=yes name=comm_st dbname="comm210.comm_st" values="사용	Y/미사용	N/" )
+ column=(type=char(80) updatewhereclause=yes name=comm_remk dbname="comm210.comm_remk" )
+ column=(type=char(6) updatewhereclause=yes name=rel_cd dbname="comm210.rel_cd" )
+ column=(type=char(6) updatewhereclause=yes name=inpt_id dbname="comm210.inpt_id" )
+ column=(type=char(19) updatewhereclause=yes name=inpt_dt dbname="comm210.inpt_dt" )
+ column=(type=char(6) updatewhereclause=yes name=updt_id dbname="comm210.updt_id" )
+ column=(type=char(19) updatewhereclause=yes name=updt_dt dbname="comm210.updt_dt" )
+ column=(type=char(40) updatewhereclause=yes name=comm210_comm_nm1 dbname="comm210.comm_nm1" )
+ retrieve="SELECT  COMM210_A.comm_cd ,
+        COMM210_A.comm_rpst ,
+        COMM210_A.comm_deta ,
+        COMM210_A.comm_nm1 ,
+        COMM210_A.comm_nm2 ,
+        COMM210_A.comm_nm3 ,
+        COMM210_A.comm_nm4 ,
+        COMM210_A.comm_wk ,
+        COMM210_A.comm_st ,
+        COMM210_A.comm_remk ,
+        COMM210_A.rel_cd ,
+        COMM210_A.inpt_id ,
+        COMM210_A.inpt_dt ,
+        COMM210_A.updt_id ,
+        COMM210_A.updt_dt ,
+        COMM210_B.comm_nm1    
+   FROM comm210 COMM210_A ,
+        comm210 COMM210_B 
+  WHERE COMM210_A.COMM_RPST = :ag_rpst  and
+        COMM210_B.COMM_CD   = 'A00' + :ag_rpst   " arguments=(("ag_rpst", string))  sort="comm_cd A " )
+group(level=1 header.height=0 trailer.height=0 by=("comm_rpst" ) newpage=yes header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="0" text="한국델파이" border="0" color="0" x="64" y="464" height="60" width="320"  name=t_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="코드구분 :" border="0" color="0" x="64" y="532" height="60" width="320"  name=t_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=2 alignment="2" tabsequence=32766 border="0" color="0" x="398" y="532" height="60" width="110" format="[general]"  name=comm_rpst  tag="대표코드" edit.limit=3 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header id=16 alignment="0" tabsequence=32766 border="0" color="0" x="517" y="532" height="60" width="928" format="[general]"  name=comm210_comm_nm1 edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="세부코드" border="2" color="0" x="64" y="600" height="72" width="297"  name=comm_deta_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="관계코드" border="2" color="0" x="2400" y="600" height="72" width="265"  name=rel_cd_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="공  통  코  드" border="1" color="0" x="1234" y="240" height="96" width="928"  name=t_5  font.face="굴림체" font.height="-16" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="상태" border="2" color="0" x="2254" y="600" height="72" width="142"  name=comm_st_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="코드약어" border="2" color="0" x="1454" y="600" height="72" width="512"  name=comm_nm2_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="업무구분" border="2" color="0" x="1970" y="600" height="72" width="279"  name=comm_wk_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+text(band=header alignment="2" text="코드명" border="2" color="0" x="366" y="600" height="72" width="1083"  name=comm_nm1_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="64" y="4" height="72" width="297" format="[general]"  name=comm_deta  tag="세부코드" edit.limit=3 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="2400" y="4" height="72" width="265" format="[general]"  name=rel_cd  tag="관계코드" edit.limit=6 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="2254" y="4" height="72" width="142" format="~tif ( comm_st = 'Y', ' ', 'Ｘ' )"  name=comm_st edit.limit=0 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1454" y="4" height="72" width="512" format=" [general]"  name=comm_nm2  tag="코드명2(약어)" edit.limit=20 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="1970" y="4" height="72" width="279" format="[general]"  name=comm_wk  tag="업무구분" edit.name="[업무구분]" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="366" y="4" height="72" width="1083" format=" [general]"  name=comm_nm1  tag="코드명1" edit.limit=40 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=footer x1="59" y1="0" x2="3342" y2="0"  name=l_1 pen.style="0" pen.width="5" pen.color="0"  background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="비고" border="2" color="0" x="2670" y="600" height="72" width="658"  name=comm_remk_t  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="65535" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2670" y="4" height="72" width="658" format="[general]"  name=comm_remk  tag="비고" edit.limit=80 edit.case=any edit.autoselect=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="페 이 지 : " border="0" color="0" x="2286" y="464" height="60" width="352"  name=t_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression="page() + ' /  ' + pageCount()"border="0" color="0" x="2647" y="464" height="60" width="576" format="[general]"  name=compute_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="출력일자 : " border="0" color="0" x="2286" y="532" height="60" width="352"  name=t_4  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression="string(today(),~"YYYY-MM-DD~") + ' ' + now()"border="0" color="0" x="2642" y="528" height="60" width="622" format="[GENERAL]"  name=compute_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+
+sparse(names="comm_wk")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

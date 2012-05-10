@@ -1,0 +1,62 @@
+$PBExportHeader$f_download_count.srf
+$PBExportComments$자료 내려받기 갯수 반환
+global type f_download_count from function_object
+end type
+
+forward prototypes
+global function long f_download_count ()
+end prototypes
+
+global function long f_download_count ();/*------------------------------*/
+long				ll_rc, ll_count, ll_rtn
+long				ll_data_size
+long				ll_down_count
+blob				lb_parm_data
+blob				lb_download_file
+/*------------------------------*/
+string			ls_file_name_temp
+decimal			ld_file_ver[], ld_file_ver_temp
+string			ls_file_client_ver
+/*------------------------------*/
+
+datastore      ids_download_file
+
+// 데이타를 가져오기 위하여 datastore 설정
+ids_download_file = create datastore
+
+ids_download_file.DataObject = 'ds_download_file'
+ids_download_file.SetTransObject(sqlpis)
+ids_download_file.retrieve(gs_appname)
+
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+long				ll_row_count, ll_cur_row
+
+ll_row_count = ids_download_file.RowCount()
+if ll_row_count < 1 then 
+	destroy ids_download_file
+	return -1
+end if
+
+/////////////////////////////////////////////////////////////////////////////////
+// 총 가져올 데이터의 파일이름과 크기, 갯수를 설정
+
+ll_cur_row = 0
+ll_down_count = 0
+
+DO WHILE ll_cur_row < ll_row_count
+	ll_cur_row ++
+	ls_file_name_temp   = ids_download_file.GetItemString( ll_cur_row, 'filename')
+	ld_file_ver_temp    = ids_download_file.GetItemNumber( ll_cur_row, 'fileversion')
+	if IsNull( ld_file_ver_temp )		then continue
+	/*------------------------------------------------------------------------------*/
+	ls_file_client_ver  = ProfileString(gs_IniFile, "DOWN_VERSION", ls_file_name_temp, "")
+	if IsNull( ls_file_client_ver ) then ls_file_client_ver = ''
+	/*------------------------------------------------------------------------------*/
+	If Trim( String(ld_file_ver_temp, '##.000' ) ) <> Trim(ls_file_client_ver) Then ll_down_count ++
+LOOP
+
+destroy ids_download_file
+
+return ll_down_count
+end function

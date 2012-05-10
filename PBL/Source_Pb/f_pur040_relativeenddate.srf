@@ -1,0 +1,44 @@
+$PBExportHeader$f_pur040_relativeenddate.srf
+$PBExportComments$최종분기말일자가져오기
+global type f_pur040_relativeenddate from function_object
+end type
+
+forward prototypes
+global function string f_pur040_relativeenddate (string as_date)
+end prototypes
+
+global function string f_pur040_relativeenddate (string as_date);date ldate_1
+string ls_date
+long  ll_ccyy,ll_mm,ll_day
+
+//ldate_1 = relativedate(date(string(as_date, "@@@@-@@-@@")), al_days)
+//ls_date = string(ldate_1, "yyyy-mm-dd")
+//ls_date = mid(ls_date,1,4) + mid(ls_date,6,2) + mid(ls_date,9,2)
+if trim(f_dateedit(as_date)) = '' then  //날짜형식 안맞음
+	return ''
+end if
+
+ll_ccyy = long(mid(as_date,1,4))
+ll_mm   = long(mid(as_date,5,2))
+ll_day  = long(mid(as_date,7,2))
+
+Choose case ll_mm
+	case 1,2,3
+		ll_ccyy = ll_ccyy - 1
+		ll_mm = 12
+		ll_day = 31
+	case 4,5,6
+		ll_mm = 3
+		ll_day = 31
+	case 7,8,9
+		ll_mm = 6
+		ll_day = 30
+	case 10,11,12
+		ll_mm = 9
+		ll_day = 30
+End choose
+
+ls_date = string(ll_ccyy,"0000") + string(ll_mm,"00") + string(ll_day,"00") 
+return ls_date
+end function
+

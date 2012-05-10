@@ -1,0 +1,77 @@
+$PBExportHeader$d_bpm001_citn.srd
+$PBExportComments$History 하위품번 데이타윈도우 오브젝트
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=8 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(15) update=yes updatewhereclause=yes name=pcitn dbname="BPM001.PCITN" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BPM001.PQTYM" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BPM001.PWKCT" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BPM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="BPM001.PEDTE" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=ppitn dbname="BPM001.PPITN" )
+ column=(type=char(1) updatewhereclause=yes name=plant dbname="BPM001.PLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pdvsn dbname="BPM001.PDVSN" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=prout dbname="BPM001.PROUT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=pchdt dbname="BPM001.PCHDT" )
+ column=(type=char(1) updatewhereclause=yes name=pexdv dbname="BPM001.PEXDV" )
+ column=(type=char(1) updatewhereclause=yes name=pchcd dbname="BPM001.PCHCD" )
+ column=(type=char(1) updatewhereclause=yes name=poscd dbname="BPM001.POSCD" )
+ column=(type=char(8) updatewhereclause=yes name=pindt dbname="BPM001.PINDT" )
+ column=(type=char(6) updatewhereclause=yes name=pemno dbname="BPM001.PEMNO" )
+ column=(type=char(1) updatewhereclause=yes name=popcd dbname="BPM001.POPCD" )
+ column=(type=char(1) updatewhereclause=yes name=pebst dbname="BPM001.PEBST" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv002_xunit dbname="INV002.XUNIT" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtye dbname="BPM001.PQTYE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM001~".~"PCITN~",   
+         ~"PBBPM~".~"BPM001~".~"PQTYM~",   
+         ~"PBBPM~".~"BPM001~".~"PWKCT~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTM~",   
+         ~"PBBPM~".~"BPM001~".~"PEDTE~",   
+         ~"PBBPM~".~"BPM001~".~"PPITN~", 
+         ~"PBBPM~".~"BPM001~".~"PLANT~",  
+         ~"PBBPM~".~"BPM001~".~"PDVSN~",   
+         ~"PBBPM~".~"BPM001~".~"PROUT~",   
+         ~"PBBPM~".~"BPM001~".~"PCHDT~",   
+         ~"PBBPM~".~"BPM001~".~"PEXDV~",   
+         ~"PBBPM~".~"BPM001~".~"PCHCD~",   
+         ~"PBBPM~".~"BPM001~".~"POSCD~",   
+         ~"PBBPM~".~"BPM001~".~"PINDT~",   
+         ~"PBBPM~".~"BPM001~".~"PEMNO~",   
+         ~"PBBPM~".~"BPM001~".~"POPCD~",   
+         ~"PBBPM~".~"BPM001~".~"PEBST~",   
+         ~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV002~".~"XUNIT~",   
+         ~"PBBPM~".~"BPM001~".~"PQTYE~"  
+    FROM ~"PBBPM~".~"BPM001~"  , ~"PBINV~".~"INV002~"
+   WHERE ( ~"PBBPM~".~"BPM001~".~"PCMCD~" = '01' ) AND
+			( ~"PBBPM~".~"BPM001~".~"PLANT~" = :A_PLANT ) AND 
+         ( ~"PBBPM~".~"BPM001~".~"PDVSN~" = :A_DIV ) AND  
+         ( ~"PBBPM~".~"BPM001~".~"PPITN~" = :A_PITNO ) AND
+			( ~"PBBPM~".~"BPM001~".~"PCMCD~" = ~"PBINV~".~"INV002~".~"COMLTD~" ) AND
+			( ~"PBBPM~".~"BPM001~".~"PCITN~" = ~"PBINV~".~"INV002~".~"ITNO~" ) AND 
+			( (~"PBBPM~".~"BPM001~".~"PEDTM~" <= ~"PBBPM~".~"BPM001~".~"PEDTE~" AND ~"PBBPM~".~"BPM001~".~"PEDTE~" <> ' ' AND ~"PBBPM~".~"BPM001~".~"PEDTE~" >= :a_date )
+          OR  
+         ( ~"PBBPM~".~"BPM001~".~"PEDTE~" = ' ' ))      
+" arguments=(("A_PLANT", string),("A_DIV", string),("A_PITNO", string),("A_DATE", string)) )
+text(band=header alignment="2" text="원단위량" border="0" color="16777215" x="1266" y="0" height="72" width="251" html.valueishtml="0"  name=t_3 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="조코드" border="0" color="16777215" x="1527" y="0" height="72" width="197" html.valueishtml="0"  name=t_4 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="시작일" border="0" color="16777215" x="1733" y="0" height="72" width="251" html.valueishtml="0"  name=t_5 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="종료일" border="0" color="16777215" x="1993" y="0" height="72" width="247" html.valueishtml="0"  name=t_6 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="하위품번" border="0" color="16777215" x="9" y="0" height="72" width="352" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="원단위량" border="0" color="16777215" x="1266" y="0" height="72" width="251" html.valueishtml="0"  name=t_7 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="단 위" border="0" color="16777215" x="1074" y="0" height="72" width="187" html.valueishtml="0"  name=inv002_xunit_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품   명" border="0" color="16777215" x="370" y="0" height="72" width="695" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="1266" y="0" height="76" width="251" format="[general]" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="1527" y="0" height="76" width="197" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1733" y="0" height="76" width="251" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="1993" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="352" format="[general]" html.valueishtml="0"  name=pcitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=18 alignment="0" tabsequence=0 border="0" color="0" x="375" y="0" height="76" width="690" html.valueishtml="0"  name=inv002_itnm visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=19 alignment="2" tabsequence=0 border="0" color="0" x="1079" y="0" height="76" width="183" html.valueishtml="0"  name=inv002_xunit visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

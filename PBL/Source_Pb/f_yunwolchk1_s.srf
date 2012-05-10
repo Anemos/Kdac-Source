@@ -1,0 +1,314 @@
+$PBExportHeader$f_yunwolchk1_s.srf
+$PBExportComments$연월차 적치 check(samusik) 2007.05.01
+global type f_yunwolchk1_s from function_object
+end type
+
+forward prototypes
+global function fstr_yunwol_rtn f_yunwolchk1_s (string a_s_empno, string a_s_date, string a_s_gubun, string a_s_return)
+end prototypes
+
+global function fstr_yunwol_rtn f_yunwolchk1_s (string a_s_empno, string a_s_date, string a_s_gubun, string a_s_return);string l_s_entdt, l_s_entyy, l_s_entmm, l_s_entdd, l_s_accyy, l_s_accmm, l_s_accdd, &
+       l_s_guntdt, l_s_yy, l_s_mm, l_s_dd, l_s_guntyy, l_s_guntmm, l_s_guntdd, &
+		 l_s_gunfdt, l_s_gunfyy, l_s_gunfmm, l_s_gunfdd, l_s_fchkdt, l_s_tchkdt, &
+       l_s_date, l_s_fdate, l_s_fyy, l_s_fmm, l_s_fdd, l_s_woldt, l_s_yundt, l_s_yundt1, a_s_date_1,&
+		 l_s_dategubun , l_s_fdt, l_s_tdt , l_s_peentdt
+int l_s_cnt, l_s_use, l_s_guncnt, l_s_row, i_idx, l_s_row1,l_s_row2, l_s_yuncnt, l_s_yunuse, l_s_wolcnt, &
+    l_s_stridx, l_s_endidx, l_s_sexgb ,l_s_wol_not ,l_s_row3 ,l_s_yuncnt_crt,l_s_yuncnt_add, &
+	 l_s_gunro , l_s_gunmu
+
+select peyuncha, pegunfdt, peguntdt, persex , peentdt into :l_s_entdt, :l_s_gunfdt, :l_s_guntdt, :l_s_sexgb ,:l_s_peentdt
+from pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+// 사용분계산시 당일까지.. 그외는 그전일까지..산정
+if a_s_return = "2" then
+	a_s_date_1 = a_s_date
+else
+	a_s_date_1 = f_relativedate(a_s_date, - 1)
+end if
+
+l_s_dategubun = mid(a_s_date,1,4)
+
+
+// "1" 월차 , "2" 년차
+choose case a_s_gubun
+	case '1'
+		//////////////월차산정시////////////////////////////////
+		l_s_entyy = mid(l_s_peentdt,1,4)
+		l_s_entmm = mid(l_s_peentdt,5,2)
+		l_s_entdd = mid(l_s_peentdt,7,2)
+		
+		l_s_gunfyy = mid(l_s_gunfdt,1,4)
+		l_s_gunfmm = mid(l_s_gunfdt,5,2)
+		l_s_gunfdd = mid(l_s_gunfdt,7,2)
+		l_s_guntyy = mid(l_s_guntdt,1,4)
+		l_s_guntmm = mid(l_s_guntdt,5,2)
+		l_s_guntdd = mid(l_s_guntdt,7,2)
+		
+		l_s_accyy = mid(a_s_date,1,4)
+		l_s_accmm = mid(a_s_date,5,2)
+		l_s_accdd = mid(a_s_date,7,2)
+		
+		l_s_fyy = string(integer(mid(a_s_date, 1, 4)) - 1,"0000")
+		l_s_fmm = mid(l_s_peentdt, 5, 2)
+		l_s_fdd = mid(l_s_peentdt, 7, 2)
+		l_s_fdate = l_s_fyy + l_s_fmm + l_s_fdd
+		
+		l_s_yy = mid(a_s_date, 1, 4)
+		l_s_mm = mid(l_s_peentdt, 5, 2)
+		l_s_dd = string(integer(mid(l_s_peentdt, 7, 2)) - 1,"00")
+		l_s_date = l_s_yy + l_s_mm + l_s_dd
+		////////////////////////////////////////////////////////////////
+		// 입사일자 check
+		if l_s_entyy = l_s_accyy then
+			l_s_cnt = integer(l_s_accmm) - 1 - integer(l_s_entmm)
+		else
+			l_s_cnt = integer(l_s_accmm) - 1
+			// 1월일 경우	
+			if l_s_accmm = '01' then
+				if string(integer(l_s_accyy) - 1)= l_s_entyy  and &
+					l_s_entmm = '12' and l_s_entdd  <> '01' then
+					
+				else
+		//			l_s_cnt = l_s_cnt + 1
+					l_s_cnt = 12
+				end if
+			end if
+		end if
+		
+		if l_s_entyy = l_s_accyy and integer(l_s_entdd) = 1 then
+			l_s_cnt = l_s_cnt + 1
+		end if
+		////////////////////////2006.01.05/////////////////////////////////////////////////
+		////if l_s_entyy = string(integer(l_s_accyy) - 1 )  and integer(l_s_entmm) <> 1 then
+		////  if l_s_accmm = '01' then
+		////		l_s_cnt = integer(l_s_accmm)
+		////  else
+		////    l_s_cnt = integer(l_s_accmm) - 1
+		////  end if
+		////end if
+		///////////////////////////////////////////////////////////////////////////////////
+		if l_s_entyy = string(integer(l_s_accyy) - 1 )  then  ///////입사 다음년도
+			if integer(l_s_entmm) <> 1 then
+			  if l_s_accmm = '01' then  ////////1월일경우
+					if integer(l_s_entdd) = 1  then
+						l_s_cnt = 12 - integer(l_s_entmm) + 1
+					else
+						l_s_cnt = 12 - integer(l_s_entmm)
+					end if
+			  else
+				 l_s_cnt = integer(l_s_accmm) - 1
+			  end if
+			end if
+		end if
+		//MESSAGEBOX('11',l_s_cnt)
+		// 군휴직자 check
+		if l_s_guntyy = l_s_accyy then 
+			l_s_guncnt = integer(l_s_accmm) - 1 - integer(l_s_guntmm)
+			if l_s_guncnt < 1 then
+				l_s_cnt = 0
+			else
+				l_s_cnt = l_s_guncnt
+			end if
+		end if
+		if l_s_guntyy = l_s_accyy and integer(l_s_guntdd) = 1 then
+			l_s_cnt += 1
+		end if
+		if l_s_guntyy = l_s_accyy and l_s_gunfyy = l_s_guntyy then
+			l_s_guncnt = integer(l_s_gunfmm) - 1
+			if l_s_guncnt < 1 then
+			else
+			l_s_cnt = l_s_guncnt
+			end if
+		end if
+		//MESSAGEBOX('22',l_s_cnt)
+		// 사용갯수 산정
+		l_s_woldt = l_s_accyy + '0201'
+		// 1월일 경우	
+		if l_s_accmm = '01'  then
+		//	l_s_woldt = l_s_accyy + '0101'   ///////2006.01.05
+			l_s_woldt = string(long(l_s_accyy) - 1) + '0201'
+		end if
+		
+		select count(*) into :l_s_use
+		from delabo.labtaf
+		where dsempno = :a_s_empno and 
+				dscd2r || dscd3r = 'R1' and 
+//미승인건도 포함
+//				dsyngb = 'Y' AND 
+				dsyy || dsmm || dsdd between :l_s_woldt and :a_s_date_1
+		using sqlcc;
+		
+		//MESSAGEBOX('33',l_s_cnt)	
+		// 1월 일경우
+		if l_s_accmm = '01' then	
+		//	l_s_stridx = 11
+		//	l_s_endidx = 11
+			l_s_stridx = 1
+			l_s_endidx = 12
+			l_s_accyy = l_s_fyy
+		else
+			l_s_stridx = 1
+			l_s_endidx = integer(l_s_accmm) - 1
+		end if
+		
+		for i_idx = l_s_stridx to l_s_endidx	
+			l_s_fchkdt = l_s_accyy + string(i_idx,"00") + "01"
+			if i_idx = integer(l_s_accmm) then
+				l_s_tchkdt = l_s_accyy + string(i_idx,"00") + l_s_accdd
+			else
+			
+				l_s_tchkdt = l_s_accyy + string(i_idx,"00") + "31"
+			end if
+		
+			select count(*) into :l_s_row1
+			from delabo.labtaf
+			where dsempno = :a_s_empno and 
+					( dscd2r || dscd3r in('K1','K2','K3','M1','M2','99','E2') ) and
+					dsyy || dsmm || dsdd between :l_s_fchkdt and :l_s_tchkdt
+			using sqlcc;
+			/////////육아휴직(M3), 출산휴가(R6) ,휴업(L2)/////////////////////////////
+			select count(*) into :l_s_row2
+			from delabo.labtaf
+			where dsempno = :a_s_empno and 
+				   ( dscd2r || dscd3r = 'M3' or dscd2r || dscd3r = 'L2' or  dscd2r || dscd3r = 'Q1' or
+				   ( dscd2r || dscd3r = 'R6' and :l_s_sexgb = 2 ) ) and 
+					dsyy || dsmm || dsdd between :l_s_fchkdt and :l_s_tchkdt
+			using sqlcc;
+			if l_s_row1 > 0 then
+				l_s_cnt = l_s_cnt - 1        //////월차미발생
+				l_s_wol_not += 1
+			else
+				if l_s_row2 > 0  then
+					select count(aa.dsempno) into :l_s_row3
+					from delabo.labtaf aa, delabo.labmaa bb
+					where aa.dsempno = :a_s_empno and 
+						   aa.dscd2r || aa.dscd3r not in('K1','K2','K3','M1','M2','M3','R6','L2','Q1','99','E2')  and 
+							aa.dsyy || aa.dsmm || aa.dsdd =  bb.ghdt and 
+							bb.ghdt between :l_s_fchkdt and :l_s_tchkdt and
+							bb.ghgb = '' and bb.gdiv = '' 
+//							dsyy || dsmm || dsdd in ( SELECT "DELABO"."LABMAA"."GHDT" 
+//															  FROM "DELABO"."LABMAA"  
+//															  WHERE "DELABO"."LABMAA"."GHDT" between :l_s_fchkdt and :l_s_tchkdt  and
+//																		 "DELABO"."LABMAA"."GHGB" not in ('S','T','H')  and
+//																		"DELABO"."LABMAA"."GDIV"  = ''  )
+					using sqlcc;
+					
+					if l_s_row3 > 0  then
+						
+					else
+						l_s_cnt = l_s_cnt - 1   /////월차미발생
+						l_s_wol_not += 1
+					end if
+				end if
+			end if
+		next
+		//MESSAGEBOX('44',l_s_cnt)
+		if l_s_cnt < 1 then
+			l_s_cnt = 0
+		end if
+		//********12월발생분을 +1 함.***************
+		if l_s_dategubun = '2002'  then
+			if l_s_accyy = '2002' and l_s_accyy <> l_s_entyy then
+				l_s_wolcnt = l_s_cnt + 1
+			else
+				l_s_wolcnt = l_s_cnt
+			end if
+		else 	
+			if l_s_accyy = mid(g_s_date,1,4) and l_s_accyy <> l_s_entyy then
+				l_s_wolcnt = l_s_cnt 
+			else
+				l_s_wolcnt = l_s_cnt
+			end if
+		end if	
+		
+		l_s_cnt = l_s_wolcnt - l_s_use 
+		
+case '2'
+	//////////////연차산정시////////////////////////////////
+		l_s_entyy = mid(l_s_entdt,1,4)
+		l_s_entmm = mid(l_s_entdt,5,2)
+		l_s_entdd = mid(l_s_entdt,7,2)
+		
+		l_s_gunfyy = mid(l_s_gunfdt,1,4)
+		l_s_gunfmm = mid(l_s_gunfdt,5,2)
+		l_s_gunfdd = mid(l_s_gunfdt,7,2)
+		l_s_guntyy = mid(l_s_guntdt,1,4)
+		l_s_guntmm = mid(l_s_guntdt,5,2)
+		l_s_guntdd = mid(l_s_guntdt,7,2)
+		
+		l_s_accyy = mid(a_s_date,1,4)
+		l_s_accmm = mid(a_s_date,5,2)
+		l_s_accdd = mid(a_s_date,7,2)
+		
+		l_s_fyy = string(integer(mid(a_s_date, 1, 4)) - 1,"0000")
+		l_s_fmm = mid(l_s_entdt, 5, 2)
+		l_s_fdd = mid(l_s_entdt, 7, 2)
+		l_s_fdate = l_s_fyy + l_s_fmm + l_s_fdd
+		
+		l_s_yy = mid(a_s_date, 1, 4)
+		l_s_mm = mid(l_s_entdt, 5, 2)
+		l_s_dd = string(integer(mid(l_s_entdt, 7, 2)) - 1,"00")
+		l_s_date = l_s_yy + l_s_mm + l_s_dd
+		////////////////////////////////////////////////////////////////
+// 년차 발생갯수	
+	if mid(l_s_entdt, 5, 4) <= mid(a_s_date, 5, 4) then
+		l_s_yundt1 = a_s_date
+	else
+		l_s_yundt1 = string(integer(mid(a_s_date, 1, 4)) - 1,"0000") + mid(a_s_date, 5, 2) + mid(a_s_date, 7, 2)
+	end if
+	
+//   l_s_yuncnt = f_yuncha_s(a_s_empno, l_s_yundt1)
+   fstr_yuncha_rtn   str_yuncha_rtn 
+	str_yuncha_rtn = f_yuncha1_s(a_s_empno, l_s_yundt1)
+	l_s_yuncnt_crt = str_yuncha_rtn.str_yuncha_crt           /////연차발생일수
+	l_s_yuncnt_add = str_yuncha_rtn.str_yuncha_add           /////연차가산일수
+	l_s_yuncnt     = l_s_yuncnt_crt + l_s_yuncnt_add
+	l_s_gunro      = str_yuncha_rtn.str_yuncha_gunro         /////소정근로일수
+	l_s_gunmu      = str_yuncha_rtn.str_yuncha_gunmu         /////근무일수
+	l_s_fdt        = str_yuncha_rtn.str_yuncha_fdate         /////발생일 산정 시작일
+	l_s_tdt        = str_yuncha_rtn.str_yuncha_tdate         /////발생일 산정 종료일
+// 년차 사용갯수	
+   if mid(l_s_entdt, 5, 4) <= mid(a_s_date, 5, 4) then
+		l_s_yundt = mid(l_s_date, 1, 4) + mid(l_s_date, 5, 2) + string(integer(mid(l_s_date, 7, 2)) + 1,"00")
+	else
+		l_s_yundt = string(integer(mid(l_s_date, 1, 4)) - 1,"0000") + mid(l_s_date, 5, 2) + string(integer(mid(l_s_date, 7, 2)) + 1,"00")
+	end if
+		
+   select count(*) into :l_s_yunuse
+   from delabo.labtaf
+   where dsyy || dsmm || dsdd between :l_s_yundt and :a_s_date_1
+     and dscd2r || dscd3r = 'R2' 
+//미승인건도 포함	  
+//	  AND dsyngb = 'Y'
+     and dsempno = :a_s_empno 
+   using sqlcc;
+
+   l_s_cnt = l_s_yuncnt - l_s_yunuse	
+end choose
+
+if l_s_cnt < 0 then
+   l_s_cnt = 0
+end if
+
+fstr_yunwol_rtn  str_yunwol_rtn
+str_yunwol_rtn.str_yun_crt  = l_s_yuncnt_crt          //////연차발생갯수
+str_yunwol_rtn.str_yun_use  = l_s_yunuse              //////연차사용갯수
+str_yunwol_rtn.str_yun_add  = l_s_yuncnt_add          //////연차가산갯수
+str_yunwol_rtn.str_yun_gunro  = l_s_gunro             //////연차:소정근로일수
+str_yunwol_rtn.str_yun_gunmu  = l_s_gunmu             //////연차:소정근무일수
+
+str_yunwol_rtn.str_wol_crt  = l_s_wolcnt               //////월차:생성갯수
+str_yunwol_rtn.str_wol_use  = l_s_use                  //////월차:사용갯수
+str_yunwol_rtn.str_wol_not  = l_s_wol_not              //////월차:미생성갯수
+
+str_yunwol_rtn.str_yun_fdate  = l_s_fdt                //////연차:발생일자 산정시작일
+str_yunwol_rtn.str_yun_tdate  = l_s_tdt                //////연차:발생일자 산정종료일
+
+return str_yunwol_rtn
+
+
+
+end function
+

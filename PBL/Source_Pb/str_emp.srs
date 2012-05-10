@@ -1,0 +1,11 @@
+$PBExportHeader$str_emp.srs
+$PBExportComments$인원예외사항 입력용
+global type str_emp from structure
+	string		s_empcode
+	string		s_descript
+	string		s_attendcode
+	date		dt_from
+	date		dt_to
+	real		r_hour
+end type
+

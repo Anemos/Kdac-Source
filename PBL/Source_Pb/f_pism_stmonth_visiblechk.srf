@@ -1,0 +1,20 @@
+$PBExportHeader$f_pism_stmonth_visiblechk.srf
+$PBExportComments$기준월 Visible 여부 반환
+global type f_pism_stmonth_visiblechk from function_object
+end type
+
+forward prototypes
+global function integer f_pism_stmonth_visiblechk (string as_area, string as_div, string as_year, string as_month)
+end prototypes
+
+global function integer f_pism_stmonth_visiblechk (string as_area, string as_div, string as_year, string as_month);Integer li_Chk 
+
+  SELECT Count(*) INTO :li_Chk  
+    FROM TMHSTMONTH  
+   WHERE ( AreaCode = :as_area ) AND  
+         ( DivisionCode = :as_div ) AND  
+         ( stYear = :as_year ) AND  
+         ( stMonth = :as_month ) Using SqlPIS ; 
+Return li_Chk 
+end function
+

@@ -1,0 +1,68 @@
+$PBExportHeader$d_comm102u_021.srd
+$PBExportComments$PassWord °ü¸® ÀÔ·Â
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=328 color="536870912" )
+table(column=(type=char(6) update=yes updatewhereclause=yes key=yes name=emp_no dbname="COMM121.EMP_NO" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=usests dbname="COMM121.USESTS" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes name=autarea dbname="COMM121.AUTAREA" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes name=autplnt dbname="COMM121.AUTPLNT" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes name=autdiv dbname="COMM121.AUTDIV" initial=" " )
+ column=(type=char(4) update=yes updatewhereclause=yes name=autext1 dbname="COMM121.AUTEXT1" initial=" " )
+ column=(type=char(4) update=yes updatewhereclause=yes name=autext2 dbname="COMM121.AUTEXT2" initial=" " )
+ column=(type=char(6) update=yes updatewhereclause=yes name=inpt_id dbname="COMM121.INPT_ID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=inpt_dt dbname="COMM121.INPT_DT" initial=" " )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updt_id dbname="COMM121.UPDT_ID" initial=" " )
+ column=(type=char(19) update=yes updatewhereclause=yes name=updt_dt dbname="COMM121.UPDT_DT" initial=" " )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ip_addr dbname="COMM121.IP_ADDR" initial=" " )
+ column=(type=char(30) update=yes updatewhereclause=yes name=mac_addr dbname="COMM121.MAC_ADDR" initial=" " )
+ column=(type=char(10) update=yes updatewhereclause=yes name=out_emp_name dbname="COMM121.OUT_EMP_NAME" initial=" " )
+ column=(type=char(3) update=yes updatewhereclause=yes name=out_vendor dbname="COMM121.OUT_VENDOR" initial=" " )
+ column=(type=char(10) updatewhereclause=yes name=penamek dbname="DAC003.PENAMEK" )
+ column=(type=char(4) updatewhereclause=yes name=pedept dbname="DAC003.PEDEPT" )
+ retrieve="SELECT 
+			~"PBCOMMON~".~"COMM121~".~"EMP_NO~",
+			~"PBCOMMON~".~"COMM121~".~"USESTS~",
+			~"PBCOMMON~".~"COMM121~".~"AUTAREA~",
+			~"PBCOMMON~".~"COMM121~".~"AUTPLNT~",
+			~"PBCOMMON~".~"COMM121~".~"AUTDIV~",
+			~"PBCOMMON~".~"COMM121~".~"AUTEXT1~",
+			~"PBCOMMON~".~"COMM121~".~"AUTEXT2~",   
+			~"PBCOMMON~".~"COMM121~".~"INPT_ID~",   
+			~"PBCOMMON~".~"COMM121~".~"INPT_DT~",   
+			~"PBCOMMON~".~"COMM121~".~"UPDT_ID~",   
+			~"PBCOMMON~".~"COMM121~".~"UPDT_DT~",   
+			~"PBCOMMON~".~"COMM121~".~"IP_ADDR~",   
+			~"PBCOMMON~".~"COMM121~".~"MAC_ADDR~",  
+			~"PBCOMMON~".~"COMM121~".~"OUT_EMP_NAME~",  
+			~"PBCOMMON~".~"COMM121~".~"OUT_VENDOR~",  
+			~"PBCOMMON~".~"DAC003~".~"PENAMEK~",   
+			~"PBCOMMON~".~"DAC003~".~"PEDEPT~"  
+FROM 	~"PBCOMMON~".~"COMM121~" LEFT OUTER JOIN ~"PBCOMMON~".~"DAC003~" 
+	ON		~"PBCOMMON~".~"COMM121~".~"EMP_NO~" = ~"PBCOMMON~".~"DAC003~".~"PEEMPNO~"  
+WHERE	~"PBCOMMON~".~"COMM121~".~"EMP_NO~" = :ag_empno 
+" update="PBCOMMON.COMM121" updatewhere=0 updatekeyinplace=yes arguments=(("ag_empno", string)) )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="471" y="60" height="60" width="297" format="[general]" html.valueishtml="0"  name=emp_no visible="1" edit.limit=6 edit.case=upper edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="0" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="2" tabsequence=20 border="5" color="0" x="325" y="192" height="60" width="73" format="[general]" html.valueishtml="0"  name=autarea visible="1" edit.limit=1 edit.case=upper edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Áö¿ª" border="0" color="0" x="91" y="192" height="68" width="183" html.valueishtml="0"  name=comm030_comm_nm1_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="»ç¿ëÀÚ¹øÈ£" border="0" color="0" x="91" y="60" height="68" width="352" html.valueishtml="0"  name=comm020_emp_no_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="¼Ò ¼Ó ¸í" border="0" color="0" x="1531" y="60" height="68" width="293" html.valueishtml="0"  name=v_psnl560_dept_kor_nm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="f_get_deptnm(  pedept , '5' ) "border="5" color="0" x="1847" y="60" height="60" width="1097" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=30 border="5" color="0" x="695" y="192" height="60" width="73" format="[general]" html.valueishtml="0"  name=autplnt visible="1" edit.limit=1 edit.case=upper edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="´ã´ç" border="0" color="0" x="471" y="192" height="68" width="183" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="±ÇÇÑ-±âÅ¸ 2" border="0" color="0" x="2194" y="192" height="68" width="366" html.valueishtml="0"  name=t_4 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=60 border="5" color="0" x="2578" y="192" height="60" width="379" format="[general]" html.valueishtml="0"  name=autext2 visible="1" edit.limit=4 edit.case=upper edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="°øÀå" border="0" color="0" x="878" y="192" height="68" width="183" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=40 border="5" color="0" x="1106" y="192" height="60" width="73" format="[general]" html.valueishtml="0"  name=autdiv visible="1" edit.limit=1 edit.case=upper edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="1111" y="60" height="60" width="366" format="[general]" html.valueishtml="0"  name=penamek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="ÀÌ¸§" border="0" color="0" x="882" y="60" height="68" width="183" html.valueishtml="0"  name=v1_psnl110_kor_nm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="±¸¸ÅÁÖ°üºÎ¼­" border="0" color="0" x="1243" y="192" height="68" width="393" html.valueishtml="0"  name=t_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=50 border="5" color="0" x="1664" y="188" height="72" width="489" format="[general]" html.valueishtml="0"  name=autext1 visible="1" dddw.name=dddw_codename dddw.displaycolumn=coflname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=5 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes criteria.override_edit=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

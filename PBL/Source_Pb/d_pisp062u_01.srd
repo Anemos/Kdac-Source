@@ -1,0 +1,613 @@
+$PBExportHeader$d_pisp062u_01.srd
+$PBExportComments$ÀÏÀÏ»ý»ê°èÈ¹ - SR ÇöÈ²
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=104 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=612 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=sortorder dbname="SortOrder" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=yes name=modelid dbname="ModelID" )
+ column=(type=char(1) updatewhereclause=yes name=productgubun dbname="ProductGubun" )
+ column=(type=char(10) updatewhereclause=yes name=productgubunname dbname="ProductGubunName" )
+ column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(15) updatewhereclause=yes name=areaname dbname="AreaName" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=divisionname dbname="DivisionName" )
+ column=(type=long updatewhereclause=yes name=rackqty dbname="RackQty" )
+ column=(type=long updatewhereclause=yes name=safetyinvqty dbname="SafetyInvQty" )
+ column=(type=long updatewhereclause=yes name=invqty dbname="InvQty" )
+ column=(type=char(1) updatewhereclause=yes name=invcompute dbname="InvCompute" values="SR	1/DDRS	2/SR // DDRS	3/DDRS + ¼Ò¿ä·®	4/" )
+ column=(type=long updatewhereclause=yes name=releaseqty dbname="ReleaseQty" )
+ column=(type=long updatewhereclause=yes name=prdqty dbname="PrdQty" )
+ column=(type=long updatewhereclause=yes name=changeqtysum dbname="ChangeQtySum" )
+ column=(type=long updatewhereclause=yes name=changeqty01 dbname="ChangeQty01" )
+ column=(type=long updatewhereclause=yes name=changeqty02 dbname="ChangeQty02" )
+ column=(type=long updatewhereclause=yes name=changeqty03 dbname="ChangeQty03" )
+ column=(type=long updatewhereclause=yes name=changeqty04 dbname="ChangeQty04" )
+ column=(type=long updatewhereclause=yes name=changeqty05 dbname="ChangeQty05" )
+ column=(type=long updatewhereclause=yes name=changeqty06 dbname="ChangeQty06" )
+ column=(type=long updatewhereclause=yes name=changeqty07 dbname="ChangeQty07" )
+ column=(type=long updatewhereclause=yes name=changeqty08 dbname="ChangeQty08" )
+ column=(type=long updatewhereclause=yes name=changeqty09 dbname="ChangeQty09" )
+ column=(type=long updatewhereclause=yes name=changeqty10 dbname="ChangeQty10" )
+ column=(type=long updatewhereclause=yes name=changeqty11 dbname="ChangeQty11" )
+ column=(type=long updatewhereclause=yes name=changeqty12 dbname="ChangeQty12" )
+ column=(type=long updatewhereclause=yes name=changeqty13 dbname="ChangeQty13" )
+ column=(type=long updatewhereclause=yes name=changeqty14 dbname="ChangeQty14" )
+ column=(type=long updatewhereclause=yes name=changeqty15 dbname="ChangeQty15" )
+ column=(type=long updatewhereclause=yes name=changeqty16 dbname="ChangeQty16" )
+ column=(type=long updatewhereclause=yes name=srqtysum dbname="SRQtySum" )
+ column=(type=long updatewhereclause=yes name=srqty01 dbname="SRQty01" )
+ column=(type=long updatewhereclause=yes name=srqty02 dbname="SRQty02" )
+ column=(type=long updatewhereclause=yes name=srqty03 dbname="SRQty03" )
+ column=(type=long updatewhereclause=yes name=srqty04 dbname="SRQty04" )
+ column=(type=long updatewhereclause=yes name=srqty05 dbname="SRQty05" )
+ column=(type=long updatewhereclause=yes name=srqty06 dbname="SRQty06" )
+ column=(type=long updatewhereclause=yes name=srqty07 dbname="SRQty07" )
+ column=(type=long updatewhereclause=yes name=srqty08 dbname="SRQty08" )
+ column=(type=long updatewhereclause=yes name=srqty09 dbname="SRQty09" )
+ column=(type=long updatewhereclause=yes name=srqty10 dbname="SRQty10" )
+ column=(type=long updatewhereclause=yes name=srqty11 dbname="SRQty11" )
+ column=(type=long updatewhereclause=yes name=srqty12 dbname="SRQty12" )
+ column=(type=long updatewhereclause=yes name=srqty13 dbname="SRQty13" )
+ column=(type=long updatewhereclause=yes name=srqty14 dbname="SRQty14" )
+ column=(type=long updatewhereclause=yes name=srqty15 dbname="SRQty15" )
+ column=(type=long updatewhereclause=yes name=srqty16 dbname="SRQty16" )
+ column=(type=long updatewhereclause=yes name=ddrsqtysum dbname="DDRSQtySum" )
+ column=(type=long updatewhereclause=yes name=ddrsqty01 dbname="DDRSQty01" )
+ column=(type=long updatewhereclause=yes name=ddrsqty02 dbname="DDRSQty02" )
+ column=(type=long updatewhereclause=yes name=ddrsqty03 dbname="DDRSQty03" )
+ column=(type=long updatewhereclause=yes name=ddrsqty04 dbname="DDRSQty04" )
+ column=(type=long updatewhereclause=yes name=ddrsqty05 dbname="DDRSQty05" )
+ column=(type=long updatewhereclause=yes name=ddrsqty06 dbname="DDRSQty06" )
+ column=(type=long updatewhereclause=yes name=ddrsqty07 dbname="DDRSQty07" )
+ column=(type=long updatewhereclause=yes name=ddrsqty08 dbname="DDRSQty08" )
+ column=(type=long updatewhereclause=yes name=ddrsqty09 dbname="DDRSQty09" )
+ column=(type=long updatewhereclause=yes name=ddrsqty10 dbname="DDRSQty10" )
+ column=(type=long updatewhereclause=yes name=ddrsqty11 dbname="DDRSQty11" )
+ column=(type=long updatewhereclause=yes name=ddrsqty12 dbname="DDRSQty12" )
+ column=(type=long updatewhereclause=yes name=ddrsqty13 dbname="DDRSQty13" )
+ column=(type=long updatewhereclause=yes name=ddrsqty14 dbname="DDRSQty14" )
+ column=(type=long updatewhereclause=yes name=ddrsqty15 dbname="DDRSQty15" )
+ column=(type=long updatewhereclause=yes name=ddrsqty16 dbname="DDRSQty16" )
+ column=(type=long updatewhereclause=yes name=dummyqtysum dbname="DummyQtySum" )
+ column=(type=long updatewhereclause=yes name=kdqtysum dbname="KDQtySum" )
+ column=(type=long updatewhereclause=yes name=kdqty01 dbname="KDQty01" )
+ column=(type=long updatewhereclause=yes name=kdqty02 dbname="KDQty02" )
+ column=(type=long updatewhereclause=yes name=kdqty03 dbname="KDQty03" )
+ column=(type=long updatewhereclause=yes name=kdqty04 dbname="KDQty04" )
+ column=(type=long updatewhereclause=yes name=kdqty05 dbname="KDQty05" )
+ column=(type=long updatewhereclause=yes name=kdqty06 dbname="KDQty06" )
+ column=(type=long updatewhereclause=yes name=kdqty07 dbname="KDQty07" )
+ column=(type=long updatewhereclause=yes name=kdqty08 dbname="KDQty08" )
+ column=(type=long updatewhereclause=yes name=kdqty09 dbname="KDQty09" )
+ column=(type=long updatewhereclause=yes name=kdqty10 dbname="KDQty10" )
+ column=(type=long updatewhereclause=yes name=kdqty11 dbname="KDQty11" )
+ column=(type=long updatewhereclause=yes name=kdqty12 dbname="KDQty12" )
+ column=(type=long updatewhereclause=yes name=kdqty13 dbname="KDQty13" )
+ column=(type=long updatewhereclause=yes name=kdqty14 dbname="KDQty14" )
+ column=(type=long updatewhereclause=yes name=kdqty15 dbname="KDQty15" )
+ column=(type=long updatewhereclause=yes name=kdqty16 dbname="KDQty16" )
+ column=(type=long updatewhereclause=yes name=asqtysum dbname="ASQtySum" )
+ column=(type=long updatewhereclause=yes name=asqty01 dbname="ASQty01" )
+ column=(type=long updatewhereclause=yes name=asqty02 dbname="ASQty02" )
+ column=(type=long updatewhereclause=yes name=asqty03 dbname="ASQty03" )
+ column=(type=long updatewhereclause=yes name=asqty04 dbname="ASQty04" )
+ column=(type=long updatewhereclause=yes name=asqty05 dbname="ASQty05" )
+ column=(type=long updatewhereclause=yes name=asqty06 dbname="ASQty06" )
+ column=(type=long updatewhereclause=yes name=asqty07 dbname="ASQty07" )
+ column=(type=long updatewhereclause=yes name=asqty08 dbname="ASQty08" )
+ column=(type=long updatewhereclause=yes name=asqty09 dbname="ASQty09" )
+ column=(type=long updatewhereclause=yes name=asqty10 dbname="ASQty10" )
+ column=(type=long updatewhereclause=yes name=asqty11 dbname="ASQty11" )
+ column=(type=long updatewhereclause=yes name=asqty12 dbname="ASQty12" )
+ column=(type=long updatewhereclause=yes name=asqty13 dbname="ASQty13" )
+ column=(type=long updatewhereclause=yes name=asqty14 dbname="ASQty14" )
+ column=(type=long updatewhereclause=yes name=asqty15 dbname="ASQty15" )
+ column=(type=long updatewhereclause=yes name=asqty16 dbname="ASQty16" )
+ column=(type=long updatewhereclause=yes name=etcqty01sum dbname="EtcQty01Sum" )
+ column=(type=long updatewhereclause=yes name=etcqty0101 dbname="EtcQty0101" )
+ column=(type=long updatewhereclause=yes name=etcqty0102 dbname="EtcQty0102" )
+ column=(type=long updatewhereclause=yes name=etcqty0103 dbname="EtcQty0103" )
+ column=(type=long updatewhereclause=yes name=etcqty0104 dbname="EtcQty0104" )
+ column=(type=long updatewhereclause=yes name=etcqty0105 dbname="EtcQty0105" )
+ column=(type=long updatewhereclause=yes name=etcqty0106 dbname="EtcQty0106" )
+ column=(type=long updatewhereclause=yes name=etcqty0107 dbname="EtcQty0107" )
+ column=(type=long updatewhereclause=yes name=etcqty0108 dbname="EtcQty0108" )
+ column=(type=long updatewhereclause=yes name=etcqty0109 dbname="EtcQty0109" )
+ column=(type=long updatewhereclause=yes name=etcqty0110 dbname="EtcQty0110" )
+ column=(type=long updatewhereclause=yes name=etcqty0111 dbname="EtcQty0111" )
+ column=(type=long updatewhereclause=yes name=etcqty0112 dbname="EtcQty0112" )
+ column=(type=long updatewhereclause=yes name=etcqty0113 dbname="EtcQty0113" )
+ column=(type=long updatewhereclause=yes name=etcqty0114 dbname="EtcQty0114" )
+ column=(type=long updatewhereclause=yes name=etcqty0115 dbname="EtcQty0115" )
+ column=(type=long updatewhereclause=yes name=etcqty0116 dbname="EtcQty0116" )
+ column=(type=long updatewhereclause=yes name=etcqty02sum dbname="EtcQty02Sum" )
+ column=(type=long updatewhereclause=yes name=etcqty0201 dbname="EtcQty0201" )
+ column=(type=long updatewhereclause=yes name=etcqty0202 dbname="EtcQty0202" )
+ column=(type=long updatewhereclause=yes name=etcqty0203 dbname="EtcQty0203" )
+ column=(type=long updatewhereclause=yes name=etcqty0204 dbname="EtcQty0204" )
+ column=(type=long updatewhereclause=yes name=etcqty0205 dbname="EtcQty0205" )
+ column=(type=long updatewhereclause=yes name=etcqty0206 dbname="EtcQty0206" )
+ column=(type=long updatewhereclause=yes name=etcqty0207 dbname="EtcQty0207" )
+ column=(type=long updatewhereclause=yes name=etcqty0208 dbname="EtcQty0208" )
+ column=(type=long updatewhereclause=yes name=etcqty0209 dbname="EtcQty0209" )
+ column=(type=long updatewhereclause=yes name=etcqty0210 dbname="EtcQty0210" )
+ column=(type=long updatewhereclause=yes name=etcqty0211 dbname="EtcQty0211" )
+ column=(type=long updatewhereclause=yes name=etcqty0212 dbname="EtcQty0212" )
+ column=(type=long updatewhereclause=yes name=etcqty0213 dbname="EtcQty0213" )
+ column=(type=long updatewhereclause=yes name=etcqty0214 dbname="EtcQty0214" )
+ column=(type=long updatewhereclause=yes name=etcqty0215 dbname="EtcQty0215" )
+ column=(type=long updatewhereclause=yes name=etcqty0216 dbname="EtcQty0216" )
+ column=(type=long updatewhereclause=yes name=etcqty03sum dbname="EtcQty03Sum" )
+ column=(type=long updatewhereclause=yes name=etcqty0301 dbname="EtcQty0301" )
+ column=(type=long updatewhereclause=yes name=etcqty0302 dbname="EtcQty0302" )
+ column=(type=long updatewhereclause=yes name=etcqty0303 dbname="EtcQty0303" )
+ column=(type=long updatewhereclause=yes name=etcqty0304 dbname="EtcQty0304" )
+ column=(type=long updatewhereclause=yes name=etcqty0305 dbname="EtcQty0305" )
+ column=(type=long updatewhereclause=yes name=etcqty0306 dbname="EtcQty0306" )
+ column=(type=long updatewhereclause=yes name=etcqty0307 dbname="EtcQty0307" )
+ column=(type=long updatewhereclause=yes name=etcqty0308 dbname="EtcQty0308" )
+ column=(type=long updatewhereclause=yes name=etcqty0309 dbname="EtcQty0309" )
+ column=(type=long updatewhereclause=yes name=etcqty0310 dbname="EtcQty0310" )
+ column=(type=long updatewhereclause=yes name=etcqty0311 dbname="EtcQty0311" )
+ column=(type=long updatewhereclause=yes name=etcqty0312 dbname="EtcQty0312" )
+ column=(type=long updatewhereclause=yes name=etcqty0313 dbname="EtcQty0313" )
+ column=(type=long updatewhereclause=yes name=etcqty0314 dbname="EtcQty0314" )
+ column=(type=long updatewhereclause=yes name=etcqty0315 dbname="EtcQty0315" )
+ column=(type=long updatewhereclause=yes name=etcqty0316 dbname="EtcQty0316" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag dbname="ChangeFlag" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag01 dbname="ChangeFlag01" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag02 dbname="ChangeFlag02" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag03 dbname="ChangeFlag03" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag04 dbname="ChangeFlag04" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag05 dbname="ChangeFlag05" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag06 dbname="ChangeFlag06" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag07 dbname="ChangeFlag07" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag08 dbname="ChangeFlag08" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag09 dbname="ChangeFlag09" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag10 dbname="ChangeFlag10" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag11 dbname="ChangeFlag11" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag12 dbname="ChangeFlag12" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag13 dbname="ChangeFlag13" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag14 dbname="ChangeFlag14" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag15 dbname="ChangeFlag15" )
+ column=(type=char(1) updatewhereclause=yes name=changeflag16 dbname="ChangeFlag16" )
+ procedure="1 execute dbo.sp_pisp062u_01;1 @ps_todate = :ps_todate, @ps_plandate01 = :ps_plandate01, @ps_plandate02 = :ps_plandate02, @ps_plandate03 = :ps_plandate03, @ps_plandate04 = :ps_plandate04, @ps_plandate05 = :ps_plandate05, @ps_plandate06 = :ps_plandate06, @ps_plandate07 = :ps_plandate07, @ps_plandate08 = :ps_plandate08, @ps_plandate09 = :ps_plandate09, @ps_plandate10 = :ps_plandate10, @ps_plandate11 = :ps_plandate11, @ps_plandate12 = :ps_plandate12, @ps_plandate13 = :ps_plandate13, @ps_plandate14 = :ps_plandate14, @ps_plandate15 = :ps_plandate15, @ps_plandate16 = :ps_plandate16, @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_workcenter = :ps_workcenter, @ps_linecode = :ps_linecode, @ps_itemcode = :ps_itemcode" arguments=(("ps_todate", string),("ps_plandate01", string),("ps_plandate02", string),("ps_plandate03", string),("ps_plandate04", string),("ps_plandate05", string),("ps_plandate06", string),("ps_plandate07", string),("ps_plandate08", string),("ps_plandate09", string),("ps_plandate10", string),("ps_plandate11", string),("ps_plandate12", string),("ps_plandate13", string),("ps_plandate14", string),("ps_plandate15", string),("ps_plandate16", string),("ps_areacode", string),("ps_divisioncode", string),("ps_workcenter", string),("ps_linecode", string),("ps_itemcode", string)) )
+text(band=header alignment="2" text="¼ø¼­" border="0" color="16777215" x="14" y="12" height="84" width="146"  name=sortorder_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø/Ç°¸í" border="0" color="16777215" x="174" y="12" height="84" width="773"  name=itemcode_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Äº°ID" border="0" color="16777215" x="960" y="12" height="84" width="247"  name=modelid_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç°í°è»ê" border="0" color="16777215" x="1221" y="12" height="84" width="549"  name=invcompute_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="1783" y="12" height="84" width="338"  name=t_2  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±¸ºÐ" border="0" color="16777215" x="2135" y="12" height="84" width="475"  name=productgubunname_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö¿ë¼ö" border="0" color="16777215" x="2624" y="12" height="84" width="256"  name=rackqty_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾ÈÀüÀç°í" border="0" color="16777215" x="2894" y="12" height="84" width="320"  name=safetyinvqty_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶È¸¼ö·®ÇÕ°è" border="0" color="65535" x="4014" y="12" height="84" width="475"  name=changeqtysum_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="4992" y="12" height="84" width="197"  name=changeqty01_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="5202" y="12" height="84" width="197"  name=changeqty02_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="5413" y="12" height="84" width="197"  name=changeqty03_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="5838" y="12" height="84" width="197"  name=changeqty05_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="6469" y="12" height="84" width="197"  name=changeqty08_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="6679" y="12" height="84" width="197"  name=changeqty09_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="6889" y="12" height="84" width="197"  name=changeqty10_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="7099" y="12" height="84" width="197"  name=changeqty11_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="7735" y="12" height="84" width="197"  name=changeqty14_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="7310" y="12" height="84" width="201"  name=changeqty12_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="7525" y="12" height="84" width="197"  name=changeqty13_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="6048" y="12" height="84" width="197"  name=changeqty06_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="6258" y="12" height="84" width="197"  name=changeqty07_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="7945" y="12" height="84" width="197"  name=changeqty15_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º¯°æ¼ö·®ÇÕ°è" border="0" color="16777215" x="4503" y="12" height="84" width="475"  name=t_1  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="5623" y="12" height="84" width="201"  name=changeqty04_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="0" x="14" y="8" height="64" width="146" format="[general]"  name=sortorder edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="174" y="84" height="64" width="773" format="[general]"  name=itemname edit.limit=30 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="8388608" x="174" y="8" height="64" width="773" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty01,
+     If ( invcompute = '2', ddrsqty01,
+          If ( invcompute = '3', If(srqty01 = 0, ddrsqty01, srqty01),
+               If ( invcompute = '4', ddrsqty01 + dummyqty01,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="530" y="820" height="64" width="197" format="#,###"  name=computeqty01  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty02,
+     If ( invcompute = '2', ddrsqty02,
+          If ( invcompute = '3', If(srqty02 = 0, ddrsqty02, srqty02),
+               If ( invcompute = '4', ddrsqty02 + dummyqty02,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="741" y="820" height="64" width="197" format="#,###"  name=computeqty02  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty03,
+     If ( invcompute = '2', ddrsqty03,
+          If ( invcompute = '3', If(srqty03 = 0, ddrsqty03, srqty03),
+               If ( invcompute = '4', ddrsqty03 + dummyqty03,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="951" y="820" height="64" width="197" format="#,###"  name=computeqty03  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty04,
+     If ( invcompute = '2', ddrsqty04,
+          If ( invcompute = '3', If(srqty04 = 0, ddrsqty04, srqty04),
+               If ( invcompute = '4', ddrsqty04 + dummyqty04,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1161" y="820" height="64" width="197" format="#,###"  name=computeqty04  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty05,
+     If ( invcompute = '2', ddrsqty05,
+          If ( invcompute = '3', If(srqty05 = 0, ddrsqty05, srqty05),
+               If ( invcompute = '4', ddrsqty05 + dummyqty05,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1376" y="820" height="64" width="197" format="#,###"  name=computeqty05  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty08,
+     If ( invcompute = '2', ddrsqty08,
+          If ( invcompute = '3', If(srqty08 = 0, ddrsqty08, srqty08),
+               If ( invcompute = '4', ddrsqty08 + dummyqty08,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="2007" y="820" height="64" width="197" format="#,###"  name=computeqty08  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty06,
+     If ( invcompute = '2', ddrsqty06,
+          If ( invcompute = '3', If(srqty06 = 0, ddrsqty06, srqty06),
+               If ( invcompute = '4', ddrsqty06 + dummyqty06,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1586" y="820" height="64" width="197" format="#,###"  name=computeqty06  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty07,
+     If ( invcompute = '2', ddrsqty07,
+          If ( invcompute = '3', If(srqty07 = 0, ddrsqty07, srqty07),
+               If ( invcompute = '4', ddrsqty07 + dummyqty07,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1797" y="820" height="64" width="197" format="#,###"  name=computeqty07  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=121 alignment="1" tabsequence=32766 border="0" color="0" x="539" y="1016" height="64" width="197" format="#,###"  name=etcqty0201 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=122 alignment="1" tabsequence=32766 border="0" color="0" x="750" y="1016" height="64" width="197" format="#,###"  name=etcqty0202 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=123 alignment="1" tabsequence=32766 border="0" color="0" x="960" y="1016" height="64" width="197" format="#,###"  name=etcqty0203 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=124 alignment="1" tabsequence=32766 border="0" color="0" x="1170" y="1016" height="64" width="197" format="#,###"  name=etcqty0204 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=125 alignment="1" tabsequence=32766 border="0" color="0" x="1385" y="1016" height="64" width="197" format="#,###"  name=etcqty0205 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=126 alignment="1" tabsequence=32766 border="0" color="0" x="1595" y="1016" height="64" width="197" format="#,###"  name=etcqty0206 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=127 alignment="1" tabsequence=32766 border="0" color="0" x="1806" y="1016" height="64" width="197" format="#,###"  name=etcqty0207 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=120 alignment="1" tabsequence=32766 border="0" color="128" x="41" y="1020" height="64" width="475" format="#,##0"  name=etcqty02sum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=137 alignment="1" tabsequence=32766 border="0" color="128" x="50" y="1204" height="64" width="475" format="#,##0"  name=etcqty03sum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=138 alignment="1" tabsequence=32766 border="0" color="0" x="549" y="1200" height="64" width="197" format="#,###"  name=etcqty0301 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=139 alignment="1" tabsequence=32766 border="0" color="0" x="759" y="1200" height="64" width="197" format="#,###"  name=etcqty0302 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=140 alignment="1" tabsequence=32766 border="0" color="0" x="969" y="1200" height="64" width="197" format="#,###"  name=etcqty0303 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=141 alignment="1" tabsequence=32766 border="0" color="0" x="1179" y="1200" height="64" width="197" format="#,###"  name=etcqty0304 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=142 alignment="1" tabsequence=32766 border="0" color="0" x="1394" y="1200" height="64" width="197" format="#,###"  name=etcqty0305 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=143 alignment="1" tabsequence=32766 border="0" color="0" x="1605" y="1200" height="64" width="197" format="#,###"  name=etcqty0306 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=144 alignment="1" tabsequence=32766 border="0" color="0" x="1815" y="1200" height="64" width="197" format="#,###"  name=etcqty0307 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=145 alignment="1" tabsequence=32766 border="0" color="0" x="549" y="1300" height="64" width="197" format="#,###"  name=etcqty0308 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=146 alignment="1" tabsequence=32766 border="0" color="0" x="759" y="1300" height="64" width="197" format="#,###"  name=etcqty0309 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=147 alignment="1" tabsequence=32766 border="0" color="0" x="969" y="1300" height="64" width="197" format="#,###"  name=etcqty0310 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=148 alignment="1" tabsequence=32766 border="0" color="0" x="1179" y="1300" height="64" width="197" format="#,###"  name=etcqty0311 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=151 alignment="1" tabsequence=32766 border="0" color="0" x="1815" y="1300" height="64" width="197" format="#,###"  name=etcqty0314 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=149 alignment="1" tabsequence=32766 border="0" color="0" x="1390" y="1300" height="64" width="201" format="#,###"  name=etcqty0312 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=150 alignment="1" tabsequence=32766 border="0" color="0" x="1605" y="1300" height="64" width="197" format="#,###"  name=etcqty0313 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=152 alignment="1" tabsequence=32766 border="0" color="0" x="2025" y="1300" height="64" width="197" format="#,###"  name=etcqty0315 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=128 alignment="1" tabsequence=32766 border="0" color="0" x="544" y="1104" height="64" width="197" format="#,###"  name=etcqty0208 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=129 alignment="1" tabsequence=32766 border="0" color="0" x="754" y="1104" height="64" width="197" format="#,###"  name=etcqty0209 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=130 alignment="1" tabsequence=32766 border="0" color="0" x="965" y="1104" height="64" width="197" format="#,###"  name=etcqty0210 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=131 alignment="1" tabsequence=32766 border="0" color="0" x="1175" y="1104" height="64" width="197" format="#,###"  name=etcqty0211 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=134 alignment="1" tabsequence=32766 border="0" color="0" x="1810" y="1104" height="64" width="197" format="#,###"  name=etcqty0214 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=132 alignment="1" tabsequence=32766 border="0" color="0" x="1385" y="1104" height="64" width="201" format="#,###"  name=etcqty0212 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=133 alignment="1" tabsequence=32766 border="0" color="0" x="1600" y="1104" height="64" width="197" format="#,###"  name=etcqty0213 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=135 alignment="1" tabsequence=32766 border="0" color="0" x="2021" y="1104" height="64" width="197" format="#,###"  name=etcqty0215 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty09,
+     If ( invcompute = '2', ddrsqty09,
+          If ( invcompute = '3', If(srqty09 = 0, ddrsqty09, srqty09),
+               If ( invcompute = '4', ddrsqty09 + dummyqty09,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="526" y="912" height="64" width="197" format="#,###"  name=computeqty09  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty10,
+     If ( invcompute = '2', ddrsqty10,
+          If ( invcompute = '3', If(srqty10 = 0, ddrsqty10, srqty10),
+               If ( invcompute = '4', ddrsqty10 + dummyqty10,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="736" y="912" height="64" width="197" format="#,###"  name=computeqty10  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty11,
+     If ( invcompute = '2', ddrsqty11,
+          If ( invcompute = '3', If(srqty11 = 0, ddrsqty11, srqty11),
+               If ( invcompute = '4', ddrsqty11 + dummyqty11,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="946" y="912" height="64" width="197" format="#,###"  name=computeqty11  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty14,
+     If ( invcompute = '2', ddrsqty14,
+          If ( invcompute = '3', If(srqty14 = 0, ddrsqty14, srqty14),
+               If ( invcompute = '4', ddrsqty14 + dummyqty14,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1582" y="912" height="64" width="197" format="#,###"  name=computeqty14  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty12,
+     If ( invcompute = '2', ddrsqty12,
+          If ( invcompute = '3', If(srqty12 = 0, ddrsqty12, srqty12),
+               If ( invcompute = '4', ddrsqty12 + dummyqty12,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1157" y="912" height="64" width="201" format="#,###"  name=computeqty12  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty13,
+     If ( invcompute = '2', ddrsqty13,
+          If ( invcompute = '3', If(srqty13 = 0, ddrsqty13, srqty13),
+               If ( invcompute = '4', ddrsqty13 + dummyqty13,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1371" y="912" height="64" width="197" format="#,###"  name=computeqty13  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty15,
+     If ( invcompute = '2', ddrsqty15,
+          If ( invcompute = '3', If(srqty15 = 0, ddrsqty15, srqty15),
+               If ( invcompute = '4', ddrsqty15 + dummyqty15,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="1792" y="912" height="64" width="197" format="#,###"  name=computeqty15  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( invcompute = '1', srqty16,
+     If ( invcompute = '2', ddrsqty16,
+          If ( invcompute = '3', If(srqty16 = 0, ddrsqty16, srqty16),
+               If ( invcompute = '4', ddrsqty16 + dummyqty16,
+                    0
+                  )
+             )
+        )
+   )"border="0" color="0" x="2002" y="912" height="64" width="197" format="#,###"  name=computeqty16  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="kdqty16 + asqty16 + etcqty0116 + etcqty0216 + etcqty0316"border="0" color="0" x="2226" y="912" height="64" width="197" format="#,###"  name=dummyqty16  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="8388736" x="960" y="8" height="64" width="247" format="[general]"  name=modelid edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=10 border="0" color="0" x="1221" y="8" height="64" width="549" format="[general]"  name=invcompute ddlb.limit=0 ddlb.allowedit=no ddlb.case=upper ddlb.vscrollbar=yes ddlb.useasborder=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="0" x="2624" y="8" height="64" width="256" format="#,##0"  name=rackqty edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="2894" y="8" height="64" width="320" format="#,##0"  name=safetyinvqty edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="3227" y="8" height="64" width="288" format="#,##0"  name=invqty edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="8" height="64" width="475" format="#,##0"  name=changeqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="84" height="64" width="475" format="#,##0"  name=srqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" srqty01 +  srqty02 +  srqty03 +  srqty04 +  srqty05 +  srqty06 +  srqty07 +  srqty08 +  srqty09 +  srqty10 +  srqty11 +  srqty12 +  srqty13 +  srqty14 +  srqty15"border="0" color="8388608" x="4503" y="84" height="64" width="475" format="#,##0"  name=compute_2  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="changeqty01 +  changeqty02 +  changeqty03 +  changeqty04 +  changeqty05 +  changeqty06 +  changeqty07 +  changeqty08 +  changeqty09 +  changeqty10 +  changeqty11 +  changeqty12 +  changeqty13 +  changeqty14 +  changeqty15"border="0" color="8388608" x="4503" y="8" height="64" width="475" format="#,##0"  name=compute_1  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=51 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="160" height="64" width="475" format="#,##0"  name=ddrsqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" ddrsqty01 +  ddrsqty02 +  ddrsqty03 +  ddrsqty04 +  ddrsqty05 +  ddrsqty06 +  ddrsqty07 +  ddrsqty08 +  ddrsqty09 +  ddrsqty10 +  ddrsqty11 +  ddrsqty12 +  ddrsqty13 +  ddrsqty14 +  ddrsqty15"border="0" color="8388608" x="4503" y="160" height="64" width="475" format="#,##0"  name=compute_3  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=68 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="236" height="64" width="475" format="#,##0"  name=dummyqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="dummyqty01 + dummyqty02 + dummyqty03 + dummyqty04 + dummyqty05 + dummyqty06 + dummyqty07 + dummyqty08 + dummyqty09 + dummyqty10 + dummyqty11 + dummyqty12 + dummyqty13 + dummyqty14 + dummyqty15"border="0" color="8388608" x="4503" y="236" height="64" width="475" format="#,##0"  name=compute_4  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=69 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="312" height="64" width="475" format="#,##0"  name=kdqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=70 alignment="1" tabsequence=20 border="0" color="0" x="4992" y="312" height="64" width="197" format="#,###"  name=kdqty01 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=71 alignment="1" tabsequence=30 border="0" color="0" x="5202" y="312" height="64" width="197" format="#,###"  name=kdqty02 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=72 alignment="1" tabsequence=40 border="0" color="0" x="5413" y="312" height="64" width="197" format="#,###"  name=kdqty03 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=74 alignment="1" tabsequence=60 border="0" color="0" x="5838" y="312" height="64" width="197" format="#,###"  name=kdqty05 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=77 alignment="1" tabsequence=90 border="0" color="0" x="6469" y="312" height="64" width="197" format="#,###"  name=kdqty08 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=78 alignment="1" tabsequence=100 border="0" color="0" x="6679" y="312" height="64" width="197" format="#,###"  name=kdqty09 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=79 alignment="1" tabsequence=110 border="0" color="0" x="6889" y="312" height="64" width="197" format="#,###"  name=kdqty10 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=80 alignment="1" tabsequence=120 border="0" color="0" x="7099" y="312" height="64" width="197" format="#,###"  name=kdqty11 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=83 alignment="1" tabsequence=150 border="0" color="0" x="7735" y="312" height="64" width="197" format="#,###"  name=kdqty14 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=81 alignment="1" tabsequence=130 border="0" color="0" x="7310" y="312" height="64" width="201" format="#,###"  name=kdqty12 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=82 alignment="1" tabsequence=140 border="0" color="0" x="7525" y="312" height="64" width="197" format="#,###"  name=kdqty13 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=75 alignment="1" tabsequence=70 border="0" color="0" x="6048" y="312" height="64" width="197" format="#,###"  name=kdqty06 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=76 alignment="1" tabsequence=80 border="0" color="0" x="6258" y="312" height="64" width="197" format="#,###"  name=kdqty07 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=84 alignment="1" tabsequence=160 border="0" color="0" x="7945" y="312" height="64" width="197" format="#,###"  name=kdqty15 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="kdqty01 +  kdqty02 +  kdqty03 +  kdqty04 +  kdqty05 +  kdqty06 +  kdqty07 +  kdqty08 +  kdqty09 +  kdqty10 +  kdqty11 +  kdqty12 +  kdqty13 +  kdqty14 +  kdqty15"border="0" color="8388608" x="4503" y="312" height="64" width="475" format="#,##0"  name=compute_5  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=86 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="388" height="64" width="475" format="#,##0"  name=asqtysum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=87 alignment="1" tabsequence=170 border="0" color="0" x="4992" y="388" height="64" width="197" format="#,###"  name=asqty01 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=88 alignment="1" tabsequence=180 border="0" color="0" x="5202" y="388" height="64" width="197" format="#,###"  name=asqty02 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=89 alignment="1" tabsequence=190 border="0" color="0" x="5413" y="388" height="64" width="197" format="#,###"  name=asqty03 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=91 alignment="1" tabsequence=210 border="0" color="0" x="5838" y="388" height="64" width="197" format="#,###"  name=asqty05 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=94 alignment="1" tabsequence=240 border="0" color="0" x="6469" y="388" height="64" width="197" format="#,###"  name=asqty08 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=95 alignment="1" tabsequence=250 border="0" color="0" x="6679" y="388" height="64" width="197" format="#,###"  name=asqty09 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=96 alignment="1" tabsequence=260 border="0" color="0" x="6889" y="388" height="64" width="197" format="#,###"  name=asqty10 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=97 alignment="1" tabsequence=270 border="0" color="0" x="7099" y="388" height="64" width="197" format="#,###"  name=asqty11 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=100 alignment="1" tabsequence=300 border="0" color="0" x="7735" y="388" height="64" width="197" format="#,###"  name=asqty14 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=98 alignment="1" tabsequence=280 border="0" color="0" x="7310" y="388" height="64" width="201" format="#,###"  name=asqty12 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=99 alignment="1" tabsequence=290 border="0" color="0" x="7525" y="388" height="64" width="197" format="#,###"  name=asqty13 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=92 alignment="1" tabsequence=220 border="0" color="0" x="6048" y="388" height="64" width="197" format="#,###"  name=asqty06 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=93 alignment="1" tabsequence=230 border="0" color="0" x="6258" y="388" height="64" width="197" format="#,###"  name=asqty07 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=101 alignment="1" tabsequence=310 border="0" color="0" x="7945" y="388" height="64" width="197" format="#,###"  name=asqty15 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="asqty01 +  asqty02 +  asqty03 +  asqty04 +  asqty05 +  asqty06 +  asqty07 +  asqty08 +  asqty09 +  asqty10 +  asqty11 +  asqty12 +  asqty13 +  asqty14 +  asqty15"border="0" color="8388608" x="4503" y="388" height="64" width="475" format="#,##0"  name=compute_6  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=104 alignment="1" tabsequence=320 border="0" color="0" x="4992" y="464" height="64" width="197" format="#,###"  name=etcqty0101 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=105 alignment="1" tabsequence=330 border="0" color="0" x="5202" y="464" height="64" width="197" format="#,###"  name=etcqty0102 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=106 alignment="1" tabsequence=340 border="0" color="0" x="5413" y="464" height="64" width="197" format="#,###"  name=etcqty0103 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=108 alignment="1" tabsequence=360 border="0" color="0" x="5838" y="464" height="64" width="197" format="#,###"  name=etcqty0105 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=111 alignment="1" tabsequence=390 border="0" color="0" x="6469" y="464" height="64" width="197" format="#,###"  name=etcqty0108 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=112 alignment="1" tabsequence=400 border="0" color="0" x="6679" y="464" height="64" width="197" format="#,###"  name=etcqty0109 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=113 alignment="1" tabsequence=410 border="0" color="0" x="6889" y="464" height="64" width="197" format="#,###"  name=etcqty0110 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=114 alignment="1" tabsequence=420 border="0" color="0" x="7099" y="464" height="64" width="197" format="#,###"  name=etcqty0111 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=117 alignment="1" tabsequence=450 border="0" color="0" x="7735" y="464" height="64" width="197" format="#,###"  name=etcqty0114 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=115 alignment="1" tabsequence=430 border="0" color="0" x="7310" y="464" height="64" width="201" format="#,###"  name=etcqty0112 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=116 alignment="1" tabsequence=440 border="0" color="0" x="7525" y="464" height="64" width="197" format="#,###"  name=etcqty0113 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=109 alignment="1" tabsequence=370 border="0" color="0" x="6048" y="464" height="64" width="197" format="#,###"  name=etcqty0106 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=110 alignment="1" tabsequence=380 border="0" color="0" x="6258" y="464" height="64" width="197" format="#,###"  name=etcqty0107 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=118 alignment="1" tabsequence=460 border="0" color="0" x="7945" y="464" height="64" width="197" format="#,###"  name=etcqty0115 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="etcqty0101 +  etcqty0102 +  etcqty0103 +  etcqty0104 +  etcqty0105 +  etcqty0106 +  etcqty0107 +  etcqty0108 +  etcqty0109 +  etcqty0110 +  etcqty0111 +  etcqty0112 +  etcqty0113 +  etcqty0114 +  etcqty0115 "border="0" color="8388608" x="4503" y="464" height="64" width="475" format="#,##0"  name=compute_7  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=103 alignment="1" tabsequence=32766 border="0" color="128" x="4014" y="464" height="64" width="475" format="#,##0"  name=etcqty01sum edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="S/R ÇöÈ²" border="0" color="0" x="1783" y="84" height="64" width="338"  name=t_4  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="DDRS ÇöÈ²" border="0" color="0" x="1783" y="160" height="64" width="338"  name=t_5  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="¼Ò¿ä·®" border="0" color="0" x="1783" y="236" height="64" width="338"  name=t_6  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="KD" border="0" color="0" x="1783" y="312" height="64" width="338"  name=t_8  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="AS" border="0" color="0" x="1783" y="388" height="64" width="338"  name=t_9  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="±âÅ¸1" border="0" color="0" x="1783" y="464" height="64" width="338"  name=t_10  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="¿¹»óÀç°í" border="0" color="8388736" x="1783" y="540" height="64" width="338"  name=t_7  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="»ý»ê°èÈ¹" border="0" color="0" x="1783" y="8" height="64" width="338"  name=t_3  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="2135" y="8" height="64" width="475" format="[general]"  name=productgubunname edit.limit=10 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=73 alignment="1" tabsequence=50 border="0" color="0" x="5623" y="312" height="64" width="201" format="#,###"  name=kdqty04 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=90 alignment="1" tabsequence=200 border="0" color="0" x="5623" y="388" height="64" width="201" format="#,###"  name=asqty04 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=107 alignment="1" tabsequence=350 border="0" color="0" x="5623" y="464" height="64" width="201" format="#,###"  name=etcqty0104 edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="If ( ps_plandate01 < ps_todate, 0,
+     If ( ps_plandate01 = ps_todate, invqty + releaseqty - computeqty01,
+          invqty + changeqty01 - computeqty01
+        )
+   )
+"border="0" color="128" x="4992" y="540" height="64" width="197" format="#,##0"  name=invqty01  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate02 < ps_todate, 0,
+     If ( ps_plandate02 = ps_todate, invqty + releaseqty - computeqty02,
+          invqty01 + changeqty02 - computeqty02
+        )
+   )
+"border="0" color="128" x="5202" y="540" height="64" width="197" format="#,##0"  name=invqty02  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate03 < ps_todate, 0,
+     If ( ps_plandate03 = ps_todate, invqty + releaseqty - computeqty03,
+          invqty02 + changeqty03 - computeqty03
+        )
+   )
+"border="0" color="128" x="5413" y="540" height="64" width="197" format="#,##0"  name=invqty03  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate05 < ps_todate, 0,
+     If ( ps_plandate05 = ps_todate, invqty + releaseqty - computeqty05,
+          invqty04 + changeqty05 - computeqty05
+        )
+   )
+"border="0" color="128" x="5838" y="540" height="64" width="197" format="#,##0"  name=invqty05  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate08 < ps_todate, 0,
+     If ( ps_plandate08 = ps_todate, invqty + releaseqty - computeqty08,
+          invqty07 + changeqty08 - computeqty08
+        )
+   )
+"border="0" color="128" x="6469" y="540" height="64" width="197" format="#,##0"  name=invqty08  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate09 < ps_todate, 0,
+     If ( ps_plandate09 = ps_todate, invqty + releaseqty - computeqty09,
+          invqty08 + changeqty09 - computeqty09
+        )
+   )
+"border="0" color="128" x="6679" y="540" height="64" width="197" format="#,##0"  name=invqty09  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate10 < ps_todate, 0,
+     If ( ps_plandate10 = ps_todate, invqty + releaseqty - computeqty10,
+          invqty09 + changeqty10 - computeqty10
+        )
+   )
+"border="0" color="128" x="6889" y="540" height="64" width="197" format="#,##0"  name=invqty10  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate11 < ps_todate, 0,
+     If ( ps_plandate11 = ps_todate, invqty + releaseqty - computeqty11,
+          invqty10 + changeqty11 - computeqty11
+        )
+   )
+"border="0" color="128" x="7099" y="540" height="64" width="197" format="#,##0"  name=invqty11  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate14 < ps_todate, 0,
+     If ( ps_plandate14 = ps_todate, invqty + releaseqty - computeqty14,
+          invqty13 + changeqty14 - computeqty14
+        )
+   )
+"border="0" color="128" x="7735" y="540" height="64" width="197" format="#,##0"  name=invqty14  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate12 < ps_todate, 0,
+     If ( ps_plandate12 = ps_todate, invqty + releaseqty - computeqty12,
+          invqty11 + changeqty12 - computeqty12
+        )
+   )
+"border="0" color="128" x="7310" y="540" height="64" width="201" format="#,##0"  name=invqty12  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate13 < ps_todate, 0,
+     If ( ps_plandate13 = ps_todate, invqty + releaseqty - computeqty13,
+          invqty12 + changeqty13 - computeqty13
+        )
+   )
+"border="0" color="128" x="7525" y="540" height="64" width="197" format="#,##0"  name=invqty13  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate06 < ps_todate, 0,
+     If ( ps_plandate06 = ps_todate, invqty + releaseqty - computeqty06,
+          invqty05 + changeqty06 - computeqty06
+        )
+   )
+"border="0" color="128" x="6048" y="540" height="64" width="197" format="#,##0"  name=invqty06  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate07 < ps_todate, 0,
+     If ( ps_plandate07 = ps_todate, invqty + releaseqty - computeqty07,
+          invqty06 + changeqty07 - computeqty07
+        )
+   )
+"border="0" color="128" x="6258" y="540" height="64" width="197" format="#,##0"  name=invqty07  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate15 < ps_todate, 0,
+     If ( ps_plandate15 = ps_todate, invqty + releaseqty - computeqty15,
+          invqty14 + changeqty15 - computeqty15
+        )
+   )
+"border="0" color="128" x="7945" y="540" height="64" width="197" format="#,##0"  name=invqty15  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="If ( ps_plandate04 < ps_todate, 0,
+     If ( ps_plandate04 = ps_todate, invqty + releaseqty - computeqty04,
+          invqty03 + changeqty04 - computeqty04
+        )
+   )
+"border="0" color="128" x="5623" y="540" height="64" width="201" format="#,##0"  name=invqty04  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=35 alignment="1" tabsequence=32766 border="0" color="0" x="4992" y="84" height="64" width="197" format="#,###"  name=srqty01 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=36 alignment="1" tabsequence=32766 border="0" color="0" x="5202" y="84" height="64" width="197" format="#,###"  name=srqty02 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="0" color="0" x="5413" y="84" height="64" width="197" format="#,###"  name=srqty03 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=39 alignment="1" tabsequence=32766 border="0" color="0" x="5838" y="84" height="64" width="197" format="#,###"  name=srqty05 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=42 alignment="1" tabsequence=32766 border="0" color="0" x="6469" y="84" height="64" width="197" format="#,###"  name=srqty08 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=43 alignment="1" tabsequence=32766 border="0" color="0" x="6679" y="84" height="64" width="197" format="#,###"  name=srqty09 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=44 alignment="1" tabsequence=32766 border="0" color="0" x="6889" y="84" height="64" width="197" format="#,###"  name=srqty10 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=45 alignment="1" tabsequence=32766 border="0" color="0" x="7099" y="84" height="64" width="197" format="#,###"  name=srqty11 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=48 alignment="1" tabsequence=32766 border="0" color="0" x="7735" y="84" height="64" width="197" format="#,###"  name=srqty14 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=46 alignment="1" tabsequence=32766 border="0" color="0" x="7310" y="84" height="64" width="201" format="#,###"  name=srqty12 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=47 alignment="1" tabsequence=32766 border="0" color="0" x="7525" y="84" height="64" width="197" format="#,###"  name=srqty13 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=40 alignment="1" tabsequence=32766 border="0" color="0" x="6048" y="84" height="64" width="197" format="#,###"  name=srqty06 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=41 alignment="1" tabsequence=32766 border="0" color="0" x="6258" y="84" height="64" width="197" format="#,###"  name=srqty07 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=49 alignment="1" tabsequence=32766 border="0" color="0" x="7945" y="84" height="64" width="197" format="#,###"  name=srqty15 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="4992" y="8" height="64" width="197" format="#,###"  name=changeqty01 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=52 alignment="1" tabsequence=32766 border="0" color="0" x="4992" y="160" height="64" width="197" format="#,###"  name=ddrsqty01 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=53 alignment="1" tabsequence=32766 border="0" color="0" x="5202" y="160" height="64" width="197" format="#,###"  name=ddrsqty02 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=54 alignment="1" tabsequence=32766 border="0" color="0" x="5413" y="160" height="64" width="197" format="#,###"  name=ddrsqty03 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=56 alignment="1" tabsequence=32766 border="0" color="0" x="5838" y="160" height="64" width="197" format="#,###"  name=ddrsqty05 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=59 alignment="1" tabsequence=32766 border="0" color="0" x="6469" y="160" height="64" width="197" format="#,###"  name=ddrsqty08 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=60 alignment="1" tabsequence=32766 border="0" color="0" x="6679" y="160" height="64" width="197" format="#,###"  name=ddrsqty09 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=61 alignment="1" tabsequence=32766 border="0" color="0" x="6889" y="160" height="64" width="197" format="#,###"  name=ddrsqty10 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=62 alignment="1" tabsequence=32766 border="0" color="0" x="7099" y="160" height="64" width="197" format="#,###"  name=ddrsqty11 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=65 alignment="1" tabsequence=32766 border="0" color="0" x="7735" y="160" height="64" width="197" format="#,###"  name=ddrsqty14 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=63 alignment="1" tabsequence=32766 border="0" color="0" x="7310" y="160" height="64" width="201" format="#,###"  name=ddrsqty12 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=64 alignment="1" tabsequence=32766 border="0" color="0" x="7525" y="160" height="64" width="197" format="#,###"  name=ddrsqty13 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=57 alignment="1" tabsequence=32766 border="0" color="0" x="6048" y="160" height="64" width="197" format="#,###"  name=ddrsqty06 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=58 alignment="1" tabsequence=32766 border="0" color="0" x="6258" y="160" height="64" width="197" format="#,###"  name=ddrsqty07 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=66 alignment="1" tabsequence=32766 border="0" color="0" x="7945" y="160" height="64" width="197" format="#,###"  name=ddrsqty15 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty01 + asqty01 + etcqty0101 + etcqty0201 + etcqty0301"border="0" color="0" x="4992" y="236" height="64" width="197" format="#,###"  name=dummyqty01  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty02 + asqty02 + etcqty0102 + etcqty0202 + etcqty0302"border="0" color="0" x="5202" y="236" height="64" width="197" format="#,###"  name=dummyqty02  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty03 + asqty03 + etcqty0103 + etcqty0203 + etcqty0303"border="0" color="0" x="5413" y="236" height="64" width="197" format="#,###"  name=dummyqty03  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty05 + asqty05 + etcqty0105 + etcqty0205 + etcqty0305"border="0" color="0" x="5838" y="236" height="64" width="197" format="#,###"  name=dummyqty05  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty08 + asqty08 + etcqty0108 + etcqty0208 + etcqty0308"border="0" color="0" x="6469" y="236" height="64" width="197" format="#,###"  name=dummyqty08  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty09 + asqty09 + etcqty0109 + etcqty0209 + etcqty0309"border="0" color="0" x="6679" y="236" height="64" width="197" format="#,###"  name=dummyqty09  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty10 + asqty10 + etcqty0110 + etcqty0210 + etcqty0310"border="0" color="0" x="6889" y="236" height="64" width="197" format="#,###"  name=dummyqty10  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty11 + asqty11 + etcqty0111 + etcqty0211 + etcqty0311"border="0" color="0" x="7099" y="236" height="64" width="197" format="#,###"  name=dummyqty11  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty14 + asqty14 + etcqty0114 + etcqty0214 + etcqty0314"border="0" color="0" x="7735" y="236" height="64" width="197" format="#,###"  name=dummyqty14  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty12 + asqty12 + etcqty0112 + etcqty0212 + etcqty0312"border="0" color="0" x="7310" y="236" height="64" width="201" format="#,###"  name=dummyqty12  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty13 + asqty13 + etcqty0113 + etcqty0213 + etcqty0313"border="0" color="0" x="7525" y="236" height="64" width="197" format="#,###"  name=dummyqty13  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty06 + asqty06 + etcqty0106 + etcqty0206 + etcqty0306"border="0" color="0" x="6048" y="236" height="64" width="197" format="#,###"  name=dummyqty06  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty07 + asqty07 + etcqty0107 + etcqty0207 + etcqty0307"border="0" color="0" x="6258" y="236" height="64" width="197" format="#,###"  name=dummyqty07  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty15 + asqty15 + etcqty0115 + etcqty0215 + etcqty0315"border="0" color="0" x="7945" y="236" height="64" width="197" format="#,###"  name=dummyqty15  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=38 alignment="1" tabsequence=32766 border="0" color="0" x="5623" y="84" height="64" width="201" format="#,###"  name=srqty04 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=55 alignment="1" tabsequence=32766 border="0" color="0" x="5623" y="160" height="64" width="201" format="#,###"  name=ddrsqty04 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+compute(band=detail alignment="1" expression="kdqty04 + asqty04 + etcqty0104 + etcqty0204 + etcqty0304"border="0" color="0" x="5623" y="236" height="64" width="201" format="#,###"  name=dummyqty04  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="5202" y="8" height="64" width="197" format="#,###"  name=changeqty02 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="5413" y="8" height="64" width="197" format="#,###"  name=changeqty03 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="5623" y="8" height="64" width="197" format="#,###"  name=changeqty04 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="0" color="0" x="6048" y="8" height="64" width="197" format="#,###"  name=changeqty06 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="0" x="6679" y="8" height="64" width="197" format="#,###"  name=changeqty09 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=27 alignment="1" tabsequence=32766 border="0" color="0" x="6889" y="8" height="64" width="197" format="#,###"  name=changeqty10 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=28 alignment="1" tabsequence=32766 border="0" color="0" x="7099" y="8" height="64" width="197" format="#,###"  name=changeqty11 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=29 alignment="1" tabsequence=32766 border="0" color="0" x="7310" y="8" height="64" width="197" format="#,###"  name=changeqty12 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=30 alignment="1" tabsequence=32766 border="0" color="0" x="7520" y="8" height="64" width="201" format="#,###"  name=changeqty13 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=31 alignment="1" tabsequence=32766 border="0" color="0" x="7735" y="8" height="64" width="197" format="#,###"  name=changeqty14 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=32 alignment="1" tabsequence=32766 border="0" color="0" x="7945" y="8" height="64" width="197" format="#,###"  name=changeqty15 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="0" x="6258" y="8" height="64" width="197" format="#,###"  name=changeqty07 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="0" x="6469" y="8" height="64" width="197" format="#,###"  name=changeqty08 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="5833" y="8" height="64" width="201" format="#,###"  name=changeqty05 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="28817335" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="3529" y="8" height="64" width="471" format="#,##0"  name=releaseqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÇöÀç°í" border="0" color="16777215" x="3227" y="12" height="84" width="288"  name=invqty_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±ÝÀÏÀÔ°í¿¹»ó" border="0" color="16777215" x="3529" y="12" height="84" width="471"  name=releaseqty_t  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_accdr023.srf
+$PBExportComments$필수입력(거래처-사번 or 사용자사번) editing 여부 return
+global type f_get_accdr023 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr023 (string a_cust)
+end prototypes
+
+global function string f_get_accdr023 (string a_cust);int    l_n_rcnt
+
+SELECT count(*)  into :l_n_rcnt  
+ FROM  "PBCOMMON"."DAC003"
+WHERE  "PBCOMMON"."DAC003"."PEEMPNO" = :a_cust using sqlca;
+if isnull(l_n_rcnt) then
+	return 'e'
+end if
+if l_n_rcnt < 1 then
+	return 'e'
+else
+	return ''
+end if
+end function
+

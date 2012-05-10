@@ -1,0 +1,5 @@
+$PBExportHeader$str_mpms_xy.srs
+global type str_mpms_xy from structure
+	long		lx
+	long		ly
+end type

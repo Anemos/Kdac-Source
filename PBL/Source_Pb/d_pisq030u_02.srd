@@ -1,0 +1,56 @@
+$PBExportHeader$d_pisq030u_02.srd
+$PBExportComments$∞ÀªÁ±‚¡ÿº≠ ∞À≈‰(µ≈◊¿œ)
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TQQCSTANDARDDETAIL.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TQQCSTANDARDDETAIL.DIVISIONCODE" )
+ column=(type=char(5) update=yes updatewhereclause=yes key=yes name=suppliercode dbname="TQQCSTANDARDDETAIL.SUPPLIERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="TQQCSTANDARDDETAIL.ITEMCODE" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=standardrevno dbname="TQQCSTANDARDDETAIL.STANDARDREVNO" )
+ column=(type=long update=yes updatewhereclause=yes key=yes name=orderno dbname="TQQCSTANDARDDETAIL.ORDERNO" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=qcitem dbname="TQQCSTANDARDDETAIL.QCITEM" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=decisionrank dbname="TQQCSTANDARDDETAIL.DECISIONRANK" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=itemspecquality dbname="TQQCSTANDARDDETAIL.ITEMSPECQUALITY" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=sample dbname="TQQCSTANDARDDETAIL.SAMPLE" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=qcstructure dbname="TQQCSTANDARDDETAIL.QCSTRUCTURE" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=qcstipulation dbname="TQQCSTANDARDDETAIL.QCSTIPULATION" )
+ retrieve="  SELECT TQQCSTANDARDDETAIL.AREACODE,   
+         TQQCSTANDARDDETAIL.DIVISIONCODE,   
+         TQQCSTANDARDDETAIL.SUPPLIERCODE,   
+         TQQCSTANDARDDETAIL.ITEMCODE,   
+         TQQCSTANDARDDETAIL.STANDARDREVNO,   
+         TQQCSTANDARDDETAIL.ORDERNO,   
+         TQQCSTANDARDDETAIL.QCITEM,   
+         TQQCSTANDARDDETAIL.DECISIONRANK,   
+         TQQCSTANDARDDETAIL.ITEMSPECQUALITY,   
+         TQQCSTANDARDDETAIL.SAMPLE,   
+         TQQCSTANDARDDETAIL.QCSTRUCTURE,   
+         TQQCSTANDARDDETAIL.QCSTIPULATION  
+    FROM TQQCSTANDARDDETAIL  
+   WHERE ( TQQCSTANDARDDETAIL.AREACODE = :as_areacode ) AND  
+         ( TQQCSTANDARDDETAIL.DIVISIONCODE = :as_divisioncpde ) AND  
+         ( TQQCSTANDARDDETAIL.SUPPLIERCODE = :as_suppliercode ) AND  
+         ( TQQCSTANDARDDETAIL.ITEMCODE = :as_itemcode ) AND  
+         ( TQQCSTANDARDDETAIL.STANDARDREVNO = :as_standardrevno )    
+   " update="TQQCSTANDARDDETAIL" updatewhere=1 updatekeyinplace=no arguments=(("as_areacode", string),("as_divisioncpde", string),("as_suppliercode", string),("as_itemcode", string),("as_standardrevno", string)) )
+text(band=header alignment="2" text="º¯¿ß" border="0" color="16777215" x="9" y="8" height="68" width="165"  name=orderno_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞ÀªÁ¡∂∞«" border="0" color="16777215" x="3223" y="8" height="68" width="507"  name=qcstipulation_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞ÀªÁ±‚±∏" border="0" color="16777215" x="2706" y="8" height="68" width="507"  name=qcstructure_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞ÀªÁ«◊∏Ò" border="0" color="16777215" x="183" y="8" height="68" width="631"  name=qcitem_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±‘∞›" border="0" color="16777215" x="1102" y="8" height="68" width="955"  name=itemspecquality_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ª˘«√" border="0" color="16777215" x="2066" y="8" height="68" width="631"  name=sample_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞·¡°∞Ë±ﬁ" border="0" color="16777215" x="823" y="8" height="68" width="270"  name=decisionrank_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="68" width="165" format="[general]"  name=orderno edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1102" y="8" height="68" width="955" format="[general]"  name=itemspecquality edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="823" y="8" height="68" width="270" format="[general]"  name=decisionrank edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2066" y="8" height="68" width="631" format="[general]"  name=sample edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="183" y="8" height="68" width="631" format="[general]"  name=qcitem edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2706" y="8" height="68" width="507" format="[general]"  name=qcstructure edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="3223" y="8" height="68" width="507" format="[general]"  name=qcstipulation edit.limit=20 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

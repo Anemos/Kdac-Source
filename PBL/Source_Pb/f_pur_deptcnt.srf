@@ -1,0 +1,22 @@
+$PBExportHeader$f_pur_deptcnt.srf
+$PBExportComments$관리부서숫자 가져오기(사번)
+global type f_pur_deptcnt from function_object
+end type
+
+forward prototypes
+global function long f_pur_deptcnt (string ls_empno)
+end prototypes
+
+global function long f_pur_deptcnt (string ls_empno);////관리부서 숫자 가져오기
+long ll_rcnt
+SELECT 
+  count(*)
+INTO :ll_rcnt
+FROM  PBCOMMON.dac001
+WHERE duse = ''
+and   dtodt = 0
+and   dempno = :ls_empno;
+
+return ll_rcnt 
+end function
+

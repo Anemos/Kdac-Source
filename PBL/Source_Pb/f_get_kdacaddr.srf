@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_kdacaddr.srf
+$PBExportComments$KDAC 사업장별 주소 return
+global type f_get_kdacaddr from function_object
+end type
+
+forward prototypes
+global function string f_get_kdacaddr (string a_s_company, string a_s_area)
+end prototypes
+
+global function string f_get_kdacaddr (string a_s_company, string a_s_area);string l_s_vndnm
+
+SELECT "PBCOMMON"."DAC006"."CUADDR"  
+  INTO :l_s_vndnm
+FROM   "PBCOMMON"."DAC006" 
+WHERE  "PBCOMMON"."DAC006"."COMLTD" = :a_s_company and
+       "PBCOMMON"."DAC006"."DAREA"  = :a_s_area    using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_vndnm = " "
+end if
+ 
+return l_s_vndnm
+ 
+end function
+

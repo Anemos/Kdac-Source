@@ -1,0 +1,56 @@
+$PBExportHeader$d_bom_export_mor.srd
+$PBExportComments$BOM Àü°³ DW
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=plant dbname="BOM001.PLANT" )
+ column=(type=char(1) updatewhereclause=yes name=pdvsn dbname="BOM001.PDVSN" )
+ column=(type=char(15) updatewhereclause=yes name=pcitn dbname="BOM001.PCITN" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BOM001.PWKCT" )
+ column=(type=char(1) updatewhereclause=yes name=poscd dbname="BOM001.POSCD" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BOM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="BOM001.PEDTE" )
+ column=(type=char(8) updatewhereclause=yes name=pchdt dbname="BOM001.PCHDT" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BOM001.PQTYM" )
+ column=(type=char(1) updatewhereclause=yes name=pexplant dbname="BOM001.PEXPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=pexdv dbname="BOM001.PEXDV" )
+ retrieve=" select ~"PBPDM~".~"BOM001~".~"PLANT~",~"PBPDM~".~"BOM001~".~"PDVSN~",~"PBPDM~".~"BOM001~".~"PCITN~",~"PBPDM~".~"BOM001~".~"PWKCT~",
+         ~"PBPDM~".~"BOM001~".~"POSCD~",~"PBPDM~".~"BOM001~".~"PEDTM~",~"PBPDM~".~"BOM001~".~"PEDTE~",~"PBPDM~".~"BOM001~".~"PCHDT~",
+  			~"PBPDM~".~"BOM001~".~"PQTYM~",~"PBPDM~".~"BOM001~".~"PEXPLANT~",~"PBPDM~".~"BOM001~".~"PEXDV~" from ~"PBPDM~".~"BOM001~"
+	  where  ~"PBPDM~".~"BOM001~".~"PCMCD~" = '01' AND
+	  			~"PBPDM~".~"BOM001~".~"PLANT~" = :a_plant AND
+				~"PBPDM~".~"BOM001~".~"PDVSN~" = :a_div AND
+	  			~"PBPDM~".~"BOM001~".~"PPITN~" = :a_pitno 
+ORDER BY	~"PBPDM~".~"BOM001~".~"PLANT~",~"PBPDM~".~"BOM001~".~"PDVSN~",~"PBPDM~".~"BOM001~".~"PCITN~",~"PBPDM~".~"BOM001~".~"PCHDT~"
+" arguments=(("a_plant", string),("a_div", string),("a_pitno", string)) )
+text(band=header alignment="0" text="Plant" border="0" color="0" x="9" y="4" height="76" width="23" html.valueishtml="0"  name=plant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pdvsn" border="0" color="0" x="41" y="4" height="76" width="23" html.valueishtml="0"  name=pdvsn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pcitn" border="0" color="0" x="73" y="4" height="76" width="471" html.valueishtml="0"  name=pcitn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pwkct" border="0" color="0" x="553" y="4" height="76" width="119" html.valueishtml="0"  name=pwkct_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Poscd" border="0" color="0" x="681" y="4" height="76" width="23" html.valueishtml="0"  name=poscd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pedtm" border="0" color="0" x="713" y="4" height="76" width="247" html.valueishtml="0"  name=pedtm_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pedte" border="0" color="0" x="969" y="4" height="76" width="247" html.valueishtml="0"  name=pedte_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pqtym" border="0" color="0" x="1225" y="4" height="76" width="1367" html.valueishtml="0"  name=pqtym_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pexplant" border="0" color="0" x="2601" y="4" height="76" width="23" html.valueishtml="0"  name=pexplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pexdv" border="0" color="0" x="2633" y="4" height="76" width="23" html.valueishtml="0"  name=pexdv_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=plant visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="41" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=pdvsn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="73" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=pcitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="553" y="0" height="76" width="119" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="681" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=poscd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="713" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="969" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1225" y="0" height="76" width="1367" format="[general]" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2601" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=pexplant visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2633" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=pexdv visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=0 border="0" color="0" x="2670" y="0" height="76" width="247" html.valueishtml="0"  name=pchdt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pchdt" border="0" color="0" x="2665" y="4" height="76" width="251" html.valueishtml="0"  name=pchdt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

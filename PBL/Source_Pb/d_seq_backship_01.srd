@@ -1,0 +1,127 @@
+$PBExportHeader$d_seq_backship_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=tseqmstitem_customercode dbname="TSeqMstItem.CustomerCode" )
+ column=(type=char(15) updatewhereclause=yes name=tseqmstitem_customeritemcode dbname="TSeqMstItem.CustomerItemCode" )
+ column=(type=char(30) updatewhereclause=yes name=tmstcustitem_custitemname dbname="TMSTCUSTITEM.CustItemName" )
+ column=(type=char(1) updatewhereclause=yes name=tmstcustitem_areacode dbname="TMSTCUSTITEM.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmstcustitem_divisioncode dbname="TMSTCUSTITEM.DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=tseqmstitem_itemcode dbname="TSeqMstItem.Itemcode" )
+ column=(type=char(3) updatewhereclause=yes name=tseqmstitem_partid dbname="TSeqMstItem.PartId" )
+ column=(type=char(1) updatewhereclause=yes name=tseqmstitem_areacode dbname="TSeqMstItem.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tseqmstitem_divisioncode dbname="TSeqMstItem.DivisionCode" )
+ column=(type=char(10) updatewhereclause=yes name=tseqmstitem_productgroup dbname="TSeqMstItem.ProductGroup" )
+ column=(type=char(10) updatewhereclause=yes name=tseqmstitem_cartype dbname="TSeqMstItem.CarType" )
+ column=(type=char(1) updatewhereclause=yes name=tseqmstitem_assygubun dbname="TSeqMstItem.Assygubun" )
+ column=(type=char(2) updatewhereclause=yes name=tseqmstitem_seqgubun dbname="TSeqMstItem.Seqgubun" )
+ column=(type=char(50) updatewhereclause=yes name=tseqmstprod_productname dbname="TSeqMstProd.ProductName" )
+ column=(type=char(1) updatewhereclause=yes name=tseqmstprod_seqgubun dbname="TSeqMstProd.SeqGubun" )
+ column=(type=datetime updatewhereclause=yes name=tseqshipqa_oldshiptime dbname="TSEQSHIPQA.OLDSHIPTIME" )
+ column=(type=char(1) updatewhereclause=yes name=tseqshipqa_oldstatus dbname="TSEQSHIPQA.OLDSTATUS" )
+ column=(type=char(20) updatewhereclause=yes name=ordno dbname="ordno" )
+ column=(type=char(8) updatewhereclause=yes name=dkdt dbname="dkdt" )
+ column=(type=char(1) updatewhereclause=yes name=sjcd dbname="sjcd" values="»ý°üÈ®Á¤	A/	 /" )
+ column=(type=char(8) updatewhereclause=yes name=inptdt dbname="inptdt" )
+ column=(type=char(1) updatewhereclause=yes name=cnlcd dbname="cnlcd" values="¼öÀÔ°Ë»çºÒ·®	D/Line ºÒ·®	L/Filed ºÒ·®	F/" )
+ column=(type=char(1) updatewhereclause=yes name=suse dbname="suse" )
+ column=(type=char(3) updatewhereclause=yes name=cur dbname="cur" )
+ column=(type=decimal(3) updatewhereclause=yes name=luprc1 dbname="TMSTCUSTITEM.luprc1" )
+ column=(type=long updatewhereclause=yes name=dcqty1 dbname="TMSTCUSTITEM.dcqty1" )
+ column=(type=char(1) updatewhereclause=yes name=stcd dbname="stcd" )
+ column=(type=char(8) updatewhereclause=yes name=csrno dbname="csrno" )
+ column=(type=char(2) updatewhereclause=yes name=csrno1 dbname="csrno1" )
+ column=(type=char(2) updatewhereclause=yes name=csrno2 dbname="csrno2" )
+ retrieve="  SELECT TSeqMstItem.CustomerCode,   
+         TSeqMstItem.CustomerItemCode,   
+         TMSTCUSTITEM.CustItemName,   
+         TMSTCUSTITEM.AreaCode,   
+         TMSTCUSTITEM.DivisionCode,   
+         TSeqMstItem.Itemcode,   
+         TSeqMstItem.PartId,   
+         TSeqMstItem.AreaCode,   
+         TSeqMstItem.DivisionCode,   
+         TSeqMstItem.ProductGroup,   
+         TSeqMstItem.CarType,   
+         TSeqMstItem.Assygubun,   
+         TSeqMstItem.Seqgubun,   
+         TSeqMstProd.ProductName,   
+         TSeqMstProd.SeqGubun,   
+         TSEQSHIPQA.OLDSHIPTIME,   
+         TSEQSHIPQA.OLDSTATUS  ,
+			'                    ' as ordno,
+			'        ' as dkdt,
+         ' ' as sjcd,
+         '        ' as inptdt,
+         ' ' as cnlcd,
+         ' ' as suse,
+         '   ' as cur,
+         0.000    as luprc1,
+         0        as dcqty1,
+         ' ' as stcd,
+         '        ' as csrno,'  ' as csrno1 , '  ' as csrno2
+    FROM TMSTCUSTITEM,   
+         TSeqMstItem,   
+         TSeqMstProd,   
+         TSEQSHIPQA  
+   WHERE ( TMSTCUSTITEM.CustCode = TSeqMstItem.CustomerCode ) and  
+         ( TMSTCUSTITEM.CustItemCode = TSeqMstItem.CustomerItemCode ) and  
+         ( TSeqMstItem.PartId = TSEQSHIPQA.PARTID ) and  
+         ( TSeqMstItem.Itemcode = TSEQSHIPQA.ITEMCODE ) and  
+         ( TSeqMstItem.AreaCode = TSeqMstProd.Areacode ) and  
+         ( TSeqMstItem.DivisionCode = TSeqMstProd.Divisioncode ) and  
+         ( TSeqMstItem.ProductGroup = TSeqMstProd.ProductGroup ) and  
+         ( ( TSeqMstProd.SeqGubun = 'B' ) AND  
+         ( TSeqMstItem.Seqgubun = 'FA' ) AND  
+         ( TSEQSHIPQA.OLDSHIPTIME between :a_fromdate and :a_todate ) AND  
+         ( TSeqMstItem.AreaCode = :a_areacode ) AND  
+         ( TSeqMstItem.DivisionCode like :a_divisioncode ) AND  
+         ( TSeqMstItem.CustomerCode = :a_custcode ) AND  
+         ( TSEQSHIPQA.OLDSTATUS = '2' ) )    
+" arguments=(("a_fromdate", datetime),("a_todate", datetime),("a_areacode", string),("a_divisioncode", string),("a_custcode", string)) )
+text(band=header alignment="2" text="°Å·¡Ã³Ç°¹ø" border="0" color="16777215" x="9" y="0" height="72" width="425" html.valueishtml="0"  name=tseqmstitem_customeritemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³Ç°¸í" border="0" color="16777215" x="443" y="0" height="72" width="608" html.valueishtml="0"  name=tmstcustitem_custitemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏÁö¿ª" border="0" color="16777215" x="1061" y="0" height="72" width="279" html.valueishtml="0"  name=tmstcustitem_areacode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ°øÀå" border="0" color="16777215" x="1349" y="0" height="72" width="274" html.valueishtml="0"  name=tmstcustitem_divisioncode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="KDAC Ç°¹ø" border="0" color="16777215" x="1632" y="0" height="72" width="512" html.valueishtml="0"  name=tseqmstitem_itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Äº° ID" border="0" color="16777215" x="2153" y="0" height="72" width="251" html.valueishtml="0"  name=tseqmstitem_partid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÇ·ÚÁö¿ª" border="0" color="16777215" x="2414" y="0" height="72" width="315" html.valueishtml="0"  name=tseqmstitem_areacode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÇ·Ú°øÀå" border="0" color="16777215" x="2738" y="0" height="72" width="279" html.valueishtml="0"  name=tseqmstitem_divisioncode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ëÃ¼ÆÇÁ¤½Ã°£" border="0" color="16777215" x="3026" y="0" height="72" width="416" html.valueishtml="0"  name=tseqshipqa_oldshiptime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ÛÀå¹øÈ£" border="0" color="16777215" x="3451" y="0" height="72" width="416" html.valueishtml="0"  name=ordno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÇ·ÚÀÏ" border="0" color="16777215" x="3877" y="0" height="72" width="402" html.valueishtml="0"  name=dkdt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ý°üÈ®Á¤¿©ºÎ" border="0" color="16777215" x="4288" y="0" height="72" width="411" html.valueishtml="0"  name=sjcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È®Á¤ÀÏ" border="0" color="16777215" x="4709" y="0" height="72" width="421" html.valueishtml="0"  name=inptdt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="5138" y="0" height="72" width="334" html.valueishtml="0"  name=cnlcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ëµµ" border="0" color="16777215" x="5481" y="0" height="72" width="270" html.valueishtml="0"  name=suse_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÅëÈ­´ÜÀ§" border="0" color="16777215" x="5760" y="0" height="72" width="352" html.valueishtml="0"  name=cur_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»óÅÂ" border="0" color="16777215" x="6766" y="0" height="72" width="366" html.valueishtml="0"  name=stcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àü»ê¹øÈ£" border="0" color="16777215" x="7141" y="0" height="72" width="485" html.valueishtml="0"  name=csrno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´Ü°¡" border="0" color="16777215" x="6121" y="0" height="72" width="334" html.valueishtml="0"  name=luprc1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö·®" border="0" color="16777215" x="6464" y="0" height="72" width="293" html.valueishtml="0"  name=dcqty1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="425" format="[general]" html.valueishtml="0"  name=tseqmstitem_customeritemcode visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="443" y="0" height="72" width="608" format="[general]" html.valueishtml="0"  name=tmstcustitem_custitemname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1632" y="0" height="72" width="512" format="[general]" html.valueishtml="0"  name=tseqmstitem_itemcode visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="33554432" x="3026" y="0" height="72" width="416" format="[shortdate] [time]" html.valueishtml="0"  name=tseqshipqa_oldshiptime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=32766 border="0" color="33554432" x="3451" y="0" height="72" width="416" format="[general]" html.valueishtml="0"  name=ordno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="0" tabsequence=32766 border="0" color="33554432" x="3881" y="0" height="72" width="398" format="[general]" html.valueishtml="0"  name=dkdt visible="1" editmask.mask="####.##.##" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="33554432" x="4288" y="0" height="72" width="411" format="[general]" html.valueishtml="0"  name=sjcd visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="33554432" x="4713" y="0" height="72" width="416" format="[general]" html.valueishtml="0"  name=inptdt visible="1" editmask.mask="####.##.##" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="0" color="33554432" x="5138" y="0" height="72" width="334" format="[general]" html.valueishtml="0"  name=cnlcd visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="0" color="33554432" x="5481" y="0" height="72" width="270" format="[general]" html.valueishtml="0"  name=suse visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="0" tabsequence=32766 border="0" color="33554432" x="5760" y="0" height="72" width="352" format="[general]" html.valueishtml="0"  name=cur visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="0" tabsequence=32766 border="0" color="33554432" x="6766" y="0" height="72" width="366" format="[general]" html.valueishtml="0"  name=stcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=28 alignment="0" tabsequence=32766 border="0" color="33554432" x="7141" y="0" height="72" width="485" format="[general]" html.valueishtml="0"  name=csrno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="33554432" x="6121" y="0" height="72" width="334" format="#,##0.000" html.valueishtml="0"  name=luprc1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="33554432" x="6464" y="0" height="72" width="293" format="#,##0" html.valueishtml="0"  name=dcqty1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="2153" y="0" height="72" width="251" format="[general]" html.valueishtml="0"  name=tseqmstitem_partid visible="1" edit.limit=3 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="2414" y="0" height="72" width="315" format="[general]" html.valueishtml="0"  name=tseqmstitem_areacode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="2738" y="0" height="72" width="279" format="[general]" html.valueishtml="0"  name=tseqmstitem_divisioncode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1349" y="0" height="72" width="274" format="[general]" html.valueishtml="0"  name=tmstcustitem_divisioncode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="1061" y="0" height="72" width="279" format="[general]" html.valueishtml="0"  name=tmstcustitem_areacode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

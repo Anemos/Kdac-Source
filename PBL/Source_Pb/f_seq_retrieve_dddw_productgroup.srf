@@ -1,0 +1,66 @@
+$PBExportHeader$f_seq_retrieve_dddw_productgroup.srf
+$PBExportComments$dddw 을 조회하는 함수 - 제품군
+global type f_seq_retrieve_dddw_productgroup from function_object
+end type
+
+forward prototypes
+global subroutine f_seq_retrieve_dddw_productgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, boolean fb_allflag, ref string rs_productgroup, ref string rs_productgroupname)
+end prototypes
+
+global subroutine f_seq_retrieve_dddw_productgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, boolean fb_allflag, ref string rs_productgroup, ref string rs_productgroupname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_productgroup
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드
+//						string			fs_productgroup		조회하고자 하는 제품군 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 제품군 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (제품군코드는 '%', 제품군명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_productgroup		선택된 제품군 코드 (reference)
+//						string			rs_productgroupname	선택된 제품군 명 (reference)
+//	Returns		: none
+//	Description	: 제품군을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode, fs_productgroup)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_productgroup = ''
+		rs_productgroupname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_productgroup		= Trim(ldwc_1.GetItemString(1, 'productgroup'))
+		rs_productgroupname	= Trim(ldwc_1.GetItemString(1, 'productname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_productgroup)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'productname', 30)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_productgroup		= Trim(ldwc_1.GetItemString(1, 'productgroup'))
+			rs_productgroupname	= Trim(ldwc_1.GetItemString(1, 'productname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_productgroup)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'productname', 30)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'productgroup', 'ALL')
+			ldwc_1.Setitem(1, 'productname', '전체')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_productgroup = '%'
+			rs_productgroupname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'productname', 30)
+		End If
+	End If
+End If
+end subroutine

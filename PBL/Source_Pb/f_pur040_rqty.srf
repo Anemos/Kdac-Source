@@ -1,0 +1,41 @@
+$PBExportHeader$f_pur040_rqty.srf
+$PBExportComments$구매요구수량(지역,공장,품번,계정)  (요구량-취소량-발주량)
+global type f_pur040_rqty from function_object
+end type
+
+forward prototypes
+global function decimal f_pur040_rqty (string as_xplant, string as_div, string as_itno, string as_cls)
+end prototypes
+
+global function decimal f_pur040_rqty (string as_xplant, string as_div, string as_itno, string as_cls);////////////////////////////////////////////////
+// : 구매요구량 산출 (미발주량)
+//	argument : 품번
+// 적용:opm302u   
+////////////////////////////////////////////////
+
+DEC{2} lr_qty
+
+ SELECT  coalesce(sum("PBPUR"."PUR302"."RQTY" - "PBPUR"."PUR302"."RCNL" - "PBPUR"."PUR302"."IQTY"),0)
+ into :lr_qty		  
+ FROM  "PBPUR"."PUR302", "PBPUR"."PUR301"
+ WHERE "PBPUR"."PUR302"."COMLTD" = "PBPUR"."PUR302"."COMLTD" and
+		 "PBPUR"."PUR302"."RQNO" = "PBPUR"."PUR301"."RQNO" and
+		 "PBPUR"."PUR302"."COMLTD" = '01'   AND
+		 "PBPUR"."PUR302"."STCD" = ' '   AND
+		 "PBPUR"."PUR302"."SRCE" = '01'  AND
+		 "PBPUR"."PUR302"."GUBUN" <> 'B'   AND		//BLANK ORDER  2008.07.18 :과거 심재범 과장이 사용.
+		// "PBPUR"."PUR302"."XPLAN" = :as_xplan   and
+		 "PBPUR"."PUR301"."XPLANT" = :as_xplant and
+		 "PBPUR"."PUR301"."DIV" = :as_div  and
+		 "PBPUR"."PUR302"."ITNO" = :as_itno and
+		 "PBPUR"."PUR302"."CLS" = :as_cls and
+		 "PBPUR"."PUR301"."RPRT" = 'C' AND
+		 "PBPUR"."PUR302"."RASPRT" <> 'C'  	//반려:2009.02.25
+		 ; 
+
+
+IF isnull(lr_qty) Then lr_qty= 0 
+
+Return lr_qty
+end function
+

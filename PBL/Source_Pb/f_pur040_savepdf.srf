@@ -1,0 +1,187 @@
+$PBExportHeader$f_pur040_savepdf.srf
+$PBExportComments$DataWindow PDF로저장.
+global type f_pur040_savepdf from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_savepdf (datawindow adw_1, string ls_filename, ref string as_msg)
+end prototypes
+
+global function integer f_pur040_savepdf (datawindow adw_1, string ls_filename, ref string as_msg);////발주번호 받아서 C:\POSheet\...에 PO생성한 후
+////전체 수신자에 일괄발송
+////as_gubun 개정발주 여부 => 파일이름만 다르게 처리
+
+String ls_stcd, ls_slt, ls_coitname, ls_tod, ls_tod_desc, ls_xplan, ls_empno
+string ls_vsrno, ls_vndnm
+Long ll_rtn, ll_row, ll_rcnt
+Window l_to_open
+//adw_1 = tab_1.tabpage_2.adw_1
+//dw_temp1 = tab_1.tabpage_2.dw_temp
+blob lb_xsign
+datawindowchild idwc_1
+str_easy	i_str_prt
+
+//if FileExists('C:\POSheet') <> true then
+//	messagebox('확인','C:\POSheet' + ' 폴더가 없습니다.  폴더를 생성후에 작업하세요!',Exclamation!)
+//	as_msg = 'C:\POSheet' + ' 폴더가 없습니다.  폴더를 생성후에 작업하세요!'
+//	return -1
+//end if
+//////KDAC PURCHASE ORDER TERMS AND CONDITIONS.doc
+//if FileExists('C:\POSheet\PURCHASE ORDER TERMS AND CONDITIONS.pdf') <> true then
+//	messagebox('확인','C:\POSheet\폴더안에' + ' PURCHASE ORDER TERMS AND CONDITIONS.pdf 파일이 없습니다!',Exclamation!)
+//	as_msg = 'C:\POSheet\폴더안에' + ' PURCHASE ORDER TERMS AND CONDITIONS.pdf 파일이 없습니다!'
+//	return -1
+//end if
+//uo_status.st_message.text = f_message("P070") //잠시만 기다리세요....//
+	
+SetPointer(HourGlass!)
+/////////////////////////////////////////////////
+//i_str_prt.title	= 	"PO SHEET"			
+//adw_1.DataObject = "d_opm302u_23p1"
+//adw_1.SetTransObject(sqlca)
+
+if adw_1.rowcount() = 0 then
+	messagebox('확인','저장할 자료없음!',Exclamation!)
+	as_msg = '저장할 자료없음!'
+	return -1
+end if
+
+////uo_status.st_message.text = '기타 출력용 자료 셋팅중...'
+//adw_1.GetChild("opm101_vsrno",idwc_1)
+//idwc_1.SetTransObject(Sqlca)
+//idwc_1.Retrieve()
+
+
+//ls_coitname = trim(adw_1.getitemstring(1, "opm101_vsrno1"))
+//adw_1.setitem(1, "com_vsrno", string(ls_coitname, "@@@-@@-@@@"))
+	
+//		ls_xplan = trim(adw_1.object.opm101_xplan[1])
+//		selectblob  xsign into :lb_xsign
+//		from pbpur.opm602
+//		where comltd = '01'
+//		and  xplan = :ls_xplan;
+//		adw_1.object.p_sign.SetPicture(lb_xsign)
+
+
+
+//// 사진 file pc로 download해서 display 
+//
+//long ll_len, ll_mod
+//string ls_filenm, ls_rtn
+//blob lb_tmp
+
+//////팀장 싸인용 그림파일 가져오기
+//setnull (lb_xsign)
+////ls_xplan = trim(adw_1.object.opm101_xplan[1])
+//select trim(empno) into :ls_empno
+//from  pbpur.opm602
+//where comltd = '01'
+//and  xplan = '99';
+//
+//selectblob  xsign into :lb_xsign
+//from pbpur.opm602
+//where comltd = '01'
+//and  xplan = '99';
+//if sqlca.sqlcode <> 0 then
+//	messagebox('확인','담당코드:' + '99' + ' 싸인용 그림파일 조회에러!. 확인바랍니다!',Exclamation!)
+//	as_msg = '담당코드:' + '99' + ' 싸인용 그림파일 조회에러!. 확인바랍니다!'
+//	return -1
+//end if
+////adw_1.object.p_sign.SetPicture(lb_xsign)
+// ll_len = len(lb_xsign)
+// if ll_len > 32765 then
+//	  if mod(ll_len, 32765) = 0 then
+//			ll_mod = ll_len / 32765
+//	  else
+//			ll_mod = (ll_len / 32765) + 1
+//	  end if
+// else
+//	  ll_mod = 1
+// end if
+// ls_filenm = 'C:\POSheet\' + trim(ls_empno) + '.jpg'    
+// ll_rtn = FileOpen(ls_filenm, StreamMode!, Write!, LockWrite!, Replace!)
+
+//ls_rtn = adw_1.modify("p_tsign" + ".filename = ' '")   //그림파일 지우고
+//if trim(ls_rtn) <> '' or isnull(ls_rtn) then
+//	messagebox('확인','PO:' + ls_purno + ' 팀장 싸인용 그림파일 변경에러!. 확인바랍니다!, ' + ls_rtn,Exclamation!)
+//	as_msg = 'PO:' + ls_purno + ' 팀장 싸인용 그림파일 변경에러!. 확인바랍니다!, ' + ls_rtn
+//	return -1
+//end if
+//
+//for ll_row = 1 to ll_mod 
+//	 if ll_row = ll_mod then
+//		 lb_tmp = blobmid(lb_xsign, 1 + 32765 * (ll_row - 1), mod(ll_len, 32765))
+//	 else
+//		 lb_tmp = blobmid(lb_xsign, 1 + 32765 * (ll_row - 1), 32765 * ll_row)
+//	 end if
+//	 filewrite(ll_rtn, lb_tmp)
+//next
+//fileclose(ll_rtn)
+//
+//ls_rtn = adw_1.modify("p_tsign" + ".filename = '" + ls_filenm + "'")  //그림파일 다시쓴다
+//if trim(ls_rtn) <> '' or isnull(ls_rtn) then
+//	messagebox('확인','PO:' + ls_purno + ' 팀장 싸인용 그림파일 변경에러!. 확인바랍니다!, ' + ls_rtn,Exclamation!)
+//	as_msg = 'PO:' + ls_purno + ' 팀장 싸인용 그림파일 변경에러!. 확인바랍니다!, ' + ls_rtn
+//	return -1
+//end if
+
+
+//string ls_filename
+////ls_purno = trim(adw_1.object.opm101_purno[1])
+//ls_vsrno = trim(adw_1.object.opm101_vsrno[1])
+//select coalesce(max(vndnm),'') into :ls_vndnm
+//from pbpur.pur101
+//where comltd = '01'
+//and  vsrno = :ls_vsrno;
+//ls_vndnm = trim(mid(ls_vndnm,1,10))
+//ls_vndnm = f_pur040_clrspecial(ls_vndnm)
+//if ls_gubun <> 'R' then //개정PO
+//	ls_filename = ls_purno + '_' + ls_vndnm + '.pdf'
+//else
+//	ls_filename = ls_purno + '_' + ls_vndnm + '_Revised.pdf'
+//end if
+ll_rtn = adw_1.SaveAs("C:\" + ls_filename, PDF!, FALSE)
+if ll_rtn = -1 then
+	messagebox('확인','파일명:' + ls_filename + ' 파일저장중 오류발생. 확인바랍니다!',Exclamation!)
+	as_msg = '파일명:' + ls_filename + ' 파일저장중 오류발생. 확인바랍니다!'
+	return -1
+end if
+
+//PDFWriter이용한 파일저장
+//  dw_2.object.datawindow.printer = "Acrobat PDFWriter"
+//  dw_2.object.DataWindow.Print.FileName = 'c:\download\' + l_s_accode + '.pdf'
+//  dw_2.Object.DataWindow.Print.DocumentName = 'c:\download\' + l_s_accode + '.pdf'
+//  l_n_acbcrt = dw_2.print()
+//  if l_n_acbcrt <> 1 then
+//      messagebox('message', l_n_acbcrt)
+//  end if
+
+
+//ll_rtn = f_opm_posheetsend(ls_filename,ls_xplan,ls_vsrno,as_msg)
+//if ll_rtn = -1 then
+//	//messagebox('확인','파일명:' + ls_filename + ' 메일전송중 오류발생. 확인바랍니다!',Exclamation!)
+//	//as_msg = '파일명:' + ls_filename + ' 메일전송중 오류발생. 확인바랍니다!'
+//	return -1
+//end if
+//   IF adw_1.print() <> 1 Then
+//		uo_status.st_message.Text	=	'발행취소 및 실패'			//발행할 자료가 없습니다.
+//		RETURN
+//	else
+//		//this.triggerevent('ue_retrieve')
+//		idw_21.update()
+//		uo_status.st_message.text = '발행완료'
+//		return
+//	End IF	
+
+////-- 인쇄 DataWindow 저장  "str_easy" 사용
+//i_str_prt.transaction   =	sqlca
+//i_str_prt.datawindow		= 	adw_1
+//
+////i_str_prt.dwsyntax      =  ls_syntax
+////i_str_prt.tag			  = 	Parent.ClassName()
+//f_close_report("2", i_str_prt.title) // Open된 출력Window 닫기
+//Opensheetwithparm(l_to_open, i_str_prt, "w_prt", w_frame, 0, Layered!)
+
+return 1
+end function
+

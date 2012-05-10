@@ -1,0 +1,75 @@
+$PBExportHeader$d_rtn031i_rtn015_template.srd
+$PBExportComments$±âº»Á¤º¸ ¾÷·Îµå¿ë ÅÛÇÃ¸´
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=replant dbname="RTN015.REPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=redvsn dbname="RTN015.REDVSN" )
+ column=(type=char(12) updatewhereclause=yes name=reitno dbname="RTN015.REITNO" )
+ column=(type=char(7) updatewhereclause=yes name=reline1 dbname="RTN015.RELINE1" )
+ column=(type=char(1) updatewhereclause=yes name=reline2 dbname="RTN015.RELINE2" )
+ column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.REOPSQ" )
+ column=(type=char(7) updatewhereclause=yes name=reopno dbname="RTN015.REOPNO" )
+ column=(type=char(50) updatewhereclause=yes name=reopnm dbname="RTN015.REOPNM" )
+ column=(type=char(5) updatewhereclause=yes name=reline3 dbname="RTN015.RELINE3" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebmtm dbname="RTN015.REBMTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebltm dbname="RTN015.REBLTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebstm dbname="RTN015.REBSTM" )
+ column=(type=decimal(0) updatewhereclause=yes name=relbcnt dbname="RTN015.RELBCNT" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN015~".~"REPLANT~",   
+         ~"PBRTN~".~"RTN015~".~"REDVSN~",   
+         ~"PBRTN~".~"RTN015~".~"REITNO~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE1~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE2~",   
+         ~"PBRTN~".~"RTN015~".~"REOPSQ~",   
+         ~"PBRTN~".~"RTN015~".~"REOPNO~",   
+         ~"PBRTN~".~"RTN015~".~"REOPNM~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE3~",   
+         ~"PBRTN~".~"RTN015~".~"REBMTM~",   
+         ~"PBRTN~".~"RTN015~".~"REBLTM~",   
+         ~"PBRTN~".~"RTN015~".~"REBSTM~",
+			~"PBRTN~".~"RTN015~".~"RELBCNT~"     
+FROM ~"PBRTN~".~"RTN015~"  
+    WHERE ( ~"PBRTN~".~"RTN015~".~"RECMCD~"  = :a_cmcd ) AND  
+          ( ~"PBRTN~".~"RTN015~".~"REPLANT~" = :a_plant ) AND   
+         ( ~"PBRTN~".~"RTN015~".~"REDVSN~"   = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN015~".~"REITNO~"   = :a_itno ) AND 
+         ( ~"PBRTN~".~"RTN015~".~"RELINE1~" = :a_line1 AND ~"PBRTN~".~"RTN015~".~"RELINE2~" = :a_line2 ) AND
+         (~"PBRTN~".~"RTN015~".~"REEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN015~".~"REEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN015~".~"REEDFM~" <= ~"PBRTN~".~"RTN015~".~"REEDTO~" )
+" arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_itno", string),("a_line1", string),("a_line2", string),("a_ajdate", string))  sort="replant A redvsn A reitno A reline1 A reline2 A reopsq A reopno A " )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="60" width="201" html.valueishtml="0"  name=replant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="219" y="8" height="60" width="238" html.valueishtml="0"  name=redvsn_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="466" y="8" height="60" width="416" html.valueishtml="0"  name=reitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ëÃ¼¶óÀÎ" border="0" color="16777215" x="891" y="8" height="60" width="256" html.valueishtml="0"  name=reline1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÄÚµå" border="0" color="16777215" x="1157" y="8" height="60" width="242" html.valueishtml="0"  name=reline2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¼ø¼­" border="0" color="16777215" x="1408" y="8" height="60" width="384" html.valueishtml="0"  name=reopsq_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¹øÈ£" border="0" color="16777215" x="1801" y="8" height="60" width="256" html.valueishtml="0"  name=reopno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¸í" border="0" color="16777215" x="2066" y="8" height="60" width="622" html.valueishtml="0"  name=reopnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="2697" y="8" height="60" width="242" html.valueishtml="0"  name=reline3_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±â°èÀÛ¾÷½Ã°£" border="0" color="16777215" x="2949" y="8" height="60" width="384" html.valueishtml="0"  name=rebmtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÀÛ¾÷½Ã°£" border="0" color="16777215" x="3342" y="8" height="60" width="384" html.valueishtml="0"  name=rebltm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±âº»ÀÛ¾÷½Ã°£" border="0" color="16777215" x="3735" y="8" height="60" width="384" html.valueishtml="0"  name=rebstm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÎ¿ø" border="0" color="16777215" x="4128" y="8" height="60" width="265" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="88" width="201" format="[general]" html.valueishtml="0"  name=replant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="219" y="8" height="88" width="238" format="[general]" html.valueishtml="0"  name=redvsn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="466" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=reitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="891" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=reline1 visible="1" edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1157" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=reline2 visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="1408" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=reopsq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1801" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=reopno visible="1" edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2066" y="8" height="88" width="622" format="[general]" html.valueishtml="0"  name=reopnm visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="2697" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=reline3 visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="2949" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rebmtm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3342" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rebltm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="33554432" x="3735" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rebstm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="33554432" x="4128" y="8" height="88" width="265" format="[general]" html.valueishtml="0"  name=relbcnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

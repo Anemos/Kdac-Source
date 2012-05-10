@@ -1,0 +1,18 @@
+$PBExportHeader$f_mps007_update.srf
+global type f_mps007_update from function_object
+end type
+
+forward prototypes
+global subroutine f_mps007_update (string a_xplant, string a_div, string a_date, string a_stscd)
+end prototypes
+
+global subroutine f_mps007_update (string a_xplant, string a_div, string a_date, string a_stscd);// string l_s_date 
+// l_s_date = f_relativedate(g_s_Date,-1)
+update pbmps.mps007
+	set zstscd = :a_stscd , zupdt = :g_s_date , zyear = :a_date 
+where zcmcd = '01' and zpgmid = 'MPSU06' and zplant = :a_xplant and zdvsn = :a_div 
+using sqlca ;
+
+
+end subroutine
+

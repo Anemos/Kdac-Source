@@ -1,0 +1,90 @@
+$PBExportHeader$d_tseqmstitem_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=customercode dbname="TSeqMstItem.CustomerCode" )
+ column=(type=char(15) updatewhereclause=yes name=customeritemcode dbname="TSeqMstItem.CustomerItemCode" )
+ column=(type=char(30) updatewhereclause=yes name=custitemname dbname="compute_0003" )
+ column=(type=char(15) updatewhereclause=yes name=tmstdivision_divisionname dbname="TMSTDIVISION.DivisionName" )
+ column=(type=char(50) updatewhereclause=yes name=tseqmstprod_productname dbname="TSeqMstProd.ProductName" )
+ column=(type=char(1) updatewhereclause=yes name=areacode dbname="TSeqMstItem.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="TSeqMstItem.DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=itemcode dbname="TSeqMstItem.Itemcode" )
+ column=(type=char(3) updatewhereclause=yes name=partid dbname="TSeqMstItem.PartId" )
+ column=(type=char(3) updatewhereclause=yes name=partid2 dbname="TSeqMstItem.PartId2" )
+ column=(type=char(10) updatewhereclause=yes name=productgroup dbname="TSeqMstItem.ProductGroup" )
+ column=(type=char(2) updatewhereclause=yes name=seqgubun dbname="TSeqMstItem.seqgubun" )
+ column=(type=char(1) updatewhereclause=yes name=assygubun dbname="TSeqMstItem.assygubun" values="Finish Ass'y	F/Sub Ass'y	S/" )
+ column=(type=char(10) updatewhereclause=yes name=linecode dbname="TSeqMstItem.LineCode" )
+ column=(type=char(10) updatewhereclause=yes name=rackgroup dbname="TSeqMstItem.RackGroup" )
+ column=(type=char(10) updatewhereclause=yes name=cartype dbname="TSeqMstItem.CarType" )
+ column=(type=long updatewhereclause=yes name=lotsize dbname="TSeqMstItem.LotSize" )
+ column=(type=long updatewhereclause=yes name=safestockqty dbname="TSeqMstItem.SafeStockQty" )
+ column=(type=char(6) updatewhereclause=yes name=lastemp dbname="TSeqMstItem.LastEmp" )
+ column=(type=datetime updatewhereclause=yes name=lastdate dbname="TSeqMstItem.LastDate" )
+ retrieve="  SELECT TSeqMstItem.CustomerCode,   
+         TSeqMstItem.CustomerItemCode,   
+			nullif(TMstCustItem.CustItemName,''), 
+			TMstDivision.DivisionName,  
+			TSeqMstProd.ProductName,
+         TSeqMstItem.AreaCode,   
+         TSeqMstItem.DivisionCode,   
+         TSeqMstItem.Itemcode,   
+         TSeqMstItem.PartId,
+         TSeqMstItem.PartId2,   
+         TSeqMstItem.ProductGroup,  
+			TSeqMstItem.seqgubun,
+			TSeqMstItem.assygubun, 
+         TSeqMstItem.LineCode,   
+         TSeqMstItem.RackGroup,   
+         TSeqMstItem.CarType,   
+         TSeqMstItem.LotSize,   
+         TSeqMstItem.SafeStockQty,   
+         TSeqMstItem.LastEmp,   
+         TSeqMstItem.LastDate  
+    FROM TSeqMstItem  , TMstCustItem , TMstDivision , TSeqMstProd
+   WHERE ( TSeqMstItem.AreaCode 				= :a_areacode ) AND  
+         ( TSeqMstItem.DivisionCode 		like :a_divisioncode ) AND  
+         ( TSeqMstItem.ProductGroup 		like :a_productgroup ) AND  
+  			( TSeqMstItem.CustomerItemCode 	*=	TMstCustItem.CustItemCode ) And
+			( TSeqMstItem.CustomerCode 	 	*=	TMstCustItem.CustCode ) And
+			( TSeqMstItem.DivisionCode 		= 	TMstDivision.DivisionCode ) And
+			( TSeqMstItem.AreaCode 				= 	TMstDivision.AreaCode ) And
+			( TSeqMstItem.ProductGroup			=	TSeqMstProd.ProductGroup ) And
+			( TSeqMstItem.DivisionCode 		= 	TSeqMstProd.DivisionCode ) And
+			( TSeqMstItem.AreaCode 				= 	TSeqMstProd.AreaCode )" arguments=(("a_areacode", string),("a_divisioncode", string),("a_productgroup", string))  sort="areacode A divisioncode A productgroup A customercode A customeritemcode A itemcode A partid A " )
+text(band=header alignment="2" text="Lot Size" border="0" color="16777215" x="4800" y="0" height="72" width="283" html.valueishtml="0"  name=lotsize_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾ÈÀüÀç°í·®" border="0" color="16777215" x="5093" y="0" height="72" width="361" html.valueishtml="0"  name=safestockqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="9" y="0" height="72" width="347" html.valueishtml="0"  name=tmstdivision_divisionname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="0" color="16777215" x="366" y="0" height="72" width="635" html.valueishtml="0"  name=tseqmstprod_productname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±¸ºÐ" border="0" color="16777215" x="1010" y="0" height="72" width="439" html.valueishtml="0"  name=assygubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼­¿­±¸ºÐ" border="0" color="16777215" x="1458" y="0" height="72" width="507" html.valueishtml="0"  name=seqgubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¶óÀÎÄÚµå" border="0" color="16777215" x="4503" y="0" height="72" width="288" html.valueishtml="0"  name=linecode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç° ¸í" border="0" color="16777215" x="3721" y="0" height="72" width="773" html.valueishtml="0"  name=custitemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="½Äº°ID2" border="0" color="16777215" x="3479" y="0" height="72" width="233" html.valueishtml="0"  name=partid2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Äº°ID" border="0" color="16777215" x="3259" y="0" height="72" width="210" html.valueishtml="0"  name=partid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="KDACÇ°¹ø" border="0" color="16777215" x="2866" y="0" height="72" width="384" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³Ç°¹ø" border="0" color="16777215" x="2359" y="0" height="72" width="498" html.valueishtml="0"  name=customeritemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Å·¡Ã³" border="0" color="16777215" x="1975" y="0" height="72" width="375" html.valueishtml="0"  name=customercode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Â÷Á¾" border="0" color="16777215" x="5467" y="0" height="72" width="224" html.valueishtml="0"  name=cartype_t visible="0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="33554432" x="4800" y="0" height="72" width="283" format="[general]" html.valueishtml="0"  name=lotsize visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="33554432" x="5093" y="0" height="72" width="361" format="[general]" html.valueishtml="0"  name=safestockqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="347" format="[general]" html.valueishtml="0"  name=tmstdivision_divisionname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="366" y="0" height="72" width="635" format="[general]" html.valueishtml="0"  name=tseqmstprod_productname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="1010" y="0" height="72" width="439" format="[general]" html.valueishtml="0"  name=assygubun visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="1458" y="0" height="72" width="507" format="[general]" html.valueishtml="0"  name=seqgubun visible="1" dddw.name=d_seq_select_code dddw.displaycolumn=codename dddw.datacolumn=codeid dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="4503" y="0" height="72" width="288" format="[general]" html.valueishtml="0"  name=linecode visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="3259" y="0" height="72" width="210" format="[general]" html.valueishtml="0"  name=partid visible="1" edit.limit=3 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="3721" y="0" height="72" width="773" format="[general]" html.valueishtml="0"  name=custitemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="2866" y="0" height="72" width="384" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="2359" y="0" height="72" width="498" format="[general]" html.valueishtml="0"  name=customeritemcode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="1975" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=customercode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="3479" y="0" height="72" width="233" format="[general]" html.valueishtml="0"  name=partid2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="33554432" x="5467" y="0" height="72" width="224" format="[general]" html.valueishtml="0"  name=cartype visible="0" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="tmstdivision_divisionname	tseqmstprod_productname	assygubun	seqgubun	customercode	customeritemcode	itemcode	partid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

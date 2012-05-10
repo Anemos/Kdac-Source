@@ -1,0 +1,13 @@
+$PBExportHeader$str_system_time.srs
+$PBExportComments$서버의 시간과 동기화
+global type str_system_time from structure
+	unsignedinteger		year
+	unsignedinteger		month
+	unsignedinteger		dayweek
+	unsignedinteger		day
+	unsignedinteger		hour
+	unsignedinteger		min
+	unsignedinteger		sec
+	unsignedinteger		millsec
+end type
+

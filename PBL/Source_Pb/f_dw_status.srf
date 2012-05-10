@@ -1,0 +1,26 @@
+$PBExportHeader$f_dw_status.srf
+$PBExportComments$DataWindow 상태 Check      Global  Function
+global type f_dw_status from function_object
+end type
+
+forward prototypes
+global function integer f_dw_status (datawindow adw_dw, string as_level)
+end prototypes
+
+global function integer f_dw_status (datawindow adw_dw, string as_level);Integer li_Net
+
+If as_level = '5' Then
+	adw_dw.AcceptText()
+	
+	If adw_dw.ModifiedCount() > 0 Then
+		li_Net = MessageBox('확인', '[처리]중입니다. 저장하시겠습니까?', Question!, YesNoCancel!, 2)
+	Else
+		li_Net = -1
+	End If
+Else
+	li_Net = -1
+End If
+
+Return li_Net
+end function
+

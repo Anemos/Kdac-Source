@@ -1,0 +1,77 @@
+$PBExportHeader$d_commsum_retrieve.srd
+$PBExportComments$½ÂÀÎÇöÈ²Á¶È¸
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 2 print.margin.left = 10 print.margin.right = 10 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 7 print.paper.size = 9 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=68 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(10) updatewhereclause=yes name=inputname dbname="INPUTNAME" )
+ column=(type=char(200) updatewhereclause=yes name=reason dbname="REASON" )
+ column=(type=long updatewhereclause=yes name=pgm_count dbname="compute_0003" values=" 	0/" )
+ column=(type=long updatewhereclause=yes name=user_count dbname="compute_0004" values=" 	0/" )
+ column=(type=long updatewhereclause=yes name=usepgm_count dbname="compute_0005" values=" 	0/" )
+ column=(type=long updatewhereclause=yes name=pbd_count dbname="compute_0006" values=" 	0/" )
+ retrieve="Select		CoaleSce(penamek,Inpt_id) AS InputName,Reason,
+			sum(Case When gubun = 'ÇÁ·Î±×·¥ °ü¸®'   Then IfNull(CountSum, 0) Else 0 End ),
+			sum(Case When gubun = '»ç¿ëÀÚ °ü¸®'   	Then IfNull(CountSum, 0) Else 0 End ),
+			sum(Case When gubun = '»ç¿ë±ÇÇÑ °ü¸®'   Then IfNull(CountSum, 0) Else 0 End ),
+			sum(Case When gubun = 'PBD º¯°æ'   		Then IfNull(CountSum, 0) Else 0 End )	From
+	( select 'ÇÁ·Î±×·¥ °ü¸®' as gubun,inpt_id,'º¯°æ»çÀ¯ ¾øÀ½' as reason,count(*) as CountSum from pbcommon.comm110his
+		where  substring(confirm_date,1,10)	between	:ag_Fromdate	And	:ag_Todate
+		group by inpt_id
+		union all
+	select '»ç¿ëÀÚ °ü¸®' as gubun,inpt_id,case when posstr(upgrade_detail,']') = 0 Then 'º¯°æ»çÀ¯ ¾øÀ½' Else substr(upgrade_detail,2,posstr(upgrade_detail,']')-2) End as reason,
+			count(*)	 as CountSum from pbcommon.comm121his
+		where substring(confirm_date,1,10) 	between	:ag_Fromdate	And	:ag_Todate
+		group by inpt_id,upgrade_detail
+		union all
+	select '»ç¿ë±ÇÇÑ °ü¸®' as gubun,inpt_id,case when posstr(upgrade_detail,']') = 0 Then 'º¯°æ»çÀ¯ ¾øÀ½' Else substr(upgrade_detail,2,posstr(upgrade_detail,']')-2) End as reason,
+		count(*)	as CountSum from pbcommon.comm140his
+		where substring(confirm_date,1,10)	between	:ag_Fromdate	And	:ag_Todate
+		group by inpt_id,upgrade_detail
+		union all
+	select 'PBD º¯°æ' as gubun,updt_id as inpt_id,case when posstr(upgrade_detail,']') = 0 Then 'º¯°æ»çÀ¯ ¾øÀ½' Else substr(upgrade_detail,2,posstr(upgrade_detail,']')-2) End as reason,
+		count(*) as CountSum from pbcommon.comm702his
+		where substring(confirm_date,1,10)	between	:ag_Fromdate	And	:ag_Todate
+		group by updt_id,upgrade_detail ) A Left Outer Join		pbcommon.dac003 	On		Inpt_id = Peempno
+Group By penamek,Inpt_id,Reason
+
+
+" arguments=(("ag_Fromdate", string),("ag_Todate", string))  sort="inputname A reason A " )
+group(level=1 header.height=0 trailer.height=72 by=("inputname" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="¿äÃ»ÀÚ" border="0" color="16777215" x="9" y="0" height="76" width="421" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º¯ °æ »ç À¯" border="0" color="16777215" x="439" y="0" height="76" width="878" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÇÁ·Î±×·¥ °ü¸®" border="0" color="16777215" x="1326" y="0" height="76" width="539" html.valueishtml="0"  name=t_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ëÀÚ °ü¸®" border="0" color="16777215" x="1874" y="0" height="76" width="517" html.valueishtml="0"  name=t_4 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ë±ÇÇÑ °ü¸®" border="0" color="16777215" x="2400" y="0" height="76" width="526" html.valueishtml="0"  name=t_5 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="PBD º¯°æ" border="0" color="16777215" x="2935" y="0" height="76" width="507" html.valueishtml="0"  name=t_6 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÇÕ  °è" border="0" color="16777215" x="3451" y="0" height="76" width="553" html.valueishtml="0"  name=t_7 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="76" width="421" format="[general]" html.valueishtml="0"  name=inputname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="439" y="0" height="76" width="878" format="[general]" html.valueishtml="0"  name=reason visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="1326" y="0" height="76" width="539" format="#,###" html.valueishtml="0"  name=pgm_count visible="1" edit.limit=0 edit.case=any edit.format="#,###" edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="2400" y="0" height="76" width="526" format="#,###" html.valueishtml="0"  name=usepgm_count visible="1" edit.limit=0 edit.case=any edit.format="#,###" edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="2935" y="0" height="76" width="507" format="#,###" html.valueishtml="0"  name=pbd_count visible="1" edit.limit=0 edit.case=any edit.format="#,###" edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression=" pgm_count +  user_count +  usepgm_count +  pbd_count "border="0" color="8388608" x="3451" y="0" height="76" width="553" format="#,###" html.valueishtml="0"  name=sum_id visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="1874" y="0" height="76" width="517" format="#,###" html.valueishtml="0"  name=user_count visible="1" edit.limit=0 edit.case=any edit.format="#,###" edit.focusrectangle=no edit.autoselect=no edit.imemode=0 edit.codetable=yes  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+compute(band=summary alignment="2" expression="sum(  pgm_count  for all ) "border="0" color="8388736" x="1326" y="0" height="76" width="539" format="#,###" html.valueishtml="0"  name=pgm_count_total visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+compute(band=summary alignment="2" expression="sum(  usepgm_count for all )"border="0" color="8388736" x="2400" y="0" height="76" width="526" format="#,###" html.valueishtml="0"  name=usepgm_count_total visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+compute(band=summary alignment="2" expression="sum(  pbd_count for all )"border="0" color="8388736" x="2935" y="0" height="76" width="507" format="#,###" html.valueishtml="0"  name=pbd_count_total visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+compute(band=summary alignment="2" expression="sum(  sum_id for all )"border="0" color="8388736" x="3451" y="0" height="76" width="553" format="#,###" html.valueishtml="0"  name=sum_total visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+compute(band=summary alignment="2" expression="sum(  user_count for all ) "border="0" color="8388736" x="1874" y="0" height="76" width="517" format="#,###" html.valueishtml="0"  name=user_count_total visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+text(band=summary alignment="2" text="" border="0" color="8388736" x="9" y="0" height="68" width="421" html.valueishtml="0"  name=t_10 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+text(band=summary alignment="1" text="Àü   Ã¼   ÇÕ   °è   :  " border="0" color="8388736" x="439" y="0" height="68" width="878" html.valueishtml="0"  name=t_11 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="29879025" )
+text(band=trailer.1 alignment="2" text="" border="0" color="0" x="9" y="0" height="68" width="421" html.valueishtml="0"  name=t_9 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=trailer.1 alignment="1" text="¼Ò  °è   :  " border="0" color="0" x="439" y="0" height="68" width="878" html.valueishtml="0"  name=t_8 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="2" expression="sum(pgm_count for group 1) "border="0" color="8388608" x="1326" y="0" height="68" width="539" format="#,###" html.valueishtml="0"  name=pgm_count_group visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="2" expression="sum(user_count for group 1)"border="0" color="8388608" x="1874" y="0" height="68" width="517" format="#,###" html.valueishtml="0"  name=user_count_group visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="2" expression="sum(usepgm_count for group 1)"border="0" color="8388608" x="2400" y="0" height="68" width="526" format="#,###" html.valueishtml="0"  name=usepgm_count_group visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="2" expression="sum(pbd_count  for group 1)"border="0" color="8388608" x="2935" y="0" height="68" width="507" format="#,###" html.valueishtml="0"  name=pbd_count_group visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="2" expression="sum(  sum_id  for group 1)"border="0" color="8388608" x="3451" y="0" height="68" width="553" format="#,###" html.valueishtml="0"  name=sum_group visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+
+sparse(names="inputname	reason")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,57 @@
+$PBExportHeader$dddw_cd_dac001a.srd
+$PBExportComments$¿¸∫Œº≠ :∫Œº≠(≥ª∫Œ(dintcode1),ø‹∫Œ(dcode)),¥„¥Á(ddiv3),∫ª∫Œ(ddiv5),¡÷¿Á¡ˆ(dcity) (PBCOMMON.dac001)
+release 9;
+datawindow(units=0 timer_interval=0 color=15793151 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=dcode dbname="DAC001A.DCODE" )
+ column=(type=char(20) updatewhereclause=yes name=dfname1 dbname="DAC001A.DFNAME1" )
+ column=(type=char(20) updatewhereclause=yes name=dfname2 dbname="DAC001A.DFNAME2" )
+ column=(type=char(20) updatewhereclause=yes name=dfname3 dbname="DAC001A.DFNAME3" )
+ column=(type=char(20) updatewhereclause=yes name=dfname4 dbname="DAC001A.DFNAME4" )
+ column=(type=char(40) updatewhereclause=yes name=dname dbname="DAC001A.DNAME" )
+ column=(type=char(1) updatewhereclause=yes name=ddiv5 dbname="DAC001A.DDIV5" )
+ column=(type=char(1) updatewhereclause=yes name=ddiv4 dbname="DAC001A.DDIV4" )
+ column=(type=char(1) updatewhereclause=yes name=ddiv3 dbname="DAC001A.DDIV3" )
+ column=(type=char(1) updatewhereclause=yes name=dcity dbname="DAC001A.DCITY" )
+ column=(type=char(1) updatewhereclause=yes name=dlevel1 dbname="DAC001A.DLEVEL1" )
+ column=(type=char(4) updatewhereclause=yes name=dintcode1 dbname="DAC001A.DINTCODE1" )
+ retrieve="  SELECT ~"PBCOMMON~".~"DAC001A~".~"DCODE~",            
+         ~"PBCOMMON~".~"DAC001A~".~"DFNAME1~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DFNAME2~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DFNAME3~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DFNAME4~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DNAME~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DDIV5~",
+         ~"PBCOMMON~".~"DAC001A~".~"DDIV4~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DDIV3~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DCITY~",
+         ~"PBCOMMON~".~"DAC001A~".~"DLEVEL1~",   
+         ~"PBCOMMON~".~"DAC001A~".~"DINTCODE1~"  
+    FROM ~"PBCOMMON~".~"DAC001A~"  
+   WHERE ( ~"PBCOMMON~".~"DAC001A~".~"DUSE~" = ' ' ) AND  
+         ( ~"PBCOMMON~".~"DAC001A~".~"DTODT~" = 0 ) AND  
+         ( ~"PBCOMMON~".~"DAC001A~".~"DSYS1~" = 'X' )and
+			 ( ~"PBCOMMON~".~"DAC001A~".~"DSYS2~"  = 'X' ) and
+         ( ~"PBCOMMON~".~"DAC001A~".~"DACTTODT~" = 0 ) 
+   ORDER BY ~"PBCOMMON~".~"DAC001A~".~"DINTCODE1~"  
+        
+     " )
+column(band=detail id=1 alignment="0" tabsequence=0 border="6" color="16711680" x="9" y="0" height="76" width="146" html.valueishtml="0"  name=dcode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=6 alignment="0" tabsequence=0 border="6" color="0" x="165" y="0" height="76" width="1216" html.valueishtml="0"  name=dname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=7 alignment="0" tabsequence=0 border="6" color="0" x="4590" y="0" height="76" width="32" html.valueishtml="0"  name=ddiv5 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=8 alignment="0" tabsequence=0 border="6" color="0" x="4622" y="0" height="76" width="32" html.valueishtml="0"  name=ddiv4 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=9 alignment="0" tabsequence=0 border="6" color="0" x="4654" y="0" height="76" width="32" html.valueishtml="0"  name=ddiv3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=10 alignment="0" tabsequence=0 border="6" color="0" x="4686" y="0" height="76" width="32" html.valueishtml="0"  name=dcity visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=11 alignment="0" tabsequence=0 border="6" color="0" x="4718" y="0" height="76" width="32" html.valueishtml="0"  name=dlevel1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=12 alignment="0" tabsequence=0 border="6" color="0" x="4750" y="0" height="76" width="128" html.valueishtml="0"  name=dintcode1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=3 alignment="0" tabsequence=0 border="6" color="0" x="1390" y="0" height="76" width="640" html.valueishtml="0"  name=dfname2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=4 alignment="0" tabsequence=0 border="6" color="0" x="2030" y="0" height="76" width="640" html.valueishtml="0"  name=dfname3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=5 alignment="0" tabsequence=0 border="6" color="0" x="2670" y="0" height="76" width="640" html.valueishtml="0"  name=dfname4 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

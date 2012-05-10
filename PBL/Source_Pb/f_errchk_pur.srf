@@ -1,0 +1,154 @@
+$PBExportHeader$f_errchk_pur.srf
+$PBExportComments$필수입력항목 Check - ip_chk
+global type f_errchk_pur from function_object
+end type
+
+forward prototypes
+global function integer f_errchk_pur (datawindow ag_dw)
+end prototypes
+
+global function integer f_errchk_pur (datawindow ag_dw);//////////////////////////////////////////////////////////////////////////
+// * 기능강화(UPGRADE) 필수입력사항 Check 함수 *
+// * CheckBox 있는 경우 : name = 'ip_chk'
+//
+// -> 칼럼의 배경색값에 조건(If문...)을 준 경우에도 Check...
+//																		2002. 11. 3 박병주
+//////////////////////////////////////////////////////////////////////////
+
+ag_dw.AcceptText()
+
+String 	ls_ColCnt
+Long 		ll_RowCnt
+
+ls_ColCnt = ag_dw.Object.DataWindow.Column.Count
+ll_RowCnt = ag_dw.RowCount()
+
+Long		ll_Row = 0, ll_i , ll_Mod
+String	ls_ColType, ls_ColName, ls_ColText, ls_Color_Syntax, ls_Color
+Any		la_ColValue
+Long     ln_cnt = 0
+
+
+dwItemStatus l_status
+Integer  li_confirm
+
+
+//Do While ll_Row <= ll_RowCnt
+For ll_Row = 1 to ll_RowCnt
+	//2003.05.14
+	IF ag_dw.object.ip_chk[ll_Row] = 0 Then Continue
+   ln_cnt = ln_cnt + 1
+
+		
+//   Messagebox("확인","Row : " + String(ll_Row) )
+//	ll_Mod = ag_dw.GetNextModified(ll_Row - 1, Primary!)
+//	Messagebox("확인"," GetNextModified Row : " + String(ll_Row) )
+/*	
+	Messagebox("확인"," GetNextModified Row : " + String(ll_Row) )
+	
+	l_status = ag_dw.GetItemStatus(ll_Row, 0, Primary!)
+	
+	IF l_status = New! Then
+		li_confirm = Messagebox("확인 Row :" + String(ll_Row),"dw status : " + "New!", Information! ,OKCancel! , 2 )
+	ElseIF l_status = NewModified! Then
+		li_confirm = Messagebox("확인 Row :" + String(ll_Row),"dw status : " + "NewModified!" , Information! ,OKCancel! , 2 )
+		
+	ElseIF l_status = DataModified! Then
+		li_confirm = Messagebox("확인 Row :" + String(ll_Row),"dw status : " + "DataModified!" , Information! ,OKCancel! , 2 )
+	ElseIF l_status = NotModified! Then
+		li_confirm = Messagebox("확인 Row :" + String(ll_Row),"dw status : " + "NotModified!" , Information! ,OKCancel! , 2 )
+	//Else
+	//	li_confirm = Messagebox("확인 Row :" + String(ll_Row),"dw status : " + "모르는 값" , Information! ,OKCancel! , 2 )
+	End IF
+	
+	IF li_confirm = 1 Then
+		Return -1
+	End IF
+*/
+//	If ll_Mod = 0 Then 
+//		MessageBox("확인","필수입력항목을 수정(입력)후 처리바랍니다.")
+//		RETURN -1	//2003.05.14
+//		//Exit   
+//	END IF	
+
+
+
+	For ll_i = 1 To Dec(ls_ColCnt) 
+					
+		//
+		ls_ColType = Upper(ag_dw.Describe('#' + String(ll_i) + '.ColType'))
+		ls_ColName = ag_dw.Describe('#' + String(ll_i) + '.Name')
+		
+		ls_Color_Syntax = ag_dw.Describe(ls_ColName + '.BackGround.Color')
+		
+		If Pos( ls_Color_Syntax, 'if', 1 ) = 0 Then
+			ls_Color = ls_Color_Syntax
+		Else				
+			ls_Color_Syntax = Mid( ls_Color_Syntax, Pos( ls_Color_Syntax, 'if', 1 ) )
+			ls_Color_Syntax = Left( ls_Color_Syntax, Len(ls_Color_Syntax) - 1 )			
+			ls_Color = ag_dw.Describe( "Evaluate('" + ls_Color_Syntax +"', " + String(ll_Row) + ")" )		
+		End If
+		
+		Choose Case Left(ls_ColType, 3)
+			Case 'CHA'
+				la_ColValue = ag_dw.GetItemString(ll_Row, ls_ColName)
+				If Long( ls_Color ) = 15780518 Then
+					If IsNull(la_ColValue) Or la_ColValue = "" Or la_ColValue = ' ' Then
+						ls_ColText = ag_dw.Describe(ls_ColName + '_t.Text')
+						MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+						ag_dw.SetRow(ll_Row)
+						ag_dw.SetColumn(ll_i)
+						ag_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+			Case 'INT', 'DEC', 'LON', 'NUM', 'REA'
+				
+				la_ColValue = ag_dw.GetItemDecimal(ll_Row, ls_ColName)				
+				If Long( ls_Color ) = 15780518 Then
+					If IsNull(la_ColValue) Or la_ColValue <= 0 Then
+						ls_ColText = ag_dw.Describe(ls_ColName + '_t.Text')
+						
+						If la_ColValue < 0 Then
+							MessageBox('확인!', ls_ColText + '는(은) 음수값이 들어간 항목입니다.', Exclamation!)
+						Else
+							MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+						End If
+						ag_dw.SetRow(ll_Row)
+						ag_dw.SetColumn(ll_i)
+						ag_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+			Case 'DAT'
+				la_ColValue = ag_dw.GetItemDateTime(ll_Row, ls_ColName)
+				If Long( ls_Color ) = 15780518 Then
+					If IsNull(la_ColValue) Then
+						ls_ColText = ag_dw.Describe(ls_ColName + '_t.Text')
+						MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+						ag_dw.SetRow(ll_Row)
+						ag_dw.SetColumn(ll_i)
+						ag_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+		End Choose
+		
+	Next	
+//Loop
+Next
+//2003.05.14 
+IF ln_cnt =0 Then 
+	Messagebox("확인","선택한후 처리바랍니다.")
+	Return -1
+End IF
+
+Return 1
+end function
+

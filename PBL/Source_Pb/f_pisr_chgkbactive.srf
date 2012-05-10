@@ -1,0 +1,69 @@
+$PBExportHeader$f_pisr_chgkbactive.srf
+$PBExportComments$외주간판 운용(Active)/대기(Sleeping) 전환 (arg string as_kbNo, strign as_actGubun, return integer)
+global type f_pisr_chgkbactive from function_object
+end type
+
+forward prototypes
+global function integer f_pisr_chgkbactive (string as_kbno, string as_actgubun)
+end prototypes
+
+global function integer f_pisr_chgkbactive (string as_kbno, string as_actgubun);
+If f_pisr_getpartkbas(as_kbNo) = as_actgubun Then Return 1 
+
+If as_actgubun = 'S' Then // Active -> Sleeping 
+	Update TPARTKBSTATUS
+		Set KBActiveGubun 	= 'S', 
+			 PartKBStatus 		= 'D', 
+			 KBOrderPossible 	= 'N',
+			 LastEmp 			= 'Y',	//Interface Flag 활용
+			 LastDate 			= getdate()
+	Where TPARTKBSTATUS.PartKBNo = :as_kbNo 
+	USING	sqlpis	;
+//Update TPARTKBSTATUS
+//	Set KBActiveGubun = 'S', 
+//		 PartKBStatus = 'D', 
+//		 KBOrderPossible = 'N',
+//		 OrderChangeFlag = 'N',
+//		 PartOrderCancel = 'N',
+//		 PartReceiptCancel = 'N',
+//		 PartObeyDateFlag = 0,
+//		 PartObeyTimeFlag = 0,
+//		 PartOrderDate = null,
+//		 PartOrderTime = null,
+//		 PartForeCastDate = null,
+//		 PartForecastEditNo = null,
+//		 PartForecastTime = null,
+//		 PartReceiptDate = null,
+//		 PartEditNo = null,
+//		 PartReceiptTime = null,
+//		 PartIncomeDate = null,
+//		 PartIncomeTime = null,
+//		 PartOrderNo = null,
+//		 DeliveryNo = null,
+//		 OrderChangeTime = null,
+//		 OrderChangeCode = null,
+//		 ChangeForecastDate = null,
+//		 ChangeForecastEditNo = null,
+//		 ChangeForecastTime = null,
+//		 LastEmp = 'Y',	
+//		 LastDate = getdate()
+//Where TPARTKBSTATUS.PartKBNo = :as_kbNo 
+//USING	sqlpis	;
+
+Else				// Sleeping -> Active 
+	Update TPARTKBSTATUS
+		Set KBActiveGubun 	= 'A', 
+			 PartKBStatus 		= 'D', 
+			 KBOrderPossible 	= 'Y',
+			 LastEmp 			= 'Y',	//Interface Flag 활용
+			 LastDate 			= getdate()
+	 Where TPARTKBSTATUS.PartKBNo = :as_kbNo 
+	 USING sqlpis	;
+End If 
+
+//If Not f_pisr_sqlchkopt(sqlpis, False) Then Return -1
+If sqlpis.SqlCode <> 0 Then Return -1
+
+Return 1 
+end function
+

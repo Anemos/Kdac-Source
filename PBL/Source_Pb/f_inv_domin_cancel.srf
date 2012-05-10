@@ -1,0 +1,354 @@
+$PBExportHeader$f_inv_domin_cancel.srf
+$PBExportComments$내자취소입고입력(여주 Interface)
+global type f_inv_domin_cancel from function_object
+end type
+
+forward prototypes
+global function integer f_inv_domin_cancel (string as_gubun, string as_xplant, string as_div, string as_itno, string as_date, string as_stcd, string as_vsrno, decimal ad_qty, string as_srno, string as_usrid, string as_inptdt, ref string as_error)
+end prototypes
+
+global function integer f_inv_domin_cancel (string as_gubun, string as_xplant, string as_div, string as_itno, string as_date, string as_stcd, string as_vsrno, decimal ad_qty, string as_srno, string as_usrid, string as_inptdt, ref string as_error);//**************************************************
+// 여주공장 내자취소입고 Interface                      
+// INV401 INSERT => INV101 UPDATE => 재공함수 CALL  
+//**************************************************
+
+// 입력시 변수선언 
+String  ls_cls,  ls_srce, ls_unit, ls_pdcd, ls_plan, ls_mlan 
+String  ls_itnm, ls_spec, ls_type, ls_rvno  
+String  ls_slno, ls_srno, ls_vndr, ls_vdnm, ls_curr, ls_pay, ls_otxcd
+String  ls_key,  ls_key1, ls_cdiv, ls_dept
+Long    ll_wamt, ll_amt,  ll_ohamt, ll_intamt, ll_row
+Dec{1}  ld_qty, ld_rqty, ld_sqty,  ld_intqty, ld_ohqty, ld_saqty
+Dec{2}  ld_cost, ld_costav, ld_exch, ld_dcost, ld_ecost
+// 삭제시 변수선언
+String  ls_dsrno, ls_dsrno1, ls_dsrno2, ls_sltype
+Long    ll_tramt, ll_rtn
+Dec{1}  ld_tqty4
+ 
+Datastore ds_trans_01
+
+/////////////////////////////////////////
+////// Argument Value 유효성검정   //////
+/////////////////////////////////////////
+
+// 불출일 : 결산년월 Check
+If f_yeo_online(as_date,' ') = -1 Then 
+	 as_error = "마감일이 지난후 작업할 수 없음"
+	return -1
+End If
+
+//////////////////////////////////////////////
+////// Argument Value 유효성검정 종료  //////
+/////////////////////////////////////////////
+
+If as_gubun = 'A' Then
+	
+	// INV401 Insert 용 DataStore Open
+	ds_trans_01 = create datastore                  			              
+	ds_trans_01.dataobject = "d_inv_out_01"
+	ds_trans_01.settransobject(sqlca)
+	
+End If
+
+If as_gubun = 'A' Then
+	
+	// INV401(Trans) 데이타 입력
+	ds_trans_01.Reset( )
+	ll_row = ds_trans_01.insertrow(0)
+	
+Else
+
+	// 삭제시 Trans Read => Primary Key
+	SELECT "SLIPTYPE", "SRNO",    "SRNO1",    "SRNO2",    "TQTY4",   "TRAMT"
+	  INTO :ls_sltype, :ls_dsrno, :ls_dsrno1, :ls_dsrno2, :ld_tqty4, :ll_tramt
+	FROM "PBINV"."INV401" 
+	WHERE "COMLTD" = '01'     AND "XPLANT" = :as_xplant AND "DIV" = :as_div AND 
+	      "ITNO"   = :as_itno AND "TFILL"  = :as_srno  using sqlca ;
+	If sqlca.sqlcode <> 0 Then
+		as_error = "Tran_DB에 DATA를 조회할 수 없음"
+		return -1
+	End If
+	
+End If
+
+If as_gubun = 'A' Then
+	
+	// 품목Master에서 기본정보 가져오기
+	SELECT "PBINV"."INV002"."ITNM", "PBINV"."INV002"."SPEC",	"PBINV"."INV002"."XTYPE", "PBINV"."INV002"."RVNO"  
+	 INTO  :ls_itnm, :ls_spec,	:ls_type, :ls_rvno   
+	FROM "PBINV"."INV002"  
+	WHERE ( "PBINV"."INV002"."COMLTD" = '01' ) AND ( "PBINV"."INV002"."ITNO" = :as_itno ) using sqlca;
+	If sqlca.sqlcode <> 0 Then
+		as_error = "품목Master에서 기본정보 가져오기 실패"
+		return -1
+	End If
+	
+End If
+
+//품목재고 테이블에서 기존정보가져오기
+SELECT "PDCD",  "COSTAV", "SRCE", "CLS", "XUNIT", "XPLAN", "MLAN",   
+		 "OHUQTY","OHRQTY", "OHSQTY", "OHAMT", "INTQTY", "INTAMT"
+  INTO :ls_pdcd,   :ld_costav, :ls_srce,  :ls_cls, :ls_unit,  :ls_plan,   :ls_mlan,   
+		 :ld_qty, :ld_rqty, :ld_sqty, :ll_ohamt, :ld_intqty, :ll_intamt
+FROM  "PBINV"."INV101"
+WHERE "COMLTD" = '01' AND "XPLANT" = :as_xplant AND 
+		"DIV" = :as_div AND "ITNO"   = :as_itno   using sqlca ;
+ 
+If sqlca.sqlcode <> 0 Then
+	as_error = "품목재고 테이블에서 기존정보가져오기 실패"
+	return -1
+End If
+
+// 취소량 & 재고수량 Editing
+If as_gubun = 'A' Then
+	
+	// 구입선이 외자면  Error
+	If ls_srce = '01' Then
+		as_error = "구입선이 외자면  Error! 내자여야 함"
+		return -1
+	End If
+	
+	// 입고수량이 사용가 수량을 넘을수 없습니다. 
+	If as_stcd = 'U' Then
+		If ad_qty > ld_qty Then
+			as_error = "입고취소수량이 사용가 수량을 넘을수 없음."
+			return -1
+		End If
+	End If
+	// 입고수량이 요수리 수량을 넘을수 없습니다. 
+	If as_stcd = 'R' Then
+		If ad_qty > ld_rqty Then
+			as_error = "입고취소수량이 요수리 수량을 넘을수 없음."
+			return -1
+		End If
+	End If
+	// 입고수량이 폐품 수량을 넘을수 없습니다. 
+	If as_stcd = 'S' Then
+		If ld_qty > ld_sqty Then
+			as_error = "입고취소수량이 폐품 수량을 넘을수 없음."
+			return -1
+		End If
+	End If
+	
+	//업체별품목단가 DB에서 단가 Search	
+	SELECT "PBPUR"."PUR103"."ECURR","PBPUR"."PUR103"."DCOST","PBPUR"."PUR103"."ECOST","PBPUR"."PUR103"."XPAY"
+	  INTO :ls_curr, :ld_dcost, :ld_ecost, :ls_pay
+	FROM  "PBPUR"."PUR103" 
+	WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' )     AND ( "PBPUR"."PUR103"."VSRC" = 'D')      AND
+			( "PBPUR"."PUR103"."VSRNO"  = :as_vsrno) AND ( "PBPUR"."PUR103"."ITNO" = :as_itno) using sqlca ;
+	if ld_dcost = 0 and ld_ecost <> 0 then
+		if ls_curr = 'USD' then
+			ls_otxcd = 'L'
+			ls_pay   = 'L'
+			ld_exch  = f_yeo_exch_fex(as_date)
+			ld_cost  = ld_ecost * ld_exch
+		else
+			ls_otxcd = ' '
+			ld_cost = ld_ecost
+		end if
+	else
+		ld_cost = ld_dcost
+	end if
+	
+	// 입고취소금액
+	ll_amt = truncate(ld_cost * ad_qty,0)
+	
+	// 취소수량이 현재고수량과 동일해야 합니다.
+	If ll_amt = ll_ohamt Then
+		If ad_qty <> (ld_qty + ld_rqty + ld_sqty) Then
+			as_error = "취소금액과 현재고금액이 같을시 수량또한 동일해야함."
+			return -1
+		End If
+	End If
+	
+	// 취소금액은 현재고금액과 동일해야 합니다.
+	If ad_qty = (ld_qty + ld_rqty + ld_sqty) Then
+		If ll_amt <> ll_ohamt Then
+			as_error = "취소수량과 현재고수량이 같을시 금액또한 동일해야함."
+			return -1
+		End If
+	End If
+		
+End If
+
+If as_gubun = 'A' Then
+	
+	// 전산번호 부여
+	ls_key  = 'SS' + as_xplant + as_div + ls_cls + mid(as_date,4,3) 
+	ls_srno = f_yeo_get_ctlno(ls_key,as_date)
+	
+	// 원가사업장
+	ls_cdiv = f_get_accdiv(as_xplant, as_div, ls_pdcd)
+	
+//	If as_xplant = 'Y' Then
+//		If as_div = 'Y' Then
+//			If mid(ls_pdcd,1,2) = '40' or mid(ls_pdcd,1,2) = '45' Then
+//				ls_cdiv = 'H'
+//			Else
+//				ls_cdiv = 'D'
+//			End If
+//		Else
+//			ls_cdiv = '*'
+//		End If
+//	End If
+		
+	// 전표번호 부여
+	ls_key1 = as_xplant + as_div + 'D' + ls_cls + mid(as_date,4,3)
+	ls_slno = f_yeo_get_slno1(ls_key1,as_date)
+	
+	
+	
+	// 업체명, 사업자번호
+	ls_vdnm = f_yeo_vdnm_pur(as_vsrno, 'S', 'D')
+	ls_vndr = f_yeo_vndr_pur(as_vsrno, 'S', 'D')
+	
+		
+	//고객사 유상?,
+	ds_trans_01.setitem(ll_row,"comltd",'01')                 // 회사
+	ds_trans_01.setitem(ll_row,"sliptype",'SS')               // 전표구분
+	ds_trans_01.setitem(ll_row,"srno",ls_srno)                // 전산번호(년월/Serial)
+	ds_trans_01.setitem(ll_row,"srno1",as_xplant + as_div)    // 전산번호(지역 + 공장)
+	ds_trans_01.setitem(ll_row,"srno2",ls_cls)                // 전산번호(계정)
+	ds_trans_01.setitem(ll_row,"xplant",as_xplant)            // 지역
+	ds_trans_01.setitem(ll_row,"div",as_div)                  // 공장
+	ds_trans_01.setitem(ll_row,"costdiv",ls_cdiv)             // 원가사업장
+//	ds_trans_01.setitem(ll_row,"slno",ls_slno)                // 전표번호
+	ds_trans_01.setitem(ll_row,"slno",' ')                // 전표번호
+	ds_trans_01.setitem(ll_row,"itno",as_itno)                // 품번
+	ds_trans_01.setitem(ll_row,"rvno",ls_rvno)                // REV
+	ds_trans_01.setitem(ll_row,"itnm",ls_itnm)                // 품명
+	ds_trans_01.setitem(ll_row,"spec",ls_spec)                // 규격
+	ds_trans_01.setitem(ll_row,"cls",ls_cls)                  // 계정
+	ds_trans_01.setitem(ll_row,"srce",ls_srce)                // 구입선
+	ds_trans_01.setitem(ll_row,"xunit",ls_unit)               // 단위
+	ds_trans_01.setitem(ll_row,"pdcd",ls_pdcd)                // 제품
+	ds_trans_01.setitem(ll_row,"xtype",ls_type)               // item type
+	ds_trans_01.setitem(ll_row,"xplan",ls_plan)               // 구매담당
+	ds_trans_01.setitem(ll_row,"mlan",ls_mlan)                // 자재담당
+	ds_trans_01.setitem(ll_row,"kbcd",' ')                    // 간판여부
+	ds_trans_01.setitem(ll_row,"vsrno",as_vsrno)              // 사급업체
+	ds_trans_01.setitem(ll_row,"vndr",ls_vndr)                // 사업자번호
+	ds_trans_01.setitem(ll_row,"vndnm",ls_vdnm)               // 업체명
+	ds_trans_01.setitem(ll_row,"xpay",ls_pay)                 // 결제조건 
+	ds_trans_01.setitem(ll_row,"tdte4",as_date)               // 취소입고일일
+	ds_trans_01.setitem(ll_row,"xuse",'01')                   // 용도
+	ds_trans_01.setitem(ll_row,"rtngub",' ')                  // 구분
+	ds_trans_01.setitem(ll_row,"otxcd",ls_otxcd)              // 영세율 및 L/C
+	ds_trans_01.setitem(ll_row,"exch",ld_exch)                //환율 
+	ds_trans_01.setitem(ll_row,"curr",ls_curr)                //화폐단위 
+	ds_trans_01.setitem(ll_row,"tqty1",0)                     
+	ds_trans_01.setitem(ll_row,"tqty2",0)                     
+	ds_trans_01.setitem(ll_row,"tqty3",0)                     
+	ds_trans_01.setitem(ll_row,"tqty4",ad_qty)                // 취소입고량
+	ds_trans_01.setitem(ll_row,"xcost",ld_cost)               // 취소입고단가
+	ds_trans_01.setitem(ll_row,"tramt",ll_amt)                // 취소입고금액
+	ds_trans_01.setitem(ll_row,"pjtno",' ')                   // Project No
+	ds_trans_01.setitem(ll_row,"tshsl",'X')                   // Project No
+	ds_trans_01.setitem(ll_row,"sscom",'X')                   // Project No
+	ds_trans_01.setitem(ll_row,"chkcd",'1')                   // Project No
+	ds_trans_01.setitem(ll_row,"invstcd",as_stcd)             // 재고상태
+	ds_trans_01.setitem(ll_row,"tfill",as_srno)               // 여주공장 전산번호
+	ds_trans_01.setitem(ll_row,"inptid",as_usrid)             // 입력자사번
+ 	ds_trans_01.setitem(ll_row,"inptdt",as_inptdt)            //입력일 
+Else
+	
+	DELETE FROM "PBINV"."INV401" 
+	WHERE "COMLTD" = '01'       AND "SLIPTYPE" = :ls_sltype AND "SRNO" = :ls_dsrno AND 
+	      "SRNO1"  = :ls_dsrno1 AND "SRNO2"    = :ls_dsrno2  using sqlca ;
+	
+End If
+
+// 입고수량 계산
+If as_gubun = 'A' Then
+	ld_intqty = ld_intqty - ad_qty
+Else
+	ld_intqty = ld_intqty + ld_tqty4
+End If
+
+// 입고금액 계산
+If as_gubun = 'A' Then
+	ll_intamt = ll_intamt - ll_amt
+Else
+	ll_intamt = ll_intamt + ll_tramt
+End If
+
+// 재고상태별 현재고수량 계산
+	
+// 사용가
+If as_stcd = 'U' Then
+	If as_gubun = 'A' Then
+		ld_qty = ld_qty - ad_qty
+	Else
+		ld_qty = ld_qty + ld_tqty4
+	End If
+End If
+
+// 요수리
+If as_stcd = 'R' Then
+	If as_gubun = 'A' Then
+		ld_rqty = ld_rqty - ad_qty
+	Else
+		ld_rqty = ld_rqty + ld_tqty4
+	End If
+End If
+
+// 폐품
+If as_stcd = 'S' Then
+	If as_gubun = 'A' Then
+		ld_sqty = ld_sqty - ad_qty
+	Else
+		ld_sqty = ld_sqty + ld_tqty4
+	End If
+End If
+
+// 현재고 금액계산
+If as_gubun = 'A' Then
+	ll_ohamt = ll_ohamt - ll_amt
+Else
+	ll_ohamt = ll_ohamt + ll_tramt
+End If
+
+// 이동평균단가 계산
+If as_gubun = 'A' Then
+	If ll_ohamt > 0 and (ld_qty + ld_rqty + ld_sqty) > 0 Then
+		ld_costav = ll_ohamt / (ld_qty + ld_rqty + ld_sqty)  
+	End If
+End If
+
+If as_gubun = 'A' Then
+	
+	ds_trans_01.accepttext()
+	ll_rtn = ds_trans_01.update()
+	If ll_rtn <> 1 Then
+		as_error = STRING(SQLCA.SQLCODE) +STRING(SQLCA.SQLNROWS) +STRING(ll_rtn)+"Trans_DB Insert error : " + sqlca.sqlerrtext
+		rollback using sqlca;
+		destroy ds_trans_01
+		return -1
+		
+	End If
+	
+End If
+
+// 품목재고 Table Update
+UPDATE "PBINV"."INV101" 
+	SET "OHUQTY" = :ld_qty ,    "OHRQTY"  = :ld_rqty,     "OHSQTY" = :ld_sqty,  "OHAMT"   = :ll_ohamt, 
+		 "INTQTY" = :ld_intqty,  "INTAMT"  = :ll_intamt,   "UPDTID" = :as_usrid, "PBINV"."INV101"."ILUDT" = :as_date
+WHERE  "PBINV"."INV101"."COMLTD" = '01'    AND "PBINV"."INV101"."XPLANT" = :as_xplant AND
+		 "PBINV"."INV101"."DIV"    = :as_div AND "PBINV"."INV101"."ITNO"   = :as_itno  using sqlca ;
+		 
+If sqlca.sqlcode <> 0  Then
+	rollback using sqlca;
+	as_error = "품목재고 Table Update error."
+	return -1
+End If
+
+If as_gubun = 'A' Then
+	commit using sqlca;
+	destroy ds_trans_01
+End If
+
+return 0
+	
+
+end function
+

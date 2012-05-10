@@ -1,0 +1,32 @@
+$PBExportHeader$f_get_data_from_win_multi.srf
+$PBExportComments$w_cond_select_multi와 통신
+global type f_get_data_from_win_multi from function_object
+end type
+
+forward prototypes
+global function long f_get_data_from_win_multi (string dw_object_nm, boolean get_retrieve, string get_retrieve_arg, string get_col_nm, ref string give_text[100, 50])
+end prototypes
+
+global function long f_get_data_from_win_multi (string dw_object_nm, boolean get_retrieve, string get_retrieve_arg, string get_col_nm, ref string give_text[100, 50]);int i,j
+str_parm st_temp
+
+st_temp.check = get_retrieve
+st_temp.s_parm[1] = dw_object_nm
+st_temp.s_parm[2] = get_retrieve_arg
+st_temp.s_parm[3] = get_col_nm
+
+openwithparm(w_cd_search_multi,st_temp)
+
+st_temp = message.powerobjectparm
+
+if st_temp.i_parm[1] = 0 then return 0
+
+for j = 1 to st_temp.i_parm[1]	//선택한 row수
+	for i = 1 to 50
+		give_text[j,i] = st_temp.s_array[j,i]
+	next
+next
+
+return st_temp.i_parm[1]
+end function
+

@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_stscd_wip090.srf
+$PBExportComments$재공마감상태 가져오기
+global type f_get_stscd_wip090 from function_object
+end type
+
+forward prototypes
+global function string f_get_stscd_wip090 (string a_cmcd, string a_plant, string a_dvsn, string a_yyyymm, string a_gubun)
+end prototypes
+
+global function string f_get_stscd_wip090 (string a_cmcd, string a_plant, string a_dvsn, string a_yyyymm, string a_gubun);// 재공 상태코드 테이블 wip090에서 마감상태코드 가져오기
+string ls_cttp, ls_rtncd
+ls_cttp = 'WIP' + a_dvsn + a_gubun
+	
+SELECT "PBWIP"."WIP090"."WZSTSCD"  INTO :ls_rtncd  
+   FROM "PBWIP"."WIP090"  
+   WHERE ( "PBWIP"."WIP090"."WZCMCD" = :a_cmcd ) AND  
+         ( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
+         ( "PBWIP"."WIP090"."WZCTTP" = :ls_cttp ) AND
+			( "PBWIP"."WIP090"."WZEDDT" = :a_yyyymm ) 
+			using sqlca;
+			
+if sqlca.sqlcode <> 0 then
+	return ' '
+else
+	return ls_rtncd
+end if
+end function

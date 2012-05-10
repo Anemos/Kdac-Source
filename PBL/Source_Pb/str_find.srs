@@ -1,0 +1,6 @@
+$PBExportHeader$str_find.srs
+global type str_find from structure
+    datawindow dw
+    string title
+end type
+

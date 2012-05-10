@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_mps007.srf
+global type f_get_mps007 from function_object
+end type
+
+forward prototypes
+global function string f_get_mps007 (string a_cmcd, string a_plant, string a_dvsn, string a_date)
+end prototypes
+
+global function string f_get_mps007 (string a_cmcd, string a_plant, string a_dvsn, string a_date);string l_s_stscd,l_s_updt
+
+
+select zstscd,zupdt into :l_s_stscd,:l_s_updt from pbmps.mps007
+	where zcmcd = :a_cmcd and zpgmid = 'MPSU06' and zplant = :a_plant and 
+	      zdvsn = :a_dvsn and zyear  = :a_date 
+using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+//	insert into pbmps.mps007 values 
+//	 ( :g_s_company,'MPSU06',:a_plant,:a_dvsn,
+	l_s_updt = ''
+	l_s_stscd = ''
+end if
+l_s_updt = string(l_s_updt,"@@@@@@@@")
+
+return l_s_updt + l_s_stscd
+end function
+

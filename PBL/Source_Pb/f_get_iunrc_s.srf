@@ -1,0 +1,29 @@
+$PBExportHeader$f_get_iunrc_s.srf
+$PBExportComments$미입고량 Return  Global  Function
+global type f_get_iunrc_s from function_object
+end type
+
+forward prototypes
+global function decimal f_get_iunrc_s (string ag_itno)
+end prototypes
+
+global function decimal f_get_iunrc_s (string ag_itno);/////////////////////////////////////////////////////////
+// * 품번을 받아 품목재고 Table의 미입고량을 Return *
+//
+/////////////////////////////////////////////////////////
+
+Dec{1} ld_Iunrc
+
+
+SELECT IUNRC INTO :ld_Iunrc
+FROM PBINV.INV101
+WHERE COMLTD = '01' AND
+		XPLANT = 'D' AND
+		DIV	 = 'F' AND
+		ITNO	 = :ag_itno	Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then Return -1
+	
+Return ld_Iunrc
+end function
+

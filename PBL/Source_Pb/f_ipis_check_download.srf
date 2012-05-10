@@ -1,0 +1,75 @@
+$PBExportHeader$f_ipis_check_download.srf
+$PBExportComments$다운로드 갯수 확인 및 처리
+global type f_ipis_check_download from function_object
+end type
+
+forward prototypes
+global function integer f_ipis_check_download ()
+end prototypes
+
+global function integer f_ipis_check_download ();string ls_curdir
+integer li_rtn
+boolean lb_check
+
+ls_curdir = GetCurrentDirectory ()
+
+// DLL 다운로드 및 파일변경
+if FileExists(ls_curdir + "\ipis_gather_01.dll") = true then
+	FileDelete(ls_curdir + "\pbdwe90.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_01.dll", ls_curdir + "\pbdwe90.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_01.dll")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_02.dll") = true then
+	FileDelete(ls_curdir + "\pbmss90.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_02.dll", ls_curdir + "\pbmss90.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_02.dll")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_03.dll") = true then
+	FileDelete(ls_curdir + "\pbodb90.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_03.dll", ls_curdir + "\pbodb90.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_03.dll")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_04.dll") = true then
+	FileDelete(ls_curdir + "\pbrtc90.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_04.dll", ls_curdir + "\pbrtc90.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_04.dll")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_05.dll") = true then
+	FileDelete(ls_curdir + "\pbvm90.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_05.dll", ls_curdir + "\pbvm90.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_05.dll")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_06.ini") = true then
+	FileDelete(ls_curdir + "\pbodb90.ini")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_06.ini", ls_curdir + "\pbodb90.ini")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_06.ini")
+	lb_check = true
+end if
+// DownLoad Module 변경된 경우에 적용함.
+if FileExists(ls_curdir + "\ipis_gather_down.exe") = true then
+	FileDelete(ls_curdir + "\auto_down.exe")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_down.exe", ls_curdir + "\auto_down.exe")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_down.exe")
+	lb_check = true
+end if
+if FileExists(ls_curdir + "\ipis_gather_down.dll") = true then
+	FileDelete(ls_curdir + "\auto_down.dll")
+	li_rtn = FileCopy(ls_curdir + "\ipis_gather_down.dll", ls_curdir + "\auto_down.dll")
+	if li_rtn = 1 then FileDelete(ls_curdir + "\ipis_gather_down.dll")
+	lb_check = true
+end if
+// DownLoad
+String ls_Restart_Exe
+
+If f_pisc_download_count() > 0 or lb_check Then
+	return 0
+else
+	return -1
+End If
+end function
+

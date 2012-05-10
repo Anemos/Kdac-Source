@@ -1,0 +1,139 @@
+$PBExportHeader$d_bpm301u_51.srd
+$PBExportComments$사업계획단가관리(내자)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=no dbname="NO" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=yitno dbname="BPM509.YITNO" )
+ column=(type=char(8) update=yes updatewhereclause=yes key=yes name=yvndsr dbname="BPM509.YVNDSR" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=yplant dbname="BPM509.YPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=ydiv dbname="BPM509.YDIV" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=yplan dbname="BPM509.YPLAN" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ychge dbname="BPM509.YCHGE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ycode1 dbname="BPM509.YCODE1" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=ycstr dbname="BPM509.YCSTR" )
+ column=(type=decimal(6) updatewhereclause=yes name=ycstc1 dbname="BPM509.YCSTC1" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=ygcst dbname="BPM509.YGCST" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ycmcd dbname="BPM509.YCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ygrad dbname="BPM509.YGRAD" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=ysrce dbname="BPM509.YSRCE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=yclsb dbname="BPM509.YCLSB" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=ypdcd dbname="BPM509.YPDCD" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=ygubun dbname="BPM509.YGUBUN" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=bomunit dbname="BPM509.BOMUNIT" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xunit dbname="BPM509.XUNIT" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xunit1 dbname="BPM509.XUNIT1" )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=convinv dbname="BPM509.CONVINV" )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=convpur dbname="BPM509.CONVPUR" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=convqty dbname="BPM509.CONVQTY" )
+ column=(type=char(3) update=yes updatewhereclause=yes name=ycurr dbname="BPM509.YCURR" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=ycstc dbname="BPM509.YCSTC" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=yadjdt dbname="BPM509.YADJDT" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=ycstd dbname="BPM509.YCSTD" )
+ column=(type=decimal(6) update=yes updatewhereclause=yes name=ycste dbname="BPM509.YCSTE" )
+ column=(type=decimal(8) update=yes updatewhereclause=yes name=ycstd1 dbname="BPM509.YCSTD1" )
+ column=(type=decimal(8) update=yes updatewhereclause=yes name=ycste1 dbname="BPM509.YCSTE1" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ycode dbname="BPM509.YCODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=yalt dbname="BPM509.YALT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=yexpt dbname="BPM509.YEXPT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=ydate dbname="BPM509.YDATE" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=yredt dbname="BPM509.YREDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updtid dbname="BPM509.UPDTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=updtdt dbname="BPM509.UPDTDT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=crtdt dbname="BPM509.CRTDT" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=yccyy dbname="BPM509.YCCYY" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="SPEC" )
+ retrieve="  SELECT 0 no,
+         a.YITNO,
+         a.YVNDSR,   
+         a.YPLANT,   
+         a.YDIV,   
+         a.YPLAN,   
+         a.YCHGE, 
+         a.YCODE1,   
+         a.YCSTR, 
+         a.YCSTC1,    
+         a.YGCST,   
+         a.YCMCD,   
+
+         a.YGRAD,   
+         a.YSRCE,   
+         a.YCLSB,   
+         a.YPDCD,   
+         a.YGUBUN,   
+         a.BOMUNIT,   
+         a.XUNIT,   
+         a.XUNIT1,   
+         a.CONVINV,   
+         a.CONVPUR,   
+         a.CONVQTY,   
+ 
+         a.YCURR,   
+         a.YCSTC,  
+          
+         a.YADJDT,   
+         
+         a.YCSTD,   
+         a.YCSTE,   
+         a.YCSTD1,   
+         a.YCSTE1,   
+         
+         a.YCODE,   
+         a.YALT,   
+         a.YEXPT,   
+           
+         
+         a.YDATE,   
+         a.YREDT,   
+         a.UPDTID,   
+         a.UPDTDT,   
+         a.CRTDT,
+         a.Yccyy,  
+         (select coalesce(max(itnm),'') from pbbpm.bpm502 x
+          where x.xyear = a.yccyy
+          and   x.itno = a.yitno) itnm,   
+         (select coalesce(max(spec),'') from pbbpm.bpm502 x
+          where x.xyear = a.yccyy
+          and   x.itno = a.yitno) spec  
+    FROM PBBPM.BPM509 a 
+   WHERE ( a.YCCYY = :as_xyear ) AND  
+         ( a.YPLANT like :as_xplant || '%' ) AND  
+         ( a.YDIV like :as_div || '%' ) AND  
+         ( a.YITNO like :as_itno || '%' ) AND  
+         ( a.YVNDSR like :as_vsrno || '%' )
+   and   (:as_srce = '01' and a.ysrce = '01' or :as_srce <> '01' and a.ysrce <> '01')      
+" update="PBBPM.BPM509" updatewhere=0 updatekeyinplace=yes arguments=(("as_xyear", string),("as_xplant", string),("as_div", string),("as_itno", string),("as_vsrno", string),("as_srce", string)) )
+text(band=header alignment="2" text="품번(12)" border="0" color="16777215" x="229" y="0" height="60" width="398" html.valueishtml="0"  name=yitno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체(5)" border="0" color="16777215" x="635" y="0" height="60" width="631" html.valueishtml="0"  name=yvndsr_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="지역(1)" border="0" color="16777215" x="1275" y="0" height="60" width="238" html.valueishtml="0"  name=yplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="공장(1)" border="0" color="16777215" x="1522" y="0" height="60" width="242" html.valueishtml="0"  name=ydiv_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="구매담당자(2)" border="0" color="16777215" x="1774" y="0" height="60" width="462" html.valueishtml="0"  name=yplan_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="C/D사유코드(1)" border="0" color="16777215" x="2245" y="0" height="60" width="535" html.valueishtml="0"  name=ychge_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="수정단가(15,6)" border="0" color="16777215" x="3209" y="0" height="60" width="507" html.valueishtml="0"  name=ycstr_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="사급완성품가공비(15,6)" border="0" color="16777215" x="4338" y="0" height="60" width="731" html.valueishtml="0"  name=ygcst_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="No" border="0" color="16777215" x="9" y="0" height="60" width="210" html.valueishtml="0"  name=no_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="고객사사급" border="0" color="16777215" x="5079" y="0" height="60" width="334" html.valueishtml="0"  name=ycmcd_t visible="0"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품목구분(1)" border="0" color="16777215" x="2789" y="0" height="60" width="411" html.valueishtml="0"  name=ycode1_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="구매기준단가(15,6)" border="0" color="16777215" x="3726" y="0" height="60" width="603" html.valueishtml="0"  name=ycstc1_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="229" y="0" height="60" width="398" format="[general]" html.valueishtml="0"  name=yitno  tag="품번" visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="635" y="0" height="60" width="631" format="[general]" html.valueishtml="0"  name=yvndsr  tag="업체" visible="1" dddw.name=dddw_pur030_vnd01a dddw.displaycolumn=vndnm dddw.datacolumn=vsrno dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1774" y="0" height="60" width="462" format="[general]" html.valueishtml="0"  name=yplan  tag="구매담당자" visible="1" dddw.name=dddw_pur030_xplan5 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2245" y="0" height="60" width="535" format="[general]" html.valueishtml="0"  name=ychge  tag="C/D 사유 코드" visible="1" dddw.name=dddw_pur030_ychge dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="3209" y="0" height="60" width="507" format="[general]" html.valueishtml="0"  name=ycstr  tag="수정단가" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="4338" y="0" height="60" width="731" format="[general]" html.valueishtml="0"  name=ygcst  tag="사급완성품가공비" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="1275" y="0" height="60" width="238" format="[general]" html.valueishtml="0"  name=yplant  tag="지역" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1522" y="0" height="60" width="242" format="[general]" html.valueishtml="0"  name=ydiv  tag="공장" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="60" width="210" format="[general]" html.valueishtml="0"  name=no visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="5079" y="0" height="60" width="334" format="[general]" html.valueishtml="0"  name=ycmcd  tag="고객사사급" visible="0" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2789" y="0" height="60" width="411" format="[general]" html.valueishtml="0"  name=ycode1 visible="1" dddw.name=dddw_pur030_ycode1 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="3726" y="0" height="60" width="603" format="#,##0.00" html.valueishtml="0"  name=ycstc1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

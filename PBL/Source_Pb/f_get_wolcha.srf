@@ -1,0 +1,185 @@
+$PBExportHeader$f_get_wolcha.srf
+$PBExportComments$월차갯수(empno, xdate, ref crt, ref nocrt, ref use, ref ufrdt) return remain
+global type f_get_wolcha from function_object
+end type
+
+forward prototypes
+global function integer f_get_wolcha (string as_empno, string as_xdate, ref integer ai_crt, ref integer ai_nocrt, ref integer ai_use, ref string as_tfrdt, ref string as_ttodt, ref string as_frdt)
+end prototypes
+
+global function integer f_get_wolcha (string as_empno, string as_xdate, ref integer ai_crt, ref integer ai_nocrt, ref integer ai_use, ref string as_tfrdt, ref string as_ttodt, ref string as_frdt);string ls_gubun, ls_yunchadt, ls_gunfdt, ls_guntdt, ls_sexgb, ls_entdt
+string ls_frmonth, ls_tomonth, ls_frdt, ls_yy, ls_mm
+Int li_tcnt, li_miscnt1, li_miscnt2, li_use
+long i, ll_frmonth, ll_tomonth
+
+ai_crt   = 0 
+ai_nocrt = 0
+ai_use  = 0
+as_tfrdt = '' //생성대상월 from
+as_ttodt = '' //생성대상월 To
+as_frdt = ''  //사용가능시작일
+
+select pegubun1, peyuncha, pegunfdt, peguntdt, persex , peentdt 
+into :ls_gubun, :ls_yunchadt, :ls_gunfdt, :ls_guntdt, :ls_sexgb ,:ls_entdt
+from pbper.per001
+where peempno = :as_empno
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	return 0
+End if
+
+//1월달에는 전년도 발생분에 대한 사용량..
+//월차발생대상기간.. frmonth ~ tomonth
+//사용기간 ftdt ~ xdate
+if Mid(as_xdate,5,2) = '01' then                             //1월달일경우	
+	if dec(mid(as_xdate,1,4))-1 = dec(mid(ls_entdt,1,4)) then  //입사연도일시
+		if Mid(ls_entdt,7,2) = '01' then
+			ls_frmonth = mid(ls_entdt,1,6)
+		else
+			ls_frmonth = uf_add_month(mid(ls_entdt,1,6), + 1)
+		end if
+	else
+		ls_frmonth = string(dec(mid(as_xdate,1,4)) -1) + '01'
+	end if
+else
+	if dec(mid(as_xdate,1,4)) = dec(mid(ls_entdt,1,4)) then  //입사연도일시
+		if Mid(ls_entdt,7,2) = '01' then
+			ls_frmonth = mid(ls_entdt,1,6)
+		else
+			ls_frmonth = uf_add_month(mid(ls_entdt,1,6), + 1)
+		end if
+	else
+		ls_frmonth = string(dec(mid(as_xdate,1,4))) + '01'
+	end if
+end if
+//군휴직자반영
+if mid(ls_guntdt,1,4) = mid(ls_frmonth,1,4) then
+	if mid(ls_guntdt,7,2) = '01' then
+		ls_frmonth = mid(ls_guntdt,1,6)
+	else
+		ls_frmonth = uf_add_month(mid(ls_guntdt,1,6), + 1)
+	End if
+End if
+
+ls_frdt = uf_add_month(ls_frmonth, 1) + '01'
+
+ls_tomonth = uf_add_month(mid(as_xdate,1,6), -1)		
+	
+if ls_frmonth > ls_tomonth then
+	return 0
+End if
+
+if ls_gubun <> '1' then //생산직
+  	ll_frmonth = dec(ls_frmonth)
+	ll_tomonth = dec(ls_tomonth)
+	
+	for i = ll_frmonth to ll_tomonth
+		
+		ls_yy = mid(string(i),1,4)
+		ls_mm = mid(string(i),5,2)
+		
+		//대상근무일
+		select count(ghdt) 
+		 into :li_tcnt
+		from delabo.labmaa
+		where ghdt between :ls_yy || :ls_mm || '01' and :ls_yy || :ls_mm || '31' and gdiv = '' and ghgb = ''	using sqlcc;
+		
+		//미발생근태1
+		select count(aa.dgempno) into :li_miscnt1
+		from delabo.labtac aa, delabo.labmaa bb
+		where aa.dgyy || aa.dgmm || aa.dgdd = bb.ghdt
+		  and aa.dgyy = :ls_yy and aa.dgmm = :ls_mm
+		  and aa.dgcd2r || aa.dgcd3r in ('E2','K1','K2','K3','L2','M1','M2','M3','P1','P2','Q1','R6','99')
+		  and aa.dgempno = :as_empno 
+		  and bb.gdiv = ''
+		  and bb.ghgb = ''
+		using sqlcc;
+		
+		//미발생근태2
+		select count(aa.dgempno) into :li_miscnt2
+		from delabo.labtac aa, delabo.labmaa bb
+		where aa.dgyy || aa.dgmm || aa.dgdd = bb.ghdt
+		  and aa.dgyy = :ls_yy and aa.dgmm = :ls_mm
+		  and aa.dgcd2r || aa.dgcd3r in ('K1','K2','K3','M1','M2','99')
+		  and aa.dgempno = :as_empno 
+		  and bb.gdiv = ''
+		  and bb.ghgb = ''
+		using sqlcc;
+		
+		if li_tcnt = li_miscnt1 or li_miscnt2 > 0 then
+			ai_nocrt += 1
+		else
+			ai_crt += 1
+		end if
+	Next
+	
+	select count(dgempno) into :li_use
+	from delabo.labtac
+	where dgempno = :as_empno and 
+			dgcd2r = 'R' and dgcd3r = '1' and
+			dgyy || dgmm || dgdd between :ls_frdt and :as_xdate
+	using sqlcc;
+	
+	ai_use = li_use
+else //사무직
+	ll_frmonth = dec(ls_frmonth)
+	ll_tomonth = dec(ls_tomonth)
+	
+	for i = ll_frmonth to ll_tomonth
+		
+		ls_yy = mid(string(i),1,4)
+		ls_mm = mid(string(i),5,2)
+		
+		//대상근무일
+		select count(ghdt) 
+		 into :li_tcnt
+		from delabo.labmaa
+		where ghdt between :ls_yy || :ls_mm || '01' and :ls_yy || :ls_mm || '31' and gdiv = '' and ghgb = ''	using sqlcc;
+		
+		//미발생근태1
+		select count(aa.dsempno) into :li_miscnt1
+		from delabo.labtaf aa, delabo.labmaa bb
+		where aa.dsyy || aa.dsmm || aa.dsdd = bb.ghdt
+		  and aa.dsyy = :ls_yy and aa.dsmm = :ls_mm
+		  and aa.dscd2r || aa.dscd3r in ('E2','K1','K2','K3','L2','M1','M2','M3','P1','P2','Q1','R6','99')
+		  and aa.dsempno = :as_empno 
+		  and bb.gdiv = ''
+		  and bb.ghgb = ''
+		using sqlcc;
+		
+		//미발생근태2
+		select count(aa.dsempno) into :li_miscnt2
+		from delabo.labtaf aa, delabo.labmaa bb
+		where aa.dsyy || aa.dsmm || aa.dsdd = bb.ghdt
+		  and aa.dsyy = :ls_yy and aa.dsmm = :ls_mm
+		  and aa.dscd2r || aa.dscd3r in ('K1','K2','K3','M1','M2','99')
+		  and aa.dsempno = :as_empno 
+		  and bb.gdiv = ''
+		  and bb.ghgb = ''
+		using sqlcc;
+		
+		if li_tcnt = li_miscnt1 or li_miscnt2 > 0 then
+			ai_nocrt += 1
+		else
+			ai_crt += 1
+		end if
+	Next
+	
+	select count(dsempno) into :li_use
+	from delabo.labtaf
+	where dsempno = :as_empno and 
+			dscd2r = 'R' and dscd3r = '1' and
+			dsyy || dsmm || dsdd between :ls_frdt and :as_xdate
+	using sqlcc;
+	
+	ai_use = li_use
+end if
+
+as_tfrdt = ls_frmonth + '01'
+as_ttodt = ls_tomonth + '31'
+as_frdt  = ls_frdt
+
+return ai_crt - ai_use
+end function
+

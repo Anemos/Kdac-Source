@@ -1,0 +1,41 @@
+$PBExportHeader$f_dwbandatpointer.srf
+$PBExportComments$마우스포인터밑의 row와 band를 구함
+global type f_dwbandatpointer from function_object
+end type
+
+forward prototypes
+global function boolean f_dwbandatpointer (datawindow adw_1, ref long al_seq, ref string as_band)
+end prototypes
+
+global function boolean f_dwbandatpointer (datawindow adw_1, ref long al_seq, ref string as_band);///////////////////////////////////////////////////////////////////////////////
+//   Function : f_dwobandatpointer
+//
+//    Purpose : datawindow에서 마우스 포인터밑의 row와 band를 알고자
+//					 할때. GetBandAtPointer 함수의 return value를 쪼개어 반환
+//
+//  Arguments : 
+//					adw_1			... 마우스밑의 datawindow
+//					al_seq		... 마우스밑의 row(ref)
+//					as_band		... 마우스가 놓인 band(ref)
+//
+//    Returns : boolean
+//					 TRUE if successful, FALSE if failure
+//////////////////////////////////////////////////////////////////////////
+STRING	ls_colrow		//GetBandAtPointer()의 return value
+INT		li_tab_pos		//'~t'의 위치
+
+//GetBandAtPointer()
+ls_colrow = adw_1.GetBandatPointer()
+
+IF ls_colrow = "" THEN
+	RETURN FALSE
+ELSE
+	li_tab_pos = Pos(ls_colrow,"~t",1)
+	//Row
+	al_seq = Integer(Mid( ls_colrow, li_tab_pos + 1))
+	//Band
+	as_band = Left( ls_colrow, li_tab_pos - 1)
+	RETURN TRUE
+END IF
+end function
+

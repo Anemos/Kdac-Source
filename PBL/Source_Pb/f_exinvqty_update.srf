@@ -1,0 +1,62 @@
+$PBExportHeader$f_exinvqty_update.srf
+$PBExportComments$공장간이체-자재 기말재고 업데이트
+global type f_exinvqty_update from function_object
+end type
+
+forward prototypes
+global function integer f_exinvqty_update (string as_xyear, string as_frxplant, string as_frdiv, string as_toxplant, string as_todiv, string as_itno)
+end prototypes
+
+global function integer f_exinvqty_update (string as_xyear, string as_frxplant, string as_frdiv, string as_toxplant, string as_todiv, string as_itno);String ls_prfdiv, ls_prtdiv, ls_frcostdiv, ls_tocostdiv, ls_pryy, ls_prmm, ls_pdcd
+Dec    ld_ohuqty, ld_ohrqty, ld_ohsqty, ld_frqty, ld_toqty
+
+ls_pryy = mid(as_xyear,1,4)
+ls_prmm = mid(as_xyear,5,2)
+
+//from 공장 기말재고
+SELECT  OHUQTY, OHRQTY, OHSQTY, COSTDIV, PDCD
+  INTO  :ld_ohuqty, :ld_ohrqty, :ld_ohsqty, :ls_frcostdiv, :ls_pdcd
+  FROM  PBINV.INV402
+ WHERE  COMLTD = '01'         AND 
+		  XPLANT = :as_frxplant AND 
+		  DIV    = :as_frdiv    AND 
+		  ITNO   = :as_itno     AND
+		  XYEAR  = :as_xyear    using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	return -1
+end if		 
+
+ld_frqty  = truncate( ld_ohuqty + ld_ohrqty + ld_ohsqty , 0 )  //사용가 + 요수리 + 폐품재고
+ls_prfdiv = as_frxplant + ls_frcostdiv
+
+//to 공장 기말재고
+SELECT  OHUQTY, OHRQTY, OHSQTY, COSTDIV
+  INTO  :ld_ohuqty, :ld_ohrqty, :ld_ohsqty, :ls_tocostdiv
+  FROM  PBINV.INV402
+ WHERE  COMLTD = '01'         AND 
+		  XPLANT = :as_toxplant AND 
+		  DIV    = :as_todiv    AND 
+		  ITNO   = :as_itno     AND
+		  XYEAR  = :as_xyear    using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	return -1
+end if		 
+
+ld_toqty  = truncate( ld_ohuqty + ld_ohrqty + ld_ohsqty , 0 )
+ls_prtdiv = as_toxplant + ls_tocostdiv
+
+
+UPDATE PBACC.PCC051 
+	SET PRFQTYI = :ld_frqty,      PRTQTYI  = :ld_toqty
+WHERE  COMLTD  = '01'       AND  PRYY     = :ls_pryy   AND PRMM   = :ls_prmm  AND 
+       PRFDIV  = :ls_prfdiv AND  PRPRCD   = :ls_pdcd   AND PRITNO = :as_itno  using sqlca;
+		 
+if sqlca.sqlcode <> 0 then
+	return -1
+end if
+				
+return 0
+end function
+

@@ -1,0 +1,45 @@
+$PBExportHeader$f_pisc_get_date_dayname.srf
+$PBExportComments$요일 구하는 Function (arg : yyyy.mm.dd ref yyyy.mm.dd(요일:토), return boolean)
+global type f_pisc_get_date_dayname from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_get_date_dayname (string fs_applydate, ref string rs_dayname)
+end prototypes
+
+global function boolean f_pisc_get_date_dayname (string fs_applydate, ref string rs_dayname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_dayname
+//	Access		: public
+//	Arguments	: String fs_applydate	Date
+//					  String ref rs_dayname Date + 요일
+//	Returns		: Boolean
+//	Description	: 
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 20
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+If Not IsDate(fs_applydate) Then
+	Return False
+Else
+	CHOOSE CASE DayNumber(Date(fs_applydate))
+		CASE 1
+			rs_dayname = fs_applydate + ' (일)'
+		CASE 2
+			rs_dayname = fs_applydate + ' (월)'
+		CASE 3
+			rs_dayname = fs_applydate + ' (화)'
+		CASE 4
+			rs_dayname = fs_applydate + ' (수)'
+		CASE 5
+			rs_dayname = fs_applydate + ' (목)'
+		CASE 6
+			rs_dayname = fs_applydate + ' (금)'
+		CASE 7
+			rs_dayname = fs_applydate + ' (토)'
+	END CHOOSE
+	
+	Return True
+End If
+end function
+

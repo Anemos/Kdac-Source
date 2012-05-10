@@ -1,0 +1,60 @@
+$PBExportHeader$f_get_accslipupdate.srf
+$PBExportComments$전표 Update - 계정별(test 중)
+global type f_get_accslipupdate from function_object
+end type
+
+forward prototypes
+global function string f_get_accslipupdate (string a_s_company, string a_s_area, string a_s_date, string a_s_accode)
+end prototypes
+
+global function string f_get_accslipupdate (string a_s_company, string a_s_area, string a_s_date, string a_s_accode);string l_s_err, l_s_accode, l_s_drcr
+dec    l_n_slipno, l_n_cdno, l_n_pageno, l_n_serno
+
+declare acc_cur cursor for
+	select "PBACC"."ACC100"."SLSLIPNO"
+	from   "PBACC"."ACC100"
+	where  "PBACC"."ACC100"."COMLTD"   = :a_s_company and
+			 "PBACC"."ACC100"."SLAREA"   = :a_s_area    and
+			 "PBACC"."ACC100"."SLACCODE" = :a_s_accode  and  
+			 "PBACC"."ACC100"."SLACDATE" = :a_s_date    and
+			 "PBACC"."ACC100"."SLDECISION" = ' '        using sqlca ;
+open acc_cur ;
+	do while true
+		fetch acc_cur into :l_n_slipno ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if
+	
+		declare acc_cur1 cursor for
+			select "PBACC"."ACC100"."SLCDNO", "PBACC"."ACC100"."SLPAGENO", "PBACC"."ACC100"."SLSERNO",
+			       "PBACC"."ACC100"."SLACCODE", "PBACC"."ACC100"."SLDRCR"
+			from   "PBACC"."ACC100"
+			where  "PBACC"."ACC100"."COMLTD"   = :a_s_company and
+					 "PBACC"."ACC100"."SLAREA"   = :a_s_area    and
+					 "PBACC"."ACC100"."SLACDATE" = :a_s_date    and
+					 "PBACC"."ACC100"."SLSLIPNO" = :l_n_slipno  and
+					 "PBACC"."ACC100"."SLSERNO"  <> 9           and
+					 "PBACC"."ACC100"."SLDECISION" = ' '        using sqlca ;
+		open acc_cur1 ;
+			do while true
+				fetch acc_cur1 into :l_n_cdno, :l_n_pageno, :l_n_serno, :l_s_accode, :l_s_drcr ;
+				if sqlca.sqlcode <> 0 then
+					exit
+				end if
+				if sqlca.sqlcode <> 0 then
+					rollback using sqlca;
+				end if
+			loop
+		close acc_cur1 ;
+	loop
+close acc_cur ;
+
+if sqlca.sqlcode <> 0 then
+	rollback using sqlca;
+else
+	commit using sqlca;	
+end if
+
+return l_s_err
+end function
+

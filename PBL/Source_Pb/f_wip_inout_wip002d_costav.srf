@@ -1,0 +1,69 @@
+$PBExportHeader$f_wip_inout_wip002d_costav.srf
+global type f_wip_inout_wip002d_costav from function_object
+end type
+
+forward prototypes
+global function decimal f_wip_inout_wip002d_costav (string arg_plant, string arg_dvsn, string arg_itno, decimal arg_bgqty, decimal arg_bgamt, decimal arg_inqty, decimal arg_inamt, decimal arg_costav, decimal arg_waavrg, string arg_srce, decimal arg_convqty)
+end prototypes
+
+global function decimal f_wip_inout_wip002d_costav (string arg_plant, string arg_dvsn, string arg_itno, decimal arg_bgqty, decimal arg_bgamt, decimal arg_inqty, decimal arg_inamt, decimal arg_costav, decimal arg_waavrg, string arg_srce, decimal arg_convqty);string ls_cls
+dec{5} lc_avgcost
+
+//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
+lc_avgcost = 0
+if arg_srce = '01' or arg_srce = '02' then
+	if arg_inqty <> 0 then
+		if ( arg_inamt <> 0 and arg_inqty <> 0 ) then
+			lc_avgcost = abs(arg_inamt / arg_inqty)
+		end if
+	end if
+	if lc_avgcost = 0 then 
+		lc_avgcost = arg_costav / arg_convqty
+	end if
+else
+	lc_avgcost = arg_waavrg
+end if
+//if arg_srce = '01' or arg_srce = '02' then
+//	if arg_bgqty <> 0 or arg_inqty <> 0 then
+//		if ( arg_bgamt = 0 and arg_inamt <> 0 and arg_inqty <> 0 ) then
+//			lc_avgcost = abs(arg_inamt / arg_inqty)
+//		elseif ( arg_inamt = 0 and arg_bgamt <> 0 and arg_bgqty <> 0 ) then
+//			lc_avgcost = abs(arg_bgamt / arg_bgqty)
+//		elseif sign(arg_bgqty) <> sign(arg_inqty) then
+//			if sign(arg_bgqty) = 1 then
+//				lc_avgcost = abs(arg_bgamt / arg_bgqty)
+//			elseif sign(arg_inqty) = 1 then
+//				lc_avgcost = abs(arg_inamt / arg_inqty)
+//			else
+//				lc_avgcost = 0
+//			end if
+//		else
+//			lc_avgcost = abs((arg_bgamt + arg_inamt) / (arg_bgqty + arg_inqty))
+//		end if
+//	end if
+//	if lc_avgcost = 0 then 
+//		lc_avgcost = arg_costav / arg_convqty
+//	end if
+//else
+//	lc_avgcost = arg_waavrg
+//end if
+
+if lc_avgcost = 0 then
+	select costav, cls into :lc_avgcost, :ls_cls
+	from pbinv.inv101
+	where comltd = '01' and xplant = :arg_plant and
+		div = :arg_dvsn and itno = :arg_itno
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		lc_avgcost = 0
+	else
+		if ls_cls = '10' then
+			lc_avgcost = lc_avgcost / arg_convqty
+		end if
+	end if
+end if
+
+return lc_avgcost
+end function
+

@@ -1,0 +1,29 @@
+$PBExportHeader$f_pur040_chkhan.srf
+$PBExportComments$한글지우기
+global type f_pur040_chkhan from function_object
+end type
+
+forward prototypes
+global function long f_pur040_chkhan (string ls_itnm)
+end prototypes
+
+global function long f_pur040_chkhan (string ls_itnm);long ll_row, ll_rcnt
+string ls_itnm1
+
+//asc(mid(ls_itnm,ll_row,1)) = 15 then //si
+ls_itnm = trim(ls_itnm)
+ll_rcnt = len(ls_itnm)
+
+for ll_row = len(ls_itnm)  to 1 step -1 
+	if asc(mid(ls_itnm,ll_row,1)) >= 161 then   //한글스페이스로 대체
+   	//ls_itnm = mid(ls_itnm,1,ll_row - 1) + ' ' + mid(ls_itnm,ll_row + 1, ll_rcnt) 
+		return -1
+	end if
+next
+
+return 0
+
+			
+
+end function
+

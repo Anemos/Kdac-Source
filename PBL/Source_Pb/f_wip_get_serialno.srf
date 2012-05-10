@@ -1,0 +1,41 @@
+$PBExportHeader$f_wip_get_serialno.srf
+$PBExportComments$재공전산번호 증가및 가져오기
+global type f_wip_get_serialno from function_object
+end type
+
+forward prototypes
+global function string f_wip_get_serialno (string a_cmcd)
+end prototypes
+
+global function string f_wip_get_serialno (string a_cmcd);//Return값  string(serialno) : 성공, '0':실패
+dec{0} lc_serno, lc_addserno
+
+SELECT max("PBWIP"."WIP090"."WZSERNO")  
+	INTO :lc_serno  
+	FROM "PBWIP"."WIP090"  
+   WHERE ( "PBWIP"."WIP090"."WZCMCD" = :a_cmcd ) AND  
+         ( "PBWIP"."WIP090"."WZCTTP" = 'SERIAL' )   
+			using sqlca;
+			
+if sqlca.sqlcode <> 0 then
+	return '0'
+end if
+
+lc_addserno = lc_serno + 1
+
+UPDATE "PBWIP"."WIP090"  
+	SET "WZSERNO" = :lc_addserno  
+	WHERE ( "PBWIP"."WIP090"."WZCMCD" = :a_cmcd ) AND  
+         ( "PBWIP"."WIP090"."WZCTTP" = 'SERIAL' )   
+         using sqlca;
+			
+if sqlca.sqlcode <> 0 then
+	return '0'
+else
+	return string(lc_addserno,"0000000000")
+end if
+
+
+
+end function
+

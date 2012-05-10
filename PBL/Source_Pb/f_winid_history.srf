@@ -1,0 +1,21 @@
+$PBExportHeader$f_winid_history.srf
+$PBExportComments$window 立加 history 包府
+global type f_winid_history from function_object
+end type
+
+forward prototypes
+global function boolean f_winid_history (string as_accessgubun, string as_empno, string as_empkornm, string as_winid, string as_errcode)
+end prototypes
+
+global function boolean f_winid_history (string as_accessgubun, string as_empno, string as_empkornm, string as_winid, string as_errcode);insert into pbinv.inv910
+	values (	current_timestamp,
+	         :as_accessgubun, :as_empno, :as_empkornm, :as_winid, :as_errcode,
+				:g_s_ipaddr,:g_s_macaddr )
+using sqlca ;
+
+If sqlca.sqlcode <>	0 then
+	return false
+end if
+return true
+end function
+

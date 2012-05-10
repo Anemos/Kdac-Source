@@ -1,0 +1,41 @@
+$PBExportHeader$f_pisr_workcount_productgroup.srf
+$PBExportComments$자재관리 제품군별 기준월의 작업일수를 계산한다.(arg string fs_divisioncode, fs_applymonth('YYYY.MM'), return integer workcount)
+global type f_pisr_workcount_productgroup from function_object
+end type
+
+forward prototypes
+global function integer f_pisr_workcount_productgroup (string fs_areacode, string fs_divcode, string fs_productgroup, string fs_applymonth)
+end prototypes
+
+global function integer f_pisr_workcount_productgroup (string fs_areacode, string fs_divcode, string fs_productgroup, string fs_applymonth);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_workcount
+//	Access		: reorder
+//	Arguments	: String fs_areacode		지역
+//					  String fs_divcode		공장
+//					  String fs_applymonth	기준월
+//	Returns		: Integer li_count		작업일수
+//	Description	: 자재관리 공장의 기준의 작업일수를 계산한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh Sang
+// Coded Date	: 2002.9.26
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Int		li_count
+String	ls_applymonth
+
+ls_applymonth	= fs_applymonth + '%'
+
+Select	Count(WorkGubun)
+  into	:li_count
+  From	TPARTCALENDARWORK
+ Where	AreaCode			= :fs_areacode			And
+   		DivisionCode	= :fs_divcode			And
+			ProductGroup	= :fs_productgroup   And
+   		ApplyDate		Like :ls_applymonth	And
+	   	WorkGubun		= 'W'
+ Using	sqlpis	;
+	
+Return li_count
+	
+
+end function
+

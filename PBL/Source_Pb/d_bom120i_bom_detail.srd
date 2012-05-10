@@ -1,0 +1,96 @@
+$PBExportHeader$d_bom120i_bom_detail.srd
+$PBExportComments$«œ¿ß «∞π¯ ªÛºº¡§∫∏ DW
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=pcitn dbname="BOM001.PCITN" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BOM001.PQTYM" values=" 	0/" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BOM001.PWKCT" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BOM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="BOM001.PEDTE" )
+ column=(type=char(15) updatewhereclause=yes name=ppitn dbname="BOM001.PPITN" )
+ column=(type=char(1) updatewhereclause=yes name=pdvsn dbname="BOM001.PDVSN" )
+ column=(type=char(1) updatewhereclause=yes name=plant dbname="BOM001.PLANT" )
+ column=(type=char(4) updatewhereclause=yes name=prout dbname="BOM001.PROUT" )
+ column=(type=char(8) updatewhereclause=yes name=pchdt dbname="BOM001.PCHDT" )
+ column=(type=char(1) updatewhereclause=yes name=pexplant dbname="BOM001.PEXPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=pexdv dbname="BOM001.PEXDV" )
+ column=(type=char(1) updatewhereclause=yes name=pchcd dbname="BOM001.PCHCD" )
+ column=(type=char(1) updatewhereclause=yes name=poscd dbname="BOM001.POSCD" )
+ column=(type=char(8) updatewhereclause=yes name=pindt dbname="BOM001.PINDT" )
+ column=(type=char(6) updatewhereclause=yes name=pemno dbname="BOM001.PEMNO" )
+ column=(type=char(1) updatewhereclause=yes name=popcd dbname="BOM001.POPCD" )
+ column=(type=char(1) updatewhereclause=yes name=pebst dbname="BOM001.PEBST" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtye dbname="BOM001.PQTYE" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="INV101.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="INV101.SRCE" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv002_xunit dbname="INV002.XUNIT" )
+ retrieve="SELECT 
+	~"PBPDM~".~"BOM001~".~"PCITN~",   
+	~"PBPDM~".~"BOM001~".~"PQTYM~",   
+	~"PBPDM~".~"BOM001~".~"PWKCT~",   
+	~"PBPDM~".~"BOM001~".~"PEDTM~",   
+	~"PBPDM~".~"BOM001~".~"PEDTE~",   
+	~"PBPDM~".~"BOM001~".~"PPITN~",   
+	~"PBPDM~".~"BOM001~".~"PDVSN~",
+	~"PBPDM~".~"BOM001~".~"PLANT~",   
+	~"PBPDM~".~"BOM001~".~"PROUT~",   
+	~"PBPDM~".~"BOM001~".~"PCHDT~",
+	~"PBPDM~".~"BOM001~".~"PEXPLANT~",   
+	~"PBPDM~".~"BOM001~".~"PEXDV~",   
+	~"PBPDM~".~"BOM001~".~"PCHCD~",   
+	~"PBPDM~".~"BOM001~".~"POSCD~",   
+	~"PBPDM~".~"BOM001~".~"PINDT~",   
+	~"PBPDM~".~"BOM001~".~"PEMNO~",   
+	~"PBPDM~".~"BOM001~".~"POPCD~",   
+	~"PBPDM~".~"BOM001~".~"PEBST~",   
+	~"PBPDM~".~"BOM001~".~"PQTYE~",
+	~"PBINV~".~"INV101~".~"CLS~",
+	~"PBINV~".~"INV101~".~"SRCE~",
+	~"PBINV~".~"INV002~".~"ITNM~",
+	~"PBINV~".~"INV002~".~"XUNIT~"
+FROM ~"PBPDM~".~"BOM001~",~"PBINV~".~"INV002~",~"PBINV~".~"INV101~"  
+WHERE 
+		( ~"PBPDM~".~"BOM001~".~"PCMCD~" 	= '01' ) 				AND
+		( ~"PBPDM~".~"BOM001~".~"PLANT~" 		= :A_PLANT ) 		AND  
+		( ~"PBPDM~".~"BOM001~".~"PDVSN~" 		= :A_DIV ) 			AND  
+		( ~"PBPDM~".~"BOM001~".~"PCHCD~" 		= :A_CHCD ) 			AND  
+		( ~"PBPDM~".~"BOM001~".~"PPITN~" 		like :A_PITNO  		AND	~"PBPDM~".~"BOM001~".~"PCITN~" like :A_CITNO	) 		AND  
+		( ~"PBPDM~".~"BOM001~".~"PEDTM~" 		like	:A_FROMDATE	AND 	~"PBPDM~".~"BOM001~".~"PEDTE~"  like	:A_TODATE	) 	and
+		( ~"PBPDM~".~"BOM001~".~"PCMCD~" 	= ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+		( ~"PBPDM~".~"BOM001~".~"PLANT~" 		= ~"PBINV~".~"INV101~".~"XPLANT~" ) AND  
+		( ~"PBPDM~".~"BOM001~".~"PDVSN~" 		= ~"PBINV~".~"INV101~".~"DIV~" ) AND  
+		( ~"PBPDM~".~"BOM001~".~"PCITN~" 		= ~"PBINV~".~"INV101~".~"ITNO~" ) AND  
+		( ~"PBPDM~".~"BOM001~".~"PCMCD~" 	= ~"PBINV~".~"INV002~".~"COMLTD~" ) AND
+		( ~"PBPDM~".~"BOM001~".~"PCITN~" 		= ~"PBINV~".~"INV002~".~"ITNO~" )
+
+" arguments=(("A_PLANT", string),("A_DIV", string),("A_PITNO", string),("A_CITNO", string),("A_FROMDATE", string),("A_TODATE", string),("A_CHCD", string))  sort="pcitn A pedtm A " )
+text(band=header alignment="2" text="≈ı¿‘√≥" border="0" color="1090519039" x="2075" y="0" height="72" width="229" html.valueishtml="0"  name=t_4 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ω√¿€¿œ" border="0" color="1090519039" x="2313" y="0" height="72" width="315" html.valueishtml="0"  name=t_5 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¡æ∑·¿œ" border="0" color="1090519039" x="2638" y="0" height="72" width="329" html.valueishtml="0"  name=t_6 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¥‹¿ß" border="0" color="16777215" x="1595" y="0" height="72" width="160" html.valueishtml="0"  name=t_15 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±∏¿‘º±" border="0" color="16777215" x="1371" y="0" height="72" width="215" html.valueishtml="0"  name=t_14 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞Ë¡§" border="0" color="16777215" x="1184" y="0" height="72" width="178" html.valueishtml="0"  name=t_13 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«∞ ∏Ì" border="0" color="16777215" x="457" y="0" height="72" width="718" html.valueishtml="0"  name=t_9 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«œ¿ß«∞π¯" border="0" color="16777215" x="9" y="0" height="72" width="439" html.valueishtml="0"  name=t_1 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ø¯¥‹¿ß∑Æ" border="0" color="1090519039" x="1765" y="0" height="72" width="302" html.valueishtml="0"  name=t_3 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ø¯¥‹¿ß∑Æ" border="0" color="16777215" x="1765" y="0" height="72" width="302" html.valueishtml="0"  name=t_7 visible="1"  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="2638" y="0" height="72" width="329" format="[general]" html.valueishtml="0"  name=pedte pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="0" font.pitch="0" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="2313" y="0" height="72" width="315" format="[general]" html.valueishtml="0"  name=pedtm pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="0" font.pitch="0" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="2075" y="0" height="72" width="229" format="[general]" html.valueishtml="0"  name=pwkct pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="0" font.pitch="0" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="1765" y="0" height="72" width="302" format="#,##0.000" html.valueishtml="0"  name=pqtym pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.format="" edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="0" font.pitch="0" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=21 alignment="2" tabsequence=32766 border="0" color="0" x="1371" y="0" height="72" width="215" format="[general]" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="0" x="1184" y="0" height="72" width="178" format="[general]" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="0" color="0" x="457" y="0" height="72" width="718" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="439" format="[general]" html.valueishtml="0"  name=pcitn pointer="HyperLink!" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="0" font.pitch="0" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="0" x="1595" y="0" height="72" width="160" format="[general]" html.valueishtml="0"  name=inv002_xunit visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="ªı±º∏≤" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

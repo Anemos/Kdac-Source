@@ -1,0 +1,54 @@
+$PBExportHeader$d_tmm410i_07_tablet.srd
+$PBExportComments$담당자별 실적집계표
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=380 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=tmm003_lastemp dbname="TMM003.LASTEMP" )
+ column=(type=char(50) updatewhereclause=yes name=tmm005_empname dbname="TMM005.EMPNAME" )
+ column=(type=long updatewhereclause=yes name=order_cnt dbname="ORDER_CNT" )
+ column=(type=long updatewhereclause=yes name=resultqty dbname="RESULTQTY" )
+ column=(type=decimal(1) updatewhereclause=yes name=tooltime dbname="TOOLTIME" )
+ column=(type=decimal(0) updatewhereclause=yes name=fee dbname="FEE" )
+ retrieve="  SELECT ~"PBGMS~".~"TMM003~".~"LASTEMP~",   
+         ~"PBGMS~".~"TMM005~".~"EMPNAME~",
+			COUNT(*) AS ORDER_CNT,   
+         SUM( ~"PBGMS~".~"TMM003~".~"RESULTQTY~" ) AS RESULTQTY,   
+         SUM( ~"PBGMS~".~"TMM003~".~"TOOLTIME~" ) AS TOOLTIME,   
+         SUM( ~"PBGMS~".~"TMM003~".~"FEE~" ) AS FEE  
+    FROM ~"PBGMS~".~"TMM002~"  INNER JOIN ~"PBGMS~".~"TMM003~"
+		ON ( ~"PBGMS~".~"TMM002~".~"ORDERNO~" = ~"PBGMS~".~"TMM003~".~"ORDERNO~" )
+		LEFT OUTER JOIN  ~"PBGMS~".~"TMM005~"
+		ON ( ~"PBGMS~".~"TMM003~".~"LASTEMP~" = ~"PBGMS~".~"TMM005~".~"EMPNO~" )            
+   WHERE ( ~"PBGMS~".~"TMM002~".~"INGSTATUS~" <> 'A' ) AND
+			( ~"PBGMS~".~"TMM002~".~"TMGUBUN~" LIKE :ag_tmgubun ) AND
+			( ~"PBGMS~".~"TMM002~".~"ENDDATE~" >= :ag_startdate ) AND
+			( ~"PBGMS~".~"TMM002~".~"ENDDATE~" >= :ag_enddate )
+GROUP BY ~"PBGMS~".~"TMM003~".~"LASTEMP~", ~"PBGMS~".~"TMM005~".~"EMPNAME~"
+ORDER BY ~"PBGMS~".~"TMM003~".~"LASTEMP~"" arguments=(("ag_tmgubun", string),("ag_startdate", string),("ag_enddate", string)) )
+text(band=header alignment="2" text="담당자별 실적집계표" border="0" color="0" x="1056" y="40" height="96" width="1344" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림체" font.height="-16" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="text" border="0" color="0" x="786" y="152" height="60" width="1883" html.valueishtml="0"  name=t_base visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="성명" border="0" color="16777215" x="370" y="316" height="60" width="407" html.valueishtml="0"  name=tmm005_empname_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="건수" border="0" color="16777215" x="782" y="316" height="60" width="293" html.valueishtml="0"  name=order_cnt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="수량" border="0" color="16777215" x="1079" y="316" height="60" width="306" html.valueishtml="0"  name=resultqty_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="장비사용시간" border="0" color="16777215" x="1390" y="316" height="60" width="462" html.valueishtml="0"  name=tooltime_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="사번" border="0" color="16777215" x="5" y="316" height="60" width="361" html.valueishtml="0"  name=tmm003_lastemp_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="수수료" border="0" color="16777215" x="1856" y="316" height="60" width="654" html.valueishtml="0"  name=fee_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="비고" border="0" color="16777215" x="2514" y="316" height="60" width="855" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="출력일자:" border="0" color="0" x="2025" y="236" height="60" width="320" html.valueishtml="0"  name=t_3 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression="string(today(),~"yyyy.mm.dd~")"border="0" color="0" x="2359" y="236" height="60" width="425" format="[General]" html.valueishtml="0"  name=date_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="2" expression="'Page ' + page() + ' of ' + pageCount()"border="0" color="0" x="2821" y="236" height="60" width="544" format="[general]" html.valueishtml="0"  name=page_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="1856" y="0" height="72" width="654" format="#,##0" html.valueishtml="0"  name=fee visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="370" y="0" height="72" width="407" format="[general]" html.valueishtml="0"  name=tmm005_empname visible="1" edit.limit=50 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="782" y="0" height="72" width="293" format="[general]" html.valueishtml="0"  name=order_cnt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="1079" y="0" height="72" width="306" format="[general]" html.valueishtml="0"  name=resultqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1390" y="0" height="72" width="462" format="[general]" html.valueishtml="0"  name=tooltime visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="5" y="0" height="72" width="361" format="[general]" html.valueishtml="0"  name=tmm003_lastemp visible="1" edit.limit=6 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

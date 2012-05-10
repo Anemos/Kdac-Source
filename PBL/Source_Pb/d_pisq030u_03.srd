@@ -1,0 +1,71 @@
+$PBExportHeader$d_pisq030u_03.srd
+$PBExportComments$∞ÀªÁ±‚¡ÿº≠ ∞À≈‰(∫Ø∞Ê¿Ã∑¬)
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TQQCSTANDARDCHANGE.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TQQCSTANDARDCHANGE.DIVISIONCODE" )
+ column=(type=char(5) update=yes updatewhereclause=yes key=yes name=suppliercode dbname="TQQCSTANDARDCHANGE.SUPPLIERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="TQQCSTANDARDCHANGE.ITEMCODE" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=standardrevno dbname="TQQCSTANDARDCHANGE.STANDARDREVNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=chargename dbname="TQQCSTANDARDCHANGE.CHARGENAME" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=enactmentdate dbname="TQQCSTANDARDCHANGE.ENACTMENTDATE" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=consertdate dbname="TQQCSTANDARDCHANGE.CONSERTDATE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=itemrank dbname="TQQCSTANDARDCHANGE.ITEMRANK" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=quality dbname="TQQCSTANDARDCHANGE.QUALITY" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=heattreatment dbname="TQQCSTANDARDCHANGE.HEATTREATMENT" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=surfacetreatment dbname="TQQCSTANDARDCHANGE.SURFACETREATMENT" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=qcconceptionreference dbname="TQQCSTANDARDCHANGE.QCCONCEPTIONREFERENCE" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=rejecttreatment dbname="TQQCSTANDARDCHANGE.REJECTTREATMENT" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=modifycontent dbname="TQQCSTANDARDCHANGE.MODIFYCONTENT" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=modifydate dbname="TQQCSTANDARDCHANGE.MODIFYDATE" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=applydate dbname="TQQCSTANDARDCHANGE.APPLYDATE" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TQQCSTANDARDCHANGE.LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TQQCSTANDARDCHANGE.LastDate" )
+ retrieve="  SELECT top 10
+			TQQCSTANDARDCHANGE.AREACODE,   
+         TQQCSTANDARDCHANGE.DIVISIONCODE,   
+         TQQCSTANDARDCHANGE.SUPPLIERCODE,   
+         TQQCSTANDARDCHANGE.ITEMCODE,   
+         TQQCSTANDARDCHANGE.STANDARDREVNO,   
+         TQQCSTANDARDCHANGE.CHARGENAME,   
+         TQQCSTANDARDCHANGE.ENACTMENTDATE,   
+         TQQCSTANDARDCHANGE.CONSERTDATE,   
+         TQQCSTANDARDCHANGE.ITEMRANK,   
+         TQQCSTANDARDCHANGE.QUALITY,   
+         TQQCSTANDARDCHANGE.HEATTREATMENT,   
+         TQQCSTANDARDCHANGE.SURFACETREATMENT,   
+         TQQCSTANDARDCHANGE.QCCONCEPTIONREFERENCE,   
+         TQQCSTANDARDCHANGE.REJECTTREATMENT,   
+         TQQCSTANDARDCHANGE.MODIFYCONTENT,   
+         TQQCSTANDARDCHANGE.MODIFYDATE,   
+         TQQCSTANDARDCHANGE.APPLYDATE,   
+         TQQCSTANDARDCHANGE.LastEmp,   
+         TQQCSTANDARDCHANGE.LastDate  
+    FROM TQQCSTANDARDCHANGE  
+   WHERE ( TQQCSTANDARDCHANGE.AREACODE = :as_areacode ) AND  
+         ( TQQCSTANDARDCHANGE.DIVISIONCODE = :as_divisioncode ) AND  
+         ( TQQCSTANDARDCHANGE.SUPPLIERCODE = :as_suppliercode ) AND  
+         ( TQQCSTANDARDCHANGE.ITEMCODE = :as_itemcode )    
+ORDER BY TQQCSTANDARDCHANGE.STANDARDREVNO DESC
+ " update="TQQCSTANDARDCHANGE" updatewhere=1 updatekeyinplace=no arguments=(("as_areacode", string),("as_divisioncode", string),("as_suppliercode", string),("as_itemcode", string)) )
+text(band=header alignment="2" text="Rev No." border="0" color="16777215" x="9" y="8" height="68" width="233"  name=standardrevno_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿€º∫¿⁄" border="0" color="16777215" x="251" y="8" height="68" width="288"  name=chargename_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¡¶¡§¿œ¿⁄" border="0" color="16777215" x="549" y="8" height="68" width="329"  name=enactmentdate_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ω¬¿Œ¿œ¿⁄" border="0" color="16777215" x="887" y="8" height="68" width="320"  name=consertdate_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫Ø∞Ê≥ªøÎ" border="0" color="16777215" x="1216" y="8" height="68" width="1833"  name=modifycontent_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫Ø∞Ê¿œ¿⁄" border="0" color="16777215" x="3058" y="8" height="68" width="329"  name=modifydate_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿˚øÎ¿œ¿⁄" border="0" color="16777215" x="3397" y="8" height="68" width="329"  name=applydate_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="2" tabsequence=10 border="0" color="0" x="9" y="8" height="76" width="233" format="[general]"  name=standardrevno edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=20 border="0" color="0" x="251" y="8" height="76" width="288" format="[general]"  name=chargename edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=50 border="0" color="0" x="1216" y="8" height="76" width="1833" format="[general]"  name=modifycontent edit.limit=150 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=40 border="0" color="0" x="887" y="8" height="76" width="320" format="[general]"  name=consertdate edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=30 border="0" color="0" x="549" y="8" height="76" width="329" format="[general]"  name=enactmentdate edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=60 border="0" color="0" x="3058" y="8" height="76" width="329" format="[general]"  name=modifydate edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=70 border="0" color="0" x="3397" y="8" height="76" width="329" format="[general]"  name=applydate edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

@@ -1,0 +1,29 @@
+$PBExportHeader$f_per_chkorder.srf
+$PBExportComments$급여발령체크(사번,발령) return boolean
+global type f_per_chkorder from function_object
+end type
+
+forward prototypes
+global function boolean f_per_chkorder (string as_empno, string as_order)
+end prototypes
+
+global function boolean f_per_chkorder (string as_empno, string as_order);string ls_pegubun
+int li_cnt
+
+if isNull(as_empno) or as_empno = '' then
+	return false
+else
+	select count(peempno) into :li_cnt
+	from pbper.per001
+	where peempno = :as_empno and 
+			 peorder = :as_order and peout <> '*' and peordfdt <= :g_s_date 
+	using sqlca;
+	
+	if li_cnt > 0 then
+		return true
+	else
+		return false
+	end if	
+end if
+end function
+

@@ -1,0 +1,26 @@
+$PBExportHeader$dddw_comm210_a10.srd
+$PBExportComments$DDDW 공통코드 List
+release 8;
+datawindow(units=0 timer_interval=0 color=15793151 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(6) update=yes updatewhereclause=yes key=yes name=comm_cd dbname="comm210.comm_cd" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=comm_nm1 dbname="comm210.comm_nm1" )
+ column=(type=char(3) updatewhereclause=yes name=comm_deta dbname="comm210.comm_deta" )
+ retrieve="  SELECT DISTINCT comm210.comm_cd,   
+         comm210.comm_nm1,   
+         comm210.comm_deta  
+    FROM comm210  
+   WHERE COMM_RPST = 'A10'   
+UNION ALL
+SELECT DISTINCT ' ',' ',' '  
+	FROM comm210  
+   WHERE COMM_RPST = 'A07'   
+ORDER BY comm210.comm_cd ASC " update="comm210" updatewhere=1 updatekeyinplace=no )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="0" x="2240" y="8" height="72" width="338" format="[general]" html.valueishtml="0"  name=comm_cd  tag="공통코드" visible="1" edit.limit=6 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="0" x="5" y="8" height="72" width="425" format="[general]" html.valueishtml="0"  name=comm_nm1  tag="코드명1" visible="1" edit.limit=40 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="3022" y="8" height="72" width="357" format="[general]" html.valueishtml="0"  name=comm_deta visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

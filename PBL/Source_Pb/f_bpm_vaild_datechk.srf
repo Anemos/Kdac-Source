@@ -1,0 +1,55 @@
+$PBExportHeader$f_bpm_vaild_datechk.srf
+global type f_bpm_vaild_datechk from function_object
+end type
+
+forward prototypes
+global function string f_bpm_vaild_datechk (string a_year, string a_revno, string a_plant, string a_div, string a_pitno, string a_citno, string a_from_date, string a_to_date)
+end prototypes
+
+global function string f_bpm_vaild_datechk (string a_year, string a_revno, string a_plant, string a_div, string a_pitno, string a_citno, string a_from_date, string a_to_date);string l_s_dtm, l_s_dte, l_s_indtm, l_s_indte, l_s_outdte, l_s_outdtm
+integer k
+
+DECLARE bomchk_cur CURSOR FOR 
+SELECT "PBBPM"."BPM504"."PEDTM","PBBPM"."BPM504"."PEDTE" FROM "PBBPM"."BPM504"
+  WHERE "PBBPM"."BPM504"."PPITN" = :a_pitno and "PBBPM"."BPM504"."PCITN" = :a_citno and 
+  		  "PBBPM"."BPM504"."XYEAR" = :a_year and "PBBPM"."BPM504"."REVNO" = :a_revno and
+		  "PBBPM"."BPM504"."PDVSN" = :a_div and "PBBPM"."BPM504"."PLANT" = :a_plant and
+		  ( ("PBBPM"."BPM504"."PEDTM" <= "PBBPM"."BPM504"."PEDTE" AND "PBBPM"."BPM504"."PEDTE" <> ' ' AND "PBBPM"."BPM504"."PEDTE" >= :g_s_date )
+          OR  
+        ( "PBBPM"."BPM504"."PEDTE" = ' ' AND "PBBPM"."BPM504"."PEDTM" <= :g_s_date ))
+  using SQLCA ;
+k = 0
+open bomchk_cur ;  
+	do while true
+		fetch bomchk_cur into :l_s_dtm,:l_s_dte ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if 
+		k = k + 1
+		if k = 1 then
+			l_s_indte = l_s_dte
+			l_s_indtm = l_s_dtm
+			continue
+		end if
+		if f_spacechk(l_s_dte) = -1 then
+			l_s_indte = '       '
+		else
+			if f_spacechk(l_s_indte) <> -1 and l_s_indte < l_s_dte then
+				l_s_indte = l_s_dte
+			end if
+		end if
+		if f_spacechk(l_s_dtm) = -1 then
+			l_s_indtm = '         '
+		else
+			if f_spacechk(l_s_indtm) <> -1 and l_s_indtm > l_s_dtm then
+				l_s_indtm = l_s_dtm
+			end if
+		end if
+	loop
+close bomchk_cur ;
+l_s_outdte = string(l_s_indte,"@@@@@@@@")
+l_s_outdtm = string(l_s_indtm,"@@@@@@@@")
+return l_s_outdtm + l_s_outdte
+
+end function
+

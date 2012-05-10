@@ -1,0 +1,8 @@
+$PBExportHeader$str_undo.srs
+$PBExportComments$입력취소((undo) 된 row수들....
+global type str_undo from structure
+    integer unedit
+    integer uninsert
+    integer undelete
+end type
+

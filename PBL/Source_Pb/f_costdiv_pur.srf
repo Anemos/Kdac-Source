@@ -1,0 +1,56 @@
+$PBExportHeader$f_costdiv_pur.srf
+$PBExportComments$원가공장(지역,공장,품번)
+global type f_costdiv_pur from function_object
+end type
+
+forward prototypes
+global function string f_costdiv_pur (string ag_xplant, string ag_div, string ag_itno)
+end prototypes
+
+global function string f_costdiv_pur (string ag_xplant, string ag_div, string ag_itno);/////////////////////////////////////////
+// 원가공장(직접재 품번만..그리구 전장공장일대만...) 
+//         계정 : 10, 20, 40, 50 일때만.
+//       argument : 공장
+//
+//			적용 : 
+//			Costdiv : 'A' - 35 : 'Y'
+//                       38 : 'W'
+//                       70 : 'C'
+//                      그외: 'E'
+/////////////////////////////////////////
+
+String ls_costdiv, ls_pdcd
+
+ag_xplant = Upper(Trim(ag_xplant))
+ag_div = Upper(Trim(ag_div))
+ag_itno = Upper(Trim(ag_itno))
+
+SELECT "PBINV"."INV101"."PDCD"  
+ INTO :ls_pdcd  
+ FROM "PBINV"."INV101"  
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+		( "PBINV"."INV101"."DIV" = :ag_div ) AND  
+		( "PBINV"."INV101"."ITNO" = :ag_itno ) Using sqlca ;
+
+
+If sqlca.sqlcode <> 0 or f_spacechk(ls_pdcd) = -1 Then
+	ls_pdcd = " "
+End IF
+//2003.02.07 - 박진규대리 요청
+ls_costdiv = f_get_accdiv(ag_xplant, ag_div, ls_pdcd)		
+
+//IF ls_pdcd = '35' Then
+//	ls_costdiv = 'Y'
+//ElseIF ls_pdcd = '38' Then
+//	ls_costdiv = 'W'
+//ElseIF ls_pdcd = '70' Then
+//	ls_costdiv = 'C'
+//Else
+//	ls_costdiv = 'E'
+//End IF
+//
+Return ls_costdiv
+//
+end function
+

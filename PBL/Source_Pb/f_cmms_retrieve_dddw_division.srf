@@ -1,0 +1,79 @@
+$PBExportHeader$f_cmms_retrieve_dddw_division.srf
+$PBExportComments$dddw을 조회하는 함수 - 공장
+global type f_cmms_retrieve_dddw_division from function_object
+end type
+
+forward prototypes
+global subroutine f_cmms_retrieve_dddw_division (datawindow fdw_1, string fs_empno, string fs_areacode, string fs_divisioncode, boolean fb_allflag, ref string rs_divisioncode, ref string rs_divisionname, ref string rs_divisionnameeng)
+end prototypes
+
+global subroutine f_cmms_retrieve_dddw_division (datawindow fdw_1, string fs_empno, string fs_areacode, string fs_divisioncode, boolean fb_allflag, ref string rs_divisioncode, ref string rs_divisionname, ref string rs_divisionnameeng);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_division
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_empno					조회하고자 하는 사번 (지역별/공장별 권한에 따른 조회를 위하여)
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 공장 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (공장코드는 '%', 공장명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_divisioncode		선택된 공장 코드 (reference)
+//						string			rs_divisionname		선택된 공장 명 (reference)
+//						string			rs_divisionnameeng	선택된 공장 영문 명 (reference)
+//	Returns		: none
+//	Description	: 공장을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount, ll_find
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(SQLPIS)
+	ldwc_1.Retrieve(fs_empno, fs_areacode, fs_divisioncode)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_divisioncode = ''
+		rs_divisionname = ''
+		rs_divisionnameeng = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_divisioncode	= Trim(ldwc_1.GetItemString(1, 'DivisionCode'))
+		rs_divisionname	= Trim(ldwc_1.GetItemString(1, 'DivisionName'))
+		rs_divisionnameeng= Trim(ldwc_1.GetItemString(1, 'DivisionNameEng'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_divisioncode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DivisionNameEng', 20)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			if fs_divisioncode <> '%' then
+				ll_find = ldwc_1.find("DivisionCode = '" + fs_divisioncode + "'",1,ll_rowcount)
+			else
+				ll_find = 1
+			end if
+			rs_divisioncode	= Trim(ldwc_1.GetItemString(ll_find, 'DivisionCode'))
+			rs_divisionname	= Trim(ldwc_1.GetItemString(ll_find, 'DivisionName'))
+			rs_divisionnameeng= Trim(ldwc_1.GetItemString(ll_find, 'DivisionNameEng'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_divisioncode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DivisionNameEng', 20)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'DivisionCode', 'ALL')
+			ldwc_1.Setitem(1, 'DivisionName', '전체')
+			ldwc_1.Setitem(1, 'DivisionNameEng', 'ALL')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_divisioncode = '%'
+			rs_divisionname = '전체'
+			rs_divisionnameeng = 'ALL'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DivisionNameEng', 20)
+		End If
+	End If
+	gs_kmdivision	= rs_divisioncode
+	f_cmms_set_server("DEVISION", gs_kmarea, gs_kmdivision)
+End If
+end subroutine
+

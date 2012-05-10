@@ -1,0 +1,15 @@
+$PBExportHeader$d_title_bar.srd
+$PBExportComments$°¢ È­¸éÀÇ TITLE
+release 8;
+datawindow(units=0 timer_interval=100 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=200 color="536870912" )
+table(column=(type=char(15) updatewhereclause=no name=title_name dbname="title_name" )
+ )
+bitmap(band=detail filename="bmp\bg_title.gif" x="0" y="0" height="200" width="4622" border="0"  name=p_1 visible="1" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="16777215" x="82" y="24" height="152" width="1632" format="[general]" html.valueishtml="0"  name=title_name visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0 edit.displayonly=yes  font.face="ÈÞ¸Õ¿¾Ã¼" font.height="-28" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="String(today(), 'yyyy.mm.dd  HH:MM:SS')"border="0" color="65280" x="3538" y="100" height="72" width="951" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="µ¸¿ò" font.height="-13" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

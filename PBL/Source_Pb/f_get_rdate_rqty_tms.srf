@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_rdate_rqty_tms.srf
+$PBExportComments$备概夸备老, (角)备概夸备樊 Return
+global type f_get_rdate_rqty_tms from function_object
+end type
+
+forward prototypes
+global subroutine f_get_rdate_rqty_tms (string as_srno, ref string as_rdate, ref decimal as_rqty)
+end prototypes
+
+global subroutine f_get_rdate_rqty_tms (string as_srno, ref string as_rdate, ref decimal as_rqty);////////////////////////////////////////////
+// * 备概夸备老, (角)备概夸备樊 Return *
+//
+////////////////////////////////////////////
+
+//备概夸备 DB : 备概夸备老, 备概夸备樊
+SELECT "PBPUR"."PUR301"."RDATE", "PBPUR"."PUR302"."RQTY" - "PBPUR"."PUR302"."RCNL"
+ INTO :as_Rdate, :as_Rqty
+ FROM "PBPUR"."PUR301",   
+		"PBPUR"."PUR302"  
+WHERE ( "PBPUR"."PUR301"."COMLTD" = "PBPUR"."PUR302"."COMLTD" ) And  
+		( "PBPUR"."PUR301"."RQNO" = "PBPUR"."PUR302"."RQNO" ) And  
+		( ( "PBPUR"."PUR302"."SRNO" = :as_Srno ) ) 		Using SQLCA ;
+		
+end subroutine
+

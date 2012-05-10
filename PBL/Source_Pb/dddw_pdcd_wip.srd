@@ -1,0 +1,36 @@
+$PBExportHeader$dddw_pdcd_wip.srd
+$PBExportComments$DDDW 대학(야간포함) 12Font
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="DAC007.PRNAME" )
+ column=(type=char(4) updatewhereclause=yes name=dac007_prprcd dbname="DAC007.PRPRCD" )
+ retrieve="  SELECT DISTINCT ~"PBCOMMON~".~"DAC007~".~"PRNAME~",   
+         ~"PBCOMMON~".~"DAC007~".~"PRPRCD~"  
+    FROM ~"PBCOMMON~".~"DAC007~",
+			~"PBCOMMON~".~"DAC004~",   
+         ~"PBPDM~".~"BOM011~"  
+   WHERE ( ~"PBCOMMON~".~"DAC004~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) and
+			( ~"PBCOMMON~".~"DAC004~".~"PRPRCD~" = ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" ) and
+			( ~"PBCOMMON~".~"DAC004~".~"PRPLANT~" = ~"PBPDM~".~"BOM011~".~"BDIV~" ) and 
+			( ~"PBCOMMON~".~"DAC004~".~"COMLTD~" = ~"PBPDM~".~"BOM011~".~"CMCD~" ) and 
+			( ( ~"PBPDM~".~"BOM011~".~"CMCD~" = '01' ) AND
+           ( ~"PBPDM~".~"BOM011~".~"BDIV~" = :A_DIV ) AND
+			  ( ~"PBPDM~".~"BOM011~".~"GUBUN~" = 'C' ) AND 
+         ( {fn substring(~"PBCOMMON~".~"DAC004~".~"PRPRCD~",3,2)} = '  ' ) ) and 
+         ( ~"PBCOMMON~".~"DAC004~".~"PRUSE~" = '' )
+
+  UNION
+
+   SELECT ' ',' '
+	FROM PBPDM.BOM011
+	WHERE CMCD = '01' AND GUBUN = 'C' AND BPLANT = 'D' AND BDIV = 'A' AND ADIV = 'E'
+
+	ORDER BY 2" arguments=(("A_DIV", string)) )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="5" y="0" height="76" width="960" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="969" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=dac007_prprcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

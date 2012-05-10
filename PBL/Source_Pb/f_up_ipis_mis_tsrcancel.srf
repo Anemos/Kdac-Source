@@ -1,0 +1,135 @@
+$PBExportHeader$f_up_ipis_mis_tsrcancel.srf
+$PBExportComments$취소SR확정
+global type f_up_ipis_mis_tsrcancel from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_tsrcancel (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_tsrcancel (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_flag, ls_srno, ls_checksrno, ls_canceldate, ls_userid, ls_inputdate
+integer	li_cnt, li_index
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_flag = trim(ag_dwo.GetItemString(li_cnt, 'ConfirmFlag'))
+	If ls_flag = 'Y' Then
+		ls_flag = 'V'
+	End If
+	ls_srno				= trim(ag_dwo.GetItemString(li_cnt, 'SRNo'))			
+	ls_checksrno		= trim(ag_dwo.GetItemString(li_cnt, 'CheckSRNo'))
+	ls_canceldate		= trim(ag_dwo.GetItemString(li_cnt, 'CancelDate'))		// 취소일
+	ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)
+	
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+			
+	If ls_flag = 'V' Then
+		UPDATE	pbsle.sle303
+		SET		prtcd = '4', updtid = :g_s_empno, updtdt = :g_s_date
+		WHERE		comltd = '01' and	srno = :ls_checksrno
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE303"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+
+		UPDATE	pbsle.sle304
+		SET		stcd = 'C',
+					srdt = :ls_canceldate, updtid = :g_s_empno, updtdt = :g_s_date
+		WHERE		comltd = '01' and	csrno = :ls_srno
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE304"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+
+		UPDATE	pbsle.sle301
+		SET		prtcd= '4', updtid = :g_s_empno, updtdt = :g_s_date                                 
+		WHERE		comltd = '01' and	srno = :ls_checksrno 
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE301"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+
+		UPDATE	pbsle.sle302
+		SET		stcd = 'C' , updtid = :g_s_empno, updtdt = :g_s_date                                 
+		WHERE		comltd = '01' and	csrno = :ls_srno 
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE302"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if			
+	Else                                                                   
+		UPDATE	pbsle.sle303
+		SET 		prtcd = '2' , updtid = :g_s_empno, updtdt = :g_s_date                                
+		WHERE		comltd = '01' and	srno = :ls_checksrno 
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE303"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if	
+
+		UPDATE	pbsle.sle304
+		SET		stcd = ' ', 
+					srdt = ' '  , updtid = :g_s_empno, updtdt = :g_s_date                    
+		WHERE		comltd = '01' and	csrno = :ls_srno 
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE304"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+
+		UPDATE	pbsle.sle301
+		SET		prtcd= '4' , updtid = :g_s_empno, updtdt = :g_s_date                                 
+		WHERE		comltd = '01' and	srno = :ls_checksrno
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE301"
+			f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+
+		UPDATE	pbsle.sle302
+		SET		stcd = ' ' , updtid = :g_s_empno, updtdt = :g_s_date                                 
+		WHERE		comltd = '01' and	csrno = :ls_srno 
+		Using lstr_ipis.t_sqlpis;
+		
+		if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+			ag_message = "취소SR확정에 실패하였습니다. SLE302"
+			f_ipis_transaction_errorlog('',g_s_winid,'f_up_ipis_mis_tsrcancel',&
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+			return -1
+		end if
+	End If	
+next
+
+return 0
+end function
+

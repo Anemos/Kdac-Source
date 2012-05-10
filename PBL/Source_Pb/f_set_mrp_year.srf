@@ -1,0 +1,71 @@
+$PBExportHeader$f_set_mrp_year.srf
+$PBExportComments$MRP 기준년월 Update     Global Function
+global type f_set_mrp_year from function_object
+end type
+
+forward prototypes
+global function integer f_set_mrp_year ()
+end prototypes
+
+global function integer f_set_mrp_year ();///////////////////////////////////////
+// MRP 결산년월/해당년월 Update()
+//
+// Return: 성공(1), 실패(-1)
+///////////////////////////////////////
+
+
+//------- 기준년월 READ --------
+
+String ls_Xyear
+
+SELECT "XYEAR1" INTO :ls_Xyear
+FROM "PBINV"."INV403"
+WHERE CKEY = 'MRPRUN'  Using SQLCA ;
+
+If SQLCA.SQLcode <> 0 Then
+	Return -1
+End If
+
+
+//------- 다음 작업년월 계산 --------
+
+String ls_yyyy, ls_mm
+
+ls_yyyy = Left(ls_Xyear, 4)
+ls_mm	  = Mid(ls_Xyear, 5, 2)
+
+Integer li_add_year, li_add_month
+
+li_add_month = 1 // Add Month.
+li_add_year = Int((Dec(ls_mm) + li_add_month) / 12) // Add Year.
+
+ls_yyyy = String(Dec(ls_yyyy) + li_add_year) // 계산된 년.
+ls_mm   = String(Mod(Dec(ls_mm) + li_add_month, 12), '00') // 계산된 월.
+
+If ls_mm = '00' Then
+	ls_mm = '12'
+	ls_yyyy = String(Dec(ls_yyyy) - 1)
+End If
+
+
+//-------- DB UPDATE ---------
+
+String ls_Xyear1
+
+ls_Xyear1 = ls_yyyy + ls_mm
+
+UPDATE "PBINV"."INV403"
+	SET "XYEAR" = :ls_Xyear,
+	    "XYEAR1" = :ls_Xyear1
+WHERE "COMLTD" = '01' AND
+		"CKEY" = 'MRPRUN'	  Using SQLCA ;
+
+If SQLCA.SQLcode = 0 Then
+//	Commit Using SQLCA ;
+	Return 1
+Else
+//	RollBack Using SQLCA ;	
+	Return -1
+End If
+end function
+

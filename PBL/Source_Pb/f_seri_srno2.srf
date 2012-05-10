@@ -1,0 +1,43 @@
+$PBExportHeader$f_seri_srno2.srf
+$PBExportComments$srno2 시리얼 증가함수(srno2) => srno2+1 350개까지증가
+global type f_seri_srno2 from function_object
+end type
+
+forward prototypes
+global function string f_seri_srno2 (string as_srno2)
+end prototypes
+
+global function string f_seri_srno2 (string as_srno2);String ls_fstring, ls_sstring, ls_srno2
+INT    li_srno2
+
+If f_spacechk(as_srno2) = -1 Or as_srno2 = '0' then
+	as_srno2 = '00'
+End if
+
+ls_fstring = Mid(as_srno2, 1,1)
+ls_sstring = Mid(as_srno2, 2,1)
+
+IF Asc(ls_fstring) > 64 and Asc(ls_fstring) < 91 THEN
+	If ls_sstring = '9' then
+		If Asc(ls_fstring) = 90 then
+			ls_srno2 = '00'
+		Else
+			ls_srno2 = String(Char(Asc(ls_fstring) + 1)) + '0'
+		End if
+	Else
+		ls_srno2 = ls_fstring + String(Integer(ls_sstring)+1)
+	End if
+ELSEIF as_srno2 = '99' then
+	ls_srno2 = 'A0'    
+Elseif as_srno2 >= '00' and as_srno2 < '99' then
+	li_srno2 = Integer(as_srno2)
+	li_srno2 = li_srno2 + 1
+	ls_srno2 = String(li_srno2,"00")
+Else
+	ls_srno2 = '00'
+End if
+
+Return ls_srno2
+
+end function
+

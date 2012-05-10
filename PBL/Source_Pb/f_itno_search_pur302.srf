@@ -1,0 +1,33 @@
+$PBExportHeader$f_itno_search_pur302.srf
+$PBExportComments$해당 품목 구매요구등록여부 Return
+global type f_itno_search_pur302 from function_object
+end type
+
+forward prototypes
+global function integer f_itno_search_pur302 (string as_itno)
+end prototypes
+
+global function integer f_itno_search_pur302 (string as_itno);///////////////////////////////////////////////////////
+// * 해당품번 구매 Detail Table에 등록여부 Check * 
+//
+// 등록: Return 1
+///////////////////////////////////////////////////////
+
+
+
+Long ll_Count
+
+SELECT COUNT( B.ITNO ) INTO :ll_Count
+	FROM 	PBPUR.PUR301 A,
+			PBPUR.PUR302 B
+WHERE A.COMLTD = B.COMLTD AND
+	   A.RQNO = B.RQNO AND
+		B.ITNO = :as_itno    Using SQLCA ;
+
+If ll_Count = 0 Then 
+	Return -1
+Else
+	Return 1
+End If
+end function
+

@@ -1,0 +1,32 @@
+$PBExportHeader$f_pisc_get_date_nextmonth.srf
+$PBExportComments$Get nextmonth(arg int fi_month, int fi_year, Return integer)
+global type f_pisc_get_date_nextmonth from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_date_nextmonth (string fs_month)
+end prototypes
+
+global function string f_pisc_get_date_nextmonth (string fs_month);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisc_get_date_nextmonth
+//	Access		: public
+//	Arguments	: string		fs_month			Month ('YYYY.MM')
+//	Returns		: string		ls_nextmonth	다음 달 ('YYYY.MM')
+//	Description	: 다음 달을 구한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.10
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+String	ls_nextmonth
+
+Select Top 1 Convert(Char(10), DateAdd(MM, 1, Convert(DateTime, :fs_month + '.01')), 102)
+  Into :ls_nextmonth
+  From sysusers
+;
+
+ls_nextmonth	= Left(ls_nextmonth, 7)
+
+Return ls_nextmonth
+end function
+

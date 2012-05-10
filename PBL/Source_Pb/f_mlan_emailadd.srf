@@ -1,0 +1,46 @@
+$PBExportHeader$f_mlan_emailadd.srf
+$PBExportComments$이메일Add (arg:자재담당코드, D(자재) or I(외자구매)) return
+global type f_mlan_emailadd from function_object
+end type
+
+forward prototypes
+global function string f_mlan_emailadd (string as_mlan, string as_gubun)
+end prototypes
+
+global function string f_mlan_emailadd (string as_mlan, string as_gubun);string ls_dept, ls_pedept, MailAddress, ls_empno 
+
+If as_gubun = 'D' then   //자재담당자
+	
+	SELECT "PBCOMMON"."DAC002"."COITNAMEE" INTO : ls_empno		  
+	 FROM "PBCOMMON"."DAC002"  
+	WHERE ( "PBCOMMON"."DAC002"."COMLTD" = '01' ) AND ("PBCOMMON"."DAC002"."COCODE" = :as_mlan ) AND 
+			( "PBCOMMON"."DAC002"."COGUBUN" = 'INV070' ) USING sqlca;
+
+ELSEIF as_gubun = 'P' then //외주개발담당자
+	
+	SELECT "PBCOMMON"."DAC002"."COITNAMEE" INTO : ls_empno		  
+	 FROM "PBCOMMON"."DAC002"  
+	WHERE ( "PBCOMMON"."DAC002"."COMLTD" = '01' ) AND ("PBCOMMON"."DAC002"."COCODE" = :as_mlan ) AND 
+			( "PBCOMMON"."DAC002"."COGUBUN" = 'INV050' ) USING sqlca;
+ELSE
+	                    //외자구매담당자 
+	SELECT "PBCOMMON"."DAC002"."COITNAMEE" INTO : ls_empno		  
+	 FROM "PBCOMMON"."DAC002"  
+	WHERE ( "PBCOMMON"."DAC002"."COMLTD" = '01' ) AND ("PBCOMMON"."DAC002"."COCODE" = :as_mlan ) AND 
+			( "PBCOMMON"."DAC002"."COGUBUN" = 'INV060' ) USING sqlca;
+End if	
+			
+
+If SQLCA.SQLCode <> 0 Then Return ""	
+
+// 입력자(직원)  메일주소...
+
+SELECT "PEMAIL" INTO :MailAddress
+FROM "PBCOMMON"."DAC003"
+WHERE "PEEMPNO" = :ls_empno USING sqlca;
+
+If SQLCA.SQLCode <> 0 Then Return ""
+
+Return MailAddress
+end function
+

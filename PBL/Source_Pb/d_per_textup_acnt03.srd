@@ -1,0 +1,141 @@
+$PBExportHeader$d_per_textup_acnt03.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=per001_pedept dbname="PER001.PEDEPT" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=pay256_xyear dbname="PAY256.XYEAR" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=pay256_ymgubun dbname="PAY256.YMGUBUN" )
+ column=(type=char(6) update=yes updatewhereclause=yes key=yes name=pay256_empno dbname="PAY256.EMPNO" )
+ column=(type=char(10) updatewhereclause=yes name=per001_penamek dbname="PER001.PENAMEK" )
+ column=(type=char(2) updatewhereclause=yes name=per001_peclass dbname="PER001.PECLASS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pay256_gubun dbname="PAY256.GUBUN" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_plnt dbname="PAY256.PLNT" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln01 dbname="PAY256.PLN01" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln02 dbname="PAY256.PLN02" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln03 dbname="PAY256.PLN03" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln04 dbname="PAY256.PLN04" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln05 dbname="PAY256.PLN05" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln06 dbname="PAY256.PLN06" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln07 dbname="PAY256.PLN07" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln08 dbname="PAY256.PLN08" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln09 dbname="PAY256.PLN09" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln10 dbname="PAY256.PLN10" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln11 dbname="PAY256.PLN11" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_pln12 dbname="PAY256.PLN12" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pay256_ryul dbname="PAY256.RYUL" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pay256_status dbname="PAY256.STATUS" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=pay256_cetc dbname="PAY256.CETC" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=pay256_detc dbname="PAY256.DETC" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=pay256_extd dbname="PAY256.EXTD" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=pay256_inptid dbname="PAY256.INPTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=pay256_inptdt dbname="PAY256.INPTDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=pay256_updtid dbname="PAY256.UPDTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=pay256_updtdt dbname="PAY256.UPDTDT" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=pay256_ipaddr dbname="PAY256.IPADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=pay256_macaddr dbname="PAY256.MACADDR" )
+ column=(type=char(3) updatewhereclause=yes name=per001_pearea dbname="PER001.PEAREA" )
+ column=(type=char(4) updatewhereclause=yes name=per001_pekubho dbname="PER001.PEKUBHO" )
+ column=(type=char(2) updatewhereclause=yes name=per001_pejikchek dbname="PER001.PEJIKCHEK" )
+ column=(type=char(4) updatewhereclause=yes name=per001_peintdept dbname="PER001.PEINTDEPT" )
+ column=(type=char(2) updatewhereclause=yes name=errcol dbname="ERRCOL" )
+ column=(type=char(72) updatewhereclause=yes name=errtext dbname="ERRTEXT" )
+ retrieve="  SELECT ~"PBPER~".~"PER001~".~"PEDEPT~",
+         ~"PBPAY~".~"PAY256~".~"XYEAR~",   
+         ~"PBPAY~".~"PAY256~".~"YMGUBUN~",   
+         ~"PBPAY~".~"PAY256~".~"EMPNO~",
+         ~"PBPER~".~"PER001~".~"PENAMEK~",
+         ~"PBPER~".~"PER001~".~"PECLASS~",             
+         ~"PBPAY~".~"PAY256~".~"GUBUN~",   
+         ~"PBPAY~".~"PAY256~".~"PLNT~",   
+         ~"PBPAY~".~"PAY256~".~"PLN01~",   
+         ~"PBPAY~".~"PAY256~".~"PLN02~",   
+         ~"PBPAY~".~"PAY256~".~"PLN03~",   
+         ~"PBPAY~".~"PAY256~".~"PLN04~",   
+         ~"PBPAY~".~"PAY256~".~"PLN05~",   
+         ~"PBPAY~".~"PAY256~".~"PLN06~",   
+         ~"PBPAY~".~"PAY256~".~"PLN07~",   
+         ~"PBPAY~".~"PAY256~".~"PLN08~",   
+         ~"PBPAY~".~"PAY256~".~"PLN09~",   
+         ~"PBPAY~".~"PAY256~".~"PLN10~",   
+         ~"PBPAY~".~"PAY256~".~"PLN11~",   
+         ~"PBPAY~".~"PAY256~".~"PLN12~",   
+         ~"PBPAY~".~"PAY256~".~"RYUL~",   
+         ~"PBPAY~".~"PAY256~".~"STATUS~",   
+         ~"PBPAY~".~"PAY256~".~"CETC~",   
+         ~"PBPAY~".~"PAY256~".~"DETC~",   
+         ~"PBPAY~".~"PAY256~".~"EXTD~",   
+         ~"PBPAY~".~"PAY256~".~"INPTID~",   
+         ~"PBPAY~".~"PAY256~".~"INPTDT~",   
+         ~"PBPAY~".~"PAY256~".~"UPDTID~",   
+         ~"PBPAY~".~"PAY256~".~"UPDTDT~",   
+         ~"PBPAY~".~"PAY256~".~"IPADDR~",   
+         ~"PBPAY~".~"PAY256~".~"MACADDR~",    
+         ~"PBPER~".~"PER001~".~"PEAREA~",    
+         ~"PBPER~".~"PER001~".~"PEKUBHO~",   
+         ~"PBPER~".~"PER001~".~"PEJIKCHEK~",
+         ~"PBPER~".~"PER001~".~"PEINTDEPT~",
+         '  ' AS errcol,
+         '                                                                        ' as errtext   
+    FROM ~"PBPAY~".~"PAY256~",   
+         ~"PBPER~".~"PER001~"     
+   WHERE ( ~"PBPAY~".~"PAY256~".~"EMPNO~"  = ~"PBPER~".~"PER001~".~"PEEMPNO~" )  AND
+         ( ~"PBPAY~".~"PAY256~".~"YMGUBUN~" = 'Y' ) and  
+         ( ~"PBPAY~".~"PAY256~".~"XYEAR~" = :as_xyear ) and
+         ( ~"PBPER~".~"PER001~".~"PEAREA~"  LIKE :as_area || '%' ) and
+			( ~"PBPER~".~"PER001~".~"PEDEPT~"  LIKE :as_dept || '%' ) and
+			( ~"PBPAY~".~"PAY256~".~"GUBUN~" LIKE :as_part || '%' ) and
+			( ~"PBPER~".~"PER001~".~"PEEMPNO~" LIKE :as_empno || '%' ) 
+ORDER BY 
+~"PBPER~".~"PER001~".~"PEINTDEPT~", 
+~"PBPER~".~"PER001~".~"PEJIKCHEK~", 
+~"PBPER~".~"PER001~".~"PECLASS~",
+~"PBPER~".~"PER001~".~"PEKUBHO~" desc,
+~"PBPAY~".~"PAY256~".~"EMPNO~"
+" update="PBPAY.PAY256" updatewhere=0 updatekeyinplace=yes arguments=(("as_xyear", string),("as_area", string),("as_dept", string),("as_part", string),("as_empno", string)) )
+text(band=header alignment="2" text="ºÎ¼­" border="2" color="16777215" x="9" y="8" height="60" width="512" html.valueishtml="0"  name=per001_pedept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¹ø" border="2" color="16777215" x="530" y="8" height="60" width="265" html.valueishtml="0"  name=pay256_empno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="¼º  ¸í" border="2" color="16777215" x="805" y="8" height="60" width="270" html.valueishtml="0"  name=per001_penamek_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á÷À§" border="2" color="16777215" x="1083" y="8" height="60" width="197" html.valueishtml="0"  name=per001_peclass_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³â°£°èÈ¹" border="2" color="16777215" x="1289" y="8" height="60" width="265" html.valueishtml="0"  name=pay256_plnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Errcol" border="0" color="0" x="3154" y="8" height="60" width="133" html.valueishtml="0"  name=errcol_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="¿¡·¯³»¿ë" border="0" color="0" x="3296" y="8" height="60" width="2295" html.valueishtml="0"  name=errtext_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="1¿ù" border="2" color="16777215" x="1563" y="8" height="60" width="123" html.valueishtml="0"  name=pay256_pln01_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="2¿ù" border="2" color="16777215" x="1696" y="8" height="60" width="123" html.valueishtml="0"  name=pay256_pln02_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="3¿ù" border="2" color="16777215" x="1829" y="8" height="60" width="123" html.valueishtml="0"  name=pay256_pln03_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="4¿ù" border="2" color="16777215" x="1961" y="8" height="60" width="119" html.valueishtml="0"  name=pay256_pln04_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="5¿ù" border="2" color="16777215" x="2089" y="8" height="60" width="123" html.valueishtml="0"  name=pay256_pln05_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="6¿ù" border="2" color="16777215" x="2222" y="8" height="60" width="123" html.valueishtml="0"  name=pay256_pln06_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="7¿ù" border="2" color="16777215" x="2354" y="8" height="60" width="114" html.valueishtml="0"  name=pay256_pln07_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="8¿ù" border="2" color="16777215" x="2478" y="8" height="60" width="119" html.valueishtml="0"  name=pay256_pln08_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="9¿ù" border="2" color="16777215" x="2606" y="8" height="60" width="114" html.valueishtml="0"  name=pay256_pln09_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="10¿ù" border="2" color="16777215" x="2729" y="8" height="60" width="133" html.valueishtml="0"  name=pay256_pln10_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="11¿ù" border="2" color="16777215" x="2871" y="8" height="60" width="128" html.valueishtml="0"  name=pay256_pln11_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="12¿ù" border="2" color="16777215" x="3008" y="8" height="60" width="137" html.valueishtml="0"  name=pay256_pln12_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="80" width="512" format="[general]" html.valueishtml="0"  name=per001_pedept  tag="ºÎ¼­ÄÚµå" visible="1" dddw.name=dddw_cd_dac001 dddw.displaycolumn=dname dddw.datacolumn=dcode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="805" y="4" height="80" width="270" format="[general]" html.valueishtml="0"  name=per001_penamek  tag="¼º  ¸í" visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1083" y="4" height="80" width="197" format="[general]" html.valueishtml="0"  name=per001_peclass  tag="ÇöÁ÷À§" visible="1" dddw.name=dddw_cd_per306 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="8388736" x="1289" y="4" height="80" width="265" format="###" html.valueishtml="0"  name=pay256_plnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="530" y="4" height="80" width="265" format="[general]" html.valueishtml="0"  name=pay256_empno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=9 alignment="1" tabsequence=10 border="0" color="33554432" x="1563" y="4" height="80" width="123" format="##0" html.valueishtml="0"  name=pay256_pln01 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="1" tabsequence=20 border="0" color="33554432" x="1696" y="4" height="80" width="123" format="##0" html.valueishtml="0"  name=pay256_pln02 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="1" tabsequence=30 border="0" color="33554432" x="1829" y="4" height="80" width="123" format="##0" html.valueishtml="0"  name=pay256_pln03 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="1" tabsequence=40 border="0" color="33554432" x="1961" y="4" height="80" width="119" format="##0" html.valueishtml="0"  name=pay256_pln04 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="1" tabsequence=50 border="0" color="33554432" x="2089" y="4" height="80" width="123" format="##0" html.valueishtml="0"  name=pay256_pln05 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="1" tabsequence=60 border="0" color="33554432" x="2222" y="4" height="80" width="123" format="##0" html.valueishtml="0"  name=pay256_pln06 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="1" tabsequence=70 border="0" color="33554432" x="2354" y="4" height="80" width="114" format="##0" html.valueishtml="0"  name=pay256_pln07 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="1" tabsequence=80 border="0" color="33554432" x="2478" y="4" height="80" width="119" format="##0" html.valueishtml="0"  name=pay256_pln08 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="1" tabsequence=90 border="0" color="33554432" x="2606" y="4" height="80" width="114" format="##0" html.valueishtml="0"  name=pay256_pln09 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="1" tabsequence=100 border="0" color="33554432" x="2729" y="4" height="80" width="133" format="##0" html.valueishtml="0"  name=pay256_pln10 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="1" tabsequence=110 border="0" color="33554432" x="2871" y="4" height="80" width="128" format="##0" html.valueishtml="0"  name=pay256_pln11 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=20 alignment="1" tabsequence=120 border="0" color="33554432" x="3008" y="4" height="80" width="137" format="##0" html.valueishtml="0"  name=pay256_pln12 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=36 alignment="0" tabsequence=130 border="0" color="255" x="3154" y="4" height="80" width="133" format="[general]" html.valueishtml="0"  name=errcol visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=37 alignment="0" tabsequence=140 border="0" color="255" x="3296" y="4" height="80" width="2295" format="[general]" html.valueishtml="0"  name=errtext visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

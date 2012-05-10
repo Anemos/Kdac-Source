@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_gong.srf
+$PBExportComments$공제구분가져오기
+global type f_get_gong from function_object
+end type
+
+forward prototypes
+global function string f_get_gong (string a_s_comltd, string a_s_acdate, integer a_n_slipno, string a_s_cucode)
+end prototypes
+
+global function string f_get_gong (string a_s_comltd, string a_s_acdate, integer a_n_slipno, string a_s_cucode);string l_s_gubun
+
+SELECT "PBACC"."ACC530"."TGUBUN" 
+   INTO :l_s_gubun 
+	FROM "PBACC"."ACC530"
+	WHERE "PBACC"."ACC530"."COMLTD" = :a_s_comltd AND "PBACC"."ACC530"."SLACDATE" = :a_s_acdate
+	       AND "PBACC"."ACC530"."SLSLIPNO" = :a_n_slipno 
+			 AND "PBACC"."ACC530"."SLCUCODE" = :a_s_cucode 
+			 USING SQLCA;
+
+			 if sqlca.sqlcode <> 0 then
+				  l_s_gubun =''
+			end if 
+			return l_s_gubun
+end function
+

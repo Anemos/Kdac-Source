@@ -1,0 +1,20 @@
+$PBExportHeader$f_get_accdr042.srf
+$PBExportComments$필수입력(관리NO 1-S1020600) editing 여부 return
+global type f_get_accdr042 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr042 (string a_manage1, string a_accode)
+end prototypes
+
+global function string f_get_accdr042 (string a_manage1, string a_accode);if a_accode <> 'S1020600' then
+	return ''
+end if
+
+if a_manage1 = 'J' or a_manage1 = '' then
+	return ''
+else
+	return 'e'
+end if
+end function
+

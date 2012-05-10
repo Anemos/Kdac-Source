@@ -1,0 +1,30 @@
+$PBExportHeader$f_pisr_getdaybefore.srf
+$PBExportComments$GetDate 기준일로부터 n Days 값 (arg string as_curDate, integer ai_days, return string)
+global type f_pisr_getdaybefore from function_object
+end type
+
+forward prototypes
+global function string f_pisr_getdaybefore (string as_currentdate, integer ai_days)
+end prototypes
+
+global function string f_pisr_getdaybefore (string as_currentdate, integer ai_days);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_getdaybefore
+//	Access		: reorder
+//	Arguments	: string			as_currentdate		기분일자
+//					  Integer		ai_days				변경값
+//	Returns		: String 		변경된 날자
+//	Description	: 기준일자를 입력받아 변경값 이후의 날자를 계산
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon oh-sang
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+String ls_applyTo 
+
+Select Top 1 Convert(Char(10), DateAdd(Day, :ai_days, Convert(DateTime, :as_currentdate,102)), 102)
+  Into :ls_applyTo  From TMSTAREA Using sqlpis ;
+
+If IsNull(ls_applyTo) Then ls_applyTo = ''
+Return ls_applyTo 
+
+end function
+

@@ -1,0 +1,49 @@
+$PBExportHeader$f_inqty_pur.srf
+$PBExportComments$입고량 총(구매전산번호)
+global type f_inqty_pur from function_object
+end type
+
+forward prototypes
+global function decimal f_inqty_pur (string ag_s_srno)
+end prototypes
+
+global function decimal f_inqty_pur (string ag_s_srno);//////////////////////////////////////////////////
+//	입고량
+//			argument: 구매(발주)전산번호
+//
+//			사용: 취소구매관리(w_pur304u) , 미입고취소관리(w_pur414u)
+//////////////////////////////////////////////////
+
+dec{2} ln_inqty
+
+dec{2} ln_dckqt
+
+//납품 DB : 2003.06.19
+SELECT Coalesce(sum("PBINV"."INV201"."DCKQT")  , 0)
+ INTO :ln_dckqt
+ FROM "PBINV"."INV201"  
+WHERE ( "PBINV"."INV201"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV201"."SRNO" = :ag_s_srno ) Using sqlca ;
+
+IF sqlca.sqlcode <> 0 or isnull(ln_dckqt) Then
+	ln_dckqt = 0
+End If
+
+//자재 Trans DB
+SELECT Coalesce(sum("PBINV"."INV401"."TQTY4"),0)
+ INTO :ln_inqty  
+FROM "PBINV"."INV401"  
+WHERE ( "PBINV"."INV401"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV401"."SLIPTYPE" IN ('RP','DP') ) AND  
+		( "PBINV"."INV401"."SRNO" = :ag_s_srno ) AND
+		( "PBINV"."INV401"."KBCD" <> 'K' ) AND
+		( "PBINV"."INV401"."RTNGUB" <> 'K' ) Using sqlca;
+
+IF isnull(ln_inqty) Then
+	ln_inqty = 0
+End If
+
+//Return ln_inqty
+Return ln_inqty + ln_dckqt
+end function
+

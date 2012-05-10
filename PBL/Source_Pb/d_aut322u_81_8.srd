@@ -1,0 +1,57 @@
+$PBExportHeader$d_aut322u_81_8.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=88 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=plantname dbname="PLANTNAME" )
+ column=(type=char(4) updatewhereclause=yes name=dept dbname="DEPT" )
+ column=(type=char(40) updatewhereclause=yes name=dname dbname="DNAME" )
+ column=(type=char(4) updatewhereclause=yes name=dintcode1 dbname="DINTCODE1" )
+ column=(type=char(10) updatewhereclause=yes name=chid dbname="CHID" )
+ column=(type=char(20) updatewhereclause=yes name=modelnm dbname="MODELNM" )
+ column=(type=char(30) updatewhereclause=yes name=empnm dbname="EMPNM" )
+ column=(type=char(4) updatewhereclause=yes name=os dbname="OS" )
+ column=(type=char(8) updatewhereclause=yes name=monitorsize dbname="MONITORSIZE" )
+ column=(type=char(1) updatewhereclause=yes name=monitorgubun dbname="MONITORGUBUN" )
+ column=(type=char(20) updatewhereclause=yes name=memory dbname="MEMORY" )
+ column=(type=char(20) updatewhereclause=yes name=disk dbname="DISK" )
+ column=(type=char(60) updatewhereclause=yes name=etc dbname="ETC" )
+ column=(type=char(1) updatewhereclause=yes name=empgubun dbname="EMPGUBUN" )
+ retrieve="select COALESCE(coitname,'') PLANTNAME,dept,dname,dintcode1,chid,modelnm,empnm,os,monitorsize,monitorgubun,memory,disk,etc,empgubun 
+from pbcommon.dac001 C, pbcommon.comm810 A LEFT OUTER JOIN pbcommon.dac002 B ON XPLANT = COCODE
+where A.COMLTD 	= '01'  					AND
+		STCD   		LIKE :as_stcd 			AND
+		DEVICEGUBUN LIKE :as_devicegubun AND
+		dept			like :as_dept			and
+		dept			=	c.dcode				and
+		c.dtodt		=	0						and
+		c.duse		=	''						and
+		COGUBUN		=	'COMMAA'" arguments=(("as_stcd", string),("as_devicegubun", string),("as_dept", string))  sort="dintcode1 A dept A plantname A chid A " )
+text(band=header alignment="2" text="Àåºñ¹øÈ£" border="0" color="16777215" x="841" y="0" height="72" width="407" html.valueishtml="0"  name=chid_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðµ¨¸í" border="0" color="16777215" x="1257" y="0" height="72" width="480" html.valueishtml="0"  name=modelnm_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿î¿µÃ¼Á¦" border="0" color="16777215" x="2647" y="0" height="72" width="311" html.valueishtml="0"  name=os_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="RAM" border="0" color="16777215" x="3287" y="0" height="72" width="247" html.valueishtml="0"  name=memory_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="HDD" border="0" color="16777215" x="3543" y="0" height="72" width="247" html.valueishtml="0"  name=disk_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Ã¸®¾ó" border="0" color="16777215" x="3799" y="0" height="72" width="590" html.valueishtml="0"  name=etc_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ð´ÏÅÍ" border="0" color="16777215" x="2967" y="0" height="72" width="311" html.valueishtml="0"  name=t_1 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ëÀÚ¸í" border="0" color="16777215" x="1746" y="0" height="72" width="457" html.valueishtml="0"  name=empnm_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ëµµ" border="0" color="16777215" x="2213" y="0" height="72" width="425" html.valueishtml="0"  name=empgubun_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="635" y="0" height="72" width="197" html.valueishtml="0"  name=plantname_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ¼­¸í" border="0" color="16777215" x="9" y="0" height="72" width="617" html.valueishtml="0"  name=dname_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="841" y="0" height="72" width="407" format="[general]" html.valueishtml="0"  name=chid visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1257" y="0" height="72" width="480" format="[general]" html.valueishtml="0"  name=modelnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="3799" y="0" height="72" width="590" format="[general]" html.valueishtml="0"  name=etc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="2" expression="if( monitorsize = '' ,'', monitorsize + '/' + monitorgubun )"border="0" color="0" x="2967" y="0" height="72" width="311" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="0" x="3287" y="0" height="72" width="247" format="[general]" html.valueishtml="0"  name=memory visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="3543" y="0" height="72" width="247" format="[general]" html.valueishtml="0"  name=disk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1746" y="0" height="72" width="457" format="[general]" html.valueishtml="0"  name=empnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="2213" y="0" height="72" width="425" format="[general]" html.valueishtml="0"  name=empgubun visible="1" dddw.name=dddw_com000_empgubun dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="2647" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=os visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="635" y="0" height="72" width="197" format="[general]" html.valueishtml="0"  name=plantname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="617" format="[general]" html.valueishtml="0"  name=dname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="dname	plantname	chid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+  

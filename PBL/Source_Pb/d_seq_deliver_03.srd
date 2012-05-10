@@ -1,0 +1,13 @@
+$PBExportHeader$d_seq_deliver_03.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=5 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=328 color="536870912"  height.autosize=yes)
+table(column=(type=char(10) updatewhereclause=yes name=a dbname="a" )
+ unbound = "yes"arguments=(("a_itemcode1", string),("a_itemcode2", string),("a_itemcode3", string),("a_itemcode4", string),("a_itemcode5", string),("a_fromdate", string),("a_todate", string),("a_shipqty1", number),("a_shipqty2", number),("a_shipqty3", number),("a_shipqty4", number),("a_shipqty5", number)) )
+report(band=detail dataobject="d_seq_deliver_sp_01" x="18" y="24" height="128" width="3424" border="0"  height.autosize=yes criteria="" nest_arguments=((" a_itemcode1 "),(" a_itemcode2 "),(" a_itemcode3 "),(" a_itemcode4 "),(" a_itemcode5 "),(" a_fromdate "),(" a_todate "),(" a_shipqty1 "),(" a_shipqty2 "),(" a_shipqty3 "),(" a_shipqty4 "),(" a_shipqty5 ")) trail_footer = yes  name=dw_1 visible="1"  slideup=directlyabove )
+report(band=detail dataobject="d_seq_deliver_sp_02" x="14" y="168" height="128" width="3424" border="0"  height.autosize=yes criteria="" nest_arguments=((" a_itemcode1 "),(" a_itemcode2 "),(" a_itemcode3 "),(" a_itemcode4 "),(" a_itemcode5 "),(" a_fromdate "),(" a_todate "),(" a_shipqty1 "),(" a_shipqty2 "),(" a_shipqty3 "),(" a_shipqty4 "),(" a_shipqty5 ")) trail_footer = yes  name=dw_2 visible="1"  slideup=directlyabove )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

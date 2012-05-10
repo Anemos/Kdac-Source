@@ -1,0 +1,29 @@
+$PBExportHeader$d_rtn01_dw_line_treeview.srd
+$PBExportComments$공장별 전체 대체 Line Display Treeview
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=rbdvsn dbname="RTN012.RBDVSN" )
+ column=(type=char(7) updatewhereclause=yes name=rbline1 dbname="RTN012.RBLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rbplant dbname="RTN012.RBPLANT" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN012~".~"RBDVSN~",   
+         ~"PBRTN~".~"RTN012~".~"RBLINE1~",   
+         ~"PBRTN~".~"RTN012~".~"RBPLANT~"  
+    FROM ~"PBRTN~".~"RTN012~"  
+   WHERE ( ~"PBRTN~".~"RTN012~".~"RBCMCD~" = '01' ) AND  
+         ( ~"PBRTN~".~"RTN012~".~"RBDVSN~" = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN012~".~"RBPLANT~" = :a_plant )   
+GROUP BY ~"PBRTN~".~"RTN012~".~"RBPLANT~",   
+         ~"PBRTN~".~"RTN012~".~"RBDVSN~",   
+         ~"PBRTN~".~"RTN012~".~"RBLINE1~"   
+" arguments=(("a_plant", string),("a_div", string)) )
+text(band=header alignment="0" text="Rbline1" border="0" color="0" x="9" y="4" height="76" width="219" html.valueishtml="0"  name=rbline1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="219" format="[general]" html.valueishtml="0"  name=rbline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

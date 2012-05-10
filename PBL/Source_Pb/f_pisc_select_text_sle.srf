@@ -1,0 +1,28 @@
+$PBExportHeader$f_pisc_select_text_sle.srf
+$PBExportComments$SingleLineEditor Select Text 처리(arg singlelineedit sle_name, return boolena)
+global type f_pisc_select_text_sle from function_object
+end type
+
+forward prototypes
+global function boolean f_pisc_select_text_sle (singlelineedit sle_name)
+end prototypes
+
+global function boolean f_pisc_select_text_sle (singlelineedit sle_name);//	Function		: f_select_text_sle
+//	Access		: public
+//	Arguments	: SingleLineEdit sle_name	Select Text 처리할 SingleLineEdit Object
+//	Returns		: Boolean
+//	Description	: Focus가 바뀌었을때 입력을 용이하게 하기 위해서 SingleLineEdit를 SelectText 처리한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 20
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+If IsValid(sle_name) Then
+	sle_name.SetFocus()
+	sle_name.SelectText(1, Len(sle_name.Text))
+	Return True
+Else
+	Return False
+End If
+end function
+

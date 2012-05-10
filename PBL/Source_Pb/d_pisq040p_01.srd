@@ -1,0 +1,157 @@
+$PBExportHeader$d_pisq040p_01.srd
+$PBExportComments$∞ÀªÁ±‚¡ÿº≠ ∞À≈‰(«ÏµÂ)
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="∞ÀªÁ±‚¡ÿº≠" print.orientation = 1 print.margin.left = 0 print.margin.right = 0 print.margin.top = 0 print.margin.bottom = 0 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=2996 color="536870912"  height.autosize=yes)
+table(column=(type=char(1) update=yes updatewhereclause=yes name=areacode dbname="TQQCSTANDARD.AREACODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=divisioncode dbname="TQQCSTANDARD.DIVISIONCODE" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=suppliercode dbname="TQQCSTANDARD.SUPPLIERCODE" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itemcode dbname="TQQCSTANDARD.ITEMCODE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=standardrevno dbname="TQQCSTANDARD.STANDARDREVNO" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=chargename dbname="TQQCSTANDARD.CHARGENAME" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=enactmentdate dbname="TQQCSTANDARD.ENACTMENTDATE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=itemrank dbname="TQQCSTANDARD.ITEMRANK" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=quality dbname="TQQCSTANDARD.QUALITY" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=heattreatment dbname="TQQCSTANDARD.HEATTREATMENT" )
+ column=(type=char(40) update=yes updatewhereclause=yes name=surfacetreatment dbname="TQQCSTANDARD.SURFACETREATMENT" )
+ column=(type=char(4099) updatewhereclause=no name=qcconceptionreference dbname="TQQCSTANDARD.QCCONCEPTIONREFERENCE" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=badtreatment dbname="TQQCSTANDARD.BADTREATMENT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=consertdependenceflag dbname="TQQCSTANDARD.CONSERTDEPENDENCEFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=chargecode dbname="TQQCSTANDARD.CHARGECODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=chargeconsertflag dbname="TQQCSTANDARD.CHARGECONSERTFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=sanctioncode dbname="TQQCSTANDARD.SANCTIONCODE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=sanctionconsertflag dbname="TQQCSTANDARD.SANCTIONCONSERTFLAG" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=consertdate dbname="TQQCSTANDARD.CONSERTDATE" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=returnreason dbname="TQQCSTANDARD.RETURNREASON" )
+ column=(type=char(150) update=yes updatewhereclause=yes name=modifycontent dbname="TQQCSTANDARD.MODIFYCONTENT" )
+ column=(type=char(15) updatewhereclause=yes name=tmstarea_areaname dbname="TMSTAREA.AreaName" )
+ column=(type=char(15) updatewhereclause=yes name=tmstdivision_divisionname dbname="TMSTDIVISION.DivisionName" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ItemName" )
+ column=(type=char(50) updatewhereclause=yes name=tmstsupplier_supplierkorname dbname="TMSTSUPPLIER.SupplierKorName" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_as_chargename dbname="TMSTEMP.AS_CHARGENAME" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_as_sanctionname dbname="TMSTEMP.AS_SANCTIONNAME" )
+ column=(type=char(1) updatewhereclause=yes name=as_qcconceptionreference dbname="AS_QCCONCEPTIONREFERENCE" )
+ column=(type=char(2) updatewhereclause=yes name=itemrevno dbname="TQQCSTANDARD.ITEMREVNO" )
+ retrieve="  SELECT TQQCSTANDARD.AREACODE,   
+         TQQCSTANDARD.DIVISIONCODE,   
+         TQQCSTANDARD.SUPPLIERCODE,   
+         TQQCSTANDARD.ITEMCODE,   
+         TQQCSTANDARD.STANDARDREVNO,   
+         TQQCSTANDARD.CHARGENAME,   
+         TQQCSTANDARD.ENACTMENTDATE,   
+         TQQCSTANDARD.ITEMRANK,   
+         TQQCSTANDARD.QUALITY,   
+         TQQCSTANDARD.HEATTREATMENT,   
+         TQQCSTANDARD.SURFACETREATMENT,   
+         TQQCSTANDARD.QCCONCEPTIONREFERENCE,
+         TQQCSTANDARD.BADTREATMENT,   
+         TQQCSTANDARD.CONSERTDEPENDENCEFLAG,   
+         TQQCSTANDARD.CHARGECODE,   
+         TQQCSTANDARD.CHARGECONSERTFLAG,   
+         TQQCSTANDARD.SANCTIONCODE,   
+         TQQCSTANDARD.SANCTIONCONSERTFLAG,   
+         TQQCSTANDARD.CONSERTDATE,   
+         TQQCSTANDARD.RETURNREASON,   
+         TQQCSTANDARD.MODIFYCONTENT,   
+         TMSTAREA.AreaName,   
+         TMSTDIVISION.DivisionName,   
+         TMSTITEM.ItemName,   
+         TMSTSUPPLIER.SupplierKorName ,
+			A.EMPNAME AS AS_CHARGENAME,
+			B.EMPNAME AS AS_SANCTIONNAME,
+			' '		 AS AS_QCCONCEPTIONREFERENCE,
+			TQQCSTANDARD.ITEMREVNO
+    FROM TQQCSTANDARD,   
+         TMSTAREA,   
+         TMSTDIVISION,   
+         TMSTITEM,   
+         TMSTSUPPLIER,
+			TMSTEMP A,
+			TMSTEMP B
+   WHERE TQQCSTANDARD.CHARGECODE			*= A.EMPNO
+     AND TQQCSTANDARD.SANCTIONCODE		*= B.EMPNO   
+     AND TQQCSTANDARD.AREACODE			*= TMSTAREA.AreaCode 
+     AND TQQCSTANDARD.AREACODE			*= TMSTDIVISION.AreaCode 
+     AND TQQCSTANDARD.DIVISIONCODE		*= TMSTDIVISION.DivisionCode 
+     AND TQQCSTANDARD.ITEMCODE			*= TMSTITEM.ItemCode 
+     AND TQQCSTANDARD.SUPPLIERCODE		*= TMSTSUPPLIER.SupplierCode 
+     AND TQQCSTANDARD.AREACODE			= :as_areacode 
+     AND TQQCSTANDARD.DIVISIONCODE		= :as_divisioncode 
+     AND TQQCSTANDARD.SUPPLIERCODE		= :as_suppliercode 
+     AND TQQCSTANDARD.ITEMCODE			= :as_itemcode 
+     AND TQQCSTANDARD.STANDARDREVNO		= :as_standardrevno 
+ " arguments=(("as_areacode", string),("as_divisioncode", string),("as_suppliercode", string),("as_itemcode", string),("as_standardrevno", string)) )
+rectangle(band=detail x="32" y="256" height="2736" width="1280"  name=r_1 visible="1" brush.hatch="6" brush.color="16777215" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+rectangle(band=detail x="1307" y="760" height="2232" width="3584"  name=r_3 visible="1" brush.hatch="6" brush.color="16777215" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+rectangle(band=detail x="1307" y="100" height="664" width="3584"  name=r_2 visible="1" brush.hatch="6" brush.color="16777215" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="æ‡µµ:" border="0" color="0" x="50" y="272" height="60" width="215" html.valueishtml="0"  name=t_3 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1307" y1="192" x2="4891" y2="192"  name=l_1 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1518" y="120" height="52" width="489" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="32" y1="1548" x2="1312" y2="1548"  name=l_5 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+text(band=detail alignment="0" text="∞ÀªÁ¬¯æ»¡° π◊ ¬¸∞Ì" border="0" color="0" x="1330" y="352" height="52" width="581" html.valueishtml="0"  name=qcconceptionreference_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="«˘∑¬æ˜√º" border="0" color="0" x="1330" y="212" height="52" width="279" html.valueishtml="0"  name=suppliercode_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="«∞π¯" border="0" color="0" x="1330" y="120" height="52" width="137" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1490" y1="100" x2="1490" y2="196"  name=l_6 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2039" y1="100" x2="2039" y2="196"  name=l_7 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="«∞∏Ì" border="0" color="0" x="2066" y="120" height="52" width="137" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="2226" y1="100" x2="2226" y2="196"  name=l_8 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3232" y1="100" x2="3232" y2="200"  name=l_9 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1934" y1="196" x2="1934" y2="296"  name=l_13 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="¿€º∫¿⁄" border="0" color="0" x="3250" y="212" height="60" width="201" html.valueishtml="0"  name=chargename_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1307" y1="284" x2="4891" y2="284"  name=l_2 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+column(band=detail id=25 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="216" height="52" width="809" format="[general]" html.valueishtml="0"  name=tmstsupplier_supplierkorname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="4320" y1="100" x2="4320" y2="200"  name=l_12 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="4343" y="212" height="52" width="338" format="[general]" html.valueishtml="0"  name=enactmentdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="4343" y="120" height="52" width="73" format="[general]" html.valueishtml="0"  name=itemrank visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="¡¶¡§¿œ¿⁄" border="0" color="0" x="4032" y="212" height="52" width="270" html.valueishtml="0"  name=enactmentdate_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text=" ∫Œ«∞∞Ë±ﬁ" border="0" color="0" x="4032" y="120" height="52" width="283" html.valueishtml="0"  name=itemrank_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="4009" y1="100" x2="4009" y2="200"  name=l_11 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="3488" y="212" height="52" width="320" format="[general]" html.valueishtml="0"  name=chargename visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="3621" y1="100" x2="3621" y2="200"  name=l_10 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="4320" y1="200" x2="4320" y2="288"  name=l_19 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="4009" y1="200" x2="4009" y2="288"  name=l_18 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3465" y1="200" x2="3465" y2="288"  name=l_17 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3232" y1="200" x2="3232" y2="288"  name=l_16 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pisq040p_03" x="37" y="1560" height="1208" width="1266" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_areacode "),(" as_divisioncode "),(" as_suppliercode "),(" as_itemcode ")) trail_footer = yes  name=dw_1 visible="1"  slideleft=yes  slideup=directlyabove )
+line(band=detail x1="1934" y1="284" x2="1934" y2="480"  name=l_14 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1307" y1="484" x2="4891" y2="484"  name=l_3 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+text(band=detail alignment="0" text="∫“∑Æ«∞√≥∏Æ" border="0" color="0" x="1330" y="504" height="60" width="325" html.valueishtml="0"  name=badtreatment_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1934" y1="460" x2="1934" y2="668"  name=l_15 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="504" height="52" width="2889" format="[general]" html.valueishtml="0"  name=badtreatment visible="1" edit.limit=150 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1307" y1="576" x2="4891" y2="576"  name=l_4 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+text(band=detail alignment="0" text="π›º€ ªÁ¿Ø" border="0" color="0" x="1330" y="596" height="60" width="325" html.valueishtml="0"  name=t_6 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="596" height="52" width="2889" format="[general]" html.valueishtml="0"  name=returnreason visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1307" y1="668" x2="4891" y2="668"  name=l_28 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+text(band=detail alignment="0" text="¿Á¡˙" border="0" color="0" x="1330" y="692" height="60" width="137" html.valueishtml="0"  name=quality_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="1486" y1="668" x2="1486" y2="764"  name=l_20 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1509" y="692" height="60" width="905" format="[general]" html.valueishtml="0"  name=quality visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="2432" y1="668" x2="2432" y2="764"  name=l_21 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text=" ø≠√≥∏Æ" border="0" color="0" x="2455" y="692" height="60" width="197" html.valueishtml="0"  name=heattreatment_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="2670" y1="660" x2="2670" y2="760"  name=l_22 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2693" y="692" height="60" width="905" format="[general]" html.valueishtml="0"  name=heattreatment visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="3616" y1="668" x2="3616" y2="764"  name=l_23 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text=" «•∏È√≥∏Æ" border="0" color="0" x="3639" y="692" height="60" width="283" html.valueishtml="0"  name=surfacetreatment_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="3941" y1="668" x2="3941" y2="764"  name=l_24 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="3963" y="692" height="60" width="891" format="[general]" html.valueishtml="0"  name=surfacetreatment visible="1" edit.limit=40 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="∞ÀªÁ±‚¡ÿº≠" border="0" color="0" x="320" y="92" height="124" width="704" html.valueishtml="0"  name=t_2 visible="1"  font.face="±º∏≤√º" font.height="-20" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" font.underline="1" background.mode="2" background.color="16777215" )
+line(band=detail x1="37" y1="2776" x2="1303" y2="2776"  name=l_25 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+line(band=detail x1="672" y1="2776" x2="672" y2="2992"  name=l_27 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+text(band=detail alignment="2" text="¥„¥Á¿⁄" border="0" color="0" x="46" y="2800" height="60" width="617" html.valueishtml="0"  name=t_4 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="2" text="∞·¿Á¿⁄" border="0" color="0" x="686" y="2800" height="60" width="608" html.valueishtml="0"  name=t_5 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=detail x1="37" y1="2884" x2="1303" y2="2884"  name=l_26 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="0" )
+column(band=detail id=27 alignment="2" tabsequence=32766 border="0" color="0" x="686" y="2912" height="60" width="608" format="[general]" html.valueishtml="0"  name=tmstemp_as_sanctionname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=26 alignment="2" tabsequence=32766 border="0" color="0" x="46" y="2912" height="60" width="617" format="[general]" html.valueishtml="0"  name=tmstemp_as_chargename visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+bitmap(band=detail filename="C:\kdac\bmp\temp.jpg" x="55" y="352" height="1184~tif ( f_checkimage(areacode, divisioncode, suppliercode, itemcode,  standardrevno), 1184, 1)" width="1234" border="0"  name=p_1 visible="1" )
+report(band=detail dataobject="d_pisq040p_02" x="1307" y="764" height="2160" width="3579" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_areacode "),(" as_divisioncode "),(" as_suppliercode "),(" as_itemcode "),(" as_standardrevno ")) trail_footer = yes  name=dw_pisq040p_detail visible="1"  slideleft=yes  slideup=directlyabove )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="1957" y="296" height="180" width="2894" format="[general]" html.valueishtml="0"  name=qcconceptionreference visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=24 alignment="0" tabsequence=32766 border="0" color="0" x="2254" y="120" height="52" width="960" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="µµ∏ÈRev.No" border="0" color="0" x="3250" y="120" height="60" width="352" html.valueishtml="0"  name=standardrevno_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=29 alignment="0" tabsequence=32766 border="0" color="0" x="3739" y="120" height="60" width="146" format="[general]" html.valueishtml="0"  name=itemrevno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

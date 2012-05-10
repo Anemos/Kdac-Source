@@ -1,0 +1,78 @@
+$PBExportHeader$d_bom001_305i_03.srd
+$PBExportComments$«∞π¯¿« 12∞≥ø˘ ≥ª¿⁄,ø‹¿⁄,≈∏∞¯¿Â ¿Á∑·∫Ò data
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=120 color="536870912" )
+summary(height=4 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=fmdno dbname="BOM109.FMDNO" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdmcst dbname="BOM109.FDMCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdrcst dbname="BOM109.FDRCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdacst dbname="BOM109.FDACST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fimcst dbname="BOM109.FIMCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fircst dbname="BOM109.FIRCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fiacst dbname="BOM109.FIACST" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdvomt dbname="BOM109.FDVOMT" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdvort dbname="BOM109.FDVORT" )
+ column=(type=decimal(0) updatewhereclause=yes name=fdvoat dbname="BOM109.FDVOAT" )
+ column=(type=decimal(0) updatewhereclause=yes name=foscst dbname="BOM109.FOSCST" )
+ column=(type=char(6) updatewhereclause=yes name=fdate dbname="BOM109.FDATE" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM109~".~"FMDNO~",   
+         ~"PBPDM~".~"BOM109~".~"FDMCST~",   
+         ~"PBPDM~".~"BOM109~".~"FDRCST~",   
+         ~"PBPDM~".~"BOM109~".~"FDACST~",   
+         ~"PBPDM~".~"BOM109~".~"FIMCST~",   
+         ~"PBPDM~".~"BOM109~".~"FIRCST~",   
+         ~"PBPDM~".~"BOM109~".~"FIACST~",   
+         ~"PBPDM~".~"BOM109~".~"FDVOMT~",   
+         ~"PBPDM~".~"BOM109~".~"FDVORT~",   
+         ~"PBPDM~".~"BOM109~".~"FDVOAT~",   
+         ~"PBPDM~".~"BOM109~".~"FOSCST~",   
+         ~"PBPDM~".~"BOM109~".~"FDATE~" 
+    FROM ~"PBPDM~".~"BOM109~"  
+   WHERE ( ~"PBPDM~".~"BOM109~".~"FCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM109~".~"FGUBUN~" = :a_comsec ) AND 
+         ( ~"PBPDM~".~"BOM109~".~"FPLANT~" LIKE :a_plant ) AND    
+         ( ~"PBPDM~".~"BOM109~".~"FDVSN~"  LIKE :a_div ) AND  
+         ( ~"PBPDM~".~"BOM109~".~"FPDCD~"  LIKE :a_pdcd ) AND 
+         ( ~"PBPDM~".~"BOM109~".~"FMDNO~"  = :a_itno ) AND  
+         ( ~"PBPDM~".~"BOM109~".~"FDATE~" <= :a_curdate ) AND  
+         ( ~"PBPDM~".~"BOM109~".~"FDATE~" >= :a_pastdate )    
+" arguments=(("a_curdate", string),("a_pastdate", string),("a_plant", string),("a_div", string),("a_pdcd", string),("a_itno", string),("a_comsec", string)) )
+text(band=header alignment="2" text="≥ª¿⁄" border="2" color="16777215" x="832" y="4" height="56" width="983" html.valueishtml="0"  name=incost_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ø‹¿⁄" border="2" color="16777215" x="1819" y="4" height="56" width="983" html.valueishtml="0"  name=outcost_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="≈∏∞¯¿Â" border="2" color="16777215" x="2807" y="4" height="56" width="983" html.valueishtml="0"  name=outpc_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+«∞π¯" border="2" color="16777215" x="0" y="4" height="116" width="489" html.valueishtml="0"  name=fmdno_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+≥‚ø˘" border="2" color="16777215" x="494" y="4" height="116" width="334" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ãµø∆Ú±’" border="2" color="16777215" x="832" y="64" height="56" width="325" html.valueishtml="0"  name=fdmcst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="√÷¡æ¿‘∞Ì" border="2" color="16777215" x="1161" y="64" height="56" width="325" html.valueishtml="0"  name=fdrcst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫“√‚∆Ú±’" border="2" color="16777215" x="1490" y="64" height="56" width="325" html.valueishtml="0"  name=fdacst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ãµø∆Ú±’" border="2" color="16777215" x="1819" y="64" height="56" width="325" html.valueishtml="0"  name=fimcst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="√÷¡æ¿‘∞Ì" border="2" color="16777215" x="2149" y="64" height="56" width="325" html.valueishtml="0"  name=fircst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫“√‚∆Ú±’" border="2" color="16777215" x="2478" y="64" height="56" width="325" html.valueishtml="0"  name=fiacst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ãµø∆Ú±’" border="2" color="16777215" x="2807" y="64" height="56" width="325" html.valueishtml="0"  name=fdvomt_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="√÷¡æ¿‘∞Ì" border="2" color="16777215" x="3136" y="64" height="56" width="325" html.valueishtml="0"  name=fdvort_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫“√‚∆Ú±’" border="2" color="16777215" x="3465" y="64" height="56" width="325" html.valueishtml="0"  name=fdvoat_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+ø‹¡÷ªÁ±ﬁ" border="2" color="16777215" x="3794" y="4" height="116" width="325" html.valueishtml="0"  name=foscst_t visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="2" color="0" x="0" y="0" height="64" width="489" format="[General]" html.valueishtml="0"  name=fmdno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="2" color="0" x="494" y="0" height="64" width="334" format="[General]" html.valueishtml="0"  name=fdate visible="1" editmask.mask="XXXX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="2" color="0" x="1161" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdrcst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="2" color="0" x="3794" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=foscst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="2" color="0" x="3136" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdvort visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="2" color="0" x="2807" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdvomt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="2" color="0" x="3465" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdvoat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="2" color="0" x="2478" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fiacst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="2" color="0" x="2149" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fircst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="2" color="0" x="832" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdmcst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="2" color="0" x="1819" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fimcst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="2" color="0" x="1490" y="0" height="64" width="325" format="#,###,###" html.valueishtml="0"  name=fdacst visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

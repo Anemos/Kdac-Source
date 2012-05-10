@@ -1,0 +1,33 @@
+$PBExportHeader$f_get_xpay_pura.srf
+$PBExportComments$결제조건( 주관부서, 업체코드)
+global type f_get_xpay_pura from function_object
+end type
+
+forward prototypes
+global function string f_get_xpay_pura (string ag_rdept, string ag_vsrno)
+end prototypes
+
+global function string f_get_xpay_pura (string ag_rdept, string ag_vsrno);/*
+	결제조건 가져오기
+		Argument    String      ag_pattno
+					   String		ag_pattser
+						String 		ag_wrkno
+*/
+String ls_return = " "
+
+ag_rdept = Trim(ag_rdept)
+ag_vsrno = Trim(ag_vsrno)
+
+SELECT MAX(XPAY)
+	INTO :ls_return
+FROM PBPUR.PUR103
+WHERE COMLTD = '01'
+  AND VSRC = 'D'
+  AND DEPT = :ag_rdept
+  AND VSRNO = :ag_vsrno 
+  AND XSTOP = 'O' Using sqlca;
+  
+  
+Return ls_return
+end function
+

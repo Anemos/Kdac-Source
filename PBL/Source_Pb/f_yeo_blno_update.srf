@@ -1,0 +1,27 @@
+$PBExportHeader$f_yeo_blno_update.srf
+$PBExportComments$blno 상태코드 Update
+global type f_yeo_blno_update from function_object
+end type
+
+forward prototypes
+global function integer f_yeo_blno_update (string as_blno)
+end prototypes
+
+global function integer f_yeo_blno_update (string as_blno);/******************************************************************/
+/* control (opm105)에서   B/L NO 상태코드 Update                  */
+/* Argument value arg_key : B/L no                                */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Int li_cnt
+
+UPDATE  "PBPUR"."OPM105"
+   SET  "PBPUR"."OPM105"."STCD"    = 'E'
+WHERE "PBPUR"."OPM105"."COMLTD" = '01' AND "PBPUR"."OPM105"."BLNO" = :as_blno using sqlca;
+if sqlca.sqlcode <> 0 then 
+	return -1
+end if
+
+return 1
+end function
+

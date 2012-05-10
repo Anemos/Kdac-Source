@@ -1,0 +1,17 @@
+$PBExportHeader$f_keydown_pur.srf
+$PBExportComments$keyenter
+global type f_keydown_pur from function_object
+end type
+
+forward prototypes
+global subroutine f_keydown_pur (any key)
+end prototypes
+
+global subroutine f_keydown_pur (any key);Window lw_sheet
+
+IF key = KeyEnter! Then
+	lw_sheet = w_frame.GetActiveSheet()
+	lw_sheet.TriggerEvent("ue_retrieve")
+End IF
+end subroutine
+

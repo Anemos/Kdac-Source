@@ -1,0 +1,102 @@
+$PBExportHeader$d_comm107i_01.srd
+$PBExportComments$»ç¿ëÇÑÁö 120ÀÏ ÀÌ»ó µÇ´Â user
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=128 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(40) updatewhereclause=yes name=dac001_dname dbname="DNAME" )
+ column=(type=char(6) updatewhereclause=yes name=comm121_emp_no dbname="EMP_NO" )
+ column=(type=char(1) updatewhereclause=yes name=comm121_usests dbname="USESTS" )
+ column=(type=char(1) updatewhereclause=yes name=comm121_autarea dbname="AUTAREA" )
+ column=(type=char(1) updatewhereclause=yes name=comm121_autplnt dbname="AUTPLNT" )
+ column=(type=char(1) updatewhereclause=yes name=comm121_autdiv dbname="AUTDIV" )
+ column=(type=char(4) updatewhereclause=yes name=comm121_autext1 dbname="AUTEXT1" )
+ column=(type=char(4) updatewhereclause=yes name=comm121_autext2 dbname="AUTEXT2" )
+ column=(type=char(6) updatewhereclause=yes name=comm121_inpt_id dbname="INPT_ID" )
+ column=(type=char(19) updatewhereclause=yes name=comm121_inpt_dt dbname="INPT_DT" )
+ column=(type=char(6) updatewhereclause=yes name=comm121_updt_id dbname="UPDT_ID" )
+ column=(type=char(19) updatewhereclause=yes name=comm121_updt_dt dbname="UPDT_DT" )
+ column=(type=char(30) updatewhereclause=yes name=comm121_ip_addr dbname="IP_ADDR" )
+ column=(type=char(30) updatewhereclause=yes name=comm121_mac_addr dbname="MAC_ADDR" )
+ column=(type=char(10) updatewhereclause=yes name=comm140_use_win dbname="USE_WIN" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_penamek dbname="PENAMEK" )
+ column=(type=char(1) updatewhereclause=yes name=comm140_use_grd dbname="USE_GRD" )
+ column=(type=char(2) updatewhereclause=yes name=dac003_peclass dbname="PECLASS" )
+ column=(type=char(30) updatewhereclause=yes name=dac002_coitname dbname="COITNAME" )
+ column=(type=char(30) updatewhereclause=yes name=compute_0020 dbname="compute_0020" )
+ retrieve="  SELECT ~"PBCOMMON~".~"DAC001~".~"DNAME~",
+         ~"PBCOMMON~".~"COMM121~".~"EMP_NO~",   
+         ~"PBCOMMON~".~"COMM121~".~"USESTS~",   
+         ~"PBCOMMON~".~"COMM121~".~"AUTAREA~",   
+         ~"PBCOMMON~".~"COMM121~".~"AUTPLNT~",   
+         ~"PBCOMMON~".~"COMM121~".~"AUTDIV~",   
+         ~"PBCOMMON~".~"COMM121~".~"AUTEXT1~",   
+         ~"PBCOMMON~".~"COMM121~".~"AUTEXT2~",   
+         ~"PBCOMMON~".~"COMM121~".~"INPT_ID~",   
+         ~"PBCOMMON~".~"COMM121~".~"INPT_DT~",   
+         ~"PBCOMMON~".~"COMM121~".~"UPDT_ID~",   
+         ~"PBCOMMON~".~"COMM121~".~"UPDT_DT~",   
+         ~"PBCOMMON~".~"COMM121~".~"IP_ADDR~",   
+         ~"PBCOMMON~".~"COMM121~".~"MAC_ADDR~",   
+         ~"PBCOMMON~".~"COMM140~".~"USE_WIN~",   
+         ~"PBCOMMON~".~"DAC003~".~"PENAMEK~",   
+         ~"PBCOMMON~".~"COMM140~".~"USE_GRD~",   
+         ~"PBCOMMON~".~"DAC003~".~"PECLASS~" , 
+         ~"PBCOMMON~".~"DAC002~".~"COITNAME~",
+         coalesce(b.win_name,'')
+    FROM ~"PBCOMMON~".~"COMM121~",   
+         ~"PBCOMMON~".~"DAC003~" ,
+         ~"PBCOMMON~".~"DAC002~" ,
+         ~"PBCOMMON~".~"DAC001~" ,
+			~"PBCOMMON~".~"COMM140~" left outer join ( select win_id,max(win_nm) as win_name from ~"PBCOMMON~".~"COMM110~"   
+                                                   group by win_id ) b
+			on ( ~"PBCOMMON~".~"COMM140~".~"USE_WIN~" = b.win_id )
+   WHERE ( ~"PBCOMMON~".~"COMM121~".~"EMP_NO~" = ~"PBCOMMON~".~"COMM140~".~"EMP_NO~" ) and  
+         ( ~"PBCOMMON~".~"COMM121~".~"EMP_NO~" = ~"PBCOMMON~".~"DAC003~".~"PEEMPNO~" ) and
+         ( ~"PBCOMMON~".~"DAC003~".~"PEOUT~" <> '*' ) and
+         ( ~"PBCOMMON~".~"COMM140~".~"USE_GRD~" LIKE :ag_grade ) AND
+         ( ~"PBCOMMON~".~"DAC003~".~"PEDEPT~" LIKE :ag_Dept ) and 
+         ( ~"PBCOMMON~".~"COMM140~".~"USE_WIN~" LIKE :ag_pgmid ) AND
+         ( ~"PBCOMMON~".~"DAC002~".~"COMLTD~"  = '01') and
+			( ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'PER306')  and
+			( ~"PBCOMMON~".~"DAC002~".~"COCODE~"  =  ~"PBCOMMON~".~"DAC003~".~"PECLASS~" ) and
+         ( ~"PBCOMMON~".~"DAC001~".~"DCODE~" = ~"PBCOMMON~".~"DAC003~".~"PEDEPT~" 
+				 AND ~"PBCOMMON~".~"DAC001~".~"DUSE~" = ' '
+				 AND ~"PBCOMMON~".~"DAC001~".~"DTODT~" = 0
+				 AND ~"PBCOMMON~".~"DAC001~".~"DACTTODT~" = 0 )
+" arguments=(("ag_dept", string),("ag_grade", string),("ag_pgmid", string))  sort="dac001_dname A dac003_peclass A comm121_emp_no A comm140_use_win A " )
+text(band=header alignment="2" text="»ç¿ë°¡´É
+¿©ºÎ" border="0" color="16777215" x="1664" y="8" height="120" width="352" html.valueishtml="0"  name=comm121_usests_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ë±ÇÇÑ-Áö¿ª" border="0" color="16777215" x="2025" y="8" height="120" width="338" html.valueishtml="0"  name=comm121_autarea_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ë±ÇÇÑ-´ã´ç" border="0" color="16777215" x="2373" y="8" height="120" width="366" html.valueishtml="0"  name=comm121_autplnt_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ë±ÇÇÑ-°øÀå" border="0" color="16777215" x="2747" y="8" height="120" width="357" html.valueishtml="0"  name=comm121_autdiv_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ëÀÚ
+ID" border="0" color="16777215" x="677" y="8" height="120" width="315" html.valueishtml="0"  name=comm121_emp_no_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¿ë°¡´É
+ÇÁ·Î±×·¥" border="0" color="16777215" x="3113" y="8" height="120" width="402" html.valueishtml="0"  name=comm140_use_win_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="1664" y="0" height="72" width="352" format="[general]~tif(comm121_usests = '*','ºÒ°¡','°¡´É') " html.valueishtml="0"  name=comm121_usests  tag="»ç¿ë»óÅÂ" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="2025" y="0" height="72" width="338" format="[general]" html.valueishtml="0"  name=comm121_autarea  tag="»ç¿ë±ÇÇÑ-Áö¿ª" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="2373" y="0" height="72" width="366" format="[general]" html.valueishtml="0"  name=comm121_autplnt  tag="»ç¿ë±ÇÇÑ-´ã´ç" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="2747" y="0" height="72" width="357" format="[general]" html.valueishtml="0"  name=comm121_autdiv  tag="»ç¿ë±ÇÇÑ-°øÀå" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="4233" y="0" height="72" width="251" format="~tif(comm140_use_grd = '1', 'Á¶È¸','ÀúÀå') " html.valueishtml="0"  name=comm140_use_grd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="33554432" x="1001" y="0" height="72" width="370" format="[general]" html.valueishtml="0"  name=dac003_penamek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="33554432" x="1381" y="0" height="72" width="274" format="[general]" html.valueishtml="0"  name=dac002_coitname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="677" y="0" height="72" width="315" format="[general]" html.valueishtml="0"  name=comm121_emp_no  tag="»ç¹ø" visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="658" format="[general]" html.valueishtml="0"  name=dac001_dname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="3113" y="0" height="72" width="402" format="[general]" html.valueishtml="0"  name=comm140_use_win visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="33554432" x="3525" y="0" height="72" width="699" format="[general]" html.valueishtml="0"  name=compute_0020 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÇÁ·Î±×·¥
+¸íÄª" border="0" color="16777215" x="3525" y="8" height="120" width="699" html.valueishtml="0"  name=compute_0020_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±ÇÇÑ" border="0" color="16777215" x="4233" y="8" height="120" width="251" html.valueishtml="0"  name=comm140_use_grd_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌ ¸§" border="0" color="16777215" x="1001" y="8" height="120" width="370" html.valueishtml="0"  name=dac003_penamek_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á÷  À§" border="0" color="16777215" x="1381" y="8" height="120" width="274" html.valueishtml="0"  name=dac002_coitname_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ¼­¸íÄª" border="0" color="16777215" x="9" y="8" height="120" width="658" html.valueishtml="0"  name=dac001_dname_t visible="1"  hidesnaked=1  font.face="¸¼Àº °íµñ" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+
+sparse(names="dac001_dname	comm121_emp_no	dac003_penamek	dac002_coitname	comm121_usests	comm121_autarea	comm121_autplnt	comm121_autdiv	comm140_use_win")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

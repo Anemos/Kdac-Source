@@ -1,0 +1,808 @@
+$PBExportHeader$f_pism_loadlabtac.srf
+$PBExportComments$근태내역 호출 - 작업일보 작성(갱신)
+global type f_pism_loadlabtac from function_object
+end type
+
+forward prototypes
+global function integer f_pism_loadlabtac (string as_area, string as_div, string as_wc, string as_wday, string as_empno)
+end prototypes
+
+global function integer f_pism_loadlabtac (string as_area, string as_div, string as_wc, string as_wday, string as_empno);/*********************************************/
+/*     일일근태공수 집계 -> 작업일보 작성    */
+/*********************************************/ 
+
+String ls_empGbn, ls_labtac_empGbn, ls_workStep, ls_wGbn, ls_dailyStatus = '0'  
+Decimal{1}	ld_jungsiMH, ld_etcMH, ld_totMH, ld_excunpaidMH, ld_excpaidMH, ld_gunteMH, &
+				ld_A0MH, ld_A1MH, ld_A2MH, ld_K0MH, ld_L0MH, ld_L6MH, ld_E1MH, ld_E2MH, ld_R0MH, &
+				ld_sL0MH, ld_sT1MH, ld_sT2MH,ld_sT3MH, ld_sT4MH, ld_sT5MH,ld_sT6MH, & 
+				ld_C2MH, ld_B0MH, ld_D0MH, ld_D1MH, ld_D2MH, ld_workDayChk, ld_humuetcMH, & 
+				ld_input_actIn, ld_calc_actIn, ld_R0MH_half
+Integer	li_retGbn, li_Error, li_workChk
+DateTime ld_curTime 
+
+SqlPIS.AutoCommit = False 
+
+Select Count(*) Into :li_retGbn 
+ From TMHDAILY Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+					      ( WorkCenter = :as_wc ) And ( WorkDay = :as_wday ) Using SqlPIS ; 
+ls_empGbn = '1'; ls_labtac_empGbn = '' 
+
+ls_workStep = '작업일보 평가제외 사원Flag Update' 
+Update TMHLABTAC 
+   Set excFlag = Case IsNull(A.excFlag,'') When '0' Then '' Else IsNull(A.excFlag,'') End 
+  FROM TMHDAILYEXCEMP A, 
+       TMHLABTAC B  
+ WHERE ( B.DGEMPNO *= A.excEmpNo ) and  
+       ( B.DGDEPTE *= A.WorkCenter ) and  
+       ( ( A.AreaCode = :as_area ) AND  
+         ( A.DivisionCode = :as_div ) And 
+         ( B.DGDEPTE = :as_wc ) And 
+	      ( B.DGDAY = :as_wday ) ) Using SqlPIS ; 
+If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+// 2003년02월26일자 수정 - TMSTEMP 의 RetireGubun = 'Y'(퇴직) 사원제외 
+Update TMHLABTAC 
+   Set excFlag = '1' 
+  FROM TMSTEMP A, 
+       TMHLABTAC B  
+ WHERE ( A.EMPNO = B.DGEmpNo ) and 
+       ( ( B.DGDEPTE = :as_wc ) And 
+	      ( B.DGDAY = :as_wday ) And 
+		   ( A.RetireGubun = 'Y' ) And 
+			( A.RetireDate < B.DGDAY ) ) Using SqlPIS ; 
+If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+// 주휴특근 + 휴무특근 자가 있는경우 정시외 공수로 등록하기 위해 
+// 작업일 여부를 Setting 
+ls_wGbn = f_pism_getdayworkgbn(as_area, as_div, as_wc, as_wday) 
+
+If li_retGbn = 0 Then 
+	Select Top 1 getdate() Into :ld_curTime From sysusers Using SQLPIS;
+	
+	ls_workStep = '작업일보 생성' 
+	INSERT INTO TMHDAILYSTATUS 
+			( AreaCode, DivisionCode, WorkCenter, WorkDay, DailyStatus, InputTime, LastEmp )  
+	VALUES ( :as_area, :as_div, :as_wc, :as_wday, '0', :ld_curTime, 'Y' ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+End If
+
+Do While ( li_retGbn >= 0 )
+
+	/* ①정규직  : empGbn = '1' */
+	/* ②기   타 : empGbn = '2' */
+
+	/********************* 총보유공수 *******************/ 
+	
+	// 정시 공수 (인원 * 8)
+	    Select count(dgempno) * 8 Into :ld_jungsiMH 
+		   From TMHLABTAC Where ( dgday = :as_wday ) And ( dgdepte = :as_wc ) And 
+										( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
+		 If IsNull(ld_jungsiMH) Then ld_jungsiMH = 0
+		 
+	// 정시외 공수 (연장, 조출, 상주)  ※ 21 : 철야 -> 2003년02월06일 추가 
+	    Select Sum( IsNull(dgotr, 0) + IsNull(dgjor, 0) + IsNull(dgsangr, 0) ) 
+		   Into :ld_etcMH From TMHLABTAC 
+	     Where ( dgday = :as_wday ) And ( dgdepte = :as_wc ) And  ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+  		        ( IsNull(DGCD2R,'') + IsNull(DGCD3R,'') in ( '', '21', 'T1' ) ) And ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
+		 If IsNull(ld_etcMH) Then ld_etcMH = 0			 
+		 
+   // 정시외 공수 (휴무특근 + 주휴특근) 
+	    Select Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) )
+		   Into :ld_humuetcMH From TMHLABTAC 
+	     Where ( dgday = :as_wday ) And ( dgdepte = :as_wc ) And  ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+		        ( IsNull(DGCD2R,'') + IsNull(DGCD3R,'') not in ( 'T2', 'T3' ,'T4', 'T5' ,'T6') ) and 
+				  ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
+		 If IsNull(ld_humuetcMH) Then ld_humuetcMH = 0 
+		 
+	If ls_wGbn = 'W' Then ld_humuetcMH = 0
+	If ls_wGbn = 'H' Then ld_jungsiMH = 0 
+	// 총보유공수 
+	ld_etcMH = ld_etcMH + ld_humuetcMH 
+	ld_totMH = ld_jungsiMH + ld_etcMH 
+
+	If ls_wGbn = 'W' Then 
+		/********************* 평가제외 무급공수 *******************/
+		// 결근 : K0 ( K1 : 유결, K2 : 무결, K3 : 병결 ) 
+		
+		  SELECT count(DGEMPNO) * 8 Into :ld_K0MH FROM TMHLABTAC  
+			 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+					 ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'K1', 'K2', 'K3' ) ) Using SqlPIS ; 
+		  If IsNull(ld_K0MH) Then ld_K0MH = 0 
+		  
+		// 무급 : L0 ( L2 : 무급휴무, M2 : 무급휴직, M3 : 육아휴직, R7 : 무급휴가  P2 : 무급산재 ) 
+		
+		  SELECT count(DGEMPNO) * 8 Into :ld_L0MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'L2', 'M2', 'M3', 'R7' ,'P2' ) ) Using SqlPIS ; 
+		  If IsNull(ld_L0MH) Then ld_L0MH = 0 
+		  
+		// 무급MH : L6 
+		  SELECT Sum(IsNull(DGMUR, 0)) Into :ld_L6MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+			If IsNull(ld_L6MH) Then ld_L6MH = 0 		  
+		  ld_L0MH = ld_L0MH + ld_L6MH 
+		  
+		// 사용외출 : E1, 지각조퇴 : E2 
+		
+		SELECT Sum(IsNull(dgpor, 0)), Sum(IsNull(dgjir, 0)) + Sum(IsNull(dgjtr, 0)) 
+		 Into :ld_E1MH, :ld_E2MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+		If IsNull(ld_E1MH) Then ld_E1MH = 0 
+		If IsNull(ld_E2MH) Then ld_E2MH = 0 
+		
+		ld_excunpaidMH = ld_K0MH + ld_L0MH + ld_E1MH + ld_E2MH 
+	
+		/********************* 평가제외 유급공수 *******************/
+		// 경조년월차휴가 : R0 ( R1 : 월차, R2 : 년차, R3 : 생휴, R4 : 정기휴가, R5 : 경조, R6 : 출산 ) 
+		
+		SELECT count(DGEMPNO) * 8 Into :ld_R0MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R in ( 'R1', 'R2', 'R3', 'R4', 'R5', 'R6' ) ) Using SqlPIS ; 
+		If IsNull(ld_R0MH) Then ld_R0MH = 0 
+		
+		// 경조년 반월차휴가 : R0 ( RA : 반월차, RB : 반년차 ) 
+		
+		SELECT count(DGEMPNO) * 4 Into :ld_R0MH_half FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R in ( 'RA', 'RB' ) ) Using SqlPIS ; 
+		If IsNull(ld_R0MH_half) Then ld_R0MH_half = 0 
+		ld_R0MH = ld_R0MH + ld_R0MH_half
+		
+		// 유급휴직기타 : L0 ( L1 : 유급휴무, M1 : 유급휴직, N1 : 공상, T1 : 근골1 , T2 : 근골2, T3 : 근골3,  P1 : 유급산재, Q1 : 정직, R9 : 기타휴가, J9 : 기타 ) 
+	
+		SELECT count(DGEMPNO) * 8 Into :ld_sL0MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R in ( 'L1', 'M1', 'N1', 'P1', 'Q1', 'R9', 'J9' ) ) Using SqlPIS ; 
+		  
+		If ISNull(ld_sL0MH) Then ld_sL0MH = 0 					
+		  
+		SELECT count(DGEMPNO) * 2 Into :ld_sT1MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T1'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT1MH) Then ld_sT1MH = 0 					
+			
+		SELECT count(DGEMPNO) * 2 Into :ld_sT2MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T2'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT2MH) Then ld_sT2MH = 0 									
+			
+		SELECT count(DGEMPNO) * 4 Into :ld_sT3MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T3'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT3MH) Then ld_sT3MH = 0 	
+		
+		SELECT count(DGEMPNO) * 2 Into :ld_sT4MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T4'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT4MH) Then ld_sT4MH = 0 					
+			
+		SELECT count(DGEMPNO) * 4 Into :ld_sT5MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T5'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT5MH) Then ld_sT5MH = 0 									
+			
+		SELECT count(DGEMPNO) * 6 Into :ld_sT6MH FROM TMHLABTAC  
+		WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+				( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				( DGCD2R + DGCD3R =  'T6'  ) Using SqlPIS ; 					
+		
+		If ISNull(ld_sT6MH) Then ld_sT6MH = 0 
+		
+		ld_sL0MH = ld_sL0MH + ld_sT1MH + ld_sT2MH  + ld_sT3MH + ld_sT4MH + ld_sT5MH  + ld_sT6MH
+			
+	ElseIf ls_wGbn = 'H' Then 		// 휴무날 
+			
+			/********************* 평가제외 무급공수 *******************/
+			// 결근 : K0 ( K1 : 유결, K2 : 무결, K3 : 병결 ) 
+			
+			  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_K0MH FROM TMHLABTAC  
+				 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+						 ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'K1', 'K2', 'K3' ) ) Using SqlPIS ; 
+			  If IsNull(ld_K0MH) Then ld_K0MH = 0 
+			  
+			// 무급 : L0 ( L2 : 무급휴무, M2 : 무급휴직, M3 : 육아휴직, R7 : 무급휴가 P2 : 무급산재 ) 
+			
+			  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_L0MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'L2', 'M2', 'M3', 'R7', 'P2' ) ) Using SqlPIS ; 
+			  If IsNull(ld_L0MH) Then ld_L0MH = 0 
+			  
+		   // 무급MH : L6 
+		  SELECT Sum(IsNull(DGMUR, 0)) Into :ld_L6MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+			If IsNull(ld_L6MH) Then ld_L6MH = 0 		  
+			ld_L0MH = ld_L0MH + ld_L6MH 
+			  
+			// 사용외출 : E1, 지각조퇴 : E2 
+			
+			  SELECT Sum(IsNull(dgpor, 0)), Sum(IsNull(dgjir, 0)) + Sum(IsNull(dgjtr, 0)) 
+				 Into :ld_E1MH, :ld_E2MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+				If IsNull(ld_E1MH) Then ld_E1MH = 0 
+				If IsNull(ld_E2MH) Then ld_E2MH = 0 
+				
+			ld_excunpaidMH = ld_K0MH + ld_L0MH + ld_E1MH + ld_E2MH 
+		
+			/********************* 평가제외 유급공수 *******************/
+			// 경조년월차휴가 : R0 ( R1 : 월차, R2 : 년차, R3 : 생휴, R4 : 정기휴가, R5 : 경조, R6 : 출산 ) 
+			
+			  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_R0MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R in ( 'R1', 'R2', 'R3', 'R4', 'R5', 'R6' ) ) Using SqlPIS ; 
+				If IsNull(ld_R0MH) Then ld_R0MH = 0 
+				
+			// 경조 반년월차휴가 : R0 ( RA : 반월차, RB : 반년차 ) 
+			
+			  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_R0MH_half FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' )  And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R in ( 'RA', 'RB' ) ) Using SqlPIS ; 
+				If IsNull(ld_R0MH_half) Then ld_R0MH_half = 0 
+			  ld_R0MH = ld_R0MH + ld_R0MH_half
+			  
+  		   // 유급휴직기타 : L0 ( L1 : 유급휴무, M1 : 유급휴직, N1 : 공상, T1 : 근골1 , T2 : 근골2, T3 :근골3,  P1 : 유급산재, Q1 : 정직, R9 : 기타휴가, J9 : 기타 ) 				
+	
+			  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_sL0MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R in ( 'L1', 'M1', 'N1', 'P1', 'Q1', 'R9', 'J9' ) ) Using SqlPIS ; 
+			If ISNull(ld_sL0MH) Then ld_sL0MH = 0 
+				
+	   		  SELECT count(DGEMPNO) * 2 Into :ld_sT1MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R =  'T1'  ) Using SqlPIS ; 					
+	
+			If ISNull(ld_sT1MH) Then ld_sT1MH = 0 					
+					
+			  SELECT count(DGEMPNO) * 2 Into :ld_sT2MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R =  'T2'  ) Using SqlPIS ; 					
+	
+			If ISNull(ld_sT2MH) Then ld_sT2MH = 0 									
+					
+			  SELECT count(DGEMPNO) * 4 Into :ld_sT3MH FROM TMHLABTAC  
+				WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+						( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+						( DGCD2R + DGCD3R =  'T3'  ) Using SqlPIS ; 					
+	
+			If ISNull(ld_sT3MH) Then ld_sT3MH = 0 
+			
+			SELECT count(DGEMPNO) * 2 Into :ld_sT4MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					( DGCD2R + DGCD3R =  'T4'  ) Using SqlPIS ; 					
+
+			If ISNull(ld_sT4MH) Then ld_sT4MH = 0 					
+				
+			SELECT count(DGEMPNO) * 4 Into :ld_sT5MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					( DGCD2R + DGCD3R =  'T5'  ) Using SqlPIS ; 					
+			
+			If ISNull(ld_sT5MH) Then ld_sT5MH = 0 									
+				
+			SELECT count(DGEMPNO) * 6 Into :ld_sT6MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					( DGCD2R + DGCD3R =  'T6'  ) Using SqlPIS ; 					
+			
+			If ISNull(ld_sT6MH) Then ld_sT6MH = 0 
+			
+			ld_sL0MH = ld_sL0MH + ld_sT1MH + ld_sT2MH  + ld_sT3MH + ld_sT4MH + ld_sT5MH  + ld_sT6MH
+			
+	End If 
+	
+// 법정휴식 시간 : A0 = A1 + A2 
+
+// 정규분 법정휴식 계산 -> A1 
+	 ld_A1MH = f_pism_calcresttime(as_area, as_div, as_wc, as_wday, ls_labtac_empGbn) 
+	 If IsNull(ld_A1MH) Then ld_A1MH = 0 
+	 
+	 ld_A1MH = round( ld_A1MH / 60 , 1 ) 
+	 
+// 지원분 법정휴식 
+//   SELECT subMH INTO :ld_A2MH FROM TMHDAILYDETAIL  
+//   WHERE ( AreaCode = :as_area ) AND  
+//         ( DivisionCode = :as_div ) AND  
+//         ( WorkCenter = :as_wc ) AND  
+//         ( WorkDay = :as_wday ) AND  
+//			( EmpGubun = :ls_empGbn ) And 
+//			( mhGubun = 'S' ) AND  
+//         ( mhCode = 'A2' ) Using SqlPIS ;
+	 If IsNull(ld_A2MH) Then ld_A2MH = 0 
+	 
+	 ld_A0MH = ld_A1MH + ld_A2MH 
+	 
+ 	 ld_excpaidMH = ld_R0MH + ld_sL0MH + ld_A0MH 
+	  
+
+	If ls_wGbn = 'W' Then 
+		/********************* 유급근태사고공수 *******************/
+		// 사외교육 : C2 
+		
+		  SELECT count(DGEMPNO) * 8 Into :ld_C2MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'C2' ) ) Using SqlPIS ; 
+			If IsNull(ld_C2MH) Then ld_C2MH = 0 
+		
+		// 업무출장 : B0 ( B1 : 국내출장, B2 : 해외출장, E1 : 파견 ) 
+		
+		  SELECT count(DGEMPNO) * 8 Into :ld_B0MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					( DGCD2R + DGCD3R in ( 'B1', 'B2', 'E1' ) ) Using SqlPIS ; 
+			If IsNull(ld_B0MH) Then ld_B0MH = 0 
+		
+		// 공용미출외출 : D0 ( D1 : 공용미출, D2 : 공용외출 ) 
+		
+		  SELECT count(DGEMPNO) * 8 Into :ld_D1MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'D1' ) ) Using SqlPIS ;
+			If IsNull(ld_D1MH) Then ld_D1MH = 0 
+		
+		  SELECT Sum(IsNull(dgoor, 0)) Into :ld_D2MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+			If IsNull(ld_D2MH) Then ld_D2MH = 0 
+			
+		ElseIf ls_wGbn = 'H' Then 	// 휴무일 
+			
+		/********************* 유급근태사고공수 *******************/
+		// 사외교육 : C2 
+		
+		  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_C2MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'C2' ) ) Using SqlPIS ; 
+			If IsNull(ld_C2MH) Then ld_C2MH = 0 
+		
+		// 업무출장 : B0 ( B1 : 국내출장, B2 : 해외출장, E1 : 파견 ) 
+		
+		  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_B0MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					( DGCD2R + DGCD3R in ( 'B1', 'B2', 'E1' ) ) Using SqlPIS ; 
+			If IsNull(ld_B0MH) Then ld_B0MH = 0 
+		
+		// 공용미출외출 : D0 ( D1 : 공용미출, D2 : 공용외출 ) 
+		
+		  SELECT Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) Into :ld_D1MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( DGCD2R + DGCD3R in ( 'D1' ) ) Using SqlPIS ;
+			If IsNull(ld_D1MH) Then ld_D1MH = 0 
+		
+		  SELECT Sum(IsNull(dgoor, 0)) Into :ld_D2MH FROM TMHLABTAC  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) AND ( IsNull(excFlag,'') = '' ) And 
+					( IsNull(dgempgb, '') = :ls_labtac_empGbn ) Using SqlPIS ; 
+			If IsNull(ld_D2MH) Then ld_D2MH = 0 
+			
+	End If 
+
+	ld_D0MH = ld_D1MH + ld_D2MH
+	ld_gunteMH = ld_C2MH + ld_B0MH + ld_D0MH 
+
+	ls_workStep = '총보유,정시,정시외 공수 UPDATE' 
+
+	If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+
+
+	If li_retGbn = 0 Then 
+		  INSERT INTO TMHDAILY  
+					( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, totMH, jungsiMH, mSuppMH, pSuppMH, etcMH, 
+					  etcmSuppMH, etcpSuppMH, excunpaidMH, excpaidMH, totInMH, gunteMH, ilboMH, bugaMH, ActInMH, LastEmp)  
+		  VALUES ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, :ld_totMH, :ld_jungsiMH, 0, 0, :ld_etcMH, 
+		  			  0, 0, 0, 0, 0, 0, 0, 0, 0, 'Y' ) Using SqlPIS ; 
+   	Else
+			Update TMHDAILY 
+			   Set totMH = :ld_totMH, jungsiMH = :ld_jungsiMH, mSuppMH = 0, pSuppMH = 0, etcMH = :ld_etcMH, 
+					 etcmSuppMH = 0, etcpSuppMH = 0, excunpaidMH = 0, excpaidMH = 0, totInMH = 0, gunteMH = 0, 
+					 ilboMH = 0, bugaMH = 0, ActInMH = 0, LastEmp = 'Y' 
+			 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And ( WorkCenter = :as_wc ) And 
+			 		 ( WorkDay = :as_wday ) And ( EmpGubun = :ls_empGbn ) Using SqlPIS ; 
+	End If 
+  	
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+	ls_workStep = '이전까지 작업된 상세공수 DELETE' 
+	If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+
+	INSERT INTO TDELETE ( TableName, DeleteData, DeleteTime, LastEmp )  
+	Select 'TMHDAILYDETAIL', 
+			 AreaCode + '/' + DivisionCode + '/' + rtrim(ltrim(WorkCenter)) + '/' + WorkDay + '/' + 
+			 EmpGubun + '/' + mhGubun + '/' + mhCode, 
+			 getDate(), :g_s_empno 
+	  FROM TMHDAILYDETAIL  
+	  WHERE ( AreaCode = :as_area ) AND ( DivisionCode = :as_div ) AND ( WorkCenter = :as_wc ) AND 
+				  ( WorkDay = :as_wday ) AND ( EmpGubun = :ls_empGbn ) AND 
+				  ( ( ( mhGubun = 'K' ) And ( mhCode in ( 'K0', 'L0', 'L6', 'E1', 'E2' ) ) ) Or 
+					 ( ( mhGubun = 'S' ) And ( mhCode in ( 'R0', 'L0', 'A0', 'A1' ) ) ) Or 
+					 ( ( mhGubun = 'B' ) And ( mhCode in ( 'B0', 'D0', 'D2' ) ) ) ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+	
+	DELETE FROM TMHDAILYDETAIL  
+ 	WHERE ( AreaCode = :as_area ) AND ( DivisionCode = :as_div ) AND ( WorkCenter = :as_wc ) AND 
+			  ( WorkDay = :as_wday ) AND ( EmpGubun = :ls_empGbn ) USING SQLPIS ;
+
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+	
+	ls_workStep = '근태내역에서 재호출된 상세공수 INSERT' 
+	
+	If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+	
+	If ls_wGbn = 'W' Then
+		INSERT INTO TMHDAILYDETAIL  
+		 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		 Select :as_area, :as_div, A.DGDEPTE, :as_wday, :ls_empGbn, 
+			Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'K1','K2','K3','L2','M2','M3','R7','P2' ) Then 'K'
+				  When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'R1','R2','RA','RB','R3','R4','R5','R6','L1','M1','N1','P1','Q1','R9', 'J9') Then 'S'
+				  When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'C2','B1','B2','E1','D1') Then 'B' Else 'X' End lab_mhGubun, 
+    			  ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) lab_mhCode,
+				  sum(Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'RA','RB' ) Then 4 Else 8 End),'Y'
+				  //count(A.DGEMPNO) * 8, 'Y' //sum(IsNull(DGTIMER, 0)) 
+		  FROM TMHLABTAC A  
+		 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) And 
+				 ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Not In ( 'T1','T2','T3','T4','T5','T6','A1', 'C1', '' ) ) And 
+				 ( IsNull(excFlag,'') = '' ) And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+  			Not Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+						 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								 ( WorkCenter = A.DGDEPTE ) And ( WorkDay = A.DGDAY ) And 
+								 ( EmpGubun = :ls_empGbn ) And ( mhCode = IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) ) 
+							Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Using SqlPIS ; 
+							
+		INSERT INTO TMHDAILYDETAIL  
+		 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		 Select :as_area, :as_div, A.DGDEPTE, :as_wday, :ls_empGbn, 
+					'S' lab_mhGubun, 
+    			  ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) lab_mhCode, count(A.DGEMPNO) * 2, 'Y' //sum(IsNull(DGTIMER, 0)) 
+		  FROM TMHLABTAC A  
+		 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) And 
+				 ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T1', 'T2', 'T4') ) And 
+				 ( IsNull(excFlag,'') = '' ) And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+  			Not Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+						 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								 ( WorkCenter = A.DGDEPTE ) And ( WorkDay = A.DGDAY ) And 
+								 ( EmpGubun = :ls_empGbn ) And ( mhCode = IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) ) 
+							Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Using SqlPIS ; 							
+
+		INSERT INTO TMHDAILYDETAIL  
+		 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		 Select :as_area, :as_div, A.DGDEPTE, :as_wday, :ls_empGbn, 
+					'S' lab_mhGubun, 
+    			  ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) lab_mhCode, count(A.DGEMPNO) * 4, 'Y' //sum(IsNull(DGTIMER, 0)) 
+		  FROM TMHLABTAC A  
+		 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) And 
+				 ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T3','T5') ) And 
+				 ( IsNull(excFlag,'') = '' ) And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+  			Not Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+						 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								 ( WorkCenter = A.DGDEPTE ) And ( WorkDay = A.DGDAY ) And 
+								 ( EmpGubun = :ls_empGbn ) And ( mhCode = IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) ) 
+							Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Using SqlPIS ; 	
+							
+		INSERT INTO TMHDAILYDETAIL  
+		 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		 Select :as_area, :as_div, A.DGDEPTE, :as_wday, :ls_empGbn, 
+					'S' lab_mhGubun, 
+    			  ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) lab_mhCode, count(A.DGEMPNO) * 6, 'Y' //sum(IsNull(DGTIMER, 0)) 
+		  FROM TMHLABTAC A  
+		 WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) And 
+				 ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T6' )) And 
+				 ( IsNull(excFlag,'') = '' ) And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+  			Not Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+						 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								 ( WorkCenter = A.DGDEPTE ) And ( WorkDay = A.DGDAY ) And 
+								 ( EmpGubun = :ls_empGbn ) And ( mhCode = IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) ) 
+							Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Using SqlPIS ; 							
+			
+		ElseIf ls_wGbn = 'H' Then
+			
+		INSERT INTO TMHDAILYDETAIL  
+		 	( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+			Select :as_area, :as_div, A.DGDEPTE, :as_wday, :ls_empGbn, 
+			Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'K1','K2','K3','L2','M2','M3','R7','P2' ) Then 'K'
+				  When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'R1','R2','RA','RB','R3','R4','R5','R6','L1','M1','N1','P1','Q1','R9', 'J9') Then 'S'
+				  When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'C2','B1','B2','E1','D1') Then 'B' Else 'X' End lab_mhGubun, 
+				  ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) lab_mhCode, Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ), 'Y' //sum(IsNull(DGTIMER, 0)) 
+			FROM TMHLABTAC A  
+			WHERE ( DGDAY = :as_wday ) AND ( DGDEPTE = :as_wc ) And 
+				 ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Not In ( 'T1','T2','T3','T4','T5','T6','A1', 'C1', '' ) ) And 
+				 ( IsNull(excFlag,'') = '' ) And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+				Not Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+								 Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+										 ( WorkCenter = A.DGDEPTE ) And ( WorkDay = A.DGDAY ) And 
+										 ( EmpGubun = :ls_empGbn ) And ( mhCode = IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) ) 
+			Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Using SqlPIS ; 		
+	End If 
+   If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+	ls_workStep = '근태내역에서 재호출된 상세공수 UPDATE' 
+
+	If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+	
+	If ls_wGbn = 'W' Then 
+		Update TMHDAILYDETAIL
+			Set subMH = A.subMH, 
+				 LastEmp = 'Y' 
+		  From ( Select DGDEPTE, 
+					  Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'K1','K2','K3','L2','M2','M3','R7','P2' ) Then 'K'
+							 When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'R1','R2','RA','RB','R3','R4','R5','R6','L1','M1','N1','P1','Q1','R9', 'J9') Then 'S'
+							 When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'C2','B1','B2','E1','D1') Then 'B' 
+							 Else 'X' End mhGubun, 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) mhCode,
+							 sum(Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'RA','RB' ) Then 4 Else 8 End) subMH
+					       //count(DGEMPNO) * 8 subMH 
+					 From TMHLABTAC 
+				    Where ( DGDAY = :as_wday ) AND  
+							 ( DGDEPTE = :as_wc ) And
+							 ( IsNull(excFlag,'') = '' )  And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Not In ( 'T1','T2','T3','T4','T5','T6','A1', 'C1', '' ) ) 
+				  Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) A,
+			     TMHDAILYDETAIL B 
+		 Where ( B.WorkCenter = A.DGDEPTE ) And 
+		       ( B.mhGubun = A.mhGubun ) And 
+     		    ( B.mhCode = A.mhCode ) And 
+			    ( ( B.AreaCode = :as_area ) And 
+				   ( B.DivisionCode = :as_div ) And 
+				   ( B.WorkCenter = :as_wc ) And 
+				   ( B.WorkDay = :as_wday ) And 
+				   ( B.EmpGubun = :ls_empGbn ) And 
+		  Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+					   Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								( WorkCenter = A.DGDEPTE ) And ( WorkDay = :as_wday ) And
+								( EmpGubun = :ls_empGbn ) And ( mhCode = A.mhCode ) ) ) Using SqlPIS ; 
+								
+								
+		Update TMHDAILYDETAIL
+			Set subMH = A.subMH, 
+				 LastEmp = 'Y' 
+		  From ( Select DGDEPTE, 
+					 		 'S' mhGubun, 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) mhCode,
+					       count(DGEMPNO) * 2 subMH From TMHLABTAC 
+				    Where ( DGDAY = :as_wday ) AND  
+							 ( DGDEPTE = :as_wc ) And
+							 ( IsNull(excFlag,'') = '' )  And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T1', 'T2' ,'T4' ) ) 
+				  Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) A,
+			     TMHDAILYDETAIL B 
+		 Where ( B.WorkCenter = A.DGDEPTE ) And 
+		       ( B.mhGubun = A.mhGubun ) And 
+     		    ( B.mhCode = A.mhCode ) And 
+			    ( ( B.AreaCode = :as_area ) And 
+				   ( B.DivisionCode = :as_div ) And 
+				   ( B.WorkCenter = :as_wc ) And 
+				   ( B.WorkDay = :as_wday ) And 
+				   ( B.EmpGubun = :ls_empGbn ) And 
+		  Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+					   Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								( WorkCenter = A.DGDEPTE ) And ( WorkDay = :as_wday ) And
+								( EmpGubun = :ls_empGbn ) And ( mhCode = A.mhCode ) ) ) Using SqlPIS ; 								
+								
+								
+		Update TMHDAILYDETAIL
+			Set subMH = A.subMH, 
+				 LastEmp = 'Y' 
+		  From ( Select DGDEPTE, 
+					 		 'S' mhGubun, 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) mhCode,
+					       count(DGEMPNO) * 4 subMH From TMHLABTAC 
+				    Where ( DGDAY = :as_wday ) AND  
+							 ( DGDEPTE = :as_wc ) And
+							 ( IsNull(excFlag,'') = '' )  And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T3' , 'T5' )) 
+				  Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) A,
+			     TMHDAILYDETAIL B 
+		 Where ( B.WorkCenter = A.DGDEPTE ) And 
+		       ( B.mhGubun = A.mhGubun ) And 
+     		    ( B.mhCode = A.mhCode ) And 
+			    ( ( B.AreaCode = :as_area ) And 
+				   ( B.DivisionCode = :as_div ) And 
+				   ( B.WorkCenter = :as_wc ) And 
+				   ( B.WorkDay = :as_wday ) And 
+				   ( B.EmpGubun = :ls_empGbn ) And 
+		  Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+					   Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								( WorkCenter = A.DGDEPTE ) And ( WorkDay = :as_wday ) And
+								( EmpGubun = :ls_empGbn ) And ( mhCode = A.mhCode ) ) ) Using SqlPIS ; 																
+
+		Update TMHDAILYDETAIL
+			Set subMH = A.subMH, 
+				 LastEmp = 'Y' 
+		  From ( Select DGDEPTE, 
+					 		 'S' mhGubun, 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) mhCode,
+					       count(DGEMPNO) * 6 subMH From TMHLABTAC 
+				    Where ( DGDAY = :as_wday ) AND  
+							 ( DGDEPTE = :as_wc ) And
+							 ( IsNull(excFlag,'') = '' )  And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') In ( 'T6' )) 
+				  Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) A,
+			     TMHDAILYDETAIL B 
+		 Where ( B.WorkCenter = A.DGDEPTE ) And 
+		       ( B.mhGubun = A.mhGubun ) And 
+     		    ( B.mhCode = A.mhCode ) And 
+			    ( ( B.AreaCode = :as_area ) And 
+				   ( B.DivisionCode = :as_div ) And 
+				   ( B.WorkCenter = :as_wc ) And 
+				   ( B.WorkDay = :as_wday ) And 
+				   ( B.EmpGubun = :ls_empGbn ) And 
+		  Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+					   Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								( WorkCenter = A.DGDEPTE ) And ( WorkDay = :as_wday ) And
+								( EmpGubun = :ls_empGbn ) And ( mhCode = A.mhCode ) ) ) Using SqlPIS ; 																								
+	ElseIf ls_wGbn = 'H' Then 
+		
+		Update TMHDAILYDETAIL
+			Set subMH = A.subMH, 
+				 LastEmp = 'Y' 
+		  From ( Select DGDEPTE, 
+					  Case When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'K1','K2','K3','L2','M2','M3','R7','P2' ) Then 'K'
+							 When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'R1','R2','RA','RB','R3','R4','R5','R6','L1','M1','N1','P1','Q1','R9', 'J9') Then 'S'
+							 When ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) in ( 'C2','B1','B2','E1','D1') Then 'B' 
+							 Else 'X' End mhGubun, 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) mhCode,
+					       Sum( ( IsNull(dgjuhur, 0) + IsNull(dghumur, 0) ) ) subMH From TMHLABTAC 
+				    Where ( DGDAY = :as_wday ) AND  
+							 ( DGDEPTE = :as_wc ) And
+							 ( IsNull(excFlag,'') = '' )  And ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
+					       ( IsNull(DGCD2R, '') + IsNull(DGCD3R, '') Not In ( 'T1','T2','T3','T4','T5','T6','A1', 'C1', '' ) ) 
+				  Group By DGDAY, DGDEPTE, IsNull(DGCD2R, '') + IsNull(DGCD3R, '') ) A,
+			     TMHDAILYDETAIL B 
+		 Where ( B.WorkCenter = A.DGDEPTE ) And 
+		       ( B.mhGubun = A.mhGubun ) And 
+     		    ( B.mhCode = A.mhCode ) And 
+			    ( ( B.AreaCode = :as_area ) And 
+				   ( B.DivisionCode = :as_div ) And 
+				   ( B.WorkCenter = :as_wc ) And 
+				   ( B.WorkDay = :as_wday ) And 
+				   ( B.EmpGubun = :ls_empGbn ) And 
+		  Exists ( Select EmpGubun, mhGubun, mhCode From TMHDAILYDETAIL 
+					   Where ( AreaCode = :as_area ) And ( DivisionCode = :as_div ) And 
+								( WorkCenter = A.DGDEPTE ) And ( WorkDay = :as_wday ) And
+								( EmpGubun = :ls_empGbn ) And ( mhCode = A.mhCode ) ) ) Using SqlPIS ; 
+								
+	End If 
+   If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+								
+	//	ld_K0MH, ld_L0MH, , ld_E1MH, ld_E2MH, ld_R0MH, ld_sL0MH, ld_B0MH, ld_D0MH, ld_D2MH  
+	
+	/****** 일일근태내에 존재하지 않는 코드 이므로 별도로 Insert (조회시 사용) *******/ 
+	ls_workStep = '일일근태내에 존재하지 않는 근태코드 별도Insert' 
+	If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+	
+	If ld_K0MH > 0 Then 
+		// 결근
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'K', 'K0', :ld_K0MH, 'Y' ) Using SqlPIS ; 
+	End If
+	If ld_L0MH > 0 Then 
+		// 무급
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'K', 'L0', :ld_L0MH, 'Y' ) Using SqlPIS ; 
+	End If
+	If ld_L6MH > 0 Then 
+		// 무급MH 
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'K', 'L6', :ld_L6MH, 'Y' ) Using SqlPIS ; 
+	End If	
+	If ld_E1MH > 0 Then 
+		// 사용외출 
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'K', 'E1', :ld_E1MH, 'Y' ) Using SqlPIS ; 
+	End If
+	If ld_E2MH > 0 Then 
+		// 지각,조퇴
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'K', 'E2', :ld_E2MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	If ld_A0MH > 0 Then 
+		// 법정휴게
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'S', 'A0', :ld_A0MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	If ld_A1MH > 0 Then 
+		// 정규분 법정휴게
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'S', 'A1', :ld_A1MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	
+	If ld_R0MH > 0 Then 
+		// 경조년월차휴가
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'S', 'R0', :ld_R0MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	If ld_sL0MH > 0 Then 
+		// 유급휴직기타
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'S', 'L0', :ld_sL0MH, 'Y' ) Using SqlPIS ; 
+	End IF 
+	If ld_B0MH > 0 Then 
+		// 업무출장
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'B', 'B0', :ld_B0MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	If ld_D0MH > 0 Then 
+		// 공용미출외출
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'B', 'D0', :ld_D0MH, 'Y' ) Using SqlPIS ; 
+	End If 
+	If ld_D2MH > 0 Then 
+		// 공용외출 
+		 INSERT INTO TMHDAILYDETAIL  
+			 ( AreaCode, DivisionCode, WorkCenter, WorkDay, EmpGubun, mhGubun, mhCode, subMH, LastEmp )  
+		  Values ( :as_area, :as_div, :as_wc, :as_wday, :ls_empGbn, 'B', 'D2', :ld_D2MH, 'Y' ) Using SqlPIS ; 
+	End If 
+
+   	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+	If ls_empGbn = '2' Then Exit  
+
+	ls_empGbn = '2'; ls_labtac_empGbn = '4' 
+	ld_jungsiMH = 0; ld_etcMH = 0; ld_humuetcMH = 0; ld_totMH = 0; ld_K0MH = 0; ld_L0MH = 0; ld_E1MH = 0 
+	ld_E2MH = 0; ld_R0MH = 0; ld_sL0MH = 0; ld_excpaidMH = 0; ld_C2MH = 0; ld_B0MH = 0; ld_D1MH = 0 
+	ld_K0MH = 0; ld_L0MH = 0; ld_L6MH = 0; ld_E1MH = 0; ld_E2MH = 0; ld_R0MH = 0; ld_sL0MH = 0; ld_B0MH = 0
+	ld_D0MH = 0; ld_D2MH = 0; ld_A0MH = 0; ld_A1MH = 0; ld_A2MH = 0; ld_D2MH = 0; ld_D0MH = 0; ld_gunteMH = 0 
+Loop 
+
+ls_workStep = '작업일보 세부공수 집계' 
+If IsValid(w_pism_working) Then w_pism_working.wf_setmsg('작업일보 작성', ls_workStep)
+If f_pism_calcdaily(as_area, as_div, as_wc, as_wday) = -1 Then Goto Exit_pr 
+
+ls_dailyStatus = '0' 
+  UPDATE TMHDAILYSTATUS SET DailyStatus = :ls_dailyStatus, LastEmp = 'Y' 
+   WHERE ( AreaCode = :as_area ) AND ( DivisionCode = :as_div ) AND  
+         ( WorkCenter = :as_wc ) AND ( WorkDay = :as_wday ) Using SqlPIS ;
+If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+ls_workStep = '근태내역 갱신 성공' 
+
+Commit Using SqlPIS;
+SqlPIS.AutoCommit = True 
+
+Return 1 
+
+Exit_pr: 
+
+RollBack Using SqlPIS; 
+SqlPIS.AutoCommit = True 
+
+f_pism_messagebox(StopSign!, -1, "근태내역 호출실패", ls_workStep + "~n~n작업시 오류발생" ) 
+
+Return -1 
+
+//Exit_pr2: 
+//f_pism_messagebox(Information!, 999, "근태내역집계", ls_workStep ) 
+//
+//Return 1 
+end function
+

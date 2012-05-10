@@ -1,0 +1,28 @@
+$PBExportHeader$f_get_vendor_1.srf
+$PBExportComments$업체코드와 업체명 리턴
+global type f_get_vendor_1 from function_object
+end type
+
+forward prototypes
+global function string f_get_vendor_1 (string a_vndr)
+end prototypes
+
+global function string f_get_vendor_1 (string a_vndr);string l_s_vndnm, l_s_vsrno
+
+SELECT "PBPUR"."PUR101"."VNDNM" , "PBPUR"."PUR101"."VSRNO"
+  INTO :l_s_vndnm, :l_s_vsrno  
+FROM "PBPUR"."PUR101" 
+WHERE "PBPUR"."PUR101"."VNDR" = :a_vndr and 
+      "PBPUR"."PUR101"."SCGUBUN" = 'S'  AND 
+	  "PBPUR"."PUR101"."COMLTD" = '01'
+using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	l_s_vndnm = ""
+	l_s_vsrno = ""
+end if
+ 
+return l_s_vsrno + l_s_vndnm
+ 
+end function
+

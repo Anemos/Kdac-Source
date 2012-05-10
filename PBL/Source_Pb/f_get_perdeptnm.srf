@@ -1,0 +1,21 @@
+$PBExportHeader$f_get_perdeptnm.srf
+$PBExportComments$부서명칭(parm : 사번, 부서명구분)
+global type f_get_perdeptnm from function_object
+end type
+
+forward prototypes
+global function string f_get_perdeptnm (string a_s_empno, string a_s_gubun)
+end prototypes
+
+global function string f_get_perdeptnm (string a_s_empno, string a_s_gubun);string l_s_dept, l_s_deptnm
+
+select "PBCOMMON"."DAC003"."PEDEPT"
+into   :l_s_dept
+from   "PBCOMMON"."DAC003"
+where  "PBCOMMON"."DAC003"."PEEMPNO" = :a_s_empno using sqlca;
+
+l_s_deptnm = f_get_deptnm(l_s_dept, a_s_gubun)
+
+return l_s_deptnm
+end function
+

@@ -1,0 +1,53 @@
+$PBExportHeader$d_manage_code_sub.srd
+$PBExportComments$기준정보 관리 - 업무코드 (부코드)
+release 9;
+datawindow(units=0 timer_interval=0 color=67108864 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=100 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=96 color="536870912" )
+table(column=(type=char(10) updatewhereclause=yes name=scd dbname="TM_CODE.SCD" )
+ column=(type=char(60) updatewhereclause=yes name=cdname dbname="TM_CODE.CDNAME" )
+ column=(type=char(40) updatewhereclause=yes name=remark dbname="TM_CODE.REMARK" )
+ column=(type=char(10) updatewhereclause=yes name=etc01 dbname="ETC01" )
+ column=(type=char(10) updatewhereclause=yes name=etc02 dbname="ETC02" )
+ column=(type=char(10) updatewhereclause=yes name=etc03 dbname="ETC03" )
+ column=(type=char(10) updatewhereclause=yes name=etc04 dbname="ETC04" )
+ retrieve="SELECT	
+			SCD,
+			CDNAME,
+			REMARK,
+			ETC01,
+			ETC02,
+			ETC03,
+			ETC04
+  FROM	TM_CODE   
+ WHERE	MCD	= :as_MCD
+   AND   SCD	<> '00'
+ORDER BY SCD
+
+
+
+" arguments=(("as_MCD", string)) )
+text(band=header alignment="2" text="No" border="6" color="33554432" x="9" y="4" height="92" width="128" html.valueishtml="0"  name=temp_div_t visible="1"  font.face="맑은 고딕" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="코드" border="6" color="33554432" x="146" y="4" height="92" width="247" html.valueishtml="0"  name=scd_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="코드명" border="6" color="33554432" x="402" y="4" height="92" width="699" html.valueishtml="0"  name=cdname_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="비고" border="6" color="33554432" x="1111" y="4" height="92" width="1065" html.valueishtml="0"  name=remark_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="기타-1" border="6" color="33554432" x="2185" y="4" height="92" width="361" html.valueishtml="0"  name=etc01_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="기타-2" border="6" color="33554432" x="2555" y="4" height="92" width="361" html.valueishtml="0"  name=etc02_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="기타-3" border="6" color="33554432" x="2926" y="4" height="92" width="361" html.valueishtml="0"  name=etc03_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=header alignment="2" text="기타-4" border="6" color="33554432" x="3296" y="4" height="92" width="361" html.valueishtml="0"  name=etc04_t visible="1"  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+compute(band=detail alignment="2" expression="String(GetRow())"border="6" color="33554432" x="9" y="4" height="92" width="128" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="146" y="0" height="92" width="247" format="[general]" html.valueishtml="0"  name=scd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="402" y="0" height="92" width="699" format="[general]" html.valueishtml="0"  name=cdname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1111" y="0" height="92" width="1065" format="[general]" html.valueishtml="0"  name=remark visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2185" y="0" height="92" width="361" format="[general]" html.valueishtml="0"  name=etc01 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2555" y="0" height="92" width="361" format="[general]" html.valueishtml="0"  name=etc02 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="2926" y="0" height="92" width="361" format="[general]" html.valueishtml="0"  name=etc03 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="3296" y="0" height="92" width="361" format="[general]" html.valueishtml="0"  name=etc04 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-14" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="0" background.color="1073741824~tif( (mod(getrow(),2) = 0), rgb(255,240,240), rgb(255,255,255) )" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

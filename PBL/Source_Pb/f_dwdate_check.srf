@@ -1,0 +1,45 @@
+$PBExportHeader$f_dwdate_check.srf
+$PBExportComments$dw에서날짜체크
+global type f_dwdate_check from function_object
+end type
+
+forward prototypes
+global function boolean f_dwdate_check (datawindow adw, integer ai_row, string as_col[])
+end prototypes
+
+global function boolean f_dwdate_check (datawindow adw, integer ai_row, string as_col[]);////////////////////////////////////////////////////////////////////
+// FUNCTION ID : GF_DWCHILD_OPEN
+// PUPOSE      : DATAWINDOW의 DDDW 컬럼에서 날짜가 올바른지 체크
+//					
+// ARGUMENTS   : DATAWINDOW  adw  = 데이타윈도
+//               INTEGER  ai_row  = 체크할 row
+//					  STRING  as_col[]   = 체크할 컬럼
+//					  
+// RETURN      : SUCCESS --> TRUE
+//					  FAILED  --> FALSE
+/////////////////////////////////////////////////////////////////////
+datawindowchild dddw_child
+int i,ii,li_col_num
+string ls_mod,ls_message,ls_str,ls_txt,ls_data
+
+li_col_num = UpperBound(as_col[]) 
+If li_col_num < 1 Then return true  //체크할 Key가 없을때 
+
+For i = 1 to li_col_num
+	ls_data = adw.getitemstring(ai_row,as_col[i])
+	ls_data = f_replace(ls_data,'/','')
+	If IsNull(ls_data) or trim(ls_data) = "" Then
+		Continue;
+	End if
+	If f_date_check(ls_data) = 0 Then
+		adw.setrow(ai_row)
+   	adw.SetColumn(as_col[i])
+		messagebox ("확인", "날짜가 정확하지 않습니다.")
+		adw.setredraw(true) 
+		return false
+	End if
+Next
+
+RETURN true
+end function
+

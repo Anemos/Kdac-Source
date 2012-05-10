@@ -1,0 +1,164 @@
+$PBExportHeader$m_sort_pop.srm
+forward
+global type m_sort_pop from menu
+end type
+type m_action from menu within m_sort_pop
+end type
+type m_sort from menu within m_action
+end type
+type m_suppression from menu within m_action
+end type
+type m_mode from menu within m_action
+end type
+type m_free from menu within m_action
+end type
+type m_action from menu within m_sort_pop
+m_sort m_sort
+m_suppression m_suppression
+m_mode m_mode
+m_free m_free
+end type
+end forward
+
+global type m_sort_pop from menu
+m_action m_action
+end type
+global m_sort_pop m_sort_pop
+
+on m_sort_pop.create
+m_sort_pop=this
+this.m_action=create m_action
+this.Item[]={this.m_action}
+end on
+
+on m_sort_pop.destroy
+destroy(this.m_action)
+end on
+
+type m_action from menu within m_sort_pop
+m_sort m_sort
+m_suppression m_suppression
+m_mode m_mode
+m_free m_free
+end type
+
+on m_action.create
+this.Text="Action"
+this.m_sort=create m_sort
+this.m_suppression=create m_suppression
+this.m_mode=create m_mode
+this.m_free=create m_free
+this.Item[]={this.m_sort, &
+this.m_suppression, &
+this.m_mode, &
+this.m_free}
+end on
+
+on m_action.destroy
+destroy(this.m_sort)
+destroy(this.m_suppression)
+destroy(this.m_mode)
+destroy(this.m_free)
+end on
+
+type m_sort from menu within m_action
+end type
+
+event clicked;GraphicObject which_control
+DataWindow ldw_sort
+which_control = GetFocus()
+str_sort str_param
+
+If TypeOf(which_control) = DataWindow! Then
+	ldw_sort = which_control
+	
+//	str_param.ll_x = this.parentwindow.workspacex() + this.parentwindow.workspacewidth()/2 - 1879/2
+//	str_param.ll_y = this.parentwindow.workspacey() + this.parentwindow.workspaceheight()/2 - 884/2
+//	str_param.ldw = ldw_sort
+	OpenWithParm(w_sort, str_param)
+End If
+
+
+end event
+
+on m_sort.create
+this.Text="정 렬(&S)"
+end on
+
+type m_suppression from menu within m_action
+end type
+
+event clicked;GraphicObject which_control
+DataWindow ldw_sort
+str_sort str_param
+which_control = GetFocus()
+
+If TypeOf(which_control) = DataWindow! Then
+	ldw_sort = which_control
+//	str_param.ll_x = this.parentwindow.workspacex() + this.parentwindow.workspacewidth()/2 - 1879/2
+//	str_param.ll_y = this.parentwindow.workspacey() + this.parentwindow.workspaceheight()/2 - 884/2
+//	str_param.ldw = ldw_sort
+	openwithparm(w_suppress, str_param)
+End If
+
+
+
+end event
+
+on m_suppression.create
+this.Text="동일한 데이터 숨기기(&H)"
+end on
+
+type m_mode from menu within m_action
+end type
+
+event clicked;GraphicObject which_control
+DataWindow ldw_sort
+str_sort str_param
+which_control = GetFocus()
+string ls_sql
+
+If TypeOf(which_control) = DataWindow! Then
+	ldw_sort = which_control
+	f_set_tabsequence(ldw_sort, 1)
+	ls_sql = lower(ldw_sort.GetSqlSelect())
+	if pos(ls_sql, 'where') > 0 then    // where 문이 있을경우 query mode로 변경하면 error 발생 why???
+		ls_sql = mid(ls_sql, 1, pos(ls_sql, 'where') - 1 )
+		ldw_sort.object.datawindow.table.select = ls_sql
+	end if
+	ldw_sort.SetRedraw(false)
+	ldw_sort.object.datawindow.querymode = 'yes'
+	ldw_sort.SetRedraw(true)
+End If
+
+
+
+end event
+
+on m_mode.create
+this.Text="찾기 Mode(&Q)"
+end on
+
+type m_free from menu within m_action
+end type
+
+event clicked;GraphicObject which_control
+DataWindow ldw_sort
+str_sort str_param
+which_control = GetFocus()
+string ls_sql
+
+If TypeOf(which_control) = DataWindow! Then
+	ldw_sort = which_control
+	ldw_sort.SetRedraw(false)
+	ldw_sort.object.datawindow.queryclear = 'yes'
+	ldw_sort.SetRedraw(true)
+End If
+
+
+end event
+
+on m_free.create
+this.Text="찾기설정 해제(&D)"
+end on
+

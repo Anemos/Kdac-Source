@@ -1,0 +1,33 @@
+$PBExportHeader$f_pur040_get_xplanempno.srf
+$PBExportComments$구매담당사번가져오기(내자,자재담당)
+global type f_pur040_get_xplanempno from function_object
+end type
+
+forward prototypes
+global function string f_pur040_get_xplanempno (string as_xplan)
+end prototypes
+
+global function string f_pur040_get_xplanempno (string as_xplan);//////////////////////////////////////////
+// 담당사번가져오기
+//
+////////////////////////////////////////////////////
+String ls_empno
+as_xplan = Trim(as_xplan)
+
+
+SELECT  coalesce(max(coitnamee),'') INTO :ls_empno
+FROM   PBCOMMON.DAC002   
+where  comltd  = '01'   
+and	 cogubun in ('INV050','INV070')
+and	 cocode = :as_xplan Using sqlca ; 
+		 
+If SQLCA.SQLCode <> 0 or trim(ls_empno) = '' Then 
+	MessageBox("확인",'담당코드:' +  as_xplan + " 사번조회 오류! 연락바랍니다.")
+	Return "" 
+End If
+return ls_empno
+ 
+	
+
+end function
+

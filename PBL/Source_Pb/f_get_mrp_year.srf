@@ -1,0 +1,28 @@
+$PBExportHeader$f_get_mrp_year.srf
+$PBExportComments$MRP 해당작업 년월 Return Global Function
+global type f_get_mrp_year from function_object
+end type
+
+forward prototypes
+global function string f_get_mrp_year ()
+end prototypes
+
+global function string f_get_mrp_year ();///////////////////////////////////////
+// MRP 해당년월 Return
+//
+///////////////////////////////////////
+
+String ls_Xyear1
+
+SELECT "XYEAR1" INTO :ls_Xyear1
+FROM "PBINV"."INV403"
+WHERE "COMLTD" = '01' AND
+		"CKEY" = 'MRPRUN'  Using SQLCA ;
+
+If SQLCA.SQLcode <> 0 Then
+	Return ""
+End If
+
+Return ls_Xyear1
+end function
+

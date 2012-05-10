@@ -1,0 +1,28 @@
+$PBExportHeader$f_pisr_errorhandler.srf
+$PBExportComments$transaction Error Chk (arg transaction a_to, string as_title, string as_message, return integer)
+global type f_pisr_errorhandler from function_object
+end type
+
+forward prototypes
+global function integer f_pisr_errorhandler (transaction a_to, string as_title, string as_message)
+end prototypes
+
+global function integer f_pisr_errorhandler (transaction a_to, string as_title, string as_message);// f_error_handler
+String ls_errtext, ls_dbcode
+Integer li_sqlcode
+
+li_sqlcode = a_to.sqlcode
+
+If li_sqlcode < 0 Then
+	ls_errtext = a_to.sqlerrtext
+	ls_dbcode = String(a_to.sqldbcode)
+	ROLLBACK USING a_to;
+	MessageBox( as_title, as_message + "~r~n" + &
+	"(" + ls_dbcode + ")" + ls_errtext + "~r~n반드시 관리자에게 문의 하십시오!" , &
+	Exclamation! )
+End if
+
+Return li_sqlcode
+
+end function
+

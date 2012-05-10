@@ -1,0 +1,31 @@
+$PBExportHeader$dddw_pur000deptnm01_01.srd
+$PBExportComments$ºÎ¼­¸íÄª(dcode, dname)
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=dcode dbname="DCODE" initial=" " )
+ column=(type=char(40) updatewhereclause=yes name=dname dbname="DNAME" initial=" " )
+ retrieve="  SELECT ' ' as dcode,
+         '¼±ÅÃ' as dname
+  FROM ~"PBCOMMON~".~"COMM000~"
+  WHERE 1 = 1
+  UNION
+  SELECT ~"PBCOMMON~".~"DAC001~".~"DCODE~" as dcode,   
+         ~"PBCOMMON~".~"DAC001~".~"DNAME~" as dname 
+    FROM ~"PBCOMMON~".~"DAC001~"
+   WHERE ( ~"PBCOMMON~".~"DAC001~".~"DUSE~" = ' ' ) AND  
+         ( ~"PBCOMMON~".~"DAC001~".~"DTODT~" = 0 ) AND  
+         ( ~"PBCOMMON~".~"DAC001~".~"DSYS1~" = 'X' ) AND		  
+         (({fn substring(~"PBCOMMON~".~"DAC001~".~"DCODE~",1,1)} = '9' AND
+           {fn substring(~"PBCOMMON~".~"DAC001~".~"DCODE~",4,1)} = '0' ) OR  
+          ({fn substring(~"PBCOMMON~".~"DAC001~".~"DCODE~",1,1)} <> '9' AND
+		     {fn substring(~"PBCOMMON~".~"DAC001~".~"DCODE~",3,2)} = '00' )) 
+ORDER BY 1 
+" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="526" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=dcode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="0" y="0" height="76" width="521" format="[general]" html.valueishtml="0"  name=dname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

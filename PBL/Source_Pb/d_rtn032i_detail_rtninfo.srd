@@ -1,0 +1,154 @@
+$PBExportHeader$d_rtn032i_detail_rtninfo.srd
+$PBExportComments$¶ó¿ìÆÃ»ó¼¼Á¤º¸(Á¶ÄÚµå/Ç°¹ø) display dw[°áÀç]
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=116 color="536870912" )
+summary(height=72 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.REOPSQ" )
+ column=(type=char(7) updatewhereclause=yes name=reopno dbname="RTN015.REOPNO" )
+ column=(type=char(8) updatewhereclause=yes name=reedfm dbname="RTN015.REEDFM" )
+ column=(type=char(240) updatewhereclause=yes name=reopnm dbname="RTN015.REOPNM" )
+ column=(type=char(5) updatewhereclause=yes name=reline3 dbname="RTN015.RELINE3" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebmtm dbname="RTN015.REBMTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebltm dbname="RTN015.REBLTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rebstm dbname="RTN015.REBSTM" )
+ column=(type=char(2) updatewhereclause=yes name=compute_0009 dbname="compute_0009" )
+ column=(type=char(1) updatewhereclause=yes name=compute_0010 dbname="compute_0010" )
+ column=(type=char(1) updatewhereclause=yes name=compute_0011 dbname="compute_0011" )
+ column=(type=decimal(4) updatewhereclause=yes name=renvmc dbname="RTN015.RENVMC" )
+ column=(type=decimal(4) updatewhereclause=yes name=renvlb dbname="RTN015.RENVLB" )
+ column=(type=decimal(0) updatewhereclause=yes name=relbcnt dbname="RTN015.RELBCNT" )
+ column=(type=char(2) updatewhereclause=yes name=recmcd dbname="RTN015.RECMCD" )
+ column=(type=char(1) updatewhereclause=yes name=redvsn dbname="RTN015.REDVSN" )
+ column=(type=char(12) updatewhereclause=yes name=reitno dbname="RTN015.REITNO" )
+ column=(type=char(7) updatewhereclause=yes name=reline1 dbname="RTN015.RELINE1" )
+ column=(type=char(1) updatewhereclause=yes name=reline2 dbname="RTN015.RELINE2" )
+ column=(type=char(1) updatewhereclause=yes name=replant dbname="RTN015.REPLANT" )
+ column=(type=decimal(4) updatewhereclause=yes name=capa_time dbname="CAPA_TIME" values="  	0/" )
+ column=(type=decimal(4) updatewhereclause=yes name=hyoul_time dbname="HYOUL_TIME" values="  	0/" )
+ column=(type=char(8) updatewhereclause=yes name=reedto dbname="RTN015.REEDTO" )
+ retrieve="SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",   
+         ~"PBRTN~".~"RTN015~".~"REOPNO~",   
+         ~"PBRTN~".~"RTN015~".~"REEDFM~",   
+         ~"PBRTN~".~"RTN015~".~"REOPNM~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE3~",   
+         ~"PBRTN~".~"RTN015~".~"REBMTM~",   
+         ~"PBRTN~".~"RTN015~".~"REBLTM~",   
+         ~"PBRTN~".~"RTN015~".~"REBSTM~",' ',' ',' ',   
+         ~"PBRTN~".~"RTN015~".~"RENVMC~",   
+         ~"PBRTN~".~"RTN015~".~"RENVLB~",   
+         ~"PBRTN~".~"RTN015~".~"RELBCNT~",   
+         ~"PBRTN~".~"RTN015~".~"RECMCD~",   
+         ~"PBRTN~".~"RTN015~".~"REDVSN~",   
+         ~"PBRTN~".~"RTN015~".~"REITNO~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE1~",   
+         ~"PBRTN~".~"RTN015~".~"RELINE2~",
+         ~"PBRTN~".~"RTN015~".~"REPLANT~",
+         ~"PBRTN~".~"RTN015~".~"REBSTM~" + ~"PBRTN~".~"RTN015~".~"RENVMC~" as capa_time,
+         ~"PBRTN~".~"RTN015~".~"REBLTM~" + ~"PBRTN~".~"RTN015~".~"RENVLB~" as hyoul_time,
+			~"PBRTN~".~"RTN015~".~"REEDTO~"
+    FROM ~"PBRTN~".~"RTN015~"  
+    WHERE ( ~"PBRTN~".~"RTN015~".~"RECMCD~"  = :a_cmcd ) AND  
+          ( ~"PBRTN~".~"RTN015~".~"REPLANT~" = :a_plant ) AND   
+         ( ~"PBRTN~".~"RTN015~".~"REDVSN~"   = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN015~".~"REITNO~"   = :a_itno ) AND 
+         ( ~"PBRTN~".~"RTN015~".~"RELINE1~" = :a_line1 ) AND
+			( ~"PBRTN~".~"RTN015~".~"RELINE2~" = :a_line2 ) AND
+			( ~"PBRTN~".~"RTN015~".~"RELINE3~"  LIKE :a_wkct ) AND 
+         (~"PBRTN~".~"RTN015~".~"REEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN015~".~"REEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN015~".~"REEDFM~" <= ~"PBRTN~".~"RTN015~".~"REEDTO~" )
+union
+SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",~"PBRTN~".~"RTN016~".~"RFOPNO~",' ',
+         ~"PBRTN~".~"RTN016~".~"RFREMK~",   
+         ' ',
+         0,0,0,~"PBRTN~".~"RTN016~".~"RFNVMO~",~"PBRTN~".~"RTN016~".~"RFMCNO~",~"PBRTN~".~"RTN016~".~"RFTERM~",
+         ~"PBRTN~".~"RTN016~".~"RFMCTM~",   
+         ~"PBRTN~".~"RTN016~".~"RFLBTM~",0,   
+         ~"PBRTN~".~"RTN016~".~"RFCMCD~",   
+         ~"PBRTN~".~"RTN016~".~"RFDVSN~",   
+         ~"PBRTN~".~"RTN016~".~"RFITNO~",   
+         ~"PBRTN~".~"RTN016~".~"RFLINE1~",   
+         ~"PBRTN~".~"RTN016~".~"RFLINE2~",
+         ~"PBRTN~".~"RTN016~".~"RFPLANT~",
+         0,0,''
+    FROM ~"PBRTN~".~"RTN016~" , ~"PBRTN~".~"RTN015~"    
+    WHERE ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = ~"PBRTN~".~"RTN015~".~"RECMCD~" ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = ~"PBRTN~".~"RTN015~".~"REPLANT~" ) AND   
+         ( ~"PBRTN~".~"RTN016~".~"RFDVSN~"   = ~"PBRTN~".~"RTN015~".~"REDVSN~" ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFITNO~"   = ~"PBRTN~".~"RTN015~".~"REITNO~" ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFOPNO~"   = ~"PBRTN~".~"RTN015~".~"REOPNO~" ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFLINE1~"  = ~"PBRTN~".~"RTN015~".~"RELINE1~" ) AND 
+			(~"PBRTN~".~"RTN016~".~"RFLINE2~" = ~"PBRTN~".~"RTN015~".~"RELINE2~" ) AND 
+			(~"PBRTN~".~"RTN015~".~"REEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN015~".~"REEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN015~".~"REEDFM~" <= ~"PBRTN~".~"RTN015~".~"REEDTO~" ) AND
+         ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = :a_cmcd ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = :a_plant ) AND   
+         ( ~"PBRTN~".~"RTN016~".~"RFDVSN~"   = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFITNO~"   = :a_itno ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFLINE1~"  = :a_line1 ) AND
+			( ~"PBRTN~".~"RTN016~".~"RFLINE2~" = :a_line2 ) AND 
+			( ~"PBRTN~".~"RTN015~".~"RELINE3~"  LIKE :a_wkct ) AND
+         (~"PBRTN~".~"RTN016~".~"RFEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN016~".~"RFEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN016~".~"RFEDFM~" <= ~"PBRTN~".~"RTN016~".~"RFEDTO~" )
+
+" arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_wkct", string),("a_itno", string),("a_line1", string),("a_line2", string),("a_ajdate", string))  sort="reopsq A reopno A reline3 D " )
+text(band=header alignment="2" text="°øÁ¤¸í" border="0" color="16777215" x="2491" y="4" height="120" width="603" html.valueishtml="0"  name=reopnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="3104" y="4" height="120" width="288" html.valueishtml="0"  name=reline3_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÎ¿ø" border="0" color="16777215" x="6359" y="4" height="120" width="338" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¼ø¼­" border="0" color="16777215" x="1093" y="4" height="120" width="347" html.valueishtml="0"  name=reopsq_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¹øÈ£" border="0" color="16777215" x="1449" y="4" height="120" width="343" html.valueishtml="0"  name=reopno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="4" height="120" width="146" html.valueishtml="0"  name=replant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="165" y="4" height="120" width="165" html.valueishtml="0"  name=redvsn_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="338" y="4" height="120" width="375" html.valueishtml="0"  name=reitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="1" text="´ëÃ¼¶ó" border="0" color="16777215" x="722" y="4" height="120" width="251" html.valueishtml="0"  name=reline1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="ÀÎ" border="0" color="16777215" x="983" y="4" height="120" width="101" html.valueishtml="0"  name=reline2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±âº»" border="0" color="16777215" x="3401" y="4" height="52" width="347" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷" border="0" color="16777215" x="3758" y="4" height="52" width="261" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±â°èÀÛ¾÷" border="0" color="16777215" x="3401" y="60" height="56" width="347" html.valueishtml="0"  name=rebmtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÀÛ¾÷" border="0" color="16777215" x="3758" y="60" height="56" width="261" html.valueishtml="0"  name=rebltm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="" border="0" color="16777215" x="4027" y="60" height="56" width="283" html.valueishtml="0"  name=rebstm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐÄÚµå" border="0" color="16777215" x="4320" y="60" height="56" width="379" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±â°èÀÛ¾÷" border="0" color="16777215" x="4709" y="60" height="56" width="320" html.valueishtml="0"  name=renvmc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Ã°£" border="0" color="16777215" x="4027" y="4" height="52" width="283" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ´ë" border="0" color="16777215" x="4320" y="4" height="52" width="379" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷" border="0" color="16777215" x="4709" y="4" height="52" width="320" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÀÛ¾÷" border="0" color="16777215" x="5038" y="60" height="56" width="402" html.valueishtml="0"  name=renvlb_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Capa¿ë" border="0" color="16777215" x="5449" y="60" height="56" width="434" html.valueishtml="0"  name=capa_time_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È¿À²¿ë" border="0" color="16777215" x="5893" y="60" height="56" width="457" html.valueishtml="0"  name=hyoul_time_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½Ã°£" border="0" color="16777215" x="5038" y="4" height="52" width="402" html.valueishtml="0"  name=t_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="1" text="Ç¥ÁØÀÛ" border="0" color="16777215" x="5449" y="4" height="52" width="434" html.valueishtml="0"  name=t_8 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="¾÷½Ã°£" border="0" color="16777215" x="5893" y="4" height="52" width="457" html.valueishtml="0"  name=t_9 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àû¿ëÀÏ" border="0" color="16777215" x="1801" y="4" height="120" width="343" html.valueishtml="0"  name=reedfm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ï·áÀÏ" border="0" color="16777215" x="2153" y="4" height="120" width="329" html.valueishtml="0"  name=reedto_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="2491" y="0" height="64" width="603" format="[general]" html.valueishtml="0"  name=reopnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="3104" y="0" height="64" width="288" format="[general]" html.valueishtml="0"  name=reline3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="6359" y="0" height="64" width="338" format="[general]" html.valueishtml="0"  name=relbcnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="1093" y="0" height="64" width="347" format="[general]" html.valueishtml="0"  name=reopsq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression=" compute_0009  +  compute_0010  +  compute_0011 "border="0" color="0" x="4320" y="0" height="64" width="379" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="0" x="338" y="0" height="64" width="375" format="[general]" html.valueishtml="0"  name=reitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="0" x="722" y="0" height="64" width="251" format="[general]" html.valueishtml="0"  name=reline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="0" x="983" y="0" height="64" width="101" format="[general]" html.valueishtml="0"  name=reline2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="64" width="146" format="[general]" html.valueishtml="0"  name=replant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="0" x="165" y="0" height="64" width="165" format="[general]" html.valueishtml="0"  name=redvsn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="1449" y="0" height="64" width="343" format="[general]" html.valueishtml="0"  name=reopno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="0" x="3401" y="0" height="64" width="347" format="[general]" html.valueishtml="0"  name=rebmtm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="3758" y="0" height="64" width="261" format="[general]" html.valueishtml="0"  name=rebltm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="4027" y="0" height="64" width="283" format="[general]" html.valueishtml="0"  name=rebstm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="4709" y="0" height="64" width="320" format="[general]" html.valueishtml="0"  name=renvmc visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="5038" y="0" height="64" width="402" format="[general]" html.valueishtml="0"  name=renvlb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="5449" y="0" height="64" width="434" format="[general]" html.valueishtml="0"  name=capa_time visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="5893" y="0" height="64" width="457" format="[general]" html.valueishtml="0"  name=hyoul_time visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="1801" y="0" height="64" width="343" format="[general]" html.valueishtml="0"  name=reedfm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="0" x="2153" y="0" height="64" width="329" format="[general]" html.valueishtml="0"  name=reedto visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=summary alignment="2" text="Ç¥ÁØ½Ã°£ÇÕ" border="0" color="0" x="5038" y="4" height="64" width="402" html.valueishtml="0"  name=t_10 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=summary alignment="1" expression="sum(capa_time for all)"border="0" color="0" x="5449" y="4" height="64" width="434" format="#,##0.0000" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(hyoul_time for all)"border="0" color="0" x="5893" y="4" height="64" width="457" format="#,##0.0000" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="replant	redvsn	reitno	reline1	reline2	reopsq	reopno")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

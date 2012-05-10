@@ -1,0 +1,76 @@
+$PBExportHeader$d_task_class.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 grid.columnmove=no selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=64 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes key=yes name=task_class_task_code dbname="task_class.task_code" )
+ column=(type=char(30) updatewhereclause=yes key=yes name=task_class_class_div dbname="task_class.class_div" )
+ column=(type=char(50) updatewhereclause=yes key=yes name=task_class_class_spot dbname="task_class.class_spot" )
+ column=(type=char(64) updatewhereclause=yes key=yes name=task_class_class_item dbname="task_class.class_item" )
+ column=(type=char(64) update=yes updatewhereclause=yes name=task_class_class_basis dbname="task_class.class_basis" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=task_class_class_process dbname="task_class.class_process" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_est_time_hour dbname="task_class.class_est_time_hour" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_est_time_min dbname="task_class.class_est_time_min" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_time_hour dbname="task_class.class_time_hour" initial="0" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_time_min dbname="task_class.class_time_min" initial="0" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=task_class_part_code dbname="task_class.part_code" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_est_qty dbname="task_class.class_est_qty" )
+ column=(type=number update=yes updatewhereclause=yes name=class_qty dbname="task_class.class_qty" )
+ column=(type=number update=yes updatewhereclause=yes name=task_class_class_end dbname="task_class.class_end" values="	1/	0" )
+ column=(type=char(20) update=yes updatewhereclause=yes name=class_real dbname="task_class.class_real" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=area_code dbname="task_class.area_code" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=factory_code dbname="task_class.factory_code" )
+ retrieve="  SELECT task_class.task_code,   
+         task_class.class_div,   
+         task_class.class_spot,   
+         task_class.class_item,   
+         task_class.class_basis,   
+         task_class.class_process,   
+         task_class.class_est_time_hour,   
+         task_class.class_est_time_min,   
+         task_class.class_time_hour,   
+         task_class.class_time_min,   
+         task_class.part_code,   
+         task_class.class_est_qty,   
+         task_class.class_qty,   
+         task_class.class_end,
+			task_class.class_real,
+			task_class.area_code,
+			task_class.factory_code 
+    FROM task_class   
+ " update="task_class" updatewhere=0 updatekeyinplace=yes )
+text(band=header alignment="2" text="¿Ï·á" border="6" color="33554432" x="9" y="8" height="56" width="146" html.valueishtml="0"  name=task_class_class_end_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="±¸ºÐ" border="6" color="33554432" x="165" y="8" height="56" width="302" html.valueishtml="0"  name=task_class_class_div_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Á¡°Ë°³¼Ò" border="6" color="33554432" x="475" y="8" height="56" width="430" html.valueishtml="0"  name=task_class_class_spot_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Á¡°ËÇ×¸ñ" border="6" color="33554432" x="914" y="8" height="56" width="471" html.valueishtml="0"  name=task_class_class_item_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="Á¡°Ë±âÁØ" border="6" color="33554432" x="1394" y="8" height="56" width="379" html.valueishtml="0"  name=task_class_class_basis_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="°èÈ¹(½Ã)" border="6" color="33554432" x="2798" y="8" height="56" width="238" html.valueishtml="0"  name=task_class_class_est_time_hour_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="°èÈ¹(ºÐ)" border="6" color="33554432" x="3045" y="8" height="56" width="242" html.valueishtml="0"  name=task_class_class_est_time_min_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="¼Ò¿ä(½Ã)" border="6" color="33554432" x="3296" y="8" height="56" width="242" html.valueishtml="0"  name=task_class_class_time_hour_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="¼Ò¿ä(ºÐ)" border="6" color="33554432" x="3547" y="8" height="56" width="242" html.valueishtml="0"  name=task_class_class_time_min_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="ÀÛ¾÷¹æ¹ý" border="6" color="33554432" x="2322" y="8" height="56" width="466" html.valueishtml="0"  name=task_class_class_process_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="½ÇÃø°ª" border="6" color="33554432" x="1783" y="8" height="56" width="530" html.valueishtml="0"  name=class_real_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="165" y="8" height="68" width="302" format="[general]" html.valueishtml="0"  name=task_class_class_div  tag="±¸ºÐ" visible="1" dddw.name=dd_class_div dddw.displaycolumn=class_div_name dddw.datacolumn=class_div_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="475" y="8" height="68" width="430" format="[general]" html.valueishtml="0"  name=task_class_class_spot  tag="Á¡°Ë°³¼Ò" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="914" y="8" height="68" width="471" format="[general]" html.valueishtml="0"  name=task_class_class_item  tag="Á¡°ËÇ×¸ñ" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="1394" y="8" height="68" width="379" format="[general]" html.valueishtml="0"  name=task_class_class_basis  tag="Á¡°Ë±âÁØ" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="2798" y="8" height="68" width="238" format="[general]" html.valueishtml="0"  name=task_class_class_est_time_hour visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="3045" y="8" height="68" width="242" format="[general]" html.valueishtml="0"  name=task_class_class_est_time_min visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=9 alignment="1" tabsequence=30 border="0" color="33554432" x="3296" y="8" height="68" width="242" format="[general]" html.valueishtml="0"  name=task_class_class_time_hour visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.nilisnull=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="1073741824" )
+column(band=detail id=10 alignment="1" tabsequence=40 border="0" color="33554432" x="3547" y="8" height="68" width="242" format="[general]" html.valueishtml="0"  name=task_class_class_time_min visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.nilisnull=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="1073741824" )
+column(band=detail id=14 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="8" height="68" width="146" format="[general]" html.valueishtml="0"  name=task_class_class_end visible="1" checkbox.text="" checkbox.on="1" checkbox.off="0" checkbox.scale=no checkbox.threed=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="2322" y="8" height="68" width="466" format="[general]" html.valueishtml="0"  name=task_class_class_process  tag="Á¡°Ë¹æ¹ý" visible="1" dddw.name=dd_process dddw.displaycolumn=process_name dddw.datacolumn=process_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=15 alignment="1" tabsequence=20 border="0" color="33554432" x="1783" y="8" height="68" width="530" format="[general]" html.valueishtml="0"  name=class_real visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="1073741824" )
+compute(band=summary alignment="1" expression="if(sum(  task_class_class_est_time_min  for all ) > 60,int(mod(sum(task_class_class_est_time_min  for all) , 60)),sum(  task_class_class_est_time_min  for all ))"border="0" color="33554432" x="3045" y="4" height="56" width="242" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(  task_class_class_time_hour  for all ) + if(sum(  task_class_class_time_min  for all ) > 60,int(sum(  task_class_class_time_min  for all ) / 60),0)"border="0" color="33554432" x="3296" y="4" height="56" width="242" format="[GENERAL]" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="if(sum(  task_class_class_time_min  for all ) > 60,int(mod(sum(task_class_class_time_min  for all) , 60)),sum(  task_class_class_time_min  for all ))"border="0" color="33554432" x="3547" y="4" height="56" width="242" format="[GENERAL]" html.valueishtml="0"  name=compute_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(  task_class_class_est_time_hour  for all ) + if(sum(  task_class_class_est_time_min  for all ) > 60,int(sum(  task_class_class_est_time_min  for all ) / 60),0)"border="0" color="33554432" x="2798" y="4" height="56" width="238" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=summary alignment="2" text="ÇÕ°è" border="0" color="1073741824" x="2322" y="4" height="56" width="466" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8388608" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

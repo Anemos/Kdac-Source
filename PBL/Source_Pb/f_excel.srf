@@ -1,0 +1,96 @@
+$PBExportHeader$f_excel.srf
+$PBExportComments$엑셀 '0' 포함 다운로드
+global type f_excel from function_object
+end type
+
+forward prototypes
+global function integer f_excel (datawindow adw)
+end prototypes
+
+global function integer f_excel (datawindow adw);/****************************************/
+/* 파일명 : f_excel */
+/* 아규먼트 : DataWindw adw */
+
+Integer i, j, li_rc, li_colDataType[], ll_ColCnt
+String ls_filepath, ls_filename, ls_process, ls_mode, ls_coltype[]
+OleObject MyExcel
+OleObject MyQuery
+
+li_rc = GetFileSaveName("Select File", ls_filepath, ls_filename, "xls", &
+"Excel Files (*.xls),*.xls," )
+
+IF li_rc <> 1 THEN Return li_rc
+IF FileExists(ls_filepath) THEN
+	li_rc = MessageBox("저장확인111", ls_filepath + " 파일이 이미 존재합니다.~r~n" + &
+				"기존 파일을 바꾸시겠습니까?",Question!, YesNo!,2)
+	IF li_rc = 2 THEN Return 0 
+END IF 
+
+SetPointer(HourGlass!)
+
+li_rc = adw.SaveAsAscii(ls_filepath, "~t",'"')
+
+MyExcel = Create OleObject
+MyQuery = Create OleObject
+li_rc = MyExcel.ConnectToNewObject("excel.application")
+IF li_rc <> 0 THEN
+MessageBox("오류", "Excel 구동중 에러")
+Destroy MyExcel
+Return -1
+END IF 
+
+//-----------------------------------------------------
+// DataWindow Style에 따른 처리
+//-----------------------------------------------------
+ls_process = adw.Describe("DataWindow.processing")
+IF ls_process = '4' THEN
+	//CrossTab일 경우 StaticMode를 설정해야 필드 접근가능
+	ls_mode = adw.Modify("DataWindow.crosstab.StaticMode = 'yes'")
+	IF ls_mode <> '' THEN
+		MessageBox("CrossTab StaticMode Error", ls_mode)
+		Return -1
+	END IF 
+END IF
+
+MyExcel.WorkBooks.Add()
+
+CHOOSE CASE ls_process
+	CASE '0','2', '1', '4' //Grid, CrossTab, Taburar
+	
+		//Column Type를 확인한다.
+		ll_ColCnt = Long(adw.Describe("DataWindow.Column.Count"))
+		FOR j = 1 TO ll_ColCnt
+			ls_coltype[j] = Upper( adw.Describe("#" + String(j) + ".ColType") )
+		NEXT 
+		
+		FOR i = 1 TO UpperBound(ls_coltype)
+			IF Left(Upper(ls_coltype[i]),4) = 'CHAR' THEN
+				li_colDataType[i] = 2 //text형식
+			ELSE
+				li_colDataType[i] = 1 //General형식
+			END IF
+		NEXT 
+		
+		MyExcel.ActiveWorkbook.Sheets.Add.Name = f_Replace(ls_filename,'.xls','') //f_replace 함수가 없을시 ls_filename 만 적어주어도 가능
+		MyQuery = MyExcel.ActiveWorkbook.Sheets(1).QueryTables.Add('TEXT;' + ls_filepath, MyExcel.ActiveWorkbook.Sheets(1).Cells(1,1))
+		MyQuery.TextFileColumnDataTypes = li_colDataType
+		MyQuery.Refresh
+		MyExcel.ActiveWorkBook.Sheets(1).Columns.AutoFit
+	CASE ELSE //'0':tabular, '2':label 
+		MyExcel.WorkBooks.Open(ls_filepath)
+END CHOOSE 
+
+MyExcel.ActiveWorkBook.Sheets(1).Cells(1,1).Select
+MyExcel.Application.Visible = False
+MyExcel.Application.DisplayAlerts = False 
+MyExcel.Application.WorkBooks(1).SaveAs(ls_filepath, -4143)
+MyExcel.Application.Quit
+MyExcel.DisConnectObject()
+SetPointer(Arrow!)
+
+MessageBox("Information!", "파일생성이 완료되었습니다!")
+
+Return 1
+
+end function
+

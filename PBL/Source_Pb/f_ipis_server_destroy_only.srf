@@ -1,0 +1,22 @@
+$PBExportHeader$f_ipis_server_destroy_only.srf
+$PBExportComments$트랜잭션 destroy Only 처리함수
+global type f_ipis_server_destroy_only from function_object
+end type
+
+forward prototypes
+global subroutine f_ipis_server_destroy_only (any ag_str_ipis[])
+end prototypes
+
+global subroutine f_ipis_server_destroy_only (any ag_str_ipis[]);integer li_cnt
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to UpperBound(ag_str_ipis)
+	lstr_ipis = ag_str_ipis[li_cnt]
+  	lstr_ipis.t_sqlpis.autocommit = true
+  	Disconnect USING lstr_ipis.t_sqlpis;
+  	DESTROY lstr_ipis.t_sqlpis
+  	SetNull(lstr_ipis.t_sqlpis)
+  	SetNull(lstr_ipis.s_serverid)
+next
+end subroutine
+

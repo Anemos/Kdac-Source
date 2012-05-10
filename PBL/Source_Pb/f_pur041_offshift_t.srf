@@ -1,0 +1,167 @@
+$PBExportHeader$f_pur041_offshift_t.srf
+$PBExportComments$오퍼히스토리생성(opm113,opm114)
+global type f_pur041_offshift_t from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_offshift_t (string ls_purno, string ls_srno, string ls_srno1)
+end prototypes
+
+global function integer f_pur041_offshift_t (string ls_purno, string ls_srno, string ls_srno1);string  ls_srno1_old, ls_ofdt, ls_itno
+long    ll_rcnt , ll_row, ll_rcnt1
+dec {2} ld_ofqty
+
+
+datastore ds_opm103, ds_opm104
+datastore ds_opm113, ds_opm114
+
+setpointer(hourglass!)
+	
+	ds_opm103 = create datastore
+	ds_opm103.dataobject = 'd_opm401u_11'
+	ds_opm103.settransobject(sqlca)
+	
+	ds_opm104 = create datastore
+	ds_opm104.dataobject = 'd_opm401u_12'
+	ds_opm104.settransobject(sqlca)
+	
+	ds_opm113 = create datastore
+	ds_opm113.dataobject = 'd_opm401u_13'
+	ds_opm113.settransobject(sqlca)
+	
+	ds_opm114 = create datastore
+	ds_opm114.dataobject = 'd_opm401u_14'
+	ds_opm114.settransobject(sqlca)
+	
+	if ds_opm103.retrieve(ls_purno,ls_srno,ls_srno1) = 0 then
+		messagebox('확인','오퍼:' + ls_purno + ls_srno + ls_srno1 + ' 오퍼head 없음!,OPM103',Exclamation!)
+	   return -1
+	end if
+	if ds_opm104.retrieve(ls_purno,ls_srno,ls_srno1) = 0 then
+		messagebox('확인','오퍼:' + ls_purno + ls_srno + ls_srno1 + ' 오퍼detail 없음!,OPM104',Exclamation!)
+	   return -1
+	end if
+//	ds_opm113.retrieve(ls_purno,ls_srno,ls_srno1)
+//	ds_opm114.retrieve(ls_purno,ls_srno,ls_srno1)
+	  ls_ofdt = ds_opm103.object.ofdt[1] 
+     ll_rcnt = ds_opm113.insertrow(0)
+	  ll_rcnt1 = 1
+	  ds_opm113.object.purno[ll_rcnt] = ds_opm103.object.purno[ll_rcnt1] 
+	  ds_opm113.object.srno[ll_rcnt]  = ds_opm103.object.srno[ll_rcnt1] 
+	  ds_opm113.object.srno1[ll_rcnt]  = ds_opm103.object.srno1[ll_rcnt1]
+	  ds_opm113.object.ofdt[ll_rcnt]  = ds_opm103.object.ofdt[ll_rcnt1] 
+	  ds_opm113.object.shdt[ll_rcnt]  = ds_opm103.object.shdt[ll_rcnt1]
+	  ds_opm113.object.vldt[ll_rcnt]  = ds_opm103.object.vldt[ll_rcnt1]
+	  ds_opm113.object.vsrno[ll_rcnt]  = ds_opm103.object.vsrno[ll_rcnt1] 
+	  ds_opm113.object.vsrno1[ll_rcnt]  = ds_opm103.object.vsrno1[ll_rcnt1] 
+	  ds_opm113.object.insp[ll_rcnt]   = ds_opm103.object.insp[ll_rcnt1] 
+	  ds_opm113.object.xpay[ll_rcnt]   = ds_opm103.object.xpay[ll_rcnt1] 
+	  ds_opm113.object.xremark1[ll_rcnt]  = ds_opm103.object.xremark1[ll_rcnt1] 
+	  ds_opm113.object.xremark2[ll_rcnt]  = ds_opm103.object.xremark2[ll_rcnt1]
+	  ds_opm113.object.prt[ll_rcnt]   = ds_opm103.object.prt[ll_rcnt1] 
+	  ds_opm113.object.curr[ll_rcnt]  = ds_opm103.object.curr[ll_rcnt1] 
+	  ds_opm113.object.xplan[ll_rcnt]  = ds_opm103.object.xplan[ll_rcnt1] 
+	  ds_opm113.object.stcd[ll_rcnt]  = ds_opm103.object.stcd[ll_rcnt1] 
+	  ds_opm113.object.extd[ll_rcnt]  = ds_opm103.object.extd[ll_rcnt1] 
+	  ds_opm113.object.inptid[ll_rcnt]  = ds_opm103.object.inptid[ll_rcnt1] 
+	  ds_opm113.object.inptdt[ll_rcnt]  = ds_opm103.object.inptdt[ll_rcnt1] 
+	  ds_opm113.object.updtid[ll_rcnt]  = ds_opm103.object.updtid[ll_rcnt1] 
+	  ds_opm113.object.updtdt[ll_rcnt]  = ds_opm103.object.updtdt[ll_rcnt1]
+	  ds_opm113.object.ipaddr[ll_rcnt]  = ds_opm103.object.ipaddr[ll_rcnt1] 
+	  ds_opm113.object.macaddr[ll_rcnt]  = ds_opm103.object.macaddr[ll_rcnt1] 
+	  ds_opm113.object.bocd[ll_rcnt]  = ds_opm103.object.bocd[ll_rcnt1] 
+	  ds_opm113.object.prtdt[ll_rcnt]  = ds_opm103.object.prtdt[ll_rcnt1] 
+	  ds_opm113.object.ofamt[ll_rcnt]  = ds_opm103.object.ofamt[ll_rcnt1] 
+	  ds_opm113.object.ofamt1[ll_rcnt]  = ds_opm103.object.ofamt1[ll_rcnt1] 
+	  ds_opm113.object.payamt[ll_rcnt]  = ds_opm103.object.payamt[ll_rcnt1] 
+	  ds_opm113.object.tlgubun[ll_rcnt]  = ds_opm103.object.tlgubun[ll_rcnt1] 
+	  ds_opm113.object.amdgubun[ll_rcnt]  = ds_opm103.object.amdgubun[ll_rcnt1] 
+	  ds_opm113.object.tlamd[ll_rcnt]  = ds_opm103.object.tlamd[ll_rcnt1] 
+	  ds_opm113.object.diamd[ll_rcnt]  = ds_opm103.object.diamd[ll_rcnt1] 
+	  ds_opm113.object.tod[ll_rcnt]    = ds_opm103.object.tod[ll_rcnt1] 
+	  ds_opm113.object.todamd[ll_rcnt]  = ds_opm103.object.todamd[ll_rcnt1] 
+	  ds_opm113.object.sedamd[ll_rcnt]  = ds_opm103.object.sedamd[ll_rcnt1] 
+	  ds_opm113.object.amddesc[ll_rcnt]  = ds_opm103.object.amddesc[ll_rcnt1] 
+	 
+    
+	  for ll_row = ds_opm104.rowcount() to 1 step -1  //오퍼디테일 이전것 가져오기
+         	ll_rcnt = ds_opm114.insertrow(0)
+				ll_rcnt1 = ll_row
+				ds_opm114.object.purno[ll_rcnt]  = ds_opm104.object.opm104_purno[ll_rcnt1] 
+			   ds_opm114.object.srno[ll_rcnt]   = ds_opm104.object.opm104_srno[ll_rcnt1] 
+			   ds_opm114.object.srno1[ll_rcnt]  = ds_opm104.object.opm104_srno1[ll_rcnt1]
+				ds_opm114.object.itno[ll_rcnt]   = ds_opm104.object.opm104_itno[ll_rcnt1]
+			   ds_opm114.object.ofdt[ll_rcnt]   = ls_ofdt   //오퍼일자 헤드에있음
+				ds_opm114.object.xcost[ll_rcnt]   = ds_opm104.object.opm104_xcost[ll_rcnt1] 
+				ds_opm114.object.ofqty[ll_rcnt]   = ds_opm104.object.opm104_ofqty[ll_rcnt1] 
+				ds_opm114.object.ocnqt[ll_rcnt]   = ds_opm104.object.opm104_ocnqt[ll_rcnt1] 
+				ds_opm114.object.ofamt[ll_rcnt]   = ds_opm104.object.opm104_ofamt[ll_rcnt1] 
+				ds_opm114.object.extd[ll_rcnt]    = ds_opm104.object.OPM104_extd[ll_rcnt1] 
+			   ds_opm114.object.inptid[ll_rcnt]  = ds_opm104.object.opm104_inptid[ll_rcnt1] 
+			   ds_opm114.object.inptdt[ll_rcnt]  = ds_opm104.object.opm104_inptdt[ll_rcnt1] 
+			   ds_opm114.object.updtid[ll_rcnt]  = ds_opm104.object.opm104_updtid[ll_rcnt1] 
+			   ds_opm114.object.updtdt[ll_rcnt]  = ds_opm104.object.opm104_updtdt[ll_rcnt1]
+			   ds_opm114.object.ipaddr[ll_rcnt]  = ds_opm104.object.opm104_ipaddr[ll_rcnt1] 
+			   ds_opm114.object.macaddr[ll_rcnt]  = ds_opm104.object.opm104_macaddr[ll_rcnt1] 
+			   ds_opm114.object.bocd[ll_rcnt]    = ds_opm104.object.opm104_bocd[ll_rcnt1] 
+				ds_opm114.object.bunit[ll_rcnt]   = ds_opm104.object.opm104_bunit[ll_rcnt1] 
+				ds_opm114.object.xunit[ll_rcnt]   = ds_opm104.object.opm104_xunit[ll_rcnt1] 
+				ds_opm114.object.iunit[ll_rcnt]   = ds_opm104.object.opm104_iunit[ll_rcnt1] 
+				ds_opm114.object.conv1[ll_rcnt]   = ds_opm104.object.opm104_conv1[ll_rcnt1] 
+				ds_opm114.object.conv2[ll_rcnt]   = ds_opm104.object.opm104_conv2[ll_rcnt1] 
+				ds_opm114.object.dspcd[ll_rcnt]   = ds_opm104.object.opm104_dspcd[ll_rcnt1] 
+				ds_opm114.object.ofamt1[ll_rcnt]   = ds_opm104.object.opm104_ofamt1[ll_rcnt1] 
+				ds_opm114.object.payamt[ll_rcnt]   = ds_opm104.object.opm104_payamt[ll_rcnt1] 
+					
+		next
+  
+  f_pur040_inptid01(ds_opm113)
+  f_pur040_inptid01(ds_opm114)
+  f_pur040_nullchk02(ds_opm113)
+  f_pur040_nullchk02(ds_opm114)
+  
+//  if ds_opm103.update() <> 1 then
+//	  messagebox('확인','오퍼head 저장오류!,OPM103',Exclamation!)
+//	  ROLLBACK USING SQLCA;
+////	  uo_status.st_message.text = '오퍼head 저장오류!,OPM103'
+//	  RETURN	-1
+//  end if
+//  if ds_opm104.update() <> 1 then
+//	  messagebox('확인','오퍼detail 저장오류!,OPM104',Exclamation!)
+//	  ROLLBACK USING SQLCA;
+////	  uo_status.st_message.text = '오퍼detail 저장오류!,OPM104'
+//	  RETURN	-1
+//  end if
+  if ds_opm113.update() <> 1 then
+	  messagebox('확인','오퍼head history저장오류!,OPM113',Exclamation!)
+	  ROLLBACK USING SQLCA;
+//	  uo_status.st_message.text = '오퍼head history저장오류!,OPM113'
+	  RETURN	-1
+  end if
+  if ds_opm114.update() <> 1 then
+	  messagebox('확인','오퍼detail history저장오류!,OPM114',Exclamation!)
+	  ROLLBACK USING SQLCA;
+//	  uo_status.st_message.text = '오퍼detail history저장오류!,OPM114'
+	  RETURN	-1
+  end if
+  destroy ds_opm103
+  destroy ds_opm104
+  destroy ds_opm113
+  destroy ds_opm114
+  COMMIT USING sqlca ;
+  return 1
+	
+setpointer(arrow!)
+
+
+
+
+
+
+
+
+
+
+
+end function
+

@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_coflnamee.srf
+$PBExportComments$°øÅëÄÚµå ¿µ¹®ÃÑÄª return
+global type f_get_coflnamee from function_object
+end type
+
+forward prototypes
+global function string f_get_coflnamee (string a_s_comltd, string a_s_gubun, string a_s_code)
+end prototypes
+
+global function string f_get_coflnamee (string a_s_comltd, string a_s_gubun, string a_s_code);string l_s_cdnm
+
+SELECT "PBCOMMON"."DAC002"."COFLNAMEE"  
+  INTO :l_s_cdnm  
+  FROM "PBCOMMON"."DAC002"  
+ WHERE "PBCOMMON"."DAC002"."COMLTD"  = :a_s_comltd and
+		 "PBCOMMON"."DAC002"."COGUBUN" = :a_s_gubun  and
+		 "PBCOMMON"."DAC002"."COCODE"  = :a_s_code   using sqlca;
+if sqlca.sqlcode <> 0 then
+	l_s_cdnm = " "
+end if
+
+return l_s_cdnm
+end function
+

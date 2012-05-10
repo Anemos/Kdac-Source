@@ -1,0 +1,38 @@
+$PBExportHeader$f_bom_get_itemcost.srf
+$PBExportComments$Royalty - invdae에서 불출단가를 넘겨주는 함수
+global type f_bom_get_itemcost from function_object
+end type
+
+forward prototypes
+global function decimal f_bom_get_itemcost (string a_plant, string a_div, string a_itno, string a_date, decimal a_factor)
+end prototypes
+
+global function decimal f_bom_get_itemcost (string a_plant, string a_div, string a_itno, string a_date, decimal a_factor);string lc_year
+dec{1} lc_coac
+dec{0} lc_coct
+dec{2} lc_itemcost
+
+select xyear,outqty,outamt into :lc_year,:lc_coac,:lc_coct	from pbinv.inv402
+where comltd = '01' and xplant = :a_plant and div    = :a_div and itno = :a_itno and
+		xyear <= :a_date  and ( outqty <> 0 and outamt <> 0 ) 
+order by xyear desc
+using sqlca ;
+
+//if sqlca.sqlcode <> 0 then
+//	return 0
+//end if 
+//불출단가 계산
+if lc_coac = 0 or isnull(lc_coac) then
+	return 0
+end if
+
+if a_factor > 0 then
+		lc_itemcost = (lc_coct / lc_coac) / a_factor
+		return lc_itemcost
+else
+		lc_itemcost = (lc_coct / lc_coac)
+		return lc_itemcost
+end if
+
+end function
+

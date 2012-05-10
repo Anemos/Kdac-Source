@@ -1,0 +1,325 @@
+$PBExportHeader$f_pisr_ordercalc.srf
+$PBExportComments$간판 발주시간 및 납입예정시간 계산
+global type f_pisr_ordercalc from function_object
+end type
+
+forward prototypes
+global function integer f_pisr_ordercalc (ref datawindow adw, datetime fdt_nowtime, string fs_jobdate, string fs_applydate, ref string fs_message)
+end prototypes
+
+global function integer f_pisr_ordercalc (ref datawindow adw, datetime fdt_nowtime, string fs_jobdate, string fs_applydate, ref string fs_message);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_ordercalc
+//	Access		: reorder
+//	Arguments	: datawindow		adw			 	reference	//간판정보		
+//					: datetime			fdt_nowtime						//실시간		
+//					: string				fs_jobdate						//Shift 단위일자
+//					: string				fs_applydate					//월말마감 고려한 Shift단위 일자 
+//					: string				fs_applydate					//월말마감 고려한 Shift단위 일자 
+//					: string				fs_message		reference	//오류메세지 처리
+//	Returns		: integer	 		-1:오류 0:성공 
+//	Description	: 발주 간판 발주시간 및 납입예정시간 계산
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh-sang
+// Coded Date	: 2002. 10. 02
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+String	ls_partKBNo
+String 	ls_nowTime
+String	ls_areaCode, ls_DivCode, ls_suppCode, ls_itemCode, ls_applyFrom, ls_chkstop
+String	ls_lastDate
+Long		ll_Row, ll_supplyTerm
+String	ls_CycleApplyFrom
+Long		ll_PartEditNo
+String	ls_realDate
+String	ls_WorkGubun
+
+ll_Row				= adw.GetRow()
+ls_partKBNo			= adw.GetItemString( ll_Row, 'partkbno' )
+ls_areaCode			= adw.GetItemString( ll_Row, 'areacode' )
+ls_DivCode			= adw.GetItemString( ll_Row, 'divisioncode' )
+ls_suppCode			= adw.GetItemString( ll_Row, 'suppliercode' )
+ls_itemCode			= adw.GetItemString( ll_Row, 'itemcode' )
+ls_applyFrom		= adw.GetItemString( ll_Row, 'mst_applyfrom' )			//간판MST적용시작일자
+ls_CycleApplyFrom = adw.GetItemString( ll_Row, 'cycle_applyfrom' )		//납입주기적용시작일자
+ll_supplyTerm		= adw.GetItemNumber( ll_Row, 'supplyterm' )
+
+ls_nowTime 	= String(fdt_nowtime, "yyyy.mm.dd hh:mm")							//현재일자및시간
+//ls_realDate = left(ls_nowTime, 10)												//현재일자
+
+///////////////////////////////////////
+// 거래대상 업체유무 체크 - 2004.09.17
+///////////////////////////////////////
+SELECT ISNULL(TMSTSUPPLIER.Xstop,'')    
+	INTO :ls_chkstop  
+	FROM TMSTSUPPLIER  
+	WHERE TMSTSUPPLIER.SupplierCode = :ls_suppCode   
+	using sqlpis;
+
+if ls_chkstop = 'X' then
+//	MessageBox( "입고처리오류" ,"거래중단된 외주업체입니다.", StopSign! )
+	fs_message 		= "tmstsupplier_err"
+	Return -1
+end if
+
+///////////////////////////////////////
+// 거래대상 업체에 대한 품번중단 유무 체크 - 2006.06.21
+///////////////////////////////////////
+SELECT ISNULL(Xstop,'')    
+	INTO :ls_chkstop  
+	FROM TMSTPARTCOST  
+	WHERE SupplierCode = :ls_suppCode AND ItemCode = :ls_itemCode 
+	using sqlpis;
+
+if ls_chkstop = 'X' then
+//	MessageBox( "입고처리오류" ,"업체에 대한 중단된 품번입니다.", StopSign! )
+	fs_message 		= "tmstpartcost_err"
+	Return -1
+end if
+
+//////////////////////////////////////
+//	간판 Scaning일자가 휴무일이면 다음 작업일자 '08:00'를 기준으로 발주일자 계산
+//////////////////////////////////////
+  SELECT WorkGubun  
+    INTO :ls_WorkGubun  
+    FROM TPARTCALENDAR  
+   WHERE AreaCode 		= :ls_areaCode AND  
+         DivisionCode 	= :ls_DivCode AND  
+         ApplyDate 		= :fs_jobdate
+	USING	sqlpis	;
+If sqlpis.SqlCode <> 0 Then 
+//	MessageBox("자료부족", "자재 Work Calendar가 준비되지 않았습니다.", Information!)
+	fs_message 		= "WorkCalendar_Err"
+	Return -1
+End If
+If Upper(ls_WorkGubun) = 'H' Then		
+	ls_realDate 	= f_pisr_nextworkday( ls_areaCode, ls_DivCode, fs_jobdate, 1 )	//다음작업일자
+	If ls_realDate = '' Then 
+		fs_message 	= "WorkCalendar_Err"
+		Return -1
+	End If
+	ls_nowTime 	= ls_realDate + ' 08:00'	//현재일자및시간
+	fs_jobdate	= ls_realDate
+End If	
+
+////////////////////////////////////////////////
+//발주일자 계산( OrderGubun : 'A'발주, 'B'납입 )
+////////////////////////////////////////////////
+
+//해당외주업체 최종 발주일자및편수
+  SELECT Max(PartLastEditDate)
+    INTO :ls_lastDate
+    FROM TPARTLASTEDIT  
+   WHERE AreaCode 	 = :ls_areaCode AND  
+         DivisionCode = :ls_DivCode  AND  
+         SupplierCode = :ls_suppCode AND   
+         OrderGubun	 = 'A'			 
+	USING	sqlpis	;
+	
+If isNull(ls_lastDate) Or ll_supplyTerm = 1 Then		//1.신규발주이거나 납입Term이 1일인 경우
+	If fs_jobdate > ls_applyFrom Then						//Shift일자와 간판마스터적용시작일자 중 큰일자를 발주일자로계산
+		ls_lastDate = fs_jobdate
+	Else
+		ls_lastDate = ls_applyFrom
+	End If															//
+
+  SELECT Min(PartEditNo)
+    INTO :ll_PartEditNo
+    FROM TMSTPARTEDIT  
+   WHERE AreaCode 		= :ls_areaCode 		AND  
+         DivisionCode 	= :ls_DivCode  		AND  
+         SupplierCode 	= :ls_suppCode 		AND  
+         ApplyFrom 		= :ls_CycleApplyFrom	AND
+			( 	CASE WHEN PartEditTime >= '00:00' AND PartEditTime < '08:00' THEN 
+					Convert(Char(10), DateAdd(Day, 1, Convert(DateTime, :ls_lastDate,102)), 102) + ' ' + PartEditTime
+				ELSE
+					:ls_lastDate + ' ' + PartEditTime
+				END ) >= :ls_nowTime 
+	USING	sqlpis	;
+	IF isNull(ll_PartEditNo) THEN 
+		ls_lastDate 	= f_pisr_nextworkday( ls_areaCode, ls_DivCode, ls_lastDate, ll_supplyTerm )	//다음작업일자
+		If ls_lastDate = '' Then 
+			fs_message 	= "WorkCalendar_Err"
+			Return -1
+		End If
+		ll_PartEditNo 	= 1
+	END IF
+	
+ELSEIF ll_supplyTerm > 1 THEN									//2.납입Term이 2일 이상인 경우 납입편수 = 1
+	ll_PartEditNo 	= 1
+	If fs_jobdate > ls_lastDate Then 
+		ls_lastDate = f_pisr_nextworkday( ls_areaCode, ls_DivCode, ls_lastDate, ll_supplyTerm ) //납입주기에의한 다음 납입일자
+		If ls_lastDate = '' Then 
+			fs_message 	= "WorkCalendar_Err"
+			Return -1
+		End If
+		If fs_jobdate > ls_lastDate Then ls_lastDate = fs_jobdate
+	End If
+END IF	
+
+////////////////////////////////////
+//발주시간계산
+////////////////////////////////////
+String	ls_orderDate, ls_orderTime
+String	ls_CycleApplyTo, ls_compTime
+String	ls_MaxDate = '9999.12.31'
+DateTime ldt_orderTime
+
+ls_CycleApplyTo = adw.GetItemString( ll_Row, 'cycle_applyto' )		//납입주기적용종료일자
+
+OrderTime_:
+ls_orderDate	 = ls_lastDate
+
+If ls_CycleApplyTo >= ls_lastDate Then 							//1.납입주기가 변경되지 않은경우
+  SELECT PartEditTime
+	 INTO :ls_OrderTime
+	 FROM TMSTPARTEDIT  
+	WHERE AreaCode 		= :ls_areaCode 		AND  
+			DivisionCode 	= :ls_DivCode  		AND  
+			SupplierCode 	= :ls_suppCode 		AND  
+			ApplyFrom 		= :ls_CycleApplyFrom	AND
+			PartEditNo		= :ll_PartEditNo
+	USING	sqlpis	;
+	If sqlpis.SqlCode <> 0 Then 
+		fs_message = "OrderTime_Err"
+//		MessageBox( "발주오류" , "발주시간 계산에 실패했습니다." , StopSign! )
+		Return -1
+	End If
+																				//	※	납입Term = 1 경우 발주일자 계산시 발주편수 계산완료		
+	If ll_supplyTerm > 1 And fs_jobdate = ls_lastDate Then 	//		납입Term > 1 경우 납입시간 경과
+		If ls_OrderTime >= '00:00' AND ls_OrderTime < '08:00' Then
+			ls_compTime = f_pisr_getdaybefore( ls_lastDate, 1 ) + ' ' + ls_OrderTime
+		Else 
+			ls_compTime = ls_lastDate + ' ' + ls_OrderTime
+		End If
+		If ls_compTime < ls_nowTime Then
+			ls_lastDate = f_pisr_nextworkday( ls_areaCode, ls_DivCode, ls_lastDate, ll_supplyTerm ) //납입주기에의한 다음 납입일자
+			If ls_lastDate = '' Then 
+				fs_message 	= "WorkCalendar_Err"
+				Return -1
+			End If
+			GoTo OrderTime_
+		End If
+	End If	
+Else 																			//2.납입주기가 변경된 경우
+	adw.SetRedraw(False)
+	adw.SetTransObject (sqlpis)
+	ll_Row = adw.Retrieve(ls_partKBNo, ls_lastDate)				//계산된 발주일자 기준의 간판정보
+	adw.SetRedraw(True)
+	If ll_Row = 0 Then 
+		fs_message = "KBStatus_Err"
+//		MessageBox( "발주오류" , "발주일자 기준의 간판정보를 읽는데 실패하였습니다." , StopSign! )
+		Return -1
+	End If
+
+//	ls_areaCode			= adw.GetItemString( ll_Row, 'areacode' )
+//	ls_DivCode			= adw.GetItemString( ll_Row, 'divisioncode' )
+//	ls_suppCode			= adw.GetItemString( ll_Row, 'suppliercode' )
+	ls_CycleApplyFrom = adw.GetItemString( ll_Row, 'cycle_applyfrom' )		//납입주기적용시작일자
+	ll_supplyTerm		= adw.GetItemNumber( ll_Row, 'supplyterm' )
+
+  SELECT Min(PartEditNo)
+    INTO :ll_PartEditNo
+    FROM TMSTPARTEDIT  
+   WHERE AreaCode 		= :ls_areaCode 		AND  
+         DivisionCode 	= :ls_DivCode  		AND  
+         SupplierCode 	= :ls_suppCode 		AND  
+         ApplyFrom 		= :ls_CycleApplyFrom	AND
+			( 	CASE WHEN PartEditTime >= '00:00' AND PartEditTime < '08:00' THEN 
+					Convert(Char(10), DateAdd(Day, 1, Convert(DateTime, :ls_lastDate,102)), 102) + ' ' + PartEditTime
+				ELSE
+					:ls_lastDate + ' ' + PartEditTime
+				END ) >= :ls_nowTime 
+	USING	sqlpis	;
+
+	IF isNull(ll_PartEditNo) THEN 
+		ls_orderDate 	= f_pisr_nextworkday( ls_areaCode, ls_DivCode, ls_lastDate, ll_supplyTerm )	//다음 작업일
+		If ls_orderDate = '' Then 
+			fs_message 	= "WorkCalendar_Err"
+			Return -1
+		End If
+		ll_PartEditNo 	= 1
+	END IF
+
+  SELECT PartEditTime
+	 INTO :ls_OrderTime
+	 FROM TMSTPARTEDIT  
+	WHERE AreaCode 		= :ls_areaCode 		AND  
+			DivisionCode 	= :ls_DivCode  		AND  
+			SupplierCode 	= :ls_suppCode 		AND  
+			ApplyFrom 		= :ls_CycleApplyFrom	AND
+			PartEditNo		= :ll_PartEditNo
+	USING	sqlpis	;
+	If sqlpis.SqlCode <> 0 Then 
+		fs_message = "OrderTime_Err"
+//		MessageBox( "발주오류" , "발주시간 계산에 실패했습니다." , StopSign! )
+		Return -1
+	End If
+End If
+
+If ls_OrderTime >= '00:00' AND ls_OrderTime < '08:00' Then
+	ls_compTime = f_pisr_getdaybefore( ls_orderDate, 1 )
+Else 
+	ls_compTime = ls_orderDate
+End If
+ldt_orderTime	= DateTime(Date(ls_compTime), Time(ls_OrderTime))
+adw.SetItem( ll_Row, 'partorderdate', ls_orderDate )		//Shift 단위 기준일자
+adw.SetItem( ll_Row, 'partordertime', ldt_orderTime )		//실제발주시간
+
+///////////////////////////////////////
+//납입예정 일자 및 시간 계산
+///////////////////////////////////////
+Long 		ll_supplyEditNo, ll_supplyCycle, ll_dayAfter, ll_forecastEditNo
+String	ls_forecastDate, ls_forecastTime, ls_forecastcompTime
+DateTime	ldt_forecastTime
+
+ll_supplyEditNo		= adw.GetItemNumber(ll_Row, 'supplyeditno')
+ll_supplyCycle			= adw.GetItemNumber(ll_Row, 'supplycycle')
+
+If ll_supplyTerm = 1 Then 
+	If ll_supplyEditNo= 1 And ll_supplyCycle = 1 Then 
+		ll_dayAfter = 1 
+	Else 
+		ll_dayAfter = Truncate( ( ll_PartEditNo + ll_supplyCycle - 1) / ll_supplyEditNo, 0 ) 
+	End If	
+	ll_forecastEditNo	= Mod( ( ll_PartEditNo + ll_supplyCycle ), ll_supplyEditNo )
+	If ll_forecastEditNo = 0 Then ll_forecastEditNo = ll_supplyEditNo
+Else
+	ll_dayAfter			= ll_supplyTerm * ll_supplyCycle
+	ll_forecastEditNo = 1
+End If
+
+ls_forecastDate = f_pisr_nextworkday( ls_areaCode, ls_DivCode, ls_OrderDate, ll_dayAfter )
+If ls_forecastDate = '' Then 
+	fs_message 	= "WorkCalendar_Err"
+	Return -1
+End If
+
+  SELECT PartEditTime
+	 INTO :ls_forecastTime
+	 FROM TMSTPARTEDIT  
+	WHERE AreaCode 		= :ls_areaCode 		AND  
+			DivisionCode 	= :ls_DivCode  		AND  
+			SupplierCode 	= :ls_suppCode 		AND  
+			ApplyFrom 		= :ls_CycleApplyFrom	AND
+			PartEditNo		= :ll_forecastEditNo
+	USING	sqlpis	;
+If sqlpis.SqlCode <> 0 Then 
+	fs_message = "ForecastTime_Err"
+//	MessageBox( "발주오류" , "납입예정시간 계산에 실패했습니다." , StopSign! )
+	Return -1
+End If
+
+If ls_forecastTime >= '00:00' AND ls_forecastTime < '08:00' Then
+	ls_forecastcompTime = f_pisr_getdaybefore( ls_forecastDate, 1 ) 
+Else 
+	ls_forecastcompTime = ls_forecastDate 
+End If
+ldt_forecastTime	= DateTime(Date(ls_forecastcompTime), Time(ls_forecastTime))
+adw.SetItem(ll_Row, 'partforecastdate'		, ls_forecastDate)		//납입예정일자(Shift단위일자:편수정보관리를위해필요)
+adw.SetItem(ll_Row, 'partforecasteditno'	, ll_forecastEditNo)		//납입예정편수
+adw.SetItem(ll_Row, 'partforecasttime'		, ldt_forecastTime)		//납입예정TIME(실제납입예정시간)
+
+return 0
+
+
+end function
+

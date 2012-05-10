@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_invqty1.srf
+$PBExportComments$발주전산번호(입고DB)별 입고량 SUM
+global type f_get_invqty1 from function_object
+end type
+
+forward prototypes
+global function decimal f_get_invqty1 (string as_srno, string as_srno1)
+end prototypes
+
+global function decimal f_get_invqty1 (string as_srno, string as_srno1);Dec{1} ld_tqty4
+
+SELECT value(sum("PBINV"."INV401"."TQTY4"),0)  
+ INTO :ld_tqty4  
+ FROM "PBINV"."INV401"  
+WHERE ( "PBINV"."INV401"."COMLTD" = '01')       AND ( "PBINV"."INV401"."SLIPTYPE" = 'RP')       AND
+      ( "PBINV"."INV401"."SRNO"   = :as_srno  ) AND ( "PBINV"."INV401"."SRNO1"    = :as_srno1 ) using sqlca ;
+if sqlca.sqlcode <> 0 then
+	ld_tqty4 = 0
+end if	
+
+return ld_tqty4
+end function
+

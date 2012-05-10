@@ -1,0 +1,15 @@
+$PBExportHeader$d_pisf_scan.srd
+$PBExportComments$Scanning Code( 간판번호 또는 납품표번호 Scanning )
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=144 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=scancode dbname="ScanCode" )
+ )
+text(band=detail alignment="1" text="바코드품번:" border="0" color="8388608" x="0" y="40" height="72" width="462" html.valueishtml="0"  name=scancode_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="2" text="" border="5" color="65535" x="489" y="0" height="140" width="1179" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-20" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="0" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="0" color="65535" x="489" y="12" height="120" width="1166" format="[general]" html.valueishtml="0"  name=scancode visible="1" edit.limit=0 edit.case=upper edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-20" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="0" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

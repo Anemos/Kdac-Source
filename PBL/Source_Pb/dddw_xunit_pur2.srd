@@ -1,0 +1,27 @@
+$PBExportHeader$dddw_xunit_pur2.srd
+$PBExportComments$단위(공통코드DB ) (cogubun = 'DAC070')
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=coitname dbname="COITNAME" initial=" " )
+ column=(type=char(50) updatewhereclause=yes name=coflname dbname="COFLNAME" )
+ column=(type=char(10) updatewhereclause=yes name=cocode2 dbname="COCODE2" initial=" " )
+ retrieve="SELECT ' ' AS COITNAME, ' ' AS COFLNAME, ' ' AS COCODE2
+FROM PBPUR.PURDUM
+WHERE 1 = 1
+UNION
+SELECT ~"PBCOMMON~".~"DAC002~".~"COITNAME~" as COITNAME, 
+		~"PBCOMMON~".~"DAC002~".~"COFLNAME~" AS COFLNAME,            
+		{fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,2)} as COCODE2   
+		
+ FROM ~"PBCOMMON~".~"DAC002~"  
+WHERE ~"PBCOMMON~".~"DAC002~".~"COMLTD~" = '01'  
+ AND ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'DAC070'  
+ORDER BY 3" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="73" format="[general]" html.valueishtml="0"  name=cocode2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="82" y="0" height="60" width="1600" format="[general]" html.valueishtml="0"  name=coflname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

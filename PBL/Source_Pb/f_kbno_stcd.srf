@@ -1,0 +1,42 @@
+$PBExportHeader$f_kbno_stcd.srf
+$PBExportComments$간판번호에 대한 상태코드(ag, 간판번호, 구분)
+global type f_kbno_stcd from function_object
+end type
+
+forward prototypes
+global function string f_kbno_stcd (string as_kbno, string as_gubun)
+end prototypes
+
+global function string f_kbno_stcd (string as_kbno, string as_gubun);//////////////////////////////////////////////////////////////////////////
+//                                                    
+// arg    : 간판번호/gubun('1'- 간판구분, '2'-간판발행여부, '3'-상태코드 /
+// Return : 진행상태 간판수                           
+//                                                    
+//////////////////////////////////////////////////////////////////////////
+
+String ls_kbtype, ls_prtcd, ls_stcd
+
+
+SELECT A."KBTYPE", A."PRTCD", A."STCD"
+  INTO :ls_kbtype, :ls_prtcd, :ls_stcd
+  FROM "PBINV"."INV606" A
+WHERE A."COMLTD" = '01' AND A."KBNO" = :as_kbno Using SQLCA ;
+		
+If Sqlca.SqlCode <> 0 Then 
+	Return ''
+end if
+
+CHOOSE CASE as_gubun
+		CASE '1'
+			Return ls_kbtype        
+		CASE '2'
+			Return ls_prtcd	
+		CASE '3'
+			Return ls_stcd
+		CASE ELSE
+			Return ''
+END CHOOSE
+
+
+end function
+

@@ -1,0 +1,153 @@
+$PBExportHeader$f_get_yuncha.srf
+$PBExportComments$연차갯수(empno, xdate, ref gunro, ref gumu, ref crt, ref add, ref use, ref ufrdt) return remain
+global type f_get_yuncha from function_object
+end type
+
+forward prototypes
+global function integer f_get_yuncha (string as_empno, string as_xdate, ref integer ai_gunro, ref integer ai_gunmu, ref integer ai_crt, ref integer ai_add, ref integer ai_use, ref string as_tfrdt, ref string as_ttodt, ref string as_frdt)
+end prototypes
+
+global function integer f_get_yuncha (string as_empno, string as_xdate, ref integer ai_gunro, ref integer ai_gunmu, ref integer ai_crt, ref integer ai_add, ref integer ai_use, ref string as_tfrdt, ref string as_ttodt, ref string as_frdt);string ls_gubun, ls_yunchadt, ls_gunfdt, ls_guntdt, ls_sexgb, ls_entdt
+string ls_tfrdt, ls_ttodt, ls_frdt, ls_yy, ls_mm
+Int li_tcnt, li_gunrocnt, li_gunmucnt, li_crt, li_add, li_use
+Dec ld_yul
+
+ai_gunro = 0
+ai_gunmu = 0
+ai_crt = 0
+ai_add = 0 
+ai_use = 0
+as_tfrdt = ''   //출근율대상시작일
+as_ttodt  = ''  //출근율대상마지막일
+as_frdt = ''    //사용가능일
+
+select pegubun1, peyuncha, pegunfdt, peguntdt, persex , peentdt 
+into :ls_gubun, :ls_yunchadt, :ls_gunfdt, :ls_guntdt, :ls_sexgb ,:ls_entdt
+from pbper.per001
+where peempno = :as_empno
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	return 0
+End if
+
+//연차발생일
+
+//사용기간 
+if Mid(ls_yunchadt,5,4) <= Mid(as_xdate,5,4) then                           
+	ls_frdt = mid(as_xdate,1,4) + Mid(ls_yunchadt,5,4)
+else	
+	ls_frdt = string(dec(mid(as_xdate,1,4))-1) + Mid(ls_yunchadt,5,4)
+end if
+
+//연차발생기간.. tfrdt,ttodt
+ls_tfrdt = string(dec(mid(ls_frdt,1,4))-1) + Mid(ls_yunchadt,5,4)
+ls_ttodt = f_relativedate(ls_frdt,-1)
+
+if ls_yunchadt > ls_tfrdt then //연차발생미대상..1년미경과..
+	return 0
+End if
+
+
+if ls_gubun <> '1' then //생산직
+		
+	//소정근로일
+	select count(aa.dgempno) into :li_gunrocnt
+	from delabo.labtac aa, delabo.labmaa bb
+	where aa.dgyy || aa.dgmm || aa.dgdd = bb.ghdt
+	  and aa.dgyy || aa.dgmm || aa.dgdd between  :ls_tfrdt  and :ls_ttodt
+	  and aa.dgcd2r || aa.dgcd3r Not in ('L2','M3','P1','P2','Q1','99')
+	  and aa.dgempno = :as_empno 
+	  and bb.gdiv = ''
+	  and bb.ghgb = ''
+	using sqlcc;
+	
+	//근무일
+	select count(aa.dgempno) into :li_gunmucnt
+	from delabo.labtac aa, delabo.labmaa bb
+	where aa.dgyy || aa.dgmm || aa.dgdd = bb.ghdt
+	  and aa.dgyy || aa.dgmm || aa.dgdd between  :ls_tfrdt  and :ls_ttodt
+	  and aa.dgcd2r || aa.dgcd3r Not in ('K1','K2','K3','L2','M1','M2','M3','P1','P2','Q1','99')
+	  and aa.dgempno = :as_empno 
+	  and bb.gdiv = ''
+	  and bb.ghgb = ''
+	using sqlcc;
+	
+	select count(dgempno) into :li_use
+	from delabo.labtac
+	where dgempno = :as_empno and 
+			dgcd2r = 'R' and dgcd3r = '2' and
+			dgyy || dgmm || dgdd between :ls_frdt and :as_xdate
+	using sqlcc;
+	
+else //사무직
+	
+	//소정근로일
+	select count(aa.dsempno) into :li_gunrocnt
+	from delabo.labtaf aa, delabo.labmaa bb
+	where aa.dsyy || aa.dsmm || aa.dsdd = bb.ghdt
+	  and aa.dsyy || aa.dsmm || aa.dsdd between  :ls_tfrdt  and :ls_ttodt
+	  and aa.dscd2r || aa.dscd3r Not in ('L2','M3','P2','P1','Q1','99')
+	  and aa.dsempno = :as_empno 
+	  and bb.gdiv = ''
+	  and bb.ghgb = ''
+	using sqlcc;
+	
+	//근무일
+	select count(aa.dsempno) into :li_gunmucnt
+	from delabo.labtaf aa, delabo.labmaa bb
+	where aa.dsyy || aa.dsmm || aa.dsdd = bb.ghdt
+	  and aa.dsyy || aa.dsmm || aa.dsdd between  :ls_tfrdt  and :ls_ttodt
+	  and aa.dscd2r || aa.dscd3r Not in ('K1','K2','K3','L2','M1','M2','M3','P2','P1','Q1','99')
+	  and aa.dsempno = :as_empno 
+	  and bb.gdiv = ''
+	  and bb.ghgb = ''
+	using sqlcc;	
+	
+	select count(dsempno) into :li_use
+	from delabo.labtaf
+	where dsempno = :as_empno and 
+			dscd2r = 'R' and dscd3r = '2' and
+			dsyy || dsmm || dsdd between :ls_frdt and :as_xdate
+	using sqlcc;	
+end if
+
+if li_gunrocnt = 0 then
+	return 0
+End if
+
+ld_yul = li_gunmucnt / li_gunrocnt * 100
+
+// 근태가 발생하지 않을 경우 10개 기본 발생
+// 95일 경우 9개
+// 90일 경우 8개
+choose case ld_yul
+	case 100
+		li_crt = 10
+	case is >= 95 
+		li_crt = 9
+	case is >= 90 
+		li_crt = 8
+	case else
+		li_crt = 0
+end choose
+
+// 근속년수에 따라 가산갯수 발생
+li_add =  dec(Mid(ls_frdt,1,4)) - dec(Mid(ls_yunchadt,1,4))  - 1
+
+if li_crt < 1 then
+   li_add = 0
+End if
+
+ai_gunro = li_gunrocnt
+ai_gunmu = li_gunmucnt
+ai_crt   = li_crt
+ai_add   = li_add
+ai_use   = li_use
+as_tfrdt = ls_tfrdt
+as_ttodt  = ls_ttodt
+as_frdt  = ls_frdt
+
+return li_crt + li_add - li_use 
+end function
+

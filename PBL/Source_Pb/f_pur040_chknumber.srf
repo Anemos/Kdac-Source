@@ -1,0 +1,16 @@
+$PBExportHeader$f_pur040_chknumber.srf
+$PBExportComments$숫자null체크('0'리턴)
+global type f_pur040_chknumber from function_object
+end type
+
+forward prototypes
+global function string f_pur040_chknumber (string as_data)
+end prototypes
+
+global function string f_pur040_chknumber (string as_data);if isnull(as_data) or isnumber(trim(as_data)) = false then
+	return  '0'
+else
+	return trim(as_data)
+end if
+end function
+

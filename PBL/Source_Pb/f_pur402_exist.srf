@@ -1,0 +1,28 @@
+$PBExportHeader$f_pur402_exist.srf
+$PBExportComments$양산품발주 존재유무 CHECK
+global type f_pur402_exist from function_object
+end type
+
+forward prototypes
+global function integer f_pur402_exist (string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function integer f_pur402_exist (string as_plant, string as_div, string as_itno);/******************************************************************/
+/* Argument value arg_key : 품번                                  */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Int li_cnt
+
+SELECT count("PBPUR"."PUR402"."ITNO")  INTO :li_cnt
+ FROM  "PBPUR"."PUR402", "PBPUR"."PUR301"  
+   WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) and ( "PBPUR"."PUR402"."XPLANT" = :as_plant ) and
+			( "PBPUR"."PUR402"."DIV" = :as_div ) and ( "PBPUR"."PUR402"."ITNO" = :as_itno ) using sqlca;
+if li_cnt <= 0 then 
+	return -1
+end if
+
+return 1
+
+end function
+

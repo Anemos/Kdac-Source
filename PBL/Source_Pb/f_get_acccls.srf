@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_acccls.srf
+$PBExportComments$생산,자재 품번의 계정코드 return
+global type f_get_acccls from function_object
+end type
+
+forward prototypes
+global function string f_get_acccls (string a_s_div, string a_s_itno)
+end prototypes
+
+global function string f_get_acccls (string a_s_div, string a_s_itno);string l_s_cls
+
+SELECT "PBINV"."INV101"."CLS" INTO :l_s_cls
+ FROM  "PBINV"."INV101"  
+WHERE  "PBINV"."INV101"."COMLTD"  = :g_s_company and
+       "PBINV"."INV101"."XPLANT"||"PBINV"."INV101"."COSTDIV" = :a_s_div     and
+       "PBINV"."INV101"."ITNO"    = :a_s_itno    using sqlca;
+if sqlca.sqlcode <> 0 then
+	l_s_cls = '**'
+end if
+
+return l_s_cls
+end function
+

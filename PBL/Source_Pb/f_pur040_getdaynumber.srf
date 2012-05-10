@@ -1,0 +1,22 @@
+$PBExportHeader$f_pur040_getdaynumber.srf
+$PBExportComments$스트링일자를요일넘버로변환
+global type f_pur040_getdaynumber from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_getdaynumber (string as_date)
+end prototypes
+
+global function integer f_pur040_getdaynumber (string as_date);date ldate_1
+string ls_date
+int li_daynumber
+
+ldate_1 = date(string(as_date, "@@@@-@@-@@"))
+li_daynumber = daynumber(ldate_1)
+return li_daynumber
+
+//ls_date = string(ldate_1, "yyyy-mm-dd")
+//ls_date = mid(ls_date,1,4) + mid(ls_date,6,2) + mid(ls_date,9,2)
+//return ls_date
+end function
+

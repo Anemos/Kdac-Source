@@ -1,0 +1,30 @@
+$PBExportHeader$f_get_accperbk.srf
+$PBExportComments$사원 은행(경리용) return
+global type f_get_accperbk from function_object
+end type
+
+forward prototypes
+global function string f_get_accperbk (string a_s_empno)
+end prototypes
+
+global function string f_get_accperbk (string a_s_empno);string l_s_bank
+
+SELECT "PBCOMMON"."DAC002"."COITNAMEE"  
+  INTO :l_s_bank
+FROM   "PBCOMMON"."DAC003", "PBCOMMON"."DAC002"
+WHERE  "PBCOMMON"."DAC002"."COMLTD" = :g_s_company and 
+       "PBCOMMON"."DAC003"."PEBANK" = "PBCOMMON"."DAC002"."COCODE" and 
+		 "PBCOMMON"."DAC002"."COGUBUN" = 'ACC810' and 
+        "PBCOMMON"."DAC003"."PEEMPNO" = :a_s_empno  using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_bank = ' '
+end if
+
+//if l_s_bank = '21' or l_s_bank = '26' then
+//	l_s_bank = '88'
+//end if
+ 
+return l_s_bank
+ 
+end function
+

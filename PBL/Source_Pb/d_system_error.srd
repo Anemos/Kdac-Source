@@ -1,0 +1,33 @@
+$PBExportHeader$d_system_error.srd
+$PBExportComments$½Ã½ºÅÛ ¿¡·¯¸¦ º¸¿©ÁÖ´Â DataWindow
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 0 print.margin.right = 0 print.margin.top = 0 print.margin.bottom = 0 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=4 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=972 color="536870912" )
+table(column=(type=char(10) updatewhereclause=yes name=errornum dbname="enum" )
+ column=(type=char(255) updatewhereclause=yes name=message dbname="Message" )
+ column=(type=char(255) updatewhereclause=yes name=where dbname="where" )
+ column=(type=char(255) updatewhereclause=yes name=object dbname="Object" )
+ column=(type=char(255) updatewhereclause=yes name=event dbname="event" )
+ column=(type=char(255) updatewhereclause=yes name=line dbname="line" )
+ )
+text(band=detail alignment="0" text="ÁË¼ÛÇÕ´Ï´Ù!ÇÁ·Î±×·¥¿¡¼­ ¿À·ù°¡ ¹ß»ýÇÏ¿´½À´Ï´Ù.À§ÀÇ ³»¿ëÀ» Meno¶Ç´Â PrintÇÑ ÈÄ½Ã½ºÅÛ°³¹ßÆÀ¿¡ ¿¬¶ô¹Ù¶ø´Ï´Ù." border="0" color="0" x="302" y="676" height="272" width="1157" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Error ¹øÈ£ :" border="0" color="41943040" x="37" y="12" height="68" width="384" html.valueishtml="0"  name=enum_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Error ³»¿ë :" border="0" color="41943040" x="37" y="104" height="68" width="384" html.valueishtml="0"  name=message_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="41943040" x="439" y="12" height="60" width="229" format="[general]" html.valueishtml="0"  name=errornum visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="41943040" x="439" y="104" height="168" width="1358" format="[general]" html.valueishtml="0"  name=message visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autovscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="439" y="304" height="60" width="1358" format="[general]" html.valueishtml="0"  name=where visible="1" height.autosize=yes edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Window¸í:" border="0" color="41943040" x="37" y="304" height="68" width="384" html.valueishtml="0"  name=where_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="41943040" x="439" y="396" height="60" width="1358" format="[general]" html.valueishtml="0"  name=object visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Object :" border="0" color="41943040" x="37" y="396" height="68" width="384" html.valueishtml="0"  name=object_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="41943040" x="439" y="488" height="60" width="1358" format="[general]" html.valueishtml="0"  name=event visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Event :" border="0" color="41943040" x="37" y="488" height="68" width="384" html.valueishtml="0"  name=event_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="41943040" x="439" y="580" height="60" width="229" format="[general]" html.valueishtml="0"  name=line visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+text(band=detail alignment="1" text="Line ¹øÈ£ :" border="0" color="41943040" x="37" y="580" height="68" width="384" html.valueishtml="0"  name=line_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+htmltable(border="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

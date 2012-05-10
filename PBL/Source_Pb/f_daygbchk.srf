@@ -1,0 +1,30 @@
+$PBExportHeader$f_daygbchk.srf
+$PBExportComments$휴일구분 return
+global type f_daygbchk from function_object
+end type
+
+forward prototypes
+global function string f_daygbchk (string a_s_date, string a_s_bumun)
+end prototypes
+
+global function string f_daygbchk (string a_s_date, string a_s_bumun);string l_s_gb
+
+select ghgb into :l_s_gb
+from delabo.labmaa
+where ghdt = :a_s_date
+  and gdiv = :a_s_bumun
+using sqlcc;
+
+//if l_s_gb <> ' ' then
+//   l_s_gb = 'S' 
+//end if
+IF SQLCC.SQLCODE <> 0 THEN
+	MESSAGEBOX('Calendar(' + a_s_date +') 조회 Error','시스템개발팀으로 연락주세요')
+	return ' '
+end if
+IF ISNULL(trim(l_s_gb)) or trim(l_s_gb) ='' then
+	l_s_gb = ' '
+end if
+return l_s_gb
+end function
+

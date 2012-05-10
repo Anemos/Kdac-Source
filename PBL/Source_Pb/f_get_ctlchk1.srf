@@ -1,0 +1,44 @@
+$PBExportHeader$f_get_ctlchk1.srf
+$PBExportComments$현대전자부품 마감일 check(~~2009.11까지 사용)
+global type f_get_ctlchk1 from function_object
+end type
+
+forward prototypes
+global function integer f_get_ctlchk1 (string arg_cymd)
+end prototypes
+
+global function integer f_get_ctlchk1 (string arg_cymd);/******************************************************************/
+/* 대우전자부품 10일/20일/말일 마감일 check                       */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Dec ld_tdte, ld_date
+
+ld_tdte = dec(mid(arg_cymd,7,2)) // 수불일
+ld_date = dec(mid(g_s_date,7,2)) // 현재일
+
+if mid(arg_cymd,1,6) <> mid(g_s_date,1,6) then
+	return -1
+else
+	
+	if ld_date <= 10 then
+		if ld_tdte > ld_date then
+			return -1
+		end if
+		
+	elseif ld_date >= 11  and  ld_date <= 20 then		
+		if ld_tdte < 11 or ld_tdte > ld_date then
+			return -1
+		end if
+		
+	elseif ld_date >= 21  then
+		if ld_tdte < 21 or ld_tdte > ld_date then
+			return -1
+		end if
+	end if
+end if	
+
+return 1
+
+end function
+

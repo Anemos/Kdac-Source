@@ -1,0 +1,57 @@
+$PBExportHeader$f_dw_getheaderlabel.srf
+$PBExportComments$Determine appropriate header value for a column
+global type f_dw_getheaderlabel from function_object
+end type
+
+forward prototypes
+global function string f_dw_getheaderlabel (datawindow adw_1, string as_colname)
+end prototypes
+
+global function string f_dw_getheaderlabel (datawindow adw_1, string as_colname);////////////////////////////////////////////////////////////////////////
+//
+//   Function : f_dw_getheaderlabel
+//
+//    Purpose : 특정column에 해당되는 header를 구한다.
+//					 헤더를 찾아가는 순서는 
+//					 첫번째 'column name' + '_t'인 object를 찾고
+//					 두번째 'column name' + '.tag'의 값을 찾고 
+//					 세번째 이도 저도 아니면 column name을 반환한다
+//					 그런데, 현재의 Class체계에서 'column name' + '_4자리'가
+//					 있을수 있으므로 header band에서 'column name'을 포함한 
+//				    static text가 있으면 이를 header로 간주한다
+//
+//  Arguments : 	
+//					adw_1			... datawindow containing column
+//					as_colname	... column name
+//
+//    Returns : string	... appropriate header label or empty string if error
+//
+//        Log :
+//
+//             DATE        WHO           WHAT
+//            ------      -----     -------------------------------------
+//					powersoft					init.
+//					1997-05-05	dmshin		확인방법 변경
+//////////////////////////////////////////////////////////////////////////
+STRING	ls_header_label		//반환될 header label
+
+ls_header_label = adw_1.Describe(as_colname+"_t.text")
+
+IF ls_header_label <> "!" AND ls_header_label <> "?" AND Trim(ls_header_label) <> "" THEN
+	RETURN ls_header_label
+ELSE
+	ls_header_label = adw_1.Describe(as_colname+".tag")
+	IF ls_header_label <> "?" AND Trim(ls_header_label) <> "" AND ls_header_label <> "!" THEN
+		RETURN ls_header_label
+	ELSE
+		IF ls_header_label <> "!" THEN
+			ls_header_label = as_colname
+			RETURN ls_header_label
+		ELSE
+			MessageBox("Error","'" + as_colname + "' is a non-existent column name.  This column name will not be included in the list.")
+			RETURN ""
+		END IF
+	END IF
+END IF
+end function
+

@@ -1,0 +1,67 @@
+$PBExportHeader$f_get_accdr11.srf
+$PBExportComments$필수입력(원금) editing 여부 return
+global type f_get_accdr11 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr11 (string a_acccode, string a_drcr, decimal a_befamt, decimal a_amt, decimal a_orgiamt, string a_deci)
+end prototypes
+
+global function string f_get_accdr11 (string a_acccode, string a_drcr, decimal a_befamt, decimal a_amt, decimal a_orgiamt, string a_deci);dec    l_n_amt, l_n_amt1, l_n_amt2
+string l_s_err = ' '
+
+if ( a_acccode >= 'A3030101' and a_acccode <= 'A3030199' and a_drcr = '1' ) or &
+   ( a_acccode >= 'H1080101' and a_acccode <= 'H1080199' and a_drcr = '2' ) then
+	if a_acccode = 'A3030112' or a_acccode = 'A3030108' or a_acccode = 'A3030109' or a_acccode = 'H1080103' &
+	   or a_acccode = 'H1080104' or a_acccode = 'H1080105' or a_acccode = 'H1080106' then
+		l_s_err = ''
+	elseif ( a_acccode  = 'A3030111' or a_acccode ='A3030107' or a_acccode ='H1080108' or a_acccode='A3030106') and a_deci = '*'then
+		if a_orgiamt =  0 then
+			l_s_err = 'e'
+		else
+			l_s_err = ''
+      end if 
+//		l_n_amt = a_amt
+//		l_n_amt1 =  l_n_amt * (1 - 0.2) * 10
+//		l_n_amt2 =  l_n_amt * (1 + 0.2) * 10
+//		if a_orgiamt >= l_n_amt1 and a_orgiamt <= l_n_amt2 then
+//			l_s_err = ''
+//		else
+//			l_s_err = 'e'
+//		end if
+   else
+		if a_acccode = 'A3030113' then
+			if a_orgiamt =  0 then
+		    	l_s_err = 'e'
+	   	else
+			   l_s_err = ''
+         end if 
+//			l_n_amt = a_befamt
+//			 
+//		   l_n_amt1 =  l_n_amt * (1 - 0.2) * 10
+//		   l_n_amt2 =  l_n_amt * (1 + 0.2) * 10
+//		   if a_orgiamt >= l_n_amt1 and a_orgiamt <= l_n_amt2 then
+//			  l_s_err = ''
+//		   else
+//			  l_s_err = 'e'
+//		   end if
+		else
+			l_n_amt = a_amt
+			l_n_amt1 = ( l_n_amt - 1) * 10
+		   l_n_amt2 = ( l_n_amt + 10 ) * 10
+		   if a_orgiamt >= l_n_amt1 and a_orgiamt <= l_n_amt2 then
+			  l_s_err = ''
+		   else
+			  l_s_err = 'e'
+		   end if
+		end if
+	end if
+else
+	if a_orgiamt = 0 then
+		l_s_err = 'e'
+	end if
+end if
+
+return l_s_err
+end function
+

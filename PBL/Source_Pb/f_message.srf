@@ -1,0 +1,31 @@
+$PBExportHeader$f_message.srf
+$PBExportComments$Message Function
+global type f_message from function_object
+end type
+
+forward prototypes
+global function string f_message (string ag_msgcode)
+end prototypes
+
+global function string f_message (string ag_msgcode);//////////////////////////////////////////////////////
+//							Message Code Call
+//
+//						Input  => Message Code(string 4자리)
+//						Output => Message (string)
+//////////////////////////////////////////////////////
+
+string  l_s_message, l_s_msgcode
+
+SELECT "KOR_WORD"  
+  INTO :l_s_message  
+  FROM "PBCOMMON"."COMM240"  
+ WHERE "WORD_ID" = :ag_msgcode
+ using sqlca;
+
+if f_spacechk(l_s_message) = -1 then
+	l_s_message = "[Message Code Error] 정보시스템팀으로 연락바랍니다."
+end if
+
+return l_s_message
+end function
+

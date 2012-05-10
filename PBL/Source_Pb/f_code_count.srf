@@ -1,0 +1,49 @@
+$PBExportHeader$f_code_count.srf
+$PBExportComments$코드존재유무(숫자)를 반환
+global type f_code_count from function_object
+end type
+
+forward prototypes
+global function long f_code_count (string as_table, string as_col[], string as_data[])
+end prototypes
+
+global function long f_code_count (string as_table, string as_col[], string as_data[]);///////////////////////////////////////////////////////////////////////////////
+//                                                                           
+// Description :  테이블에 조건을 만족하는 데이타가 몇개인지 확인한다.
+//                                                                           
+// return  :  long    데이타 숫자
+//
+// Usage   :  f_code_count("item_master","item_no","A00000001")
+//                                                                           
+///////////////////////////////////////////////////////////////////////////////
+string ls_data,ls_sql,ls_where
+int i,li_col_num
+long ll_cnt
+//DynamicStagingArea sqlsa
+
+if UpperBound(as_col) = 0 then return 0
+
+as_table = Upper(as_table)
+for i = 1 to UpperBound(as_col)
+	as_col[i] = Upper(as_col[i])
+Next
+
+//sql문장 생성
+ls_where = ' WHERE ' + as_col[1] + ' = ' + "'" + as_data[1] + "'"
+for i = 2 to UpperBound(as_col)
+	ls_where = ls_where + ' And ' + as_col[i] + ' = ' + "'" + as_data[i] + "'"	
+Next
+
+ls_sql = 'SELECT COUNT(*) FROM ' + as_table + ls_where
+
+// Set up select statement using passed parameters
+DECLARE dyn_cursor DYNAMIC CURSOR FOR sqlsa;
+PREPARE sqlsa FROM :ls_sql Using SqlCmms;
+OPEN DYNAMIC dyn_cursor;  
+Fetch dyn_cursor into :ll_cnt;
+CLOSE dyn_cursor;
+
+return ll_cnt
+
+end function
+

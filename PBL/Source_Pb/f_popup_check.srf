@@ -1,0 +1,43 @@
+$PBExportHeader$f_popup_check.srf
+$PBExportComments$popup menu enable/disable check
+global type f_popup_check from function_object
+end type
+
+forward prototypes
+global function string f_popup_check (string arg_win_id)
+end prototypes
+
+global function string f_popup_check (string arg_win_id);String       l_s_usewin, l_s_useyesno = "NO"
+
+//∞≥¿Œ∫∞
+DECLARE COMM140_CUR CURSOR FOR
+ SELECT {fn ltrim({fn rtrim("PBCOMMON"."COMM140"."USE_WIN")})}
+   FROM "PBCOMMON"."COMM140"
+  WHERE "PBCOMMON"."COMM140"."EMP_NO" = :g_s_empno
+  USING SQLCA;
+
+OPEN COMM140_CUR ;
+
+DO WHILE TRUE
+	FETCH COMM140_CUR INTO :l_s_usewin ;
+	
+	IF sqlca.sqlcode <> 0 THEN
+		EXIT
+   END IF
+	
+	IF	l_s_usewin = mid(arg_win_id, 1, len(l_s_usewin)) THEN
+      l_s_useyesno = "YES"
+		EXIT
+	END IF
+LOOP
+CLOSE COMM140_CUR ;
+
+RETURN l_s_useyesno
+
+
+
+
+
+
+end function
+

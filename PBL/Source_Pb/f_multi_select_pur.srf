@@ -1,0 +1,44 @@
+$PBExportHeader$f_multi_select_pur.srf
+$PBExportComments$다중 row 선택
+global type f_multi_select_pur from function_object
+end type
+
+forward prototypes
+global function long f_multi_select_pur (ref datawindow ag_dw_1, ref long ag_row)
+end prototypes
+
+global function long f_multi_select_pur (ref datawindow ag_dw_1, ref long ag_row);////////////다중 Row 선택 ///////////////
+//아규먼트 : ref datawindow    ag_dw   //
+//           ref ag_row                //
+//////////////// 2001.03.28  [shine766]//
+
+long l_n_i , l_n_selected
+
+IF ag_row <= 0 Then	Return 0
+
+IF KeyDown(KeyShift!) Then
+	l_n_selected = ag_dw_1.GetSelectedRow(0)
+	IF l_n_selected > 0 Then
+		For l_n_i = Min(l_n_selected,ag_row) To Max(l_n_selected,ag_row)
+			 ag_dw_1.SelectRow(l_n_i,true)
+		Next
+	Else
+		ag_dw_1.SelectRow(ag_row,true)
+	End IF
+	
+ElseIF KeyDown(KeyControl!) Then
+	IF ag_dw_1.IsSelected(ag_row) Then
+		ag_dw_1.SelectRow(ag_row,False)
+	Else
+		ag_dw_1.SelectRow(ag_row,True)
+	End IF
+Else
+	ag_dw_1.SelectRow(0,False)
+	ag_dw_1.SelectRow(ag_row,True)
+End IF
+
+Return 1
+
+
+end function
+

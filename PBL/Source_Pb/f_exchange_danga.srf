@@ -1,0 +1,260 @@
+$PBExportHeader$f_exchange_danga.srf
+$PBExportComments$이체단가산정함수
+global type f_exchange_danga from function_object
+end type
+
+forward prototypes
+global function integer f_exchange_danga (string a_date)
+end prototypes
+
+global function integer f_exchange_danga (string a_date);string l_s_plant,l_s_div,l_s_explant,l_s_exdiv, l_s_pitno , l_s_citno , l_s_itno[50,300], l_s_chkit, l_s_year, l_s_month,l_s_chkyear
+string l_s_itclsb,l_s_srce,l_s_expt[50,300],l_s_pt[50,300],l_s_exdvsn[50,300],l_s_dvsn[50,300],l_s_return,l_s_beforeplant
+integer i , j , k , p , a_chk ,l_n_cnt,l_s_int_month
+decimal{3} l_s_cost, l_s_sellcost[],l_s_ciucan[]
+string l_s_exchk
+
+k = 0 
+p = 0
+l_s_year  = mid(a_date,1,4)
+l_s_month = mid(a_date,5,2)
+l_s_int_month = integer(l_s_month)  
+a_chk = 0
+// 10/05 품번들 Find Cursor Define
+declare invdaa_chk cursor for
+select "PBINV"."INV101"."XPLANT", "PBINV"."INV101"."DIV","PBINV"."INV101"."ITNO"  from "PBINV"."INV101"
+  where "PBINV"."INV101"."SRCE" = '05' AND "PBINV"."INV101"."COMLTD" = :g_s_company
+ // 		and "PBINV"."INV101"."XPLANT" = 'J' 
+using sqlca;
+// 10/05 품번들 Find Cursor Start
+open invdaa_chk ;
+	do while true
+		l_s_cost = 0
+		k = 0 
+		p = 0
+		fetch invdaa_chk into :l_s_plant,:l_s_div, :l_s_chkit ;
+		if sqlca.sqlcode <> 0 then
+		   exit
+		end if
+		l_s_explant = ''
+		l_s_exdiv   = ''
+		l_s_exchk   = ''
+// 10/05 품번의 이체전 공장의 판매단가 산정	 //
+   	select "PBPDM"."BOM001"."PEXPLANT","PBPDM"."BOM001"."PEXDV" into :l_s_explant,:l_s_exdiv from "PBPDM"."BOM001"
+     		where "PBPDM"."BOM001"."PCITN" = :l_s_chkit and "PBPDM"."BOM001"."PLANT" = :l_s_plant
+          		and "PBPDM"."BOM001"."PDVSN" = :l_s_div AND "PBPDM"."BOM001"."PCMCD" = :G_S_COMPANY AND
+//					    "PBPDM"."BOM001"."PEXDV" <> ' ' AND 
+        			    ( ( "PBPDM"."BOM001"."PEDTE" = ' '  and "PBPDM"."BOM001"."PEDTM" <= :a_date ) or  
+							( "PBPDM"."BOM001"."PEDTE" <> ' ' and "PBPDM"."BOM001"."PEDTM" <= :a_date and "PBPDM"."BOM001"."PEDTE" >= :a_date ))
+      using SQLCA ;
+		if f_spacechk(l_s_exdiv) = -1  then 
+			l_s_exchk = '1'
+			select cym,xplant,div into :l_s_chkyear,:l_s_explant,:l_s_exdiv  from pbsle.sle213
+				where itno = :l_s_chkit and cym <= :a_date and avgprc <> 0
+			group by	cym,xplant,div
+			order by	cym desc
+			using sqlca;
+			if f_spacechk(l_s_exdiv) = -1 then
+				select xyear,xplant,div into :l_s_chkyear, :l_s_explant,:l_s_exdiv  from PBINV.INV402
+					where itno = :l_s_chkit and xyear <= :a_date and costls <> 0
+				group by	xyear,xplant,div
+				order by	xyear desc
+				using sqlca;
+			   if f_spacechk(l_s_exdiv) = -1 then
+				  continue
+	       	  end if
+			end if
+		end if
+		l_s_chkyear = ''
+// 영업 판매 단가 DB Find		
+		select cym,avgprc into	
+					:l_s_chkyear,:l_s_cost
+		from pbsle.sle213
+			where comltd = '01' and xplant = :l_s_explant and div = :l_s_exdiv and 
+			      itno = :l_s_chkit and cym <= :a_date and avgprc <> 0
+		order by cym desc using sqlca;
+
+// 판매단가 = 0 일때 자재 이월 DB 의 가장 최근 입고 단가 Find
+  		if l_s_cost = 0 or isnull(l_s_cost) = true then
+			select xyear,costls
+				into :l_s_chkyear,:l_s_cost
+			from "PBINV"."INV402" 
+			where div  = :l_s_exdiv   and xplant   = :l_s_explant and
+				   itno = :l_s_chkit   and comltd   = :g_s_company and xyear <= :a_date and costls <> 0
+			order by xyear desc using sqlca;
+		end if
+		if l_s_cost = 0 or isnull(l_s_cost) =true then
+			continue
+		end if
+		// 계정,구입선 
+		select cls,srce into :l_s_itclsb,:l_s_srce from PBINV.INV402
+			where  xplant	= :l_s_explant 
+				and div		= :l_s_exdiv 
+				and itno		= :l_s_chkit 
+				and xyear  <= :a_date			using sqlca;
+
+		select count(*) into : l_n_cnt from "PBPDM"."BOM010"
+			WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and APLANT = :l_s_plant and
+			      ADVSN = :l_s_div and AITNO = :l_s_chkit
+		using sqlca;
+		if l_n_cnt > 0 then
+			update pbpdm.bom010
+				set acost = acost + :l_s_cost
+			WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and APLANT = :l_s_plant
+			  and ADVSN = :l_s_div and AITNO = :l_s_chkit
+			using sqlca;
+		else
+			insert into pbpdm.bom010
+				values (:g_s_company,:l_s_year,:l_s_month,:l_s_plant,:l_s_div,:l_s_chkit,'10','05',:l_s_cost) 
+			using sqlca;
+		end if
+		// 10/05 이체전 공장의 품번이 현재 이체단가에 존재 여부 check
+		select count(*) into :l_n_cnt from "PBPDM"."BOM010"
+			WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and & 
+			      ADVSN = :l_s_exdiv and AITNO = :l_s_chkit  and APLANT = :l_s_explant
+		using sqlca;
+		if l_n_cnt = 0 then
+			insert into pbpdm.bom010
+				values (:g_s_company,:l_s_year,:l_s_month,:l_s_explant,:l_s_exdiv,:l_s_chkit,:l_s_itclsb,:l_s_srce,0) 
+			using sqlca;
+		end if
+		
+		if l_s_exchk = '1' then
+			continue
+		end if
+		
+		l_s_pitno = l_s_chkit
+		l_s_beforeplant = l_s_plant
+      declare bomchk_cur cursor for 
+		  select "PBPDM"."BOM001"."PLANT","PBPDM"."BOM001"."PDVSN","PBPDM"."BOM001"."PPITN","PBPDM"."BOM001"."PEXPLANT",
+		         "PBPDM"."BOM001"."PEXDV" from "PBPDM"."BOM001"
+			  where "PBPDM"."BOM001"."PCITN" = :l_s_pitno AND
+        			  (( "PBPDM"."BOM001"."PEDTE" = ' '  and "PBPDM"."BOM001"."PEDTM" <= :a_date ) or  
+						( "PBPDM"."BOM001"."PEDTE" <> ' ' and "PBPDM"."BOM001"."PEDTM" <= :a_date and "PBPDM"."BOM001"."PEDTE" >= :a_date ))
+			  using SQLCA ;
+		
+		open bomchk_cur ;
+		  do while true
+			fetch bomchk_cur into :l_s_plant,:l_s_div,:l_s_citno,:l_s_explant,:l_s_exdiv ;
+			if sqlca.sqlcode <> 0 then
+			  exit
+			end if 
+			
+			if l_s_plant <> l_s_beforeplant and l_s_explant <> l_s_beforeplant then
+			   continue
+			end if
+
+			l_s_return = f_bom_get_inv402(l_s_plant,l_s_div,l_s_citno,a_date)
+						
+			if l_s_return = '10 / 02' then
+				i = 1
+				k = k + 1
+				l_s_pt[1,k]     = trim(l_s_plant)
+				l_s_expt[1,k]   = trim(l_s_explant)
+				l_s_dvsn[1,k]   = trim(l_s_div)
+				l_s_exdvsn[1,k] = trim(l_s_exdiv)
+				l_s_itno[1,k]   = trim(l_s_citno)
+				continue
+			end if
+			l_s_itclsb = trim(mid(l_s_return,1,2))
+			l_s_srce   = trim(mid(l_s_return,6,2))
+			select count(*) into : l_n_cnt from "PBPDM"."BOM010"
+			  WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and ADVSN = :l_s_div and 
+					  AITNO = :l_s_citno and APLANT = :l_s_plant
+			using sqlca;
+			if l_n_cnt = 0 then
+				insert into pbpdm.bom010
+					values (:g_s_company,:l_s_year,:l_s_month,:l_s_plant,:l_s_div,:l_s_citno,:l_s_itclsb,:l_s_srce,:l_s_cost) 
+				using sqlca;
+			else
+				update pbpdm.bom010
+					set acost = acost + :l_s_cost
+				where acmcd = :g_s_company and ayear = :l_s_year and amont = :l_s_month and & 
+					  advsn = :l_s_div and aitno = :l_s_citno    and aplant = :l_s_plant
+				using sqlca;
+			end if 
+			f_find_Exdiv(l_s_plant,l_s_div,l_s_citno,a_date,l_s_cost,'1')
+			l_s_return = f_option_chk_after(l_s_plant,l_s_div,l_s_citno,a_date)
+			if f_spacechk(l_s_return) <> -1 and trim(l_s_return) <> trim(l_s_citno) then
+				continue
+			end if
+			i = 1
+			k = k + 1
+			l_s_pt[1,k]   = trim(l_s_plant)
+			l_s_expt[1,k] = trim(l_s_explant)
+			l_s_dvsn[1,k]   = trim(l_s_div)
+			l_s_exdvsn[1,k] = trim(l_s_exdiv)
+			l_s_itno[1,k]   = trim(l_s_citno)
+		  loop
+		close bomchk_cur ;
+		if k < 1 then
+			continue
+		end if
+		
+		for i = 1 to 50
+		  for j = 1 to k
+				l_s_pitno = l_s_itno[i,j]
+				open bomchk_cur ;
+				do while true
+				   fetch bomchk_cur into :l_s_plant,:l_s_div,:l_s_citno,:l_s_explant,:l_s_exdiv;
+				   if sqlca.sqlcode <> 0 then			  
+					   exit
+				   end if
+					if l_s_pt[i,j] <> l_s_plant and l_s_explant <> l_s_pt[i,j] then
+						continue
+					end if
+					l_s_return = f_bom_get_inv402(l_s_plant,l_s_div,l_s_citno,a_date)
+					if l_s_return = '10 / 02' then
+						p = p + 1
+						l_s_pt[i+1,p]     = trim(l_s_plant)
+						l_s_expt[i+1,p]   = trim(l_s_explant)
+						l_s_dvsn[i+1,p]   = trim(l_s_div)
+						l_s_exdvsn[i+1,p] = trim(l_s_exdiv)
+				 	   l_s_itno[i+1,p]   = trim(l_s_citno)
+						continue
+					end if
+					l_s_itclsb = trim(mid(l_s_return,1,2))
+					l_s_srce   = trim(mid(l_s_return,6,2))
+					select count(*) into : l_n_cnt from "PBPDM"."BOM010"
+					  WHERE ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and ADVSN = :l_s_div and & 
+							  AITNO = :l_s_citno AND APLANT = :l_s_plant
+					using sqlca;
+					if l_n_cnt = 0 then
+						insert into pbpdm.bom010
+							values (:g_s_company,:l_s_year,:l_s_month,:l_s_plant,:l_s_div,:l_s_citno,:l_s_itclsb,:l_s_srce,:l_s_cost) 
+						using sqlca;
+					else
+						update pbpdm.bom010
+							set acost = acost + :l_s_cost
+						where acmcd = :g_s_company and ayear = :l_s_year and amont = :l_s_month and & 
+							  advsn = :l_s_div     and aitno = :l_s_citno and aplant = :l_s_plant
+						using sqlca;
+					end if 
+					f_find_Exdiv(l_s_plant,l_s_div,l_s_citno,a_date,l_s_cost,'1')
+					l_s_return = f_option_chk_after(l_s_plant,l_s_div,l_s_citno,a_date)
+					if f_spacechk(l_s_return) <> -1 and trim(l_s_return) <> trim(l_s_citno) then
+						continue
+					end if
+					p = p + 1
+					l_s_pt[i+1,p]     = trim(l_s_plant)
+					l_s_expt[i+1,p]   = trim(l_s_explant)
+					l_s_dvsn[i+1,p]   = trim(l_s_div)
+					l_s_exdvsn[i+1,p] = trim(l_s_exdiv)
+					l_s_itno[i+1,p]   = trim(l_s_citno)
+				loop
+				close bomchk_cur;
+		  next 
+		  if p = 0 then
+			  exit	
+		  end if
+		  k = p
+		  p = 0
+		next
+	loop
+close invdaa_chk ;
+delete from pbpdm.bom010
+	where ACMCD = :G_s_COMPANY AND AYEAR = :l_s_year and AMONT = :l_s_month and ACOST = 0
+using sqlca;
+return a_chk
+ 
+end function
+
