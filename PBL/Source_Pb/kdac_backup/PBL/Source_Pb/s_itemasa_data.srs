@@ -1,8 +1,0 @@
-$PBExportHeader$s_itemasa_data.srs
-$PBExportComments$itemasa DB의 정보접근을 위한 structure
-global type s_itemasa_data from structure
-	string		itname
-	string		itspec
-	string		itunit
-end type
-
