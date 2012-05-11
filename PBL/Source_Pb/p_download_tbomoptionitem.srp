@@ -1,5 +1,5 @@
 $PBExportHeader$p_download_tbomoptionitem.srp
-PIPELINE(source_connect=AS/400 DB2,destination_connect=INTERFACE,type=refresh,commit=100,errors=100,keyname="BOM003")
+PIPELINE(source_connect=AS/400,destination_connect=¿¸¿Â_INTERFACE,type=refresh,commit=100,errors=100,keyname="BOM003")
 SOURCE(name="BOM003",COLUMN(type=char,name="OCMCD",dbtype="CHAR(2)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="OPLANT",dbtype="CHAR(1)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="ODVSN",dbtype="CHAR(1)",key=yes,nulls_allowed=no)

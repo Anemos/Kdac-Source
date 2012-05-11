@@ -3,6 +3,12 @@ $PBExportComments$Interface main
 forward
 global type w_interface_upload from window
 end type
+type sle_division from singlelineedit within w_interface_upload
+end type
+type sle_area from singlelineedit within w_interface_upload
+end type
+type dw_argument_list from datawindow within w_interface_upload
+end type
 type ddlb_1 from dropdownlistbox within w_interface_upload
 end type
 type dw_2 from datawindow within w_interface_upload
@@ -40,6 +46,9 @@ boolean maxbox = true
 boolean resizable = true
 long backcolor = 79741120
 event ue_postopen pbm_custom01
+sle_division sle_division
+sle_area sle_area
+dw_argument_list dw_argument_list
 ddlb_1 ddlb_1
 dw_2 dw_2
 dw_1 dw_1
@@ -138,19 +147,26 @@ If IsValid(w_select_inifile) Then
 	Close(w_select_inifile)
 End If
 
+it_source.autocommit = false
+
 Update MSTFLAG
 	Set Flag = 'N'
  Where ActionName like 'UPLOAD%'
  Using it_source;
- 
- Commit Using it_source ;
+
+if it_source.sqlnrows > 1 then
+ 	Commit Using it_source ;
+else
+	Rollback Using it_source;
+end if
+it_source.autocommit = true
 
 // Horizontal Resize의 한계값을 설정한다.
 // st_vertical의 Y 값이 아래 두값의 사이값일 경우에만 Resize  수행
 ii_first_parameter_y = uo_parameter.Y + (uo_parameter.Height / 2)
 ii_first_pipe_y		= uo_pipe.Y + (uo_pipe.Height / 2)
 
-wf_connect(gs_ini_file, 'IPIS', 'MIS', it_source, it_destination)
+//wf_connect(gs_inifile, 'IPIS', 'MIS', it_source, it_destination)
 
 end event
 
@@ -286,95 +302,105 @@ public function boolean wf_raiserror (string fs_pipeline_name);// BOX 포장, 제조
 
 String ls_mysql, ls_error
 
-CHOOSE CASE Upper(fs_pipeline_name)
-	CASE 'P_ITEM_MASTER'
-		ls_mysql = 'RAISERROR (50001, 10, 1)'
-	CASE 'P_BOXPACK_MASTER'
-		ls_mysql = 'RAISERROR (50002, 10, 1)'
-	CASE 'P_EMP_MASTER'
-		ls_mysql = 'RAISERROR (50003, 10, 1)'
-	CASE 'P_BOM_MASTER'
-		ls_mysql = 'RAISERROR (50004, 10, 1)'
-	CASE 'P_CUSTOMER_MASTER'
-		ls_mysql = 'RAISERROR (50005, 10, 1)'
-	CASE 'P_PRDCONDITION_MASTER'
-		ls_mysql = 'RAISERROR (50006, 10, 1)'
-END CHOOSE
-
-If Len(ls_mysql) > 0 Then
-	EXECUTE IMMEDIATE :ls_mysql ;
-End If
-
-CHOOSE CASE Upper(fs_pipeline_name)
-	CASE 'P_ITEM_MASTER'
-		UPDATE AMFLIB.ITEMAST  
-			SET CHPRS = ' '  
-		 WHERE AMFLIB.ITEMAST.ITEMS = 'CE'
-			AND AMFLIB.ITEMAST.CHPRS = 'Y'
-		Using it_source;
-		
-		ls_error = it_source.sqlerrtext
-		
-		If it_source.sqlcode = 0 Then
-			Commit Using it_source;
-			Return True
-		Else
-			RollBack Using it_source;
-			MessageBox("AS-400 Error", "Item Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
-			Return False
-		End If
-	CASE 'P_BOM_MASTER'
-		UPDATE IMSLIB.MASBOMF
-			SET LOWCH = ' '  
-		 WHERE IMSLIB.MASBOMF.LOWCH = 'Y'
-		Using it_source;
-		
-		ls_error = it_source.sqlerrtext
-		
-		If it_source.sqlcode = 0 Then
-			Commit Using it_source;
-			Return True
-		Else
-			RollBack Using it_source;
-			MessageBox("AS-400 Error", "BOM Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
-			Return False
-		End If
-	CASE 'P_EMP_MASTER'
-		UPDATE DHPDBF.HP13PF00
-			SET REMARK = ' '  
-		 WHERE DHPDBF.HP13PF00.REMARK = 'Y'
-		Using it_source;
-		
-		ls_error = it_source.sqlerrtext
-		
-		If it_source.sqlcode = 0 Then
-			Commit Using it_source;
-			Return True
-		Else
-			RollBack Using it_source;
-			MessageBox("AS-400 Error", "사원 Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
-			Return False
-		End If
-	CASE 'P_PIPE_TEST'
-		UPDATE MSTFLAG
-			SET FLAG = 'N'
-		 Where ActionName = 'INTERFACE_TEST';
-		If SQLCA.SQLCODE = 0 Then
-			Return True
-		Else
-			Return False
-		End If
-END CHOOSE
+//CHOOSE CASE Upper(fs_pipeline_name)
+//	CASE 'P_ITEM_MASTER'
+//		ls_mysql = 'RAISERROR (50001, 10, 1)'
+//	CASE 'P_BOXPACK_MASTER'
+//		ls_mysql = 'RAISERROR (50002, 10, 1)'
+//	CASE 'P_EMP_MASTER'
+//		ls_mysql = 'RAISERROR (50003, 10, 1)'
+//	CASE 'P_BOM_MASTER'
+//		ls_mysql = 'RAISERROR (50004, 10, 1)'
+//	CASE 'P_CUSTOMER_MASTER'
+//		ls_mysql = 'RAISERROR (50005, 10, 1)'
+//	CASE 'P_PRDCONDITION_MASTER'
+//		ls_mysql = 'RAISERROR (50006, 10, 1)'
+//END CHOOSE
+//
+//If Len(ls_mysql) > 0 Then
+//	EXECUTE IMMEDIATE :ls_mysql ;
+//End If
+//
+//CHOOSE CASE Upper(fs_pipeline_name)
+//	CASE 'P_ITEM_MASTER'
+//		UPDATE AMFLIB.ITEMAST  
+//			SET CHPRS = ' '  
+//		 WHERE AMFLIB.ITEMAST.ITEMS = 'CE'
+//			AND AMFLIB.ITEMAST.CHPRS = 'Y'
+//		Using it_source;
+//		
+//		ls_error = it_source.sqlerrtext
+//		
+//		If it_source.sqlcode = 0 Then
+//			Commit Using it_source;
+//			Return True
+//		Else
+//			RollBack Using it_source;
+//			MessageBox("AS-400 Error", "Item Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
+//			Return False
+//		End If
+//	CASE 'P_BOM_MASTER'
+//		UPDATE IMSLIB.MASBOMF
+//			SET LOWCH = ' '  
+//		 WHERE IMSLIB.MASBOMF.LOWCH = 'Y'
+//		Using it_source;
+//		
+//		ls_error = it_source.sqlerrtext
+//		
+//		If it_source.sqlcode = 0 Then
+//			Commit Using it_source;
+//			Return True
+//		Else
+//			RollBack Using it_source;
+//			MessageBox("AS-400 Error", "BOM Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
+//			Return False
+//		End If
+//	CASE 'P_EMP_MASTER'
+//		UPDATE DHPDBF.HP13PF00
+//			SET REMARK = ' '  
+//		 WHERE DHPDBF.HP13PF00.REMARK = 'Y'
+//		Using it_source;
+//		
+//		ls_error = it_source.sqlerrtext
+//		
+//		If it_source.sqlcode = 0 Then
+//			Commit Using it_source;
+//			Return True
+//		Else
+//			RollBack Using it_source;
+//			MessageBox("AS-400 Error", "사원 Master 변경 중 오류가 발생하였습니다.~r~n" + ls_error, StopSign!)
+//			Return False
+//		End If
+//	CASE 'P_PIPE_TEST'
+//		UPDATE MSTFLAG
+//			SET FLAG = 'N'
+//		 Where ActionName = 'INTERFACE_TEST';
+//		If SQLCA.SQLCODE = 0 Then
+//			Return True
+//		Else
+//			Return False
+//		End If
+//END CHOOSE
 
 Return True
 end function
 
-public subroutine wf_flag_update (string fs_action_name);Update MSTFLAG
+public subroutine wf_flag_update (string fs_action_name);it_source.autocommit = false
+ 
+ Update MSTFLAG
 	Set Flag			= 'N',
 		 LastEmp		= 'INTERFACE',
 		 LastDate	= GetDate()
  Where ActionName = :fs_action_name
  using it_source;
+ 
+if it_source.sqlnrows < 1 then
+	Rollback using it_source;
+else
+	Commit using it_source;
+end if
+
+it_source.autocommit = true
 end subroutine
 
 public subroutine wf_upload_stop ();
@@ -542,7 +568,7 @@ Choose case Upper(fs_sp_name)
 		Else
 			RollBack Using it_source ;
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_mis_flag_change : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_mis_flag_change : ' + ls_error,it_source)
 			end if
 //			MessageBox(string(it_source.sqldbcode),ls_error, StopSign!)
 //			rs_return_option = 'E'
@@ -569,12 +595,12 @@ If ul_handle1 > 0 and ul_handle2 > 0 Then
 //	End If
 	Return true
 Else
-	lb_connect = wf_connect(gs_ini_file, 'IPIS', 'MIS', it_source, it_destination)
+	lb_connect = wf_connect(gs_inifile, 'IPIS', 'MIS', it_source, it_destination)
 	Return lb_connect
 End If
 end function
 
-public function boolean wf_upload_tmstpartkb (string fs_dataobject, ref string rs_return_option);Int		li_return
+public function boolean wf_upload_tmstpartkb (string fs_dataobject, ref string rs_return_option);Int		li_return, li_rackqty
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
 Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
@@ -626,6 +652,9 @@ If ll_rowcount > 0 Then
 	Set		KBCD = ''
 	Where		KBCD <> '';
 	
+	DELETE FROM PBINV.INV108
+	WHERE COMLTD = '01' AND KBCD = 'K';
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -648,10 +677,12 @@ If ll_rowcount > 0 Then
 		Else
 			ls_flag = ''
 		End If
+		li_rackqty			= dw_2.GetItemNumber(i, 'rackqty')
 		ls_loc				= dw_2.GetItemString(i, 'ReceiptLocation')
 		ls_box				= String(dw_2.GetItemNumber(i, 'MailBoxNo'))
 		ls_costgubun		= Left(dw_2.GetItemString(i,	'CostGubun') + Space(2), 1)
-		ls_usecenter		= Left(dw_2.GetItemString(i, 'UseCenter') + space(5), 5)
+		ls_usecenter		= trim(dw_2.GetItemString(i, 'UseCenter'))
+		if isnull(ls_usecenter) then ls_usecenter = ''
 		If ls_costgubun = 'Y' or ls_costgubun = 'N' Then
 		Else
 			ls_costgubun = ''
@@ -665,24 +696,79 @@ If ll_rowcount > 0 Then
 				:ls_loc,	:ls_box,		:ls_costgubun,	:ls_usecenter,	'',			'',
 				'',			'',		'',		'',			'');
 		
-		Update	PBPUR.PUR102
-		Set		KBCD = 'K'
-		Where		VSRNO = :ls_supplier;	
+		SELECT COUNT(*) INTO :li_return
+			FROM 		PBINV.INV108
+			WHERE COMLTD = '01' AND XPLANT = :ls_area AND 
+					DIV = :ls_division AND ITNO = :ls_item AND 
+					VSRNO = :ls_usecenter;
+		
+		if ls_flag <> 'C' then
+			Update	PBPUR.PUR102
+			Set		KBCD = 'K'
+			Where		VSRNO = :ls_supplier;	
+			
+			if li_return > 0  and ls_costgubun <> '' then
+//				UPDATE PBINV.INV108
+//				SET 	KBCD = 'K', 
+//						UPDTID = 'INTSVR',
+//						UPDTDT = :ls_today
+//				WHERE COMLTD = '01' AND XPLANT = :ls_area AND 
+//						DIV = :ls_division AND ITNO = :ls_item 
+//						;
+				
+				UPDATE PBINV.INV108
+				SET 	GUBUN = :ls_costgubun,
+						STOP  = ' ',
+						STRDT = :ls_today,
+						KBCD = 'K', 
+						CAPA = :li_rackqty,
+						UPDTID = 'INTSVR',
+						UPDTDT = :ls_today
+				WHERE COMLTD = '01' AND XPLANT = :ls_area AND 
+						DIV = :ls_division AND ITNO = :ls_item AND 
+						VSRNO = :ls_usecenter;
+						
+			elseif ls_costgubun <> '' then
+				INSERT INTO PBINV.INV108(COMLTD, XPLANT, DIV, ITNO, VSRNO, GUBUN, 
+					STRDT, STOP, EXTD, INPTID, INPTDT, UPDTID, UPDTDT, 
+					IPADDR, MACADDR, DIRCD, KBCD, CAPA)
+				VALUES( '01', :ls_area, :ls_division, :ls_item, :ls_usecenter, :ls_costgubun, 
+					:ls_today, ' ', ' ', 'INTSVR', :ls_today, ' ', ' ',
+					' ', ' ', ' ', 'K', :li_rackqty);
+			end if
+//		else
+//			if li_return > 0 and ls_costgubun <> '' then
+//				UPDATE PBINV.INV108
+//				SET 	GUBUN = :ls_costgubun,
+//						STOP  = 'S',
+//						STRDT = :ls_today,
+//						KBCD = 'K', 
+//						CAPA = :li_rackqty,
+//						UPDTID = 'INTSVR',
+//						UPDTDT = :ls_today
+//				WHERE COMLTD = '01' AND XPLANT = :ls_area AND 
+//						DIV = :ls_division AND ITNO = :ls_item AND 
+//						VSRNO = :ls_usecenter;
+//			end if
+		end if
 		
 		ll_error	= SQLCA.SQLCODE
 		ls_error	= SQLCA.SQLErrText
 		
 		If ll_error = 0 Then
-			Commit;
 			dw_2.DeleteRow(i)
 			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-
+			
+			DELETE FROM tmstpartkb
+			WHERE AreaCode = :ls_area AND DivisionCode = :ls_division AND
+				SupplierCode = :ls_supplier AND ItemCode = :ls_item
+			Using		it_source;
+			
 		Else
-			RollBack;
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmstpartkb_interface : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmstpartkb_interface : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -695,19 +781,6 @@ If ll_rowcount > 0 Then
 	Else
 		rs_return_option = 'S'
 	End If
-	
-	Delete	
-	From		tmstpartkb
-	Using		it_source;
-	
-	ll_error	= it_source.SQLCODE
-	ls_error	= it_source.SQLErrText
-	
-	If ll_error = 0 Then
-		Commit Using it_source ;
-	Else
-		Rollback Using it_source ;
-	End If	
 	
 	Return True
 Else
@@ -760,8 +833,6 @@ If ll_rowcount > 0 Then
 	dw_2.SetRedraw(True)
 
 	Delete From	PBPUR.PVMT23V	;
-	
-//	commit;
 	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
@@ -840,15 +911,13 @@ If ll_rowcount > 0 Then
 		ll_error	= SQLCA.SQLCODE
 		ls_error	= SQLCA.SQLErrText
 		If ll_error = 0 Then
-			//Commit;
 			dw_2.DeleteRow(i)
 			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
 		Else
-			//RollBack;
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkbdayorder : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkbdayorder : ' + ls_error,it_source)
 				exit
 			end if
 		End If
@@ -921,8 +990,6 @@ If ll_rowcount > 0 Then
 	Delete From	PBIPIS.JIT002
 	Where		edate > :ls_today;
 	
-	commit;
-	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -951,16 +1018,14 @@ If ll_rowcount > 0 Then
 		ls_error	= SQLCA.SQLErrText
 		
 		If ll_error = 0 Then
-//			Commit;
 			dw_2.DeleteRow(i)
 			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
 
 		Else
-//			RollBack;
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tplanday : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tplanday : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -1130,7 +1195,7 @@ If ll_rowcount > 0 Then
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tqqcitem_temp : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tqqcitem_temp : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -1157,13 +1222,10 @@ end function
 
 public function boolean wf_upload_tsrcancel_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_flag, ls_srno, ls_checksrno, ls_canceldate
-String	ls_supplier, ls_goodqty, ls_badqty, ls_userid, ls_inputdate, ls_qty
-String	ls_stockdate, ls_seqno, ls_rc
-Long		ll_logid, ll_goodqty, ll_badqty
-String	ls_lib, ls_pgm, ls_parm
+Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -1178,6 +1240,7 @@ wf_upload_sp('sp_pisi_u_tsrcancel_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -1199,6 +1262,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -1209,21 +1276,64 @@ If ll_rowcount > 0 Then
 				Return False
 			End If
 		End If
+		
 		dw_2.ScrollToRow(i)
-		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_flag				= dw_2.GetItemString(i, 'ConfirmFlag')
-		If ls_flag = 'Y' Then
-			ls_flag = 'V'
-		End If
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
 		
-		// 확인필요 SR, SR전산번호
-		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 8)			
-		ls_checksrno		= Left(dw_2.GetItemString(i, 'CheckSRNo') + Space(10), 11)
-		ls_canceldate		= dw_2.GetItemString(i, 'CancelDate')		// 취소일
-		ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
+		dw_argument_list.reset()
+		dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+			
+		if f_up_ipis_mis_tsrcancel(ls_message,dw_argument_list,lstr_ipis) = -1 then
+			goto Rollback_
+		else
+				
+			Update	tsrcancel_interface
+			Set		interfaceflag = 'N',
+						lastdate	= getdate()
+			Where		logid = :ll_logid
+			Using		it_source;
+				
+			if it_source.sqlnrows < 1 then
+				goto Rollback_
+			end if
+			
+			dw_2.DeleteRow(i)
+			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			
+			commit using it_source;
+			f_ipis_server_commit_only(lstr_ipis)
+		end if
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tsrcancel_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_flag				= dw_2.GetItemString(i, 'ConfirmFlag')
+//		If ls_flag = 'Y' Then
+//			ls_flag = 'V'
+//		End If
+//		
+//		// 확인필요 SR, SR전산번호
+//		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 8)			
+//		ls_checksrno		= Left(dw_2.GetItemString(i, 'CheckSRNo') + Space(10), 11)
+//		ls_canceldate		= dw_2.GetItemString(i, 'CancelDate')		// 취소일
+//		ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
 
 		// 취소SR확정 parmameter 
 		// 구분(1)/SR번호(11)/SR전산번호(8)/확정일(8)/확정자(6)/수정일(8)/Flag(Y,N)
@@ -1231,107 +1341,110 @@ If ll_rowcount > 0 Then
 //		SQLCA.P_CNSR_CON(ls_flag, ls_checksrno, ls_srno, ls_canceldate, ls_userid, ls_inputdate, ls_rc)
 
 		// DB/2 procedure 호출에서 직접 update로 변경		
-		If ls_flag = 'V' Then
-			UPDATE	pbsle.sle303
-			SET		prtcd = '4'
-			WHERE		comltd = '01'
-			and		srno = :ls_checksrno;
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle304
-			SET		stcd = 'C',
-						srdt = :ls_canceldate
-			WHERE		comltd = '01'
-			and		csrno = :ls_srno;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle301
-			SET		prtcd= '4'                                  
-			WHERE		comltd = '01'
-			and		srno = :ls_checksrno ;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle302
-			SET		stcd = 'C'                                  
-			WHERE		comltd = '01'
-			and		csrno = :ls_srno ;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText			
-		Else                                                                   
-			UPDATE	pbsle.sle303
-			SET 		prtcd = '2'                                 
-			WHERE		comltd = '01'
-			and		srno = :ls_checksrno ;
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle304
-			SET		stcd = ' ', 
-						srdt = ' '                      
-			WHERE		comltd = '01'
-			and		csrno = :ls_srno ;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle301
-			SET		prtcd= '4'                                  
-			WHERE		comltd = '01'
-			and		srno = :ls_checksrno ;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			UPDATE	pbsle.sle302
-			SET		stcd = ' '                                  
-			WHERE		comltd = '01'
-			and		csrno = :ls_srno ;
-			
-			ll_error	= ll_error + SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-		End If
-		
-		ll_error	= SQLCA.SQLCODE
-		ls_error	= SQLCA.SQLErrText
-		
-		If ll_error = 0 Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-			
-			Update	tsrcancel_interface
-			Set		interfaceflag = 'N',
-						lastdate	= getdate()
-			Where		logid = :ll_logid
-			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrcancel_interface : ' + ls_error,it_source)
-			end if
-		End If
+//		If ls_flag = 'V' Then
+//			UPDATE	pbsle.sle303
+//			SET		prtcd = '4'
+//			WHERE		comltd = '01'
+//			and		srno = :ls_checksrno;
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle304
+//			SET		stcd = 'C',
+//						srdt = :ls_canceldate
+//			WHERE		comltd = '01'
+//			and		csrno = :ls_srno;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle301
+//			SET		prtcd= '4'                                  
+//			WHERE		comltd = '01'
+//			and		srno = :ls_checksrno ;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle302
+//			SET		stcd = 'C'                                  
+//			WHERE		comltd = '01'
+//			and		csrno = :ls_srno ;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText			
+//		Else                                                                   
+//			UPDATE	pbsle.sle303
+//			SET 		prtcd = '2'                                 
+//			WHERE		comltd = '01'
+//			and		srno = :ls_checksrno ;
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle304
+//			SET		stcd = ' ', 
+//						srdt = ' '                      
+//			WHERE		comltd = '01'
+//			and		csrno = :ls_srno ;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle301
+//			SET		prtcd= '4'                                  
+//			WHERE		comltd = '01'
+//			and		srno = :ls_checksrno ;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			UPDATE	pbsle.sle302
+//			SET		stcd = ' '                                  
+//			WHERE		comltd = '01'
+//			and		csrno = :ls_srno ;
+//			
+//			ll_error	= ll_error + SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//		End If
+//		
+//		ll_error	= SQLCA.SQLCODE
+//		ls_error	= SQLCA.SQLErrText
+//		
+//		If ll_error = 0 Then
+//			Commit;
+//			dw_2.DeleteRow(i)
+//			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//			
+//			Update	tsrcancel_interface
+//			Set		interfaceflag = 'N',
+//						lastdate	= getdate()
+//			Where		logid = :ll_logid
+//			Using		it_source;
+//			
+//			ll_error	= it_source.SQLCODE
+//			ls_error	= it_source.SQLErrText
+//			
+//			If ll_error = 0 Then
+//				Commit Using it_source ;
+//			Else
+//				Rollback Using it_source ;
+//			End If	
+//
+//		Else
+//			RollBack;
+//			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//			ll_error_cnt ++
+//			if ll_error < 0 then
+//				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrcancel_interface : ' + ls_error,it_source)
+//			end if
+//		End If
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -1354,13 +1467,10 @@ end function
 
 public function boolean wf_upload_tsrconfirm01_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_flag, ls_srno, ls_checksrno, ls_canceldate
-String	ls_supplier, ls_goodqty, ls_badqty, ls_userid, ls_inputdate, ls_qty
-String	ls_stockdate, ls_seqno, ls_rc
-Long		ll_logid, ll_goodqty, ll_badqty, ll_count
-String	ls_lib, ls_pgm, ls_parm, ls_chkstcd
+Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -1375,6 +1485,7 @@ wf_upload_sp('sp_pisi_u_tsrconfirm01_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -1396,6 +1507,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -1407,166 +1522,211 @@ If ll_rowcount > 0 Then
 			End If
 		End If
 		dw_2.ScrollToRow(i)
-		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 11)			
-//		if left(ls_srno, 2) = 'EX' then
-//			ls_srno = left(ls_srno,10)
-//		end if	
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
 		
-//		messagebox(ls_srno, len(ls_srno))
-//		messagebox(ls_userid, len(ls_userid))
-//		messagebox(ls_inputdate, len(ls_inputdate))
-		
-		// SR 확정 parmameter 
-		// SR번호(11)/입력자(6)/입력일(8)/Flag(Y,N)
-//		ls_rc = String(' ', '@')		
-//		SQLCA.P_SR_CON(ls_srno, ls_userid, ls_inputdate, ls_rc)
-
-		// 현재 데이타가 불안정한 관계로, 임시로 prtcd가 '2'인 경우에만 적용. 
-		// 향후에는 prtcd = '2' 조건 삭제한다!!!
-		// data가 없어도 update는 sqlcode = 0이다. 먼저 select 해서 있는지 확인한다 !!!
-		
-		If Left(ls_srno, 2) = 'EX' Then	// 이놈은 이체다...
-			select distinct slno 
-			  into :ls_checksrno
-			from pbinv.inv601
-			where slno = :ls_srno
-			and stcd = '3';
-//			select	distinct slno 
-//			into		:ls_checksrno
-//			from		pbinv.inv601
-//			where		slno	= :ls_srno
-//			and		stcd	= '3';
-//
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-	     
-			If ll_error = 0 Then			
-				update	pbinv.inv601
-				set		stcd	= '4'
-				where		slno	= :ls_srno
-				and		stcd	= '3';
+		dw_argument_list.reset()
+		dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+			
+		if f_up_ipis_mis_tsrconfirm01(ls_message,dw_argument_list,lstr_ipis) = -1 then
+			goto Rollback_
+		else
 				
-				ll_error	= SQLCA.SQLCODE
-				ls_error	= SQLCA.SQLErrText
-				if ll_error = 0 Then
-					Commit;
-					dw_2.DeleteRow(i)
-					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-					
+			Update	tsrconfirm01_interface
+			Set		interfaceflag = 'N',
+						lastdate	= getdate()
+			Where		logid = :ll_logid
+			Using		it_source;
+				
+			if it_source.sqlnrows < 1 then
+				goto Rollback_
+			end if
+			
+			dw_2.DeleteRow(i)
+			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			
+			commit using it_source;
+			f_ipis_server_commit_only(lstr_ipis)
+		end if
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tsrconfirm01_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic	
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 11)			
+////		if left(ls_srno, 2) = 'EX' then
+////			ls_srno = left(ls_srno,10)
+////		end if	
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
+//		
+////		messagebox(ls_srno, len(ls_srno))
+////		messagebox(ls_userid, len(ls_userid))
+////		messagebox(ls_inputdate, len(ls_inputdate))
+//		
+//		// SR 확정 parmameter 
+//		// SR번호(11)/입력자(6)/입력일(8)/Flag(Y,N)
+////		ls_rc = String(' ', '@')		
+////		SQLCA.P_SR_CON(ls_srno, ls_userid, ls_inputdate, ls_rc)
+//
+//		// 현재 데이타가 불안정한 관계로, 임시로 prtcd가 '2'인 경우에만 적용. 
+//		// 향후에는 prtcd = '2' 조건 삭제한다!!!
+//		// data가 없어도 update는 sqlcode = 0이다. 먼저 select 해서 있는지 확인한다 !!!
+//		
+//		If Left(ls_srno, 2) = 'EX' Then	// 이놈은 이체다...
+//			select distinct slno 
+//			  into :ls_checksrno
+//			from pbinv.inv601
+//			where slno = :ls_srno
+//			and stcd = '3';
+////			select	distinct slno 
+////			into		:ls_checksrno
+////			from		pbinv.inv601
+////			where		slno	= :ls_srno
+////			and		stcd	= '3';
+////
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//	     
+//			If ll_error = 0 Then			
+//				update	pbinv.inv601
+//				set		stcd	= '4'
+//				where		slno	= :ls_srno
+//				and		stcd	= '3';
+//				
+//				ll_error	= SQLCA.SQLCODE
+//				ls_error	= SQLCA.SQLErrText
+//				if ll_error = 0 Then
+//					Commit;
+//					dw_2.DeleteRow(i)
+//					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//					
+////					Update	tsrconfirm01_interface
+////					Set		interfaceflag = 'N',
+////								lastdate	= getdate()
+////					Where		logid = :ll_logid
+////					Using		it_source;
+//					
+//					ll_error	= it_source.SQLCODE
+//					ls_error	= it_source.SQLErrText
+//					
+//					If ll_error = 0 Then
+//						Commit Using it_source ;
+//					Else
+//						Rollback Using it_source ;
+//					End If	
+//		
+//				Else
+//					RollBack;
+//					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//					ll_error_cnt ++
+//					if ll_error < 0 then
+//						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
+//					end if
+//				End If
+//			Else
+//				select stcd into :ls_chkstcd 
+//					from pbinv.inv601
+//					where slno = :ls_srno ;
+//				if ls_chkstcd > '3' then
 //					Update	tsrconfirm01_interface
 //					Set		interfaceflag = 'N',
 //								lastdate	= getdate()
 //					Where		logid = :ll_logid
 //					Using		it_source;
-					
-					ll_error	= it_source.SQLCODE
-					ls_error	= it_source.SQLErrText
-					
-					If ll_error = 0 Then
-						Commit Using it_source ;
-					Else
-						Rollback Using it_source ;
-					End If	
-		
-				Else
-					RollBack;
-					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-					ll_error_cnt ++
-					if ll_error < 0 then
-						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
-					end if
-				End If
-			Else
-				select stcd into :ls_chkstcd 
-					from pbinv.inv601
-					where slno = :ls_srno ;
-				if ls_chkstcd > '3' then
-					Update	tsrconfirm01_interface
-					Set		interfaceflag = 'N',
-								lastdate	= getdate()
-					Where		logid = :ll_logid
-					Using		it_source;
-				else
-					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-					ll_error_cnt ++
-					if ll_error < 0 then
-						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
-					end if
-				end if
-			End If			
-			
-		Else		// 이체 아니놈
-		
-			select	srno
-			into		:ls_checksrno
-			from		pbsle.sle301
-			where		srno	= :ls_srno
-			and		prtcd	= '2';
-	
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-	
-			If ll_error = 0 Then			
-				update	pbsle.sle301
-				set		prtcd	= '3'
-				where		srno	= :ls_srno
-				and		prtcd	= '2';
-				
-				ll_error	= SQLCA.SQLCODE
-				ls_error	= SQLCA.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit;
-					dw_2.DeleteRow(i)
-					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-					
-					Update	tsrconfirm01_interface
-					Set		interfaceflag = 'N',
-								lastdate	= getdate()
-					Where		logid = :ll_logid
-					Using		it_source;
-					
-					ll_error	= it_source.SQLCODE
-					ls_error	= it_source.SQLErrText
-					
-					If ll_error = 0 Then
-						Commit Using it_source ;
-					Else
-						Rollback Using it_source ;
-					End If	
-		
-				Else
-					RollBack;
-					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-					ll_error_cnt ++
-					if ll_error < 0 then
-						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
-					end if
-				End If
-			Else
-				select prtcd into :ls_chkstcd
-					from		pbsle.sle301
-					where		srno	= :ls_srno ;
-				if ls_chkstcd > '2' then
-					Update	tsrconfirm01_interface
-					Set		interfaceflag = 'N',
-								lastdate	= getdate()
-					Where		logid = :ll_logid
-					Using		it_source;
-				else
-					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-					ll_error_cnt ++
-					if ll_error < 0 then
-						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
-					end if
-				end if
-			End If			
-		End If
+//				else
+//					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//					ll_error_cnt ++
+//					if ll_error < 0 then
+//						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
+//					end if
+//				end if
+//			End If			
+//			
+//		Else		// 이체 아니놈
+//		
+//			select	srno
+//			into		:ls_checksrno
+//			from		pbsle.sle301
+//			where		srno	= :ls_srno
+//			and		prtcd	= '2';
+//	
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//	
+//			If ll_error = 0 Then			
+//				update	pbsle.sle301
+//				set		prtcd	= '3'
+//				where		srno	= :ls_srno
+//				and		prtcd	= '2';
+//				
+//				ll_error	= SQLCA.SQLCODE
+//				ls_error	= SQLCA.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit;
+//					dw_2.DeleteRow(i)
+//					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//					
+//					Update	tsrconfirm01_interface
+//					Set		interfaceflag = 'N',
+//								lastdate	= getdate()
+//					Where		logid = :ll_logid
+//					Using		it_source;
+//					
+//					ll_error	= it_source.SQLCODE
+//					ls_error	= it_source.SQLErrText
+//					
+//					If ll_error = 0 Then
+//						Commit Using it_source ;
+//					Else
+//						Rollback Using it_source ;
+//					End If	
+//		
+//				Else
+//					RollBack;
+//					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//					ll_error_cnt ++
+//					if ll_error < 0 then
+//						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
+//					end if
+//				End If
+//			Else
+//				select prtcd into :ls_chkstcd
+//					from		pbsle.sle301
+//					where		srno	= :ls_srno ;
+//				if ls_chkstcd > '2' then
+//					Update	tsrconfirm01_interface
+//					Set		interfaceflag = 'N',
+//								lastdate	= getdate()
+//					Where		logid = :ll_logid
+//					Using		it_source;
+//				else
+//					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//					ll_error_cnt ++
+//					if ll_error < 0 then
+//						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm01_interface : ' + ls_error,it_source)
+//					end if
+//				end if
+//			End If			
+//		End If
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -1589,13 +1749,10 @@ end function
 
 public function boolean wf_upload_tsrconfirm02_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_flag, ls_srno, ls_checksrno, ls_canceldate
-String	ls_supplier, ls_goodqty, ls_badqty, ls_userid, ls_inputdate, ls_qty
-String	ls_stockdate, ls_seqno, ls_rc
-Long		ll_logid, ll_goodqty, ll_badqty
-String	ls_lib, ls_pgm, ls_parm
+Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -1610,6 +1767,7 @@ wf_upload_sp('sp_pisi_u_tsrconfirm02_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -1631,6 +1789,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -1642,50 +1804,95 @@ If ll_rowcount > 0 Then
 			End If
 		End If
 		dw_2.ScrollToRow(i)
-		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 11)			
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
-
-		// SR 취소입력 parmameter 
-		// SR번호(11)/입력자(6)/입력일(8)/Flag(Y,N)		
-		ls_rc = String(' ', '@')
-		SQLCA.P_SR_CAN(ls_srno, ls_userid, ls_inputdate, ls_rc)
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
 		
-		ll_error	= SQLCA.SQLCODE
-		ls_error	= SQLCA.SQLErrText
-		
-		If ll_error = 0 and ls_rc = 'Y' Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		dw_argument_list.reset()
+		dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
+		if f_up_ipis_mis_tsrconfirm02(ls_message,dw_argument_list,lstr_ipis) = -1 then
+			goto Rollback_
+		else
+				
 			Update	tsrconfirm02_interface
 			Set		interfaceflag = 'N',
 						lastdate	= getdate()
 			Where		logid = :ll_logid
 			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm02_interface : ' + ls_error,it_source)
+				
+			if it_source.sqlnrows < 1 then
+				goto Rollback_
 			end if
-		End If
+			
+			dw_2.DeleteRow(i)
+			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			
+			commit using it_source;
+			f_ipis_server_commit_only(lstr_ipis)
+		end if
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tsrconfirm02_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic	
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 11)			
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
+//
+//		// SR 취소입력 parmameter 
+//		// SR번호(11)/입력자(6)/입력일(8)/Flag(Y,N)		
+//		ls_rc = String(' ', '@')
+//		SQLCA.P_SR_CAN(ls_srno, ls_userid, ls_inputdate, ls_rc)
+//		
+//		ll_error	= SQLCA.SQLCODE
+//		ls_error	= SQLCA.SQLErrText
+//		
+//		If ll_error = 0 and ls_rc = 'Y' Then
+//			Commit;
+//			dw_2.DeleteRow(i)
+//			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//			
+//			Update	tsrconfirm02_interface
+//			Set		interfaceflag = 'N',
+//						lastdate	= getdate()
+//			Where		logid = :ll_logid
+//			Using		it_source;
+//			
+//			ll_error	= it_source.SQLCODE
+//			ls_error	= it_source.SQLErrText
+//			
+//			If ll_error = 0 Then
+//				Commit Using it_source ;
+//			Else
+//				Rollback Using it_source ;
+//			End If	
+//
+//		Else
+//			RollBack;
+//			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//			ll_error_cnt ++
+//			if ll_error < 0 then
+//				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tsrconfirm02_interface : ' + ls_error,it_source)
+//			end if
+//		End If
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -1854,7 +2061,7 @@ If ll_rowcount > 0 Then
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmcmaster_interface : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmcmaster_interface : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -1997,7 +2204,7 @@ If ll_rowcount > 0 Then
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmstpartkb_interface : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmstpartkb_interface : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -2113,6 +2320,7 @@ Select Flag Into :ls_flag
  using it_source;
  
 it_source.AutoCommit	= False
+
 If IsNull(ls_flag) Then
 	Insert into MSTFLAG (ActionName, Flag, Note, LastEmp, LastDate)
 	Values(:rs_action_name, 'Y', :ls_note, 'INTERFACE', GetDate())
@@ -2210,7 +2418,7 @@ Select InterfaceGubun,
 //	Return False
 //End If
 
-If Not wf_connect(gs_ini_file, ls_source, ls_destination, it_source, it_destination) Then
+If Not wf_connect(gs_inifile, ls_source, ls_destination, it_source, it_destination) Then
 	wf_flag_update(is_action_name)
 	Return False
 End If
@@ -2224,6 +2432,9 @@ lt_lasttime	=	Time(ldt_lastdatetime)
 idt_currdatetime = f_pisc_get_date_nowtime(it_source)
 ld_CurrentDate	=	Date(idt_currdatetime)
 lt_CurrentTime	=	Time(idt_currdatetime)
+g_s_date = string(ld_currentdate,"yyyymmdd")
+g_s_datetime = string(idt_currdatetime)
+g_s_time = string(lt_currenttime)
 
 if is_cycle = 'MI' or is_cycle = 'HH' then
 	if	is_cycle	=	'MI' Then
@@ -2456,15 +2667,15 @@ ls_today = String(Today(), 'yyyy.mm.dd')
 
 Disconnect Using SQLCA;
 
-SQLCA.DBMS       	= ProfileString(gs_ini_file, 'IPIS', "DBMS",             "X")
-SQLCA.Database   	= ProfileString(gs_ini_file, 'IPIS', "DataBase",         " ")
-SQLCA.LogID      	= ProfileString(gs_ini_file, 'IPIS', "LogID",            " ")
-SQLCA.LogPass    	= ProfileString(gs_ini_file, 'IPIS', "LogPassword",      " ")
-SQLCA.ServerName 	= ProfileString(gs_ini_file, 'IPIS', "ServerName",       " ")
-SQLCA.UserID     	= ProfileString(gs_ini_file, 'IPIS', "UserID",           " ")
-SQLCA.DBPass     	= ProfileString(gs_ini_file, 'IPIS', "DatabasePassword", " ")
-SQLCA.Lock       	= ProfileString(gs_ini_file, 'IPIS', "Lock",             " ")
-SQLCA.DbParm     	= ProfileString(gs_ini_file, 'IPIS', "DbParm",           " ")
+SQLCA.DBMS       	= ProfileString(gs_inifile, 'IPIS', "DBMS",             "X")
+SQLCA.Database   	= ProfileString(gs_inifile, 'IPIS', "DataBase",         " ")
+SQLCA.LogID      	= ProfileString(gs_inifile, 'IPIS', "LogID",            " ")
+SQLCA.LogPass    	= ProfileString(gs_inifile, 'IPIS', "LogPassword",      " ")
+SQLCA.ServerName 	= ProfileString(gs_inifile, 'IPIS', "ServerName",       " ")
+SQLCA.UserID     	= ProfileString(gs_inifile, 'IPIS', "UserID",           " ")
+SQLCA.DBPass     	= ProfileString(gs_inifile, 'IPIS', "DatabasePassword", " ")
+SQLCA.Lock       	= ProfileString(gs_inifile, 'IPIS', "Lock",             " ")
+SQLCA.DbParm     	= ProfileString(gs_inifile, 'IPIS', "DbParm",           " ")
 
 Connect Using SQLCA;
 
@@ -2540,15 +2751,15 @@ End Choose
 
 Disconnect Using SQLCA;
 
-SQLCA.DBMS       	= ProfileString(gs_ini_file, "MIS", "DBMS",             "X")
-SQLCA.Database   	= ProfileString(gs_ini_file, "MIS", "DataBase",         " ")
-SQLCA.LogID      	= ProfileString(gs_ini_file, "MIS", "LogID",            " ")
-SQLCA.LogPass    	= ProfileString(gs_ini_file, "MIS", "LogPassword",      " ")
-SQLCA.ServerName 	= ProfileString(gs_ini_file, "MIS", "ServerName",       " ")
-SQLCA.UserID     	= ProfileString(gs_ini_file, "MIS", "UserID",           " ")
-SQLCA.DBPass     	= ProfileString(gs_ini_file, "MIS", "DatabasePassword", " ")
-SQLCA.Lock       	= ProfileString(gs_ini_file, "MIS", "Lock",             " ")
-SQLCA.DbParm     	= ProfileString(gs_ini_file, "MIS", "DbParm",           " ")
+SQLCA.DBMS       	= ProfileString(gs_inifile, "MIS", "DBMS",             "X")
+SQLCA.Database   	= ProfileString(gs_inifile, "MIS", "DataBase",         " ")
+SQLCA.LogID      	= ProfileString(gs_inifile, "MIS", "LogID",            " ")
+SQLCA.LogPass    	= ProfileString(gs_inifile, "MIS", "LogPassword",      " ")
+SQLCA.ServerName 	= ProfileString(gs_inifile, "MIS", "ServerName",       " ")
+SQLCA.UserID     	= ProfileString(gs_inifile, "MIS", "UserID",           " ")
+SQLCA.DBPass     	= ProfileString(gs_inifile, "MIS", "DatabasePassword", " ")
+SQLCA.Lock       	= ProfileString(gs_inifile, "MIS", "Lock",             " ")
+SQLCA.DbParm     	= ProfileString(gs_inifile, "MIS", "DbParm",           " ")
 SQLCA.AutoCommit	= True
 
 Connect Using SQLCA;
@@ -2620,21 +2831,21 @@ If ll_rowcount > 0 Then
 	else
 		ll_error = sqlca.sqlcode
 		ls_error = sqlca.sqlerrtext
-		f_errorlog_insert('UPLOAD', 1, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_ybomtemp : ' + ls_error,it_source)
+		f_errorlog_insert('UPLOAD', ii_interface_id, 1, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_ybomtemp : ' + ls_error,it_source)
 		rs_return_option = 'F'
 	End If
 	
-	ls_lib = 'PBPDM'
-	ls_clp = 'BOM001'
-	
-	SQLCA.SP_RGZPF01(ls_lib, ls_clp)
-	
-	ll_error	= SQLCA.SQLCODE
-	ls_error	= SQLCA.SQLErrText
-	
-	if ll_error <> 0 then
-		f_errorlog_insert('UPLOAD', 2, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_ybomtemp : ' + ls_error,it_source)
-	end if
+//	ls_lib = 'PBPDM'
+//	ls_clp = 'BOM001'
+//	
+//	SQLCA.SP_RGZPF01(ls_lib, ls_clp)
+//	
+//	ll_error	= SQLCA.SQLCODE
+//	ls_error	= SQLCA.SQLErrText
+//	
+//	if ll_error <> 0 then
+//		f_errorlog_insert('UPLOAD', ii_interface_id, 2, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_ybomtemp : ' + ls_error,it_source)
+//	end if
 	
 Else
 	dw_2.SetRedraw(True)
@@ -2840,7 +3051,7 @@ If ll_rowcount > 0 Then
 			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
 			ll_error_cnt ++
 			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tqbusinesstemp : ' + ls_error,it_source)
+				f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tqbusinesstemp : ' + ls_error,it_source)
 			end if
 		End If
 		
@@ -2867,13 +3078,10 @@ end function
 
 public function boolean wf_upload_tstockcancel_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_areacode, ls_divisioncode, ls_itemcode, ls_workcenter, ls_kbno
-String	ls_partkbno, ls_orderseq, ls_deliverydate, ls_userid, ls_orderdate, ls_qty
-String	ls_stockdate, ls_seqno, ls_stockgubun
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -2888,6 +3096,7 @@ wf_upload_sp('sp_pisi_u_tstockcancel_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -2909,6 +3118,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -2922,100 +3135,153 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
-		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
-		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
-		ls_workcenter		= Left(dw_2.GetItemString(i, 'WorkCenter'), 4)
-		ls_kbno				= dw_2.GetItemString(i, 'KBNo')
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'StockQty')), 7)
 		ls_stockdate		= dw_2.GetItemString(i, 'StockDate')		// 입고일
-		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)		
-		ls_orderdate		= dw_2.GetItemString(i, 'KBReleaseDate')	// 취소일
-		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
-		ls_stockgubun		= dw_2.GetItemString(i, 'LineCode')
-
-      if mid(ls_kbno, 3, 1) = 'Z' then
-			If ls_stockgubun = 'N' Then	// 정상
-				ls_stockgubun = 'U'
-			ElseIf ls_stockgubun = 'D' Then	// 불량
-				ls_stockgubun = 'S'
-			ElseIf ls_stockgubun = 'R' Then	// 요수리
-				ls_stockgubun = 'R'
-			Else
-				ls_stockgubun = ls_stockgubun
-			End If
-		else
-			ls_stockgubun = 'U'
-		end if	
-			
-		ls_seqno				= Left(String(dw_2.GetItemNumber(i, 'SeqNo')) + Space(10), 10)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_stockdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+			
+			if f_up_ipis_mis_tstockcancel(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B41'
-			// 제품입고취소정보 parmameter 
-			// 구분(1)/지역(1)/공장(1)/품번(12)/
-			// 간판번호(11)/취소량(7.0)/취소일(8)/재고상태(1)/등록순번(10)/사용자ID(6)
-			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_itemcode + &
-							ls_kbno + ls_qty + ls_stockdate + ls_stockgubun + ls_seqno + ls_userid
-		
-//			messagebox(ls_misflag,		string(len(ls_misflag)))
-//			messagebox(ls_areacode,		string(len(ls_areacode)))
-//			messagebox(ls_divisioncode,		len(ls_divisioncode))
-//			messagebox(ls_itemcode,		len(ls_itemcode))
-//			messagebox(ls_kbno,		len(ls_kbno))
-//			messagebox(ls_qty,		len(ls_qty))
-//			messagebox(ls_stockdate,		len(ls_stockdate))
-//			messagebox(ls_stockgubun,		len(ls_stockgubun))
-//			messagebox(ls_seqno,		len(ls_seqno))
-//			messagebox(ls_userid,		len(ls_userid))
-			
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-			
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(string(ll_error), ls_parm)
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-				
 				Update	tstockcancel_interface
 				Set		interfaceflag = 'N',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;				
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tstockcancel_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tstockcancel_interface : ' + ls_message,it_source)
+		
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
+//		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
+//		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
+//		ls_workcenter		= Left(dw_2.GetItemString(i, 'WorkCenter'), 4)
+//		ls_kbno				= dw_2.GetItemString(i, 'KBNo')
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'StockQty')), 7)
+//		ls_stockdate		= dw_2.GetItemString(i, 'StockDate')		// 입고일
+//		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)		
+//		ls_orderdate		= dw_2.GetItemString(i, 'KBReleaseDate')	// 취소일
+//		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
+//		ls_stockgubun		= dw_2.GetItemString(i, 'LineCode')
+//
+//      if mid(ls_kbno, 3, 1) = 'Z' then
+//			If ls_stockgubun = 'N' Then	// 정상
+//				ls_stockgubun = 'U'
+//			ElseIf ls_stockgubun = 'D' Then	// 불량
+//				ls_stockgubun = 'S'
+//			ElseIf ls_stockgubun = 'R' Then	// 요수리
+//				ls_stockgubun = 'R'
+//			Else
+//				ls_stockgubun = ls_stockgubun
+//			End If
+//		else
+//			ls_stockgubun = 'U'
+//		end if	
+//			
+//		ls_seqno				= Left(String(dw_2.GetItemNumber(i, 'SeqNo')) + Space(10), 10)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_stockdate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B41'
+//			// 제품입고취소정보 parmameter 
+//			// 구분(1)/지역(1)/공장(1)/품번(12)/
+//			// 간판번호(11)/취소량(7.0)/취소일(8)/재고상태(1)/등록순번(10)/사용자ID(6)
+//			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_itemcode + &
+//							ls_kbno + ls_qty + ls_stockdate + ls_stockgubun + ls_seqno + ls_userid
+//		
+////			messagebox(ls_misflag,		string(len(ls_misflag)))
+////			messagebox(ls_areacode,		string(len(ls_areacode)))
+////			messagebox(ls_divisioncode,		len(ls_divisioncode))
+////			messagebox(ls_itemcode,		len(ls_itemcode))
+////			messagebox(ls_kbno,		len(ls_kbno))
+////			messagebox(ls_qty,		len(ls_qty))
+////			messagebox(ls_stockdate,		len(ls_stockdate))
+////			messagebox(ls_stockgubun,		len(ls_stockgubun))
+////			messagebox(ls_seqno,		len(ls_seqno))
+////			messagebox(ls_userid,		len(ls_userid))
+//			
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+//	//		EXECUTE mis_sp_ipis;
+//			
+//			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//			
+//	//		messagebox(string(ll_error), ls_parm)
+//			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tstockcancel_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tstockcancel_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//*********************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3038,13 +3304,10 @@ end function
 
 public function boolean wf_upload_tshipsheet_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_srno, ls_shipdate, ls_sheetno, ls_kit
-String	ls_partkbno, ls_orderseq, ls_deliverydate, ls_userid, ls_orderdate, ls_qty
-String	ls_stockdate, ls_seqno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_shipdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3055,10 +3318,11 @@ String	ls_lib, ls_pgm, ls_parm
 // Return True		: 끝까지 수행
 // Return False	: 중간에서 Return
 
-wf_upload_sp('sp_pisi_u_tshipsheet_interface')
+////wf_upload_sp('sp_pisi_u_tshipsheet_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -3080,6 +3344,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -3093,80 +3361,133 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 8)	//////////////// 확인(OK)
-		
-		ls_shipdate			= dw_2.GetItemString(i, 'ShipDate')		// 출하일
-		ls_shipdate			= Left(ls_shipdate, 4) + Mid(ls_shipdate, 6, 2) + Right(ls_shipdate, 2)
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'ShipQty')), 7)
-		ls_sheetno			= Left(dw_2.GetItemString(i, 'ShipSheetNo') + Space(10), 10)
-
-		If Mid(ls_sheetno, 3, 1) <> 'M' Then	// 이체 데이타 건너뛰고...
-			ls_kit				= Left(dw_2.GetItemString(i, 'KitGubun') + Space(5), 1)	/////////////////// 확인
-			ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-	
-			// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
-			// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
-			If wf_check_server_date(ls_shipdate) Then
-
-				ls_lib	= 'PBJIT'
-				ls_pgm	= 'JIT5B42'
-				// 출하정보 parmameter 
-				// 구분(1)/SR전산번호(8)/출하일(8)/출하량(7.0)/
-				// 출하전표번호(10)/KIT구분(1)/사용자ID(6)
-				ls_parm	= ls_misflag + ls_srno + ls_shipdate + ls_qty + &
-								ls_sheetno + ls_kit + ls_userid
-		
-		//		messagebox(ls_misflag,		len(ls_misflag))
-		//		messagebox(ls_srno,		len(ls_srno))
-		//		messagebox(ls_shipdate,		len(ls_shipdate))
-		//		messagebox(ls_qty,		len(ls_qty))
-		//		messagebox(ls_sheetno,		len(ls_sheetno))
-		//		messagebox(ls_kit,		len(ls_kit))
-		//		messagebox(ls_userid,		len(ls_userid))
-								
-		//		// 데이타 upload procedure 호출
-		//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-		//		EXECUTE mis_sp_ipis;
-		
-				ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-				SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+		ls_shipdate		= dw_2.GetItemString(i, 'ShipDate')			// 출하일
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_shipdate		= Left(ls_shipdate, 4) + Mid(ls_shipdate, 6, 2) + Right(ls_shipdate, 2)	
+		ls_message = ''
+		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+		If wf_check_server_date(ls_shipdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+			
+			if f_up_ipis_mis_tshipsheet(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
-				ll_error	= SQLCA.SQLCODE
-				ls_error	= SQLCA.SQLErrText
+				Update	tshipsheet_interface
+				Set		interfaceflag = 'N',
+							lastdate	= getdate()
+				Where		logid = :ll_logid
+				Using		it_source;			
 				
-		//		messagebox(string(ll_error), ls_parm)
-				If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
-					Commit Using SQLCA ;
-					dw_2.DeleteRow(i)
-					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-					
-					Update	tshipsheet_interface
-					Set		interfaceflag = 'N',
-								lastdate	= getdate()
-					Where		logid = :ll_logid
-					Using		it_source;
-					
-					ll_error	= it_source.SQLCODE
-					ls_error	= it_source.SQLErrText
-					
-					If ll_error = 0 Then
-						Commit Using it_source ;
-					Else
-						Rollback Using it_source ;
-					End If	
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
+				end if
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
+		End If	// 서버 시간 체크 로직 end
 		
-				Else
-					RollBack Using SQLCA ;
-					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-					ll_error_cnt ++
-					if ll_error < 0 then
-						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipsheet_interface : ' + ls_error,it_source)
-					end if
-				End If
-			End If	// 이체 데이타 건너뛰고...
-		End If	// 서버 시간 체크 로직 end	
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tshipsheet_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_srno				= Left(dw_2.GetItemString(i, 'SRNo') + Space(10), 8)	//////////////// 확인(OK)
+//		
+//		ls_shipdate			= dw_2.GetItemString(i, 'ShipDate')		// 출하일
+//		ls_shipdate			= Left(ls_shipdate, 4) + Mid(ls_shipdate, 6, 2) + Right(ls_shipdate, 2)
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'ShipQty')), 7)
+//		ls_sheetno			= Left(dw_2.GetItemString(i, 'ShipSheetNo') + Space(10), 10)
+//
+//		If Mid(ls_sheetno, 3, 1) <> 'M' Then	// 이체 데이타 건너뛰고...
+//			ls_kit				= Left(dw_2.GetItemString(i, 'KitGubun') + Space(5), 1)	/////////////////// 확인
+//			ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//	
+//			// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//			// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//			If wf_check_server_date(ls_shipdate) Then
+//
+//				ls_lib	= 'PBJIT'
+//				ls_pgm	= 'JIT5B42'
+//				// 출하정보 parmameter 
+//				// 구분(1)/SR전산번호(8)/출하일(8)/출하량(7.0)/
+//				// 출하전표번호(10)/KIT구분(1)/사용자ID(6)
+//				ls_parm	= ls_misflag + ls_srno + ls_shipdate + ls_qty + &
+//								ls_sheetno + ls_kit + ls_userid
+//		
+//		//		messagebox(ls_misflag,		len(ls_misflag))
+//		//		messagebox(ls_srno,		len(ls_srno))
+//		//		messagebox(ls_shipdate,		len(ls_shipdate))
+//		//		messagebox(ls_qty,		len(ls_qty))
+//		//		messagebox(ls_sheetno,		len(ls_sheetno))
+//		//		messagebox(ls_kit,		len(ls_kit))
+//		//		messagebox(ls_userid,		len(ls_userid))
+//								
+//		//		// 데이타 upload procedure 호출
+//		//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+//		//		EXECUTE mis_sp_ipis;
+//		
+//				ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//				SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//				
+//				ll_error	= SQLCA.SQLCODE
+//				ls_error	= SQLCA.SQLErrText
+//				
+//		//		messagebox(string(ll_error), ls_parm)
+//				If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
+//					Commit Using SQLCA ;
+//					dw_2.DeleteRow(i)
+//					uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//					
+//					Update	tshipsheet_interface
+//					Set		interfaceflag = 'N',
+//								lastdate	= getdate()
+//					Where		logid = :ll_logid
+//					Using		it_source;
+//					
+//					ll_error	= it_source.SQLCODE
+//					ls_error	= it_source.SQLErrText
+//					
+//					If ll_error = 0 Then
+//						Commit Using it_source ;
+//					Else
+//						Rollback Using it_source ;
+//					End If	
+//		
+//				Else
+//					RollBack Using SQLCA ;
+//					uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//					ll_error_cnt ++
+//					if ll_error < 0 then
+//						f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipsheet_interface : ' + ls_error,it_source)
+//					end if
+//				End If
+//			End If	// 이체 데이타 건너뛰고...
+//		End If	// 서버 시간 체크 로직 end	
+//**************************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3189,13 +3510,10 @@ end function
 
 public function boolean wf_upload_tshipback_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_csrno, ls_csrno1, ls_csrno2, ls_canceldate, ls_billno
-String	ls_invflag, ls_userid, ls_orderdate, ls_qty
-String	ls_stockdate, ls_seqno, ls_shipgubun, ls_itno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_canceldate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3210,6 +3528,7 @@ wf_upload_sp('sp_pisi_u_tshipback_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -3231,6 +3550,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -3244,99 +3567,151 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_csrno				= Left(dw_2.GetItemString(i, 'CSRNO') + Space(10), 8)	//////////////// 확인 csrno, srno
-		ls_csrno1			= Left(dw_2.GetItemString(i, 'CSRNO1') + Space(10), 2)		// 출하분할횟수
-		ls_csrno2			= Left(dw_2.GetItemString(i, 'CSRNO2') + Space(10), 2)		// 납품분할횟수
-		ls_billno			= Left(dw_2.GetItemString(i, 'BillNo') + Space(10), 10)
-		ls_canceldate		= dw_2.GetItemString(i, 'CancelConfirmDate')		// 취소일
-		ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)
-		ls_invflag			= dw_2.GetItemString(i, 'InvGubunFlag')
-		If ls_invflag = 'N' Then
-			ls_invflag = 'U'
-		ElseIf ls_invflag = 'D' Then
-			ls_invflag = 'S'
-		End If	
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'CancelQty')), 7)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		ls_shipgubun		= dw_2.GetItemString(i, 'ShipGubun')
-		ls_itno		= dw_2.GetItemString(i, 'Itno')
-
+		ls_canceldate		= dw_2.GetItemString(i, 'CancelConfirmDate')			// 취소일
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_canceldate) Then
-			// 역이체건 추가 ( 2003.11.10 )
-			If ls_shipgubun = 'M' then
-				ls_qty				= ls_qty + Fill('0', 1)
-				ls_lib	= 'PBJIT'
-				ls_pgm	= 'JIT5B47'
-				// 출하취소정보 parmameter 
-				// 구분(1)/취소의뢰전산번호(8)/출하분할횟수(2)/납품분할횟수(2)/
-				// 취소일(8)/취소량(7.0)/사용자ID(6)
-				ls_parm	= ls_misflag + ls_csrno + ls_csrno1 + ls_csrno2 + &
-								ls_canceldate + ls_qty + ls_userid
-			Else
-				ls_lib	= 'PBJIT'
-				ls_pgm	= 'JIT5B43'
-				// 출하취소정보 parmameter 
-				// 구분(1)/취소의뢰전산번호(8)/출하분할횟수(2)/납품분할횟수(2)/
-				// 전표번호(10)/취소일(8)/재고상태(1)/취소량(7.0)/사용자ID(6)
-				ls_parm	= ls_misflag + ls_csrno + ls_csrno1 + ls_csrno2 + &
-								ls_billno + ls_canceldate + ls_invflag + ls_qty + ls_userid
-			End If
-	
-	//		messagebox(ls_misflag,		len(ls_misflag))
-	//		messagebox(ls_csrno,		len(ls_csrno))
-	//		messagebox(ls_csrno1,		len(ls_csrno1))
-	//		messagebox(ls_csrno2,		len(ls_csrno2))
-	//		messagebox(ls_billno,		len(ls_billno))
-	//		messagebox(ls_canceldate,		len(ls_canceldate))
-	//		messagebox(ls_invflag,		len(ls_invflag))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_userid,		len(ls_userid))
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-		
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-			
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(string(ll_error), ls_parm)
-			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			if f_up_ipis_mis_tshipback(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
 				Update	tshipback_interface
 				Set		interfaceflag = 'N',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;				
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipback_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tshipback_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_csrno				= Left(dw_2.GetItemString(i, 'CSRNO') + Space(10), 8)	//////////////// 확인 csrno, srno
+//		ls_csrno1			= Left(dw_2.GetItemString(i, 'CSRNO1') + Space(10), 2)		// 출하분할횟수
+//		ls_csrno2			= Left(dw_2.GetItemString(i, 'CSRNO2') + Space(10), 2)		// 납품분할횟수
+//		ls_billno			= Left(dw_2.GetItemString(i, 'BillNo') + Space(10), 10)
+//		ls_canceldate		= dw_2.GetItemString(i, 'CancelConfirmDate')		// 취소일
+//		ls_canceldate		= Left(ls_canceldate, 4) + Mid(ls_canceldate, 6, 2) + Right(ls_canceldate, 2)
+//		ls_invflag			= dw_2.GetItemString(i, 'InvGubunFlag')
+//		If ls_invflag = 'N' Then
+//			ls_invflag = 'U'
+//		ElseIf ls_invflag = 'D' Then
+//			ls_invflag = 'S'
+//		End If	
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'CancelQty')), 7)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		ls_shipgubun		= dw_2.GetItemString(i, 'ShipGubun')
+//		ls_itno		= dw_2.GetItemString(i, 'Itno')
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_canceldate) Then
+//			// 역이체건 추가 ( 2003.11.10 )
+//			If ls_shipgubun = 'M' then
+//				ls_qty				= ls_qty + Fill('0', 1)
+//				ls_lib	= 'PBJIT'
+//				ls_pgm	= 'JIT5B47'
+//				// 출하취소정보 parmameter 
+//				// 구분(1)/취소의뢰전산번호(8)/출하분할횟수(2)/납품분할횟수(2)/
+//				// 취소일(8)/취소량(7.0)/사용자ID(6)
+//				ls_parm	= ls_misflag + ls_csrno + ls_csrno1 + ls_csrno2 + &
+//								ls_canceldate + ls_qty + ls_userid
+//			Else
+//				ls_lib	= 'PBJIT'
+//				ls_pgm	= 'JIT5B43'
+//				// 출하취소정보 parmameter 
+//				// 구분(1)/취소의뢰전산번호(8)/출하분할횟수(2)/납품분할횟수(2)/
+//				// 전표번호(10)/취소일(8)/재고상태(1)/취소량(7.0)/사용자ID(6)
+//				ls_parm	= ls_misflag + ls_csrno + ls_csrno1 + ls_csrno2 + &
+//								ls_billno + ls_canceldate + ls_invflag + ls_qty + ls_userid
+//			End If
+//	
+//	//		messagebox(ls_misflag,		len(ls_misflag))
+//	//		messagebox(ls_csrno,		len(ls_csrno))
+//	//		messagebox(ls_csrno1,		len(ls_csrno1))
+//	//		messagebox(ls_csrno2,		len(ls_csrno2))
+//	//		messagebox(ls_billno,		len(ls_billno))
+//	//		messagebox(ls_canceldate,		len(ls_canceldate))
+//	//		messagebox(ls_invflag,		len(ls_invflag))
+//	//		messagebox(ls_qty,		len(ls_qty))
+//	//		messagebox(ls_userid,		len(ls_userid))
+//			
+//		
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+//	//		EXECUTE mis_sp_ipis;
+//			
+//			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//			
+//	//		messagebox(string(ll_error), ls_parm)
+//			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tshipback_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipback_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//***********************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3359,13 +3734,10 @@ end function
 
 public function boolean wf_upload_tshipetc_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_area, ls_division, ls_dept, ls_inputdate, ls_item
-String	ls_invflag, ls_userid, ls_inputflag, ls_confirmno, ls_project, ls_qty
-String	ls_stockdate, ls_seqno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_inputdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3380,6 +3752,7 @@ wf_upload_sp('sp_pisi_u_tshipetc_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -3401,6 +3774,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -3412,99 +3789,151 @@ If ll_rowcount > 0 Then
 			End If
 		End If
 		dw_2.ScrollToRow(i)
-		
+
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_inputflag		= dw_2.GetItemString(i, 'InputFlag')		// 출하반납구분
-		ls_area				= dw_2.GetItemString(i, 'AreaCode')
-		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
-		ls_item				= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
-		ls_confirmno		= Left(dw_2.GetItemString(i, 'ConfirmNo') + Space(10), 10)	// 전표
-		ls_inputdate		= dw_2.GetItemString(i, 'InputDate')		// 전표일
-		ls_inputdate		= Left(ls_inputdate, 4) + Mid(ls_inputdate, 6, 2) + Right(ls_inputdate, 2)
-		ls_dept				= dw_2.GetItemString(i, 'DeptCode')			// 사용부서
-		ls_project			= Left(dw_2.GetItemString(i, 'ProjectNo') + Space(10), 5)
-		If IsNull(ls_project) Then
-			ls_project = '     '
-		End If	
-
-		ls_invflag			= dw_2.GetItemString(i, 'InvGubunFlag')
-		If ls_invflag = 'N' Then
-			ls_invflag = 'U'
-		ElseIf ls_invflag = 'D' Then
-			ls_invflag = 'S'
-		End If	
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'EtcQty')), 7) + Fill('0', 1)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-
+		ls_inputdate		= dw_2.GetItemString(i, 'InputDate')			// 전표일
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_inputdate		= Left(ls_inputdate, 4) + Mid(ls_inputdate, 6, 2) + Right(ls_inputdate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_inputdate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B44'
-			// 사내출하 및 반납정보 parmameter 
-			// 구분(1)/출하반납구분(1)/지역(1)/공장(1)/품번(12)/전표번호(10)/
-			// 전표일(8)/사용부서(4)/project번호(5)/재고상태(1)/수량(7.1)/사용자ID(6)
-			ls_parm	= ls_misflag + ls_inputflag + ls_area + ls_division + ls_item + ls_confirmno + &
-							ls_inputdate + ls_dept + ls_project + ls_invflag + ls_qty + ls_userid
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-	//		messagebox(ls_misflag,		len(ls_misflag))
-	//		messagebox(ls_inputflag,		len(ls_inputflag))
-	//		messagebox(ls_area,		len(ls_area))
-	//		messagebox(ls_division,		len(ls_division))
-	//		messagebox(ls_item,		len(ls_item))
-	//		messagebox(ls_confirmno,		len(ls_confirmno))
-	//		messagebox(ls_inputdate,		len(ls_inputdate))
-	//		messagebox(ls_dept,		len(ls_dept))
-	//		messagebox(ls_project,		len(ls_project))
-	//		messagebox(ls_invflag,		len(ls_invflag))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_userid,		len(ls_userid))
-	//		
-	//		messagebox(string(len(ls_parm)), ls_parm)
-		
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-					
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(string(ll_error), ls_parm)
-			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			if f_up_ipis_mis_tshipetc(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
 				Update	tshipetc_interface
 				Set		interfaceflag = 'N',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;				
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipetc_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tshipetc_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic		
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_inputflag		= dw_2.GetItemString(i, 'InputFlag')		// 출하반납구분
+//		ls_area				= dw_2.GetItemString(i, 'AreaCode')
+//		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
+//		ls_item				= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
+//		ls_confirmno		= Left(dw_2.GetItemString(i, 'ConfirmNo') + Space(10), 10)	// 전표
+//		ls_inputdate		= dw_2.GetItemString(i, 'InputDate')		// 전표일
+//		ls_inputdate		= Left(ls_inputdate, 4) + Mid(ls_inputdate, 6, 2) + Right(ls_inputdate, 2)
+//		ls_dept				= dw_2.GetItemString(i, 'DeptCode')			// 사용부서
+//		ls_project			= Left(dw_2.GetItemString(i, 'ProjectNo') + Space(10), 5)
+//		If IsNull(ls_project) Then
+//			ls_project = '     '
+//		End If	
+//
+//		ls_invflag			= dw_2.GetItemString(i, 'InvGubunFlag')
+//		If ls_invflag = 'N' Then
+//			ls_invflag = 'U'
+//		ElseIf ls_invflag = 'D' Then
+//			ls_invflag = 'S'
+//		End If	
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'EtcQty')), 7) + Fill('0', 1)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_inputdate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B44'
+//			// 사내출하 및 반납정보 parmameter 
+//			// 구분(1)/출하반납구분(1)/지역(1)/공장(1)/품번(12)/전표번호(10)/
+//			// 전표일(8)/사용부서(4)/project번호(5)/재고상태(1)/수량(7.1)/사용자ID(6)
+//			ls_parm	= ls_misflag + ls_inputflag + ls_area + ls_division + ls_item + ls_confirmno + &
+//							ls_inputdate + ls_dept + ls_project + ls_invflag + ls_qty + ls_userid
+//			
+//	//		messagebox(ls_misflag,		len(ls_misflag))
+//	//		messagebox(ls_inputflag,		len(ls_inputflag))
+//	//		messagebox(ls_area,		len(ls_area))
+//	//		messagebox(ls_division,		len(ls_division))
+//	//		messagebox(ls_item,		len(ls_item))
+//	//		messagebox(ls_confirmno,		len(ls_confirmno))
+//	//		messagebox(ls_inputdate,		len(ls_inputdate))
+//	//		messagebox(ls_dept,		len(ls_dept))
+//	//		messagebox(ls_project,		len(ls_project))
+//	//		messagebox(ls_invflag,		len(ls_invflag))
+//	//		messagebox(ls_qty,		len(ls_qty))
+//	//		messagebox(ls_userid,		len(ls_userid))
+//	//		
+//	//		messagebox(string(len(ls_parm)), ls_parm)
+//		
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+//	//		EXECUTE mis_sp_ipis;
+//					
+//			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//			
+//	//		messagebox(string(ll_error), ls_parm)
+//			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tshipetc_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipetc_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//**********************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3527,13 +3956,10 @@ end function
 
 public function boolean wf_upload_tshipinv_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_moveno, ls_movedate, ls_item
-String	ls_invflag, ls_userid, ls_inputflag, ls_confirmno, ls_project, ls_qty
-String	ls_stockdate, ls_seqno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_movedate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3544,150 +3970,203 @@ String	ls_lib, ls_pgm, ls_parm
 // Return True		: 끝까지 수행
 // Return False	: 중간에서 Return
 
-wf_upload_sp('sp_pisi_u_tshipinv_interface')
-
-ls_today = String(Today(), 'yyyymmdd')
-
-dw_2.DataObject	= fs_dataobject
-dw_2.SetTransObject(it_source)
-
-rs_return_option	= 'S'
-ll_start_time		= Cpu ()
-
-dw_2.SetRedraw(False)
-ll_rowcount				= dw_2.Retrieve()
-
-uo_pipe.st_read.Text		= String(ll_rowcount, "#,##0")
-uo_pipe.st_written.Text	= '0'
-
-If ll_rowcount > 0 Then
-	dw_2.ScrollToRow(ll_rowcount)
-	dw_2.SetRedraw(True)
-
-	// RecStatus이 
-	// A or I : insert
-	// R : update
-	// D : delete -> data space로 변경
-	
-	For i = ll_rowcount To 1 Step -1
-		Yield()
-		If ib_upload_stop Then
-			ib_upload_stop = False
-			li_return = MessageBox("Upload Stop", "Data Upload를 중지 하시겠습니까 ?", Question!, YesNo!, 2)
-			If li_return = 1 Then
-				rs_return_option = 'C'
-				Return False
-			End If
-		End If
-		dw_2.ScrollToRow(i)
-		
-		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_moveno			= dw_2.GetItemString(i, 'MoveRequireNo')
-
-		If Right(ls_moveno, 3) = 'P00' Then		// 기존 데이타 1	'2Z036000P00'
-			ls_moveno	= Left(Left(ls_moveno, 8) + Space(20), 12)
-		ElseIf Len(ls_moveno) = 8 Then			// 기존 데이타 2	'2Z008300'		
-			ls_moveno	= Left(Left(ls_moveno, 8) + Space(20), 12)
-//		ElseIf Len(ls_moveno) = 10 Then			// 기존 데이타 3	2120003110'	-- 데이타 수정하자
-		
-		ElseIf Len(ls_moveno) = 11 Then			// 기존 데이타 4	'2Z008300JH1'		
-			ls_moveno	= ls_moveno + '0'
-		End If
-			
-		ls_movedate			= dw_2.GetItemString(i, 'MoveConfirmDate')		// 이체입고일
-		ls_movedate			= Left(ls_movedate, 4) + Mid(ls_movedate, 6, 2) + Right(ls_movedate, 2)
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'TruckLoadQty')), 7) + Fill('0', 1)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-
-		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
-		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
-		If wf_check_server_date(ls_movedate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B45'
-			// 이체입고정보 parmameter 
-			// 구분(1)/이체의뢰전산번호(12)/이체입고일(8)/이체입고량(7.1)/사용자ID(6)
-			ls_parm	= ls_misflag + ls_moveno + ls_movedate + ls_qty + ls_userid
-		
-	//		messagebox(ls_misflag,		len(ls_misflag))
-	//		messagebox(ls_moveno,		len(ls_moveno))
-	//		messagebox(ls_movedate,		len(ls_movedate))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_userid,		len(ls_userid))
-			
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-			
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(string(ll_error), ls_parm)
-			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-				
-				Update	tshipinv_interface
-				Set		interfaceflag = 'N',
-							lastdate	= getdate()
-				Where		logid = :ll_logid
-				Using		it_source;
-				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipinv_interface : ' + ls_error,it_source)
-				end if
-			End If
-		End If	// 서버 시간 체크 로직 end
-	Next
-	
-	ll_end_time = Cpu ()
-	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
-	If ll_error_cnt > 1 Then
-		rs_return_option = 'F'
-	Else
-		rs_return_option = 'S'
-	End If
+//wf_upload_sp('sp_pisi_u_tshipinv_interface')
+//
+//ls_today = String(Today(), 'yyyymmdd')
+//
+//dw_argument_list.dataobject 	= fs_dataobject
+//dw_2.DataObject	= fs_dataobject
+//dw_2.SetTransObject(it_source)
+//
+//rs_return_option	= 'S'
+//ll_start_time		= Cpu ()
+//
+//dw_2.SetRedraw(False)
+//ll_rowcount				= dw_2.Retrieve()
+//
+//uo_pipe.st_read.Text		= String(ll_rowcount, "#,##0")
+//uo_pipe.st_written.Text	= '0'
+//
+//If ll_rowcount > 0 Then
+//	dw_2.ScrollToRow(ll_rowcount)
+//	dw_2.SetRedraw(True)
+//
+//	// RecStatus이 
+//	// A or I : insert
+//	// R : update
+//	// D : delete -> data space로 변경
+//	
+//	ls_areadivision[1] = 'XZ'
+//	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+//	it_source.autocommit = false
+//	
+//	For i = ll_rowcount To 1 Step -1
+//		Yield()
+//		If ib_upload_stop Then
+//			ib_upload_stop = False
+//			li_return = MessageBox("Upload Stop", "Data Upload를 중지 하시겠습니까 ?", Question!, YesNo!, 2)
+//			If li_return = 1 Then
+//				rs_return_option = 'C'
+//				Return False
+//			End If
+//		End If
+//		dw_2.ScrollToRow(i)
+//		
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_movedate		= dw_2.GetItemString(i, 'MoveConfirmDate')			// 이체입고일
+//		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+//		if ls_misflag = 'A' then
+//			ls_misflag = 'C'
+//		elseif ls_misflag = 'R' then
+//			ls_misflag = 'U'
+//		end if
+//		dw_2.setitem(i, 'MisFlag', ls_misflag)
+//		ls_movedate		= Left(ls_movedate, 4) + Mid(ls_movedate, 6, 2) + Right(ls_movedate, 2)	
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_movedate) Then
+//			dw_argument_list.reset()
+//			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+//			
+//			if f_up_ipis_mis_tshipinv(ls_message,dw_argument_list,lstr_ipis) = -1 then
+//				goto Rollback_
+//			else
+//				
+//				Update	tshipinv_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;						
+//				
+//				if it_source.sqlnrows < 1 then
+//					goto Rollback_
+//				end if
+//				
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+// 				
+//				commit using it_source;
+//				f_ipis_server_commit_only(lstr_ipis)
+//			end if
+//		End If	// 서버 시간 체크 로직 end
+//		
+//		continue
+//		
+//		Rollback_:
+//		rollback using it_source;
+//		f_ipis_server_rollback_only(lstr_ipis)
+//		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//		ll_error_cnt ++
+//		f_errorlog_insert('UPLOAD', i, 'wf_upload_tshipinv_interface : ' + ls_message,it_source)
+////****************************
+////* OLD Business Logic
+////		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+////		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+////		ls_moveno			= dw_2.GetItemString(i, 'MoveRequireNo')
+////
+////		If Right(ls_moveno, 3) = 'P00' Then		// 기존 데이타 1	'2Z036000P00'
+////			ls_moveno	= Left(Left(ls_moveno, 8) + Space(20), 12)
+////		ElseIf Len(ls_moveno) = 8 Then			// 기존 데이타 2	'2Z008300'		
+////			ls_moveno	= Left(Left(ls_moveno, 8) + Space(20), 12)
+//////		ElseIf Len(ls_moveno) = 10 Then			// 기존 데이타 3	2120003110'	-- 데이타 수정하자
+////		
+////		ElseIf Len(ls_moveno) = 11 Then			// 기존 데이타 4	'2Z008300JH1'		
+////			ls_moveno	= ls_moveno + '0'
+////		End If
+////			
+////		ls_movedate			= dw_2.GetItemString(i, 'MoveConfirmDate')		// 이체입고일
+////		ls_movedate			= Left(ls_movedate, 4) + Mid(ls_movedate, 6, 2) + Right(ls_movedate, 2)
+////		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'TruckLoadQty')), 7) + Fill('0', 1)
+////		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+////
+////		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+////		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+////		If wf_check_server_date(ls_movedate) Then
+////
+////			ls_lib	= 'PBJIT'
+////			ls_pgm	= 'JIT5B45'
+////			// 이체입고정보 parmameter 
+////			// 구분(1)/이체의뢰전산번호(12)/이체입고일(8)/이체입고량(7.1)/사용자ID(6)
+////			ls_parm	= ls_misflag + ls_moveno + ls_movedate + ls_qty + ls_userid
+////		
+////	//		messagebox(ls_misflag,		len(ls_misflag))
+////	//		messagebox(ls_moveno,		len(ls_moveno))
+////	//		messagebox(ls_movedate,		len(ls_movedate))
+////	//		messagebox(ls_qty,		len(ls_qty))
+////	//		messagebox(ls_userid,		len(ls_userid))
+////			
+////	//		// 데이타 upload procedure 호출
+////	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+////	//		EXECUTE mis_sp_ipis;
+////			
+////			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+////			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+////			
+////			ll_error	= SQLCA.SQLCODE
+////			ls_error	= SQLCA.SQLErrText
+////			
+////	//		messagebox(string(ll_error), ls_parm)
+////			If ll_error = 0 and Right(TRIM(ls_parm), 1) = 'Y' Then
+////				Commit Using SQLCA ;
+////				dw_2.DeleteRow(i)
+////				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+////				
+////				Update	tshipinv_interface
+////				Set		interfaceflag = 'N',
+////							lastdate	= getdate()
+////				Where		logid = :ll_logid
+////				Using		it_source;
+////				
+////				ll_error	= it_source.SQLCODE
+////				ls_error	= it_source.SQLErrText
+////				
+////				If ll_error = 0 Then
+////					Commit Using it_source ;
+////				Else
+////					Rollback Using it_source ;
+////				End If	
+////	
+////			Else
+////				RollBack Using SQLCA ;
+////				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+////				ll_error_cnt ++
+////				if ll_error < 0 then
+////					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tshipinv_interface : ' + ls_error,it_source)
+////				end if
+////			End If
+////		End If	// 서버 시간 체크 로직 end
+////********************************************
+//	Next
+//	
+//	it_source.autocommit = true
+//	f_ipis_server_destroy_only(lstr_ipis)
+//	
+//	ll_end_time = Cpu ()
+//	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
+//	If ll_error_cnt > 1 Then
+//		rs_return_option = 'F'
+//	Else
+//		rs_return_option = 'S'
+//	End If
+//	Return True
+//Else
+//	dw_2.SetRedraw(True)
+//	ll_end_time = Cpu ()
+//	uo_pipe.st_time.text = string((ll_end_time - ll_start_time)/1000,"##0.0") + " Secs"
+//	uo_pipe.st_written.Text = '0'
+//	uo_pipe.st_error.Text	= '0'
+//	rs_return_option = 'S'
 	Return True
-Else
-	dw_2.SetRedraw(True)
-	ll_end_time = Cpu ()
-	uo_pipe.st_time.text = string((ll_end_time - ll_start_time)/1000,"##0.0") + " Secs"
-	uo_pipe.st_written.Text = '0'
-	uo_pipe.st_error.Text	= '0'
-	rs_return_option = 'S'
-	Return True
-End If
+//End If
 end function
 
 public function boolean wf_upload_tmcpartrelease (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
 Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_status, ls_areacode, ls_divisioncode, ls_itemcode, ls_slipno, ls_dept
-String	ls_usage, ls_mcno, ls_releasedate, ls_userid, ls_stockstatus, ls_qty
-String	ls_stockdate, ls_seqno, ls_orderno, ls_serialno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
-Int		li_check
-Decimal	ld_qty
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_releasedate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3700,6 +4179,7 @@ Decimal	ld_qty
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -3721,6 +4201,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -3731,110 +4215,159 @@ If ll_rowcount > 0 Then
 				Return False
 			End If
 		End If
+		
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_status			= dw_2.GetItemString(i, 'DataStatus')		
-		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
-		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')		
-		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(20), 12)
-		ls_slipno			= Left(dw_2.GetItemString(i, 'SlipNo') + Space(20), 12)
-		ls_orderno			= Left(dw_2.GetItemString(i, 'OrderNo') + Space(20), 16)
-		ls_dept				= Left(dw_2.GetItemString(i, 'DeptCode') + Space(10), 5)
-		If IsNull(ls_dept) Then
-			ls_dept	= '     '
-		End If
-		ls_usage				= Left(dw_2.GetItemString(i, 'Usage') + Space(10), 2)
-		If IsNull(ls_usage) Then
-			ls_usage	= '  '
-		End If
-		ls_mcno				= Left(dw_2.GetItemString(i, 'MCNo') + Space(10), 9)
-		If IsNull(ls_mcno) Then
-			ls_mcno	= '         '
-		End If
-		ls_releaseDate		= dw_2.GetItemString(i, 'ReleaseDate')		
-		ls_stockstatus		= dw_2.GetItemString(i, 'StockStatus')		
-		ld_qty				= dw_2.GetItemNumber(i, 'ReleaseQty')
-		ls_qty				= string(ld_qty, "0000000.0")
-		li_check				= Len(ls_qty)
-		ls_qty				= Right(Left(ls_qty, li_check - 2), 7) + Right(ls_qty, 1)
-		ls_serialno			= Left(dw_2.GetItemString(i, 'SerialNo')	+ Space(10), 10)	
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		If IsNull(ls_userid) Then
-			ls_userid	= '      '
-		End If
-
+		ls_releasedate		= dw_2.GetItemString(i, 'ReleaseDate')
+		ls_misflag			= dw_2.GetItemString(i, 'DataStatus')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'DataStatus', ls_misflag)
+		dw_2.setitem(i, 'lastemp', '')
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_releasedate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B33'
-			// 공무자재 불출정보 parmameter 
-			// 구분(1)/지역(1)/공장(1)/품번(12)/불출전표번호(12)/
-			// 작업지시번호(16)/사용부서(10)/불출용도(2)/장비번호(9)/
-			// 불출일자(8)/재고상태(1)/불출량(7.1)/등록순번(10)/사용자ID(6)
-			ls_parm	= ls_status + ls_areacode + ls_divisioncode + ls_itemcode + ls_slipno +&
-							ls_orderno + ls_dept + ls_usage + ls_mcno + &
-							ls_releasedate + ls_stockstatus + ls_qty + ls_serialno + ls_userid
-	
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-	//		messagebox(ls_status,		len(ls_status))
-	//		messagebox(ls_areacode,		len(ls_areacode))
-	//		messagebox(ls_divisioncode,		len(ls_divisioncode))
-	//		messagebox(ls_itemcode,		len(ls_itemcode))
-	//		messagebox(ls_slipno,		len(ls_slipno))
-	//		messagebox(ls_orderno,		len(ls_orderno))
-	//		messagebox(ls_dept,		len(ls_dept))
-	//		messagebox(ls_usage,		len(ls_usage))
-	//		messagebox(ls_mcno,		len(ls_mcno))
-	//		messagebox(ls_releasedate,		len(ls_releasedate))
-	//		messagebox(ls_stockstatus,		len(ls_stockstatus))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_serialno,		len(ls_serialno))
-	//		messagebox(ls_userid,		len(ls_userid))
-					
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-			
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(string(ll_error), ls_parm)
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-				
+			if f_up_ipis_mis_tmcpartrelease(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				Update	tmcpartrelease
 				Set		uploadflag = 'Y',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;				
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmcpartrelease : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tmcpartrelease : ' + ls_message,it_source)
+//******************** post business logic
+//		ls_status			= dw_2.GetItemString(i, 'DataStatus')		
+//		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
+//		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')		
+//		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(20), 12)
+//		ls_slipno			= Left(dw_2.GetItemString(i, 'SlipNo') + Space(20), 12)
+//		ls_orderno			= Left(dw_2.GetItemString(i, 'OrderNo') + Space(20), 16)
+//		ls_dept				= Left(dw_2.GetItemString(i, 'DeptCode') + Space(10), 5)
+//		If IsNull(ls_dept) Then
+//			ls_dept	= '     '
+//		End If
+//		ls_usage				= Left(dw_2.GetItemString(i, 'Usage') + Space(10), 2)
+//		If IsNull(ls_usage) Then
+//			ls_usage	= '  '
+//		End If
+//		ls_mcno				= Left(dw_2.GetItemString(i, 'MCNo') + Space(10), 9)
+//		If IsNull(ls_mcno) Then
+//			ls_mcno	= '         '
+//		End If
+//		ls_releaseDate		= dw_2.GetItemString(i, 'ReleaseDate')		
+//		ls_stockstatus		= dw_2.GetItemString(i, 'StockStatus')		
+//		ld_qty				= dw_2.GetItemNumber(i, 'ReleaseQty')
+//		ls_qty				= string(ld_qty, "0000000.0")
+//		li_check				= Len(ls_qty)
+//		ls_qty				= Right(Left(ls_qty, li_check - 2), 7) + Right(ls_qty, 1)
+//		ls_serialno			= Left(dw_2.GetItemString(i, 'SerialNo')	+ Space(10), 10)	
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		If IsNull(ls_userid) Then
+//			ls_userid	= '      '
+//		End If
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_releasedate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B33'
+//			// 공무자재 불출정보 parmameter 
+//			// 구분(1)/지역(1)/공장(1)/품번(12)/불출전표번호(12)/
+//			// 작업지시번호(16)/사용부서(10)/불출용도(2)/장비번호(9)/
+//			// 불출일자(8)/재고상태(1)/불출량(7.1)/등록순번(10)/사용자ID(6)
+//			ls_parm	= ls_status + ls_areacode + ls_divisioncode + ls_itemcode + ls_slipno +&
+//							ls_orderno + ls_dept + ls_usage + ls_mcno + &
+//							ls_releasedate + ls_stockstatus + ls_qty + ls_serialno + ls_userid
+//	
+//			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			
+//	//		messagebox(ls_status,		len(ls_status))
+//	//		messagebox(ls_areacode,		len(ls_areacode))
+//	//		messagebox(ls_divisioncode,		len(ls_divisioncode))
+//	//		messagebox(ls_itemcode,		len(ls_itemcode))
+//	//		messagebox(ls_slipno,		len(ls_slipno))
+//	//		messagebox(ls_orderno,		len(ls_orderno))
+//	//		messagebox(ls_dept,		len(ls_dept))
+//	//		messagebox(ls_usage,		len(ls_usage))
+//	//		messagebox(ls_mcno,		len(ls_mcno))
+//	//		messagebox(ls_releasedate,		len(ls_releasedate))
+//	//		messagebox(ls_stockstatus,		len(ls_stockstatus))
+//	//		messagebox(ls_qty,		len(ls_qty))
+//	//		messagebox(ls_serialno,		len(ls_serialno))
+//	//		messagebox(ls_userid,		len(ls_userid))
+//					
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
+//	//		EXECUTE mis_sp_ipis;
+//			
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//			
+//	//		messagebox(string(ll_error), ls_parm)
+//			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tmcpartrelease
+//				Set		uploadflag = 'Y',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_interface_id, ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmcpartrelease : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3857,12 +4390,10 @@ end function
 
 public function boolean wf_upload_tpartreturn_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_gubun, ls_area, ls_division, ls_itemcode, ls_rtndept, ls_rtnusage, ls_rtngubun
-String	ls_rtndate, ls_tidno, ls_userid, ls_inputdate, ls_suppliercode
 Long		ll_logid
-dec{1} 	ld_uqty, ld_rqty, ld_sqty
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -3877,6 +4408,7 @@ wf_upload_sp('sp_pisi_u_tpartreturn_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -3898,6 +4430,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -3911,63 +4447,56 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_gubun 			= dw_2.GetItemString(i, 'Gubun')
-		ls_area				= dw_2.GetItemString(i, 'AreaCode')
-		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
-		ls_itemcode			= dw_2.GetItemString(i, 'ItemCode')
-		ls_rtndept			= dw_2.GetItemString(i, 'RtnDept')
-		if isnull(ls_rtndept) then ls_rtndept = ''
-		ls_rtnusage			= dw_2.GetItemString(i, 'RtnUsage')
-		ls_rtngubun			= dw_2.GetItemString(i,	'RtnGubun')
-		ls_rtndate			= dw_2.GetItemString(i, 'RtnDate')
-		ls_suppliercode	= dw_2.GetItemString(i, 'SupplierCode')
-		if isnull(ls_suppliercode) then ls_suppliercode = ''
-		ld_uqty				= dw_2.GetItemDecimal(i, 'Uqty')
-		ld_rqty				= dw_2.GetItemDecimal(i, 'Rqty')
-		ld_sqty				= dw_2.GetItemDecimal(i, 'Sqty')
-		ls_tidno				= dw_2.GetItemString(i, 'TidNo')
-		ls_userid			= dw_2.GetItemString(i, 'LastEmp')
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
-		if isnull(ls_inputdate) then ls_inputdate = ''
-
-		// 반납정보 update parmameter 
-		// 구분(1)/지역(1)/공장(1)/품번(12)/반납부서(4)/반납용도(2)/반납구분(2)/반납일(8)/Uqty(11,1)
-		//			/Rqty(11,1)/Sqty(11,1)/업체번호(5)/Tidno(12)/사용자(6)
+		ls_stockdate		= dw_2.GetItemString(i, 'RtnDate')		// 반납일
+		ls_misflag			= dw_2.GetItemString(i, 'Gubun')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Gubun', ls_misflag)
 		
-		ll_error = f_inv_out_rtn( ls_gubun, ls_area, ls_division, ls_itemcode, ls_rtndept, &
-				ls_rtnusage, ls_rtngubun, ls_rtndate, ld_uqty, ld_rqty, ld_sqty, ls_suppliercode, &
-				mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error) 
-
-		If ll_error = 0 Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+		If wf_check_server_date(ls_stockdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-			Update	tpartreturn_interface
-			Set		interfaceflag = 'N',
-						lastdate	= getdate()
-			Where		logid = :ll_logid
-			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_yeoju('UPLOAD', ii_interface_id, ll_logid, ls_error,it_source)
+			if f_up_ipis_mis_tpartreturn(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
+				
+				Update	tpartreturn_interface
+				Set		interfaceflag = 'N',
+							lastdate	= getdate()
+				Where		logid = :ll_logid
+				Using		it_source;
+				
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
+				end if
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
 			end if
-		End If
+		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartreturn_interface : ' + ls_message,it_source)	
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -3990,11 +4519,10 @@ end function
 
 public function boolean wf_upload_tpartin_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_gubun, ls_area, ls_division, ls_itemcode, ls_slno, ls_incomedate
-String	ls_itemsource, ls_tidno, ls_userid, ls_inputdate
 Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -4007,9 +4535,9 @@ Long		ll_logid
 
 wf_upload_sp('sp_pisi_u_tpartin_interface')
 
-ls_error = "에러초기화"
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4031,6 +4559,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4044,57 +4576,56 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_gubun 			= dw_2.GetItemString(i, 'Gubun')
-		ls_area				= dw_2.GetItemString(i, 'AreaCode')
-		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
-		ls_slno				= dw_2.GetItemString(i, 'SlNo')
-		ls_itemcode			= dw_2.GetItemString(i, 'ItemCode')
-		ls_incomedate		= dw_2.GetItemString(i, 'IncomeDate')
-		ls_itemsource		= dw_2.GetItemString(i, 'ItemSource')
-		ls_tidno				= dw_2.GetItemString(i, 'TidNo')
-		ls_userid			= dw_2.GetItemString(i, 'LastEmp')
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
-		if isnull(ls_inputdate) then ls_inputdate = ''
-		// 입고정보 update parmameter 
-		// 구분(1)/거래명세표번호(12)/지역(1)/공장(1)/품번(12)/입고일(8)/Tidno(12)
-		If ls_itemsource = '01' Then
-			ll_error = f_inv_expin( ls_gubun, ls_slno, ls_area, ls_division, ls_itemcode, &
-					ls_incomedate, mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error) 
-		Else
-			ll_error = f_inv_domin( ls_gubun, ls_slno, ls_area, ls_division, ls_itemcode, &
-					ls_incomedate, mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error)
-		End If
-
-		If ll_error = 0 Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-			
-			Update	tpartin_interface
-			Set		interfaceflag = 'N',
-						lastdate	= getdate()
-			Where		logid = :ll_logid
-			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_yeoju('UPLOAD', ii_interface_id, ll_logid, ls_error,it_source)
-			end if
-		End If
+		ls_stockdate		= trim(dw_2.GetItemString(i, 'IncomeDate'))		// 입고일
+		ls_misflag			= dw_2.GetItemString(i, 'Gubun')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Gubun', ls_misflag)
 		
+		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+		If wf_check_server_date(ls_stockdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+
+			if f_up_ipis_mis_tpartin(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
+				
+				Update	tpartin_interface
+				Set		interfaceflag = 'N',
+							lastdate	= getdate()
+				Where		logid = :ll_logid
+				Using		it_source;
+				
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
+				end if
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
+		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartin_interface : ' + ls_message,it_source)
+			
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4117,13 +4648,10 @@ end function
 
 public function boolean wf_upload_tpartcancel_interface (string fs_dataobject, ref string rs_return_option);integer  li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_gubun, ls_area, ls_division, ls_itemcode, ls_invstatus, ls_canceldate
-String	ls_itemsource, ls_tidno, ls_userid, ls_inputdate, ls_suppliercode, ls_blno
 Long		ll_logid
-dec{1} 	ld_cancelqty
-dec{0}   ld_cancelamt
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -4138,6 +4666,7 @@ wf_upload_sp('sp_pisi_u_tpartcancel_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4159,6 +4688,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4172,67 +4705,56 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_gubun 			= dw_2.GetItemString(i, 'Gubun')
-		ls_area				= dw_2.GetItemString(i, 'AreaCode')
-		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
-		ls_invstatus		= dw_2.GetItemString(i, 'InvStatus')
-		ls_itemcode			= dw_2.GetItemString(i, 'ItemCode')
-		ls_canceldate		= dw_2.GetItemString(i, 'CancelDate')
-		ls_itemsource		= dw_2.GetItemString(i, 'ItemSource')
-		ls_suppliercode	= dw_2.GetItemString(i, 'SupplierCode')
-		if isnull(ls_suppliercode) then ls_suppliercode = ''
-		ls_blno				= dw_2.GetItemString(i, 'Blno')
-		if isnull(ls_blno) then ls_blno = ''
-		ld_cancelqty		= dw_2.GetItemDecimal(i, 'CancelQty')
-		ld_cancelamt		= dw_2.GetItemDecimal(i, 'CancelAmt')
-		ls_tidno				= dw_2.GetItemString(i, 'TidNo')
-		ls_userid			= dw_2.GetItemString(i, 'LastEmp')
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
-		if isnull(ls_inputdate) then ls_inputdate = ''
-		// 취소정보 update parmameter 
-		// 내자 : 구분(1)/지역(1)/공장(1)/품번(12)/취소입고일(8)/재고상태(1)/업체번호(5)
-		//			/취소량(11,1)/Tidno(12)/사용자(6)
-		// 외자 : 구분(1)/지역(1)/공장(1)/품번(12)/취소입고일(8)/재고상태(1)/Blno(22)
-		//			/취소량(11,1)/취소금액(13)/Tidno(12)/사용자(6)
-
-		If ls_itemsource = '01' Then
-			ll_error = f_inv_expin_cancel( ls_gubun, ls_area, ls_division, ls_itemcode, ls_canceldate, &
-					ls_invstatus, ls_blno, ld_cancelqty, ld_cancelamt, mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error) 
-		Else
-			ll_error = f_inv_domin_cancel( ls_gubun, ls_area, ls_division, ls_itemcode, ls_canceldate, &
-					ls_invstatus, ls_suppliercode, ld_cancelqty, mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error) 			
-		End If
-
-		If ll_error = 0 Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		ls_stockdate		= dw_2.GetItemString(i, 'CancelDate')		// 입고일
+		ls_misflag			= dw_2.GetItemString(i, 'Gubun')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Gubun', ls_misflag)
+		
+		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+		If wf_check_server_date(ls_stockdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-			Update	tpartcancel_interface
-			Set		interfaceflag = 'N',
-						lastdate	= getdate()
-			Where		logid = :ll_logid
-			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_yeoju('UPLOAD', ii_interface_id, ll_logid, ls_error,it_source)
+			if f_up_ipis_mis_tpartcancel(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
+				
+				Update	tpartcancel_interface
+				Set		interfaceflag = 'N',
+							lastdate	= getdate()
+				Where		logid = :ll_logid
+				Using		it_source;
+				
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
+				end if
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
 			end if
-		End If
+		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartcancel_interface : ' + ls_message,it_source)
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4257,16 +4779,15 @@ public function boolean wf_upload_yinv002temp (string fs_dataobject, ref string 
 
 Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today 
-String	ls_misflag, ls_itno, ls_itnm, ls_spec, ls_xunit, ls_xtype
-String 	ls_rvno, ls_rrogb, ls_inptid, ls_inptdt
-String	ls_lib, ls_pgm, ls_parm
-long 		ll_logid
+Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4287,6 +4808,9 @@ If ll_rowcount > 0 Then
 	// A or I : insert
 	// R : update
 	// D : delete -> data space로 변경
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
 	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
@@ -4301,96 +4825,50 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= Upper(dw_2.GetItemString(i, 'Chgcd'))
-		ls_itno				= Upper(dw_2.GetItemString(i, 'Itno'))
-		ls_itnm				= Upper(dw_2.GetItemString(i, 'Itnm'))
-		ls_spec				= Upper( Trim(dw_2.GetItemString(i, 'Spec')))
-		ls_xunit				= Upper( Trim(dw_2.GetItemString(i, 'Xunit')))
-		ls_xtype				= Upper( Trim(dw_2.GetItemString(i, 'Xtype')))
-		ls_rvno				= Upper( Trim(dw_2.GetItemString(i, 'Rvno')))
-		ls_rrogb				= Upper( Trim(dw_2.GetItemString(i, 'Rrogb')))
-		ls_inptid			= Upper( Trim(dw_2.GetItemString(i, 'Inptid')))
-		ls_inptdt			= Upper( Trim(dw_2.GetItemString(i, 'Inptdt')))
+		ls_misflag			= Upper(dw_2.GetItemString(i, 'Chgcd'))	// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Chgcd', ls_misflag)
 		
-		if isnull( ls_itnm ) then ls_itnm = ''
-		if isnull( ls_spec ) then ls_spec = ''
-		if isnull( ls_xunit ) then ls_xunit = ''
-		if isnull( ls_xtype ) then ls_xtype = ''
-		if isnull( ls_rvno ) then ls_rvno = ''
-		if isnull( ls_rrogb ) then ls_rvno = ''
-		if isnull( ls_inptid ) then ls_inptid = ''
-		if isnull( ls_inptdt ) then ls_inptdt = ''
+		dw_argument_list.reset()
+		dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 		
-		If ls_misflag = 'A' Then		// Add - Insert
-		
-			INSERT INTO "PBINV"."INV002"  
-         ( "COMLTD","ITNO","ITNM","SPEC","XUNIT","MAKER","GUBUN","XPLAN",   
-           "RVNO","XTYPE","ITNO1","LOLEVEL","RROGB","FIXGB","BKDESN01","BKDESN02",   
-           "XSTOP","INL","FST","SND","THD","EXTD","INPTID","INPTDT",   
-           "UPDTID","UPDTDT","IPADDR","MACADDR" )  
-  			VALUES ('01', :ls_itno, :ls_itnm, :ls_spec, :ls_xunit, ' ','2',' ',
-			  :ls_rvno, :ls_xtype, ' ', 0, :ls_rrogb, ' ', ' ', ' ',
-			  ' ', ' ', ' ', ' ', ' ', ' ', :ls_inptid, :ls_inptdt,
-			  ' ',' ',' ',' ')  
-			using sqlca;
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-		
-		ElseIf ls_misflag = 'R' Then
-			UPDATE "PBINV"."INV002"  
-     			SET "ITNM" = :ls_itnm,   
-         		"SPEC" = :ls_spec,   
-         		"XUNIT" = :ls_xunit,   
-         		"RVNO" = :ls_rvno,   
-         		"XTYPE" = :ls_xtype, 
-					"RROGB" = :ls_rrogb,
-         		"INPTID" = :ls_inptid,   
-         		"INPTDT" = :ls_inptdt  
-   		WHERE ( "PBINV"."INV002"."COMLTD" = '01' ) AND  
-         		( "PBINV"."INV002"."ITNO" = :ls_itno )   
-         using sqlca;
-
-		ElseIf ls_misflag = 'D' Then	// Delete - Delete
-			
-			Delete	
-			From		PBINV.INV002
-			Where		comltd	= '01'
-			and		itno = :ls_itno
-			using sqlca;
-
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-		End If	
-	
-		If ll_error = 0 Then
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		if f_up_ipis_mis_yinv002temp(ls_message,dw_argument_list,lstr_ipis) = -1 then
+			goto Rollback_
+		else
 			
 			Update	YINV002TEMP_LOG
 			Set		Ipisflag	= 'Y'
 			Where		LogID	= :ll_logid
 			Using		it_source;
-
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
 			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_yinv002temp : ' + ls_error,it_source)
+			if it_source.sqlnrows < 1 then
+				goto Rollback_
 			end if
-		End If
+			
+			dw_2.DeleteRow(i)
+			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			
+			commit using it_source;
+			f_ipis_server_commit_only(lstr_ipis)
+		end if
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_yinv002temp : ' + ls_message,it_source)
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4416,18 +4894,15 @@ public function boolean wf_upload_yinv101temp (string fs_dataobject, ref string 
 
 Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_sysdat, ll_systim, ll_incsdt
-String	ls_error, ls_today 
-String	ls_xplant, ls_div, ls_misflag, ls_itno, ls_cls, ls_srce, ls_pdcd, ls_xunit
-String 	ls_abccd, ls_wloc, ls_mlan, ls_mass, ls_inptid, ls_inptdt, ls_costdiv
-String	ls_lib, ls_pgm, ls_parm
-long 		ll_logid
-Dec{4}	lc_convqty
-Dec{0}   lc_saud
+String	ls_error, ls_today
+Long		ll_logid
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_misflag
 
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4449,6 +4924,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4462,116 +4941,50 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= Upper(dw_2.GetItemString(i, 'Chgcd'))
-		ls_xplant			= Upper(dw_2.GetItemString(i, 'Xplant'))
-		ls_div				= Upper(dw_2.GetItemString(i, 'Div'))
-		ls_itno				= Upper(dw_2.GetItemString(i, 'Itno'))
-		ls_cls				= Upper(dw_2.GetItemString(i, 'Cls'))
-		ls_srce				= Upper(dw_2.GetItemString(i, 'Srce'))
-		if isnull(ls_srce) then ls_srce = ' '
-		ls_pdcd				= Upper( Trim(dw_2.GetItemString(i, 'Pdcd')))
-		ls_xunit				= Upper( Trim(dw_2.GetItemString(i, 'Xunit')))
-		if isnull(ls_xunit) then ls_xunit = ' '
-		ls_abccd				= Upper( Trim(dw_2.GetItemString(i, 'Abccd')))
-		if isnull(ls_abccd) then ls_abccd = ' '
-		lc_convqty			= dw_2.GetItemNumber(i, 'Convqty')
-		if isnull(lc_convqty) or lc_convqty = 0 then lc_convqty = 1
-		ls_wloc				= Upper( Trim(dw_2.GetItemString(i, 'Wloc')))
-		if isnull(ls_wloc) then ls_wloc = ' '
-		lc_saud				= dw_2.GetItemNumber(i, 'Saud')
-		if isnull(lc_saud) then lc_saud = 0
-		ls_mlan				= dw_2.GetItemString(i, 'Mlan')
-		if isnull(ls_mlan) then ls_mlan = ''
-		ls_mass				= dw_2.GetItemString(i, 'Mass')
-		if isnull(ls_mass) then ls_mass = ' '
-		ls_inptid			= Upper( Trim(dw_2.GetItemString(i, 'Inptid')))
-		if isnull(ls_inptid) then ls_inptid = ' '
-		ls_inptdt			= Upper( Trim(dw_2.GetItemString(i, 'Inptdt')))
-		if isnull(ls_inptdt) then ls_inptdt = ' '
-		ls_costdiv 			= f_get_accdiv(ls_xplant,ls_div,ls_pdcd)
+		ls_misflag			= dw_2.GetItemString(i, 'Chgcd')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Chgcd', ls_misflag)
 		
-		If ls_misflag = 'A' Then		// Add - Insert
-
-			INSERT INTO "PBINV"."INV101"  
-         ( "COMLTD", "XPLANT", "DIV", "ITNO", "CLS", "SRCE", "PDCD", "XUNIT", "UNIT1",   
-           "COSTDIV", "XPLAN", "MLAN", "CONVQTY", "CONVQTY1", "AUTCD", "MDNO", "WLOC",   
-           "WCCD", "ISCD", "ISBOX", "NUSE", "ABCCD", "KBCD", "MASS", "IRTCD", "MAXQ",   
-           "MINQ", "SAFT", "SFWQ", "ADJQTY", "ORPT", "PULS", "ISLS", "PULT",   
-           "BGQTY", "BGAMT", "INTQTY", "INTAMT", "OUTQTY", "OUTAMT", "OHUQTY", "OHRQTY",   
-           "OHSQTY", "OHAMT", "EXQTY", "COSTAV", "COSTLS", "SAUP", "SAUD", "IUNPR",   
-           "IUNRC", "ISPQT", "IPERP", "IPEIS", "IPERP1", "PKSZ", "SHPCD", "ILUDT",   
-           "LPDT", "MCNO", "FOBCOST", "CURR", "CHKCD", "HSCD", "TXRT", "FSTDT",   
-           "INDUS", "COMCD", "EXTD", "INPTID", "INPTDT", "UPDTID", "UPDTDT",   
-           "IPADDR", "MACADDR" )  
-  			VALUES ('01', :ls_xplant, :ls_div, :ls_itno, :ls_cls, :ls_srce, :ls_pdcd, :ls_xunit, ' ',
-			  :ls_costdiv, ' ', :ls_mlan, :lc_convqty, 0, ' ', ' ', :ls_wloc,
-			  'N', ' ', ' ', ' ', :ls_abccd, ' ', :ls_mass, ' ', 0,
-			  0, 0, 0, 0, 0, 0, 0, 0,
-			  0, 0, 0, 0, 0, 0, 0, 0,
-			  0, 0, 0, 0, 0, 0, :lc_saud, 0,
-			  0, 0, 0, 0, 0, 0, ' ', ' ',
-			  ' ', ' ', 0, ' ', ' ', ' ', 0, ' ',
-			  ' ', ' ', ' ', :ls_inptid, :ls_inptdt, ' ', ' ',
-			  ' ', ' ')  
-			using sqlca;
-
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-		ElseIf ls_misflag = 'R' Then
-			UPDATE "PBINV"."INV101"  
-			  SET "XUNIT" = :ls_xunit,   
-					"CONVQTY" = :lc_convqty,   
-					"WLOC" = :ls_wloc,   
-					"ABCCD" = :ls_abccd, 
-					"MLAN" = :ls_mlan,
-					"MASS" = :ls_mass,
-					"INPTID" = :ls_inptid,   
-					"INPTDT" = :ls_inptdt  
-			WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
-					( "PBINV"."INV101"."XPLANT" = :ls_xplant ) AND  
-					( "PBINV"."INV101"."DIV" = :ls_div ) AND  
-					( "PBINV"."INV101"."ITNO" = :ls_itno )   
-			using sqlca;
-		ElseIf ls_misflag = 'D' Then	// Delete - Delete
-			
-			Delete	
-			From		PBINV.INV101
-			Where COMLTD = '01' And XPLANT = :ls_xplant And
-					DIV = :ls_div And ITNO = :ls_itno
-			using sqlca;
-
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-		End If	
-	
-		If ll_error = 0 Then
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		dw_argument_list.reset()
+		dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+		
+		if f_up_ipis_mis_yinv101temp(ls_message,dw_argument_list,lstr_ipis) = -1 then
+			goto Rollback_
+		else
 			
 			Update	YINV101TEMP_LOG
 			Set		Ipisflag	= 'Y'
 			Where		LogID	= :ll_logid
 			Using		it_source;
-
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
 			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_yinv101temp : ' + ls_error,it_source)
+			if it_source.sqlnrows < 1 then
+				goto Rollback_
 			end if
-		End If
+			
+			dw_2.DeleteRow(i)
+			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			
+			commit using it_source;
+			f_ipis_server_commit_only(lstr_ipis)
+		end if
+	
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_yinv101temp : ' + ls_message,it_source)
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4647,12 +5060,10 @@ end function
 
 public function boolean wf_upload_tpartkborder_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_areacode, ls_divisioncode, ls_itemcode, ls_supplier
-String	ls_partkbno, ls_orderseq, ls_deliverydate, ls_userid, ls_orderdate, ls_qty
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_orderdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -4667,6 +5078,7 @@ wf_upload_sp('sp_pisi_u_tpartkborder_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4688,6 +5100,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4701,75 +5117,127 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
-		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
-		ls_supplier			= dw_2.GetItemString(i, 'SupplierCode')
-		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
-		ls_partkbno			= dw_2.GetItemString(i, 'PartKBNo')
-		ls_orderdate		= dw_2.GetItemString(i, 'PartOrderDate')
-		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'RackQty')), 7) + Fill('0', 1)
-		ls_orderseq			= dw_2.GetItemString(i, 'OrderSeq')
-		ls_deliverydate	= dw_2.GetItemString(i, 'PartForecastDate')
-		ls_deliverydate	= Left(ls_deliverydate, 4) + Mid(ls_deliverydate, 6, 2) + Right(ls_deliverydate, 2)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-		
+		ls_orderdate		= dw_2.GetItemString(i, 'PartOrderDate')			// 이체입고일
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_orderdate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B30'
-			// 발주정보 parmameter 
-			// 구분(1)/지역(1)/공장(1)/업체전산번호(5)/
-			// 품번(12)/간판번호(11)/발주일자(8)/발주량(7.1)/발주전산번호(10)/
-			// 납기일(8)/사용자ID(6)
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_supplier + &
-							ls_itemcode + ls_partkbno + ls_orderdate + ls_qty + ls_orderseq + &
-							ls_deliverydate + ls_userid
-			ls_parm	= String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for DEJITO.JIT5B00SP :ls_lib, :ls_pgm, :ls_parm ;
-	//		EXECUTE mis_sp_ipis;
-	
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-	
-	//		messagebox('Parm', ls_parm)
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			if f_up_ipis_mis_tpartkborder(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
 				Update	tpartkborder_interface
 				Set		interfaceflag = 'N',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;						
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkborder_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartkborder_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
+//		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
+//		ls_supplier			= dw_2.GetItemString(i, 'SupplierCode')
+//		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
+//		ls_partkbno			= dw_2.GetItemString(i, 'PartKBNo')
+//		ls_orderdate		= dw_2.GetItemString(i, 'PartOrderDate')
+//		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'RackQty')), 7) + Fill('0', 1)
+//		ls_orderseq			= dw_2.GetItemString(i, 'OrderSeq')
+//		ls_deliverydate	= dw_2.GetItemString(i, 'PartForecastDate')
+//		ls_deliverydate	= Left(ls_deliverydate, 4) + Mid(ls_deliverydate, 6, 2) + Right(ls_deliverydate, 2)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//		
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_orderdate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B30'
+//			// 발주정보 parmameter 
+//			// 구분(1)/지역(1)/공장(1)/업체전산번호(5)/
+//			// 품번(12)/간판번호(11)/발주일자(8)/발주량(7.1)/발주전산번호(10)/
+//			// 납기일(8)/사용자ID(6)
+//			
+//			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_supplier + &
+//							ls_itemcode + ls_partkbno + ls_orderdate + ls_qty + ls_orderseq + &
+//							ls_deliverydate + ls_userid
+//			ls_parm	= String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for DEJITO.JIT5B00SP :ls_lib, :ls_pgm, :ls_parm ;
+//	//		EXECUTE mis_sp_ipis;
+//	
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//	
+//	//		messagebox('Parm', ls_parm)
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//			
+//			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tpartkborder_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkborder_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//***************************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4792,12 +5260,10 @@ end function
 
 public function boolean wf_upload_tpartrelease_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_gubun, ls_area, ls_division, ls_itemcode, ls_usedept, ls_usage, ls_releasedate
-String	ls_invstatus, ls_tidno, ls_userid, ls_inputdate, ls_suppliercode, ls_projectno
 Long		ll_logid
-dec{1} 	ld_releaseqty
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -4812,6 +5278,7 @@ wf_upload_sp('sp_pisi_u_tpartrelease_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4833,6 +5300,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4846,61 +5317,56 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_gubun 			= dw_2.GetItemString(i, 'Gubun')
-		ls_area				= dw_2.GetItemString(i, 'AreaCode')
-		ls_division			= dw_2.GetItemString(i, 'DivisionCode')
-		ls_itemcode			= dw_2.GetItemString(i, 'ItemCode')
-		ls_usedept			= dw_2.GetItemString(i, 'UseDept')
-		ls_usage				= dw_2.GetItemString(i, 'Usage')
-		ls_releasedate		= dw_2.GetItemString(i, 'ReleaseDate')
-		ls_invstatus		= dw_2.GetItemString(i, 'InvStatus')
-		ls_projectno		= dw_2.GetItemString(i, 'ProjectNo')
-		if isnull(ls_projectno) then ls_projectno = ''
-		ls_suppliercode	= dw_2.GetItemString(i, 'SupplierCode')
-		if isnull(ls_suppliercode) then ls_suppliercode = ''
-		ld_releaseqty		= dw_2.GetItemDecimal(i, 'ReleaseQty')
-		ls_tidno				= dw_2.GetItemString(i, 'TidNo')
-		ls_userid			= dw_2.GetItemString(i, 'LastEmp')
-		ls_inputdate		= String(dw_2.GetItemDatetime(i, 'LastDate'), 'yyyymmdd')
-		if isnull(ls_inputdate) then ls_inputdate = ''
-		// 불출정보 update parmameter 
-		// 구분(1)/지역(1)/공장(1)/품번(12)/사용부서(4)/불출용도(2)/불출일(8)/재고상태(1)/불출량(11,1)
-		//			/Projectno(5)/업체번호(5)/Tidno(12)/사용자(6)
+		ls_stockdate		= dw_2.GetItemString(i, 'ReleaseDate')		// 불출일
+		ls_misflag			= dw_2.GetItemString(i, 'Gubun')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'Gubun', ls_misflag)
 		
-		ll_error = f_inv_out( ls_gubun, ls_area, ls_division, ls_itemcode, ls_usedept, ls_usage, &
-				ls_releasedate, ls_invstatus, ld_releaseqty, ls_projectno, ls_suppliercode, &
-				mid(ls_tidno,4,12), ls_userid, ls_inputdate, ls_error) 
-		If ll_error = 0 Then
-			Commit;
-			dw_2.DeleteRow(i)
-			uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+		If wf_check_server_date(ls_stockdate) Then
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-			Update	tpartrelease_interface
-			Set		interfaceflag = 'N',
-						lastdate	= getdate()
-			Where		logid = :ll_logid
-			Using		it_source;
-			
-			ll_error	= it_source.SQLCODE
-			ls_error	= it_source.SQLErrText
-			
-			If ll_error = 0 Then
-				Commit Using it_source ;
-			Else
-				Rollback Using it_source ;
-			End If	
-
-		Else
-			RollBack;
-
-			uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-			ll_error_cnt ++
-			if ll_error < 0 then
-				f_errorlog_yeoju('UPLOAD', ii_interface_id, ll_logid, ls_error,it_source)
+			if f_up_ipis_mis_tpartrelease(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
+				
+				Update	tpartrelease_interface
+				Set		interfaceflag = 'N',
+							lastdate	= getdate()
+				Where		logid = :ll_logid
+				Using		it_source;
+				
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
+				end if
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
 			end if
-		End If
+		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartrelease_interface : ' + ls_message,it_source)
 		
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -4923,13 +5389,10 @@ end function
 
 public function boolean wf_upload_tstock_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
 Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
 String	ls_error, ls_today
-String	ls_misflag, ls_areacode, ls_divisioncode, ls_itemcode, ls_workcenter, ls_kbno
-String	ls_partkbno, ls_orderseq, ls_deliverydate, ls_userid, ls_orderdate, ls_qty
-String	ls_stockdate, ls_seqno
 Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+str_ipis_server lstr_ipis[]
+string 	ls_areadivision[], ls_message, ls_stockdate, ls_misflag
 
 // rs_return_option
 // 'S' : Success 성공
@@ -4944,6 +5407,7 @@ wf_upload_sp('sp_pisi_u_tstock_interface')
 
 ls_today = String(Today(), 'yyyymmdd')
 
+dw_argument_list.dataobject 	= fs_dataobject
 dw_2.DataObject	= fs_dataobject
 dw_2.SetTransObject(it_source)
 
@@ -4965,6 +5429,11 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -4976,64 +5445,25 @@ If ll_rowcount > 0 Then
 			End If
 		End If
 		dw_2.ScrollToRow(i)
-		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
-		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
-		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
-		ls_workcenter		= Left(dw_2.GetItemString(i, 'WorkCenter'), 4)
-		ls_kbno				= dw_2.GetItemString(i, 'KBNo')
-		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'StockQty')), 7)
 		ls_stockdate		= dw_2.GetItemString(i, 'StockDate')		// 입고일
-		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)		
-		ls_orderdate		= dw_2.GetItemString(i, 'KBReleaseDate')	// 조립지시일
-		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
-		ls_seqno				= Left(String(dw_2.GetItemNumber(i, 'SeqNo')) + Space(10), 10)
-		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
-
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_stockdate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B40'
-			// 제품입고정보 parmameter 
-			// 구분(1)/지역(1)/공장(1)/품번(12)/
-			// 조립라인(4)/간판번호(11)/입고량(7.0)/입고일(8)/
-			// 조립지시일(8)/등록순번(10)/사용자ID(6)
-			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_itemcode + &
-							ls_workcenter + ls_kbno + ls_qty + ls_stockdate + &
-							ls_orderdate + ls_seqno + ls_userid
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
 			
-	//		messagebox(ls_misflag,		len(ls_misflag))
-	//		messagebox(ls_areacode,		len(ls_areacode))
-	//		messagebox(ls_divisioncode,		len(ls_divisioncode))
-	//		messagebox(ls_itemcode,		len(ls_itemcode))
-	//		messagebox(ls_workcenter,		len(ls_workcenter))
-	//		messagebox(ls_kbno,		len(ls_kbno))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_stockdate,		len(ls_stockdate))
-	//		messagebox(ls_orderdate,		len(ls_orderdate))
-	//		messagebox(ls_seqno,		len(ls_seqno))
-	//		messagebox(ls_userid,		len(ls_userid))
-	//
-	
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-	
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-	//		messagebox('Parm', ls_parm)
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			if f_up_ipis_mis_tstock(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
 				Update	tstock_interface
 				Set		interfaceflag = 'N',
@@ -5041,25 +5471,97 @@ If ll_rowcount > 0 Then
 				Where		logid = :ll_logid
 				Using		it_source;
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error <> 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_new.wf_upload_tstock_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tstock_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_areacode			= dw_2.GetItemString(i, 'AreaCode')
+//		ls_divisioncode	= dw_2.GetItemString(i, 'DivisionCode')
+//		ls_itemcode			= Left(dw_2.GetItemString(i, 'ItemCode') + Space(10), 12)
+//		ls_workcenter		= Left(dw_2.GetItemString(i, 'WorkCenter'), 4)
+//		ls_kbno				= dw_2.GetItemString(i, 'KBNo')
+//		ls_qty				= Right(Fill('0', 10) + String(dw_2.GetItemNumber(i, 'StockQty')), 7)
+//		ls_stockdate		= dw_2.GetItemString(i, 'StockDate')		// 입고일
+//		ls_stockdate		= Left(ls_stockdate, 4) + Mid(ls_stockdate, 6, 2) + Right(ls_stockdate, 2)		
+//		ls_orderdate		= dw_2.GetItemString(i, 'KBReleaseDate')	// 조립지시일
+//		ls_orderdate		= Left(ls_orderdate, 4) + Mid(ls_orderdate, 6, 2) + Right(ls_orderdate, 2)
+//		ls_seqno				= Left(String(dw_2.GetItemNumber(i, 'SeqNo')) + Space(10), 10)
+//		ls_userid			= Left(dw_2.GetItemString(i, 'LastEmp') + Space(10), 6)
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_stockdate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B40'
+//			// 제품입고정보 parmameter 
+//			// 구분(1)/지역(1)/공장(1)/품번(12)/
+//			// 조립라인(4)/간판번호(11)/입고량(7.0)/입고일(8)/
+//			// 조립지시일(8)/등록순번(10)/사용자ID(6)
+//			ls_parm	= ls_misflag + ls_areacode + ls_divisioncode + ls_itemcode + &
+//							ls_workcenter + ls_kbno + ls_qty + ls_stockdate + &
+//							ls_orderdate + ls_seqno + ls_userid
+//	
+//			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//			
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//
+//			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tstock_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error <> 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_new.wf_upload_tstock_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//********************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -5068,6 +5570,7 @@ If ll_rowcount > 0 Then
 	Else
 		rs_return_option = 'S'
 	End If
+	
 	Return True
 Else
 	dw_2.SetRedraw(True)
@@ -5188,112 +5691,154 @@ If ll_rowcount > 0 Then
 			// 공무자재 반납정보 parmameter 
 			// 구분(1)/지역(1)/공장(1)/품번(12)/반납전표번호(12)/
 			// 작업지시번호(16)/반납부서(5)/반납용도(2)/장비번호(9)/
-			// 반납일자(8)/반납량(사용가)(7.1)/반납량(요수리)/반납량(폐품)/반납량(부외재고)/
-			// 등록순번(10)/사용자ID(6)
-			ls_parm	= ls_status + ls_areacode + ls_divisioncode + ls_itemcode + ls_slipno +&
-							ls_orderno + ls_dept + ls_usage + ls_mcno + &
-							ls_returndate + ls_qty + ls_serialno + ls_userid
-	
-			ls_parm = String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			
-	//		messagebox(ls_status,		len(ls_status))
-	//		messagebox(ls_areacode,		len(ls_areacode))
-	//		messagebox(ls_divisioncode,		len(ls_divisioncode))
-	//		messagebox(ls_itemcode,		len(ls_itemcode))
-	//		messagebox(ls_slipno,		len(ls_slipno))
-	//		messagebox(ls_orderno,		len(ls_orderno))
-	//		messagebox(ls_dept,		len(ls_dept))
-	//		messagebox(ls_usage,		len(ls_usage))
-	//		messagebox(ls_mcno,		len(ls_mcno))
-	//		messagebox(ls_returndate,		len(ls_returndate))
-	//		messagebox(ls_qty,		len(ls_qty))
-	//		messagebox(ls_serialno,		len(ls_serialno))
-	//		messagebox(ls_userid,		len(ls_userid))
-			
-			
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for dejito.jit5b00sp :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-			
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-			
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-			
-	//		messagebox(Sqlca.Sqlerrtext, ls_parm)
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
-				
-				Update	tmcpartreturn
-				Set		uploadflag = 'Y',
-							lastdate	= getdate()
-				Where		logid = :ll_logid
-				Using		it_source;
-				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tmcpartreturn : ' + ls_error,it_source)
-				end if
-			End If
-		End If	// 서버 시간 체크 로직 end
-	Next
-	
-	ll_end_time = Cpu ()
-	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
-	If ll_error_cnt > 1 Then
-		rs_return_option = 'F'
-	Else
-		rs_return_option = 'S'
-	End If
-	Return True
+			// 반납일자(8)/반납량(사용가)(7.1)/반납량(요수리End If			
 Else
-	dw_2.SetRedraw(True)
-	ll_end_time = Cpu ()
-	uo_pipe.st_time.text = string((ll_end_time - ll_start_time)/1000,"##0.0") + " Secs"
-	uo_pipe.st_written.Text = '0'
-	uo_pipe.st_error.Text	= '0'
-	rs_return_option = 'S'
-	Return True
+	Timer(0)
+End If	
+
+end event
+
+type uo_pipe from u_interface_error within w_interface_upload
+integer x = 1253
+integer y = 828
+integer taborder = 80
+boolean border = false
+end type
+
+on uo_pipe.destroy
+call u_interface_error::destroy
+end on
+
+event ue_cancel;call super::ue_cancel;ib_upload_stop = True
+end event
+
+type uo_button from u_interface_button within w_interface_upload
+integer x = 1243
+integer y = 4
+integer taborder = 30
+boolean border = false
+long backcolor = 79741120
+end type
+
+on uo_button.destroy
+call u_interface_button::destroy
+end on
+
+event ue_click_start;call super::ue_click_start;If ib_auto Then		// 전체 Interface 항목에 대해서 Interface 수행
+	Timer(120)
+Else
+	// 선택된 Interface 항목에 대해서 Interface 수행
+	If ii_interface_id > 0 Then
+		ib_interface = True
+		uo_pipe.cb_repair.Enabled	= False
+		uo_pipe.cb_cancel.Enabled	= True
+		uf_button_enable(False, False, False)
+		uo_parameter.Enabled	= False
+		dw_interface.Enabled	= False
+		uo_option.Enabled		= False
+		uo_date.Enabled		= False
+		
+		If is_interface_gubun = 'U' Then			// DownLoad
+			If wf_upload() Then
+				wf_dw_init(2)
+			End If
+		End If
+		uo_button.uf_button_enable(True, False, True)
+		uo_parameter.Enabled	= True
+		dw_interface.Enabled	= True
+		uo_option.Enabled		= True
+		uo_date.Enabled		= True
+		ib_interface = False
+	End If
 End If
-end function
+end event
 
-public function boolean wf_upload_tpartkbincome_interface (string fs_dataobject, ref string rs_return_option);Int		li_return
-Long		i, ll_start_time, ll_end_time, ll_rowcount, ll_error_cnt = 1, ll_error
-Long		ll_pymd, ll_sysdat, ll_systim, ll_incsdt
-String	ls_error, ls_today
-String	ls_misflag, ls_receiptdate, ls_incomedate, ls_costgubun, ls_usecenter, ls_deliveryno
-String	ls_orderseq, ls_userid, ls_orderdate, ls_qty
-Long		ll_logid
-String	ls_lib, ls_pgm, ls_parm
+event ue_click_stop;call super::ue_click_stop;If is_interface_gubun = 'D' Then
+	wf_download_stop()
+	If Integer(uo_pipe.st_error.Text) > 0 Then
+		uo_pipe.cb_cancel.Enabled	= True
+	Else
+		uo_pipe.cb_cancel.Enabled	= False
+	End If
+	uo_pipe.cb_cancel.Enabled	= False
+	uf_button_enable(True, False, True)
+End If
+end event
 
-// rs_return_option
-// 'S' : Success 성공
-// 'C' : Stop, 중지
-// 'F' : Fail, 일부 Error 발생
-// 'E' : Error, Interface 불가 Error
+event ue_exit;call super::ue_exit;Close(Parent)
+end event
 
-// Return True		: 끝까지 수행
-// Return False	: 중간에서 Return
+type st_vertical from u_st_vertical within w_interface_upload
+integer x = 1243
+integer y = 564
+integer width = 105
+integer height = 92
+boolean bringtotop = true
+end type
 
-wf_upload_sp('sp_pisi_u_tpartkbincome_interface')
+event ue_mousemove;call super::ue_mousemove;If KeyDown(keyLeftButton!) Then
+	This.X = Parent.PointerX()
+End If
+end event
 
-ls_today = String(Today(), 'yyyymmdd')
+event ue_mouseup;call super::ue_mouseup;BackColor = il_hidden_color
+wf_resize_bar()
+end event
 
-dw_2.DataObject	= fs_dataobject
+type uo_parameter from u_parameter_set within w_interface_upload
+integer x = 1253
+integer y = 256
+integer taborder = 20
+boolean border = false
+long backcolor = 79741120
+end type
+
+on uo_parameter.destroy
+call u_parameter_set::destroy
+end on
+
+type st_date from statictext within w_interface_upload
+integer x = 2158
+integer y = 1000
+integer width = 466
+integer height = 60
+boolean bringtotop = true
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "굴림"
+long textcolor = 33554432
+long backcolor = 67108864
+boolean enabled = false
+string text = "DownLoad Date :"
+boolean focusrectangle = false
+end type
+
+type uo_date from u_today within w_interface_upload
+integer x = 2633
+integer y = 984
+integer taborder = 70
+boolean bringtotop = true
+long backcolor = 79741120
+end type
+
+on uo_date.destroy
+call u_today::destroy
+end on
+
+event ue_variable_set;call super::ue_variable_set;// SFC Retrive Argument
+is_applydate	= String(Date(sle_date.Text), 'YYYY.MM.DD')	
+
+// MIS Delete Where, MIS에 날자가 숫자 Type이 있을수 있다.
+is_yyyymmdd		= String(Date(sle_date.Text), 'YYYYMMDD')
+ii_yyyymmdd		= Long(is_yyyymmdd)
+
+
+end event
+
+t
 dw_2.SetTransObject(it_source)
 
 rs_return_option	= 'S'
@@ -5314,6 +5859,10 @@ If ll_rowcount > 0 Then
 	// R : update
 	// D : delete -> data space로 변경
 	
+	ls_areadivision[1] = 'XZ'
+	lstr_ipis = f_ipis_server_set_transaction('EACH',ls_areadivision)
+	it_source.autocommit = false
+	
 	For i = ll_rowcount To 1 Step -1
 		Yield()
 		If ib_upload_stop Then
@@ -5327,85 +5876,137 @@ If ll_rowcount > 0 Then
 		dw_2.ScrollToRow(i)
 		
 		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
-		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
-		ls_orderseq			= dw_2.GetItemString(i, 'OrderSeq')
-		ls_receiptdate		= dw_2.GetItemString(i, 'PartReceiptDate')	// 납품일
-		ls_receiptdate		= Left(ls_receiptdate, 4) + Mid(ls_receiptdate, 6, 2) + Right(ls_receiptdate, 2)
-		ls_incomedate		= dw_2.GetItemString(i, 'PartIncomeDate')		// 입고일
-		ls_incomedate		= Left(ls_incomedate, 4) + Mid(ls_incomedate, 6, 2) + Right(ls_incomedate, 2)
-		ls_costgubun		= dw_2.GetItemString(i, 'CostGubun')	 
-		If ls_costgubun = 'Y' Then		// 유상 - 07, 무상 -04	-> 권과장한테 확인!
-			ls_costgubun = '07'
-		ElseIf ls_costgubun = 'N' Then
-			ls_costgubun = '04'
-		Else
-			ls_costgubun = '01'
-		End If
-		
-		ls_usecenter = dw_2.GetItemString(i, 'UseCenter')
-		If isnull(ls_usecenter) then ls_usecenter = ''
-		ls_usecenter		= Left(ls_usecenter + Space(10), 5)
-		
-		ls_deliveryno = dw_2.GetItemString(i, 'DeliveryNo')
-		if isnull(ls_deliveryno) then ls_deliveryno = ''
-		ls_deliveryno		= Left(ls_deliveryno + Space(20), 12)
-		
-		ls_userid = dw_2.GetItemString(i, 'LastEmp')
-		if isnull(ls_userid) then ls_userid = ''
-		ls_userid			= Left(ls_userid + Space(10), 6)
-
+		ls_incomedate		= dw_2.GetItemString(i, 'PartIncomeDate')			// 이체입고일
+		ls_misflag			= dw_2.GetItemString(i, 'MisFlag')			// ARD => CUD 로 변환
+		if ls_misflag = 'A' then
+			ls_misflag = 'C'
+		elseif ls_misflag = 'R' then
+			ls_misflag = 'U'
+		end if
+		dw_2.setitem(i, 'MisFlag', ls_misflag)
+		ls_incomedate		= Left(ls_incomedate, 4) + Mid(ls_incomedate, 6, 2) + Right(ls_incomedate, 2)	
 		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
 		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
 		If wf_check_server_date(ls_incomedate) Then
-
-			ls_lib	= 'PBJIT'
-			ls_pgm	= 'JIT5B32'
-			// 자재입고정보 parmameter 
-			// 구분(1)/발주전산번호(10)/납품일(8)/
-			// 입고일(8)/유무상구분(2)/사용처(5)/사용자ID(6)
-			ls_parm	= ls_misflag + ls_orderseq + ls_receiptdate + &
-							ls_incomedate + ls_costgubun + ls_usecenter + ls_deliveryno + ls_userid
-	
-			ls_parm	= String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
-							
-	//		// 데이타 upload procedure 호출
-	//		DECLARE mis_sp_ipis procedure for DEJITO.JIT5B00SP :ls_lib, :ls_pgm, :ls_parm;
-	//		EXECUTE mis_sp_ipis;
-	
-			ll_error	= SQLCA.SQLCODE
-			ls_error	= SQLCA.SQLErrText
-	//		messagebox('확인', ls_parm)
-			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
-				Commit Using SQLCA ;
-				dw_2.DeleteRow(i)
-				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+			dw_argument_list.reset()
+			dw_2.RowsCopy(i, i, Primary!, dw_argument_list, 1, Primary!)
+			
+			if f_up_ipis_mis_tpartkbincome(ls_message,dw_argument_list,lstr_ipis) = -1 then
+				goto Rollback_
+			else
 				
 				Update	tpartkbincome_interface
 				Set		interfaceflag = 'N',
 							lastdate	= getdate()
 				Where		logid = :ll_logid
-				Using		it_source;
+				Using		it_source;					
 				
-				ll_error	= it_source.SQLCODE
-				ls_error	= it_source.SQLErrText
-				
-				If ll_error = 0 Then
-					Commit Using it_source ;
-				Else
-					Rollback Using it_source ;
-				End If	
-	
-			Else
-				RollBack Using SQLCA ;
-				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
-				ll_error_cnt ++
-				if ll_error < 0 then
-					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkbincome_interface : ' + ls_error,it_source)
+				if it_source.sqlnrows < 1 then
+					goto Rollback_
 				end if
-			End If
+				
+				dw_2.DeleteRow(i)
+				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+ 				
+				commit using it_source;
+				f_ipis_server_commit_only(lstr_ipis)
+			end if
 		End If	// 서버 시간 체크 로직 end
+		
+		continue
+		
+		Rollback_:
+		rollback using it_source;
+		f_ipis_server_rollback_only(lstr_ipis)
+		uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+		ll_error_cnt ++
+		f_errorlog_insert('UPLOAD', ii_interface_id, ll_logid, 'wf_upload_tpartkbincome_interface : ' + ls_message,it_source)
+//****************************
+//* OLD Business Logic		
+//		ll_logid				= dw_2.GetItemNumber(i, 'LogID')
+//		ls_misflag			= dw_2.GetItemString(i, 'MISFlag')
+//		ls_orderseq			= dw_2.GetItemString(i, 'OrderSeq')
+//		ls_receiptdate		= dw_2.GetItemString(i, 'PartReceiptDate')	// 납품일
+//		ls_receiptdate		= Left(ls_receiptdate, 4) + Mid(ls_receiptdate, 6, 2) + Right(ls_receiptdate, 2)
+//		ls_incomedate		= dw_2.GetItemString(i, 'PartIncomeDate')		// 입고일
+//		ls_incomedate		= Left(ls_incomedate, 4) + Mid(ls_incomedate, 6, 2) + Right(ls_incomedate, 2)
+//		ls_costgubun		= dw_2.GetItemString(i, 'CostGubun')	 
+//		If ls_costgubun = 'Y' Then		// 유상 - 07, 무상 -04	-> 권과장한테 확인!
+//			ls_costgubun = '07'
+//		ElseIf ls_costgubun = 'N' Then
+//			ls_costgubun = '04'
+//		Else
+//			ls_costgubun = '01'
+//		End If
+//		
+//		ls_usecenter = dw_2.GetItemString(i, 'UseCenter')
+//		If isnull(ls_usecenter) then ls_usecenter = ''
+//		ls_usecenter		= Left(ls_usecenter + Space(10), 5)
+//		
+//		ls_deliveryno = dw_2.GetItemString(i, 'DeliveryNo')
+//		if isnull(ls_deliveryno) then ls_deliveryno = ''
+//		ls_deliveryno		= Left(ls_deliveryno + Space(20), 12)
+//		
+//		ls_userid = dw_2.GetItemString(i, 'LastEmp')
+//		if isnull(ls_userid) then ls_userid = ''
+//		ls_userid			= Left(ls_userid + Space(10), 6)
+//
+//		// 매월말일일때 IPIS Server 시간을 체크해서 데이타 일자와 같을 경우에만 upload 한다.
+//		// 그러나, 월초(1일)일때는 08:00 이전까지는 서버 시간과 데이타 같더라도 upload 몬한다.
+//		If wf_check_server_date(ls_incomedate) Then
+//
+//			ls_lib	= 'PBJIT'
+//			ls_pgm	= 'JIT5B32'
+//			// 자재입고정보 parmameter 
+//			// 구분(1)/발주전산번호(10)/납품일(8)/
+//			// 입고일(8)/유무상구분(2)/사용처(5)/사용자ID(6)
+//			ls_parm	= ls_misflag + ls_orderseq + ls_receiptdate + &
+//							ls_incomedate + ls_costgubun + ls_usecenter + ls_deliveryno + ls_userid
+//	
+//			ls_parm	= String(ls_parm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+//			SQLCA.JIT5B00SP(ls_lib, ls_pgm, ls_parm)
+//							
+//	//		// 데이타 upload procedure 호출
+//	//		DECLARE mis_sp_ipis procedure for DEJITO.JIT5B00SP :ls_lib, :ls_pgm, :ls_parm;
+//	//		EXECUTE mis_sp_ipis;
+//	
+//			ll_error	= SQLCA.SQLCODE
+//			ls_error	= SQLCA.SQLErrText
+//	//		messagebox('확인', ls_parm)
+//			If ll_error = 0 and Right(Trim(ls_parm), 1) = 'Y' Then
+//				Commit Using SQLCA ;
+//				dw_2.DeleteRow(i)
+//				uo_pipe.st_written.Text	= String(Long(uo_pipe.st_written.Text) + 1, "#,##0")
+//				
+//				Update	tpartkbincome_interface
+//				Set		interfaceflag = 'N',
+//							lastdate	= getdate()
+//				Where		logid = :ll_logid
+//				Using		it_source;
+//				
+//				ll_error	= it_source.SQLCODE
+//				ls_error	= it_source.SQLErrText
+//				
+//				If ll_error = 0 Then
+//					Commit Using it_source ;
+//				Else
+//					Rollback Using it_source ;
+//				End If	
+//	
+//			Else
+//				RollBack Using SQLCA ;
+//				uo_pipe.st_error.Text	= String(ll_error_cnt, "#,##0")
+//				ll_error_cnt ++
+//				if ll_error < 0 then
+//					f_errorlog_insert('UPLOAD', ii_error_num, 'Error Code('+ string(ll_error) + ') - w_interface_upload.wf_upload_tpartkbincome_interface : ' + ls_error,it_source)
+//				end if
+//			End If
+//		End If	// 서버 시간 체크 로직 end
+//*******************************************
 	Next
+	
+	it_source.autocommit = true
+	f_ipis_server_destroy_only(lstr_ipis)
 	
 	ll_end_time = Cpu ()
 	uo_pipe.st_time.text = String((ll_end_time - ll_start_time)/1000,"#,##0") + " Secs"
@@ -5427,6 +6028,9 @@ End If
 end function
 
 on w_interface_upload.create
+this.sle_division=create sle_division
+this.sle_area=create sle_area
+this.dw_argument_list=create dw_argument_list
 this.ddlb_1=create ddlb_1
 this.dw_2=create dw_2
 this.dw_1=create dw_1
@@ -5439,7 +6043,10 @@ this.st_vertical=create st_vertical
 this.uo_parameter=create uo_parameter
 this.st_date=create st_date
 this.uo_date=create uo_date
-this.Control[]={this.ddlb_1,&
+this.Control[]={this.sle_division,&
+this.sle_area,&
+this.dw_argument_list,&
+this.ddlb_1,&
 this.dw_2,&
 this.dw_1,&
 this.dw_interface,&
@@ -5454,6 +6061,9 @@ this.uo_date}
 end on
 
 on w_interface_upload.destroy
+destroy(this.sle_division)
+destroy(this.sle_area)
+destroy(this.dw_argument_list)
 destroy(this.ddlb_1)
 destroy(this.dw_2)
 destroy(this.dw_1)
@@ -5476,12 +6086,20 @@ If IsNull(ul_handle) Or ul_handle < 0 Then
 	Connect Using it_source;
 End If
 
+it_source.autocommit = false
+
 Update MSTFLAG
 	Set Flag = 'N'
- Where ActionName like 'UPLOAD%'
- Using it_source;
- 
- Commit Using it_source ;
+Where ActionName like 'UPLOAD%'
+Using it_source;
+
+if it_source.sqlnrows < 1 then
+	Rollback using it_source;
+else
+ 	Commit Using it_source ;
+end if
+
+it_source.autocommit = true
 
 wf_disconnect()
 end event
@@ -5492,7 +6110,7 @@ st_vertical.BackColor	= il_hidden_color
 
 wf_dw_init(3)
 
-wf_connect(gs_ini_file, 'IPIS', 'MIS', it_source, it_destination)
+wf_connect(gs_inifile, 'IPIS', 'MIS', it_source, it_destination)
 
 //Update MSTFLAG
 //	Set Flag = 'N'
@@ -5569,6 +6187,50 @@ If ib_interface = False Then
 	wf_auto_upload()
 End If	
 end event
+
+type sle_division from singlelineedit within w_interface_upload
+integer x = 3429
+integer y = 940
+integer width = 174
+integer height = 84
+integer taborder = 80
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "굴림"
+long textcolor = 33554432
+borderstyle borderstyle = stylelowered!
+end type
+
+type sle_area from singlelineedit within w_interface_upload
+integer x = 3255
+integer y = 940
+integer width = 160
+integer height = 84
+integer taborder = 90
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "굴림"
+long textcolor = 33554432
+borderstyle borderstyle = stylelowered!
+end type
+
+type dw_argument_list from datawindow within w_interface_upload
+boolean visible = false
+integer x = 3269
+integer y = 1100
+integer width = 398
+integer height = 264
+integer taborder = 70
+string title = "none"
+boolean livescroll = true
+borderstyle borderstyle = stylelowered!
+end type
 
 type ddlb_1 from dropdownlistbox within w_interface_upload
 integer x = 2939

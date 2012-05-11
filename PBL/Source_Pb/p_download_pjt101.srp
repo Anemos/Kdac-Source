@@ -1,6 +1,6 @@
 $PBExportHeader$p_download_pjt101.srp
 $PBExportComments$download pjt101 (tmstproject - Interface DB)
-PIPELINE(source_connect=AS/400 DB2,destination_connect=interface,type=refresh,commit=100,errors=100)
+PIPELINE(source_connect=AS/400,destination_connect=¿¸¿Â_INTERFACE,type=refresh,commit=100,errors=100)
 SOURCE(name="PJT101",COLUMN(type=char,name="COMLTD",dbtype="CHAR()(2)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PJNO",dbtype="CHAR()(10)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PJNM",dbtype="CHAR()(80)",nulls_allowed=no)

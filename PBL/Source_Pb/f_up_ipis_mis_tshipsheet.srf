@@ -44,6 +44,7 @@ lstr_ipis = ag_str_ipis[li_index]
 
 //*** 업무로직 적용
 for li_cnt = 1 to ag_dwo.rowcount()
+	
 	ls_chgcd  = trim(ag_dwo.getitemstring(li_cnt,"MisFlag"))
 	ls_tdte4  = trim(ag_dwo.getitemstring(li_cnt,"ShipDate"))
 	ls_csrno  = trim(ag_dwo.getitemstring(li_cnt,"SRNO"))
@@ -104,8 +105,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		
 		
 	else
-		select xplant,div,itno,stcd,custcd, scustcd 
-		into :ls_xplant,:ls_div,:ls_itno,:ls_stcd, :ls_custcd, :ls_scustcd 
+		select xplant,div,itno,stcd,custcd, scustcd, cpcnt
+		into :ls_xplant,:ls_div,:ls_itno,:ls_stcd, :ls_custcd, :ls_scustcd ,:li_cpcnt
 		from pbsle.sle308
 		where comltd = '01' and csrno = :ls_csrno using lstr_ipis.t_sqlpis ;
 		if lstr_ipis.t_sqlpis.sqlcode <> 0 then
@@ -160,6 +161,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					ag_message = "SLE308 출하완료 상태"
 					return -1
 				end if
+				ls_cpcnt = string(li_cpcnt + 1,'00')
 			end if
 			
 			if ls_kit <> 'P' then			
@@ -291,6 +293,12 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					ld_dcqty     = ld_qty
 					ld_cpcnt     = 1
 					ls_stcd      = 'C'
+					/////////// DELHPI-EXS(GMX) , CHRYSLER LLC,USA는 창고출하, 2009.08.01 S.M,KWON///////////
+					IF ls_custcd = 'E56000' OR ls_custcd = 'E00100' THEN
+						ld_dcqty     = 0
+						ld_cpcnt     = 0
+						ls_stcd      = '2'				
+					END IF
 				else
 					ld_dcqty     = 0
 					ld_cpcnt     = 0
@@ -327,8 +335,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				  return -1
 			  end if	
 			  
-			  //*** sle501 수출거래처인경우
-			  if ls_tempcustcd = 'E' then
+			  //*** sle501 수출거래처인경우  E56000, E00100제외한 수출거래처는 SLE501 동시생성
+			  if ls_tempcustcd = 'E'   then
 				  if ls_stype = 'O' or ls_stype = 'P' or ls_stype = 'Q' or ls_stype = 'R' or ls_stype = 'V' then
 					  ls_paycd = 'Y'
 				  elseif ls_stype = 'S' or ls_stype = 'T' or ls_stype = 'U' then
@@ -336,44 +344,48 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				  else
 					  ls_paycd = ''
 				  End if
-				
-				  INSERT INTO PBSLE.SLE501 (
-				  "COMLTD", "CSRNO", "CSRNO1" , "CSRNO2" , "DTYPE", 
-				  "ORDNO", "CITNO", "SUSE"  , "ITNO", "PDCD", 
-				  "ACCD", "SRCE", "CUSTCD" , "SCUSTCD", "SRNO" , 
-				  "XPLANT", "DIV"  , "STYPE" , "SLNO", "LCNO", 
-				  "LCDT", "DCQTY", "SCQTY", "RCQTY", "DKDT",
-				  "RPDT"  , "SLCNT" , "CUR", "LUPRC", "LUAMT",
-				  "VANPRC" , "VANAMT", "VANPRC1", "VANAMT1", "SJCD", 
-				  "UPDATE"  , "VNDSER", "PAYCD", "MKCD", "CNLCD", 
-				  "JSCD"  , "STCD", "XPLAN", "KITCD", "TAXCD" ,
-				  "RDEPT"  , "KITSRNO" , "KITSRNO1" , "KITSRNO2", "INVOICE" ,
-				  "SLSLIP" , "SLSLDT", "SLAMTW", "EXC", "CSNGB" ,
-				  "IVGB" , "COSTDIV", "ASCSN", "EXTD",
-				  "INPTID" , "INPTDT", "UPDTID", "UPDTDT", "IPADDR", "MACADDR"
-				  )
-				  VALUES (
-				  '01',       :ls_csrno, :ls_cpcnt,  '01',        'N',
-				  :ls_epno,   :ls_citno, :ls_suse,   :ls_itno,    :ls_pdcd,
-				  :ls_accd,   :ls_srce,  :ls_custcd, :ls_scustcd, :ls_srno,
-				  :ls_xplant, :ls_div,   :ls_stype,  :ls_slno,    :ls_lcdt,
-				  :ls_lcno,   :ld_qty,   0,          :ld_qty,     :ls_epdt,
-				  :ls_tdte4,  ' ',       :ls_cur,    :ld_muprc,   :ld_muprc * :ld_qty,
-				  :ld_luprc,  :ld_luprc * :ld_qty, 0 , 0,          ' ',
-				  ' ',        ' ',       :ls_paycd,  :ls_mkcd,    ' ',
-				  ' ',        ' ',       :ls_xplan,  :ls_kitcd,   :ls_taxcd, 
-				  ' ',        ' ',       ' ',        ' ',         :ls_invoice,
-				  ' ',        ' ',       0,          0,           :ls_csngb,
-				  :ls_ivgb,   :ls_costdiv, ' ',     ' ', 
-				  :ls_id,     :g_s_date, :ls_id,     :g_s_datetime, ' ',  ' '
-				  ) Using lstr_ipis.t_sqlpis;	
-								  
-				  if lstr_ipis.t_sqlpis.sqlcode <> 0 then
-					  ag_message = "SLE501 데이터 생성에 실패하였습니다."
-					  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipsheet',&
-					  lstr_ipis.t_sqlpis.sqlerrtext,'SLE501 데이터 생성에 실패', g_s_empno, g_s_ipaddr, g_s_macaddr)
-					  return -1
-				  end if				
+				  IF ls_custcd = 'E56000' OR ls_custcd = 'E00100'  THEN
+					
+				  ELSE
+					
+					  INSERT INTO PBSLE.SLE501 (
+					  "COMLTD", "CSRNO", "CSRNO1" , "CSRNO2" , "DTYPE", 
+					  "ORDNO", "CITNO", "SUSE"  , "ITNO", "PDCD", 
+					  "ACCD", "SRCE", "CUSTCD" , "SCUSTCD", "SRNO" , 
+					  "XPLANT", "DIV"  , "STYPE" , "SLNO", "LCNO", 
+					  "LCDT", "DCQTY", "SCQTY", "RCQTY", "DKDT",
+					  "RPDT"  , "SLCNT" , "CUR", "LUPRC", "LUAMT",
+					  "VANPRC" , "VANAMT", "VANPRC1", "VANAMT1", "SJCD", 
+					  "UPDATE"  , "VNDSER", "PAYCD", "MKCD", "CNLCD", 
+					  "JSCD"  , "STCD", "XPLAN", "KITCD", "TAXCD" ,
+					  "RDEPT"  , "KITSRNO" , "KITSRNO1" , "KITSRNO2", "INVOICE" ,
+					  "SLSLIP" , "SLSLDT", "SLAMTW", "EXC", "CSNGB" ,
+					  "IVGB" , "COSTDIV", "ASCSN", "EXTD",
+					  "INPTID" , "INPTDT", "UPDTID", "UPDTDT", "IPADDR", "MACADDR"
+					  )
+					  VALUES (
+					  '01',       :ls_csrno, :ls_cpcnt,  '01',        'N',
+					  :ls_epno,   :ls_citno, :ls_suse,   :ls_itno,    :ls_pdcd,
+					  :ls_accd,   :ls_srce,  :ls_custcd, :ls_scustcd, :ls_srno,
+					  :ls_xplant, :ls_div,   :ls_stype,  :ls_slno,    :ls_lcdt,
+					  :ls_lcno,   :ld_qty,   0,          :ld_qty,     :ls_epdt,
+					  :ls_tdte4,  ' ',       :ls_cur,    :ld_muprc,   round((:ld_muprc * :ld_qty), 2),
+					  :ld_luprc,  round((:ld_luprc * :ld_qty), 2) , 0 , 0,          ' ',
+					  ' ',        ' ',       :ls_paycd,  :ls_mkcd,    ' ',
+					  ' ',        ' ',       :ls_xplan,  :ls_kitcd,   :ls_taxcd, 
+					  ' ',        ' ',       ' ',        ' ',         :ls_invoice,
+					  ' ',        ' ',       0,          0,           :ls_csngb,
+					  :ls_ivgb,   :ls_costdiv, ' ',     ' ', 
+					  :ls_id,     :g_s_date, :ls_id,     :g_s_datetime, ' ',  ' '
+					  ) Using lstr_ipis.t_sqlpis;	
+									  
+					  if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+						  ag_message = "SLE501 데이터 생성에 실패하였습니다."
+						  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipsheet',&
+						  lstr_ipis.t_sqlpis.sqlerrtext,'SLE501 데이터 생성에 실패', g_s_empno, g_s_ipaddr, g_s_macaddr)
+						  return -1
+					  end if				
+				 END IF
 			  End if
 			End if
 			
@@ -557,7 +569,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				
 				ls_tempcustcd = Mid(ls_custcd,1,1)
 				
-				if ls_tempcustcd <> 'E' then
+				if ls_tempcustcd = 'L' OR ( ls_custcd = 'E56000' OR ls_custcd = 'E00100' ) then
 					if ld_dcqty > ld_qty then
 						ag_message = "출하량이 납품량보다 작을수 없음"
 						return -1
@@ -572,7 +584,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 						ag_message = "SLE501 에 미존재"
 						return -1
 					end if
-					if ls_stcd = 'C' then
+					if ls_stcd = '1' then
 						ag_message = "매출확정 수정불가"
 						return -1
 					end if
@@ -611,24 +623,28 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					return -1
 				end if
 				
-				if ls_tempcustcd = 'E' then
-					ld_dcqty = ld_dcqty + ld_compqty
-					//** sle501
-					UPDATE PBSLE.SLE501                                                       
-					SET RCQTY = RCQTY + :ld_compqty,
-						 DCQTY = DCQTY + :ld_compqty,
-						 LUAMT = LUPRC * (DCQTY + :ld_compqty),
-						 VANAMT = VANPRC * (DCQTY + :ld_compqty),
-						 UPDTID = :ls_id,                                                       
-						 UPDTDT = :g_s_date
-					WHERE COMLTD = '01' AND CSRNO = :ls_csrno And CSRNO1= :ls_srno1 AND CSRNO2='01' Using lstr_ipis.t_sqlpis;					
-					
-					if lstr_ipis.t_sqlpis.sqlnrows < 1 then
-						ag_message = "sle501 정보 DB 업데이트 error invoke"
-						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipsheet',&
-						lstr_ipis.t_sqlpis.sqlerrtext,'sle501 Info DB 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
-						return -1
-					end if					
+				if ls_tempcustcd = 'E'  then
+					   IF ls_custcd = 'E56000' OR ls_custcd = 'E00100'  THEN
+							
+						ELSE
+							ld_dcqty = ld_dcqty + ld_compqty
+							//** sle501
+							UPDATE PBSLE.SLE501                                                       
+							SET RCQTY = RCQTY + :ld_compqty,
+								 DCQTY = DCQTY + :ld_compqty,
+								 LUAMT = round((LUPRC * (DCQTY + :ld_compqty)), 2),
+								 VANAMT = round((VANPRC * (DCQTY + :ld_compqty)),2),
+								 UPDTID = :ls_id,                                                       
+								 UPDTDT = :g_s_date
+							WHERE COMLTD = '01' AND CSRNO = :ls_csrno And CSRNO1= :ls_srno1 AND CSRNO2='01' Using lstr_ipis.t_sqlpis;					
+							
+							if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+								ag_message = "sle501 정보 DB 업데이트 error invoke"
+								f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipsheet',&
+								lstr_ipis.t_sqlpis.sqlerrtext,'sle501 Info DB 업데이트 error invoke', g_s_empno, g_s_ipaddr, g_s_macaddr)
+								return -1
+							end if				
+					   END IF
 				End if
 					
 				//** sle401 ***
@@ -754,7 +770,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				
 				ls_tempcustcd = Mid(ls_custcd,1,1)
 				
-				if ls_tempcustcd <> 'E' then
+				if ls_tempcustcd = 'L' OR  (ls_custcd = 'E56000' OR ls_custcd = 'E00100') then
 					if ld_dcqty > 0 then
 						ag_message = "납품량존재하면 삭제불가"
 						return -1
@@ -769,7 +785,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 						ag_message = "SLE501 에 미존재"
 						return -1
 					end if
-					if ls_stcd = 'C' then
+					if ls_stcd = '1' then
 						ag_message = "매출확정 수정불가"
 						return -1
 					end if
@@ -820,7 +836,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					return -1
 				end if
 				
-				if ls_tempcustcd = 'E' then
+				if ls_tempcustcd = 'E' AND (ls_custcd <> 'E56000' AND ls_custcd <> 'E00100') then
 				//** sle501 ***
 					DELETE FROM PBSLE.SLE501                                                       
 					WHERE COMLTD = '01' AND CSRNO = :ls_csrno  AND CSRNO1= :ls_srno1 AND CSRNO2='01' Using lstr_ipis.t_sqlpis;				
@@ -846,7 +862,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 			else
 				//**sle308
 				UPDATE PBSLE.SLE308                                                       
-				SET SAQTY = 0,
+				SET SAQTY = SAQTY - :ld_tqty4,
 					 STCD  = ' ',
 					 UPDTID = :ls_id,                                                       
 					 UPDTDT = :g_s_date

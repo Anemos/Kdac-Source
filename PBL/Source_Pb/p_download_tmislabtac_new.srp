@@ -1,6 +1,6 @@
 $PBExportHeader$p_download_tmislabtac_new.srp
 $PBExportComments$download tmislabtac (Interface DB) - new
-PIPELINE(source_connect=AS/400 DB2,destination_connect=INTERFACE,type=refresh,commit=100,errors=100)
+PIPELINE(source_connect=AS 400,destination_connect=INTERFACE,type=refresh,commit=100,errors=100)
 SOURCE(name="LABTAC",COLUMN(type=char,name="DGEMPNO",dbtype="CHAR(6)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="DGYY",dbtype="CHAR(4)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="DGMM",dbtype="CHAR(2)",key=yes,nulls_allowed=no)

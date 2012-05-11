@@ -31,7 +31,18 @@ WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND ( "PBINV"."INV101"."XPLANT" = :
 		( "PBINV"."INV101"."DIV"    = :as_div) AND ( "PBINV"."INV101"."ITNO"   = :as_itno)  using sqlca ;
 
 // 원가사업장
-ls_cdiv = f_yeo_get_accdiv(as_plant, as_div, ls_pdcd)
+ls_cdiv = f_get_accdiv(as_plant, as_div, ls_pdcd)
+//If as_plant = 'Y' then
+//	If as_div = 'Y' then
+//		If mid(ls_pdcd,1,2) = '40' or mid(ls_pdcd,1,2) = '45' then
+//			ls_cdiv = 'H'
+//		Else
+//			ls_cdiv = 'D'
+//		End If
+//	Else
+//		ls_cdiv = '*'
+//	End If
+//End If
 
 // 업체명칭
 ls_vdnm = f_yeo_vdnm_pur(as_vndr,'S','I')
@@ -67,14 +78,14 @@ VALUES ( '01',          'RF',          :as_srno,      :as_srno1,     :as_srno2, 
 
 IF Sqlca.SqlCode = 0 THEN
 	
-	ls_key   = 'SS' + as_plant + as_div + as_cls + mid(g_s_date,4,3)
-	ls_srno  = f_yeo_get_ctlno(ls_key, g_s_date)
+	ls_key   = 'SS' + as_plant + as_div + as_cls + mid(as_tdte4,4,3)
+	ls_srno  = f_yeo_get_ctlno(ls_key,as_tdte4)
 	ls_srno1 = as_plant + as_div
 	ls_srno2 = as_cls
 	
 	// 전표번호 생성
-	ls_key  = as_plant + as_div + 'I' + as_cls + mid(g_s_date,4,3)
-	ls_slno = f_yeo_get_slno(ls_key, g_s_date)
+	ls_key  = as_plant + as_div + 'I' + as_cls + mid(as_tdte4,4,3)
+	ls_slno = f_yeo_get_slno(ls_key,as_tdte4)
 	
 	// 취소,입고 trans 생성
 	insert into "PBINV"."INV401"    
@@ -107,11 +118,13 @@ IF Sqlca.SqlCode = 0 THEN
 	
 	IF Sqlca.SqlCode <> 0 THEN
 		as_error = "전수불합격 취소입고inv401 update error"
+		RollBack Using SQLCA ;
 		return -1		
 	End if				
 	
 else
 	as_error = "전수불합격 입고inv401 update error"
+	RollBack Using SQLCA ;
 	RETURN -1 
 
 END IF

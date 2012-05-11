@@ -1,6 +1,6 @@
 $PBExportHeader$p_download_dac004.srp
 $PBExportComments$download dac007 (modelgroup - Interface DB)
-PIPELINE(source_connect=AS/400 DB2,destination_connect=interface,type=refresh,commit=100,errors=100)
+PIPELINE(source_connect=AS/400,destination_connect=¿¸¿Â_INTERFACE,type=refresh,commit=100,errors=100)
 SOURCE(name="DAC004",COLUMN(type=char,name="COMLTD",dbtype="CHAR(2)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PRDIV",dbtype="CHAR(1)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PRPRCD",dbtype="CHAR(4)",key=yes,nulls_allowed=no)
@@ -20,7 +20,7 @@ SOURCE(name="DAC004",COLUMN(type=char,name="COMLTD",dbtype="CHAR(2)",key=yes,nul
  COLUMN(type=char,name="MACADDR",dbtype="CHAR(30)",nulls_allowed=no))
 RETRIEVE(statement="PBSELECT( VERSION(400) TABLE(NAME=~"PBCOMMON.DAC004~" ) COLUMN(NAME=~"PBCOMMON.DAC004.COMLTD~") COLUMN(NAME=~"PBCOMMON.DAC004.PRDIV~") COLUMN(NAME=~"PBCOMMON.DAC004.PRPRCD~") COLUMN(NAME=~"PBCOMMON.DAC004.PRUSE~") COLUMN(NAME=~"PBCOMMON.DAC004.PRCC~") COLUMN(NAME=~"PBCOMMON.DAC004.PRCOMN~") COLUMN(NAME=~"PBCOMMON.DAC004.PRRATEM~") COLUMN(NAME=~"PBCOMMON.DAC004.PRRATES~") COLUMN(NAME=~"PBCOMMON.DAC004.PRAREA~") COLUMN(NAME=~"PBCOMMON.DAC004.PRPLANT~") COLUMN(NAME=~"PBCOMMON.DAC004.EXTD~") COLUMN(NAME=~"PBCOMMON.DAC004.INPTID~") COLUMN(NAME=~"PBCOMMON.DAC004.INPTDT~") COLUMN(NAME=~"PBCOMMON.DAC004.UPDTID~") COLUMN(NAME=~"PBCOMMON.DAC004.UPDTDT~") COLUMN(NAME=~"PBCOMMON.DAC004.IPADDR~") COLUMN(NAME=~"PBCOMMON.DAC004.MACADDR~"))")
 DESTINATION(name="DAC004",COLUMN(type=char,name="COMLTD",dbtype="char(2)",nulls_allowed=no,initial_value="spaces")
- COLUMN(type=char,name="PRDIV",dbtype="char(1)",nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="PRDIV",dbtype="char(2)",nulls_allowed=no,initial_value="spaces")
  COLUMN(type=char,name="PRPRCD",dbtype="char(4)",nulls_allowed=no,initial_value="spaces")
  COLUMN(type=char,name="PRUSE",dbtype="char(1)",nulls_allowed=no,initial_value="spaces")
  COLUMN(type=char,name="PRCC",dbtype="char(4)",nulls_allowed=no,initial_value="spaces")

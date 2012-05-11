@@ -31,7 +31,18 @@ WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND ( "PBINV"."INV101"."XPLANT" = :
 		( "PBINV"."INV101"."DIV"    = :as_div) AND ( "PBINV"."INV101"."ITNO"   = :as_itno)  using sqlca ;
 
 // 원가사업장
-ls_cdiv = f_yeo_get_accdiv(as_plant, as_div, ls_pdcd)
+ls_cdiv = f_get_accdiv(as_plant, as_div, ls_pdcd)
+//If as_plant = 'Y' then
+//	If as_div = 'Y' then
+//		If mid(ls_pdcd,1,2) = '40' or mid(ls_pdcd,1,2) = '45' then
+//			ls_cdiv = 'H'
+//		Else
+//			ls_cdiv = 'D'
+//		End If
+//	Else
+//		ls_cdiv = '*'
+//	End If
+//End If
 
 // 업체명칭
 ls_vdnm = f_yeo_vdnm_pur(as_vndr,'S','I')
@@ -79,14 +90,14 @@ IF Sqlca.SqlCode = 0 THEN
 	ld_costls = ad_cost             // 최종입고단가 계산
 	
 	if ll_amt > 0 and (ld_uqty + ld_rqty + ld_sqty) > 0 then
-		ld_costav = truncate(ll_amt / (ld_uqty + ld_rqty + ld_sqty),2)    // 이동평균단가 계산
+		ld_costav = ll_amt / (ld_uqty + ld_rqty + ld_sqty)    // 이동평균단가 계산
 	end if
 		
 	UPDATE "PBINV"."INV101"
 		SET "OHAMT"  = :ll_Amt,      "OHUQTY" = :ld_uqty,          // 현재고 수량 & 금액
 			 "INTQTY" = :ld_intQty,   "INTAMT" = :ll_intAmt,        // 입고 수량 & 금액
 			 "COSTAV" = :ld_costav,   "COSTLS" = :ld_costls,        // 이동평균단가 & 최종입고단가
-			 "ILUDT"  = :g_s_date     
+			 "ILUDT"  = :as_tdte4
 	WHERE "COMLTD" = '01' AND "XPLANT" = :as_plant AND "DIV" = :as_div AND "ITNO" = :as_Itno	Using	SQLCA ;
 	
 	IF Sqlca.SqlCode <> 0 THEN

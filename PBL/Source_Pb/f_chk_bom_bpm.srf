@@ -4,22 +4,20 @@ global type f_chk_bom_bpm from function_object
 end type
 
 forward prototypes
-global function integer f_chk_bom_bpm (string a_year, string a_revno, string a_plant, string a_div, string a_pitno, string a_citno, string a_applydate)
+global function integer f_chk_bom_bpm (string a_plant, string a_div, string a_pitno, string a_citno)
 end prototypes
 
-global function integer f_chk_bom_bpm (string a_year, string a_revno, string a_plant, string a_div, string a_pitno, string a_citno, string a_applydate);string 	ls_pitno,ls_citno,ls_itno[50,300],ls_chkit
+global function integer f_chk_bom_bpm (string a_plant, string a_div, string a_pitno, string a_citno);string 	ls_pitno,ls_citno,ls_itno[50,300],ls_chkit
 integer 	i = 0,j = 0,k = 0,p = 0,ln_chk = 0,ln_cnt
 
 ls_chkit = trim(a_citno)
 ls_pitno = trim(a_pitno)
 
-select 	count(*) into :ln_cnt from "PBBPM"."BPM503"
-	where "PBBPM"."BPM503"."XYEAR" 	= :a_year 	and
-			"PBBPM"."BPM503"."REVNO" 	= :a_revno 	and
-			"PBBPM"."BPM503"."XPLANT" 	= :a_plant 	and
-         "PBBPM"."BPM503"."DIV" 		= :a_div 	and 
-			"PBBPM"."BPM503"."ITNO" 	= :ls_chkit and
-			"PBBPM"."BPM503"."CLS" 		IN ('10','20','40','50') 
+select 	count(*) into :ln_cnt from "PBINV"."INV101"
+	where "PBINV"."INV101"."XPLANT" 	= :a_plant 	and
+         "PBINV"."INV101"."DIV" 		= :a_div 	and 
+			"PBINV"."INV101"."ITNO" 	= :ls_chkit and
+			"PBINV"."INV101"."CLS" 		IN ('10','20','40','50') 
 using sqlca;
 
 if ln_cnt 	= 0  then
@@ -29,14 +27,12 @@ end if
 
 
 declare bomchk_cur cursor for 
-	select 	"PBBPM"."BPM504"."PPITN" from "PBBPM"."BPM504"
-     where 	"PBBPM"."BPM504"."XYEAR" = :a_year	and
-	  			"PBBPM"."BPM504"."REVNO" = :a_revno	and
-	  			"PBBPM"."BPM504"."PCITN" = :ls_pitno	and
-           	"PBBPM"."BPM504"."PDVSN" = :a_div    	and  
-			  	"PBBPM"."BPM504"."PLANT" = :a_plant 	and  
-         ((	trim("PBBPM"."BPM504"."PEDTE") =  ''  	and "PBBPM"."BPM504"."PEDTM" <= :a_applydate ) or  
-			(  trim("PBBPM"."BPM504"."PEDTE") <> ''  	and "PBBPM"."BPM504"."PEDTM" <= :a_applydate  and "PBBPM"."BPM504"."PEDTE" >= :a_applydate ))
+	select 	"PBBPM"."BPM001"."PPITN" from "PBBPM"."BPM001"
+     where 	"PBBPM"."BPM001"."PCITN" = :ls_pitno	and
+           	"PBBPM"."BPM001"."PDVSN" = :a_div    	and  
+			  	"PBBPM"."BPM001"."PLANT" = :a_plant 	and  
+         ((	trim("PBBPM"."BPM001"."PEDTE") =  ''  	and "PBBPM"."BPM001"."PEDTM" <= :g_s_date ) or  
+			(  trim("PBBPM"."BPM001"."PEDTE") <> ''  	and "PBBPM"."BPM001"."PEDTM" <= :g_s_date  and "PBBPM"."BPM001"."PEDTE" >= :g_s_date ))
   	using SQLCA ;
 
 open bomchk_cur ;

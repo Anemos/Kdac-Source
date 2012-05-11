@@ -21,7 +21,7 @@ long backcolor = 67108864
 long tabtextcolor = 33554432
 long picturemaskcolor = 536870912
 event resize ( unsignedlong sizetype,  integer newwidth,  integer newheight )
-event type string ue_retrieve ( integer id,  ref integer rowcount,  ref transaction atr_transaction )
+event type string ue_retrieve ( integer id,  ref integer rowcount )
 dw_2 dw_2
 cb_save cb_save
 dw_1 dw_1
@@ -32,7 +32,6 @@ global u_parameter_set u_parameter_set
 type variables
 boolean ib_change = False
 boolean ib_save = False
-transaction	it_transaction
 end variables
 
 event resize;int li_border = 15, li_gb_range = 20
@@ -52,7 +51,6 @@ end event
 event ue_retrieve;Int li_return
 
 rowcount = 0
-it_transaction = atr_transaction
 
 If ib_change Then
 	li_return = MessageBox("Save","Parameter 설정값이 변경 되었습니다.~r~n저장하시겠습니까 ?", Question!, YesNoCancel!)
@@ -64,7 +62,7 @@ If ib_change Then
 				Return 'F'
 			Else
 				ib_change	= False
-				dw_1.SetTransObject(atr_transaction)
+				dw_1.SetTransObject(SQLCA)
 				rowcount 	= dw_1.Retrieve(id)
 				Return 'Y'
 			End If
@@ -75,7 +73,7 @@ If ib_change Then
 			Return 'C'
 	END CHOOSE
 Else
-	dw_1.SetTransObject(atr_transaction)
+	dw_1.SetTransObject(SQLCA)
 	rowcount = dw_1.Retrieve(id)
 	Return 'Y'
 End If
@@ -131,7 +129,7 @@ end type
 
 event clicked;Int li_return
 
-it_transaction.AutoCommit	= False
+SQLCA.AutoCommit	= False
 
 li_return = dw_1.Update()
 
@@ -147,7 +145,7 @@ Else
 	RollBack;
 End If
 
-it_transaction.AutoCommit = True
+SQLCA.AutoCommit = True
 end event
 
 type dw_1 from datawindow within u_parameter_set

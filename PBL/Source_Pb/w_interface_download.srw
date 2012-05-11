@@ -107,7 +107,6 @@ public function boolean wf_auto_download ()
 public function boolean wf_download ()
 public function boolean wf_exec_sp (string fs_sp_name)
 public function boolean wf_flag_check (string fs_pipeline_name, ref string rs_action_name, ref string rs_fail_gubun)
-public subroutine wf_email_warning ()
 end prototypes
 
 event ue_postopen;ib_open = True
@@ -2404,12 +2403,12 @@ if ib_auto	then
 					if ld_lastDate	=	ld_CurrentDate	Then
 						If String(lt_LastTime,'hhmmss') < '080000'	Then
 							wf_flag_update(is_action_name)
-							Return False
+							Return True
 						End If
 					End If
 				Else
 					wf_flag_update(is_action_name)
-					Return False
+					Return True
 				End If
 			Else
 				If String(lt_CurrentTime,'hhmmss') > '200000' Then
@@ -2824,11 +2823,6 @@ Choose case Upper(fs_sp_name)
 	Case 'SP_PISI_D_TSEQWIP001'
 		DECLARE d_tseqwip001 procedure for SP_PISI_D_TSEQWIP001;
 		EXECUTE d_tseqwip001 ;
-		
-		// 외주간판 단품AS/KD 메일발송로직 추가 ( 2008.06.02 )
-		wf_email_warning()
-		// 메일발송 로직 끝
-		
 	Case 'SP_PISI_D_RNDITEM'
 		DECLARE d_rnditem procedure for SP_PISI_D_RNDITEM;
 		EXECUTE d_rnditem ;
@@ -2990,173 +2984,6 @@ Else
 End If
 end function
 
-public subroutine wf_email_warning ();//***************************
-//* 각공장별로 지정된 확정자에게 확정요청메일 발송.
-//***************************
-datastore lds_datastore, lds_getemail
-long ll_row, ll_cnt, ll_logid, ll_shiporderqty, ll_emailcnt, ll_emailrowcnt
-string ls_productgroup, ls_itemcode, ls_itemname, ls_applyfrom, ls_emailcontent, ls_email, ls_emailtitle
-string ls_areacode, ls_divisioncode, ls_checkproduct, ls_checkarea, ls_checkdivision
-string ls_itemclass, ls_itembuysource
-
-lds_getemail = create datastore
-lds_getemail.DataObject = 'd_email_empno'
-lds_getemail.SetTransObject(SQLCA)
-
-lds_datastore = create datastore
-lds_datastore.DataObject	= 'd_email_tpartwarninghistory'
-lds_datastore.SetTransObject(SQLCA)
-ll_row	= lds_datastore.Retrieve()
-
-if ll_row > 0 then
-	ls_checkproduct = lds_datastore.GetItemString(1, 'productgroup')
-	ls_checkarea = lds_datastore.GetItemString(1, 'areacode')
-	ls_checkdivision = lds_datastore.GetItemString(1, 'divisioncode')
-end if
-
-ls_emailtitle = "&nbsp;&nbsp;<FONT size=4 face=굴림 color=#ff7635>시스템에서 단품Warning 정보를 알려드립니다.</font><br><br>"
-ls_emailcontent = ""
-For ll_cnt = 1 To ll_row
-	ll_logid = lds_datastore.GetItemNumber(ll_cnt, 'logid') 
-	ll_shiporderqty = lds_datastore.GetItemNumber(ll_cnt, 'shiporderqty')
-	ls_productgroup = lds_datastore.GetItemString(ll_cnt, 'productgroup')
-	ls_itemcode = lds_datastore.GetItemString(ll_cnt, 'itemcode')
-	ls_itemname = lds_datastore.GetItemString(ll_cnt, 'itemname')
-	ls_applyfrom = lds_datastore.GetItemString(ll_cnt, 'applyfrom')
-	ls_areacode = lds_datastore.GetItemString(ll_cnt, 'areacode')
-	ls_divisioncode = lds_datastore.GetItemString(ll_cnt, 'divisioncode')
-	ls_itemclass = lds_datastore.GetItemString(ll_cnt, 'itemclass')
-	ls_itembuysource = lds_datastore.GetItemString(ll_cnt, 'itembuysource')
-	
-	if ll_cnt = ll_row then
-		// 마지막행 처리로직 시작
-		if (ls_productgroup <> ls_checkproduct or ls_areacode <> ls_checkarea or &
-				ls_divisioncode <> ls_checkdivision ) then
-			//*************************
-			//* 이전 지역,공장, 제품군에 해당하는 메일내용 먼저 발송
-			if ll_cnt <> 1 then
-				//이메일 발송로직
-				lds_getemail.reset()
-				ll_emailrowcnt = lds_getemail.retrieve(ls_checkarea, ls_checkdivision, ls_checkproduct) 
-				for ll_emailcnt = 1 to ll_emailrowcnt
-					ls_email = lds_getemail.getitemstring(ll_emailcnt,'empemail')
-					if len(trim(ls_email)) > 10 then
-						if f_SendMail( trim(ls_email), "(" + is_currentdate + ") 단품AS/KD Warning정보 제품군 : " + ls_checkproduct, ls_emailtitle + ls_emailcontent, "" ) = 1 then
-							// pass
-						end if
-					end if
-				next
-				
-				if ll_emailrowcnt > 0 then
-					sqlca.autocommit = false
-					
-					Update	TPARTWARNINGHISTORY
-					Set		SuccessFlag = 'Y'
-					Where		AreaCode = :ls_checkarea AND DivisionCode = :ls_checkdivision AND
-						ProductGroup = :ls_checkproduct AND SuccessFlag = 'N' using sqlca;
-					
-					if sqlca.sqlnrows > 0 then
-						commit using sqlca;
-					else
-						rollback using sqlca;
-					end if
-					sqlca.autocommit = true
-				end if
-			end if
-			//*************************
-			ls_emailtitle = "&nbsp;&nbsp;<FONT size=4 face=굴림 color=#ff7635>시스템에서 단품Warning 정보를 알려드립니다.</font><br><br>"
-			ls_emailcontent = ""
-			ls_emailcontent = ls_emailcontent + "&nbsp;&nbsp;품번: <b>" + ls_itemcode +  "</b>,&nbsp;&nbsp;&nbsp;&nbsp;품명: <b>" + ls_itemname &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;계정: <b>" + ls_itemclass &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;구입선: <b>" + ls_itembuysource &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;납품요구일: <b>" + ls_applyfrom &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;수량: <b>" + string(ll_shiporderqty) + "</b><br>"
-		else
-			ls_emailcontent = ls_emailcontent + "&nbsp;&nbsp;품번: <b>" + ls_itemcode +  "</b>,&nbsp;&nbsp;&nbsp;&nbsp;품명: <b>" + ls_itemname &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;계정: <b>" + ls_itemclass &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;구입선: <b>" + ls_itembuysource &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;납품요구일: <b>" + ls_applyfrom &
-				+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;수량: <b>" + string(ll_shiporderqty) + "</b><br>"
-		end if
-		//이메일 발송로직
-		lds_getemail.reset()
-		ll_emailrowcnt = lds_getemail.retrieve(ls_areacode, ls_divisioncode, ls_productgroup) 
-		for ll_emailcnt = 1 to ll_emailrowcnt
-			ls_email = lds_getemail.getitemstring(ll_emailcnt,'empemail')
-			if len(trim(ls_email)) > 10 then
-				if f_SendMail( trim(ls_email), "(" + is_currentdate + ") 단품AS/KD Warning정보 제품군 : " + ls_productgroup, ls_emailtitle + ls_emailcontent, "" ) = 1 then
-					// pass
-				end if
-			end if
-		next
-		
-		if ll_emailrowcnt > 0 then
-			sqlca.autocommit = false
-			
-			Update	TPARTWARNINGHISTORY
-			Set		SuccessFlag = 'Y'
-			Where		AreaCode = :ls_areacode AND DivisionCode = :ls_divisioncode AND
-				ProductGroup = :ls_productgroup AND SuccessFlag = 'N' using sqlca;
-			
-			if sqlca.sqlnrows > 0 then
-				commit using sqlca;
-			else
-				rollback using sqlca;
-			end if
-			sqlca.autocommit = true
-		end if
-		// 마지막행 처리로직 끝
-	else
-		// 일반적 처리로직 시작
-		if (ls_productgroup <> ls_checkproduct or ls_areacode <> ls_checkarea or &
-				ls_divisioncode <> ls_checkdivision ) then
-			//이메일 발송로직
-			lds_getemail.reset()
-			ll_emailrowcnt = lds_getemail.retrieve(ls_checkarea, ls_checkdivision, ls_checkproduct) 
-			for ll_emailcnt = 1 to ll_emailrowcnt
-				ls_email = lds_getemail.getitemstring(ll_emailcnt,'empemail')
-				if len(trim(ls_email)) > 10 then
-					if f_SendMail( trim(ls_email), "(" + is_currentdate + ") 단품AS/KD Warning정보 제품군 : " + ls_checkproduct, ls_emailtitle + ls_emailcontent, "" ) = 1 then
-						// pass
-					end if
-				end if
-			next
-			
-			if ll_emailrowcnt > 0 then
-				sqlca.autocommit = false
-				
-				Update	TPARTWARNINGHISTORY
-				Set		SuccessFlag = 'Y'
-				Where		AreaCode = :ls_checkarea AND DivisionCode = :ls_checkdivision AND
-					ProductGroup = :ls_checkproduct AND SuccessFlag = 'N' using sqlca;
-				
-				if sqlca.sqlnrows > 0 then
-					commit using sqlca;
-				else
-					rollback using sqlca;
-				end if
-				sqlca.autocommit = true
-			end if
-			
-			ls_checkproduct = ls_productgroup
-			ls_checkarea = ls_areacode
-			ls_checkdivision = ls_divisioncode
-			ls_emailtitle = "&nbsp;&nbsp;<FONT size=4 face=굴림 color=#ff7635>시스템에서 단품Warning 정보를 알려드립니다.</font><br><br>"
-			ls_emailcontent = ""
-		end if
-		ls_emailcontent = ls_emailcontent + "&nbsp;&nbsp;품번: <b>" + ls_itemcode +  "</b>,&nbsp;&nbsp;&nbsp;&nbsp;품명: <b>" + ls_itemname &
-			+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;계정: <b>" + ls_itemclass &
-			+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;구입선: <b>" + ls_itembuysource &
-			+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;납품요구일: <b>" + ls_applyfrom &
-			+ "</b>,&nbsp;&nbsp;&nbsp;&nbsp;수량: <b>" + string(ll_shiporderqty) + "</b><br>"	
-		// 일반적 처리로직 끝
-	end if
-Next
-
-destroy lds_datastore
-destroy lds_getemail
-end subroutine
-
 on w_interface_download.create
 this.dw_2=create dw_2
 this.dw_1=create dw_1
@@ -3309,21 +3136,18 @@ borderstyle borderstyle = stylelowered!
 end type
 
 event rowfocuschanged;If GetRow() > 0 Then
-	SelectRow(0,  = 1 Then
-	is_cycle = 'SS'
-ElseIf index = 2 Then
-	is_cycle	= 'MI'
-ElseIf index = 3 Then
-	is_cycle = 'HH'
-ElseIf index = 4 Then
-	is_cycle = 'DD'
-ElseIf index = 5 Then
-	is_cycle = 'MM'
-End If	
-
+	SelectRow(0, False)
+	SelectRow(currentrow, True)
+End If
 end event
 
-tring dataobject = "d_description"
+type dw_1 from datawindow within w_interface_download
+integer x = 1257
+integer y = 1076
+integer width = 699
+integer height = 372
+integer taborder = 50
+string dataobject = "d_description"
 boolean livescroll = true
 borderstyle borderstyle = stylelowered!
 end type

@@ -22,7 +22,7 @@ FROM "PBINV"."INV002"
 WHERE ( "PBINV"."INV002"."COMLTD" = '01' ) AND ( "PBINV"."INV002"."ITNO"   = :as_itno)  using sqlca ;
 
 IF Sqlca.SqlCode <> 0 THEN
-	as_error = "품목마스터 등록이 안된 품번"
+	as_error = "마스터 디비 등록 안된 품번임(1) : " + sqlca.sqlerrtext
 	return -1
 End if
 
@@ -48,7 +48,7 @@ WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND ( "PBINV"."INV101"."XPLANT" = :
 		( "PBINV"."INV101"."DIV"    = :as_div) AND ( "PBINV"."INV101"."ITNO"   = :as_itno)  using sqlca ;
 
 IF Sqlca.SqlCode <> 0 THEN
-	as_error = "품목상세 등록이 안된 품번"
+	as_error = "inv101 디비 등록 안된 품번임(2) :" + as_rqdiv + ":" + ls_kplant + ":" + as_div + ":" + as_itno + ":" + sqlca.sqlerrtext
 	return -1
 End if
 
@@ -57,10 +57,20 @@ ld_intqty = ld_intqty + ad_qty
 
 // 현재고량 재계산(inv101)
 if ls_cls = '50' then
-	ld_outqty = ld_outqty + ad_qty
-	ld_ohqty  = ld_ohqty
+	if as_div = 'A' or as_div = 'V' then
+		ld_ohqty = ld_ohqty  + ad_qty
+	else
+		ld_ohqty = 0
+	end if
 else
    ld_ohqty  = ld_ohqty  + ad_qty
+end if
+
+// 계정이 "50"인경우-전장,압축공장은 재고관리 
+if ls_cls = '50' then
+	if as_div <> 'A' and as_div <> 'V' then
+		ld_outqty = ld_outqty + ad_qty
+	end if
 end if
 
 // 수량기준으로 금액산출
@@ -78,11 +88,15 @@ IF Sqlca.SqlCode <> 0 THEN
 	return -1
 End if
 
-ls_wtype = ls_ptype
+if as_vsrno = 'D2017' then
+	ls_wtype = ls_ptype
+else
+	ls_wtype = ' '
+end if
 
 if ls_curr = 'USD' then
-	ll_wamt = Truncate(ad_qty * ld_cost * ld_exch,0)
-   ld_costls = truncate(ll_wamt / ad_qty,2)  	// 최종입고단가 계산
+	ll_wamt = ad_qty * ld_cost * ld_exch
+   ld_costls = ll_wamt / ad_qty  	// 최종입고단가 계산
 else
    ll_wamt   = al_amt
 	ld_costls = ld_cost 	// 최종입고단가 계산
@@ -93,7 +107,7 @@ if ls_cls = '10' or ls_cls = '20' or ls_cls = '24' then
    ll_intamt = ll_intamt + ll_wamt
 	ll_ohamt  = ll_ohamt  + ll_wamt
 	if ( ld_ohqty + ld_rqty + ld_sqty > 0 ) and ( ll_ohamt > 0 ) then
-	   ld_costav = truncate( (ll_ohamt / (ld_ohqty + ld_rqty + ld_sqty)), 2)
+	   ld_costav = ll_ohamt / (ld_ohqty + ld_rqty + ld_sqty)
 	end if
 end if
 
@@ -105,7 +119,18 @@ if ls_cls = '40' or ls_cls = '50' then
 end if
 
 // 원가사업장
-ls_cdiv = f_yeo_get_accdiv(as_plant, as_div, ls_pdcd)
+ls_cdiv = f_get_accdiv(as_plant, as_div, ls_pdcd)
+//If as_plant = 'Y' then
+//	If as_div = 'Y' then
+//		If mid(ls_pdcd,1,2) = '40' or mid(ls_pdcd,1,2) = '45' then
+//			ls_cdiv = 'H'
+//		Else
+//			ls_cdiv = 'D'
+//		End If
+//	Else
+//		ls_cdiv = '*'
+//	End If
+//End If
 
 // 구매요구번호 getting
 ls_rqno = f_yeo_get_pur302(as_srno)
@@ -151,29 +176,27 @@ VALUES ( '01',          'RP',          :as_srno,      :as_srno1,     :as_srno2, 
 			:as_usrid,           ' ',           ' ',           ' ' )  using sqlca;
 
 IF Sqlca.SqlCode = 0 THEN
-	
 	DELETE FROM "PBINV"."INV201"
 	WHERE "COMLTD" = '01' AND "SRNO" = :as_srno  AND "SRNO1"  = :as_srno1 AND "SRNO2"  = :as_srno2 ;
-	
 	if Sqlca.SqlCode = 0 then 
-		
 		UPDATE "PBINV"."INV101" 
 		  SET  "PBINV"."INV101"."OHUQTY"  = :ld_ohqty,     "PBINV"."INV101"."OHAMT"  = :ll_ohamt,
 		       "PBINV"."INV101"."INTQTY"  = :ld_intqty,    "PBINV"."INV101"."INTAMT" = :ll_intamt,
 				 "PBINV"."INV101"."COSTAV"  = :ld_costav,    "PBINV"."INV101"."COSTLS" = :ld_costls,
-				 "PBINV"."INV101"."OUTQTY"  = :ld_outqty,    "PBINV"."INV101"."ILUDT"  = :g_s_date
-		WHERE  "PBINV"."INV101"."COMLTD" = '01'     AND "PBINV"."INV101"."XPLANT" = :ls_kplant  AND
-				 "PBINV"."INV101"."DIV"    = :as_div  AND "PBINV"."INV101"."ITNO"   = :as_itno using sqlca ;
+				 "PBINV"."INV101"."OUTQTY"  = :ld_outqty,    "PBINV"."INV101"."ILUDT"  = :as_date
+		WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND ( "PBINV"."INV101"."XPLANT"  = :ls_kplant)  AND
+				( "PBINV"."INV101"."DIV"  = :as_div  AND "PBINV"."INV101"."ITNO" = :as_itno) using sqlca ;
 	else
 		as_error = "inv201 삭제 실패 "
 		RETURN -1 
 	end if
 	
 	// 재공 Trans Update
-//	li_rtn = f_wip_main_update('01','RP',as_srno,as_srno1,as_srno2)
+	li_rtn = f_wip_main_update('01','RP',as_srno,as_srno1,as_srno2)
+
 	
 ELSE
-	as_error = "inv401 업데이트 실패 "
+	as_error = "inv401 업데이트 실패 : " + sqlca.sqlerrtext + " : " + sqlca.sqlreturndata
 	RETURN -1
 END IF
 

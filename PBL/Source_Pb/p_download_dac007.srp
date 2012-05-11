@@ -1,6 +1,6 @@
 $PBExportHeader$p_download_dac007.srp
 $PBExportComments$download dac007 (modelgroup - Interface DB)
-PIPELINE(source_connect=AS/400 DB2,destination_connect=interface,type=refresh,commit=100,errors=100)
+PIPELINE(source_connect=AS/400,destination_connect=¿¸¿Â_INTERFACE,type=refresh,commit=100,errors=100)
 SOURCE(name="DAC007",COLUMN(type=char,name="COMLTD",dbtype="CHAR(2)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PRPRCD",dbtype="CHAR(4)",key=yes,nulls_allowed=no)
  COLUMN(type=char,name="PRNAME",dbtype="CHAR(60)",nulls_allowed=no)

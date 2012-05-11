@@ -14,7 +14,7 @@ global function string f_yeo_get_ctlno (string arg_ckey, string as_date);/******
 /******************************************************************/
 
 string  ls_srno, ls_year
-long li_ctlno
+integer li_ctlno
 
 SELECT "PBINV"."INV403"."SRNO", "PBINV"."INV403"."XYEAR1"
     INTO :li_ctlno, :ls_year
@@ -29,9 +29,9 @@ if sqlca.sqlcode = 0 then
    WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
 	 	   ( "PBINV"."INV403"."CKEY" = :arg_ckey ) Using sqlca;
    if sqlca.sqlcode <> 0 then
-//	   rollback using sqlca;
+	   rollback using sqlca;
    else
-//	   commit using sqlca;
+	   commit using sqlca;
    end if
 elseif sqlca.sqlcode = 100 Then                 //data read invalid
 		 ls_year = left(as_date,6)
@@ -46,9 +46,9 @@ elseif sqlca.sqlcode = 100 Then                 //data read invalid
 		          ' ', ' ', ' ', ' ', ' ', ' ' ) Using sqlca ;
 	
 		 if sqlca.sqlcode <> 0 then
-//		   rollback using sqlca;
+		   rollback using sqlca;
 		 else
-//		   commit using sqlca;
+		   commit using sqlca;
 		 end if
 else
 	return '0'

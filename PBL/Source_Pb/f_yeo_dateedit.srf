@@ -1,4 +1,5 @@
 $PBExportHeader$f_yeo_dateedit.srf
+$PBExportComments$사업자번호(arg:업체코드) return
 global type f_yeo_dateedit from function_object
 end type
 
@@ -34,3 +35,4 @@ else
 	Return string(l_d_dateyymd,"yyyymmdd")
 end if	
 end function
+

@@ -55,10 +55,12 @@ global w_comm107i w_comm107i
 type variables
 string is_grade = '%' ,is_pgmid = '%'
 end variables
-event ue_keydown;if key = keyenter! then
+
+event ue_keydown;if	key = keyenter! then
 	this.triggerevent("ue_retrieve")
 end if
 end event
+
 on w_comm107i.create
 int iCurrent
 call super::create
@@ -111,48 +113,63 @@ destroy(this.gb_1)
 destroy(this.gb_2)
 end on
 
-event ue_retrieve;call super::ue_retrieve;st_2.text = ''
+event ue_retrieve;call super::ue_retrieve;st_2.text	=	''
 dw_1.reset()
-st_2.text = f_get_Deptnm(trim(sle_dept.text),'5')
-if cbx_inq.checked = true then
+st_2.text 	= 	f_get_Deptnm(trim(sle_dept.text),'5')
+
+if 	cbx_inq.checked = true then
 	is_grade = '1%'
-	if cbx_save.checked = true then
+	if 	cbx_save.checked = true then
 		is_grade = '%'
 	end if
 elseif cbx_save.checked = true then
 	is_grade = '5%'
-	if cbx_inq.checked = true then
+	if 	cbx_inq.checked = true then
 		is_grade = '%'
 	end if
 end if
-if f_spacechk(trim(sle_pgm.text)) <> -1 then
+if 	f_spacechk(trim(sle_pgm.text)) <> -1 then
 	is_pgmid = '%' + trim(sle_pgm.text) + '%'
 else
 	is_pgmid = '%'
 end if
-pb_excel.visible = false
-pb_excel.enabled = false
-pb_print.visible = false
-pb_print.enabled = false
-//if f_spacechk(st_2.text) = -1 then
-//	messagebox("확인","부서명칭이 없는 부서입니다.~r~n부서코드를 확인 하시기 바랍니다")
-//	return
-//end if
-if dw_1.retrieve(trim(sle_Dept.text) + '%' ,is_grade,is_pgmid) > 0 then
+f_pism_working_msg(This.title,"부서별 사용자 정보를 조회중입니다. 잠시만 기다려 주십시오.") 
+
+pb_excel.visible	= 	false
+pb_excel.enabled 	= 	false
+pb_print.visible 	= 	false
+pb_print.enabled 	= 	false
+if 	dw_1.retrieve(trim(sle_dept.text) + '%' ,is_grade,is_pgmid) > 0 then
 	uo_status.st_message.text	=	f_message("I010")
-	pb_excel.visible = true
-	pb_excel.enabled = true
-	pb_print.visible = true
-	pb_print.enabled = true
+	pb_excel.visible 	= 	true
+	pb_excel.enabled 	= 	true
+	pb_print.visible 	= 	true
+	pb_print.enabled 	= 	true
 else
 	uo_status.st_message.text	=	f_message("I020")
 end if
-end event
-event open;call super::open;pb_excel.visible = false
-pb_excel.enabled = false
-pb_print.visible = false
-pb_print.enabled = false
 
+If	IsValid(w_pism_working) Then Close(w_pism_working)
+end event
+
+event open;call super::open;pb_excel.visible 		= 	false
+pb_excel.enabled 		= 	false
+pb_print.visible			= 	false
+pb_print.enabled 		= 	false
+if	trim(gs_userlevel)		>	'1'		then
+	sle_dept.text			=	g_s_deptcd
+	sle_dept.enabled 		= 	false
+	sle_dept.backcolor 	= 	rgb(128,128,128)
+	sle_pgm.setfocus() 
+else
+	sle_dept.text			=	''
+	sle_dept.enabled 		= 	true
+	sle_dept.backcolor 	= 	rgb(255,255,255)
+	sle_dept.setfocus() 
+end if
+pb_1.visible 				= 	true
+pb_1.enabled 			= 	true
+st_2.text					=	f_get_Deptnm(trim(sle_dept.text),'5')
 end event
 
 type uo_status from w_origin_sheet05`uo_status within w_comm107i
@@ -161,16 +178,16 @@ end type
 
 type st_1 from statictext within w_comm107i
 integer x = 50
-integer y = 68
-integer width = 293
+integer y = 60
+integer width = 261
 integer height = 72
 boolean bringtotop = true
 integer textsize = -10
 integer weight = 400
 fontcharset fontcharset = hangeul!
-fontpitch fontpitch = fixed!
+fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림체"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 long backcolor = 12632256
 string text = "부서코드"
@@ -178,7 +195,7 @@ boolean focusrectangle = false
 end type
 
 type pb_1 from picturebutton within w_comm107i
-integer x = 759
+integer x = 1714
 integer y = 48
 integer width = 238
 integer height = 108
@@ -193,34 +210,34 @@ string picturename = "C:\kdac\bmp\search.gif"
 alignment htextalign = left!
 end type
 
-event clicked;string l_s_parm
+event clicked;String ls_parm
 
-l_s_parm = ' I'
+ls_parm = ' I'
 
-openwithparm(w_find_001 , l_s_parm)
-l_s_parm = message.stringparm
+openwithparm(w_find_001 , ls_parm)
+ls_parm	=	message.stringparm
 
-if f_spacechk(l_s_parm) <> -1 then
-	st_2.text = ''
-	st_2.text = mid(l_s_parm,16,30)
-	sle_dept.text = trim(mid(l_s_parm,1,5))
+if 	f_spacechk(ls_parm) <> -1 then
+	st_2.text 	= 	''
+	st_2.text 	= 	mid(ls_parm,16,30)
+	sle_dept.text	=	trim(mid(ls_parm,1,5))
 end if
 
-return 0
+return 	0
 end event
 
 type st_2 from statictext within w_comm107i
-integer x = 1019
-integer y = 56
+integer x = 686
+integer y = 52
 integer width = 1006
-integer height = 84
+integer height = 92
 boolean bringtotop = true
 integer textsize = -10
 integer weight = 400
 fontcharset fontcharset = hangeul!
-fontpitch fontpitch = fixed!
+fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림체"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 long backcolor = 12632256
 boolean border = true
@@ -231,12 +248,14 @@ end type
 type dw_1 from datawindow within w_comm107i
 integer x = 18
 integer y = 184
-integer width = 4571
+integer width = 4585
 integer height = 2244
+integer taborder = 30
 boolean bringtotop = true
 string dataobject = "d_comm107i_01"
 boolean hscrollbar = true
 boolean vscrollbar = true
+boolean hsplitscroll = true
 boolean livescroll = true
 borderstyle borderstyle = stylelowered!
 end type
@@ -265,7 +284,7 @@ string picturename = "C:\KDAC\bmp\Excel.bmp"
 alignment htextalign = left!
 end type
 
-event clicked;f_Save_to_Excel(dw_1)
+event clicked;f_save_to_Excel(dw_1)
 end event
 
 type pb_print from picturebutton within w_comm107i
@@ -285,36 +304,37 @@ alignment htextalign = left!
 end type
 
 event clicked;dw_report.reset()
-if cbx_inq.checked = true then
+if 	cbx_inq.checked = true then
 	is_grade = '1%'
-	if cbx_save.checked = true then
+	if 	cbx_save.checked = true then
 		is_grade = '%'
 	end if
 elseif cbx_save.checked = true then
 	is_grade = '5%'
-	if cbx_inq.checked = true then
+	if 	cbx_inq.checked = true then
 		is_grade = '%'
 	end if
 end if
-if f_spacechk(trim(sle_pgm.text)) <> -1 then
+if 	f_spacechk(trim(sle_pgm.text)) <> -1 then
 	is_pgmid = '%' + trim(sle_pgm.text) + '%'
 else
 	is_pgmid = '%'
 end if
-if dw_report.retrieve(trim(sle_Dept.text) + '%' ,is_grade,is_pgmid) > 0 then
+if 	dw_report.retrieve(trim(sle_Dept.text) + '%' ,is_grade,is_pgmid) > 0 then
 	dw_report.print()
 else
 	messagebox("확인","입력하신 부서코드( " + trim(sle_Dept.text) + " ) 의 사용자 정보가 없습니다")
 end if
 
 end event
+
 type dw_report from datawindow within w_comm107i
 boolean visible = false
 integer x = 4046
 integer y = 120
 integer width = 686
 integer height = 400
-integer taborder = 30
+integer taborder = 40
 boolean bringtotop = true
 boolean enabled = false
 string dataobject = "d_comm107i_01_report"
@@ -337,7 +357,7 @@ integer weight = 400
 fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 long backcolor = 12632256
 string text = "조회기능"
@@ -355,7 +375,7 @@ integer weight = 400
 fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 long backcolor = 12632256
 string text = "저장기능"
@@ -363,17 +383,17 @@ boolean checked = true
 end type
 
 type st_3 from statictext within w_comm107i
-integer x = 2071
-integer y = 68
+integer x = 2085
+integer y = 60
 integer width = 389
 integer height = 72
 boolean bringtotop = true
 integer textsize = -10
 integer weight = 400
 fontcharset fontcharset = hangeul!
-fontpitch fontpitch = fixed!
+fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림체"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 long backcolor = 12632256
 string text = "프로그램 ID"
@@ -391,9 +411,9 @@ boolean bringtotop = true
 integer textsize = -10
 integer weight = 400
 fontcharset fontcharset = hangeul!
-fontpitch fontpitch = fixed!
+fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림체"
+string facename = "맑은 고딕"
 long textcolor = 33554432
 textcase textcase = lower!
 borderstyle borderstyle = stylelowered!
@@ -404,15 +424,16 @@ integer x = 320
 integer y = 52
 integer width = 338
 integer height = 92
-integer taborder = 30
+integer taborder = 10
 boolean bringtotop = true
-integer textsize = -11
-integer weight = 700
+integer textsize = -10
+integer weight = 400
 fontcharset fontcharset = hangeul!
-fontpitch fontpitch = fixed!
+fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
-string facename = "굴림체"
+string facename = "맑은 고딕"
 long textcolor = 33554432
+long backcolor = 16777215
 textcase textcase = upper!
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = stringmask!
