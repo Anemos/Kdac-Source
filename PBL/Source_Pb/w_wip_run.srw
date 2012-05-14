@@ -9,6 +9,8 @@ type cb_down from commandbutton within w_wip_run
 end type
 type cbx_check from checkbox within w_wip_run
 end type
+type uo_parameter from u_parameter_wip within w_wip_run
+end type
 type dw_2 from datawindow within w_wip_run
 end type
 type dw_1 from datawindow within w_wip_run
@@ -31,8 +33,6 @@ type uo_date from u_today within w_wip_run
 end type
 type ddlb_1 from dropdownlistbox within w_wip_run
 end type
-type uo_parameter from u_parameter_wip within w_wip_run
-end type
 end forward
 
 global type w_wip_run from window
@@ -44,11 +44,12 @@ boolean controlmenu = true
 boolean minbox = true
 boolean maxbox = true
 boolean resizable = true
-long backcolor = 12632256
+long backcolor = 79741120
 event ue_postopen pbm_custom01
 cb_option_post cb_option_post
 cb_down cb_down
 cbx_check cbx_check
+uo_parameter uo_parameter
 dw_2 dw_2
 dw_1 dw_1
 dw_interface dw_interface
@@ -60,7 +61,6 @@ st_vertical st_vertical
 st_date st_date
 uo_date uo_date
 ddlb_1 ddlb_1
-uo_parameter uo_parameter
 end type
 global w_wip_run w_wip_run
 
@@ -422,7 +422,7 @@ st_horizontal.SetPosition(ToTop!)
 SetRedraw(True)
 end subroutine
 
-public function boolean wf_cross_pre (string ag_plant, string ag_dvsn);// 이월전 크로스체크
+public function boolean wf_cross_pre (string ag_plant, string ag_dvsn);// 이월전 크로스체크 로직
 string ls_fromdt, ls_todt
 
 ls_fromdt = is_applydate + '01'
@@ -464,7 +464,7 @@ end function
 public function boolean wf_cross_post_update (datawindow arg_dw);// 이월후 크로스체크 에러 업데이트
 integer li_cntx, li_rowcnt, li_chk
 string ls_errorcd, ls_cmcd, ls_srty, ls_srno, ls_srno1, ls_srno2, ls_plant, ls_dvsn, ls_xuse, ls_rtngubun
-string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_adjdate, ls_time, ls_srce, ls_cls, ls_nextdt
+string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_adjdate, ls_srce, ls_cls, ls_nextdt
 dec{4} lc_qty, lc_qty2
 decimal{4} l_n_wdchqt,l_n_wausqt1,l_n_wausqt2,l_n_wausqt3,l_n_wausqt4,l_n_wausqt5,l_n_wausqt6,l_n_wausqt7,&
 			  l_n_wausqt8,l_n_wausqta,l_n_chkqty
@@ -478,7 +478,7 @@ ls_nextdt = uf_wip_addmonth(ls_adjdate,1)
 
 arg_dw.accepttext()
 li_rowcnt = arg_dw.rowcount()
-ls_time = mid(is_currenttime,1,2) + mid(is_currenttime,4,2) + mid(is_currenttime,7,2)
+
 for li_cntx = 1 to li_rowcnt
 	ls_errorcd = arg_dw.getitemstring(li_cntx,"errorcode")
 	choose case ls_errorcd
@@ -508,7 +508,7 @@ for li_cntx = 1 to li_rowcnt
 			ls_rtngubun = arg_dw.getitemstring(li_cntx,"inv401_rtngub")
 			ls_date = arg_dw.getitemstring(li_cntx,"inv401_tdte4")
 			lc_qty = arg_dw.getitemdecimal(li_cntx,"inv401_tqty4")
-			if ls_srty = 'RP' then
+			if (ls_srty = 'RP') OR (ls_srty = 'SS' AND ls_srce = '04') then
 				ls_vsrno = trim(arg_dw.getitemstring(li_cntx,"inv401_vsrno"))
 				if mid(ls_vsrno,1,1) <> 'D' then
 					continue
@@ -535,7 +535,7 @@ for li_cntx = 1 to li_rowcnt
 					A_MACADDR = ' ',   
 					A_INPTID = ' ',   
 					A_INPTDT = :is_currentdate,   
-					A_INPTTM = :ls_time,   
+					A_INPTTM = :g_s_datetime,   
 					A_ADJDT = :ls_adjdate,   
 					A_NEXTDT = :ls_nextdt  using sqlca;
 
@@ -576,7 +576,7 @@ for li_cntx = 1 to li_rowcnt
 					A_MACADDR = ' ',   
 					A_INPTID = ' ',   
 					A_INPTDT = :is_currentdate,   
-					A_INPTTM = :ls_time,   
+					A_INPTTM = :g_s_datetime,   
 					A_ADJDT = :ls_adjdate,   
 					A_NEXTDT = :ls_nextdt  using sqlca;
 			
@@ -632,13 +632,12 @@ end function
 
 public function boolean wf_cross_pre_update (datawindow arg_dw);integer li_cntx, li_rowcnt, li_chk
 string ls_errorcd, ls_cmcd, ls_srty, ls_srno, ls_srno1, ls_srno2, ls_plant, ls_dvsn, ls_xuse, ls_rtngubun
-string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_cls, ls_srce, ls_time
+string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_cls, ls_srce
 dec{4} lc_qty, lc_qty2
 string ls_wdslty, ls_wdsrno
 arg_dw.accepttext()
 li_rowcnt = arg_dw.rowcount()
 
-ls_time = mid(is_currenttime,1,2) + mid(is_currenttime,4,2) + mid(is_currenttime,7,2)
 for li_cntx = 1 to li_rowcnt
 	ls_errorcd = arg_dw.getitemstring(li_cntx,"errorcode")
 	choose case ls_errorcd
@@ -668,7 +667,7 @@ for li_cntx = 1 to li_rowcnt
 			ls_rtngubun = arg_dw.getitemstring(li_cntx,"inv401_rtngub")
 			ls_date = arg_dw.getitemstring(li_cntx,"inv401_tdte4")
 			lc_qty = arg_dw.getitemdecimal(li_cntx,"inv401_tqty4")
-			if ls_srty = 'RP' then
+			if (ls_srty = 'RP') OR (ls_srty = 'SS' AND ls_srce = '04') then
 				ls_vsrno = trim(arg_dw.getitemstring(li_cntx,"inv401_vsrno"))
 				if mid(ls_vsrno,1,1) <> 'D' then
 					continue
@@ -695,7 +694,7 @@ for li_cntx = 1 to li_rowcnt
          		A_MACADDR = ' ',   
          		A_INPTID = '000030',   
          		A_INPTDT = :is_currentdate,   
-         		A_INPTTM = :ls_time  using sqlca;
+         		A_INPTTM = :g_s_datetime  using sqlca;
 				
 				execute up_wip07;
 				//uo_status.st_message.text = ls_srty + ls_srno + ls_srno1 + ls_srno2 + " 데이타생성 완료"
@@ -735,7 +734,7 @@ for li_cntx = 1 to li_rowcnt
 						A_MACADDR = ' ',   
 						A_INPTID = '000030',   
 						A_INPTDT = :is_currentdate,   
-						A_INPTTM = :ls_time  using sqlca;
+						A_INPTTM = :g_s_datetime  using sqlca;
 				
 				execute up_wip06;
 //				//uo_status.st_message.text = ls_srty + ls_srno + ls_srno1 + ls_srno2 + " 데이타생성 완료"
@@ -928,7 +927,7 @@ into		:ls_date, :ls_time
 from		pbcommon.comm000
 using		it_source;
 
-g_s_datetime	= ls_date + ' ' + ls_time
+g_s_datetime	= mid(ls_date + ' ' + ls_time,1,19)
 
 is_currentdate	=	string(date(ls_date),"YYYYMMDD")
 g_s_date = is_currentdate
@@ -942,24 +941,24 @@ end function
 public function boolean wf_inout_pre (string ag_plant, string ag_dvsn);//이월전 재공BOM사용량 확인로직
 string ls_fromdate, ls_todate, ls_mysql
 
-//ls_fromdate = is_applydate + '01'
-//ls_todate = f_relativedate(is_currentdate,-1)
-//
-// DECLARE up_wip_051 PROCEDURE FOR PBWIP.SP_WIP_051  
-//         A_COMLTD = '01',   
-//         A_PLANT = :ag_plant,   
-//         A_DVSN = :ag_dvsn,   
-//         A_FROMDATE = :ls_fromdate,
-//			A_TODATE = :ls_todate using sqlca;
-//
-// execute up_wip_051;
-//
-//ls_mysql = " DROP TABLE QTEMP.WIPTEMP02"
-//Execute Immediate :ls_mysql ;
-//ls_mysql = " DROP TABLE QTEMP.BOMTEMP01"
-//Execute Immediate :ls_mysql ;
-//
-//Close up_wip_051;
+ls_fromdate = is_applydate + '01'
+ls_todate = f_relativedate(is_currentdate,-1)
+
+ DECLARE up_wip_051 PROCEDURE FOR PBWIP.SP_WIP_051  
+         A_COMLTD = '01',   
+         A_PLANT = :ag_plant,   
+         A_DVSN = :ag_dvsn,   
+         A_FROMDATE = :ls_fromdate,
+			A_TODATE = :ls_todate using sqlca;
+
+ execute up_wip_051;
+
+ls_mysql = " DROP TABLE QTEMP.WIPTEMP02"
+Execute Immediate :ls_mysql ;
+ls_mysql = " DROP TABLE QTEMP.BOMTEMP01"
+Execute Immediate :ls_mysql ;
+
+Close up_wip_051;
 
 //--이월전 수불체크
 If Not f_wip_inout_wip001('01',ag_plant,ag_dvsn,is_applydate,dw_2) Then
@@ -1098,7 +1097,7 @@ For i = 1 To ll_row
 	// server 연결이 안되었거나 야간엔 돌지 않는다...
 	If Not wf_connect_check(SQLCA, it_destination) Then	
 		// 10분 간격으로 변경
-//		Timer(60)
+		Timer(600)
 		Exit
 	End If
 
@@ -1108,7 +1107,7 @@ For i = 1 To ll_row
 	is_wip_desc = dw_interface.GetItemString( i, 'wzdesc')
 	
 	If is_cycle = 'PRE' and cbx_check.checked Then
-		If is_wip_id <> '020' Then
+		If is_wip_id <> '010' and is_wip_id <> '020' Then
 			continue
 		End If
 	End If
@@ -1174,11 +1173,11 @@ For i = 1 To ll_row
 		end if
 	End If
 	
-	Yield()	
-	If ib_cancel Then 
-		ib_cancel = False
-		Exit
-	End If
+//	Yield()	
+//	If ib_cancel Then 
+//		ib_cancel = False
+//		Exit
+//	End If
 Next	
 
 return true
@@ -1387,8 +1386,8 @@ End If
 end function
 
 public function boolean wf_transfer (string ag_plant, string ag_dvsn);//-- 재공이월
-string ls_fromdt, ls_todt
-string ls_curyear, ls_curmonth, ls_nextyear, ls_nextmonth
+string ls_fromdt, ls_todt, ls_lastdate
+string ls_curyear, ls_curmonth, ls_nextyear, ls_nextmonth, ls_lastyear, ls_lastmonth
 long ll_count
 dec{4} lc_sumqty001, lc_sumqty002
 dec{0} lc_sumamt001, lc_sumamt002
@@ -1399,6 +1398,9 @@ ls_curyear = mid(ls_fromdt,1,4)
 ls_curmonth = mid(ls_fromdt,5,2)
 ls_nextyear = mid(ls_todt,1,4)
 ls_nextmonth = mid(ls_todt,5,2)
+ls_lastdate = uf_wip_addmonth(is_applydate,-1)
+ls_lastyear = mid(ls_lastdate,1,4)
+ls_lastmonth = mid(ls_lastdate,5,2)
 
  DECLARE up_wip_01 PROCEDURE FOR PBWIP.SP_WIP_01  
 	A_YY01 = :ls_curyear,   
@@ -1450,6 +1452,39 @@ If f_carry_over_stock('01', is_applydate) = -1 then
 	Messagebox("경고", "창고재공 이월시에 에러가 발생하였습니다.")
 	Return False
 End If
+
+// 이체단가정보 이월
+select count(*) into :ll_count from pbpdm.bom010
+where acmcd = '01' and ayear = :ls_curyear and amont = :ls_curmonth
+using sqlca;
+
+if ll_count < 1 then
+	insert into pbpdm.bom010
+	( acmcd,ayear,amont,aplant,advsn,aitno,aclsb,asrce,
+	acost,aeitno,acitno,aqtym,aqty,aempno,alastdate )
+	select acmcd,:ls_curyear,:ls_curmonth,aplant,advsn,aitno,aclsb,asrce,
+	acost,aeitno,acitno,aqtym,aqty,aempno,alastdate
+	from pbpdm.bom010
+	where acmcd = '01' and ayear = :ls_lastyear and amont = :ls_lastmonth
+	using sqlca;
+end if
+
+// 고객사유상사급 공제단가 이월
+select count(*) into :ll_count from pbpdm.bom016
+where fcmcd = '01' and fdate =:is_applydate
+using sqlca;
+
+if ll_count < 1 then
+	insert into pbpdm.bom016
+	( fcmcd,fgubun,fdate,fplant,fdvsn,fpdcd,fmdno,
+	fcmcst,fcicst,fcocst,fcostdiv,fcrdt,fcomcd,fxcost,fwcost )
+	select fcmcd,fgubun,:is_applydate,fplant,fdvsn,fpdcd,fmdno,
+	fcmcst,fcicst,fcocst,fcostdiv,fcrdt,fcomcd,fxcost,fwcost
+	from pbpdm.bom016
+	where fcmcd = '01' and fdate =:ls_lastdate
+	using sqlca;
+end if
+
 //재공밸런스 초기화 - 전공장
 If f_carry_over_wip001('01') = -1 Then
 	Return False
@@ -1462,12 +1497,6 @@ end if
 If f_wip090_update(' ', ' ', '040', ' ') <> 0 Then
 	Return False
 End If
-//BOM LowLevel Update
-
-//Reorganize PBWIP.WIP001, PBWIP.WIP002, PBWIP.WIP003, PBWIP.WIP004
-//sqlca.SP_RGZPF01('PBWIP', 'WIP001')
-//sqlca.SP_RGZPF01('PBWIP', 'WIP002')
-//sqlca.SP_RGZPF01('PBWIP', 'WIP003')
 
 Return True
 end function
@@ -1718,6 +1747,7 @@ on w_wip_run.create
 this.cb_option_post=create cb_option_post
 this.cb_down=create cb_down
 this.cbx_check=create cbx_check
+this.uo_parameter=create uo_parameter
 this.dw_2=create dw_2
 this.dw_1=create dw_1
 this.dw_interface=create dw_interface
@@ -1729,10 +1759,10 @@ this.st_vertical=create st_vertical
 this.st_date=create st_date
 this.uo_date=create uo_date
 this.ddlb_1=create ddlb_1
-this.uo_parameter=create uo_parameter
 this.Control[]={this.cb_option_post,&
 this.cb_down,&
 this.cbx_check,&
+this.uo_parameter,&
 this.dw_2,&
 this.dw_1,&
 this.dw_interface,&
@@ -1743,14 +1773,14 @@ this.uo_button,&
 this.st_vertical,&
 this.st_date,&
 this.uo_date,&
-this.ddlb_1,&
-this.uo_parameter}
+this.ddlb_1}
 end on
 
 on w_wip_run.destroy
 destroy(this.cb_option_post)
 destroy(this.cb_down)
 destroy(this.cbx_check)
+destroy(this.uo_parameter)
 destroy(this.dw_2)
 destroy(this.dw_1)
 destroy(this.dw_interface)
@@ -1762,7 +1792,6 @@ destroy(this.st_vertical)
 destroy(this.st_date)
 destroy(this.uo_date)
 destroy(this.ddlb_1)
-destroy(this.uo_parameter)
 end on
 
 event closequery;UnsignedLong ul_handle
@@ -1914,8 +1943,8 @@ event clicked;f_save_to_excel(dw_2)
 end event
 
 type cbx_check from checkbox within w_wip_run
-integer x = 2555
-integer y = 148
+integer x = 2651
+integer y = 184
 integer width = 635
 integer height = 80
 integer taborder = 100
@@ -1927,10 +1956,22 @@ fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
 long backcolor = 67108864
-boolean enabled = false
-string text = "일일재공마감"
+string text = "재공수불체크용"
 boolean checked = true
 end type
+
+type uo_parameter from u_parameter_wip within w_wip_run
+event destroy ( )
+integer x = 1248
+integer y = 256
+integer width = 2601
+integer height = 564
+integer taborder = 50
+end type
+
+on uo_parameter.destroy
+call u_parameter_wip::destroy
+end on
 
 type dw_2 from datawindow within w_wip_run
 integer x = 1979
@@ -2215,7 +2256,6 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "굴림"
 long textcolor = 33554432
-boolean enabled = false
 boolean sorted = false
 string item[] = {"이월전마감","이월후마감"}
 borderstyle borderstyle = stylelowered!
@@ -2237,18 +2277,4 @@ ElseIf index = 2 Then
 End If	
 
 end event
-
-type uo_parameter from u_parameter_wip within w_wip_run
-event destroy ( )
-integer x = 1248
-integer y = 256
-integer width = 2601
-integer height = 564
-integer taborder = 50
-long backcolor = 12632256
-end type
-
-on uo_parameter.destroy
-call u_parameter_wip::destroy
-end on
 
