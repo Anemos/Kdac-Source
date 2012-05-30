@@ -242,7 +242,8 @@ public function integer wf_emplabtacchk (string as_empno);String ls_mhCode
     INTO :ls_mhCode FROM TMHLABTAC 
    WHERE ( TMHLABTAC.DGEMPNO = :as_empNo ) AND  
          ( TMHLABTAC.DGDAY = :istr_mh.wday ) Using SqlPIS ;
-If IsNull(ls_mhCode) Or ls_mhCode = '' Or ls_mhCode = '21' Then Return 1 	// 21(Ã¶¾ß) 
+If IsNull(ls_mhCode) Or ls_mhCode = '' Or ls_mhCode = '21' &
+	Or ls_mhCode = 'RA' Or ls_mhCode = 'RB' Then Return 1 	// 21(Ã¶¾ß), RA(¹Ý¿ùÂ÷), RB(¹Ý³âÂ÷)
 
 Return -1 
 end function

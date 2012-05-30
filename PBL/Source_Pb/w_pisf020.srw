@@ -1521,6 +1521,8 @@ if dwo.name = 'wo_outorder' then
 end if
 
 choose case dwo.name
+	case 'wo_base'
+
 	case 'wo_code'
 		if data = '' or isnull(data) then 
 		else 

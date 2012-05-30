@@ -23,7 +23,7 @@ type tab_code from tab within w_pisf013
 end type
 type tp_list from userobject within tab_code
 end type
-type dw_div_b_code from uo_datawindow within tp_list
+type dw_div_b_code from datawindow within tp_list
 end type
 type dw_list from uo_datawindow within tp_list
 end type
@@ -1338,23 +1338,30 @@ destroy(this.dw_list)
 destroy(this.dw_div_a_code)
 end on
 
-type dw_div_b_code from uo_datawindow within tp_list
+type dw_div_b_code from datawindow within tp_list
 boolean visible = false
 integer x = 1253
 integer y = 8
 integer width = 2226
 integer height = 1760
-integer taborder = 11
+integer taborder = 120
+string title = "none"
 string dataobject = "d_sys_code_equip_div_b"
+boolean livescroll = true
+borderstyle borderstyle = stylelowered!
 end type
 
-event clicked;call super::clicked;id_dw_current = this
+event itemchanged;//iw_this.TriggerEvent('ue_set_data_changed')
+//this.triggerevent('ue_retrieve_each_tab')
+end event
+
+event clicked;id_dw_current = this
 iw_this.TriggerEvent('ue_set_data_changed')
 end event
 
 type dw_list from uo_datawindow within tp_list
 event ue_asd ( )
-integer width = 2738
+integer width = 2743
 integer height = 1768
 integer taborder = 120
 string dataobject = "d_blank"
@@ -1404,6 +1411,10 @@ integer height = 1756
 integer taborder = 11
 string dataobject = "d_sys_code_equip_div_aa"
 boolean ib_enter = false
+boolean ib_filter = false
+boolean ib_sort = false
+boolean ib_excel = false
+boolean ib_print = false
 boolean ib_toggle = false
 boolean ib_date = false
 end type

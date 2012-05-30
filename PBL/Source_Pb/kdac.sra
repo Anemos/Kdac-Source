@@ -37,6 +37,7 @@ String 		gs_tag		,	gs_path
 
 
 end variables
+
 global type kdac from application
 string appname = "kdac"
 end type
@@ -56,8 +57,9 @@ function boolean DeleteFileA(ref string filename) LIBRARY "Kernel32.dll"
 
 // FUNCTION boolean GetComputerNameA(ref string  cname,ref long  nbuf) LIBRARY "Kernel32.dll"
 
-end prototypes
 
+
+end prototypes
 type variables
 n_macip uo_macip
 
