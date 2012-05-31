@@ -7,44 +7,47 @@ forward prototypes
 global function boolean f_connection_sqlserver (string as_plant, string as_div)
 end prototypes
 
-global function boolean f_connection_sqlserver (string as_plant, string as_div);string ls_area,ls_servername,ls_dbms,ls_database,ls_logid,ls_logpass,ls_dbparm,ls_serverid
+global function boolean f_connection_sqlserver (string as_plant, string as_div);String	 ls_area,ls_servername,ls_dbms,ls_database,ls_logid,ls_logpass,ls_dbparm,ls_serverid
 
-CHOOSE CASE as_plant + as_div
-	CASE 'DA'
-			 ls_serverid = 'ELE'
-	CASE 'DM','DS'
-			ls_serverid	= 'MOR'
-	CASE 'DH','DV'
-			ls_serverid	= 'HVA'
-	CASE 'JH','JM','JS'
+CHOOSE CASE	Trim(as_plant + as_div)
+	CASE	'DA','DM','DS','DH','DV','D'
+			ls_serverid 	= 'DAEGU'
+//	CASE 	'DM','DS'
+//				ls_serverid	= 'MOR'
+//	CASE 	'DH','DV'
+//				ls_serverid	= 'HVA'
+	CASE 	'JH','JM','JS','J'
 			ls_serverid	= 'JIN'		
-	CASE 'YY'
+	CASE 	'YY','Y'
 			ls_serverid	= 'YEO'		
-	CASE 'BA','BM','BS','BH','BV','BY'
+	CASE 	'BA','BM','BS','BH','BV','BY','B'
 			ls_serverid	= 'BUP'		
-	CASE 'KH','KM','KS','KY'
+	CASE 	'KH','KM','KS','KY','KV','K'
 			ls_serverid	= 'KUN'					
 END CHOOSE
 
-select servername,serverdbms,serverdatabase,serverlogid,serverpassword,serverdbparm into
-		:ls_servername,:ls_dbms,:ls_database,:ls_logid,:ls_logpass,:ls_dbparm from comm001
-	where  serverid = :ls_serverid
+
+select 	servername,serverdbms,serverdatabase,serverlogid,serverpassword,serverdbparm 	into
+			:ls_servername,:ls_dbms,:ls_database,:ls_logid,:ls_logpass,:ls_dbparm 	from	comm001
+where  	serverid	=	:ls_serverid
 using sqlpis ;
+
 if sqlpis.sqlcode <> 0 then
-	return false 
+	return 	false 
 end if
-sqlpis.ServerName 	= ls_servername
-sqlpis.DBMS       	= ls_dbms
-sqlpis.Database   	= ls_database
-sqlpis.LogId      	= ls_logid
-sqlpis.LogPass    	= ls_logpass
-sqlpis.DBParm     	= ls_dbparm
-sqlpis.Autocommit   	= True
-disconnect using sqlpis;
-connect using sqlpis;
-if sqlpis.sqlcode <> 0 then
-	return false
+sqlpis.ServerName 	= 	ls_servername
+sqlpis.DBMS       	= 	ls_dbms
+sqlpis.Database   	= 	ls_database
+sqlpis.LogId      	=	ls_logid
+sqlpis.LogPass    	= 	ls_logpass
+sqlpis.DBParm     	= 	ls_dbparm
+sqlpis.Autocommit   	= 	False
+disconnect	using	sqlpis;
+connect 		using	sqlpis;
+sqlpis.Autocommit   	= 	True
+if sqlpis.sqlcode 	<> 0 then
+	return 	false
 end if
-Return true
+Return 	true
 end function
 

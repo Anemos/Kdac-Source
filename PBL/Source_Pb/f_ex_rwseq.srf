@@ -12,7 +12,7 @@ string ls_itnm, ls_spec, ls_xtype, ls_rvno, ls_rqno
 String ls_cls, ls_srce, ls_pdcd, ls_xplan, ls_mlan, ls_xunit
 String ls_cls1, ls_srce1, ls_pdcd1, ls_xplan1, ls_mlan1, ls_xunit1
 String ls_ckey, ls_costdiv, ls_srno, ls_srno1, ls_srno2, ls_csrno, ls_slno, ls_costdiv1
-String ls_istcd, ls_stcd, ls_stcd2, ls_reqdt, ls_dudt, ls_gubun
+String ls_istcd, ls_stcd, ls_stcd2, ls_reqdt, ls_dudt
 dec{0} ld_saud, ld_ohamt, ld_amt
 dec{1} ld_qty, ld_ohuqty, ld_ohrqty, ld_ohsqty, ld_reqty, ld_tqty3
 dec{2} ld_costav
@@ -28,14 +28,6 @@ ls_csrno = as_fsrno
 ls_srno  = Mid(ls_csrno,1,8)
 ls_srno1 = Mid(ls_csrno,9,2)
 
-if len(ls_csrno) = 11 then
-	ls_gubun = 'O'
-else
-	ls_gubun = 'N'
-End if
-
-ls_csrno = Mid(ls_csrno, 1, 10)
-
 //*** 이체의뢰, 이체불출 DB check                                     
 																						  
 SELECT XPLANT, DIV, XPLANT1, DIV1, ITNO, ISTCD, SLNO,                              
@@ -50,26 +42,20 @@ If sqlca.sqlcode <> 0 then
 	return -1                                                           
 End if
 
-If ls_istcd = 'T' then
-	ag_message = "이체간판 정보"
+If ls_istcd <> 'S' then
+	ag_message = "서열보급 정보가 아님"
 	return -1
 End if
 
-If ls_gubun ='N' then
-	SELECT SRNO2, AQTY, STCD
-		INTO :ls_srno2, :ld_tqty3, :ls_stcd2
-	FROM PBINV.INV621                                                             
-	WHERE COMLTD = '01' AND SRNO = :ls_csrno  AND SLNO = :ls_slno Using sqlca;
-	
-	If sqlca.sqlcode <> 0 then                                                          
-		ag_message = "이체불출정보 미존재"
-		return -1                                                           
-	End if	
-else
-	ls_srno2 = '01'
-	ld_tqty3 = ld_qty
-	ls_stcd2 = ''
-End if
+SELECT SRNO2, AQTY, STCD
+	INTO :ls_srno2, :ld_tqty3, :ls_stcd2
+FROM PBINV.INV621                                                             
+WHERE COMLTD = '01' AND SRNO = :ls_csrno  AND SLNO = :ls_slno Using sqlca;
+
+If sqlca.sqlcode <> 0 then                                                          
+	ag_message = "이체불출정보 미존재"
+	return -1                                                           
+End if	
 
 //*** item Master Check
 SELECT ITNM, SPEC, XTYPE, RVNO                                                
@@ -94,7 +80,7 @@ If sqlca.sqlcode <> 0 then
 	return -1                                                           
 End if		
 																						  
-If Not(ls_cls = '30' or (ls_cls ='10' and ls_srce ='03')) then                 
+If Not(ls_cls = '30' or (ls_cls1='10' and ls_srce1 ='03')) then                 
 	ag_message = "불출공장 계정확인"
 	return -1                                                              
 End if                                                                       
@@ -161,7 +147,7 @@ End if
 		 ILUDT  = :g_s_date,                                                     
 		 UPDTID = :ls_id,                                                       
 		 UPDTDT = :g_s_date                                                      
- WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND DIV = :ls_div AND ITNO = :ls_itno Using sqlca;
+ WHERE COMLTD = '01' AND XPLANT = :ls_xplant1 AND DIV = :ls_div1 AND ITNO = :ls_itno Using sqlca;
 
 if sqlca.sqlnrows < 1 then
 	ag_message = "Balance DB 업데이트 error invoke"
@@ -170,8 +156,7 @@ end if
 
 ls_costdiv1 = f_get_accdiv(ls_xplant, ls_div, ls_pdcd1)
 ls_costdiv  = f_get_accdiv(ls_xplant1, ls_div1, ls_pdcd)
-ls_dept     = f_get_invdept(ls_xplant, ls_div)
-ls_slno     = Mid('EX'+ ls_slno,1,12)
+ls_dept     = f_get_invdept(ls_xplant1, ls_div1)
 
 INSERT INTO PBINV.INV401                                                        
 		( COMLTD, SLIPTYPE, SRNO, SRNO1, SRNO2, XPLANT, DIV,                            
@@ -236,38 +221,22 @@ INSERT INTO PBINV.INV401
 	 ag_message = "Trans 데이터 생성에 실패하였습니다."
 	 return -1
  end if
- 
- if ls_gubun = 'N' then
 
-	 UPDATE PBINV.INV621                                                      
-		SET RPDT = :ls_tdte4,                                                                                         
-			 BQTY = :ld_qty,                                                     
-			 STCD = '4',                                                     
-			 UPDTID = :ls_id,                                                       
-			 UPDTDT = :g_s_date                                                      
-	WHERE COMLTD = '01' AND SRNO = :ls_csrno  AND SRNO2 = :ls_srno2 Using sqlca;
-	
-	 if sqlca.sqlnrows < 1 then
-		 ag_message = "이체불출 DB 업데이트 error invoke"
-		return -1
-	 end if
-	 
-	 if ld_reqty - f_get_invqty3(ls_csrno) = 0 Then
-		 UPDATE PBINV.INV620                                                      
-			SET STCD = '5',                                                     
-				 UPDTID = :ls_id,                                                       
-				 UPDTDT = :g_s_date                                                      
-		 WHERE COMLTD = '01' AND SRNO = :ls_csrno  Using sqlca;
-	 
-		 if sqlca.sqlnrows < 1 then
-			 ag_message = "이체의뢰 DB 업데이트 error invoke"
-			return -1
-		 end if
-	 End if
-else
-	ls_csrno = Mid(ls_csrno,1,10)
-	
-	UPDATE PBINV.INV620                                                      
+ UPDATE PBINV.INV621                                                      
+	SET RPDT = :ls_tdte4,                                                                                         
+		 BQTY = :ld_qty,                                                     
+		 STCD = 'C',                                                     
+		 UPDTID = :ls_id,                                                       
+		 UPDTDT = :g_s_date                                                      
+WHERE COMLTD = '01' AND SRNO = :ls_csrno  AND SRNO2 = :ls_srno2 Using sqlca;
+
+ if sqlca.sqlnrows < 1 then
+	 ag_message = "이체불출 DB 업데이트 error invoke"
+	return -1
+ end if
+ 
+ if ld_reqty - f_get_invqty3(ls_csrno) = 0 Then
+	 UPDATE PBINV.INV620                                                      
 		SET STCD = '5',                                                     
 			 UPDTID = :ls_id,                                                       
 			 UPDTDT = :g_s_date                                                      
@@ -277,8 +246,7 @@ else
 		 ag_message = "이체의뢰 DB 업데이트 error invoke"
 		return -1
 	 end if
-	
-End if
+ End if
 
 return 0
 end function

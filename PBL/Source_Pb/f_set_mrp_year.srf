@@ -61,10 +61,10 @@ WHERE "COMLTD" = '01' AND
 		"CKEY" = 'MRPRUN'	  Using SQLCA ;
 
 If SQLCA.SQLcode = 0 Then
-//	Commit Using SQLCA ;
+	Commit Using SQLCA ;
 	Return 1
 Else
-//	RollBack Using SQLCA ;	
+	RollBack Using SQLCA ;	
 	Return -1
 End If
 end function

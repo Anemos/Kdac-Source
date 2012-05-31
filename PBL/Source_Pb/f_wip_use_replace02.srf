@@ -44,12 +44,11 @@ if a_tqty4_b = a_tqty4_a then
 		SET WDUPDTDT = ' ',WDDATE = :A_TDTE4_A,
 			 WDUPDTID = ' '
 	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
-			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND 
 			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
 			WDDATE = :A_TDTE4_B
 	USING SQLCA ;
 	if sqlca.sqlcode <> 0 then
-		f_errorlog_insert(sqlca.sqlcode, sqlca.sqlerrtext)
 		return 'N'
 	end if
 else

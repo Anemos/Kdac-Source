@@ -7,12 +7,12 @@ forward prototypes
 global function integer f_pdm_getfromexcel (datawindow adw_target)
 end prototypes
 
-global function integer f_pdm_getfromexcel (datawindow adw_target);String ls_PathName, ls_FileName, ls_msg
-Int li_Rtn
+global function integer f_pdm_getfromexcel (datawindow adw_target);String 	ls_PathName,ls_FileName,ls_msg
+Int 		ln_Rtn
 
-li_Rtn = GetFileOpenName( "[Excel UpLoad]", ls_PathName, ls_FileName, "xls", &
-								  "Excel Files (*.xls), *.xls" )
-If li_Rtn = 0 Then Return -1
+ln_Rtn 	= GetFileOpenName(	"[Excel UpLoad]", ls_PathName, ls_FileName, "xls", &
+								  		"Excel Files (*.xls), *.xls" )
+If ln_Rtn = 0 Then Return -1
 
 
 SetPointer( HourGlass! )
@@ -23,10 +23,10 @@ OleObject	OLE_Excel
 
 OLE_Excel = Create OleObject
 
-li_Rtn = OLE_Excel.ConnectToObject( ls_PathName )
-If li_Rtn <> 0 Then
+ln_Rtn = OLE_Excel.ConnectToObject( ls_PathName )
+If ln_Rtn <> 0 Then
 	Destroy OLE_Excel
-	choose case li_rtn
+	choose case ln_Rtn
 		case	-1  
 			ls_msg = 'Invalid call: the argument is the Object property of a control'
 		case -2  
@@ -61,8 +61,8 @@ OleObject	OLE_Sheet
 
 OLE_Sheet = OLE_Excel.Application.WorkBooks(1).WorkSheets(1)
 
-Long	Col = 1, Row = 1, ColCnt, RowCnt
-string ls_coltype,ls_data
+Long		Col = 1, Row = 1, ColCnt, RowCnt
+string 	ls_coltype,ls_data
 
 ColCnt = Long( adw_Target.Object.DataWindow.Column.Count )
 
@@ -74,13 +74,13 @@ Do While True
 		
 	For Col = 1 To ColCnt
 		//숫자와문자구분  // Excel Header 제외.
-		ls_coltype  = adw_target.Describe("#" + String(col) + ".ColType")
-       	ls_coltype  = Upper(LEFT(ls_coltype,3))
+		ls_coltype	= adw_target.Describe("#" + String(col) + ".ColType")
+      	ls_coltype  = Upper(LEFT(ls_coltype,3))
 		if ls_coltype = 'NUM' or ls_coltype = 'DEC' or ls_coltype = 'LON' then
 			ls_data = string(OLE_Sheet.Cells(Row + 1, Col).Value)
 			if isnumber(ls_data) = false then
 				messagebox('확인','행:' + string(row) + ' 열:' + string(col) + ' DataType이 맞지않습니다.',Exclamation!)
-				li_rtn = -1
+				ln_Rtn = -1
 				exit
 			end if
 			adw_Target.Object.data[Row, Col] = dec(ls_data)
@@ -91,7 +91,7 @@ Do While True
 		end if
 	Next
 
-	If 	( IsNull( OLE_Sheet.Cells(Row + 2, 1).Value ) or trim(string(OLE_Sheet.Cells(Row + 2, 1).Value)) = '' ) and & 
+	If ( IsNull( OLE_Sheet.Cells(Row + 2, 1).Value ) or trim(string(OLE_Sheet.Cells(Row + 2, 1).Value)) = '' ) and & 
 		( IsNull( OLE_Sheet.Cells(Row + 2, 2).Value ) or trim(string(OLE_Sheet.Cells(Row + 2, 2).Value)) = '' ) then
 		Exit
 	end if
@@ -103,10 +103,9 @@ OLE_Excel.DisConnectObject( )
 Destroy	OLE_Excel
 Destroy	OLE_Sheet
 
-if li_rtn <> -1 then
-  return 0
+if	ln_Rtn <> -1 then
+  	return 0
 end if
-	
 //SetPointer(Arrow!)
 Return -1
 

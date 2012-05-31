@@ -61,15 +61,16 @@ destroy(this.dw_1)
 destroy(this.gb_1)
 end on
 
-event open;string l_s_pdcd, l_s_parm,l_s_prname
+event open;string ls_pdcd, ls_parm,ls_prname
 
 dw_1.settransobject(sqlca)
 dw_1.reset() 
-l_s_parm = message.stringparm
-l_s_pdcd = mid(l_s_parm,11,2)
-select prname into:l_s_prname from pbcommon.dac007
-	where prprcd = :l_s_pdcd using sqlca;
-sle_1.text = l_s_prname
+ls_parm 		= message.stringparm
+ls_pdcd 		= mid(ls_parm,11,2)
+select prname into:ls_prname from pbcommon.dac007
+	where prprcd = :ls_pdcd 
+using sqlca;
+sle_1.text 	= ls_prname
 
 end event
 
@@ -89,24 +90,24 @@ string text = "검 색"
 boolean default = true
 end type
 
-event clicked;string l_s_parm,l_s_plant,l_s_div , l_s_pdcd , l_s_itno , l_s_date
-integer l_n_row
-dw_1.reset()
+event clicked;string 	ls_parm,ls_plant,ls_div,ls_pdcd,ls_itno,ls_date
+integer 	ln_row
 
-l_s_parm = message.stringparm
-l_s_plant = mid(l_s_parm,9,1)
-l_s_div   = mid(l_s_parm,10,1)
-l_s_pdcd  = mid(l_s_parm,11,2) + "%"
-l_s_date  = mid(l_s_parm,1,8)
+dw_1.reset()
+ls_parm 		= message.stringparm
+ls_plant 	= mid(ls_parm,9,1)
+ls_div   	= mid(ls_parm,10,1)
+ls_pdcd  	= mid(ls_parm,11,2) + "%"
+ls_date  	= mid(ls_parm,1,8)
 
 if f_spacechk(sle_1.text) = -1 then
 	messagebox("확인","검색어를 입력하세요")
    return
 end if
 
-l_s_itno = "%" + upper(trim(sle_1.text)) + "%"
-l_n_row = dw_1.retrieve(l_s_plant,l_s_div,l_s_pdcd,l_s_itno,l_s_date)
-if l_n_row < 1 then
+ls_itno 	= "%" + upper(trim(sle_1.text)) + "%"
+ln_row 	= dw_1.retrieve(ls_plant,ls_div,ls_pdcd,ls_itno,ls_date)
+if ln_row < 1 then
 	messagebox("확인","해당자료가 없습니다")
 end if
 
@@ -125,7 +126,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 15793151
+long backcolor = 15780518
 borderstyle borderstyle = stylelowered!
 end type
 
@@ -144,9 +145,10 @@ string facename = "굴림체"
 string text = "취 소"
 end type
 
-event clicked;string l_s_itno
-l_s_itno = ""
-closewithreturn(parent,l_s_itno)
+event clicked;string ls_itno
+
+ls_itno = ""
+closewithreturn(parent,ls_itno)
 end event
 
 type cb_1 from commandbutton within w_rtn_find_item
@@ -164,16 +166,16 @@ string facename = "굴림체"
 string text = "확 인"
 end type
 
-event clicked;string l_s_itno
-integer l_s_row
+event clicked;string 	ls_itno
+integer 	ls_row
 
-l_s_row = dw_1.getrow()
-l_s_itno = dw_1.getitemstring(l_s_row, "itno")
-if f_spacechk(l_s_itno) = -1 then
+ls_row 	= dw_1.getrow()
+ls_itno 	= dw_1.getitemstring(ls_row, "itno")
+if f_spacechk(ls_itno) = -1 then
 	messagebox("확인","품번을 선택하세요")
 	return
 else
-	closewithreturn(parent,l_s_itno)
+	closewithreturn(parent,ls_itno)
 end if
 end event
 
@@ -190,15 +192,15 @@ boolean livescroll = true
 borderstyle borderstyle = stylelowered!
 end type
 
-event doubleclicked;string l_s_itno
+event doubleclicked;string 	ls_itno
 this.selectrow(0,false)
 this.selectrow(row,true)
-l_s_itno = dw_1.getitemstring(row,"itno")
-if f_spacechk(l_s_itno) = -1 then
+ls_itno 	= dw_1.getitemstring(row,"itno")
+if f_spacechk(ls_itno) = -1 then
 	messagebox("확인","품번을 선택하세요")
 	return
 else
-	closewithreturn(parent,l_s_itno)
+	closewithreturn(parent,ls_itno)
 end if
 
 

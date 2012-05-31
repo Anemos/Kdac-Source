@@ -6,24 +6,24 @@ forward prototypes
 global function string f_relative_month (string fs_date, integer fn_add)
 end prototypes
 
-global function string f_relative_month (string fs_date, integer fn_add);long ln_month,ln_year
+global function string f_relative_month (string fs_date, integer fn_add);Long	ln_month,ln_year
 
-if len(trim(fs_date)) <= 5 then
-	return 'Error'
-elseif len(trim(fs_date)) < 8 then
-	fs_date = mid(fs_date,1,6) + '01'
+if 	len(trim(fs_date))	<=	5	then
+	return	'Error'
+elseif	len(trim(fs_date)) < 8 then
+	fs_date	=	mid(fs_date,1,6) + '01'
 end if
 
 ln_month 	= 	integer(mid(fs_date,1,4)) * 12 + integer(mid(fs_date,5,2)) + fn_add
 ln_year 		= 	integer(ln_month / 12)
 	
-if mod(ln_month, 12) = 0 then
-	 ln_month 	= 12
-	 ln_year 	    -= 1
+if 	mod(ln_month, 12) = 0 then
+	 ln_month 	= 	12
+	 ln_year 	    	-= 1
 else
-	 ln_month = mod(ln_month,12) 
+	 ln_month 	= 	mod(ln_month,12) 
 end if
 
-return string(ln_year) + string(ln_month,"00") + mid(fs_date,7,2)
+Return 	string(ln_year) + string(ln_month,"00") + mid(fs_date,7,2)
 end function
 

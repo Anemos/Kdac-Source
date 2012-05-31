@@ -17,7 +17,7 @@ SELECT value(sum("PBINV"."INV401"."TQTY4"),0)
  INTO :ld_tqty4  
  FROM "PBINV"."INV401"  
 WHERE ( "PBINV"."INV401"."COMLTD" = '01')       AND ( "PBINV"."INV401"."SLIPTYPE" = 'RW')       AND
-      ( "PBINV"."INV401"."SRNO"   = :ls_srno  ) AND ( "PBINV"."INV401"."SRNO1"    = :ls_srno1 ) AND CLS='10' using sqlca ;
+      ( "PBINV"."INV401"."SRNO"   = :ls_srno  ) AND ( "PBINV"."INV401"."SRNO1"    = :ls_srno1 ) using sqlca ;
 if sqlca.sqlcode <> 0 then
 	ld_tqty4 = 0
 end if	

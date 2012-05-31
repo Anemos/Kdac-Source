@@ -23,37 +23,13 @@ table(column=(type=char(12) updatewhereclause=yes name=itno dbname="INV101.ITNO"
          ( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBPDM~".~"BOM001~".~"PLANT~" ) and  
          ( ~"PBINV~".~"INV101~".~"DIV~" = ~"PBPDM~".~"BOM001~".~"PDVSN~" ) and  
          ( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBPDM~".~"BOM001~".~"PPITN~" ) and  
-		 ( ~"PBINV~".~"INV101~".~"XPLANT~" = :a_PLANT )  AND   
+		 	( ~"PBINV~".~"INV101~".~"XPLANT~" = :a_PLANT )  AND   
          ( ~"PBINV~".~"INV101~".~"DIV~" = :a_div )  AND  
          ( ~"PBINV~".~"INV101~".~"PDCD~" like :a_pdcd ) AND  
          ( ~"PBINV~".~"INV002~".~"ITNM~" like :a_parm ) AND  
          ( ~"PBINV~".~"INV101~".~"SRCE~" in ('  ' , '03' , '04'  ) )  AND  
-         ( ~"PBPDM~".~"BOM001~".~"PEDTE~" = ' ' OR 
-           ( ~"PBPDM~".~"BOM001~".~"PEDTE~" <> '' AND ~"PBPDM~".~"BOM001~".~"PEDTE~" >= :a_date AND 
-             ~"PBPDM~".~"BOM001~".~"PEDTM~" <= ~"PBPDM~".~"BOM001~".~"PEDTE~" ) )
-
-UNION ALL      
-
-SELECT DISTINCT ~"PBINV~".~"INV101~".~"ITNO~",   
-         ~"PBINV~".~"INV002~".~"ITNM~",   
-         ~"PBINV~".~"INV002~".~"XUNIT~",   
-         ~"PBINV~".~"INV101~".~"CLS~",   
-         ~"PBINV~".~"INV101~".~"SRCE~"  
-    FROM ~"PBINV~".~"INV002~",   
-         ~"PBINV~".~"INV101~",   
-         ~"PBPDM~".~"BOM002~"  
-   WHERE ( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" ) and  
-         ( ~"PBINV~".~"INV101~".~"XPLANT~"  = ~"PBPDM~".~"BOM002~".~"HPLANT~" ) and  
-         ( ~"PBINV~".~"INV101~".~"DIV~"  = ~"PBPDM~".~"BOM002~".~"HDVSN~" ) and  
-         ( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBPDM~".~"BOM002~".~"HPITN~" ) and  
-         ( ~"PBINV~".~"INV101~".~"XPLANT~" = :a_PLANT )  AND   
-         ( ~"PBINV~".~"INV101~".~"DIV~" = :a_div )  AND  
-         ( ~"PBINV~".~"INV101~".~"PDCD~" like :a_pdcd ) AND  
-         ( ~"PBINV~".~"INV002~".~"ITNM~" like :a_parm ) AND  
-         ( ~"PBINV~".~"INV101~".~"SRCE~" in ('  ' , '03' , '04'  ) )  AND  
-         ( ~"PBPDM~".~"BOM002~".~"HEDTE~" = ' ' OR 
-           ( ~"PBPDM~".~"BOM002~".~"HEDTE~" <> '' AND ~"PBPDM~".~"BOM002~".~"HEDTE~" >= :a_date AND 
-             ~"PBPDM~".~"BOM002~".~"HEDTM~" <= ~"PBPDM~".~"BOM002~".~"HEDTE~" ) )
+         (( trim(~"PBPDM~".~"BOM001~".~"PEDTE~") =  ''  and ~"PBPDM~".~"BOM001~".~"PEDTM~" <= :a_Date ) or  
+			(  trim(~"PBPDM~".~"BOM001~".~"PEDTE~") <> ''  and ~"PBPDM~".~"BOM001~".~"PEDTM~" <= :a_Date  and ~"PBPDM~".~"BOM001~".~"PEDTE~" >= :a_date ))
 
 " retrieve.asneeded=yes arguments=(("a_plant", string),("a_div", string),("a_pdcd", string),("a_parm", string),("a_date", string)) )
 text(band=header alignment="2" text="Ç°  ¹ø" border="0" color="16777215" x="9" y="4" height="72" width="526" html.valueishtml="0"  name=itno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="0" font.pitch="0" font.charset="0" background.mode="2" background.color="8421376" )

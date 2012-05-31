@@ -16,7 +16,8 @@ String  ls_err, ls_key, ls_slno, ls_costdiv, ls_srno, ls_srno1, ls_srno2, ls_ser
 Int    li_rtn, ii
 Long   ll_row, ll_InsertRow
 Dec{0} ld_reqqt
-
+//datastore 선언
+Datastore lds_inv620
 //****************************************************
 //  ag_pass data validation check!!
 //  8개 항목 필수입력
@@ -96,35 +97,62 @@ if ls_gubun = 'C' then
 	end if
 end if
 
+//INV601 DataStore Open
+lds_inv620 = create datastore                  			              
+lds_inv620.dataobject = "d_ex_inv620"
+lds_inv620.settransobject(sqlca)
+
 // 이체전표 번호부여
 ls_key = 'RW' + mid(g_s_date,4,3)
-if trim(ad_slno) = '' Or isnull(ad_slno) then
+if trim(ad_slno) = '' then
 	ls_slno = f_get_slno1(ls_key, 'EX')	
 else
 	ls_slno = ad_slno
 end if
 
+ll_InsertRow = lds_inv620.InsertRow(0)
+
 ls_itno   = ad_itno         // 입력 품번
 ld_reqqt  = ad_reqqt
+
+lds_inv620.setitem(ll_InsertRow,'comltd','01')
+lds_inv620.setitem(ll_InsertRow,'xplant',ls_xplant)
+lds_inv620.setitem(ll_InsertRow,'div',ls_div)
 
 ls_key = 'RW' + ls_xplant + ls_div + 'AL' + mid(g_s_date,4,3)
 ls_srno = f_get_ctlno(ls_key) + ls_xplant + ls_div
 
-INSERT into PBINV.INV620                                                   
-	( COMLTD, SRNO, XPLANT, DIV,   ITNO, GUBUN, XPLANT1, DIV1,
-	  PDCD,   CLS,  SRCE,   REQDT, DUDT, REQTY, PDNR, PGUBUN,
-	  SLNO,   ISTCD, STCD, CGUBUN, EXTD,INPTID,  INPTDT,UPDTID, UPDTDT,                      
-	  IPADDR,   MACADDR  )                                                          
-	VALUES                                                                          
-	  ('01',     :ls_srno, :ls_xplant, :ls_div,   :ls_itno, :ls_gubun, :ls_xplant1, :ls_div1,  
-		:ls_pdcd, :ls_cls,  :ls_srce,   :g_s_date, :ls_dudt, :ld_reqqt, ' ',        :ad_ser, 
-		:ls_slno,  'S', '3', ' ', ' ',  :g_s_empno,:g_s_date, ' ', ' ', ' ', ' ' ) Using sqlca;	
+lds_inv620.setitem(ll_InsertRow,'srno',ls_srno)
+lds_inv620.setitem(ll_InsertRow,'itno',ls_itno)
+lds_inv620.setitem(ll_InsertRow,'gubun',ls_gubun)
+lds_inv620.setitem(ll_InsertRow,'xplant1',ls_xplant1)
+lds_inv620.setitem(ll_InsertRow,'div1',ls_div1)
+lds_inv620.setitem(ll_InsertRow,'pdcd',ls_pdcd)
+lds_inv620.setitem(ll_InsertRow,'cls',ls_cls)
+lds_inv620.setitem(ll_InsertRow,'srce',ls_srce)
 
-if sqlca.sqlcode <> 0 then
-	 ls_err = "의뢰정보생성실패"
-	 return ls_err
-end if
-	
+lds_inv620.setitem(ll_InsertRow,'reqdt',g_s_date)
+lds_inv620.setitem(ll_InsertRow,'dudt',ls_dudt)
+lds_inv620.setitem(ll_InsertRow,'reqty',ld_reqqt)
+lds_inv620.setitem(ll_InsertRow,'pgubun',ad_ser)
+lds_inv620.setitem(ll_InsertRow,'slno',ls_slno) 
+lds_inv620.setitem(ll_InsertRow,'istcd','S')
+lds_inv620.setitem(ll_InsertRow,'stcd','3')                     //의뢰확정상태
+
+f_null_Kill2( lds_inv620 )
+f_ExtColumn_Set2( lds_inv620 ) 
+
+li_Rtn = lds_inv620.Update(True, False)
+
+If li_Rtn = 1 Then   	
+	lds_inv620.ResetUpdate( )	
+   destroy lds_inv620
+Else
+	messagebox("AA",sqlca.sqlerrtext)
+	destroy lds_inv620
+	ls_err = "의뢰정보생성실패"
+	return ls_err
+End if
 return ls_slno
 end function
 

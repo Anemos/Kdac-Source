@@ -3,19 +3,20 @@ global type f_rtn_conv_itno from function_object
 end type
 
 forward prototypes
-global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno)
+global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno, string a_applydate)
 end prototypes
 
-global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno);string l_s_itno
+global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno, string a_applydate);string ls_itno
 
-select raitno into :l_s_itno from pbrtn.rtn001
-	where racmcd = '01' and raplant = :a_plant and radvsn = :a_dvsn and raitno1 = :a_itno 
+select distinct rhitno into :ls_itno from pbrtn.rtn018
+	where rhcmcd = '01' and rhplant = :a_plant and rhdvsn = :a_dvsn and rhitno1 = :a_itno and
+		rhedfm <= :a_applydate and rhedto >= :a_applydate
 using sqlca ;
 
 if sqlca.sqlcode <> 0 then 
-	l_s_itno = a_itno
+	ls_itno = a_itno
 end if
 
-return l_s_itno
+return ls_itno
 end function
 

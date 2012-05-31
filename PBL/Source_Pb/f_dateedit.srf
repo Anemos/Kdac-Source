@@ -12,27 +12,26 @@ global function string f_dateedit (string ag_dateyymd);//////  ÀÏÀÚ ¿À·ù Check Ç
 // (2) Error¸é  "        " Return,                        //
 //     Á¤»óÀÌ¸é "yyyymmdd" Return                         //
 //////////////////////////////  1998.05.   ±è ¿ë ´ë   //////
+String	ls_dateyymd
+Date   	ld_dateyymd
 
-string l_s_dateyymd
-date   l_d_dateyymd
-
-if len(f_spacedel(ag_dateyymd)) <>  8  and &      
-   len(f_spacedel(ag_dateyymd)) <> 10  then   // ÇüÅÂ°¡ '19970101' and '1997/01/01'ÀÌ ¾Æ´Ï¸é
-	Return space(8)
+if	len(f_spacedel(ag_dateyymd))	<>  8  and &      
+   	len(f_spacedel(ag_dateyymd))	<> 10  then   // ÇüÅÂ°¡ '19970101' and '1997/01/01'ÀÌ ¾Æ´Ï¸é
+	Return	space(8)
 end if	
 
-if len(ag_dateyymd) = 8  then
-	l_s_dateyymd = string(ag_dateyymd,"@@@@/@@/@@")
+if 	len(ag_dateyymd)	=	8	then
+	ls_dateyymd	=	string(ag_dateyymd,"@@@@/@@/@@")
 else
-	l_s_dateyymd = ag_dateyymd
+	ls_dateyymd = ag_dateyymd
 end if
 
-l_d_dateyymd = date(l_s_dateyymd) 
-if isnull(l_d_dateyymd)              = True          or &
-   string(l_d_dateyymd,"yyyy/mm/dd") = "1900/01/01"  then   
-	Return space(8)
+ld_dateyymd	=	date(ls_dateyymd) 
+if 	isnull(ld_dateyymd)	=	True	or	&
+   	String(ld_dateyymd,"yyyy/mm/dd") = "1900/01/01"  then   
+	Return 	space(8)
 else
-	Return string(l_d_dateyymd,"yyyymmdd")
+	Return 	String(ld_dateyymd,"yyyymmdd")
 end if	
 end function
 

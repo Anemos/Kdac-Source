@@ -7,15 +7,14 @@ forward prototypes
 global function string f_get_perdeptnm (string a_s_empno, string a_s_gubun)
 end prototypes
 
-global function string f_get_perdeptnm (string a_s_empno, string a_s_gubun);string l_s_dept, l_s_deptnm
+global function string f_get_perdeptnm (string a_s_empno, string a_s_gubun);String 	ls_dept, ls_deptnm
 
-select "PBCOMMON"."DAC003"."PEDEPT"
-into   :l_s_dept
-from   "PBCOMMON"."DAC003"
-where  "PBCOMMON"."DAC003"."PEEMPNO" = :a_s_empno using sqlca;
+Select 	"PBCOMMON"."DAC003"."PEDEPT"		into   :ls_dept	from   "PBCOMMON"."DAC003"
+Where  	"PBCOMMON"."DAC003"."PEEMPNO"	=		:a_s_empno 
+Using 	sqlca	;
 
-l_s_deptnm = f_get_deptnm(l_s_dept, a_s_gubun)
+ls_deptnm	=	f_get_deptnm(ls_dept, a_s_gubun)
 
-return l_s_deptnm
+return 	ls_deptnm
 end function
 

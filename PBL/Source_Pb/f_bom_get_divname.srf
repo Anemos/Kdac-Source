@@ -7,44 +7,31 @@ forward prototypes
 global function string f_bom_get_divname (string a_plant, string a_div)
 end prototypes
 
-global function string f_bom_get_divname (string a_plant, string a_div);string l_s_div
-string l_s_itdsc , l_s_gubun
+global function string f_bom_get_divname (string a_plant, string a_div);string ls_plant,ls_div,ls_gubun
 
-l_s_div = a_div
-if a_plant = 'J' then
-	choose case a_div
-		case 'M'
-			l_s_div = 'B'
-		case 'S'
-			l_s_div = 'L'
-		case 'H'
-			l_s_div = 'T'
-	end choose
-end if
+ls_gubun = "SLE220" 
 
-if a_plant = 'K' then
-	choose case a_div
-		case 'M'
-			l_s_div = 'P'
-		case 'S'
-			l_s_div = 'N'
-		case 'H'
-			l_s_div = 'O'
-	end choose
-end if
-
-l_s_gubun = "DAC030" 
-
-SELECT "PBCOMMON"."DAC002"."COITNAME"  
- INTO :l_s_itdsc
- FROM "PBCOMMON"."DAC002"  
-WHERE "PBCOMMON"."DAC002"."COMLTD" = '01' AND
-		"PBCOMMON"."DAC002"."COGUBUN" = :l_s_gubun AND 
-		"PBCOMMON"."DAC002"."COCODE" = :l_s_div using sqlca ;
+SELECT 	"PBCOMMON"."DAC002"."COITNAME"  INTO :ls_plant FROM "PBCOMMON"."DAC002"  
+	WHERE "PBCOMMON"."DAC002"."COMLTD" 	= '01' 		AND
+			"PBCOMMON"."DAC002"."COGUBUN" = :ls_gubun AND 
+			"PBCOMMON"."DAC002"."COCODE" 	= :a_plant 
+using sqlca ;
 if sqlca.sqlcode <> 0 then
-	l_s_itdsc = " "
+	ls_plant = ''
 end if
-return l_s_itdsc
+
+
+ls_gubun = "DAC030" 
+
+SELECT 	"PBCOMMON"."DAC002"."COITNAME"  INTO :ls_div FROM "PBCOMMON"."DAC002"  
+	WHERE "PBCOMMON"."DAC002"."COMLTD" 	= '01' 		AND
+			"PBCOMMON"."DAC002"."COGUBUN" = :ls_gubun AND 
+			"PBCOMMON"."DAC002"."COCODE" 	= :a_div 
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	ls_div = ''
+end if
+return	ls_plant + "  "  + ls_div
 
 end function
 

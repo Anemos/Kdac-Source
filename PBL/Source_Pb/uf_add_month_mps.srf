@@ -7,22 +7,22 @@ forward prototypes
 global function string uf_add_month_mps (string arg1, integer arg2)
 end prototypes
 
-global function string uf_add_month_mps (string arg1, integer arg2);String  ls_date, ls_yyyy, ls_mm
-Integer li_add_yyyy, li_add_mm
+global function string uf_add_month_mps (string arg1, integer arg2);String  	ls_date,ls_yyyy,ls_mm
+Integer 	ln_add_yyyy,ln_add_mm
 
-ls_yyyy = Left(arg1,4)
-ls_mm   = Mid(arg1,5,2)
+ls_yyyy 		= Left(arg1,4)
+ls_mm   		= Mid(arg1,5,2)
 
-li_add_mm   = Mod(arg2,  12)    //Add 월
-li_add_yyyy = Int(Truncate(arg2 / 12, 0)) + Int((Dec(ls_mm) + li_add_mm) / 12)    //Add 년
-ls_yyyy     = String(Dec(ls_yyyy) + li_add_yyyy)                     //계산된 년
-ls_mm       = String(Mod((Dec(ls_mm) + li_add_mm) , 12), '00')       //계산된 월
+ln_add_mm   = Mod(arg2,  12)    //Add 월
+ln_add_yyyy = Int(Truncate(arg2 / 12, 0)) + Int((Dec(ls_mm) + ln_add_mm) / 12)    //Add 년
+ls_yyyy     = String(Dec(ls_yyyy) + ln_add_yyyy)                     //계산된 년
+ls_mm       = String(Mod((Dec(ls_mm) + ln_add_mm) , 12), '00')       //계산된 월
 
 IF ls_mm   = '00' THEN
 	ls_mm   = '12'
 	ls_yyyy = String(Dec(ls_yyyy) - 1)
 END IF
-ls_date     = ls_yyyy + ls_mm
+ls_date		= ls_yyyy + ls_mm
 Return ls_date
 
 

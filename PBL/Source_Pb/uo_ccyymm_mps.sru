@@ -21,13 +21,14 @@ long tabtextcolor = 16777215
 long tabbackcolor = 16711680
 long picturemaskcolor = 536870912
 event ue_modify ( integer yyyy,  integer mm )
+event ue_keydown pbm_keydown
 vsb_1 vsb_1
 st_yyyymm st_yyyymm
 end type
 global uo_ccyymm_mps uo_ccyymm_mps
 
 type variables
-integer i_n_yyyy, i_n_mm
+integer in_yyyy, in_mm
 end variables
 
 forward prototypes
@@ -35,18 +36,18 @@ public function string uf_yyyymm ()
 public subroutine uf_reset (integer a_n_yyyy, integer a_n_mm)
 end prototypes
 
-public function string uf_yyyymm ();string l_s_ccyymm
+public function string uf_yyyymm ();string ls_ccyymm
 
-l_s_ccyymm = string(i_n_yyyy * 100 + i_n_mm)
+ls_ccyymm = string(in_yyyy * 100 + in_mm)
 
-return l_s_ccyymm
+return ls_ccyymm
 end function
 
-public subroutine uf_reset (integer a_n_yyyy, integer a_n_mm);i_n_yyyy = a_n_yyyy   // 공유 날자 입력...
-i_n_mm   = a_n_mm
+public subroutine uf_reset (integer a_n_yyyy, integer a_n_mm);in_yyyy = a_n_yyyy   // 공유 날자 입력...
+in_mm   = a_n_mm
 
-st_yyyymm.text = string(i_n_yyyy) + "년"  & 
-               + right( space(1) + trim(string(i_n_mm)), 2) + "월"
+st_yyyymm.text = string(in_yyyy) + "년"  & 
+               + right( space(1) + trim(string(in_mm)), 2) + "월"
 return
 end subroutine
 
@@ -62,9 +63,10 @@ destroy(this.vsb_1)
 destroy(this.st_yyyymm)
 end on
 
-event constructor;string l_s_date
-l_s_date = uf_add_month_mps(mid(g_s_date,1,6),1)
-this.uf_reset(integer(mid(l_s_date,1,4)),integer(mid(l_s_date,5,2)))
+event constructor;string ls_date
+
+ls_date = uf_add_month_mps(mid(g_s_date,1,6),1)
+this.uf_reset(integer(mid(ls_date,1,4)),integer(mid(ls_date,5,2)))
 
 end event
 
@@ -78,30 +80,31 @@ boolean bringtotop = true
 boolean stdwidth = false
 end type
 
-event linedown;i_n_mm --
-if i_n_mm < 1 then
-	i_n_yyyy --
-	i_n_mm = 12
+event linedown;in_mm --
+if in_mm < 1 then
+	in_yyyy --
+	in_mm = 12
 end if
-st_yyyymm.text = string(i_n_yyyy) + "년"  & 
-               + right( space(1) + trim(string(i_n_mm)), 2) + "월"
-parent.event post ue_modify(i_n_yyyy, i_n_mm)					
+st_yyyymm.text = string(in_yyyy) + "년"  & 
+               + right( space(1) + trim(string(in_mm)), 2) + "월"
+parent.event post ue_modify(in_yyyy, in_mm)					
 
 
 end event
 
-event lineup;i_n_mm ++
-if i_n_mm > 12 then
-	i_n_yyyy ++
-	i_n_mm = 1
+event lineup;in_mm ++
+if in_mm > 12 then
+	in_yyyy ++
+	in_mm = 1
 end if
-st_yyyymm.text = string(i_n_yyyy) + "년"  & 
-               + right( space(1) + trim(string(i_n_mm)), 2) + "월"
-parent.event post ue_modify(i_n_yyyy, i_n_mm)					
+st_yyyymm.text = string(in_yyyy) + "년"  & 
+               + right( space(1) + trim(string(in_mm)), 2) + "월"
+parent.event post ue_modify(in_yyyy, in_mm)					
 
 end event
 
 type st_yyyymm from statictext within uo_ccyymm_mps
+event ue_keydown pbm_keydown
 integer width = 434
 integer height = 84
 boolean bringtotop = true
@@ -112,7 +115,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 string pointer = "HourGlass!"
-long backcolor = 15793151
+long backcolor = 15780518
 boolean enabled = false
 string text = "    년  월"
 alignment alignment = right!
@@ -120,4 +123,11 @@ boolean border = true
 borderstyle borderstyle = stylelowered!
 boolean focusrectangle = false
 end type
+
+event ue_keydown;if key = keyenter!	then
+	window 	ls_wsheet
+	ls_wsheet = w_frame.GetActiveSheet()
+	ls_wsheet.TriggerEvent("ue_retrieve")
+end if
+end event
 

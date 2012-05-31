@@ -12,21 +12,19 @@ global function string f_bom_get_inv402 (string a_plant, string a_div, string a_
 //*******************************************************
 string ls_srce, ls_clsb,ls_date,ls_slash,ls_return
 
-SELECT cls,srce
- INTO :ls_clsb , :ls_srce
- FROM pbinv.inv402
-WHERE comltd = '01' 
-	and xplant		= :a_plant 
-	and div 			= :a_div 
-	and itno			= :a_itno 
-	and xyear		= :a_date
+SELECT 	cls,srce	INTO 	:ls_clsb , :ls_srce FROM 	pbinv.inv402
+	WHERE comltd 	= '01' and
+			xplant	= :a_plant and 
+			div 		= :a_div and
+			itno		= :a_itno and
+			xyear		= :a_date 
 using sqlca;
 
 if sqlca.sqlcode <> 0 then
 	ls_clsb = " "
 	ls_srce = " "
 end if
-if ls_clsb = '30' or ls_clsb = ' ' or ls_clsb = '35' then
+if ls_clsb 	= '30' or ls_clsb = ' ' or ls_clsb = '35' then
    ls_slash = ' '
 else
 	ls_slash = ' / '
@@ -34,7 +32,7 @@ end if
 
 ls_return = ls_clsb + ls_slash + ls_srce
 
-return ls_return
+return 	ls_return
 
 end function
 

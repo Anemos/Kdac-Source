@@ -4,21 +4,21 @@ global type f_option_check_bpm from function_object
 end type
 
 forward prototypes
-global function integer f_option_check_bpm (string a_plant, string a_div, string a_itno)
+global function integer f_option_check_bpm (string a_year, string a_revno, string a_plant, string a_div, string a_itno)
 end prototypes
 
-global function integer f_option_check_bpm (string a_plant, string a_div, string a_itno);string 	ls_div,ls_oitno[],ls_itno,ls_citno,ls_pitno,ls_chkitno[50,300],ls_kitno
+global function integer f_option_check_bpm (string a_year, string a_revno, string a_plant, string a_div, string a_itno);string 	ls_div,ls_oitno[],ls_itno,ls_citno,ls_pitno,ls_chkitno[50,300],ls_kitno
 integer 	i = 0,j = 0,k = 0,p = 0,ln_chk = 0
 
 ls_itno = trim(a_itno)
 ls_div  = trim(a_div)
 
 declare optchk_cur cursor for 
-  select 	"PBBPM"."BPM003"."OFITN" from "PBBPM"."BPM003"
-     where 	"PBBPM"."BPM003"."OPITN" = :ls_itno AND
-           	"PBBPM"."BPM003"."ODVSN" = :ls_div AND  "PBBPM"."BPM003"."OPLANT" = :a_plant AND 
-    		(( trim("PBBPM"."BPM003"."OEDTE") =  ''  and "PBBPM"."BPM003"."OEDTM" <= :g_s_date ) or  
-			(  trim("PBBPM"."BPM003"."OEDTE") <> ''  and "PBBPM"."BPM003"."OEDTM" <= :g_s_date  and "PBBPM"."BPM003"."OEDTE" >= :g_s_date ))
+  select 	"PBBPM"."BPM505"."OFITN" from "PBBPM"."BPM505"
+     where 	"PBBPM"."BPM505"."OPITN" = :ls_itno AND "PBBPM"."BPM505"."XYEAR" = :a_year AND "PBBPM"."BPM505"."REVNO" = :a_revno AND
+           	"PBBPM"."BPM505"."ODVSN" = :ls_div AND  "PBBPM"."BPM505"."OPLANT" = :a_plant AND 
+    		(( trim("PBBPM"."BPM505"."OEDTE") =  ''  and "PBBPM"."BPM505"."OEDTM" <= :g_s_date ) or  
+			(  trim("PBBPM"."BPM505"."OEDTE") <> ''  and "PBBPM"."BPM505"."OEDTM" <= :g_s_date  and "PBBPM"."BPM505"."OEDTE" >= :g_s_date ))
   using SQLCA ;
 
 open optchk_cur ;
@@ -35,11 +35,11 @@ open optchk_cur ;
 close optchk_cur ;
 
 declare bom_cur cursor for 
-  select 	"PBBPM"."BPM001"."PPITN" from "PBBPM"."BPM001"
-     where 	"PBBPM"."BPM001"."PCITN" = :ls_pitno AND
-           	"PBBPM"."BPM001"."PDVSN" = :ls_div AND  "PBBPM"."BPM001"."PLANT" = :a_plant AND
-          (( trim("PBBPM"."BPM001"."PEDTE") =  ''  and "PBBPM"."BPM001"."PEDTM" <= :g_s_date ) or  
-			 (  trim("PBBPM"."BPM001"."PEDTE") <> ''  and "PBBPM"."BPM001"."PEDTM" <= :g_s_date  and "PBBPM"."BPM001"."PEDTE" >= :g_s_date ))   
+  select 	"PBBPM"."BPM504"."PPITN" from "PBBPM"."BPM504"
+     where 	"PBBPM"."BPM504"."PCITN" = :ls_pitno AND  "PBBPM"."BPM504"."XYEAR" = :a_year AND "PBBPM"."BPM504"."REVNO" = :a_revno AND
+           	"PBBPM"."BPM504"."PDVSN" = :ls_div AND  "PBBPM"."BPM504"."PLANT" = :a_plant AND
+          (( trim("PBBPM"."BPM504"."PEDTE") =  ''  and "PBBPM"."BPM504"."PEDTM" <= :g_s_date ) or  
+			 (  trim("PBBPM"."BPM504"."PEDTE") <> ''  and "PBBPM"."BPM504"."PEDTM" <= :g_s_date  and "PBBPM"."BPM504"."PEDTE" >= :g_s_date ))   
   using SQLCA ;
 
 for j = 1 to i

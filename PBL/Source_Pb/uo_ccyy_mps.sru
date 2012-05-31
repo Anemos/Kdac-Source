@@ -21,13 +21,14 @@ long tabtextcolor = 16777215
 long tabbackcolor = 16711680
 long picturemaskcolor = 536870912
 event ue_modify ( integer yyyy )
+event ue_keydown pbm_keydown
 vsb_1 vsb_1
 st_yyyymm st_yyyymm
 end type
 global uo_ccyy_mps uo_ccyy_mps
 
 type variables
-integer i_n_yyyy, i_n_mm
+integer in_yyyy, in_mm
 end variables
 
 forward prototypes
@@ -35,12 +36,12 @@ public subroutine uf_reset (integer a_n_yyyy)
 public function string uf_return ()
 end prototypes
 
-public subroutine uf_reset (integer a_n_yyyy);i_n_yyyy = a_n_yyyy   // 공유 날자 입력...
-st_yyyymm.text = string(i_n_yyyy) + "년" 
+public subroutine uf_reset (integer a_n_yyyy);in_yyyy = a_n_yyyy   // 공유 날자 입력...
+st_yyyymm.text = string(in_yyyy) + "년" 
 return
 end subroutine
 
-public function string uf_return ();return string(i_n_yyyy)
+public function string uf_return ();return string(in_yyyy)
 end function
 
 on uo_ccyy_mps.create
@@ -69,20 +70,21 @@ boolean bringtotop = true
 boolean stdwidth = false
 end type
 
-event linedown;i_n_yyyy --
-st_yyyymm.text = string(i_n_yyyy)  + "년"
-parent.event post ue_modify(i_n_yyyy)					
+event linedown;in_yyyy --
+st_yyyymm.text = string(in_yyyy)  + "년"
+parent.event post ue_modify(in_yyyy)					
 
 
 end event
 
-event lineup;i_n_yyyy ++
-st_yyyymm.text = string(i_n_yyyy) + "년" 
-parent.event post ue_modify(i_n_yyyy)					
+event lineup;in_yyyy ++
+st_yyyymm.text = string(in_yyyy) + "년" 
+parent.event post ue_modify(in_yyyy)					
 
 end event
 
 type st_yyyymm from statictext within uo_ccyy_mps
+event ue_keydown pbm_keydown
 integer width = 329
 integer height = 84
 boolean bringtotop = true
@@ -93,7 +95,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 string pointer = "HourGlass!"
-long backcolor = 15793151
+long backcolor = 15780518
 boolean enabled = false
 string text = "    년"
 alignment alignment = right!
@@ -101,4 +103,11 @@ boolean border = true
 borderstyle borderstyle = stylelowered!
 boolean focusrectangle = false
 end type
+
+event ue_keydown;if key = keyenter!	then
+	window 	ls_wsheet
+	ls_wsheet = w_frame.GetActiveSheet()
+	ls_wsheet.TriggerEvent("ue_retrieve")
+end if
+end event
 

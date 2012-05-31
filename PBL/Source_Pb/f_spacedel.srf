@@ -13,22 +13,20 @@ global function string f_spacedel (string ag_text);/////////////////////////////
 //								input  => string data
 //								output => string data
 ////////////////////////////////////////////////////////////
+Integer	ln__length, ln__count
+String 	ln__outtext
 
-int 	 l_n_length, l_n_count
-string l_n_outtext
-
-if isNull(ag_text) = True then
-	l_n_outtext = ""
+if 	isNull(ag_text) = True then
+	ln__outtext = ""
 else
-	l_n_length = len(ag_text)
-	
-	for l_n_count = 1 to l_n_length
-		if mid(ag_text,l_n_count,1) <> " " then
-			l_n_outtext = l_n_outtext + mid(ag_text,l_n_count,1)
-		end if
+	ln__length = len(ag_text)
+	for	ln__count = 1 	to	ln__length
+			if 	mid(ag_text,ln__count,1)	<>	" "	then
+				ln__outtext	=	ln__outtext + mid(ag_text,ln__count,1)
+			end if
 	next
 end if
 
-return l_n_outtext
+return 	ln__outtext
 end function
 

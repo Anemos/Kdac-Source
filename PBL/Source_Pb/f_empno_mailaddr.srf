@@ -17,10 +17,6 @@ WHERE "PEEMPNO" = :as_empno	Using SQLCA ;
 
 If SQLCA.SQLCode <> 0 Or Match( lower(MailAddress), "@kdac.co.kr") = False Then Return ""
 
-If Pos(MailAddress, "@") = 1 then
-	MailAddress = "guest" + MailAddress
-End if
-
 Return MailAddress
 end function
 

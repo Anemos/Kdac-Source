@@ -7,18 +7,17 @@ forward prototypes
 global function string f_get_pername (string ag_emp_no)
 end prototypes
 
-global function string f_get_pername (string ag_emp_no);string l_s_name
+global function string f_get_pername (string ag_emp_no);String ls_name
   
-SELECT "PBCOMMON"."DAC003"."PENAMEK"  
-  INTO :l_s_name  
-  FROM "PBCOMMON"."DAC003"  
- WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+SELECT		"PBCOMMON"."DAC003"."PENAMEK"	INTO 	:ls_name		FROM "PBCOMMON"."DAC003"  
+WHERE 		"PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  
+Using 	sqlca;
 
-if sqlca.sqlcode <> 0 then
-	l_s_name = ' '
+if 	sqlca.sqlcode <> 0 then
+	ls_name = ' '
 end if
 
-return l_s_name
+return ls_name
 
 end function
 

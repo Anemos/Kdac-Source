@@ -20,6 +20,7 @@ table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacod
  column=(type=char(1) update=yes updatewhereclause=yes name=statuscode dbname="TshipLabelDetail.StatusCode" )
  column=(type=char(10) update=yes updatewhereclause=yes name=printdate dbname="TshipLabelDetail.PrintDate" )
  column=(type=datetime update=yes updatewhereclause=yes name=inputdate dbname="TshipLabelDetail.InputDate" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=labeltype dbname="TshipLabelDetail.LabelType" )
  column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TshipLabelDetail.LastEmp" )
  column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TshipLabelDetail.LastDate" )
  retrieve="  SELECT TshipLabelDetail.AreaCode,   
@@ -37,7 +38,8 @@ table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacod
          TshipLabelDetail.TraceNo,   
          TshipLabelDetail.StatusCode,
          TshipLabelDetail.PrintDate,   
-         TshipLabelDetail.InputDate,   
+         TshipLabelDetail.InputDate,
+			TshipLabelDetail.LabelType,   
          TshipLabelDetail.LastEmp,   
          TshipLabelDetail.LastDate  
     FROM TshipLabelDetail  
@@ -46,8 +48,9 @@ table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacod
          ( TshipLabelDetail.CustomerCode = :ag_customercode ) AND  
          ( TshipLabelDetail.CustomerItemCode = :ag_customeritemcode ) AND  
 			( TshipLabelDetail.lotqty = :ag_lotqty ) AND  
-         ( TshipLabelDetail.SerialNofrom = :ag_serial )   
-" update="TshipLabelDetail" updatewhere=0 updatekeyinplace=no arguments=(("ag_areacode", string),("ag_divisioncode", string),("ag_customercode", string),("ag_customeritemcode", string),("ag_lotqty", number),("ag_serial", number)) )
+         ( TshipLabelDetail.SerialNofrom = :ag_serial ) AND
+			( TshipLabelDetail.LabelType = :ag_labeltype )
+" update="TshipLabelDetail" updatewhere=0 updatekeyinplace=no arguments=(("ag_areacode", string),("ag_divisioncode", string),("ag_customercode", string),("ag_customeritemcode", string),("ag_lotqty", number),("ag_serial", number),("ag_labeltype", string)) )
 text(band=detail alignment="1" text="¹ßÁÖ¹øÈ£" border="0" color="0" x="2546" y="36" height="60" width="421" html.valueishtml="0"  name=puchaseno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="1" text="¹ßÇàÀÏ" border="0" color="0" x="2546" y="168" height="60" width="421" html.valueishtml="0"  name=printdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="1" text="°Å·¡Ã³Ç°¹ø" border="0" color="0" x="23" y="36" height="64" width="439" html.valueishtml="0"  name=customeritemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
@@ -66,7 +69,7 @@ text(band=detail alignment="1" text="·¢¼ö" border="0" color="0" x="937" y="160" 
 text(band=detail alignment="1" text="¸Å¼ö" border="0" color="0" x="937" y="280" height="60" width="146" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=13 alignment="0" tabsequence=80 border="5" color="0" x="480" y="280" height="64" width="430" format="[general]" html.valueishtml="0"  name=traceno visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
 column(band=detail id=10 alignment="1" tabsequence=40 border="5" color="0" x="485" y="156" height="64" width="430" format="[general]" html.valueishtml="0"  name=weight visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
-column(band=detail id=7 alignment="0" tabsequence=90 border="5" color="0" x="1102" y="280" height="64" width="430" format="[general]" html.valueishtml="0"  name=labelcount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=7 alignment="0" tabsequence=90 border="5" color="0" x="1102" y="280" height="64" width="430" format="[general]" html.valueishtml="0"  name=labelcount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
 column(band=detail id=11 alignment="1" tabsequence=50 border="5" color="0" x="1102" y="156" height="64" width="430" format="[general]" html.valueishtml="0"  name=rackcount visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
 column(band=detail id=5 alignment="1" tabsequence=20 border="5" color="0" x="1897" y="32" height="64" width="430" format="[general]" html.valueishtml="0"  name=lotqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
 column(band=detail id=9 alignment="0" tabsequence=60 border="5" color="0" x="1897" y="156" height="64" width="430" format="[general]" html.valueishtml="0"  name=vessel visible="1" edit.limit=4 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )

@@ -22,7 +22,7 @@ String	ls_applydate
 DECLARE get_applydate PROCEDURE for sp_mpms_get_applydate
 @pdt_sourcedate = :fdt_datetime,
 @rs_applydate = '1' output
-Using sqlca;
+Using SQLPIS;
 
 //exactly the parameters in the sp.
 EXECUTE get_applydate;
@@ -33,3 +33,4 @@ CLOSE get_applydate;
 
 Return	ls_applydate
 end function
+

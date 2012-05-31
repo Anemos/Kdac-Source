@@ -4,10 +4,10 @@ global type f_pisc_get_date_lastday_of_month from function_object
 end type
 
 forward prototypes
-global function string f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year, ref transaction rt_transaction)
+global function integer f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year)
 end prototypes
 
-global function string f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year, ref transaction rt_transaction);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+global function integer f_pisc_get_date_lastday_of_month (integer fi_month, integer fi_year);///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Function		: f_get_lastday_of_month
 //	Access		: public
 //	Arguments	: Int	fi_month					Month(1-12)
@@ -27,15 +27,11 @@ ls_month = String(fi_year) + "." + Right('0' + String(fi_month), 2)
 Select Top 1 Convert(Char(8), DateAdd(DD, -1, DateAdd(MM, 1, Convert(DateTime, :ls_month + '.01'))), 112)
   Into :ls_lastday
   From sysusers
-Using rt_transaction;
+Using SQLPIS;
 
-
-//li_lastday_of_month = Integer(Right(ls_lastday, 2))
+li_lastday_of_month = Integer(Right(ls_lastday, 2))
 //Return the number of days in the relevant month
 
-//Return li_lastday_of_month
-
-Return ls_lastday
-
+Return li_lastday_of_month
 end function
 

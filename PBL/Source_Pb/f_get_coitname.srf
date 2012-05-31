@@ -7,18 +7,18 @@ forward prototypes
 global function string f_get_coitname (string a_s_comltd, string a_s_gubun, string a_s_code)
 end prototypes
 
-global function string f_get_coitname (string a_s_comltd, string a_s_gubun, string a_s_code);string l_s_cdnm
+global function string f_get_coitname (string a_s_comltd, string a_s_gubun, string a_s_code);String	ls_cdnm
 
-SELECT "PBCOMMON"."DAC002"."COITNAME"  
-  INTO :l_s_cdnm  
-  FROM "PBCOMMON"."DAC002"  
- WHERE "PBCOMMON"."DAC002"."COMLTD"  = :a_s_comltd and
-		 "PBCOMMON"."DAC002"."COGUBUN" = :a_s_gubun  and
-		 "PBCOMMON"."DAC002"."COCODE"  = :a_s_code   using sqlca;
-if sqlca.sqlcode <> 0 then
-	l_s_cdnm = " "
+SELECT "PBCOMMON"."DAC002"."COITNAME"	INTO	:ls_cdnm	FROM	"PBCOMMON"."DAC002"  
+WHERE 	"PBCOMMON"."DAC002"."COMLTD"	= 		:a_s_comltd and
+		 	"PBCOMMON"."DAC002"."COGUBUN" 	= 		:a_s_gubun  	and
+		 	"PBCOMMON"."DAC002"."COCODE"  	= 		:a_s_code   	
+Using 	Sqlca	;
+
+if 	sqlca.sqlcode <> 0 then
+	ls_cdnm	=	" "
 end if
 
-return l_s_cdnm
+Return	ls_cdnm
 end function
 

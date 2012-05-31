@@ -7,22 +7,22 @@ forward prototypes
 global function string f_get_vendor_1 (string a_vndr)
 end prototypes
 
-global function string f_get_vendor_1 (string a_vndr);string l_s_vndnm, l_s_vsrno
+global function string f_get_vendor_1 (string a_vndr);string ls_vndnm, ls_vsrno
 
-SELECT "PBPUR"."PUR101"."VNDNM" , "PBPUR"."PUR101"."VSRNO"
-  INTO :l_s_vndnm, :l_s_vsrno  
-FROM "PBPUR"."PUR101" 
-WHERE "PBPUR"."PUR101"."VNDR" = :a_vndr and 
-      "PBPUR"."PUR101"."SCGUBUN" = 'S'  AND 
-	  "PBPUR"."PUR101"."COMLTD" = '01'
+SELECT 	"PBPUR"."PUR101"."VNDNM" , "PBPUR"."PUR101"."VSRNO"
+  INTO 	:ls_vndnm, :ls_vsrno  
+FROM 		"PBPUR"."PUR101" 
+WHERE 	"PBPUR"."PUR101"."VNDR" 	= :a_vndr 	and 
+      	"PBPUR"."PUR101"."SCGUBUN" = 'S'  		and 
+	  		"PBPUR"."PUR101"."COMLTD" 	= '01'
 using sqlca ;
 
 if sqlca.sqlcode <> 0 then
-	l_s_vndnm = ""
-	l_s_vsrno = ""
+	ls_vndnm = ""
+	ls_vsrno = ""
 end if
  
-return l_s_vsrno + l_s_vndnm
+return ls_vsrno + ls_vndnm
  
 end function
 

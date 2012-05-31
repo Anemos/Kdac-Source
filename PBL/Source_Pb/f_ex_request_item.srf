@@ -132,7 +132,7 @@ end if
 	lds_inv601.setitem(ll_InsertRow,'xplant',ls_xplant)
 	lds_inv601.setitem(ll_InsertRow,'div',ls_div)
 
-	ls_key = 'RW' + ls_xplant + ls_div + 'AL' + mid(g_s_date,4,3)
+	ls_key = 'RW' + ls_xplant + ls_div + ls_cls + mid(g_s_date,4,3)
 	ls_srno = f_get_ctlno(ls_key)
 	ls_srno1 = ls_xplant + ls_div
 	ls_srno2 = ls_cls

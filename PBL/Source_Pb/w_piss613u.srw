@@ -41,6 +41,16 @@ type em_3 from editmask within w_piss613u
 end type
 type st_5 from statictext within w_piss613u
 end type
+type uo_label from u_piss_select_labelgubun within w_piss613u
+end type
+type st_6 from statictext within w_piss613u
+end type
+type sle_invoiceno from singlelineedit within w_piss613u
+end type
+type st_7 from statictext within w_piss613u
+end type
+type pb_print from picturebutton within w_piss613u
+end type
 end forward
 
 global type w_piss613u from w_ipis_sheet01
@@ -63,6 +73,11 @@ em_4 em_4
 st_4 st_4
 em_3 em_3
 st_5 st_5
+uo_label uo_label
+st_6 st_6
+sle_invoiceno sle_invoiceno
+st_7 st_7
+pb_print pb_print
 end type
 global w_piss613u w_piss613u
 
@@ -70,54 +85,20 @@ type variables
 Boolean	ib_open
 int ii_currentrow
 string	is_firstareacode,	is_firstdivisioncode,	is_firstcustomercode,&
-			is_firstcustomeritemcode,	is_firstinvoiceno
+			is_firstcustomeritemcode,	is_firstinvoiceno, is_labelgubun
 end variables
 
 forward prototypes
-public function integer wf_itemcheck ()
 public function integer wf_mastercheck ()
-public function integer wf_replacesave ()
 public function integer wf_deleteitemcheck ()
-public function integer wf_insertsave ()
+public function integer wf_itemcheck ()
 public function integer wf_deletesave ()
-public subroutine wf_label_ford (integer ag_printcount)
-public subroutine wf_label_form (integer ag_printcount)
+public function integer wf_replacesave ()
+public function integer wf_insertsave ()
+public function integer wf_label_print ()
+public function integer wf_label_form (integer ag_printcount)
+public function integer wf_label_ford (integer ag_printcount)
 end prototypes
-
-public function integer wf_itemcheck ();string ls_errcheck
-integer li_rowcount, li_selectcount, i
-ls_errcheck = ' '
-li_selectcount = 0
-is_firstcustomeritemcode	=	''
-is_firstinvoiceno				=	''
-li_rowcount = dw_3.rowcount()
-for i = 1 to li_rowcount
-	if dw_3.getitemstring(i, 'instcheck') = 'Y' then
-		li_selectcount ++
-		if li_selectcount = 1 then
-			is_firstcustomeritemcode	= dw_3.getitemstring(i, 'customeritemcode')
-			is_firstareacode				= dw_3.getitemstring(i, 'areacode')
-			is_firstdivisioncode			= dw_3.getitemstring(i, 'divisioncode')
-			is_firstcustomercode			= dw_3.getitemstring(i, 'customercode')
-			is_firstinvoiceno				= dw_3.getitemstring(i, 'invoiceno')
-		else
-			if dw_3.getitemstring(i, 'customeritemcode') <> is_firstcustomeritemcode then
-				ls_errcheck = 'Y'
-			end if
-		end if
-	end if
-next
-
-if li_selectcount = 0 then
-	return -1
-end if
-
-if ls_errcheck <> 'Y' then
-	return -1
-end if
-	
-return 0
-end function
 
 public function integer wf_mastercheck ();
 if dw_4.object.labelcount[1] = 0 or isnull(dw_4.object.labelcount[1]) then
@@ -135,44 +116,6 @@ if trim(f_dateedit(dw_4.object.tracedate[1])) = ''	then
 	return -1
 end if
 return 0
-end function
-
-public function integer wf_replacesave ();string ls_areacode, ls_divisioncode, ls_customercode, ls_customeritemcode,&
-		 ls_invoiceno, ls_tracedate
-integer li_serialnofrom, li_row
-
-ls_tracedate	= dw_4.getitemstring(1, "tracedate")
-
-ls_areacode				= dw_2.getitemstring(ii_currentrow, "areacode")
-ls_divisioncode		= dw_2.getitemstring(ii_currentrow, "divisioncode")
-ls_customercode		= dw_2.getitemstring(ii_currentrow, "customercode")
-ls_invoiceno			= dw_2.getitemstring(ii_currentrow, "mixedinvoiceno")
-li_serialnofrom		= dw_2.getitemnumber(ii_currentrow, "serialnofrom")
-
-update tlabelmixed
-	set	tracedate = :ls_tracedate		 
-where areacode 			= :ls_areacode and
-		divisioncode		=	:ls_divisioncode	and
-		customercode		=	:ls_customercode	and
-		invoiceno			=	:ls_invoiceno	and
-		serialnofrom		=	:li_serialnofrom	using sqlpis;
-
-if sqlpis.sqlcode <>	0 then
-	uo_status.st_message.text = '저장 실패'
-	rollback using sqlpis;
-	return -1
-end if	
-
-
-if sqlpis.sqlcode =	0 then
-	commit using sqlpis;
-	uo_status.st_message.text = '저장이 되었습니다.'
-end if
-		
-dw_2.setitem(1,"Tracedate",			ls_Tracedate)	
-
-return 0
-
 end function
 
 public function integer wf_deleteitemcheck ();string ls_errcheck, ls_customeritemcode
@@ -204,96 +147,47 @@ end if
 return 0
 end function
 
-public function integer wf_insertsave ();integer	li_serialnofrom, li_labelcount, li_rowcount, i, li_masterrowcount
-integer	li_serialnofromcon, ln_currow, li_find
-string	ls_tracedate, ls_areacode,	ls_divisioncode,	ls_customercode
-string	ls_customeritemcode, ls_invoiceno, ls_serialtext
-
-
-select isnull(sum(labelcount),0) into :li_serialnofrom from tlabelmixed
-where areacode				=	:is_firstareacode 			and	
-		divisioncode		=	:is_firstdivisioncode		and
-		customercode		=	:is_firstcustomercode		and
-		invoiceno			=	:is_firstinvoiceno			using sqlpis;
-	
-
-if sqlpis.sqlcode <> 0 then
-	li_serialnofrom = 0
-end if
-
-li_serialnofrom = li_serialnofrom + 1
-li_labelcount	= dw_4.getitemnumber(1, "labelcount")
-ls_tracedate	= dw_4.getitemstring(1, "tracedate")
-
-insert	into tlabelmixed
-		(areacode,				divisioncode,				customercode,
-		 invoiceno,				serialnofrom,				labelcount,
-		 tracedate)		 
-values(:is_firstareacode,	:is_firstdivisioncode,	:is_firstcustomercode,
-		 :is_firstinvoiceno,	:li_serialnofrom,			:li_labelcount,
-		 :ls_tracedate)  using sqlpis ;
-
-if sqlpis.sqlcode <>	0 then
-	uo_status.st_message.text = '저장 실패'
-	rollback using sqlpis;
-	return -1
-end if	
-
+public function integer wf_itemcheck ();string ls_errcheck
+integer li_rowcount, li_selectcount, i
+ls_errcheck = ' '
+li_selectcount = 0
+is_firstcustomeritemcode	=	''
+is_firstinvoiceno				=	''
 li_rowcount = dw_3.rowcount()
 for i = 1 to li_rowcount
 	if dw_3.getitemstring(i, 'instcheck') = 'Y' then
-		ls_areacode				= dw_3.getitemstring(i, 'areacode')
-		ls_divisioncode		= dw_3.getitemstring(i, 'divisioncode')
-		ls_customercode		= dw_3.getitemstring(i, 'customercode')
-		ls_customeritemcode	=	dw_3.getitemstring(i, 'customeritemcode')
-		ls_invoiceno			= dw_3.getitemstring(i, 'invoiceno')
-		li_serialnofromcon	=	dw_3.getitemnumber(i, 'serialnofrom')
-		update	tlabelcontainer
-			set	labelgroupgubun	=	'X', masterinvoiceno	=	:is_firstinvoiceno,
-					labelgroupserial	=	:li_serialnofrom
-		where	areacode				= :ls_areacode				and
-				divisioncode		= :ls_divisioncode		and
-				customercode		= :ls_customercode		and
-				customeritemcode	= :ls_customeritemcode	and
-				invoiceno			= :ls_invoiceno			and
-				serialnofrom		= :li_serialnofromcon	using sqlpis;
-
-		if sqlpis.sqlcode <>	0 then
-			uo_status.st_message.text = '저장 실패'
-			rollback using sqlpis;
-			return -1
-		end if	
+		li_selectcount ++
+		if li_selectcount = 1 then
+			is_firstcustomeritemcode	= dw_3.getitemstring(i, 'customeritemcode')
+			is_firstareacode				= dw_3.getitemstring(i, 'areacode')
+			is_firstdivisioncode			= dw_3.getitemstring(i, 'divisioncode')
+			is_firstcustomercode			= dw_3.getitemstring(i, 'customercode')
+			is_firstinvoiceno				= dw_3.getitemstring(i, 'invoiceno')
+			is_labelgubun					= dw_3.getitemstring(i, 'labelgubun')
+		else
+			if dw_3.getitemstring(i, 'customeritemcode') <> is_firstcustomeritemcode then
+				ls_errcheck = 'Y'
+			end if
+		end if
 	end if
 next
 
-if sqlpis.sqlcode =	0 then
-	commit using sqlpis;
-	uo_status.st_message.text = '저장이 되었습니다.'
+if li_selectcount = 0 then
+	return -1
 end if
 
-this.TriggerEvent("ue_retrieve")
-ls_serialtext = "serialnofrom = " + string(li_serialnofrom)
-li_find	= dw_2.Find("customercode = '" + is_firstcustomercode + "' And " + &
-							"areacode = '" + is_firstareacode + "' And " + &
-							"DivisionCode = '" + is_firstdivisioncode + "' And " + &
-							"mixedinvoiceno = '" + is_firstinvoiceno + "' And " + &
-							ls_serialtext, 1, dw_2.RowCount())
-If li_find > 0 Then
-	dw_2.SetRow(li_find)
-	dw_2.selectrow(li_find,false)
-	dw_2.selectrow(li_find,true)	
-	setpointer(arrow!)
-
-End If
-
+if ls_errcheck <> 'Y' then
+	return -1
+end if
+	
 return 0
-
 end function
 
 public function integer wf_deletesave ();integer li_serialnofrom, li_serialnofromcon, li_rowcount, i, li_count, ln_currow
-string  ls_areacode,	ls_divisioncode,	ls_customercode
-string	ls_customeritemcode, ls_invoiceno
+string  ls_areacode,	ls_divisioncode,	ls_customercode, ls_labelgubun
+string	ls_customeritemcode, ls_invoiceno, ls_message
 
+sqlpis.Autocommit = False
 li_rowcount = dw_3.rowcount()
 for i = 1 to li_rowcount
 	if dw_3.getitemstring(i, 'instcheck') = 'Y' then
@@ -303,18 +197,20 @@ for i = 1 to li_rowcount
 		ls_customeritemcode	= dw_3.getitemstring(i, 'customeritemcode')
 		ls_invoiceno			= dw_3.getitemstring(i, 'invoiceno')
 		li_serialnofromcon	=	dw_3.getitemnumber(i, 'serialnofrom')
-		update tlabelcontainer
+		ls_labelgubun 			= dw_3.getitemstring(i, 'labelgubun')
+		update tshiplabelcontainer
 		set labelgroupgubun	=	'',	masterinvoiceno = '',	labelgroupserial = 0
 		where	areacode				= :ls_areacode				and
 				divisioncode		= :ls_divisioncode		and
 				customercode		= :ls_customercode		and
 				customeritemcode	= :ls_customeritemcode	and
 				invoiceno			= :ls_invoiceno			and
-				serialnofrom		= :li_serialnofromcon	using sqlpis;
+				serialnofrom		= :li_serialnofromcon	and
+				labelgubun			= :ls_labelgubun
+		using sqlpis;
 		if sqlpis.sqlcode <>	0 then
-			uo_status.st_message.text = '삭제	실패'
-			rollback using sqlpis;
-			return -1
+			ls_message = 'LabelContainer 삭제실패'
+			goto RollBack_
 		end if	
 	end if
 next
@@ -323,13 +219,18 @@ ls_divisioncode		=	dw_2.object.divisioncode[ii_currentrow]
 ls_customercode		=	dw_2.object.customercode[ii_currentrow]
 ls_invoiceno			=	dw_2.object.mixedInvoiceNo[ii_currentrow]
 li_serialnofrom		=	dw_2.object.SerialnoFrom[ii_currentrow]
-select isnull(count(*),0) into :li_count from tlabelcontainer
+ls_labelgubun			=  dw_2.object.labelgubun[ii_currentrow]
+
+select isnull(count(*),0) into :li_count 
+from tshiplabelcontainer
 where areacode				= :ls_areacode				and
 		divisioncode		= :ls_divisioncode		and
 		customercode		= :ls_customercode		and
 		labelgroupgubun	= 'X'							and
 		masterinvoiceno	= :ls_invoiceno			and
-		labelgroupserial	= :li_serialnofrom		using sqlpis;
+		labelgroupserial	= :li_serialnofrom		and
+		labelgubun			= :ls_labelgubun
+using sqlpis;
 if sqlpis.sqlcode <>	0 then
 	li_count	=	0
 end if
@@ -338,21 +239,25 @@ if li_count > 0 then
 	dw_2.SelectRow(ii_currentrow, True)
 	dw_2.SetRow(ii_currentrow)
 	dw_2.ScrollToRow(ii_currentrow)
-return 0
+else
+	delete	from tshiplabelmixed
+	where	areacode				=	:ls_areacode	and
+			divisioncode		=	:ls_divisioncode	and
+			customercode		=	:ls_customercode	and
+			invoiceno			=	:ls_invoiceno			and
+			serialnofrom		=	:li_serialnofrom	and
+			labelgubun			=  :ls_labelgubun
+	using sqlpis;
+				
+	if sqlpis.sqlcode <>	0 then
+		ls_message = 'LabelMixed 삭제실패'
+		goto RollBack_
+	end if
 end if
 
-delete	from tlabelmixed
-where	areacode				=	:ls_areacode	and
-		divisioncode		=	:ls_divisioncode	and
-		customercode		=	:ls_customercode	and
-		invoiceno			=	:ls_invoiceno			and
-		serialnofrom		=	:li_serialnofrom	using sqlpis;
-			
-if sqlpis.sqlcode <>	0 then
-	uo_status.st_message.text = '삭제 실패'
-	rollback using sqlpis;
-	return -1
-end if	
+Commit using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = '정상적으로 처리되었습니다.'		
 		
 dw_2.deleterow(ii_currentrow)
 if dw_2.rowcount() = 0 then
@@ -367,165 +272,242 @@ dw_2.selectrow(ln_currow,true)
 setpointer(arrow!)
 return 0
 
+RollBack_:
+Rollback using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = ls_message
+
+return 0
+
 end function
 
-public subroutine wf_label_ford (integer ag_printcount);boolean	lb_null = False
-int		li_currow, li_selectedcount, li_currentprintcount, li_currentserial, li_shipqty,&
-			li_serialnofrom, li_serialnofrom1, li_labelcount, li_printcount, li_codecount
-int		li_grosswgt, li_standardpackqty, li_shift, li_lotsize
-long		ll_rowcount, ll_weightheader, ll_weightdetail, ll_rackcount
-string 	ls_suppliername, ls_segment1, ls_segment2, ls_suppliercity, ls_countryoforigin
-string	ls_customerdivision, ls_customaddr, ls_customaddr2, ls_customeritemcode
-string	ls_customercity, ls_customerstate, ls_plantdock, ls_deliverylocation
-string 	ls_customerno, ls_engalert, ls_supplierno, ls_containerno, ls_partdesc
-string	ls_workcenter, ls_tracedate, ls_dockcode, ls_pkgid, ls_itemcode, ls_unit
-string   ls_areacode, ls_divisioncode, ls_customercode, ls_invoiceno, ls_partitemcode, ls_bar2d
+public function integer wf_replacesave ();string ls_areacode, ls_divisioncode, ls_customercode, ls_customeritemcode,&
+		 ls_invoiceno, ls_tracedate, ls_labelgubun, ls_message
+integer li_serialnofrom, li_row
 
-//	BARCODE PRINT <TABPAGE-2>	
-ll_rowcount = dw_2.rowcount()
-dw_print.reset()
+sqlpis.Autocommit = False
+ls_tracedate	= dw_4.getitemstring(1, "tracedate")
 
-li_printcount = 0
+ls_areacode				= dw_2.getitemstring(ii_currentrow, "areacode")
+ls_divisioncode		= dw_2.getitemstring(ii_currentrow, "divisioncode")
+ls_customercode		= dw_2.getitemstring(ii_currentrow, "customercode")
+ls_invoiceno			= dw_2.getitemstring(ii_currentrow, "mixedinvoiceno")
+li_serialnofrom		= dw_2.getitemnumber(ii_currentrow, "serialnofrom")
+ls_labelgubun			= dw_2.getitemstring(ii_currentrow, "labelgubun")
+update tshiplabelmixed
+	set	tracedate = :ls_tracedate		 
+where areacode 			= :ls_areacode and
+		divisioncode		=	:ls_divisioncode	and
+		customercode		=	:ls_customercode	and
+		invoiceno			=	:ls_invoiceno	and
+		serialnofrom		=	:li_serialnofrom	and
+		labelgubun			=  :ls_labelgubun
+using sqlpis;
 
-For li_selectedcount = 1 To ll_rowcount
-	if dw_2.isselected(li_selectedcount) <> true then
-		continue
-	end if
-	// 세부 라벨품목 조회하기
-	ls_areacode					= dw_2.getitemstring(li_selectedcount,'areacode')
-	ls_divisioncode			= dw_2.getitemstring(li_selectedcount,'divisioncode')
-	ls_customercode			= dw_2.getitemstring(li_selectedcount,'customercode')
-	ls_customeritemcode		= dw_2.getitemstring(li_selectedcount,'customeritemcode')
-	ls_invoiceno				= Trim(dw_2.getitemstring(li_selectedcount, 'mixedinvoiceno'))
-	li_serialnofrom			= dw_2.getitemnumber(li_selectedcount, 'serialnofrom')
-	li_codecount = dw_5.retrieve(ls_areacode, ls_divisioncode, ls_customercode, &
-				ls_invoiceno,li_serialnofrom)
-	if li_codecount < 1 then
-		continue
-	end if
-	//Null Value Check
-	ls_suppliername		= dw_5.getitemstring(1,'suppliername')	
-//	ls_segment1				= dw_5.getitemstring(1,'segment1')
-//	ls_segment2				= dw_5.getitemstring(1,'segment2')
-//	ls_suppliercity		= dw_5.getitemstring(1,'suppliercity')
-//	ls_customeritemcode	= dw_5.getitemstring(1,'partno')
-//	ls_countryoforigin	= dw_5.getitemstring(1,'countryoforigin')
-	ls_customerdivision	= dw_5.getitemstring(1,'customerdivision')
-//	ls_customaddr			= dw_5.getitemstring(1,'customerplantaddress')
-//	ls_customaddr2			= dw_5.getitemstring(1,'customerplantaddress2')
-//	ls_customercity		= dw_5.getitemstring(1,'customercity')
-//	ls_customerstate		= dw_5.getitemstring(1,'customerstate')
-//	ls_plantdock			= dw_5.getitemstring(1,'plantdock')
-//	ls_deliverylocation	= dw_5.getitemstring(1,'deliverylocation')
-	ls_customerno			= dw_5.getitemstring(1,'customerno')
-//	ls_itemcode				= dw_5.getitemstring(1,'itemcode')
-//	ls_engalert				= dw_5.getitemstring(1,'engalert')
-	ls_supplierno			= dw_5.getitemstring(1,'supplierno')
-	ls_containerno			= dw_5.getitemstring(1,'containerno')
-//	ls_partdesc				= dw_5.getitemstring(1,'partdesc')
-//	ls_workcenter			= dw_5.getitemstring(1,'workcenter')
-	ls_tracedate			= dw_5.getitemstring(1,'tracedate')
-//	ls_dockcode				= dw_5.getitemstring(1,'dockcode')
-//	ls_unit					= dw_5.getitemstring(1,'unit')
-//	li_shipqty				= dw_5.getitemnumber(1,'shipqty')
-	li_grosswgt				= ( dw_5.getitemnumber(1, 'grosswgt') * 2.25 )
-//	li_standardpackqty	= dw_5.getitemnumber(1,'standardpackqty')
-//	li_shift					= dw_5.getitemnumber(1,'shift')
-//	li_lotsize				= dw_5.getitemnumber(1,'lotsize')
-//	if ls_customeritemcode = '892940' then
-//		ls_lotno = 'C02' + ls_lotno + '1'
-//	end if
-	li_serialnofrom			= dw_5.getitemnumber(1,'serialnofrom')
-	li_labelcount				= dw_5.getitemnumber(1, 'labelcount')
+if sqlpis.sqlcode <>	0 then
+	ls_message = "LabelMixed 출하일 수정 실패"
+	goto RollBack_
+end if	
 
-	if li_labelCount	<= 0 then
-		continue
-	end if
-	li_Printcount ++
+
+Commit using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = '정상적으로 처리되었습니다.'
+this.TriggerEvent("ue_retrieve")
+		
+dw_2.setitem(1,"Tracedate",			ls_Tracedate)	
+return 0
+
+RollBack_:
+Rollback using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = ls_message
+
+return 0
+end function
+
+public function integer wf_insertsave ();integer	li_serialnofrom, li_labelcount, li_rowcount, i, li_masterrowcount
+integer	li_serialnofromcon, ln_currow, li_find
+string	ls_tracedate, ls_areacode,	ls_divisioncode,	ls_customercode, ls_labelgubun
+string	ls_customeritemcode, ls_invoiceno, ls_serialtext, ls_message
+
+
+select isnull(sum(labelcount),0) into :li_serialnofrom from tshiplabelmixed
+where areacode				=	:is_firstareacode 			and	
+		divisioncode		=	:is_firstdivisioncode		and
+		customercode		=	:is_firstcustomercode		and
+		invoiceno			=	:is_firstinvoiceno			and
+		labelgubun			=  :is_labelgubun
+using sqlpis;
 	
-	for li_currentserial = 1	to Integer (li_labelcount)
-		li_serialnofrom1 = li_serialnofrom + li_currentserial - 1
-		//ls_pkgid = string(li_serialnofrom1)
-		for li_currentprintcount = 1 to ag_printcount
-			li_currow = dw_print.insertrow(0)
-			dw_print.setitem(li_currow,'suppliername',ls_suppliername)
-			dw_print.setitem(li_currow,'segment1',ls_segment1)
-			dw_print.setitem(li_currow,'segment2',ls_segment2)
-			dw_print.setitem(li_currow,'suppliercity',ls_suppliercity)
-			dw_print.setitem(li_currow,'countryoforigin',ls_countryoforigin)
-			dw_print.setitem(li_currow,'customerdivision',ls_customerdivision)
-			dw_print.setitem(li_currow,'customerplantaddress',ls_customaddr)
-			dw_print.setitem(li_currow,'customerplantaddress2',ls_customaddr2)
-			dw_print.setitem(li_currow,'customerplantcity',ls_customercity)
-			dw_print.setitem(li_currow,'customerstate',ls_customerstate)
-			dw_print.setitem(li_currow,'plantdock',ls_plantdock)
-			dw_print.setitem(li_currow,'deliverylocation',ls_deliverylocation)
-			dw_print.setitem(li_currow,'customerno',ls_customerno)
-			dw_print.setitem(li_currow,'customeritemcode',ls_customeritemcode)
-			dw_print.setitem(li_currow,'engalert',ls_engalert)
-			dw_print.setitem(li_currow,'supplierno',ls_supplierno)
-			dw_print.setitem(li_currow,'containerno',ls_containerno)
-			dw_print.setitem(li_currow,'itemcode',ls_itemcode)
-			dw_print.setitem(li_currow,'partdesc',ls_partdesc)
-			dw_print.setitem(li_currow,'workcenter',ls_workcenter)
-			dw_print.setitem(li_currow,'shift',li_shift)
-			dw_print.setitem(li_currow,'lotsize',li_lotsize)
-			dw_print.setitem(li_currow,'dockcode',ls_dockcode)
-			dw_print.setitem(li_currow,'unit',ls_unit)
-			dw_print.setitem(li_currow,'tracedate', string(date(string(ls_tracedate,"@@@@-@@-@@")),"DDMMMYYYY"))
-			dw_print.setitem(li_currow,'shipqty',li_shipqty)
-			dw_print.setitem(li_currow,'grosswgt',li_grosswgt)
-			dw_print.setitem(li_currow,'standardpackqty',li_standardpackqty)
-			ls_pkgid = upper(ls_divisioncode) + upper(right(ls_invoiceno,4)) +'-'+string(li_serialnofrom1,'000')
-			dw_print.setitem(li_currow,'serialnofrom', ls_pkgid)
-			// Calculate Barcode by code128
-			ls_partitemcode = f_replace_dash_blank(ls_customeritemcode)
-			dw_print.setitem(li_currow,'customeritemcodebar', &
-				char(204) + f_piss_convert_code128( 'B', 'P' + trim(ls_partitemcode) ) + char(206))
-			dw_print.setitem(li_currow,'shipqtybar', &
-				char(204) + f_piss_convert_code128( 'B', 'Q' + String(li_shipqty) ) + char(206))
-			dw_print.setitem(li_currow,'suppliernobar', &
-				char(204) + f_piss_convert_code128( 'B', 'V' + trim(ls_supplierno) ) + char(206))
-			dw_print.setitem(li_currow,'serialnofrombar', &
-				char(204) + f_piss_convert_code128( 'B', '5S' + Trim(ls_pkgid) ) + char(206))
-			// Calculate Barcode by BAR2D
-			string ls_data
-			ls_data =	char(91) + char(41) + char(62) + char(30) + "06" + char(29) +  &  
-						"V" +  trim(ls_supplierno)    + char(29) + &
-						"D" +  upper(string(date(string(ls_tracedate,"@@@@-@@-@@")),"YYMMDD")) +  char(29) + &
-						"5S" + trim(ls_pkgid) + char(30) + char(04)
-			ls_bar2d = f_get_2dbarcode( ls_data )
-			dw_print.setitem(li_currow,'bar2d',ls_bar2d)
-		next
-	next
-Next
-if li_printcount > 0 then		
-//	Long	ll_printjob
-//	ll_printjob	= PrintOPen()
-//	dw_print.modify("datawindow.Print.Orientation = 1" )
-//	dw_print.Modify("datawindow.print.margin.left   = " + String( Integer(Trim(em_3.Text))*100 ))
-//	dw_print.Modify("datawindow.print.margin.Top    = " + String( Integer(Trim(em_4.Text))*100 ))
-//	
-//	PrintDataWindow(ll_printjob, dw_print)
-//	PrintClose(ll_printjob)
-//	messagebox('확인', '출력하였습니다')
-else
-	messagebox('확인', 'Label정보가 존재 하지 않는 품목을 선택 하셨습니다.')
+
+if sqlpis.sqlcode <> 0 then
+	li_serialnofrom = 0
 end if
 
-return
-				
+sqlpis.Autocommit = False
 
+if dw_3.dataobject = 'd_piss613u_03' then
+	li_serialnofrom = li_serialnofrom + 1
+	li_labelcount	= dw_4.getitemnumber(1, "labelcount")
+	ls_tracedate	= dw_4.getitemstring(1, "tracedate")
+	
+	insert	into tshiplabelmixed
+			(areacode,				divisioncode,				customercode,
+			 invoiceno,				serialnofrom,				labelgubun,
+			 labelcount,			tracedate)		 
+	values(:is_firstareacode,	:is_firstdivisioncode,	:is_firstcustomercode,
+			 :is_firstinvoiceno,	:li_serialnofrom,			:is_labelgubun,
+			 :li_labelcount,		:ls_tracedate)  using sqlpis ;
+	
+	if sqlpis.sqlcode <> 0 then
+		ls_message = "ERR01 : " + sqlpis.sqlerrtext
+		goto RollBack_
+	end if
+end if
 
-end subroutine
+li_rowcount = dw_3.rowcount()
+for i = 1 to li_rowcount
+	ls_areacode				= dw_3.getitemstring(i, 'areacode')
+	ls_divisioncode		= dw_3.getitemstring(i, 'divisioncode')
+	ls_customercode		= dw_3.getitemstring(i, 'customercode')
+	ls_customeritemcode	=	dw_3.getitemstring(i, 'customeritemcode')
+	ls_invoiceno			= dw_3.getitemstring(i, 'invoiceno')
+	li_serialnofromcon	=	dw_3.getitemnumber(i, 'serialnofrom')
+	ls_labelgubun			= dw_3.getitemstring(i, 'labelgubun')
+	if dw_3.getitemstring(i, 'instcheck') = 'Y' then	
+		update	tshiplabelcontainer
+			set	labelgroupgubun	=	'X', masterinvoiceno	=	:is_firstinvoiceno,
+					labelgroupserial	=	:li_serialnofrom
+		where	areacode				= :ls_areacode				and
+				divisioncode		= :ls_divisioncode		and
+				customercode		= :ls_customercode		and
+				customeritemcode	= :ls_customeritemcode	and
+				invoiceno			= :ls_invoiceno			and
+				serialnofrom		= :li_serialnofromcon	and
+				labelgubun			= :ls_labelgubun
+		using sqlpis;
+		
+		if sqlpis.sqlnrows = 0 then
+			ls_message = "ERR02 : " + sqlpis.sqlerrtext
+			goto RollBack_
+		end if
+	else
+		if li_serialnofromcon <> 0 then
+			update	tshiplabelcontainer
+				set	labelgroupgubun	=	'', masterinvoiceno	=	:is_firstinvoiceno,
+						labelgroupserial	=	:li_serialnofrom
+			where	areacode				= :ls_areacode				and
+					divisioncode		= :ls_divisioncode		and
+					customercode		= :ls_customercode		and
+					customeritemcode	= :ls_customeritemcode	and
+					invoiceno			= :ls_invoiceno			and
+					serialnofrom		= :li_serialnofromcon	and
+					labelgubun			= :ls_labelgubun
+			using sqlpis;
+		else
+			update	tshiplabelcontainer
+				set	labelgroupgubun	=	'', masterinvoiceno	=	'',
+						labelgroupserial	=	0
+			where	areacode				= :ls_areacode				and
+					divisioncode		= :ls_divisioncode		and
+					customercode		= :ls_customercode		and
+					customeritemcode	= :ls_customeritemcode	and
+					invoiceno			= :ls_invoiceno			and
+					serialnofrom		= :li_serialnofromcon	and
+					labelgubun			= :ls_labelgubun
+			using sqlpis;
+		end if
+		
+		if sqlpis.sqlnrows = 0 then
+			ls_message = "ERR02 : " + sqlpis.sqlerrtext
+			goto RollBack_
+		end if
+	end if
+next
 
-public subroutine wf_label_form (integer ag_printcount);string	ls_areacode,				ls_divisioncode,		ls_customercode,&
+Commit using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = '정상적으로 처리되었습니다.'
+
+this.TriggerEvent("ue_retrieve")
+ls_serialtext = "serialnofrom = " + string(li_serialnofrom)
+li_find	= dw_2.Find("customercode = '" + is_firstcustomercode + "' And " + &
+							"areacode = '" + is_firstareacode + "' And " + &
+							"DivisionCode = '" + is_firstdivisioncode + "' And " + &
+							"Labelgubun = '" + ls_labelgubun + "' And " + &
+							"mixedinvoiceno = '" + is_firstinvoiceno + "' And " + &
+							ls_serialtext, 1, dw_2.RowCount())
+If li_find > 0 Then
+	dw_2.SetRow(li_find)
+	dw_2.SelectRow(0, FALSE)
+	dw_2.SelectRow(li_find, TRUE)
+//	dw_2.selectrow(li_find,false)
+//	dw_2.selectrow(li_find,true)	
+	setpointer(arrow!)
+End If
+return 0
+
+RollBack_:
+Rollback using sqlpis;
+sqlpis.Autocommit = True
+uo_status.st_message.text = ls_message
+
+return 0
+
+end function
+
+public function integer wf_label_print ();integer li_printcount, li_currow, li_rowcnt
+string  ls_labelgubun
+li_printcount = integer(em_1.text)
+li_rowcnt = dw_3.rowcount()
+
+if li_rowcnt < 1 then
+	messagebox('확인','Container현황에서 선택된 품목이 없습니다.')
+	return -1
+end if
+if isnull(li_printcount) then
+	messagebox('확인','인쇄 매수 확인 하세요')
+	return -1
+end if
+
+li_currow = dw_2.getselectedrow(0)
+if li_currow < 1 then
+	messagebox('확인','출력할 내용이 없습니다.')
+	return -1
+end if
+ls_labelgubun = dw_2.getitemstring(li_currow,'labelgubun')
+For li_currow = 1 To li_rowcnt
+	if dw_2.isselected(li_currow) <> true then
+		continue
+	end if
+	if ls_labelgubun <> dw_2.getitemstring(li_currow,'labelgubun') then
+		messagebox('알림','라벨구분이 동일한 것만 선택하시기 바랍니다.')
+		return -1
+	end if
+Next
+
+choose case ls_labelgubun
+	case 'DH'
+		dw_print.dataobject = "d_piss613u_06p"
+		wf_label_form(li_printcount)
+	case 'FD'
+		dw_print.dataobject = "d_piss613u_07p"
+		wf_label_ford(li_printcount)
+	case else
+		uo_status.st_message.text = "정의된 출력라벨이 없습니다. 시스템개발팀 담당자에게 연락바랍니다."
+		return -1
+end choose
+return 0
+end function
+
+public function integer wf_label_form (integer ag_printcount);string	ls_areacode,				ls_divisioncode,		ls_customercode,&
 			ls_invoiceno,				ls_plantdock,			ls_suppliercode,&
 			ls_suppliername,			ls_tracedate,			ls_suppliercity,&
 			ls_supplierpostal,		ls_countryoforigin,	ls_containerinvoiceno,&
 			ls_deliverylocation,		ls_customerdivision,	ls_customerplantaddress,&
 			ls_customerplantcity,	ls_customerstate,		ls_customerpostal,&
-			ls_segment1,				ls_segment2,			ls_segment3
+			ls_segment1,				ls_segment2,			ls_segment3, ls_labelgubun
 boolean	lb_null = False
 int		li_row, li_selectedcount, li_currentprintcount, li_currentserial,&
 			li_serialnofrom, li_labelcount, ln_row, li_serialcount, ll_rowcount,&
@@ -546,8 +528,9 @@ For li_selectedcount = 1 To ll_rowcount
 		ls_customercode			= dw_2.getitemstring(li_selectedcount,'customercode')
 		ls_invoiceno				= dw_2.getitemstring(li_selectedcount, 'mixedinvoiceno')
 		li_serialnofrom			= dw_2.getitemnumber(li_selectedcount, 'serialnofrom')
+		ls_labelgubun				= dw_2.getitemstring(li_selectedcount, 'labelgubun')
 		ln_row = dw_5.retrieve(ls_areacode, ls_divisioncode, ls_customercode,&
-									  ls_invoiceno,li_serialnofrom)
+									  ls_invoiceno,li_serialnofrom, ls_labelgubun)
 		li_containerrowcount = dw_5.rowcount()
 		ls_plantdock				=	dw_5.getitemstring(1,'plantdock')
 		ls_suppliercode			=	dw_5.getitemstring(1,'suppliercode')
@@ -676,20 +659,151 @@ For li_selectedcount = 1 To ll_rowcount
 		next
 Next
 	
-//Long	ll_printjob
-//////ll_printjob	= PrintOPen()
-//////printSetup()
-//ll_printjob	= PrintOPen()
-//dw_print.Modify("datawindow.print.margin.left   = " + String( Integer(Trim(em_3.Text))*100 )  )
-//dw_print.Modify("datawindow.print.margin.Top    = " + String( Integer(Trim(em_4.Text))*100 ) )
-//PrintDataWindow(ll_printjob, dw_print)
-//PrintClose(ll_printjob)
-//messagebox('확인', '출력하였습니다')
-return
+return 0
 				
 
 
-end subroutine
+end function
+
+public function integer wf_label_ford (integer ag_printcount);boolean	lb_null = False
+int		li_currow, li_selectedcount, li_currentprintcount, li_currentserial, li_shipqty,&
+			li_serialnofrom, li_serialnofrom1, li_labelcount, li_printcount, li_codecount
+int		li_grosswgt, li_standardpackqty, li_shift, li_lotsize
+long		ll_rowcount, ll_weightheader, ll_weightdetail, ll_rackcount
+string 	ls_suppliername, ls_segment1, ls_segment2, ls_suppliercity, ls_countryoforigin
+string	ls_customerdivision, ls_customaddr, ls_customaddr2, ls_customeritemcode
+string	ls_customercity, ls_customerstate, ls_plantdock, ls_deliverylocation
+string 	ls_customerno, ls_engalert, ls_supplierno, ls_containerno, ls_partdesc
+string	ls_workcenter, ls_tracedate, ls_dockcode, ls_pkgid, ls_itemcode, ls_unit, ls_labelgubun
+string   ls_areacode, ls_divisioncode, ls_customercode, ls_invoiceno, ls_partitemcode, ls_bar2d
+
+//	BARCODE PRINT <TABPAGE-2>	
+ll_rowcount = dw_2.rowcount()
+dw_print.reset()
+
+li_printcount = 0
+
+For li_selectedcount = 1 To ll_rowcount
+	if dw_2.isselected(li_selectedcount) <> true then
+		continue
+	end if
+	// 세부 라벨품목 조회하기
+	ls_areacode					= dw_2.getitemstring(li_selectedcount,'areacode')
+	ls_divisioncode			= dw_2.getitemstring(li_selectedcount,'divisioncode')
+	ls_customercode			= dw_2.getitemstring(li_selectedcount,'customercode')
+	ls_invoiceno				= Trim(dw_2.getitemstring(li_selectedcount, 'mixedinvoiceno'))
+	li_serialnofrom			= dw_2.getitemnumber(li_selectedcount, 'serialnofrom')
+	ls_labelgubun				= dw_2.getitemstring(li_selectedcount,'labelgubun')
+	li_codecount = dw_5.retrieve(ls_areacode, ls_divisioncode, ls_customercode, &
+				ls_invoiceno,li_serialnofrom, ls_labelgubun)
+	if li_codecount < 1 then
+		continue
+	end if
+	//Null Value Check
+	ls_suppliername		= dw_5.getitemstring(1,'suppliername')	
+//	ls_segment1				= dw_5.getitemstring(1,'segment1')
+//	ls_segment2				= dw_5.getitemstring(1,'segment2')
+//	ls_suppliercity		= dw_5.getitemstring(1,'suppliercity')
+//	ls_customeritemcode	= dw_5.getitemstring(1,'partno')
+//	ls_countryoforigin	= dw_5.getitemstring(1,'countryoforigin')
+	ls_customerdivision	= dw_5.getitemstring(1,'customerdivision')
+//	ls_customaddr			= dw_5.getitemstring(1,'customerplantaddress')
+//	ls_customaddr2			= dw_5.getitemstring(1,'customerplantaddress2')
+//	ls_customercity		= dw_5.getitemstring(1,'customercity')
+//	ls_customerstate		= dw_5.getitemstring(1,'customerstate')
+//	ls_plantdock			= dw_5.getitemstring(1,'plantdock')
+//	ls_deliverylocation	= dw_5.getitemstring(1,'deliverylocation')
+	ls_customerno			= dw_5.getitemstring(1,'customerno')
+//	ls_itemcode				= dw_5.getitemstring(1,'itemcode')
+//	ls_engalert				= dw_5.getitemstring(1,'engalert')
+	ls_supplierno			= dw_5.getitemstring(1,'supplierno')
+	ls_containerno			= dw_5.getitemstring(1,'containerno')
+//	ls_partdesc				= dw_5.getitemstring(1,'partdesc')
+//	ls_workcenter			= dw_5.getitemstring(1,'workcenter')
+	ls_tracedate			= dw_5.getitemstring(1,'tracedate')
+//	ls_dockcode				= dw_5.getitemstring(1,'dockcode')
+//	ls_unit					= dw_5.getitemstring(1,'unit')
+	li_shipqty				= dw_3.object.sum_shipqty[1]
+	li_grosswgt				= long( dw_3.object.sum_grosswgt[1] * 2.25 )
+//	li_standardpackqty	= dw_5.getitemnumber(1,'standardpackqty')
+//	li_shift					= dw_5.getitemnumber(1,'shift')
+	li_lotsize				= dw_3.object.sum_lotsize[1]
+//	if ls_customeritemcode = '892940' then
+//		ls_lotno = 'C02' + ls_lotno + '1'
+//	end if
+	li_serialnofrom			= dw_5.getitemnumber(1,'serialnofrom')
+	li_labelcount				= dw_5.getitemnumber(1, 'labelcount')
+
+	if li_labelCount	<= 0 then
+		continue
+	end if
+	li_Printcount ++
+	
+	for li_currentserial = 1	to Integer (li_labelcount)
+		li_serialnofrom1 = li_serialnofrom + li_currentserial - 1
+		//ls_pkgid = string(li_serialnofrom1)
+		for li_currentprintcount = 1 to ag_printcount
+			li_currow = dw_print.insertrow(0)
+			dw_print.setitem(li_currow,'suppliername',ls_suppliername)
+			dw_print.setitem(li_currow,'segment1',ls_segment1)
+			dw_print.setitem(li_currow,'segment2',ls_segment2)
+			dw_print.setitem(li_currow,'suppliercity',ls_suppliercity)
+			dw_print.setitem(li_currow,'countryoforigin',ls_countryoforigin)
+			dw_print.setitem(li_currow,'customerdivision',ls_customerdivision)
+			dw_print.setitem(li_currow,'customerplantaddress',ls_customaddr)
+			dw_print.setitem(li_currow,'customerplantaddress2',ls_customaddr2)
+			dw_print.setitem(li_currow,'customerplantcity',ls_customercity)
+			dw_print.setitem(li_currow,'customerstate',ls_customerstate)
+			dw_print.setitem(li_currow,'plantdock',ls_plantdock)
+			dw_print.setitem(li_currow,'deliverylocation',ls_deliverylocation)
+			dw_print.setitem(li_currow,'customerno',ls_customerno)
+			dw_print.setitem(li_currow,'customeritemcode',ls_customeritemcode)
+			dw_print.setitem(li_currow,'engalert',ls_engalert)
+			dw_print.setitem(li_currow,'supplierno',ls_supplierno)
+			dw_print.setitem(li_currow,'containerno',ls_containerno)
+			dw_print.setitem(li_currow,'itemcode',ls_itemcode)
+			dw_print.setitem(li_currow,'partdesc',ls_partdesc)
+			dw_print.setitem(li_currow,'workcenter',ls_workcenter)
+			dw_print.setitem(li_currow,'shift',li_shift)
+			dw_print.setitem(li_currow,'lotsize',li_lotsize)
+			dw_print.setitem(li_currow,'dockcode',ls_dockcode)
+			dw_print.setitem(li_currow,'unit',ls_unit)
+			dw_print.setitem(li_currow,'tracedate', upper(string(date(string(ls_tracedate,"@@@@-@@-@@")),"DDMMMYYYY")))
+			dw_print.setitem(li_currow,'shipqty',li_shipqty)
+			dw_print.setitem(li_currow,'grosswgt',li_grosswgt)
+			dw_print.setitem(li_currow,'standardpackqty',li_standardpackqty)
+			ls_pkgid = upper(ls_divisioncode) + upper(right(ls_invoiceno,4)) +'-'+string(li_serialnofrom1,'000')
+			dw_print.setitem(li_currow,'serialnofrom', ls_pkgid)
+			// Calculate Barcode by code128
+			ls_partitemcode = f_replace_dash_blank(ls_customeritemcode)
+			dw_print.setitem(li_currow,'customeritemcodebar', &
+				char(204) + f_piss_convert_code128( 'B', 'P' + trim(ls_partitemcode) ) + char(206))
+			dw_print.setitem(li_currow,'shipqtybar', &
+				char(204) + f_piss_convert_code128( 'B', 'Q' + String(li_shipqty) ) + char(206))
+			dw_print.setitem(li_currow,'suppliernobar', &
+				char(204) + f_piss_convert_code128( 'B', 'V' + trim(ls_supplierno) ) + char(206))
+			dw_print.setitem(li_currow,'serialnofrombar', &
+				char(204) + f_piss_convert_code128( 'B', '5S' + Trim(ls_pkgid) ) + char(206))
+			// Calculate Barcode by BAR2D
+			string ls_data
+			ls_data =	char(91) + char(41) + char(62) + char(30) + "06" + char(29) +  &  
+						"V" +  trim(ls_supplierno)    + char(29) + &
+						"D" +  upper(string(date(string(ls_tracedate,"@@@@-@@-@@")),"YYMMDD")) +  char(29) + &
+						"5S" + trim(ls_pkgid) + char(30) + char(04)
+			ls_bar2d = f_get_2dbarcode( ls_data )
+			dw_print.setitem(li_currow,'bar2d',ls_bar2d)
+		next
+	next
+Next
+if li_printcount > 0 then		
+	return 0
+else
+	return -1
+end if
+				
+
+
+end function
 
 on w_piss613u.create
 int iCurrent
@@ -713,6 +827,11 @@ this.em_4=create em_4
 this.st_4=create st_4
 this.em_3=create em_3
 this.st_5=create st_5
+this.uo_label=create uo_label
+this.st_6=create st_6
+this.sle_invoiceno=create sle_invoiceno
+this.st_7=create st_7
+this.pb_print=create pb_print
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.gb_4
 this.Control[iCurrent+2]=this.uo_area
@@ -733,6 +852,11 @@ this.Control[iCurrent+16]=this.em_4
 this.Control[iCurrent+17]=this.st_4
 this.Control[iCurrent+18]=this.em_3
 this.Control[iCurrent+19]=this.st_5
+this.Control[iCurrent+20]=this.uo_label
+this.Control[iCurrent+21]=this.st_6
+this.Control[iCurrent+22]=this.sle_invoiceno
+this.Control[iCurrent+23]=this.st_7
+this.Control[iCurrent+24]=this.pb_print
 end on
 
 on w_piss613u.destroy
@@ -756,6 +880,11 @@ destroy(this.em_4)
 destroy(this.st_4)
 destroy(this.em_3)
 destroy(this.st_5)
+destroy(this.uo_label)
+destroy(this.st_6)
+destroy(this.sle_invoiceno)
+destroy(this.st_7)
+destroy(this.pb_print)
 end on
 
 event ue_postopen;call super::ue_postopen;dw_2.SetTransObject(SQLPIS)
@@ -772,7 +901,8 @@ f_pisc_retrieve_dddw_division(uo_division.dw_1, &
 										uo_division.is_uo_divisioncode, &
 										uo_division.is_uo_divisionname, &
 										uo_division.is_uo_divisionnameeng)
-f_piss_retrieve_dddw_labelcustomer(uo_customer.dw_1,'%','%',false,uo_customer.is_uo_customercode,uo_customer.is_uo_customername)
+f_piss_retrieve_dddw_labelcustomer(uo_customer.dw_1,'%','%',true,uo_customer.is_uo_customercode,uo_customer.is_uo_customername)
+f_piss_retrieve_dddw_labelgubun(uo_label.dw_1,'%','%',true,uo_label.is_uo_labelcode,uo_label.is_uo_labelname)
 
 ib_open = True
 
@@ -816,13 +946,33 @@ st_3.y = gb_3.y
 st_3.x = gb_3.x+650
 end event
 
-event ue_insert;call super::ue_insert;string ls_customercode, ls_areacode, ls_divisioncode, ls_customeritemcode
+event ue_insert;call super::ue_insert;string ls_customercode, ls_areacode, ls_divisioncode, ls_customeritemcode, ls_labelgubun
+string ls_invoiceno
 int li_selcount
-dw_3.dataobject = 'd_piss612u_03'
+dw_3.dataobject = 'd_piss613u_03'
 dw_3.settransobject(sqlpis)
 dw_3.reset()
+
+ls_labelgubun = uo_label.is_uo_labelcode
+ls_invoiceno = sle_invoiceno.text
+if ls_labelgubun = '%' then
+	uo_status.st_message.text = "라벨구분을 선택해 주십시요"
+	return 0
+end if
+if uo_customer.is_uo_customercode = '%' then
+	uo_status.st_message.text = "거래처을 선택해 주십시요"
+	return 0
+end if
+if f_spacechk(ls_invoiceno) = -1 then
+	uo_status.st_message.text = "Invoice No를 입력해 주십시요"
+	return 0
+end if
 li_selcount = dw_3.retrieve(uo_area.is_uo_areacode,uo_division.is_uo_divisioncode,&
-									uo_customer.is_uo_customercode)
+									uo_customer.is_uo_customercode, ls_labelgubun, ls_invoiceno)
+if li_selcount < 1 then
+	uo_status.st_message.text = "조회된 컨테이너 정보가 없습니다."
+	return 0
+end if
 dw_4.object.labelcount.protect = false 
 dw_4.reset()
 dw_4.insertrow(0)
@@ -841,68 +991,56 @@ wf_icon_onoff(i_b_retrieve,  i_b_insert,  i_b_save,  i_b_delete,  i_b_print,    
 					  i_b_dretrieve,  i_b_dprint,    i_b_dchar)
 end event
 
-event ue_print;integer li_printcount, li_currow, li_rowcnt
-string  ls_labelgubun
-li_printcount = integer(em_1.text)
-li_rowcnt = dw_2.rowcount()
-
-if li_rowcnt < 1 then
-	messagebox('확인','출력할 내용이 없습니다.')
-end if
-if isnull(li_printcount) then
-	messagebox('확인','인쇄 매수 확인 하세요')
-	return
+event ue_print;// 전체인쇄
+if wf_label_print() = -1 then
+	return -1
 end if
 
-li_currow = dw_2.getselectedrow(0)
-if li_currow < 1 then
-	return 0
-end if
-ls_labelgubun = dw_2.getitemstring(li_currow,'labelgubun')
-For li_currow = 1 To li_rowcnt
-	if dw_2.isselected(li_currow) <> true then
-		continue
-	end if
-	if ls_labelgubun <> dw_2.getitemstring(li_currow,'labelgubun') then
-		messagebox('알림','라벨구분이 동일한 것만 선택하시기 바랍니다.')
-		return 0
-	end if
-Next
-if ls_labelgubun = 'F' then
-	dw_print.dataobject = 'd_piss613u_07p'
-	wf_label_ford(li_printcount)
-else
-	dw_print.dataobject = 'd_piss613u_06p'
-	wf_label_form(li_printcount)
-end if
+Long	ll_printjob
+ll_printjob	= PrintOPen()
+dw_print.modify("datawindow.Print.Orientation = 1" )
+dw_print.Modify("datawindow.print.margin.left   = " + String( Integer(Trim(em_3.Text))*100 ))
+dw_print.Modify("datawindow.print.margin.Top    = " + String( Integer(Trim(em_4.Text))*100 ))
+
+PrintDataWindow(ll_printjob, dw_print)
+PrintClose(ll_printjob)
+messagebox('확인', '출력하였습니다')
 
 // 라벨 인쇄 테스트
-	window 	l_to_open
-	str_easy l_str_prt
-	
-	//인쇄 DataWindow 저장
-	//w_easy_prt에 dwsyntax에 의한 modify()항이 추가됨
-	l_str_prt.transaction  = sqlpis
-	l_str_prt.datawindow   = dw_print
-	//l_str_prt.title = "완성품별 사용실적"
-	l_str_prt.tag			  = This.ClassName()
-		
-	f_close_report("1", l_str_prt.title)			 //Open된 출력Window 닫기
-	Opensheetwithparm(l_to_open, l_str_prt, "w_prt", w_frame, 0, Layered!)
+//	window 	l_to_open
+//	str_easy l_str_prt
+//	
+//	//인쇄 DataWindow 저장
+//	//w_easy_prt에 dwsyntax에 의한 modify()항이 추가됨
+//	l_str_prt.transaction  = sqlpis
+//	l_str_prt.datawindow   = dw_print
+//	//l_str_prt.title = "완성품별 사용실적"
+//	l_str_prt.tag			  = This.ClassName()
+//		
+//	f_close_report("1", l_str_prt.title)			 //Open된 출력Window 닫기
+//	Opensheetwithparm(l_to_open, l_str_prt, "w_prt", w_frame, 0, Layered!)
+
+return 0
 
 
 end event
-event ue_retrieve;call super::ue_retrieve;string ls_invoiceno
-long    l_n_row, l_n_currow
 
-//ls_invoiceno = em_1.text
+event ue_retrieve;call super::ue_retrieve;string ls_invoiceno, ls_labelgubun
+long    l_n_row, l_n_currow
 
 uo_status.st_message.text	=	"조회중입니다."
 
 dw_2.reset()
 dw_3.reset()
 
-l_n_row = dw_2.retrieve(uo_area.is_uo_areacode, uo_division.is_uo_divisioncode,uo_customer.is_uo_customercode)
+ls_labelgubun = uo_label.is_uo_labelcode
+ls_invoiceno = sle_invoiceno.text
+if f_spacechk(ls_invoiceno) = -1 then
+	ls_invoiceno = '%'
+end if
+
+l_n_row = dw_2.retrieve(uo_area.is_uo_areacode, uo_division.is_uo_divisioncode, &
+		uo_customer.is_uo_customercode, ls_labelgubun, ls_invoiceno)
 //l_n_row = dw_3.retrieve(uo_area.is_uo_areacode, uo_division.is_uo_divisioncode,uo_customer.is_uo_customercode)
 
 if l_n_row > 0 then
@@ -936,38 +1074,34 @@ dw_2.accepttext()
 dw_3.accepttext()
 dw_4.accepttext()
 if wf_mastercheck() = -1 then
-	return
+	return 0
 end if
 
-if dw_3.dataobject = 'd_piss612u_03' then
-	if wf_itemcheck() = -1 then
-		messagebox('확인', '선택한 품목이 없거나 ~r~n 2개 이상의 품번이 선택 되지 않았습니다.')
-		return
-	end if
+if wf_itemcheck() = -1 then
+	messagebox('확인', '선택한 품목이 없거나 ~r~n 2개 이상의 품번이 선택 되지 않았습니다.')
+	return 0
+end if
+
+if dw_3.dataobject = 'd_piss613u_03' then
 	if wf_insertsave() = -1 then
-		uo_status.st_message.text = '저장 실패'
-		return
-	else
-		uo_status.st_message.text = '저장 되었습니다.'
-		return
+		return 0
+	end if
+	
+	if wf_replacesave() = -1 then
+		return 0
 	end if
 else
 	if wf_replacesave() = -1 then
-		uo_status.st_message.text = '저장 실패'
-		return
-	else
-		uo_status.st_message.text = '저장 되었습니다.'
-		return
+		return 0
 	end if
 end if
-
 end event
 
 event ue_delete;call super::ue_delete;
 dw_2.accepttext()
 dw_3.accepttext()
 if wf_deleteitemcheck() = -1 then
-	messagebox('확인', '선택한 정보가 없거나~r~n 2가지 이상 품목이 존재 하지 않습니다.')
+	messagebox('확인', '선택한 정보가 없거나~r~n 2가지 이상 고객사품목이 존재 하지 않습니다.')
 	return
 end if
 if wf_deletesave() = -1 then
@@ -996,7 +1130,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "여백"
 end type
 
@@ -1048,7 +1182,8 @@ event ue_select;If ib_open Then
 	dw_4.SetTransObject(SQLPIS)
 	dw_5.SetTransObject(SQLPIS)
 	iw_this.TriggerEvent("ue_reset")
-	f_piss_retrieve_dddw_labelcustomer(uo_customer.dw_1,'%','%',false,uo_customer.is_uo_customercode,uo_customer.is_uo_customername)
+	f_piss_retrieve_dddw_labelcustomer(uo_customer.dw_1,uo_area.is_uo_areacode,uo_division.is_uo_divisioncode,true,uo_customer.is_uo_customercode,uo_customer.is_uo_customername)
+	f_piss_retrieve_dddw_labelgubun(uo_label.dw_1,uo_area.is_uo_areacode,uo_division.is_uo_divisioncode,true,uo_label.is_uo_labelcode,uo_label.is_uo_labelname)
 
 End If
 
@@ -1057,7 +1192,7 @@ end event
 type gb_1 from groupbox within w_piss613u
 integer x = 18
 integer width = 3579
-integer height = 192
+integer height = 304
 integer taborder = 60
 integer textsize = -10
 integer weight = 400
@@ -1066,13 +1201,13 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 end type
 
 type dw_print from datawindow within w_piss613u
 boolean visible = false
 integer x = 1042
-integer y = 516
+integer y = 836
 integer width = 1591
 integer height = 996
 integer taborder = 70
@@ -1088,7 +1223,7 @@ end type
 
 type dw_2 from u_vi_std_datawindow within w_piss613u
 integer x = 59
-integer y = 280
+integer y = 412
 integer width = 1591
 integer height = 288
 integer taborder = 0
@@ -1105,12 +1240,12 @@ If currentrow <= 0 Then
 end if
 
 ii_currentrow = currentrow
-dw_3.dataobject = 'd_piss612u_01'
+dw_3.dataobject = 'd_piss613u_01'
 dw_3.settransobject(sqlpis)
 dw_3.reset()
 li_row = dw_3.retrieve(dw_2.object.areacode[currentrow], dw_2.object.divisioncode[currentrow],&
 								dw_2.object.customercode[currentrow], 'X', dw_2.object.mixedInvoiceNo[currentrow],&
-								dw_2.object.SerialnoFrom[currentrow])
+								dw_2.object.SerialnoFrom[currentrow], dw_2.object.labelgubun[currentrow])
 
 dw_4.reset()
 dw_4.insertrow(0)
@@ -1130,8 +1265,8 @@ dw_4.object.labelcount.protect = true
 end event
 
 type uo_customer from u_piss_select_labelcustomer within w_piss613u
-integer x = 1157
-integer y = 76
+integer x = 50
+integer y = 192
 integer taborder = 30
 boolean bringtotop = true
 end type
@@ -1153,9 +1288,9 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 134217857
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "입력은 입력 버튼 클릭후 수용수입력,대상품목 선택후 저장"
-alignment alignment = right!
+alignment alignment = center!
 boolean focusrectangle = false
 end type
 
@@ -1167,7 +1302,7 @@ integer height = 400
 integer taborder = 50
 boolean bringtotop = true
 string title = "none"
-string dataobject = "d_piss612u_01"
+string dataobject = "d_piss613u_01"
 boolean hscrollbar = true
 boolean vscrollbar = true
 boolean hsplitscroll = true
@@ -1200,13 +1335,13 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "Container 현황"
 end type
 
 type gb_2 from groupbox within w_piss613u
 integer x = 23
-integer y = 204
+integer y = 336
 integer width = 1659
 integer height = 396
 integer textsize = -10
@@ -1216,13 +1351,14 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "Mixed 현황"
 end type
 
 type dw_5 from datawindow within w_piss613u
-integer x = 2057
-integer y = 364
+boolean visible = false
+integer x = 2208
+integer y = 660
 integer width = 686
 integer height = 400
 integer taborder = 40
@@ -1245,7 +1381,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "Label발행매수:"
 boolean focusrectangle = false
 end type
@@ -1301,7 +1437,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "위:"
 boolean focusrectangle = false
 end type
@@ -1338,8 +1474,117 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "왼쪽:"
 boolean focusrectangle = false
 end type
+
+type uo_label from u_piss_select_labelgubun within w_piss613u
+integer x = 1134
+integer y = 192
+integer taborder = 40
+boolean bringtotop = true
+end type
+
+on uo_label.destroy
+call u_piss_select_labelgubun::destroy
+end on
+
+type st_6 from statictext within w_piss613u
+integer x = 1198
+integer y = 88
+integer width = 325
+integer height = 72
+boolean bringtotop = true
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+string text = "Invoice No"
+boolean focusrectangle = false
+end type
+
+type sle_invoiceno from singlelineedit within w_piss613u
+integer x = 1504
+integer y = 72
+integer width = 544
+integer height = 76
+integer taborder = 30
+boolean bringtotop = true
+integer textsize = -9
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+textcase textcase = upper!
+borderstyle borderstyle = stylelowered!
+end type
+
+type st_7 from statictext within w_piss613u
+integer x = 2446
+integer y = 200
+integer width = 315
+integer height = 52
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 128
+long backcolor = 12632256
+string text = "선별인쇄:"
+alignment alignment = center!
+boolean focusrectangle = false
+end type
+
+type pb_print from picturebutton within w_piss613u
+string tag = "선별인쇄"
+integer x = 2770
+integer y = 188
+integer width = 302
+integer height = 80
+integer taborder = 70
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+string picturename = "C:\kdac\bmp\Printer.bmp"
+alignment htextalign = left!
+end type
+
+event clicked;string ls_pagerange
+
+// 선별 인쇄
+if wf_label_print() = -1 then
+	return -1
+end if
+
+open(w_piss_print_range)
+ls_pagerange = message.stringparm
+
+if f_spacechk(ls_pagerange) = -1 then
+	return 0
+end if
+
+Long	ll_printjob
+ll_printjob	= PrintOPen()
+dw_print.object.datawindow.print.page.range = ls_pagerange
+dw_print.modify("datawindow.Print.Orientation = 1" )
+dw_print.Modify("datawindow.print.margin.left   = " + String( Integer(Trim(em_3.Text))*100 ))
+dw_print.Modify("datawindow.print.margin.Top    = " + String( Integer(Trim(em_4.Text))*100 ))
+PrintDataWindow(ll_printjob, dw_print)
+PrintClose(ll_printjob)
+messagebox('확인', '출력하였습니다')
+end event
 

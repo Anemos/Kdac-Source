@@ -25,9 +25,20 @@ type tabpage_2 from userobject within tab_1
 dw_4 dw_4
 dw_5 dw_5
 end type
+type tabpage_3 from userobject within tab_1
+end type
+type dw_6 from u_vi_std_datawindow within tabpage_3
+end type
+type dw_7 from datawindow within tabpage_3
+end type
+type tabpage_3 from userobject within tab_1
+dw_6 dw_6
+dw_7 dw_7
+end type
 type tab_1 from tab within w_piss610u
 tabpage_1 tabpage_1
 tabpage_2 tabpage_2
+tabpage_3 tabpage_3
 end type
 type uo_area from u_pisc_select_area within w_piss610u
 end type
@@ -91,8 +102,116 @@ int i_n_tab_index
 end variables
 
 forward prototypes
+public subroutine wf_label02_form (integer ag_printcount)
 public subroutine wf_label_form (integer ag_printcount)
 end prototypes
+
+public subroutine wf_label02_form (integer ag_printcount);string	ls_customername, ls_customercode, ls_customeritemcode, ls_customeritemname, ls_suppliercode,ls_vessel, &
+			ls_uselocation, ls_inventorycode, ls_printdate, ls_itemcode, ls_revisionno, &
+			ls_traceno, ls_puchaseno, &
+			ls_areacode, ls_divisioncode
+string   ls_itemcodebar, ls_lotqtybar, ls_puchasenobar, ls_suppliercodebar, ls_serialnofrombar
+boolean	lb_null = False
+int		li_row, li_selectedcount, li_currentprintcount, li_currentserial, li_lotqty,&
+			li_serialnofrom,	li_labelcount, li_serialnoto
+long		ll_rowcount, ll_weightheader, ll_weightdetail, ll_rackcount
+
+//	BARCODE PRINT <TABPAGE-2>	
+ll_rowcount = tab_1.tabpage_3.dw_6.rowcount()
+dw_print.reset()
+dw_print.Modify("datawindow.print.margin.left   = " + String( Integer(Trim(em_2.Text))*100 )  )
+dw_print.Modify("datawindow.print.margin.Top    = " + String( Integer(Trim(em_3.Text))*100 ) )
+dw_print.Modify("datawindow.print.margin.bottom  = " + String(0*100 ))
+For li_selectedcount = 1 To ll_rowcount
+	   if tab_1.tabpage_3.dw_6.isselected(li_selectedcount) <> true then
+			continue
+		end if
+		//Null Value Check
+		ls_customercode		= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'customercode')
+		SELECT custname
+		 INTO :ls_customername
+		 FROM tmstcustomer
+		WHERE custcode = :ls_customercode using sqlpis  ;
+		ls_areacode				= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'areacode')
+		ls_divisioncode		= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'divisioncode')
+		ls_customercode		= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'customercode')
+		ls_puchaseno	 		= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'puchaseno')
+		ls_customeritemcode	= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'customeritemcode')
+		//ls_customeritemname	= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'customeritemname')
+		li_lotqty  				= tab_1.tabpage_3.dw_6.getitemnumber(li_selectedcount,'lotqty')
+		ls_vessel				= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'vessel')
+		ll_weightdetail		= tab_1.tabpage_3.dw_6.getitemnumber(li_selectedcount,'weightdetail')
+		ll_rackcount			= tab_1.tabpage_3.dw_6.getitemnumber(li_selectedcount,'rackcount')
+		ls_printdate   	 	= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'printdate')
+		ls_traceno				= tab_1.tabpage_3.dw_6.getitemstring(li_selectedcount,'traceno')
+	   li_serialnofrom  	   = tab_1.tabpage_3.dw_6.getitemnumber(li_selectedcount,'serialnofrom')
+	   li_labelcount      	= tab_1.tabpage_3.dw_6.getitemnumber(li_selectedcount,'labelcount')
+   	SELECT suppliercode, inventorycode, weight, uselocation, itemcode, revisionno
+		  into :ls_suppliercode, :ls_inventorycode, :ll_weightheader, :ls_uselocation, :ls_itemcode, :ls_revisionno
+		 FROM tshiplabelheader
+		WHERE areacode 		  = :ls_areacode and
+		      divisioncode	  = :ls_divisioncode and
+				customercode 	  = :ls_customercode and
+				customeritemcode = :ls_customeritemcode and
+		      lotqty			  = :li_lotqty
+		using sqlpis  ;
+//		SELECT custname
+//		  into :ls_customername
+//		 FROM tmstcustomer
+//		WHERE custcode 	 = :ls_customercode
+//		using sqlpis  ;
+	
+	li_serialnoto = li_serialnofrom	+	li_labelcount - 1
+	for li_currentserial = li_serialnofrom to li_serialnoto
+		for li_currentprintcount = 1 to ag_printcount
+
+			li_row ++			
+			dw_print.insertrow(li_row)
+			
+	//		dw_print.setitem(li_row,'customername',ls_customername)
+			dw_print.setitem(li_row,'puchaseno',ls_puchaseno)
+			dw_print.setitem(li_row,'itemcode',ls_customeritemcode)
+			dw_print.setitem(li_row,'lotqty',li_lotqty)
+			dw_print.setitem(li_row,'suppliercode',ls_suppliercode)
+			dw_print.setitem(li_row,'vessel',ls_vessel)
+			dw_print.setitem(li_row,'inventorycode',ls_inventorycode)
+			dw_print.setitem(li_row,'weightheader',ll_weightheader)
+			dw_print.setitem(li_row,'weightdetail',ll_weightdetail)
+			dw_print.setitem(li_row,'rackcount',ll_rackcount)
+			dw_print.setitem(li_row,'uselocation',ls_uselocation)
+		//	dw_print.setitem(li_row,'customeritemname',ls_customeritemname)
+		//	dw_print.setitem(li_row,'itemcode',ls_itemcode)
+			dw_print.setitem(li_row,'printdate',ls_printdate)
+			dw_print.setitem(li_row,'revisionno',ls_revisionno)
+			dw_print.setitem(li_row,'traceno',ls_traceno)
+			dw_print.setitem(li_row,'serialnofrom', li_currentserial)
+			// Calculate Barcode By code128
+			dw_print.setitem(li_row,'itemcodebar', &
+				char(204) + f_piss_convert_code128('B','P' + trim(ls_customeritemcode)) + char(206))
+			dw_print.setitem(li_row,'lotqtybar', &
+				char(204) + f_piss_convert_code128('B','Q' + string(li_lotqty)) + char(206))
+			dw_print.setitem(li_row,'puchasenobar', &
+				char(204) + f_piss_convert_code128('B','A' + trim(ls_puchaseno)) + char(206))
+			dw_print.setitem(li_row,'suppliercodebar', &
+				char(204) + f_piss_convert_code128('B','V' + trim(ls_suppliercode)) + char(206))
+			dw_print.setitem(li_row,'serialnofrombar', &
+				char(204) + f_piss_convert_code128('B','S' + string(li_currentserial,"0000")) + char(206))
+		next
+	next
+Next
+	
+Long	ll_printjob
+////ll_printjob	= PrintOPen()
+////printSetup()
+ll_printjob	= PrintOPen()
+PrintDataWindow(ll_printjob, dw_print)
+PrintClose(ll_printjob)
+messagebox('확인','발행 되었습니다')
+return
+				
+
+
+end subroutine
 
 public subroutine wf_label_form (integer ag_printcount);string	ls_customername, ls_customercode, ls_customeritemcode, ls_customeritemname, ls_suppliercode,ls_vessel, &
 			ls_uselocation, ls_inventorycode, ls_printdate, ls_itemcode, ls_revisionno, &
@@ -181,15 +300,16 @@ Next
 Long	ll_printjob
 ////ll_printjob	= PrintOPen()
 ////printSetup()
-//ll_printjob	= PrintOPen()
-//PrintDataWindow(ll_printjob, dw_print)
-//PrintClose(ll_printjob)
-//messagebox('확인','발행 되었습니다')
+ll_printjob	= PrintOPen()
+PrintDataWindow(ll_printjob, dw_print)
+PrintClose(ll_printjob)
+messagebox('확인','발행 되었습니다')
 return
 				
 
 
 end subroutine
+
 on w_piss610u.create
 int iCurrent
 call super::create
@@ -255,6 +375,8 @@ event ue_postopen;call super::ue_postopen;tab_1.tabpage_1.dw_2.SetTransObject(SQ
 tab_1.tabpage_1.dw_3.SetTransObject(SQLPIS)
 tab_1.tabpage_2.dw_4.SetTransObject(SQLPIS)
 tab_1.tabpage_2.dw_5.SetTransObject(SQLPIS)
+tab_1.tabpage_3.dw_6.SetTransObject(SQLPIS)
+tab_1.tabpage_3.dw_7.SetTransObject(SQLPIS)
 
 f_pisc_retrieve_dddw_division(uo_division.dw_1, &
 										g_s_empno, &
@@ -298,8 +420,10 @@ of_resize()
 
 end event
 
-event ue_insert;call super::ue_insert;String ls_customercode, ls_itemcode
+event ue_insert;call super::ue_insert;String ls_customercode, ls_itemcode, ls_customeritemcode, ls_puchaseno
 int    l_n_row, net
+long	ll_lotqty, ll_rackcount
+dec{2}	lc_weight
 
 choose case i_n_tab_index
 		 case 1
@@ -338,49 +462,122 @@ choose case i_n_tab_index
 				ls_itemcode = '%'
 				tab_1.tabpage_2.dw_4.reset()
 		   	l_n_row = tab_1.tabpage_2.dw_4.retrieve(uo_area.is_uo_areacode, &
-					uo_division.is_uo_divisioncode,ls_customercode + '%',ls_itemcode)
+					uo_division.is_uo_divisioncode,ls_customercode + '%',ls_itemcode,'%','A')
 			else
 				ls_customercode = tab_1.tabpage_2.dw_4.getitemstring(l_n_row,"customercode")
+				ls_customeritemcode = tab_1.tabpage_2.dw_4.getitemstring(l_n_row,"customeritemcode")
+				ls_puchaseno = tab_1.tabpage_2.dw_4.getitemstring(l_n_row,"puchaseno")
+				ll_lotqty = tab_1.tabpage_2.dw_4.getitemnumber(l_n_row,"lotqty")
+				lc_weight = tab_1.tabpage_2.dw_4.getitemnumber(l_n_row,"weightdetail")
+				ll_rackcount = tab_1.tabpage_2.dw_4.getitemnumber(l_n_row,"rackcount")
 			end if
 			
 			tab_1.tabpage_2.dw_5.reset()
 			tab_1.tabpage_2.dw_5.insertrow(0)
-			tab_1.tabpage_2.dw_5.object.customeritemcode.protect = false
-			tab_1.tabpage_2.dw_5.object.lotqty.protect = false
-			tab_1.tabpage_2.dw_5.object.LabelCount.protect = false
+			tab_1.tabpage_2.dw_5.object.customeritemcode.protect = 0
+			tab_1.tabpage_2.dw_5.object.lotqty.protect = 0
+			tab_1.tabpage_2.dw_5.object.LabelCount.protect = 0
 			tab_1.tabpage_2.dw_5.setitem(1,"customercode",ls_customercode)
+			tab_1.tabpage_2.dw_5.setitem(1,"customeritemcode",ls_customeritemcode)
+			tab_1.tabpage_2.dw_5.setitem(1,"puchaseno",ls_puchaseno)
+			tab_1.tabpage_2.dw_5.setitem(1,"lotqty",ll_lotqty)
+			tab_1.tabpage_2.dw_5.setitem(1,"weight",lc_weight)
+			tab_1.tabpage_2.dw_5.setitem(1,"rackcount",ll_rackcount)
+			tab_1.tabpage_2.dw_5.setitem(1,"labeltype",'A')
 			tab_1.tabpage_2.dw_5.setfocus() 
   		   tab_1.tabpage_2.dw_5.setcolumn("customeritemcode")
 			uo_status.st_message.text = "해당정보를 입력하십시오"
+		case 3
+			l_n_row = tab_1.tabpage_3.dw_6.getselectedrow(0)
+			if l_n_row < 1 then
+				ls_customercode = uo_customer.is_uo_custcode
+				if f_spacechk(ls_customercode) = -1 then
+					uo_status.st_message.text = "거래처를 선택해 주십시요"
+					return 0
+				end if
+				ls_customercode = ls_customercode
+				ls_itemcode = '%'
+				tab_1.tabpage_3.dw_6.reset()
+		   	l_n_row = tab_1.tabpage_3.dw_6.retrieve(uo_area.is_uo_areacode, &
+					uo_division.is_uo_divisioncode,ls_customercode + '%',ls_itemcode,'%','B')
+			else
+				ls_customercode = tab_1.tabpage_3.dw_6.getitemstring(l_n_row,"customercode")
+				ls_customeritemcode = tab_1.tabpage_3.dw_6.getitemstring(l_n_row,"customeritemcode")
+				ls_puchaseno = tab_1.tabpage_3.dw_6.getitemstring(l_n_row,"puchaseno")
+				ll_lotqty = tab_1.tabpage_3.dw_6.getitemnumber(l_n_row,"lotqty")
+				lc_weight = tab_1.tabpage_3.dw_6.getitemnumber(l_n_row,"weightdetail")
+				ll_rackcount = tab_1.tabpage_3.dw_6.getitemnumber(l_n_row,"rackcount")
+			end if
+			
+			tab_1.tabpage_3.dw_7.reset()
+			tab_1.tabpage_3.dw_7.insertrow(0)
+			tab_1.tabpage_3.dw_7.object.customeritemcode.protect = 0
+			tab_1.tabpage_3.dw_7.object.lotqty.protect = 0
+			tab_1.tabpage_3.dw_7.object.LabelCount.protect = 0
+			tab_1.tabpage_3.dw_7.setitem(1,"customercode",ls_customercode)
+			tab_1.tabpage_3.dw_7.setitem(1,"customeritemcode",ls_customeritemcode)
+			tab_1.tabpage_3.dw_7.setitem(1,"puchaseno",ls_puchaseno)
+			tab_1.tabpage_3.dw_7.setitem(1,"lotqty",ll_lotqty)
+			tab_1.tabpage_3.dw_7.setitem(1,"weight",lc_weight)
+			tab_1.tabpage_3.dw_7.setitem(1,"rackcount",ll_rackcount)
+			tab_1.tabpage_3.dw_7.setitem(1,"labeltype",'B')
+			tab_1.tabpage_3.dw_7.setfocus() 
+			tab_1.tabpage_3.dw_7.setcolumn("customeritemcode")
+			uo_status.st_message.text = "해당정보를 입력하십시오"
 end choose
+
+return 0
 
 end event
 
-event ue_print;integer li_printcount
+event ue_print;integer li_printcount, li_selcnt
+string ls_customeritemcode
 
 li_printcount = integer(em_1.text)
 
 if isnull(li_printcount) then
 	messagebox('확인','인쇄 매수 확인 하세요')
-	return
+	return 0
 end if
 
-wf_label_form(li_printcount)
+choose case i_n_tab_index
+	case 2
+		li_selcnt = tab_1.tabpage_2.dw_4.getselectedrow(0)
+		if li_selcnt < 1 then
+			uo_status.st_message.text = "출력할데이타를 선택하십시요."
+			return 0
+		end if
+		dw_print.dataobject = "d_piss610p_06"
+		dw_print.settransobject(sqlpis)
+		wf_label_form(li_printcount)
+	case 3
+		li_selcnt = tab_1.tabpage_3.dw_6.getselectedrow(0)
+		if li_selcnt < 1 then
+			uo_status.st_message.text = "출력할데이타를 선택하십시요."
+			return 0
+		end if
+		dw_print.dataobject = "d_piss610p_07"
+		dw_print.settransobject(sqlpis)
+		wf_label02_form(li_printcount)
+	case else
+		return 0
+end choose
 
-// 라벨 인쇄 테스트
-	window 	l_to_open
-	str_easy l_str_prt
-	
-	//인쇄 DataWindow 저장
-	//w_easy_prt에 dwsyntax에 의한 modify()항이 추가됨
-	l_str_prt.transaction  = sqlpis
-	l_str_prt.datawindow   = dw_print
-	//l_str_prt.title = "완성품별 사용실적"
-	l_str_prt.tag			  = This.ClassName()
-		
-	f_close_report("1", l_str_prt.title)			 //Open된 출력Window 닫기
-	Opensheetwithparm(l_to_open, l_str_prt, "w_prt", w_frame, 0, Layered!)
-
+////화면표시
+//window 	l_to_open
+//str_easy l_str_prt
+//
+////인쇄 DataWindow 저장
+////w_easy_prt에 dwsyntax에 의한 modify()항이 추가됨
+//l_str_prt.transaction  = sqlpis
+//l_str_prt.datawindow   = dw_print
+////l_str_prt.title = "완성품별 사용실적"
+//l_str_prt.tag			  = This.ClassName()
+//	
+//f_close_report("1", l_str_prt.title)			 //Open된 출력Window 닫기
+//Opensheetwithparm(l_to_open, l_str_prt, "w_prt", w_frame, 0, Layered!)
+////끝
+//
 end event
 
 event ue_retrieve;string ls_areacode, ls_divisioncode, ls_customercode, ls_customeritemcode, ls_serialfrom
@@ -431,14 +628,39 @@ choose case i_n_tab_index
 				end if
 			end if
 			tab_1.tabpage_2.dw_4.reset()
+			tab_1.tabpage_2.dw_5.reset()
 
-		   l_n_row = tab_1.tabpage_2.dw_4.retrieve(ls_areacode, ls_divisioncode,ls_customercode,ls_itno,ls_prtdate)
+		   l_n_row = tab_1.tabpage_2.dw_4.retrieve(ls_areacode, ls_divisioncode,ls_customercode,ls_itno,ls_prtdate,'A')
 			
 			if l_n_row > 0 then
 				// 처음 retrieve시 dw_4의 default data는 first row
 				l_n_currow = tab_1.tabpage_2.dw_4.getrow()
 				tab_1.tabpage_2.dw_4.selectrow(0,false)
 				tab_1.tabpage_2.dw_4.selectrow(l_n_currow,true)
+		  	   uo_status.st_message.text	=	'조회되었습니다.'
+			else
+			   uo_status.st_message.text	=	'조회할 자료가 없습니다.'  	
+			end if
+		case 3
+			em_date.getdata(ls_prtdate)
+			if f_spacechk(ls_prtdate) = -1 then
+				ls_prtdate = '%'
+			else
+				if f_dateedit(ls_prtdate) = space(8) then
+					messagebox("알림","발행일이 잘못 입력되었습니다.")
+					return 0
+				end if
+			end if
+			tab_1.tabpage_3.dw_6.reset()
+			tab_1.tabpage_3.dw_7.reset()
+
+		   l_n_row = tab_1.tabpage_3.dw_6.retrieve(ls_areacode, ls_divisioncode,ls_customercode,ls_itno,ls_prtdate,'B')
+			
+			if l_n_row > 0 then
+				// 처음 retrieve시 dw_6의 default data는 first row
+				l_n_currow = tab_1.tabpage_3.dw_6.getrow()
+				tab_1.tabpage_3.dw_6.selectrow(0,false)
+				tab_1.tabpage_3.dw_6.selectrow(l_n_currow,true)
 		  	   uo_status.st_message.text	=	'조회되었습니다.'
 			else
 			   uo_status.st_message.text	=	'조회할 자료가 없습니다.'  	
@@ -546,18 +768,7 @@ choose case i_n_tab_index
 					return
 				end if
 			end if	
-//			if isnull(tab_1.tabpage_2.dw_5.getitemnumber(1, 'weight')) or &
-//			   tab_1.tabpage_2.dw_5.getitemnumber(1, 'weight') <= 0 then
-//				messagebox('확인','총중량을 입력 하시오')
-//				return
-//			end if	
-//
-//			if isnull(tab_1.tabpage_2.dw_5.getitemnumber(1, 'rackcount')) or &
-//			   tab_1.tabpage_2.dw_5.getitemnumber(1, 'rackcount') <= 0 then
-//				messagebox('확인','랙수를 입력 하시오')
-//				return
-//			end if	
-//
+
 			li_copies = tab_1.tabpage_2.dw_5.getitemnumber(1,'labelcount') 
 			if tab_1.tabpage_2.dw_5.getitemnumber(1, 'serialnofrom') = 0 or	&
 				isnull(tab_1.tabpage_2.dw_5.getitemnumber(1, 'serialnofrom'))	then
@@ -602,6 +813,95 @@ choose case i_n_tab_index
 			
 			f_inptid(tab_1.tabpage_2.dw_5)
 			li_rtncnt = tab_1.tabpage_2.dw_5.update(true,false)
+			if li_rtncnt = 1 then
+				commit using sqlpis;
+				uo_status.st_message.text = '저장이 되었습니다.'
+			else 
+				uo_status.st_message.text = '저장 실패'
+				rollback using sqlpis;
+			end if
+		case 3
+			tab_1.tabpage_3.dw_7.accepttext()
+			ls_areacode			= uo_area.is_uo_areacode
+			ls_divisioncode	= uo_division.is_uo_divisioncode
+			ls_customercode	= tab_1.tabpage_3.dw_7.getitemstring(1,'customercode')
+			tab_1.tabpage_3.dw_7.setitem(1,'areacode',ls_areacode)
+         tab_1.tabpage_3.dw_7.setitem(1,'divisioncode',ls_divisioncode)
+			ls_customeritemcode	  = tab_1.tabpage_3.dw_7.getitemstring(1,'customeritemcode') 
+			li_lotqty 				  = tab_1.tabpage_3.dw_7.getitemnumber(1,'lotqty') 
+			li_SerialNoFrom		  = tab_1.tabpage_3.dw_7.getitemnumber(1,'SerialNoFrom') 
+			ls_printdate			  = tab_1.tabpage_3.dw_7.getitemstring(1,'printdate') 	
+			if isnull(tab_1.tabpage_3.dw_7.getitemstring(1, 'customeritemcode')) or &
+			   tab_1.tabpage_3.dw_7.getitemstring(1, 'customeritemcode') = '' then
+				messagebox('확인','거래처 품번을 입력 하시오')
+				return
+			end if
+			
+			if isnull(tab_1.tabpage_3.dw_7.getitemnumber(1, 'lotqty')) or &
+			   tab_1.tabpage_3.dw_7.getitemnumber(1, 'lotqty') <= 0 then
+				messagebox('확인','수용수를 입력 하시오')
+				return
+			end if	
+			
+			if isnull(tab_1.tabpage_3.dw_7.getitemstring(1, 'puchaseno')) or &
+			   tab_1.tabpage_3.dw_7.getitemstring(1, 'puchaseno') = '' then
+				messagebox('확인','발주번호를 입력 하시오')
+				return
+			end if	
+
+			if trim(ls_printdate) = '' or isnull(ls_printdate) then
+			//
+			else
+				if trim(f_dateedit(ls_printdate)) = ''	then
+					messagebox('확인','날짜 체계가 틀립니다.')
+					return
+				end if
+			end if	
+
+			li_copies = tab_1.tabpage_3.dw_7.getitemnumber(1,'labelcount') 
+			if tab_1.tabpage_3.dw_7.getitemnumber(1, 'serialnofrom') = 0 or	&
+				isnull(tab_1.tabpage_3.dw_7.getitemnumber(1, 'serialnofrom'))	then
+				if li_copies <= 0 then
+					uo_status.st_message.text = '매수를 입력하십시오'
+					messagebox('확인','매수를 입력하십시오')
+					return
+				end if
+			end if	
+			
+			SELECT count(*) into :li_count
+		   FROM tshiplabelheader
+		   WHERE ( areacode         = :ls_areacode) AND
+			      ( divisioncode 	 = :ls_divisioncode ) and
+					( customercode 	 = :ls_customercode ) and
+					( customeritemcode = :ls_customeritemcode ) and
+					( lotqty           = :li_lotqty )	using sqlpis ;
+			
+			if sqlpis.sqlcode <> 0 or li_count = 0 then
+				uo_status.st_message.text = '기본정보 등록후 작업 하시오'
+				messagebox('확인','기본정보 등록후 작업 하시오')
+				return
+			end if
+			
+			if li_SerialNoFrom	<=	0	or isnull(li_SerialNoFrom)	then
+				SELECT sum(LabelCount)  
+		        INTO :li_maxlabelcount
+		   	FROM tshiplabeldetail
+		  		WHERE ( areacode         = :ls_areacode) AND
+			   	   ( divisioncode 	 = :ls_divisioncode ) and
+						( customercode 	 = :ls_customercode ) and
+						( customeritemcode = :ls_customeritemcode ) and
+						( lotqty           = :li_lotqty )	using sqlpis ;
+
+				if sqlpis.sqlcode <> 0 or isnull(li_maxlabelcount) = true then
+   				li_maxlabelcount = 0
+				end if
+			
+				li_maxlabelcount++
+				tab_1.tabpage_3.dw_7.setitem(1,'serialnofrom',li_maxlabelcount)
+			end if
+			
+			f_inptid(tab_1.tabpage_3.dw_7)
+			li_rtncnt = tab_1.tabpage_3.dw_7.update(true,false)
 			if li_rtncnt = 1 then
 				commit using sqlpis;
 				uo_status.st_message.text = '저장이 되었습니다.'
@@ -710,7 +1010,33 @@ choose case i_n_tab_index
 				rollback using sqlpis;
 				uo_status.st_message.text = "err_d1; " + "삭제실패 정보시스템으로 연락바랍니다."
 			end if
-			
+		case 3
+			ll_currow = tab_1.tabpage_3.dw_6.getselectedrow(0)
+			ls_areacode		 	  = tab_1.tabpage_3.dw_6.object.areacode[ll_currow]
+			ls_divisioncode	  = tab_1.tabpage_3.dw_6.object.divisioncode[ll_currow]
+			ls_customercode 	  = tab_1.tabpage_3.dw_6.object.customercode[ll_currow]
+			ls_customeritemcode = tab_1.tabpage_3.dw_6.object.customeritemcode[ll_currow]
+			li_lotqty			  = tab_1.tabpage_3.dw_6.object.lotqty[ll_currow]
+			li_serialnofrom     = tab_1.tabpage_3.dw_6.object.serialnofrom[ll_currow]
+			li_rtn = messagebox("알림", ls_customeritemcode + " 를 정말 삭제 하시겠습니까?",question!,yesno!,1)   //정말삭제하시겠습니까?
+			if li_rtn = 2 then
+				uo_status.st_message.text = "삭제가 취소되었습니다."
+				return 0
+			end if
+			delete from tshiplabeldetail
+				where areacode 			= :ls_areacode and
+				      divisioncode 		= :ls_divisioncode and
+						customercode 		= :ls_customercode and
+						customeritemcode 	= :ls_customeritemcode and
+						lotqty           	= :li_lotqty and
+						serialnofrom 		= :li_serialnofrom using sqlpis;
+			if sqlpis.sqlcode = 0 then
+				commit using sqlpis;
+				uo_status.st_message.text = "삭제되었습니다."
+			else
+				rollback using sqlpis;
+				uo_status.st_message.text = "err_d1; " + "삭제실패 정보시스템으로 연락바랍니다."
+			end if
 	end choose
 	this.triggerevent("ue_retrieve")
 end event
@@ -745,6 +1071,7 @@ boolean focusonbuttondown = true
 integer selectedtab = 1
 tabpage_1 tabpage_1
 tabpage_2 tabpage_2
+tabpage_3 tabpage_3
 end type
 
 event resize;tabpage_1.dw_3.Width = newwidth - ( tabpage_1.dw_3.x + 40 ) 
@@ -757,28 +1084,36 @@ tabpage_2.dw_5.y = newheight - 550
 tabpage_2.dw_4.Width = newwidth - ( tabpage_2.dw_4.x + 40 ) 
 tabpage_2.dw_4.Height = newheight - ( tabpage_2.dw_4.y + 565 ) 
 
+tabpage_3.dw_7.Width = newwidth - ( tabpage_3.dw_7.x + 40 ) 
+tabpage_3.dw_7.y = newheight - 550
+tabpage_3.dw_6.Width = newwidth - ( tabpage_3.dw_6.x + 40 ) 
+tabpage_3.dw_6.Height = newheight - ( tabpage_3.dw_6.y + 565 )
+
 end event
 
 on tab_1.create
 this.tabpage_1=create tabpage_1
 this.tabpage_2=create tabpage_2
+this.tabpage_3=create tabpage_3
 this.Control[]={this.tabpage_1,&
-this.tabpage_2}
+this.tabpage_2,&
+this.tabpage_3}
 end on
 
 on tab_1.destroy
 destroy(this.tabpage_1)
 destroy(this.tabpage_2)
+destroy(this.tabpage_3)
 end on
 
 event selectionchanged;i_n_tab_index = newindex 
 
 em_1.enabled = false
-if i_n_tab_index = 2 then
+if i_n_tab_index = 1 then
+	em_date.enabled = false
+else
 	em_date.enabled = true
 	em_1.enabled = true
-else
-	em_date.enabled = false
 end if	
 end event
 
@@ -900,7 +1235,7 @@ If currentrow > 0 Then
 	ls_customeritemcode 	 = tab_1.tabpage_2.dw_4.object.customeritemcode[currentrow]
 	li_lotqty		 		 = tab_1.tabpage_2.dw_4.object.lotqty[currentrow]
 	li_serialnofrom 		 = tab_1.tabpage_2.dw_4.object.serialnofrom[currentrow]
-	tab_1.tabpage_2.dw_5.retrieve(ls_areacode,ls_divisioncode,ls_customercode,ls_customeritemcode,li_lotqty,li_serialnofrom)
+	tab_1.tabpage_2.dw_5.retrieve(ls_areacode,ls_divisioncode,ls_customercode,ls_customeritemcode,li_lotqty,li_serialnofrom,'A')
 	tab_1.tabpage_2.dw_5.object.customeritemcode.protect = true
 	tab_1.tabpage_2.dw_5.object.lotqty.protect = true
 	tab_1.tabpage_2.dw_5.object.labelcount.protect = true
@@ -917,6 +1252,76 @@ integer y = 1156
 integer width = 3547
 integer height = 416
 integer taborder = 30
+string title = "none"
+string dataobject = "d_piss610u_04"
+boolean livescroll = true
+borderstyle borderstyle = stylelowered!
+end type
+
+type tabpage_3 from userobject within tab_1
+integer x = 18
+integer y = 100
+integer width = 3547
+integer height = 1436
+long backcolor = 12632256
+string text = "Remy Poland"
+long tabtextcolor = 33554432
+long tabbackcolor = 12632256
+long picturemaskcolor = 536870912
+dw_6 dw_6
+dw_7 dw_7
+end type
+
+on tabpage_3.create
+this.dw_6=create dw_6
+this.dw_7=create dw_7
+this.Control[]={this.dw_6,&
+this.dw_7}
+end on
+
+on tabpage_3.destroy
+destroy(this.dw_6)
+destroy(this.dw_7)
+end on
+
+type dw_6 from u_vi_std_datawindow within tabpage_3
+integer y = 16
+integer width = 3547
+integer height = 1128
+integer taborder = 11
+string dataobject = "d_piss610u_03"
+boolean hscrollbar = true
+boolean vscrollbar = true
+end type
+
+event rowfocuschanged;call super::rowfocuschanged;String ls_areacode, ls_divisioncode, ls_customercode, ls_customeritemcode
+integer li_lotqty, li_serialnofrom
+
+If currentrow > 0 Then
+	tab_1.tabpage_3.dw_7.reset()
+	ls_areacode				 = tab_1.tabpage_3.dw_6.object.areacode[currentrow]
+	ls_divisioncode  		 = tab_1.tabpage_3.dw_6.object.divisioncode[currentrow]
+	ls_customercode 		 = tab_1.tabpage_3.dw_6.object.customercode[currentrow]
+	ls_customeritemcode 	 = tab_1.tabpage_3.dw_6.object.customeritemcode[currentrow]
+	li_lotqty		 		 = tab_1.tabpage_3.dw_6.object.lotqty[currentrow]
+	li_serialnofrom 		 = tab_1.tabpage_3.dw_6.object.serialnofrom[currentrow]
+	tab_1.tabpage_3.dw_7.retrieve(ls_areacode,ls_divisioncode,ls_customercode,ls_customeritemcode,li_lotqty,li_serialnofrom,'B')
+	tab_1.tabpage_3.dw_7.object.customeritemcode.protect = true
+	tab_1.tabpage_3.dw_7.object.lotqty.protect = true
+	tab_1.tabpage_3.dw_7.object.labelcount.protect = true
+	
+	tab_1.tabpage_3.dw_7.setfocus() 
+	tab_1.tabpage_3.dw_7.setcolumn("puchaseno")
+
+	uo_status.st_message.text	=	'조회되었습니다.'
+End If	
+end event
+
+type dw_7 from datawindow within tabpage_3
+integer y = 1156
+integer width = 3547
+integer height = 416
+integer taborder = 50
 string title = "none"
 string dataobject = "d_piss610u_04"
 boolean livescroll = true
@@ -1138,9 +1543,9 @@ end type
 
 type dw_print from datawindow within w_piss610u
 boolean visible = false
-integer x = 690
-integer y = 708
-integer width = 2373
+integer x = 2304
+integer y = 680
+integer width = 1175
 integer height = 732
 integer taborder = 40
 boolean bringtotop = true

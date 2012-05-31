@@ -4,25 +4,18 @@ global type f_exkb_sqlpis from function_object
 end type
 
 forward prototypes
-global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty, transaction fs_pis1, transaction fs_pis2)
+global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty)
 end prototypes
 
-global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty, transaction fs_pis1, transaction fs_pis2);string ls_areacode,ls_divisioncode,ls_kbno,ls_srno
-
-if len(fs_srno) = 12 then
-	ls_srno = left(fs_srno,11)
-else
-	ls_srno = left(fs_srno,10)
-End if
-
+global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty);string ls_areacode,ls_divisioncode,ls_kbno,ls_srno
+ls_srno				= left(fs_srno,11)
 ls_areacode 		= mid(fs_kbno,1,1)
 ls_divisioncode 	= mid(fs_kbno,2,1)
 ls_kbno 				= 'EX' + fs_kbno
 
-//if f_connection_sqlserver_any(fs_xplant1,fs_div1,fs_pis1) = false then
-//	return 3  // sqlserver connection 실패
-//end if
-//fs_pis1.autocommit	= 	false
+if f_connection_sqlserver(fs_xplant1,fs_div1) = false then
+	return 3  // sqlserver connection 실패
+end if
 
 update TINV
 set moveinvqty 	= moveinvqty - :fd_kbqty,
@@ -31,9 +24,9 @@ set moveinvqty 	= moveinvqty - :fd_kbqty,
  where AreaCode     = :fs_xplant1
 	and divisioncode = :fs_div1
 	and itemcode     = :fs_itno
-using fs_pis1 ;
+using sqlpis ;
 
-if fs_pis1.sqlnrows <> 1 then
+if sqlpis.sqlnrows <> 1 then
 	return 4  // 해당 Data 없음
 end if
 
@@ -49,17 +42,15 @@ update TSHIPINV
 	and fromdivisioncode = :ls_divisioncode
 	and moverequireno    = :ls_kbno
 	and itemcode 			= :fs_itno
-using fs_pis1 ;
+using sqlpis ;
 
-if fs_pis1.sqlnrows <> 1 then
+if sqlpis.sqlnrows <> 1 then
 	return 5  // 해당 Data 없음
 end if
 
-//if f_connection_sqlserver_any(ls_areacode,ls_divisioncode,fs_pis2) = false then
-//	return 1  // sqlserver connection 실패
-//end if
-//
-//fs_pis2.autocommit	= 	false
+if f_connection_sqlserver(ls_areacode,ls_divisioncode) = false then
+	return 1  // sqlserver connection 실패
+end if
 
 update tshipinv
 	set moveconfirmflag = 'Y',
@@ -75,9 +66,9 @@ update tshipinv
 	and fromdivisioncode = :fs_div1
 	and itemcode 			= :fs_itno
 	and srno					= :ls_srno
-using fs_pis2 ;
+using sqlpis ;
 
-if fs_pis2.sqlnrows <> 1 then
+if sqlpis.sqlnrows <> 1 then
 	return 2 // 해당 Data 없음
 end if
 

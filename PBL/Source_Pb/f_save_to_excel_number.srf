@@ -7,36 +7,37 @@ forward prototypes
 global function integer f_save_to_excel_number (datawindow dw_excel)
 end prototypes
 
-global function integer f_save_to_excel_number (datawindow dw_excel);Integer i, j, k=1, kk, li_rc, li_colDataType[], ll_ColCnt, ln_Columnorder[],ln_length,ln_pos
-String ls_filepath, ls_filename, ls_process, ls_mode, ls_coltype[], ls_data, ls_order
-OleObject MyExcel
+global function integer f_save_to_excel_number (datawindow dw_excel);Integer 		i, j, k=1, kk, li_rc, li_colDataType[], ll_ColCnt, ln_Columnorder[],ln_length,ln_pos
+String 		ls_filepath, ls_filename, ls_process, ls_mode, ls_coltype[], ls_data, ls_order
+OleObject 	MyExcel
 
 li_rc = GetFileSaveName(	"Select File", ls_filepath, ls_filename, "xls", &
 									"Excel Files (*.xls),*.xls,"	)
-IF li_rc <> 1 THEN Return li_rc
-IF FileExists(ls_filepath) THEN
-	li_rc = MessageBox("저장확인", ls_filepath + " 파일이 이미 존재합니다.~r~n" + &
-	"기존 파일을 바꾸시겠습니까?",Question!, YesNo!,2)
-	IF li_rc = 2 THEN Return 0 
+IF 	li_rc <> 1 	THEN 	Return 	li_rc
+IF FileExists(ls_filepath) 	THEN
+	li_rc	=	MessageBox(	"저장확인", ls_filepath + " 파일이 이미 존재합니다.~r~n" + &
+									"기존 파일을 바꾸시겠습니까?",Question!, YesNo!,2)
+	IF 	li_rc = 2 THEN 	Return 	0 
 END IF 
+
 SetPointer(HourGlass!)
-MyExcel = Create OleObject
-li_rc = MyExcel.ConnectToNewObject("excel.application")
-IF li_rc <> 0 THEN
+MyExcel		=	Create OleObject
+li_rc 			= 	MyExcel.ConnectToNewObject("excel.application")
+IF 	li_rc 	<> 	0 	THEN
 	MessageBox("오류", "Excel 구동중 에러")
-	Destroy MyExcel
-	Return -1
+	Destroy 	MyExcel
+	Return 	-1
 END IF 
 //-----------------------------------------------------
 // DataWindow Style에 따른 처리
 //-----------------------------------------------------
-ls_process = dw_excel.Describe("DataWindow.processing")
-IF ls_process = '4' THEN
+ls_process	=	dw_excel.Describe("DataWindow.processing")
+IF 	ls_process	=	'4'	THEN
 	//CrossTab일 경우 StaticMode를 설정해야 필드 접근가능
-	ls_mode = dw_Excel.Modify("DataWindow.crosstab.StaticMode = 'yes'")
-	IF ls_mode <> '' THEN
+	ls_mode	=	dw_Excel.Modify("DataWindow.crosstab.StaticMode = 'yes'")
+	IF 	ls_mode <> '' THEN
 		MessageBox("CrossTab StaticMode Error", ls_mode)
-		Return -1
+		Return 	-1
 	END IF 
 END IF
 
@@ -100,7 +101,7 @@ MyExcel.Application.Quit
 MyExcel.DisConnectObject()
 Destroy MyExcel
 MessageBox("확인", "엑셀파일 생성이 완료되었습니다!")
-Return 1
+Return 	1
 
  
 

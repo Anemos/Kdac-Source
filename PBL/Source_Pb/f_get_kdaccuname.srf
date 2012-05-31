@@ -7,18 +7,18 @@ forward prototypes
 global function string f_get_kdaccuname (string a_s_company, string a_s_area)
 end prototypes
 
-global function string f_get_kdaccuname (string a_s_company, string a_s_area);string l_s_vndnm
+global function string f_get_kdaccuname (string a_s_company, string a_s_area);String	ls_vndnm
 
-SELECT "PBCOMMON"."DAC006"."CUNAME"  
-  INTO :l_s_vndnm
-FROM   "PBCOMMON"."DAC006" 
-WHERE  "PBCOMMON"."DAC006"."COMLTD" = :a_s_company and
-       "PBCOMMON"."DAC006"."DAREA"  = :a_s_area    using sqlca ;
-if sqlca.sqlcode <> 0 then
-	l_s_vndnm = " "
+SELECT 	"PBCOMMON"."DAC006"."CUNAME"  	INTO 	:ls_vndnm	FROM   "PBCOMMON"."DAC006" 
+WHERE  	"PBCOMMON"."DAC006"."COMLTD" 	= :a_s_company and
+       			"PBCOMMON"."DAC006"."DAREA"  		= :a_s_area    
+Using Sqlca ;
+
+if 	sqlca.sqlcode <> 0 then
+	ls_vndnm = " "
 end if
  
-return l_s_vndnm
+return	ls_vndnm
  
 end function
 

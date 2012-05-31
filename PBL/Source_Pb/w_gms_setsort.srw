@@ -24,7 +24,7 @@ boolean titlebar = true
 string title = "정열윈도우"
 boolean controlmenu = true
 windowtype windowtype = response!
-long backcolor = 67108864
+long backcolor = 12632256
 event ue_mousemove pbm_mousemove
 cb_cancel cb_cancel
 cb_ok cb_ok
@@ -35,21 +35,15 @@ end type
 global w_gms_setsort w_gms_setsort
 
 type variables
-// Keeps track of the last row that was clicked in the
-// three datawindows
-long   il_prim_lastclicked, &
-         il_del_lastclicked, &
-         il_fil_lastclicked
+long   	in_prim_lastclicked, &
+       	in_del_lastclicked, &
+       	in_fin_lastclicked
+boolean  ib_post_ldown, &
+         ib_pre_ldown, &
+         ib_fin_ldown
 
-// Determines if left mouse button is down in the 3 DataWindows
-boolean   ib_post_ldown, &
-              ib_pre_ldown, &
-              ib_fil_ldown
-
-// Used when rows that are clicked have already been
-// selected.  This is necessary to drag a group of rows.
-boolean   ib_already_selected
-long   il_selected_clicked
+boolean  ib_already_selected
+long   	in_selected_clicked
 
 // Determine whether user is copying or moving rows.
 string   is_action
@@ -60,8 +54,8 @@ forward prototypes
 public subroutine wf_change_buffer (datawindow adw_source, datawindow adw_target)
 end prototypes
 
-event ue_mousemove;ib_pre_ldown = false
-ib_post_ldown = false
+event ue_mousemove;ib_pre_ldown 	= false
+ib_post_ldown 	= false
 end event
 
 public subroutine wf_change_buffer (datawindow adw_source, datawindow adw_target);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,19 +79,18 @@ public subroutine wf_change_buffer (datawindow adw_source, datawindow adw_target
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-long		ll_selected_rows[], &
-			ll_selected_count, &
-			ll_rowcount,ll_chk
-dwbuffer		lb_source_buffer, &
+long		ln_selected_rows[], &
+			ln_selected_count, &
+			ln_rowcount,ln_chk
+dwbuffer	lb_source_buffer, &
 			lb_target_buffer
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Store the row numbers of the selected rows in an array
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ll_selected_count = f_return_selected (adw_source, ll_selected_rows)
-if ll_selected_count = 0 then return
+ln_selected_count = f_return_selected (adw_source, ln_selected_rows)
+if ln_selected_count = 0 then return
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +98,7 @@ if ll_selected_count = 0 then return
 // Copy the rows from the source datawindow to the target datawindow.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //if adw_target <> dw_post then
-//	adw_source.RowsCopy (ll_selected_rows[1], ll_selected_rows[ll_selected_count], &
+//	adw_source.RowsCopy (ln_selected_rows[1], ln_selected_rows[ln_selected_count], &
 //								primary!, adw_target, adw_target.RowCount() + 1, primary!)	
 //end if
 
@@ -129,20 +122,20 @@ end choose
 choose case adw_target
 	case dw_post
 		lb_target_buffer = primary!
-		ll_chk = dw_pre.RowsMove (il_prim_lastclicked, il_prim_lastclicked, &
+		ln_chk = dw_pre.RowsMove (in_prim_lastclicked, in_prim_lastclicked, &
 								lb_source_buffer, dw_post, dw_post.RowCount() + 1, lb_target_buffer)
 
 	case dw_pre
 		lb_target_buffer = primary!
-		ll_chk = dw_post.RowsMove (il_del_lastclicked, il_del_lastclicked, &
+		ln_chk = dw_post.RowsMove (in_del_lastclicked, in_del_lastclicked, &
 								lb_source_buffer, dw_pre, dw_pre.RowCount() + 1, lb_target_buffer)
 end choose
 
 //if is_action = "copy" then
-//	dw_pre.RowsCopy (ll_selected_rows[1], ll_selected_rows[ll_selected_count], &
+//	dw_pre.RowsCopy (ln_selected_rows[1], ln_selected_rows[ln_selected_count], &
 //								lb_source_buffer, dw_post, dw_post.RowCount() + 1, lb_target_buffer)	
 //else
-//	ll_chk = dw_pre.RowsMove (ll_selected_rows[1], ll_selected_rows[ll_selected_count], &
+//	ln_chk = dw_pre.RowsMove (ln_selected_rows[1], ln_selected_rows[ln_selected_count], &
 //								lb_source_buffer, dw_post, dw_post.RowCount() + 1, lb_target_buffer)	
 //end if
 
@@ -153,13 +146,13 @@ end choose
 // from the source DataWindow.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //if (is_action = "move")  and lb_target_buffer = delete! then //and (adw_source = dw_deleted or adw_source = dw_filtered) then
-//	adw_source.RowsDiscard (ll_selected_rows[1], ll_selected_rows[ll_selected_count], primary!)
+//	adw_source.RowsDiscard (ln_selected_rows[1], ln_selected_rows[ln_selected_count], primary!)
 //end if
 //
 //wf_set_rowcounts()
 adw_target.SetFocus()
-ll_rowcount = adw_target.RowCount()
-adw_target.ScrollToRow(ll_rowcount)
+ln_rowcount = adw_target.RowCount()
+adw_target.ScrollToRow(ln_rowcount)
 end subroutine
 
 on w_gms_setsort.create
@@ -187,22 +180,22 @@ event open;//인수로 넘겨진 데이타컨트롤의 텍스트와 column name의 관계는 텍스트 =
 //데이타윈도우오브젝트작성시 db layout에서 computed column을 만들것
 //인수는 데이타윈도우 컨트롤
 //리턴값은 display와 sorting을 위한 2개의 string(1 structure)
-datawindow dw_parm
-string ls_colcnt,ls_colnm,ls_dbnm
-integer li_cntnum,li_currow,li_rowcnt
-dw_parm = message.PowerObjectParm	
+datawindow 	dw_parm
+string 		ls_colcnt,ls_colnm,ls_dbnm
+integer 		ln_cntnum,ln_currow,ln_rowcnt
 
-ls_colcnt = dw_parm.describe("datawindow.column.count")
-for li_cntnum = 1 to integer(ls_colcnt)
-	ls_dbnm = dw_parm.Describe("#" + string(li_cntnum) + ".name")
+dw_parm 		= message.PowerObjectParm	
+ls_colcnt 	= dw_parm.describe("datawindow.column.count")
+for ln_cntnum = 1 to integer(ls_colcnt)
+	ls_dbnm 	= dw_parm.Describe("#" + string(ln_cntnum) + ".name")
 	ls_colnm = dw_parm.Describe(ls_dbnm + "_t" + ".text")
 	if trim(ls_colnm) = "!" or trim(ls_colnm) = "?" then
 		//nothing
 	else
-		li_currow = dw_pre.insertrow(0)
-		dw_pre.setitem(li_currow,"dsptext",ls_colnm)
-		dw_pre.setitem(li_currow,"colnm",ls_dbnm)
-		dw_pre.setitem(li_currow,"ordchk",'A')
+		ln_currow = dw_pre.insertrow(0)
+		dw_pre.setitem(ln_currow,"dsptext",ls_colnm)
+		dw_pre.setitem(ln_currow,"colnm",ls_dbnm)
+		dw_pre.setitem(ln_currow,"ordchk",'A')
 	end if
 next
 
@@ -223,7 +216,7 @@ string facename = "굴림체"
 string text = "취소"
 end type
 
-event clicked;s_gms_rtnsort lstr_rsult
+event clicked;s_gms_rtnsort 	lstr_rsult
 lstr_rsult.rtnsort = ''
 lstr_rsult.dspsort = ''
 closewithreturn(parent,lstr_rsult)
@@ -244,23 +237,23 @@ string facename = "굴림체"
 string text = "확인"
 end type
 
-event clicked;long ll_cntnum,ll_rowcnt
-string ls_dsptext,ls_colnm,ls_ordchk,ls_rtnsort,ls_dspsort
+event clicked;long 		ln_cntnum,ln_rowcnt
+string 	ls_dsptext,ls_colnm,ls_ordchk,ls_rtnsort,ls_dspsort
 s_gms_rtnsort lstr_rsult
 
-ll_rowcnt = dw_post.rowcount()
-ls_rtnsort = ""
-ls_dspsort = ""
-for ll_cntnum = 1 to ll_rowcnt
-	ls_dsptext = dw_post.getitemstring(ll_cntnum,"dsptext")
-	ls_colnm = dw_post.getitemstring(ll_cntnum,"colnm")
-	ls_ordchk = dw_post.getitemstring(ll_cntnum,"ordchk")
-	if ll_cntnum = ll_rowcnt then
-		ls_rtnsort = ls_rtnsort + ls_colnm + " " + ls_ordchk
-		ls_dspsort = ls_dspsort + ls_dsptext + " " + ls_ordchk
+ln_rowcnt 	= dw_post.rowcount()
+ls_rtnsort 	= ""
+ls_dspsort 	= ""
+for ln_cntnum = 1 to ln_rowcnt
+	ls_dsptext 	= dw_post.getitemstring(ln_cntnum,"dsptext")
+	ls_colnm 	= dw_post.getitemstring(ln_cntnum,"colnm")
+	ls_ordchk 	= dw_post.getitemstring(ln_cntnum,"ordchk")
+	if ln_cntnum 	= ln_rowcnt then
+		ls_rtnsort 	= ls_rtnsort + ls_colnm + " " + ls_ordchk
+		ls_dspsort 	= ls_dspsort + ls_dsptext + " " + ls_ordchk
 	else
-		ls_rtnsort = ls_rtnsort + ls_colnm + " " + ls_ordchk + ","
-		ls_dspsort = ls_dspsort + ls_dsptext + " " + ls_ordchk + ","
+		ls_rtnsort 	= ls_rtnsort + ls_colnm + " " + ls_ordchk + ","
+		ls_dspsort 	= ls_dspsort + ls_dsptext + " " + ls_ordchk + ","
 	end if
 next
 lstr_rsult.rtnsort = ls_rtnsort
@@ -280,7 +273,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "Drag and Drop items"
 boolean focusrectangle = false
 end type
@@ -323,55 +316,21 @@ end event
 event ue_lmouse_up;ib_post_ldown = false
 end event
 
-event clicked;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Allow user to use Shift-click to highlight all rows betwen first clicked row and the
-// row that was Shift-clicked.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+event clicked;long	ln_clicked
 
-
-long	ll_clicked
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// First make sure the user clicked on a Row.  Clicking on WhiteSpace or in the header 
-// will return a clicked row value of 0.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 If row = 0 then return
+ln_clicked = row
+if Keydown (KeyShift!) and not ib_already_selected then
+	//wf_shift_highlight (this, ln_clicked)
+else
+	this.SelectRow (0, false)
+	this.SelectRow (ln_clicked, true)
+	// A single row is now selected in the DataWindow, so change its drag icon to the 
+	// single rows icon.
+	this.DragIcon = "C:\kdac\bmp\row.ico"
+end if
+in_del_lastclicked = ln_clicked
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// If the clicked row is already selected, handle highlite processing for it in the left mouse
-// button up event.  This is necessary so groups of selected rows can be dragged.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//if this.GetSelectedRow (row - 1) = row and ib_already_selected = false then
-//	ib_already_selected = true
-//	il_selected_clicked = row
-//	return
-//else
-//
-//	if ib_already_selected then
-//		ll_clicked = il_selected_clicked
-//	else
-		ll_clicked = row
-//	end if
-//
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// case of select multiple rows range using the shift key
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	if Keydown (KeyShift!) and not ib_already_selected then
-		//wf_shift_highlight (this, ll_clicked)
-	else
-		this.SelectRow (0, false)
-		this.SelectRow (ll_clicked, true)
-
-		// A single row is now selected in the DataWindow, so change its drag icon to the 
-		// single rows icon.
-		this.DragIcon = "C:\kdac\bmp\row.ico"
-	end if
-
-//	ib_already_selected = false
-	il_del_lastclicked = ll_clicked
-//end if
 
 end event
 
@@ -380,7 +339,7 @@ event dragdrop;/////////////////////////////////////////////////////////////////
 // primary buffer.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DragObject		ldo_object
+DragObject	ldo_object
 DataWindow	ldw_control
 
 
@@ -397,7 +356,7 @@ event losefocus;////////////////////////////////////////////////////////////////
 // Deselect all rows and reset the last clicked instance variable
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 this.SelectRow (0, false)
-il_del_lastclicked = 0
+in_del_lastclicked = 0
 end event
 
 type dw_pre from datawindow within w_gms_setsort
@@ -422,7 +381,6 @@ event ue_mousemove;/////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 if ib_pre_ldown and this.RowCount() > 0 then
-
 	// If the Control key is held down, then the rows will be copied with dwRowsCopy
 	if KeyDown (keyControl!) then
 		//is_action = "copy"
@@ -440,55 +398,21 @@ end event
 event ue_lmouse_up;ib_pre_ldown = false
 end event
 
-event clicked;////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Allow user to use Shift-click to highlight all rows betwen first clicked row and the
-// row that was Shift-clicked.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+event clicked;long	ln_clicked
 
-
-long	ll_clicked
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// First make sure the user clicked on a Row.  Clicking on WhiteSpace or in the header 
-// will return a clicked row value of 0.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 If row = 0 then return
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// If the clicked row is already selected, handle highlite processing for it in the left mouse
-// button up event.  This is necessary so groups of selected rows can be dragged.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//if this.GetSelectedRow (row - 1) = row and ib_already_selected = false then
-//	ib_already_selected = true
-//	il_selected_clicked = row
-//	return
-//else
-//
-//	if ib_already_selected then
-//		ll_clicked = il_selected_clicked
-//	else
-		ll_clicked = row
-//	end if
-//
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// case of select multiple rows range using the shift key
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	if Keydown (KeyShift!) and not ib_already_selected then
-		//wf_shift_highlight (this, ll_clicked)
-	else
-		this.SelectRow (0, false)
-		this.SelectRow (ll_clicked, true)
+ln_clicked = row
+if Keydown (KeyShift!) and not ib_already_selected then
+	//wf_shift_highlight (this, ln_clicked)
+else
+	this.SelectRow (0, false)
+	this.SelectRow (ln_clicked, true)
+	this.DragIcon = "C:\kdac\bmp\row.ico"
+end if
 
-		// A single row is now selected in the DataWindow, so change its drag icon to the 
-		// single rows icon.
-		this.DragIcon = "C:\kdac\bmp\row.ico"
-	end if
+in_prim_lastclicked = ln_clicked
 
-//	ib_already_selected = false
-	il_prim_lastclicked = ll_clicked
-//end if
 
 end event
 
@@ -497,7 +421,7 @@ event dragdrop;/////////////////////////////////////////////////////////////////
 // primary buffer.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-DragObject		ldo_object
+DragObject	ldo_object
 DataWindow	ldw_control
 
 
@@ -514,6 +438,6 @@ event losefocus;////////////////////////////////////////////////////////////////
 // Deselect all rows and reset the last clicked instance variable
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 this.SelectRow (0, false)
-il_prim_lastclicked = 0
+in_prim_lastclicked = 0
 end event
 

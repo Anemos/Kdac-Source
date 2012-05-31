@@ -7,15 +7,14 @@ forward prototypes
 global function string f_get_perclassnm (string a_s_empno)
 end prototypes
 
-global function string f_get_perclassnm (string a_s_empno);string l_s_class, l_s_clsnm
+global function string f_get_perclassnm (string a_s_empno);String 	ls_class, ls_clsnm
 
-select "PBCOMMON"."DAC003"."PECLASS"
-into   :l_s_class
-from   "PBCOMMON"."DAC003"
-where  "PBCOMMON"."DAC003"."PEEMPNO" = :a_s_empno using sqlca;
+Select 	"PBCOMMON"."DAC003"."PECLASS"	Into   :ls_class		from   "PBCOMMON"."DAC003"
+Where  	"PBCOMMON"."DAC003"."PEEMPNO" 	= 		:a_s_empno 
+Using 	Sqlca	;
 
-l_s_clsnm = f_get_coitname(g_s_company, 'PER306', l_s_class)
+ls_clsnm	=	f_get_coitname(g_s_company, 'PER306', ls_class)
 
-return l_s_clsnm
+return 	ls_clsnm
 end function
 

@@ -16,7 +16,7 @@ String ls_xuse, ls_dudt, ls_slno, ls_rdept
 String ls_xpay, ls_dept, ls_jscd
 dec{0} ld_amt
 dec{1} ld_qty
-dec{2} ld_xcost
+dec{2} ld_xcost, ld_dcost, ld_ecost
 dec{4} ld_convqty
 integer	li_cnt, li_index, li_Retcnt
 Boolean lb_trachk = False
@@ -81,9 +81,9 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		return -1 
 	End if
 	
-	SELECT XPLANT, DIV, ITNO, PQTY, XCOST, PAMT, PURNO1, VSRNO, XPAY, DEPT 
-	  INTO :ls_xplant, :ls_div, :ls_itno, :ld_qty, :ld_xcost, :ld_amt,
-	       :ls_kbno, :ls_vsrno, :ls_xpay, :ls_rdept  
+	SELECT XPLANT, DIV, ITNO, PQTY, PURNO1, VSRNO, XPAY, DEPT, XPLAN, XCOST 
+	  INTO :ls_xplant, :ls_div, :ls_itno, :ld_qty,
+	       :ls_kbno, :ls_vsrno, :ls_xpay, :ls_rdept, :ls_xplan, :ld_xcost  
 	FROM PBPUR.PUR402
 	WHERE COMLTD='01' AND SRNO = :ls_srno AND SRNO1 = :ls_srno1 Using lstr_ipis.t_sqlpis;
 	
@@ -92,6 +92,33 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		return -1 
 	End if
 	
+	//*** 내자구매 담당품목은 발주단가로 - 20101117 심과장님 추가요청
+	IF Len(ls_xplan) <> 2 or (Left(ls_xplan, 1) <> '8' and Left(ls_xplan, 1) <> '9') THEN	
+		//*** 업연 : 구매기획팀F0007404-10018  - 간판은 현재단가로..
+		SELECT DCOST, ECOST
+			INTO :ld_dcost, :ld_ecost
+		FROM PBPUR.PUR103                                                             
+		WHERE COMLTD = '01' AND VSRC ='D' AND DEPT ='D' AND VSRNO =:ls_vsrno AND ITNO = :ls_itno  Using lstr_ipis.t_sqlpis;
+		
+		If lstr_ipis.t_sqlpis.sqlcode <> 0 then
+				ag_message = "업체단가정보 미존재"
+				return -1 
+		End if		
+		
+		If ld_dcost = 0 then 
+			ld_xcost = ld_ecost
+		Else
+			ld_xcost = ld_dcost
+		End if		
+	END IF
+	
+	IF ld_xcost <= 0 then
+		ag_message = "발주단가(0)를 확인 바랍니다."
+		return -1
+	End if
+	
+	ld_amt = Truncate( ld_xcost * ld_qty, 0)
+			
 	//*** 업체 Master 등록여부 Check
 	SELECT Count(*) 
 	   INTO :li_Retcnt

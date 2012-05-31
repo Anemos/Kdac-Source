@@ -127,7 +127,7 @@ If ls_xuse = '04' or ls_xuse ='07' then
 		SELECT Count("ITNO")	INTO :li_cnt
 		  FROM "PBINV"."INV304"  
 		WHERE "COMLTD" = '01'    AND "XPLANT" = :ls_xplant AND
-				"DIV"    = :ls_div AND "ITNO"   = :ls_itno using lstr_ipis.t_sqlpis;
+				"DIV"    = :ls_div AND "ITNO"   = :ls_itno AND "VSRNO"  = :ls_vsrno using lstr_ipis.t_sqlpis;
 					
 		If li_cnt < 1 Then
 			ag_message = "유상사급단가가 미존재품"

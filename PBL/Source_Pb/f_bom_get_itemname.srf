@@ -7,22 +7,21 @@ forward prototypes
 global function string f_bom_get_itemname (string a_itno)
 end prototypes
 
-global function string f_bom_get_itemname (string a_itno);string l_s_dsc, l_s_unmsr
+global function string f_bom_get_itemname (string a_itno);string ls_dsc, ls_unmsr
 
-SELECT ITNM, XUNIT  
-   INTO :l_s_dsc, :l_s_unmsr
-   FROM "PBINV"."INV002"  
-    WHERE 	"PBINV"."INV002"."COMLTD" = '01' AND
-	 			"PBINV"."INV002"."ITNO" = :a_itno using sqlca ;
-
+SELECT	ITNM, XUNIT  
+	INTO 	:ls_dsc, :ls_unmsr
+   FROM 	"PBINV"."INV002"  
+   WHERE	"PBINV"."INV002"."COMLTD"	= '01' 	AND
+	 		"PBINV"."INV002"."ITNO" 	= :a_itno 
+using sqlca ;
 if sqlca.sqlcode <> 0 then
-	l_s_dsc = " "
+	ls_dsc = " "
 else
-	l_s_dsc = mid(l_s_dsc,1,30)
+	ls_dsc = mid(ls_dsc,1,30)
 end if
-
-l_s_dsc = string(l_s_dsc, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" )
-return l_s_dsc + l_s_unmsr
+ls_dsc = string(ls_dsc, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" )
+return 	ls_dsc + ls_unmsr
 
 end function
 

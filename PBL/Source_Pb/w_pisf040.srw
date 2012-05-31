@@ -410,10 +410,9 @@ call u_cmms_select_division::destroy
 end on
 
 type cbx_gubun from checkbox within w_pisf040
-boolean visible = false
-integer x = 2697
-integer y = 64
-integer width = 251
+integer x = 2496
+integer y = 68
+integer width = 649
 integer height = 64
 boolean bringtotop = true
 integer textsize = -10
@@ -423,10 +422,18 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "굴림"
 long textcolor = 33554432
-long backcolor = 67108864
-string text = "출력용"
-boolean righttoleft = true
+long backcolor = 12632256
+string text = "작명번호별 인원제외"
 end type
+
+event clicked;if cbx_gubun.checked = false then
+	dw_1.dataobject = 'd_wo_report'
+	dw_1.settransobject(sqlcmms)
+else
+	dw_1.dataobject = 'd_wo_report1'
+	dw_1.settransobject(sqlcmms)
+end if
+end event
 
 type pb_down from picturebutton within w_pisf040
 integer x = 3511

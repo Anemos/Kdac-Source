@@ -14,30 +14,19 @@ long				ll_down_count
 blob				lb_parm_data
 blob				lb_download_file
 /*------------------------------*/
-string			ls_file_name_temp, ls_curdir
+string			ls_file_name_temp
 decimal			ld_file_ver[], ld_file_ver_temp
 string			ls_file_client_ver
 /*------------------------------*/
 
 datastore      ids_download_file
 
-//*******************
-//* 데이타를 가져오기 위하여 datastore 설정
-//* PB 8.0 => ds_dowload_file
-//* pb 9.0 => ds_dowload_get_file
-//*******************
+// 데이타를 가져오기 위하여 datastore 설정
 ids_download_file = create datastore
-ls_curdir = GetCurrentDirectory()
 
-if FileExists(ls_curdir + "\pbdwe90.dll") = true then
-	ids_download_file.DataObject = 'ds_download_get_file'
-	ids_download_file.Settransobject(sqlca)
-	ids_download_file.Retrieve('ipis')
-else
-	ids_download_file.DataObject = 'ds_download_file'
-	ids_download_file.Settransobject(sqlca)
-	ids_download_file.Retrieve(gs_appname + '%')
-end if
+ids_download_file.DataObject = 'ds_download_file'
+ids_download_file.SetTransObject(SQLPIS)
+ids_download_file.retrieve(gs_appname)
 
 /*-------------------------------------------*/
 /*-------------------------------------------*/
@@ -64,7 +53,7 @@ DO WHILE ll_cur_row < ll_row_count
 	ls_file_client_ver  = ProfileString(gs_IniFile, "DOWN_VERSION", ls_file_name_temp, "")
 	if IsNull( ls_file_client_ver ) then ls_file_client_ver = ''
 	/*------------------------------------------------------------------------------*/
-	If Trim( String(ld_file_ver_temp, '##.000' ) ) <> Trim( String(Dec(ls_file_client_ver), '##.000')) Then ll_down_count ++
+	If Trim( String(ld_file_ver_temp, '##.000' ) ) <> Trim(ls_file_client_ver) Then ll_down_count ++
 LOOP
 
 destroy ids_download_file

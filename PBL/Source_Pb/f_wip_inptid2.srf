@@ -21,28 +21,28 @@ DO WHILE  ll_row <= ll_rowcount
 		FOR  ii = 1  TO Dec(ls_colcount)
 			  ls_colname = arg_dw.Describe("#" + String(ii) + ".Name")
 			IF  Right(ls_colname,6) = 'comltd' OR Right(ls_colname,4) = 'cmcd' THEN
-				 arg_dw.SetItem(ll_row,ls_colname,'01')
+				 arg_dw.SetItem(ll_row,ls_colname,g_s_company)
 			ELSEIF  Right(ls_colname,6) = 'inptid' OR Right(ls_colname,6) = 'updtid' THEN
-				 arg_dw.SetItem(ll_row,ls_colname,' ')
+				 arg_dw.SetItem(ll_row,ls_colname,g_s_empno)
 			ELSEIF  Right(ls_colname,6) = 'inptdt' OR Right(ls_colname,6) = 'updtdt' THEN
 					  arg_dw.SetItem(ll_row,ls_colname,g_s_date)
 			ELSEIF  Right(ls_colname,6) = 'ipaddr' THEN
-					  arg_dw.SetItem(ll_row,ls_colname,' ')
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_ipaddr)
 			ELSEIF  Right(ls_colname,7) = 'macaddr' THEN
-					  arg_dw.SetItem(ll_row,ls_colname,' ')
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_macaddr)
 			END IF
 		NEXT
    ELSEIF arg_dw.GetItemStatus(ll_row, 0, Primary!) = DataModified! THEN
 		FOR  ii = 1  TO Dec(ls_colcount)
 			  ls_colname = arg_dw.Describe("#" + String(ii) + ".Name")
 			IF  Right(ls_colname,6) = 'updtid' THEN
-				 arg_dw.SetItem(ll_row,ls_colname,' ')
+				 arg_dw.SetItem(ll_row,ls_colname,g_s_empno)
 			ELSEIF  Right(ls_colname,6) = 'updtdt' THEN
 					  arg_dw.SetItem(ll_row,ls_colname,g_s_date)
 			ELSEIF  Right(ls_colname,6) = 'ipaddr' THEN
-					  arg_dw.SetItem(ll_row,ls_colname,' ')
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_ipaddr)
 			ELSEIF  Right(ls_colname,7) = 'macaddr' THEN
-					  arg_dw.SetItem(ll_row,ls_colname,' ')
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_macaddr)
 			END IF
 		NEXT
 	END IF

@@ -11,63 +11,65 @@ global function boolean f_init_userid (string a_empno);integer 		i,ln_count
 string  		ls_area
 blob			ls_empno
 datastore	ds_1
-if trim(a_empno)	=	'ADMIN'	then
-	ls_empno	=	blob('KDAC2238')
-elseif len(trim(a_empno)) = 3 then
-	ls_empno	=	blob('KDAC0001')
-else
-	ls_empno = blob('D' + a_empno + '0' )
-end if
-sqlxx = CREATE transaction
-ds_1	= Create Datastore
-ds_1.dataobject = 'd_comm001_retrieve'
-ds_1.settransobject(Sqlpis)
 
-ln_count = ds_1.retrieve()
+//if trim(a_empno)	=	'ADMIN'	then
+//	ls_empno	=	blob('KDAC2238')
+////elseif len(trim(a_empno)) = 3 then
+////	ls_empno	=	blob('KDAC0001')
+//else
+ls_empno	=	Blob('D' + a_empno + '0' )
+//end if
+sqlxx			= 	Create	Transaction
+ds_1			=	Create 	Datastore
+ds_1.dataobject	=	'd_comm001_retrieve'
+ds_1.SetTransobject(Sqlpis)
 
-for i = 1 to ln_count
-	// remote autodown 관련
-	ls_area 				= trim(ds_1.object.serverid[i])
-	sqlxx.ServerName 	= trim(ds_1.object.servername[i])
-	sqlxx.DBMS       	= trim(ds_1.object.serverdbms[i])
-	sqlxx.Database   	= trim(ds_1.object.serverdatabase[i])
-	sqlxx.LogId      	= trim(ds_1.object.serverlogid[i])
-	sqlxx.LogPass    	= trim(ds_1.object.serverpassword[i])
-	sqlxx.autocommit 	= true
-	sqlxx.DBParm     	= trim(ds_1.object.serverdbparm[i])
-	connect using sqlxx;
-	if sqlxx.sqlcode <> 0 then
-		messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다. Delete 불가.')
-		disconnect using sqlxx;
-		destroy sqlxx 
-		return false
-	end if
-	if sqlxx.dbms	=	"ODBC"	then
-		updateblob PBCOMMON.COMM121
-			set     EMP_PWD = :ls_empno
-			where   EMP_NO  = :a_empno using sqlxx;
-		update PBCOMMON.COMM121
-			set USESTS = '',UPDT_ID = :g_s_empno,UPDT_DT = :g_s_datetime,IP_ADDR = :g_s_ipaddr,MAC_ADDR = :g_s_macaddr
-		where  EMP_NO = :a_empno using sqlxx;
-	else
-		updateblob COMM121
-			set     EMP_PWD = :ls_empno
-			where   EMP_NO  = :a_empno using sqlxx;
-		update COMM121
-			set USESTS = '',UPDT_ID = :g_s_empno,UPDT_DT = :g_s_datetime,IP_ADDR = :g_s_ipaddr,MAC_ADDR = :g_s_macaddr
-		where  EMP_NO = :a_empno using sqlxx;
-	end if
-	if sqlxx.sqlcode <> 0 then
-		messagebox("확인",sqlxx.sqlerrtext)
-		disconnect using sqlxx;
-		destroy sqlxx 
-		destroy ds_1
-		return false
-	end if
-	disconnect using sqlxx;
+ln_count	=	ds_1.retrieve()
+
+for 	i	=	1	to	ln_count
+		// remote autodown 관련
+		ls_area 					= 	trim(ds_1.object.serverid[i])
+		sqlxx.ServerName 		= 	trim(ds_1.object.servername[i])
+		sqlxx.DBMS       		= 	trim(ds_1.object.serverdbms[i])
+		sqlxx.Database   		= 	trim(ds_1.object.serverdatabase[i])
+		sqlxx.LogId      		= 	trim(ds_1.object.serverlogid[i])
+		sqlxx.LogPass    		= 	trim(ds_1.object.serverpassword[i])
+		sqlxx.autocommit 		= 	true
+		sqlxx.DBParm     		= 	trim(ds_1.object.serverdbparm[i])
+		connect using 	sqlxx;
+		if 	sqlxx.sqlcode <> 0 then
+			messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다. Delete 불가.')
+			disconnect using sqlxx;
+			destroy sqlxx 
+			return false
+		end if
+		if 	sqlxx.dbms	=	"ODBC"	then
+			updateblob 	PBCOMMON.COMM121
+				set				EMP_PWD 	= 	:ls_empno
+			where   			EMP_NO  	= 	:a_empno 	using sqlxx;
+			update 			PBCOMMON.COMM121
+				set 			USESTS 	= 	'',UPDT_ID = :g_s_empno,UPDT_DT = :g_s_datetime,IP_ADDR = :g_s_ipaddr,MAC_ADDR = :g_s_macaddr
+			where  			EMP_NO 	= 	:a_empno 	using sqlxx;
+		else
+			updateblob 	COMM121
+				set     	EMP_PWD 	= 	:ls_empno
+			where   		EMP_NO  	= 	:a_empno	using sqlxx;
+			update 		COMM121
+				set 		USESTS 	= 	'',UPDT_ID = :g_s_empno,UPDT_DT = :g_s_datetime,IP_ADDR = :g_s_ipaddr,MAC_ADDR = :g_s_macaddr
+			where  		EMP_NO 	= 	:a_empno 	using 	sqlxx;
+		end if
+		if 	sqlxx.sqlcode	<>	0	then
+			messagebox("확인",sqlxx.sqlerrtext)
+			disconnect using 	sqlxx;
+			destroy 	sqlxx 
+			destroy 	ds_1
+			return 	false
+		end if
+		disconnect using 	sqlxx;
 next
-destroy sqlxx 
-destroy ds_1
-return true
+
+destroy 	sqlxx 
+destroy 	ds_1
+return 	true
 end function
 

@@ -1,9 +1,9 @@
 $PBExportHeader$dddw_plandiv_bom.srd
-release 8;
-datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
-detail(height=88 color="536870912" )
+detail(height=108 color="536870912" )
 table(column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV902.XPLANT" )
  column=(type=char(1) updatewhereclause=yes name=div dbname="INV902.DIV" )
  retrieve="  SELECT ~"PBINV~".~"INV902~".~"XPLANT~",   
@@ -12,9 +12,12 @@ table(column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV902.XPLA
   FROM ~"PBINV~".~"INV902~"    
   WHERE ~"PBINV~".~"INV902~".~"DIV~" IN ('A','M','S','H','V')" )
 text(band=detail alignment="0" text="Áö¿ª" border="0" color="0" x="0" y="16" height="60" width="137" html.valueishtml="0"  name=xplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
-text(band=detail alignment="0" text="°øÀå" border="0" color="0" x="567" y="16" height="60" width="151" html.valueishtml="0"  name=div_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
-column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="750" y="12" height="68" width="453" format="[general]" html.valueishtml="0"  name=div visible="1" dddw.name=dddw_plandiv_rtn_03 dddw.displaycolumn=dac002_coitname dddw.datacolumn=div dddw.percentwidth=0 dddw.lines=5 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
-column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="160" y="12" height="68" width="357" format="[general]" html.valueishtml="0"  name=xplant visible="1" dddw.name=dddw_plandiv_rtn_02 dddw.displaycolumn=coitname dddw.datacolumn=cocode1 dddw.percentwidth=0 dddw.lines=6 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="5" color="0" x="160" y="12" height="68" width="402" format="[general]" html.valueishtml="0"  name=xplant visible="1" dddw.name=dddw_plandiv_rtn_02 dddw.displaycolumn=coitname dddw.datacolumn=cocode1 dddw.percentwidth=0 dddw.lines=6 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes dddw.autoretrieve=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=detail alignment="0" text="°øÀå" border="0" color="0" x="608" y="16" height="60" width="151" html.valueishtml="0"  name=div_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="5" color="0" x="791" y="12" height="68" width="453" format="[general]" html.valueishtml="0"  name=div visible="1" dddw.name=dddw_plandiv_rtn_03 dddw.displaycolumn=dac002_coitname dddw.datacolumn=div dddw.percentwidth=0 dddw.lines=5 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes dddw.autoretrieve=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
 htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

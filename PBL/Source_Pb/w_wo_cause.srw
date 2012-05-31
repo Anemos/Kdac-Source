@@ -19,7 +19,7 @@ boolean titlebar = true
 string title = "고장원인 코드 검색"
 boolean controlmenu = true
 windowtype windowtype = response!
-long backcolor = 67108864
+long backcolor = 12632256
 string icon = "AppIcon!"
 boolean center = true
 cb_2 cb_2
@@ -31,7 +31,7 @@ global w_wo_cause w_wo_cause
 
 event open;dw_1.settransobject(sqlcmms)
 dw_2.settransobject(sqlcmms)
-dw_1.retrieve()
+dw_1.retrieve(gs_kmarea,gs_kmdivision)
 end event
 
 on w_wo_cause.create

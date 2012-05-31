@@ -13,19 +13,16 @@ global function string f_message (string ag_msgcode);///////////////////////////
 //						Input  => Message Code(string 4자리)
 //						Output => Message (string)
 //////////////////////////////////////////////////////
+String  	ls_message, ls_msgcode
 
-string  l_s_message, l_s_msgcode
+SELECT 	kor_word	INTO :ls_message	FROM pbcommon.comm240  
+WHERE 		word_id 		=	:ag_msgcode
+Using 		SqlCa;
 
-SELECT "KOR_WORD"  
-  INTO :l_s_message  
-  FROM "PBCOMMON"."COMM240"  
- WHERE "WORD_ID" = :ag_msgcode
- using sqlca;
-
-if f_spacechk(l_s_message) = -1 then
-	l_s_message = "[Message Code Error] 정보시스템팀으로 연락바랍니다."
+if 	f_spacechk(ls_message)	=	-1	then
+	ls_message		=	"[Message Code Error] 정보시스템팀으로 연락바랍니다."
 end if
 
-return l_s_message
+return 	ls_message
 end function
 

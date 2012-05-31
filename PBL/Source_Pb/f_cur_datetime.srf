@@ -7,15 +7,7 @@ forward prototypes
 global function string f_cur_datetime ()
 end prototypes
 
-global function string f_cur_datetime ();datetime ld_datetime
-
-select current_timestamp into :ld_datetime
-from   "PBCOMMON"."COMM000" using sqlca ;
-
-if sqlca.sqlcode <> 0 then
-	select current_timestamp into :ld_datetime from comm122 using sqlpis ;
-end if
-
-Return string(ld_datetime,'YYYY-MM-DD HH:MM:SS')
+global function string f_cur_datetime ();
+Return g_s_datetime
 end function
 

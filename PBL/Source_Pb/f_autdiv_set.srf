@@ -25,18 +25,14 @@ string ls_Rtn
 
 If g_s_autarea = '' And g_s_autplnt = '' Then Return   // 전체 권한자.
 
-If g_s_autarea = 'D' OR g_s_autarea = 'J' OR g_s_autarea = 'K' OR &
-   g_s_autarea = 'Y' OR g_s_autarea = 'B' OR g_s_autarea = 'S' Then 
-	adw.Object.Xplant[1] = g_s_autarea
-	adw.Object.Xplant.Protect = 1 // 해당 지역권한만 허가.	
-END IF
+adw.Object.Xplant[1] = g_s_autarea
+If g_s_autarea <> '' Then adw.Object.Xplant.Protect = 1 // 해당 지역권한만 허가.
 
 DataWindowChild ldwc_div
 
 adw.GetChild( 'div', ldwc_Div )
 ldwc_Div.SetTransObject( SQLCA )
 ldwc_Div.Retrieve( g_s_autarea )
-
 If g_s_autdiv = '' Then         	// 담당의 전체 권한자.
 	String ls_Div_Syntax
 	Int	 li_Pos_From, li_Pos_To

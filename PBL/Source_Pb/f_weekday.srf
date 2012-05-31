@@ -8,21 +8,21 @@ global function integer f_weekday (string fs_applydate)
 end prototypes
 
 global function integer f_weekday (string fs_applydate);
-CHOOSE CASE DayNumber(Date(fs_applydate))
-		CASE 1
-			return 0
-		CASE 2
-			return 1
-		CASE 3
-			return 2
-		CASE 4
-			return 3
-		CASE 5
-			return 4
-		CASE 6
-			return 5
-		CASE 7
-			return 6
+CHOOSE CASE	DayNumber(Date(fs_applydate))
+		CASE 	1
+			return 	0
+		CASE 	2
+			return 	1
+		CASE 	3
+			return 	2
+		CASE 	4
+			return 	3
+		CASE 	5
+			return 	4
+		CASE 	6
+			return 	5
+		CASE 	7
+			return 	6
 END CHOOSE
 end function
 

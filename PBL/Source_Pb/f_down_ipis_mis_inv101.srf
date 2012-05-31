@@ -60,7 +60,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		lstr_ipis = ag_str_ipis[li_index]
 	end if
 		
-	if ( ls_cls = '23' or ls_cls = '43' ) then
+	if ( ls_cls = '23' or ls_cls = '43' or ls_cls = '22') then
 		SELECT MINQ, MAXQ INTO :lc_minq, :lc_maxq
 		FROM PBINV.INV101
 		WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND 

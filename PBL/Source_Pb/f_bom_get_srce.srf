@@ -7,14 +7,15 @@ forward prototypes
 global function string f_bom_get_srce (string a_plant, string a_div, string a_itno)
 end prototypes
 
-global function string f_bom_get_srce (string a_plant, string a_div, string a_itno);string l_s_srce
+global function string f_bom_get_srce (string a_plant, string a_div, string a_itno);string 	ls_srce
 
-select srce into:l_s_srce from PBINV.INV101
-where comltd = '01' and xplant = :a_plant and div = :a_div and itno = :a_itno using sqlca;
+select	srce into:ls_srce from PBINV.INV101
+	where comltd = '01' and xplant = :a_plant and div = :a_div and itno = :a_itno 
+using sqlca;
 if sqlca.sqlcode <> 0 then
-	l_s_srce = " "
+	ls_srce = " "
 end if
-return l_s_srce
+return	ls_srce
 
 end function
 

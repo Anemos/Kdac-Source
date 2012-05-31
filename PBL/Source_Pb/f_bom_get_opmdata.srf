@@ -43,17 +43,14 @@ opmdata.it_prunt = l_s_prunt
 opmdata.it_prutc = truncate(l_s_prutc,4)
 l_s_purno = trim(l_s_purno)
 
-  SELECT "PBPUR"."OPM101"."CURR",   
-         "PBPUR"."OPM101"."TOD",   
-         "PBPUR"."OPM101"."VSRNO1"  
-    INTO :l_s_pcurr,   
-         :l_s_ptod,   
-         :l_s_pvend  
-    FROM "PBPUR"."OPM101"  
-   WHERE ( "PBPUR"."OPM101"."COMLTD" = '01' ) AND  
-         ( "PBPUR"."OPM101"."PURNO" = :l_s_purno ) AND  
-         ( "PBPUR"."OPM101"."SRNO" = :l_s_srno )   
-			using sqlca;
+SELECT "PBPUR"."OPM101"."CURR","PBPUR"."OPM101"."TOD","PBPUR"."OPM101"."VSRNO1"  
+	INTO :l_s_pcurr,:l_s_ptod,:l_s_pvend  
+FROM "PBPUR"."OPM101"  
+WHERE 
+			( "PBPUR"."OPM101"."COMLTD" = '01' ) AND  
+			( "PBPUR"."OPM101"."PURNO" = :l_s_purno ) 
+//	  AND	( "PBPUR"."OPM101"."SRNO" = :l_s_srno )  // 2007.09.21 외자 Table 기준 변경//
+using sqlca;
 			
 opmdata.it_pvsrno = l_s_pvend
 opmdata.it_pcurr = trim(l_s_pcurr)

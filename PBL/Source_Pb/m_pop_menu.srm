@@ -182,6 +182,7 @@ type m_copy from menu within m_action
 end type
 
 event clicked;string ls_filter_string, ls_sort_string, ls_find_string
+string ls_col_name, ls_col_type
 integer li_pos, li_findrow
 
 openwithparm(w_filter,idw_get)
@@ -197,13 +198,43 @@ elseif ls_filter_string <> "" and isnull(ls_filter_string) = false then
 	ls_sort_string = mid(ls_filter_string,1,(li_pos - 1))
 	ls_find_string = mid(ls_filter_string,(li_pos + 1))
 	
+	long ll_rtn
+	string ls_modtext
+	
+	ll_rtn = 1
+	ls_modtext = ls_find_string
+	do while(true)
+		ll_rtn = pos(ls_modtext,"'",ll_rtn)
+		if ll_rtn = 0 then
+			exit
+		end if
+		ls_modtext = replace(ls_modtext,ll_rtn,1,"")
+		ll_rtn = ll_rtn + 1
+	loop
+	
 	idw_get.SetSort(ls_sort_string)
 	idw_get.Sort()
 	
-	li_findrow = idw_get.find(ls_sort_string + " >= " + ls_find_string,1,idw_get.rowcount())
-	idw_get.SelectRow(0, FALSE)
-   idw_get.SelectRow(li_findrow, TRUE)
-	idw_get.scrolltorow(li_findrow)
+	ls_col_name = trim(ls_sort_string)
+	ls_col_type = UPPER(Mid(idw_get.Describe(ls_col_name + ".colType"),1,3))
+	if ls_col_type = "CHA" then
+		for li_pos = 1 to idw_get.rowcount()
+			ls_col_type = idw_get.getitemstring(li_pos,ls_col_name)
+			li_findrow = pos(idw_get.getitemstring(li_pos,ls_col_name),trim(ls_modtext))
+			if pos(idw_get.getitemstring(li_pos,ls_col_name),trim(ls_modtext)) > 0 then
+				li_findrow = li_pos
+				exit
+			end if
+		next 
+	else
+		li_findrow = idw_get.find(ls_sort_string + " >= " + ls_find_string,1,idw_get.rowcount())
+	end if
+	
+	if li_findrow > 0 then
+		idw_get.SelectRow(0, FALSE)
+		idw_get.SelectRow(li_findrow, TRUE)
+		idw_get.scrolltorow(li_findrow)
+	end if
 //   idw_get.Setfilter(ls_filter_string)
 //   idw_get.filter( )
 //	if idw_get.RowCount() > 0 then

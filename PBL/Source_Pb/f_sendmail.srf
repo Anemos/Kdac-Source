@@ -44,7 +44,7 @@ End If
 
 
 Mail.Reset                                      // Mail객체 초기화.
-Mail.IsHTML 	= false                          // 메일 내용을 HTML 형식으로 보낼것인가 여부를 결정.
+Mail.IsHTML 	= True                           // 메일 내용을 HTML 형식으로 보낼것인가 여부를 결정.
 Mail.Host   	= "mail.kdac.co.kr"               // SMTP 서버(우리는 Notes!!) 설정.
 Mail.From		= f_Empno_MailAddr( g_s_empno )  // 보내는 사람 주소 설정.
 Mail.FromName  = g_s_empno + " " + g_s_kornm    // 보내는 사람 이름 설정.

@@ -20,7 +20,7 @@ global function datetime f_pisc_get_date_nowtime ();////////////////////////////
 
 DateTime ldt_now
 
-Select Top 1 GetDate() Into :ldt_now From sysusers;
+Select Top 1 GetDate() Into :ldt_now From sysusers Using SQLPIS;
 
 Return ldt_now
 end function

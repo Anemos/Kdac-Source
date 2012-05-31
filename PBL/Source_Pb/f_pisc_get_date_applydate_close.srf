@@ -19,7 +19,7 @@ global function string f_pisc_get_date_applydate_close (string fs_areacode, stri
 //	Author	BY		:	Kim Jin-Su
 // Company			:	Daewoo Information System Co., Ltd. IAS
 //****************************************************************************************************************
-String	ls_applydate
+String	ls_applydate_close
 
 //Declare syntax in script.
 DECLARE get_applydate_close PROCEDURE for sp_pisc_get_applydate_close
@@ -27,15 +27,15 @@ DECLARE get_applydate_close PROCEDURE for sp_pisc_get_applydate_close
 @ps_divisioncode = :fs_divisioncode,
 @pdt_sourcedate = :fdt_datetime,
 @rs_applydate = '1' output
-Using SQLCA;
+Using SQLPIS;
 
 //exactly the parameters in the sp.
 EXECUTE get_applydate_close;
 
 //then fetch output parameters.
-FETCH get_applydate_close into :ls_applydate;
+FETCH get_applydate_close into :ls_applydate_close;
 CLOSE get_applydate_close;
 
-Return	ls_applydate
+Return	ls_applydate_close
 end function
 

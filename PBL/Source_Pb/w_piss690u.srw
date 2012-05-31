@@ -188,6 +188,7 @@ elseif in_index = 3 then
 end if
 
 end event
+
 event ue_save;call super::ue_save;long ln_rowcount,i,ln_rackqty,ln_standardqty,ln_savecount,ln_count
 string ls_kbno,ls_itemcode,ls_linecode,ls_productgroupname,ls_itemname
 dwItemStatus ls_status
@@ -649,6 +650,7 @@ event doubleclicked;if row > 0 then
 	tab_1.tabpage_3.dw_detail.retrieve(ls_areacode,ls_divisioncode,ls_itemcode,ls_outdate)
 end if
 end event
+
 type dw_detail from datawindow within tabpage_3
 boolean visible = false
 integer x = 1042
@@ -719,6 +721,7 @@ if dwo.name = 'b_save' then
 	sqlpis.autocommit = false	
 end if
 end event
+
 type gb_3 from groupbox within tabpage_3
 integer x = 18
 integer y = -4

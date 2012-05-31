@@ -7,46 +7,45 @@ forward prototypes
 global function integer f_lolev_update1 (string a_plant, string a_div, string a_itno)
 end prototypes
 
-global function integer f_lolev_update1 (string a_plant, string a_div, string a_itno);string l_s_div , l_s_citno , l_s_itno 
-integer l_s_lowlevel , l_s_comp , a_level
+global function integer f_lolev_update1 (string a_plant, string a_div, string a_itno);string 		ls_div,ls_citno,ls_itno 
+integer 	ln_lowlevel,ln_comp = 0,ln_level
 
-l_s_comp = 0 
+ls_itno		= trim(a_itno)
+ls_div  	= trim(a_div)
 
-l_s_itno = trim(a_itno)
-l_s_div   = trim(a_div)
-
-select lolevel into:a_level from PBINV.INV002
-	   where itno = :l_s_itno using sqlca;
+select lolevel into:ln_level from PBINV.INV002
+	where itno = :ls_itno 
+using sqlca;
 		
 declare bomchk_cur cursor for 
-  select "PBPDM"."BOM001"."PPITN" from "PBPDM"."BOM001"
-     where "PBPDM"."BOM001"."PCITN" = :l_s_itno AND  
-        ( ("PBPDM"."BOM001"."PEDTM" <= "PBPDM"."BOM001"."PEDTE" AND "PBPDM"."BOM001"."PEDTE" <> '' AND "PBPDM"."BOM001"."PEDTE" >= :g_s_date )
-                  OR  
-        ( "PBPDM"."BOM001"."PEDTE" = '' AND "PBPDM"."BOM001"."PEDTM" <= :g_s_date ))
-            
-     using SQLCA ;
+  select 	"PBPDM"."BOM001"."PPITN" from "PBPDM"."BOM001"
+  where 	"PBPDM"."BOM001"."PCITN" = :ls_itno AND  
+		(( trim("PBPDM"."BOM001"."PEDTE") =  ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date ) or  
+		(  trim("PBPDM"."BOM001"."PEDTE") <> ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date  and "PBPDM"."BOM001"."PEDTE" >= :g_s_date ))
+  using SQLCA ;
 
 open bomchk_cur ;
 
 do while true
-   fetch bomchk_cur into :l_s_citno ;
-   if sqlca.sqlcode <> 0 then
-   	exit
-   end if
-	l_s_citno = trim(l_s_citno)
-	select lolevel into:l_s_lowlevel from PBINV.INV002
-	   where itno = :l_s_citno using sqlca;
-	if l_s_lowlevel > l_s_comp then
-		l_s_comp = l_s_lowlevel
+	fetch bomchk_cur into :ls_citno ;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+	ls_citno 	= trim(ls_citno)
+	select lolevel into:ln_lowlevel from PBINV.INV002
+		where itno = :ls_citno 
+	using sqlca;
+	if ln_lowlevel > ln_comp then
+		ln_comp 		= ln_lowlevel
 	end if
 loop
 close bomchk_cur ;
-if l_s_comp <> 0 then
-   l_s_comp = l_s_comp + 1
+if ln_comp <> 0 then
+	ln_comp = ln_comp + 1
 end if
-if a_level <> l_s_comp then
-	update PBINV.INV002 set lolevel = :l_s_comp  where itno = :a_itno using sqlca;
+if ln_level <> ln_comp then
+	update PBINV.INV002 set lolevel = :ln_comp  where itno = :a_itno 
+	using sqlca;
 	return 1
 end if
 return 0

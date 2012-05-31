@@ -8,21 +8,21 @@ global function s_invdata_info f_bom_get_curinv (string a_plant, string a_div, s
 end prototypes
 
 global function s_invdata_info f_bom_get_curinv (string a_plant, string a_div, string a_itmnbr);s_invdata_info cur_inv
-decimal lc_imisq,lc_imisa
-string ls_ildcd
+decimal 	ld_imisq,ld_imisa
+string 	ls_ildcd
 
-select cls,  srce,  xunit,  costav,  convqty,  abccd,  outqty,  outamt,  costls, intqty,  puls,  pult
-	into :cur_inv.it_clsb, :cur_inv.it_srce, :cur_inv.it_prum, :cur_inv.it_ucav, :cur_inv.it_iumcv &
-			,:cur_inv.it_iavcd,:lc_imisq, :lc_imisa, :cur_inv.it_iucan, :cur_inv.it_mrcq,:cur_inv.it_lot,:cur_inv.it_lead
-from "PBINV"."INV101" a
-where a.comltd = '01' and
-		a.xplant = :a_plant and
-      a.div    = :a_div and
-		a.itno   = :a_itmnbr using sqlca;
-		
+select 	cls,  srce,  xunit,  costav,  convqty,  abccd,  outqty,  outamt,  costls, intqty,  puls,  pult
+	into 	:cur_inv.it_clsb, :cur_inv.it_srce, :cur_inv.it_prum, :cur_inv.it_ucav, :cur_inv.it_iumcv,
+			:cur_inv.it_iavcd,:ld_imisq, :ld_imisa, :cur_inv.it_iucan, :cur_inv.it_mrcq,:cur_inv.it_lot,:cur_inv.it_lead
+	from 	"PBINV"."INV101" a
+	where a.comltd = '01' 		and
+			a.xplant = :a_plant 	and
+			a.div    = :a_div 	and
+			a.itno   = :a_itmnbr 
+using sqlca;
 //get 불출평균단가
-if lc_imisq <> 0 and lc_imisa <> 0 then
-	cur_inv.it_imasa = (lc_imisa / lc_imisq)
+if ld_imisq <> 0 and ld_imisa <> 0 then
+	cur_inv.it_imasa = (ld_imisa / ld_imisq)
 else
 	cur_inv.it_imasa = 0
 end if
@@ -44,6 +44,6 @@ end if
 //	cur_inv.it_lead = 0
 //end if
 
-return cur_inv
+return 	cur_inv
 end function
 

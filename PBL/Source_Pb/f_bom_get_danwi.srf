@@ -7,17 +7,16 @@ forward prototypes
 global function string f_bom_get_danwi (string a_itno)
 end prototypes
 
-global function string f_bom_get_danwi (string a_itno);string l_s_danwi
+global function string f_bom_get_danwi (string a_itno);string ls_danwi
  
-SELECT "PBINV"."INV002"."XUNIT"  
- INTO :l_s_danwi
- FROM "PBINV"."INV002"  
-WHERE "PBINV"."INV002"."COMLTD" = '01' AND
-		"PBINV"."INV002"."ITNO" = :a_itno using sqlca ;
+SELECT 	"PBINV"."INV002"."XUNIT"  INTO :ls_danwi FROM "PBINV"."INV002"  
+	WHERE "PBINV"."INV002"."COMLTD" 	= '01' AND
+			"PBINV"."INV002"."ITNO" 	= :a_itno 
+using sqlca ;
 if sqlca.sqlcode <> 0 then
-	l_s_danwi = " "
+	ls_danwi = " "
 end if
-return l_s_danwi
+return ls_danwi
 
 end function
 

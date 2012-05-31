@@ -115,6 +115,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 	
 		If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 			ag_message = "SLE501 미존재"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						'SLE501 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                           
 		End if	
 		
@@ -127,6 +129,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 																												  
 			If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 				ag_message = "품목기본정보 미존재"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						'품목기본정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 				return -1                                                           
 			End if
 			
@@ -140,6 +144,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		
 			If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 				ag_message = "품목상세정보 미존재"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						'품목상세정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 				return -1                                                           
 			End if
 		  End if
@@ -147,6 +153,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 			//*** 결산년월 Check
 			If f_Get_Ctlchk( ls_tdte4, "" ) = -1 Then
 				ag_message = "마감이후 작업 불가"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						'마감이후 작업 불가',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2, g_s_empno, g_s_ipaddr, g_s_macaddr)
 				return -1	
 			End If
 		
@@ -157,6 +165,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					If ld_costav = 0 Then                                                           
 					  if Not(ls_div = 'A' and ls_cls='10' and ls_srce ='03') then                
 						  ag_message = "전장이외 이동평균단가 필수 입력사항"
+						  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								'전장이외 이동평균단가 필수 입력사항',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 						  return -1                                                             
 					  End if                                                                    
 					End if
@@ -250,7 +260,13 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					  li_retcnt = f_wip001_crud_logic( ls_chgcd, '01', 'SR', ls_srno, ls_srno1, ls_srno2, ls_xplant, ls_div, &
 								ls_itno, ls_cls, ls_srce, ld_convqty, '90 ', ' ', ls_scustcd, ' ', ld_qty, ld_qty, &
 								ls_tdte4, ls_tdte4, ld_amt, lstr_ipis.t_sqlpis, ag_message )
-					  if li_retcnt = -1 then return -1 
+					  if li_retcnt = -1 then 
+						ag_message = "재공 생성에 실패하였습니다."
+						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						  '재공 생성실패',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
+					  
+						return -1 
+					  end if
 				  End if				  
 				  
 			   End if
@@ -265,6 +281,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				  
 				  If lstr_ipis.t_sqlpis.sqlcode <> 0 Then
 					  ag_message = "제품출하취소 삭제 정보 검색 오류"
+					  f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+						  '제품출하취소 삭제 정보 검색 오류',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 					  return -1
 				  End if
 			  End if
@@ -295,6 +313,11 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					 Case 'S'
 						ld_ohsqty = ld_ohsqty - ld_qty
 				  End Choose
+				  
+				  IF ld_ohuqty < 0 THEN
+					  ag_message = "현재고 (-)재고 발생"
+					  return -1
+				  End if
 							  
 				  UPDATE PBINV.INV101                                                       
 					SET OUTQTY = OUTQTY + :ld_qty,                                             
@@ -316,11 +339,11 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					end if
 					
 					DELETE FROM PBINV.INV401
-					WHERE	COMLTD	= '01'      AND SLIPTYPE ='SA'     AND SRNO = :ls_srno AND	
+					WHERE	COMLTD	= '01'      AND SLIPTYPE ='SR'     AND SRNO = :ls_srno AND	
 							SRNO1		= :ls_srno1 AND SRNO2 = :ls_srno2
 					using lstr_ipis.t_sqlpis; 
 					
-					if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+					if lstr_ipis.t_sqlpis.sqlnrows < 1 then
 						ag_message = "제품출하취소정보 삭제에 실패하였습니다."
 						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
 							lstr_ipis.t_sqlpis.sqlerrtext,'제품출하취소정보 정보 삭제 에러', g_s_empno, g_s_ipaddr, g_s_macaddr)
@@ -332,7 +355,12 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					  li_retcnt = f_wip001_crud_logic( ls_chgcd, '01', 'SR', ls_srno, ls_srno1, ls_srno2, ls_xplant, ls_div, &
 								ls_itno, ls_cls, ls_srce, ld_convqty, '90 ', ' ', ls_scustcd, ' ', ld_qty, ld_qty, &
 								ls_tdte4, ls_tdte4, ld_amt, lstr_ipis.t_sqlpis, ag_message )
-					  if li_retcnt = -1 then return -1 
+					  if li_retcnt = -1 then 
+							ag_message = "재공 생성에 실패하였습니다."
+							f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '재공 생성실패',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
+							return -1 
+					  end if
 				  End if
 					
 				End if
@@ -360,11 +388,15 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		
 		If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 			ag_message = "역이체의뢰정보 미존재"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '역이체의뢰정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                           
 		End if
 		
 		If ls_istcd <> 'C' then
 			ag_message = "역이체의뢰(C) 정보가 아님"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '역이체의뢰(C) 정보가 아님',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1
 		End if
 			
@@ -377,6 +409,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 			
 			If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 				ag_message = "역이체불출정보 미존재"
+				f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '역이체불출정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 				return -1                                                           
 			End if	
 		else
@@ -393,6 +427,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 																											  
 		If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 			ag_message = "품목기본정보 미존재"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '품목기본정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                           
 		End if
 		
@@ -405,11 +441,15 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				
 		If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 			ag_message = "불출공장 품목상세정보 미존재"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '불출공장 품목상세정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                           
 		End if		
 																											  
 		If Not(ls_cls='10' and ls_srce ='05') then                 
 			ag_message = "불출공장 계정확인"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '불출공장 계정확인',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                              
 		End if                                                                       
 																											  
@@ -422,17 +462,23 @@ for li_cnt = 1 to ag_dwo.rowcount()
 																											  
 		If lstr_ipis.t_sqlpis.sqlcode <> 0 then                                                          
 			ag_message = "입고공장 품목상세정보 미존재"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '입고공장 품목상세정보 미존재',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                           
 		End if                                                                      
 																											  
 		If Not(ls_cls1='30' or (ls_cls1='10' and ls_srce1 ='03')) then                                  
 			ag_message = "입고공장 계정확인"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '입고공장 계정확인',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1                                                                
 		End if
 			
 		//*** 결산년월 Check
 		If f_Get_Ctlchk( ls_tdte4, "" ) = -1 Then
 			ag_message = "마감이후 작업 불가"
+			f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '마감이후 작업 불가',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 			return -1	
 		End If
 		
@@ -443,17 +489,23 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				  If ld_costav = 0 Then                                                         
 					  if Not(ls_div1 = 'A' and ls_cls1='10' and ls_srce1 ='03') then                
 							ag_message = "입고공장 이동평균단가 확인"
+							f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '입고공장 이동평균단가 확인',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 							return -1                                                             
 						End if                                                                    
 					End if                                                                       
 																														  
 					If ld_qty > ld_ohuqty Then                                                    
 						ag_message = "불출공장 사용가 수량 확인"
+						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '불출공장 사용가 수량 확인',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 						return -1                                                               
 					End if
 					
 					If ld_qty <> ld_TQTY3 Then                 	                                   
 						ag_message = "불출수량과 입고수량 오차"
+						f_ipis_transaction_errorlog(ls_chgcd,'','f_up_ipis_mis_tshipback',&
+								 '불출수량과 입고수량 오차',ls_xplant+ls_div+ls_itno + "  " +ls_srno+ls_srno1+ls_srno2 , g_s_empno, g_s_ipaddr, g_s_macaddr)
 						return -1                                                               
 					End if
 	                                                                  

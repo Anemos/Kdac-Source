@@ -1,5 +1,5 @@
 $PBExportHeader$f_pisc_get_date_applydate.srf
-$PBExportComments$월마감 일자를 고려한 기준일자를 구한다.(return string 'YYYY.MM.DD')
+$PBExportComments$기준일자를 구한다.(return string 'YYYY.MM.DD')
 global type f_pisc_get_date_applydate from function_object
 end type
 
@@ -8,7 +8,7 @@ global function string f_pisc_get_date_applydate (string fs_areacode, string fs_
 end prototypes
 
 global function string f_pisc_get_date_applydate (string fs_areacode, string fs_divisioncode, datetime fdt_datetime);//****************************************************************************************************************
-//	Function			:	f_pisc_get_date_applydate_close
+//	Function			:	f_pisc_get_date_applydate
 //	Description		:	기준일 구한다.
 //	Arguments		:	fs_areacode
 //							fs_divisioncode
@@ -27,7 +27,7 @@ DECLARE get_applydate PROCEDURE for sp_pisc_get_applydate
 @ps_divisioncode = :fs_divisioncode,
 @pdt_sourcedate = :fdt_datetime,
 @rs_applydate = '1' output
-Using SQLCA;
+Using SQLPIS;
 
 //exactly the parameters in the sp.
 EXECUTE get_applydate;

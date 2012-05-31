@@ -12,7 +12,7 @@ end forward
 global type u_piss_select_labelcustomer from userobject
 integer width = 1001
 integer height = 72
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "none"
 long tabtextcolor = 33554432
 long picturemaskcolor = 536870912
@@ -86,7 +86,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 8388608
-long backcolor = 67108864
+long backcolor = 12632256
 string text = "거래처:"
 alignment alignment = right!
 boolean focusrectangle = false

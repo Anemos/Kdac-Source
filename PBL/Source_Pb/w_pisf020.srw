@@ -201,7 +201,7 @@ end event
 
 event ue_retrieve_each_tab;call super::ue_retrieve_each_tab;string ls_where, ls_and, ls_and1, ls_and2, ls_and3,ls_where1,ls_where2
 string ls_code, ls_decript
-long li_current_tab_page, ll_row
+long li_current_tab_page, ll_row, ll_currow
 string ls_womanual
 string ls_manualcode
 string ls_equipcode
@@ -226,9 +226,14 @@ choose case li_current_tab_page
 	case 1
 		id_dw_property.object.datawindow.table.select = is_original_sql_property + ls_where
 		if id_dw_property.retrieve() < 1 then
-			id_dw_property.insertrow(0)
+			ll_currow = id_dw_property.insertrow(0)
 			id_dw_1.reset()
 			id_dw_1_1.reset()
+			id_dw_property.setitem(ll_currow,"wo_acc_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+			id_dw_property.setitem(ll_currow,"wo_float_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+			id_dw_property.setitem(ll_currow,"wo_start_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+			id_dw_property.setitem(ll_currow,"wo_end_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+			id_dw_property.setitem(ll_currow,"wo_estend_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
 		else
 			id_dw_1.object.datawindow.table.select = is_original_sql_1 + ls_and
 			id_dw_1.retrieve()
@@ -400,9 +405,16 @@ case 1
 	// 작업지시코드가 사후정비(%B%)인 경우 해당공장의 장비인지 체크
 	ls_equip_code = id_dw_property.GetItemString(id_dw_property.getrow(), 'Equip_Code')
 	if trim(ls_equip_code) <> "" Or Pos(ls_wono, 'B') > 0 then
-		ls_Col[1] = 'Area_Code'; 		ls_Data[1] = gs_kmarea;
-		ls_Col[2] = 'Factory_Code'; 	ls_Data[2] = gs_kmdivision;
-		ls_Col[3] = 'Equip_Code'; 		ls_Data[3] = id_dw_property.GetItemString(id_dw_property.getrow(), 'Equip_Code')
+		ls_Col[1] = 'Area_Code' 		
+		ls_Data[1] = gs_kmarea
+		ls_Col[2] = 'Factory_Code' 	
+		ls_Data[2] = gs_kmdivision
+		ls_Col[3] = 'Equip_Code'
+		if isnull(id_dw_property.GetItemString(id_dw_property.getrow(), 'Equip_Code')) then
+			ls_Data[3] = ''
+		else
+			ls_Data[3] = id_dw_property.GetItemString(id_dw_property.getrow(), 'Equip_Code')
+		end if
 		ll_row = f_code_count('Equip_Master', ls_Col, ls_Data)
 		if ll_row = 0 Then
 			messagebox("알림",'대상장비가 해당 지역공장에 없는 장비코드 입니다.~r~n확인하세요!!')
@@ -514,7 +526,7 @@ end event
 
 event ue_postopen;call super::ue_postopen;str_parm str_get_parm
 string ls_return[]
-long ii, ll_find
+long ii, ll_find, ll_currow
 datawindowchild ldwc
 
 tab_1.tp_1.dw_property.settransobject(sqlcmms)   
@@ -601,7 +613,12 @@ if Isvalid(str_get_parm) then
 	else
 		this.tab_1.selectedTab = 1
 		//this.triggerevent('ue_insert')
-		id_dw_property.insertrow(0)
+		ll_currow = id_dw_property.insertrow(0)
+		id_dw_property.setitem(ll_currow,"wo_acc_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+		id_dw_property.setitem(ll_currow,"wo_float_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+		id_dw_property.setitem(ll_currow,"wo_start_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+		id_dw_property.setitem(ll_currow,"wo_end_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
+		id_dw_property.setitem(ll_currow,"wo_estend_date",datetime(date(string(g_s_date,"@@@@-@@-@@")),time(g_s_time)))
 	end if
 else
 	this.triggerevent('ue_retrieve')
@@ -1521,8 +1538,6 @@ if dwo.name = 'wo_outorder' then
 end if
 
 choose case dwo.name
-	case 'wo_base'
-
 	case 'wo_code'
 		if data = '' or isnull(data) then 
 		else 
@@ -1864,6 +1879,20 @@ end event
 
 event dberror;f_show_dberror(sqldbcode)
 return 1
+end event
+
+event itemfocuschanged;//*** comminv3.pbl f_toggle 함수 사용
+ulong handle
+handle = handle(this)
+ 
+CHOOSE CASE dwo.NAME
+CASE 'wo_base' 
+	f_toggle(handle,'K')  // 한글자판변환
+CASE ELSE
+	f_toggle(handle,'E')   // 영문자판변환
+END Choose
+
+return 0
 end event
 
 type gb_1 from groupbox within tp_1
