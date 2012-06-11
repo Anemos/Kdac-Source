@@ -1,0 +1,83 @@
+$PBExportHeader$d_bom308i_01.srd
+$PBExportComments$Ç¥ÁØÀç·áºñ´ëºñ½ÇÀûÀç·áºñ
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=zplant dbname="ZPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=zdiv dbname="ZDIV" )
+ column=(type=char(4) updatewhereclause=yes name=zmdcd dbname="ZMDCD" )
+ column=(type=char(60) updatewhereclause=yes name=prname dbname="PRNAME" )
+ column=(type=char(12) updatewhereclause=yes name=zmdno dbname="ZMDNO" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="SPEC" )
+ column=(type=decimal(0) updatewhereclause=yes name=ftmcst dbname="FTMCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=ftrcst dbname="FTRCST" )
+ column=(type=decimal(0) updatewhereclause=yes name=ftacst dbname="FTACST" )
+ column=(type=decimal(0) updatewhereclause=yes name=pcmats dbname="PCMATS" )
+ retrieve="select tmp_113d.zplant as zplant,
+tmp_113d.zdiv as zdiv,tmp_113d.zmdcd as zmdcd,tmp_007.prname,tmp_113d.zmdno as zmdno,
+tmp_002.itnm, tmp_002.spec,
+tmp_109d.ftmcst as ftmcst, tmp_109d.ftrcst as ftrcst, tmp_109d.ftacst as ftacst,tmp_acc.pcmats as pcmats
+from 
+( select distinct zcmcd,zdate,zplant,zdiv,zmdcd, zmdno from pbpdm.bom113d
+where zcmcd = '01' and zdate = :ag_date and zsrce in ('01','02','04') and 
+(( zygchk = 'Y' and (zscmovcost + zscrcpcost + zscoutcost) = 0 ) or 
+( zygchk <> 'Y' and (zmovcost + zrcpcost + zoutcost) = 0 )) ) tmp_113d
+inner join pbpdm.bom109d tmp_109d
+on tmp_113d.zcmcd = tmp_109d.fcmcd and tmp_109d.fgubun = 'B' and
+		tmp_113d.zdate = tmp_109d.fdate and tmp_113d.zplant = tmp_109d.fplant and
+		tmp_113d.zdiv = tmp_109d.fdvsn and tmp_113d.zmdcd = tmp_109d.fpdcd and 
+		tmp_113d.zmdno = tmp_109d.fmdno
+inner join pbinv.inv002 tmp_002
+on tmp_113d.zcmcd = tmp_002.comltd and tmp_113d.zmdno = tmp_002.itno
+left outer join pbcommon.dac007 tmp_007
+on tmp_113d.zcmcd = tmp_007.comltd and tmp_113d.zmdcd = tmp_007.prprcd
+left outer join ( SELECT PCDIV,
+     SUBSTR(A.PCDIV,1,1)  as PCAREA ,
+     CASE  WHEN SUBSTR(A.PCDIV,1,1) ='Y' THEN 'Y'
+     ELSE CASE  SUBSTR(A.PCDIV,2,1)  WHEN 'E' THEN 'A' 
+          WHEN 'D' THEN 'Y' 
+     ELSE CASE WHEN  IFNULL(B.DIV,'')=''  THEN SUBSTR(A.PCDIV,2,1) ELSE B.DIV END END END  AS PCPLANT,
+         	PCPRCD1, 
+         	PCITNO ,
+         	PCMATS  
+			 FROM PBACC.PCC140 A LEFT OUTER JOIN PBACC.ACC060 B
+                       ON  A.COMLTD = B.COMLTD AND 
+                           A.PCDIV = B.ACCDIV AND 
+                           A.PCPRCD1 = B.PDCD AND 
+                           B.PDCD <>'' 
+			WHERE A.COMLTD = '01' and
+      		A.PCGUBUN = '2' AND 
+      		A.PCYY||A.PCMM= :ag_lastmm ) tmp_acc
+	on tmp_113d.zplant = tmp_acc.pcarea and tmp_113d.zdiv = tmp_acc.pcplant and
+		tmp_113d.zmdno = tmp_acc.pcitno
+" arguments=(("ag_date", string),("ag_lastmm", string)) )
+text(band=header alignment="0" text="Áö¿ª" border="0" color="16777215" x="5" y="4" height="60" width="128" html.valueishtml="0"  name=zplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="°øÀå" border="0" color="16777215" x="142" y="4" height="60" width="142" html.valueishtml="0"  name=zdiv_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Á¦Ç°±º" border="0" color="16777215" x="293" y="4" height="60" width="187" html.valueishtml="0"  name=zmdcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Á¦Ç°±º¸í" border="0" color="16777215" x="489" y="4" height="60" width="718" html.valueishtml="0"  name=prname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Á¦Ç°" border="0" color="16777215" x="1216" y="4" height="60" width="379" html.valueishtml="0"  name=zmdno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Ç°¸í" border="0" color="16777215" x="1605" y="4" height="60" width="823" html.valueishtml="0"  name=itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Ftmcst" border="0" color="16777215" x="2441" y="4" height="60" width="553" html.valueishtml="0"  name=ftmcst_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Ftrcst" border="0" color="16777215" x="3003" y="4" height="60" width="603" html.valueishtml="0"  name=ftrcst_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Ftacst" border="0" color="16777215" x="3616" y="4" height="60" width="654" html.valueishtml="0"  name=ftacst_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Pcmats" border="0" color="16777215" x="4279" y="4" height="60" width="599" html.valueishtml="0"  name=pcmats_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="9" y="0" height="76" width="123" html.valueishtml="0"  name=zplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=0 border="0" color="0" x="146" y="0" height="76" width="137" html.valueishtml="0"  name=zdiv visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=0 border="0" color="0" x="297" y="0" height="76" width="183" html.valueishtml="0"  name=zmdcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=0 border="0" color="0" x="494" y="0" height="76" width="713" html.valueishtml="0"  name=prname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=0 border="0" color="0" x="1221" y="0" height="76" width="375" html.valueishtml="0"  name=zmdno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=0 border="0" color="0" x="1609" y="0" height="76" width="818" html.valueishtml="0"  name=itnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=0 border="0" color="0" x="2446" y="0" height="76" width="549" html.valueishtml="0"  name=ftmcst visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="0" tabsequence=0 border="0" color="0" x="3008" y="0" height="76" width="599" html.valueishtml="0"  name=ftrcst visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=0 border="0" color="0" x="3621" y="0" height="76" width="649" html.valueishtml="0"  name=ftacst visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=0 border="0" color="0" x="4283" y="0" height="76" width="594" html.valueishtml="0"  name=pcmats visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 
