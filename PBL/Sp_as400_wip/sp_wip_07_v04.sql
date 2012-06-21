@@ -1,8 +1,12 @@
--- file name : sp_wip_07t
--- procedure name : pbwip.sp_wip_07t
+-- file name : sp_wip_07
+-- procedure name : pbwip.sp_wip_07
 -- desc : WIP001 Vendor WIP Update ( ADD IOCD = 3 )
+--       2012.02 50/04 입고취소(SS) 추가
+--       2012.06 유상사급 호환품번 수량적용
 
-create procedure pbwip.sp_wip_07t(
+drop procedure pbwip.sp_wip_07;
+
+create procedure pbwip.sp_wip_07 (
 in a_comltd varchar(2),
 in a_prsrty varchar(2),
 in a_prsrno varchar(8),

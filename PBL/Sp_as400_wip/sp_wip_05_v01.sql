@@ -103,7 +103,7 @@ while at_end = 0 do
  else
         set p_calcnt = 0;
  end if;
- if p_selcnt <> p_calcnt then
+ if p_selcnt < p_calcnt then
     insert into qtemp.wiptemp02(tcmcd,tprsrty,tprsrno,
        tprsrno1,tprsrno2,tplant,tdvsn,tprno,tdate,
        tselcnt,tcalcnt)

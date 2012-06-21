@@ -1889,7 +1889,7 @@ CHOOSE CASE dwo.NAME
 CASE 'wo_base' 
 	f_toggle(handle,'K')  // 한글자판변환
 CASE ELSE
-	f_toggle(handle,'E')   // 영문자판변환
+	f_toggle(handle,'K')   // 영문자판변환
 END Choose
 
 return 0

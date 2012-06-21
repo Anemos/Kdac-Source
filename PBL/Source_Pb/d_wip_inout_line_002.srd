@@ -1,7 +1,7 @@
 $PBExportHeader$d_wip_inout_line_002.srd
 $PBExportComments$라인품번의 해당전표조회[이월데이타기준]
-release 8;
-datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 header(height=68 color="536870912" )
 summary(height=4 color="536870912" )
 footer(height=0 color="536870912" )
@@ -58,6 +58,16 @@ GROUP BY XPLANT,DIV,ITNO,CLS,SRCE,DEPT,SLIPTYPE, XUSE, RTNGUB
 
 UNION ALL
 
+SELECT XPLANT, DIV, ITNO,CLS,SRCE,DEPT, SLIPTYPE, XUSE, RTNGUB, SUM(TQTY4) AS COM_QTY, SUM(TRAMT) AS COM_AMT
+FROM PBINV.INV401
+WHERE (COMLTD = :a_cmcd) AND (XPLANT = :a_plant) AND (DIV = :a_dvsn)
+		AND CLS = '50' AND SRCE = '04' 
+		AND (TDTE4 >= :a_fromdt) AND (TDTE4 <= :a_todt)
+		AND (SLIPTYPE = 'SS' AND INVSTCD = 'U')
+GROUP BY XPLANT,DIV,ITNO,CLS,SRCE,DEPT,SLIPTYPE, XUSE, RTNGUB
+
+UNION ALL
+
 SELECT WDPLANT, WDDVSN, WDITNO,WDITCL,WDSRCE,WDCHDPT, WDSLTY,WDUSGE,'', SUM(WDCHQT) AS COM_QTY, SUM(0) AS COM_AMT
 FROM PBWIP.WIP004
 WHERE (WDCMCD = :a_cmcd) AND (WDPLANT = :a_plant) AND (WDDVSN = :a_dvsn) 
@@ -99,5 +109,8 @@ column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x=
 column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2281" y="4" height="60" width="480" format="[general]" html.valueishtml="0"  name=com_amt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2798" y="8" height="60" width="192" format="[general]" html.valueishtml="0"  name=dept visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

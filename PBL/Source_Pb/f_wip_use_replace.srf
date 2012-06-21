@@ -45,6 +45,10 @@ if a_tqty4_b = a_tqty4_a  then
 			WDDATE = :A_TDTE4_B
 	USING SQLCA ;
 	
+	if sqlca.sqlnrows < 1 then
+		Messagebox("업데이트 에러1",sqlca.sqlerrtext)
+	end if
+	
 	return 'Y'
 end if
 
@@ -58,10 +62,14 @@ WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND
 		WDDATE = :A_TDTE4_B
 USING SQLCA ;
 
+if sqlca.sqlnrows < 1 then
+	Messagebox("업데이트 에러2",sqlca.sqlerrtext)
+end if
+
 Declare WIP004_Cur Cursor For
 	SELECT WDIOCD,WDUSGE,WDITNO,WDCHQT   FROM "PBWIP"."WIP004"
 	WHERE WDPRNO = :A_ITNO AND WDCMCD = :A_COMLTD AND 
-			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND
+			WDPLANT = :A_XPLANT AND WDDVSN = :A_DIV AND WDIOCD = :l_s_gubun AND 
 			WDPRSRTY = :A_SLIPXTYPE AND WDPRSRNO = :A_SRNO AND WDPRSRNO1 = :A_SRNO1 AND WDPRSRNO2 = :A_SRNO2 AND
 			WDDATE = :A_TDTE4_A
 	USING SQLCA ;
@@ -76,8 +84,12 @@ Open WIP004_Cur ;
 				:l_n_waavrg1,:l_n_wausqt1,:l_n_wausqt2,:l_n_wausqt3,:l_n_wausqt4,:l_n_wausqt5,
 				:l_n_wausqt6,:l_n_wausqt7,:l_n_wausqt8,:l_n_waohqt   FROM "PBWIP"."WIP001" 
 			WHERE WACMCD = :a_comltd AND WAPLANT = :a_xplant AND WADVSN = :a_div AND 
-					WAORCT = :l_s_orct AND WAITNO = :l_s_itno AND WAIOCD = :l_s_gubun 
+					WAORCT = :l_s_orct AND WAITNO = :l_s_itno AND WAIOCD = :l_s_gubun
 		USING SQLCA;
+		
+		if sqlca.sqlcode <> 0 then
+			Messagebox("WIP001 조회 오류", "품번 : " + l_s_itno + " : " + sqlca.sqlerrtext)
+		end if
 		
 		select costav into :l_n_costav
 			from pbinv.inv101
@@ -125,6 +137,10 @@ Open WIP004_Cur ;
 		where WACMCD = :a_comltd AND WAPLANT = :a_xplant AND WADVSN = :a_div AND 
 				WAORCT = :l_s_orct AND WAITNO = :l_s_itno AND WAIOCD = :l_s_gubun
 		using sqlca;
+		
+		if sqlca.sqlnrows < 1 then
+			Messagebox("업데이트 에러3", "품번 : " + l_s_itno + " : " + sqlca.sqlerrtext)
+		end if
 	loop
 
 Close WIP004_Cur ;	

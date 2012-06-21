@@ -50,7 +50,7 @@ table(column=(type=char(2) updatewhereclause=yes name=wip001_wacmcd dbname="WIP0
          ( ~"PBWIP~".~"WIP001~".~"WADVSN~" = :a_dvsn  ) AND
 			( ~"PBPDM~".~"BOM003~".~"OPITN~" = :a_pitno ) AND    
          ( ~"PBWIP~".~"WIP001~".~"WAORCT~" = :a_orct ) AND
-			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2') ) AND 
+			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2','3') ) AND 
 			( ~"PBINV~".~"INV101~".~"CONVQTY~" = :a_convqty ) AND 
          ((~"PBPDM~".~"BOM003~".~"OEDTE~" = ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate ) OR
 			(~"PBPDM~".~"BOM003~".~"OEDTE~" <> ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate 
