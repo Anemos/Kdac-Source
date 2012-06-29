@@ -354,16 +354,19 @@ for ll_cnt = 1 to ll_rowcnt
 						RFIPAD = :g_s_ipaddr,   
 						RFUPDT = :g_s_date,   
 						RFSYDT = 'DEL01'
-					WHERE RFLOGID = :ll_logid AND RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND RFDVSN = :ls_dvsn AND
-							RFITNO = :ls_itno AND RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
-							RFOPNO = :ls_opno AND RFNVMO = :l_s_rdnvmo AND RFMCNO = :l_s_rdmcno AND 
-							RFTERM = :l_s_rdterm AND RFEDFM = :l_s_rdedfm
+					WHERE RFLOGID = :ll_logid
 					using sqlca;
 					
-	//					if sqlca.sqlnrows < 1 then
-	//						ag_errortext = "부대작업 이력생성시에 오류발생 2. : " + sqlca.sqlerrtext
-	//						return -1
-	//					end if
+					// Where조건 임시적으로 logid만 적용함
+//					WHERE RFLOGID = :ll_logid AND RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND RFDVSN = :ls_dvsn AND
+//							RFITNO = :ls_itno AND RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
+//							RFOPNO = :ls_opno AND RFNVMO = :l_s_rdnvmo AND RFMCNO = :l_s_rdmcno AND 
+//							RFTERM = :l_s_rdterm AND RFEDFM = :l_s_rdedfm
+					
+//					if sqlca.sqlnrows < 1 then
+//						ag_errortext = "부대작업 이력생성시에 오류발생 2. : " + sqlca.sqlerrtext
+//						return -1
+//					end if
 				else
 					UPDATE PBRTN.RTN016
 					SET RFFLAG = 'D', 
@@ -372,16 +375,13 @@ for ll_cnt = 1 to ll_rowcnt
 						RFIPAD = :g_s_ipaddr,   
 						RFUPDT = :g_s_date,   
 						RFSYDT = 'DEL02'
-					WHERE RFLOGID = :ll_logid AND RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND RFDVSN = :ls_dvsn AND
-							RFITNO = :ls_itno AND RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
-							RFOPNO = :ls_opno AND RFNVMO = :l_s_rdnvmo AND RFMCNO = :l_s_rdmcno AND 
-							RFTERM = :l_s_rdterm AND RFEDFM = :l_s_rdedfm
+					WHERE RFLOGID = :ll_logid
 					using sqlca;
 					
-	//					if sqlca.sqlnrows < 1 then
-	//						ag_errortext = "부대작업 이력생성시에 오류발생 3. : " + sqlca.sqlerrtext
-	//						return -1
-	//					end if
+//						if sqlca.sqlnrows < 1 then
+//							ag_errortext = "부대작업 이력생성시에 오류발생 3. : " + sqlca.sqlerrtext
+//							return -1
+//						end if
 					
 					SELECT COUNT(*) INTO :ll_chkcount FROM PBRTN.RTN016
 					WHERE RFLOGID = :ll_logid AND RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND RFDVSN = :ls_dvsn AND
@@ -392,10 +392,7 @@ for ll_cnt = 1 to ll_rowcnt
 					
 					if ll_chkcount > 0 then
 						DELETE FROM PBRTN.RTN016
-						WHERE RFLOGID = :ll_logid AND RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND RFDVSN = :ls_dvsn AND
-								RFITNO = :ls_itno AND RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
-								RFOPNO = :ls_opno AND RFNVMO = :l_s_rdnvmo AND RFMCNO = :l_s_rdmcno AND 
-								RFTERM = :l_s_rdterm AND RFEDFM = :ls_nextdate
+						WHERE RFLOGID = :ll_logid AND RFEDFM = :ls_nextdate
 						using sqlca;
 						if sqlca.sqlcode <> 0 then
 							ag_errortext = "부대작업 이력생성시에 오류발생 5. : " + sqlca.sqlerrtext
@@ -426,15 +423,26 @@ for ll_cnt = 1 to ll_rowcnt
 			
 			if ls_rdflag = 'D' then
 				DELETE FROM PBRTN.RTN014
-				WHERE RDLOGID = :ll_logid AND RDCMCD = :g_s_company AND RDPLANT = :ls_plant AND RDDVSN = :ls_dvsn AND
-						RDITNO = :ls_itno AND RDLINE1 = :ls_line1 AND RDLINE2 = :ls_line2 AND
-						RDOPNO = :ls_opno AND RDNVMO = :l_s_rdnvmo AND RDMCNO = :l_s_rdmcno AND 
-						RDTERM = :l_s_rdterm
+				WHERE RDLOGID = :ll_logid
 				using sqlca;
 				if sqlca.sqlcode <> 0 then
 					ag_errortext = "부대작업 이력생성시에 오류발생 1. : " + sqlca.sqlerrtext
 					return -1
-				end if	
+				end if
+			else
+				UPDATE PBRTN.RTN014  
+				SET RDFLAG = :ls_rdflag,   
+					RDEPNO = :g_s_empno,   
+					RDEDFM = :ls_nextdate,   
+					RDIPAD = :g_s_ipaddr,   
+					RDUPDT = :g_s_date,   
+					RDSYDT = 'UPT01'  
+				WHERE RDLOGID = :ll_logid
+				using sqlca;
+//				if sqlca.sqlcode <> 0 then
+//					ag_errortext = "부대작업 적용일자변경시에 오류가 발행했습니다. : " + sqlca.sqlerrtext
+//					return -1
+//				end if
 			end if
 		loop
 
@@ -450,7 +458,7 @@ for ll_cnt = 1 to ll_rowcnt
 //			end if
 //		else
 //			UPDATE PBRTN.RTN014  
-//			SET RDFLAG = :ls_flag,   
+//			SET RDFLAG = :ls_rdflag,   
 //				RDEPNO = :g_s_empno,   
 //				RDEDFM = :ls_nextdate,   
 //				RDIPAD = :g_s_ipaddr,   
@@ -1246,7 +1254,7 @@ for ll_cnt = 1 to dw_rtn042u_01.rowcount()
 		case 'PE'	//담당자 결재내역삭제
 			if ls_gubun = 'RTN011' then
 				UPDATE PBRTN.RTN011
-				SET Raflag = 'D', Rainchk = 'Y', Raplchk = 'Y', Radlchk = 'Y'
+				SET Raflag = 'R', Rainchk = 'Y', Raplchk = 'Y', Radlchk = 'Y'
 				WHERE Racmcd ='01' AND Rainemp = :ls_inemp AND Rainchk = :ls_inchk AND
 					Raintime = :ls_intime AND Raplemp = :ls_plemp AND Raplchk = :ls_plchk
 				using sqlca;
@@ -1257,7 +1265,7 @@ for ll_cnt = 1 to dw_rtn042u_01.rowcount()
 				end if
 			else
 				UPDATE PBRTN.RTN013
-				SET Rcflag = 'D', Rcinchk = 'Y', Rcplchk = 'Y', Rcdlchk = 'Y'
+				SET Rcflag = 'R', Rcinchk = 'Y', Rcplchk = 'Y', Rcdlchk = 'Y'
 				WHERE Rccmcd ='01' AND Rcinemp = :ls_inemp AND Rcinchk = :ls_inchk AND
 					Rcintime = :ls_intime AND Rcplemp = :ls_plemp AND Rcplchk = :ls_plchk
 				using sqlca;

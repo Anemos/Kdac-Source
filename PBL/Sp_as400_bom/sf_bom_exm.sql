@@ -165,11 +165,11 @@ if p_xyear = p_currentmonth then
   select decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
       CASE WHEN b.costls = 0 THEN b.costav ELSE b.costls END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN b.costav = 0 THEN b.costls ELSE b.costav END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN (b.outqty <> 0 AND b.outamt <> 0)
@@ -177,18 +177,18 @@ if p_xyear = p_currentmonth then
        ELSE
         CASE WHEN b.costls = 0 THEN b.costav ELSE b.costls END
        END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
       CASE WHEN ifnull(c.sccostls,0) = 0 THEN
         ifnull(c.sccostav,0)
       ELSE ifnull(c.sccostls,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN ifnull(c.sccostav,0) = 0 THEN
       ifnull(c.sccostls,0) ELSE ifnull(c.sccostav,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN ifnull(c.sciscostav,0) = 0 THEN
@@ -196,7 +196,7 @@ if p_xyear = p_currentmonth then
         ifnull(c.sccostav,0)
       ELSE ifnull(c.sccostls,0) END
     ELSE ifnull(c.sciscostav,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6)
+    ELSE 0.000000 END ,6),15,6)
   into p_inputcost,p_movecost,p_outcost,
     p_scinputcost,p_scmovecost,p_scoutcost
   from pbinv.inv101 b left outer join pbinv.inv101a c
@@ -208,11 +208,11 @@ else
   select decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
       CASE WHEN b.costls = 0 THEN b.costav ELSE b.costls END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN b.costav = 0 THEN b.costls ELSE b.costav END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN (b.outqty <> 0 AND b.outamt <> 0)
@@ -220,18 +220,18 @@ else
        ELSE
         CASE WHEN b.costls = 0 THEN b.costav ELSE b.costls END
        END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
       CASE WHEN ifnull(c.sccostls,0) = 0 THEN
         ifnull(c.sccostav,0)
       ELSE ifnull(c.sccostls,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN ifnull(c.sccostav,0) = 0 THEN
       ifnull(c.sccostls,0) ELSE ifnull(c.sccostav,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6),
+    ELSE 0.000000 END ,6),15,6),
   decimal(truncate(
     CASE WHEN b.srce NOT IN ('05','03',' ') THEN
     CASE WHEN ifnull(c.sciscostav,0) = 0 THEN
@@ -239,7 +239,7 @@ else
         ifnull(c.sccostav,0)
       ELSE ifnull(c.sccostls,0) END
     ELSE ifnull(c.sciscostav,0) END
-    ELSE 0.000000 END / p_convqty ,6),15,6)
+    ELSE 0.000000 END ,6),15,6)
   into p_inputcost,p_movecost,p_outcost,
     p_scinputcost,p_scmovecost,p_scoutcost
   from pbinv.inv402 b left outer join pbinv.inv402a c
