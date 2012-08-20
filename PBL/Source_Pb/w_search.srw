@@ -412,7 +412,7 @@ IF li_ok = 1 THEN
 	li_pos		= Pos(ls_fullpath, '.XLS', 1)
 	ls_tmpfile	= Replace(ls_fullpath, li_pos, 4, '.TXT')	
 	
-	If dw_time_day.SaveAsAscii(ls_tmpfile, "~t" , "") = 1 Then
+	If dw_time_night.SaveAsAscii(ls_tmpfile, "~t" , "") = 1 Then
 		If f_file_convert('1', ls_tmpfile, ls_fullpath) = True Then
 			MessageBox("Save OK", "File Save Success", Information!)
 		Else

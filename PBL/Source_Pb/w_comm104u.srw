@@ -993,14 +993,16 @@ if	dwo.name = 'b_delete_copy'	then
 	
 	insert 	into pbcommon.comm140his 	
 	select 	cast(:ls_toempno as char(6)),use_win,:ls_chgdate,'','A',use_grd,:g_s_empno,
-					cast(:g_s_ipaddr as char(30)),cast(:g_s_macaddr as char(30)),:ls_inputdetail from pbcommon.comm140 
-	where 	emp_no = :ls_fromempno
+				cast(:g_s_ipaddr as char(30)),cast(:g_s_macaddr as char(30)),:ls_inputdetail from pbcommon.comm140 
+	where 	emp_no = :ls_fromempno	and left(lower(trim(use_win)),5) not in ( 'w_fia','w_acc','w_pcc','w_fun','w_acs','w_fex' )		// 회계 관련 권한 Copy 불가 요청 ( 2012.07.16 )
 	using 	sqlca ;
+	
 elseif	dwo.name = 'b_update_add'	then
 	insert 	into pbcommon.comm140his 	
 	select 	cast(:ls_toempno as char(6)),use_win,:ls_chgdate,'','A',use_grd,:g_s_empno,
 				cast(:g_s_ipaddr as char(30)),cast(:g_s_macaddr as char(30)),:ls_inputdetail from pbcommon.comm140 
 	where 	emp_no = :ls_fromempno	and 	use_win not in ( select use_win from pbcommon.comm140 where emp_no = :ls_toempno )
+				and	left(lower(trim(use_win)),5) not in ( 'w_fia','w_acc','w_pcc','w_fun','w_acs','w_fex' )	// 회계 관련 권한 Copy 불가 요청 ( 2012.07.16 )
 	using 	sqlca ;
 end if
 	

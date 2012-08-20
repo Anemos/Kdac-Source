@@ -132,19 +132,27 @@ open hisryt_cur;
 				exit
 			end if
 			
+//			SELECT COUNT(*) INTO :ll_rowcnt
+//			 FROM "PBPDM"."BOMT02" INNER JOIN "PBACC"."ACC300"
+//				ON ( "PBPDM"."BOMT02"."RCMCD"  = "PBACC"."ACC300"."COMLTD" ) AND
+//					( "PBPDM"."BOMT02"."RPLANT" || "PBPDM"."BOMT02"."RDIV"  = "PBACC"."ACC300"."SLDIV" ) AND
+//					( "PBPDM"."BOMT02"."RMDNO" = "PBACC"."ACC300"."SLITNO" )   
+//					LEFT OUTER JOIN "PBCOMMON"."DAC002"  
+//				ON ( "PBPDM"."BOMT02"."RCMCD"  = "PBCOMMON"."DAC002"."COMLTD" ) AND
+//					( "PBPDM"."BOMT02"."RCUST" = "PBCOMMON"."DAC002"."COCODE" )
+//			WHERE ( "PBPDM"."BOMT02"."RCMCD" = '01' ) AND 
+//					( "PBPDM"."BOMT02"."RYEAR" = :ls_year ) AND
+//					( "PBPDM"."BOMT02"."RMONTH" = :ls_month ) AND  
+//					( "PBCOMMON"."DAC002"."COGUBUN" = 'DAC170' )
+//			using sqlca;
+
 			SELECT COUNT(*) INTO :ll_rowcnt
-			 FROM "PBPDM"."BOMT02" INNER JOIN "PBACC"."ACC300"
-				ON ( "PBPDM"."BOMT02"."RCMCD"  = "PBACC"."ACC300"."COMLTD" ) AND
-					( "PBPDM"."BOMT02"."RPLANT" || "PBPDM"."BOMT02"."RDIV"  = "PBACC"."ACC300"."SLDIV" ) AND
-					( "PBPDM"."BOMT02"."RMDNO" = "PBACC"."ACC300"."SLITNO" )   
-					LEFT OUTER JOIN "PBCOMMON"."DAC002"  
-				ON ( "PBPDM"."BOMT02"."RCMCD"  = "PBCOMMON"."DAC002"."COMLTD" ) AND
-					( "PBPDM"."BOMT02"."RCUST" = "PBCOMMON"."DAC002"."COCODE" )
+			 FROM "PBPDM"."BOMT02"
 			WHERE ( "PBPDM"."BOMT02"."RCMCD" = '01' ) AND 
 					( "PBPDM"."BOMT02"."RYEAR" = :ls_year ) AND
-					( "PBPDM"."BOMT02"."RMONTH" = :ls_month ) AND  
-					( "PBCOMMON"."DAC002"."COGUBUN" = 'DAC170' )
+					( "PBPDM"."BOMT02"."RMONTH" = :ls_month )
 			using sqlca;
+
 			
 			if (ls_preyear + ls_premonth) <> (ls_year + ls_month) and li_cntnum = 1 then
 				li_currow = tab_royalty.tabpage_cal.dw_rythist.insertrow(0)
@@ -1320,7 +1328,7 @@ delete from pbpdm.bom006
 
 //모델품번 가져오기
 declare rytget_cur cursor for
-	SELECT "PBPDM"."BOM011"."BPLANT",
+	SELECT DISTINCT "PBPDM"."BOM011"."BPLANT",
    		 "PBPDM"."BOM011"."BDIV",
           "PBACC"."ACC300"."SLITNO",   
           "PBACC"."ACC300"."SLPRCD",
@@ -1609,7 +1617,7 @@ loop
 
 //display the result data at window
 declare result_cur cursor for
-	SELECT "PBPDM"."BOM006"."RFYYMM",
+	SELECT DISTINCT "PBPDM"."BOM006"."RFYYMM",
 			 "PBPDM"."BOM006"."RFCUST",
 			 "PBPDM"."BOM006"."RFCITN",
 			 "PBPDM"."BOM006"."RFCOST",

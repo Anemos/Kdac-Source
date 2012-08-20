@@ -149,6 +149,8 @@ loop
 
   if p_wkct = '8888' then
     set p_iocd = '3';
+  else
+    set p_iocd = '2';
   end if;
 
   if p_opcd <> '1' then

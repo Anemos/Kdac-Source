@@ -79,11 +79,11 @@ Do While ( li_retGbn >= 0 )
 										( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
 		 If IsNull(ld_jungsiMH) Then ld_jungsiMH = 0
 		 
-	// 정시외 공수 (연장, 조출, 상주)  ※ 21 : 철야 -> 2003년02월06일 추가 
+	// 정시외 공수 (연장, 조출, 상주)  ※ 21 : 철야 -> 2003년02월06일 추가, RA : 반월차, RB : 반년차 -> 2012년 7월 추가
 	    Select Sum( IsNull(dgotr, 0) + IsNull(dgjor, 0) + IsNull(dgsangr, 0) ) 
 		   Into :ld_etcMH From TMHLABTAC 
 	     Where ( dgday = :as_wday ) And ( dgdepte = :as_wc ) And  ( IsNull(dgempgb, '') = :ls_labtac_empGbn ) And 
-  		        ( IsNull(DGCD2R,'') + IsNull(DGCD3R,'') in ( '', '21', 'T1' ) ) And ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
+  		        ( IsNull(DGCD2R,'') + IsNull(DGCD3R,'') in ( '', '21', 'T1', 'RA', 'RB' ) ) And ( IsNull(excFlag,'') = '' ) Using SqlPIS ; 
 		 If IsNull(ld_etcMH) Then ld_etcMH = 0			 
 		 
    // 정시외 공수 (휴무특근 + 주휴특근) 

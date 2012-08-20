@@ -793,7 +793,7 @@ em_dept.visible 	= 	false
 em_dept.enabled 	= 	false
 pb_find.visible  	= 	false
 pb_find.enabled  	= 	false
-st_4.visible 		= 	false
+st_4.visible 			= 	false
 st_4.enabled 		= 	false
 
 end event
@@ -825,7 +825,7 @@ em_dept.visible 	= 	true
 em_dept.enabled 	= 	true
 pb_find.visible  	= 	true
 pb_find.enabled  	= 	true
-st_4.visible 		= 	true
+st_4.visible 			= 	true
 st_4.enabled 		= 	true
 
 end event
@@ -896,9 +896,8 @@ long backcolor = 12632256
 end type
 
 type st_dept from statictext within w_comm106u
-boolean visible = false
-integer x = 910
-integer y = 108
+integer x = 869
+integer y = 112
 integer width = 293
 integer height = 72
 integer textsize = -10
@@ -1007,8 +1006,8 @@ long backcolor = 12632256
 end type
 
 type cb_2 from commandbutton within w_comm106u
-integer x = 841
-integer y = 100
+integer x = 855
+integer y = 104
 integer width = 302
 integer height = 92
 integer taborder = 10

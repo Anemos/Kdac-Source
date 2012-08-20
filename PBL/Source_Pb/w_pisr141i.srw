@@ -383,7 +383,7 @@ integer width = 2473
 integer height = 1160
 integer taborder = 11
 boolean bringtotop = true
-string dataobject = "d_pisr140i_01"
+string dataobject = "d_pisr141i_01"
 boolean hscrollbar = true
 boolean vscrollbar = true
 end type

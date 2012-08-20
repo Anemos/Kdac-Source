@@ -15,6 +15,10 @@ type rb_not from radiobutton within w_pism018i
 end type
 type cb_dailycreate from commandbutton within w_pism018i
 end type
+type cb_all_down from commandbutton within w_pism018i
+end type
+type dw_all_down from datawindow within w_pism018i
+end type
 type gb_3 from groupbox within w_pism018i
 end type
 end forward
@@ -27,6 +31,8 @@ rb_ok rb_ok
 rb_notok rb_notok
 rb_not rb_not
 cb_dailycreate cb_dailycreate
+cb_all_down cb_all_down
+dw_all_down dw_all_down
 gb_3 gb_3
 end type
 global w_pism018i w_pism018i
@@ -69,6 +75,8 @@ this.rb_ok=create rb_ok
 this.rb_notok=create rb_notok
 this.rb_not=create rb_not
 this.cb_dailycreate=create cb_dailycreate
+this.cb_all_down=create cb_all_down
+this.dw_all_down=create dw_all_down
 this.gb_3=create gb_3
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.dw_dailystatus
@@ -77,7 +85,9 @@ this.Control[iCurrent+3]=this.rb_ok
 this.Control[iCurrent+4]=this.rb_notok
 this.Control[iCurrent+5]=this.rb_not
 this.Control[iCurrent+6]=this.cb_dailycreate
-this.Control[iCurrent+7]=this.gb_3
+this.Control[iCurrent+7]=this.cb_all_down
+this.Control[iCurrent+8]=this.dw_all_down
+this.Control[iCurrent+9]=this.gb_3
 end on
 
 on w_pism018i.destroy
@@ -88,6 +98,8 @@ destroy(this.rb_ok)
 destroy(this.rb_notok)
 destroy(this.rb_not)
 destroy(this.cb_dailycreate)
+destroy(this.cb_all_down)
+destroy(this.dw_all_down)
 destroy(this.gb_3)
 end on
 
@@ -283,7 +295,7 @@ end type
 type cb_dailycreate from commandbutton within w_pism018i
 integer x = 1577
 integer y = 184
-integer width = 1509
+integer width = 1275
 integer height = 80
 integer taborder = 40
 boolean bringtotop = true
@@ -324,6 +336,151 @@ Else
 End If 
 
 end event
+
+type cb_all_down from commandbutton within w_pism018i
+integer x = 2944
+integer y = 184
+integer width = 512
+integer height = 80
+integer taborder = 50
+boolean bringtotop = true
+integer textsize = -9
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+string text = "전공장 다운로드"
+end type
+
+event clicked;string l_s_docname, l_s_named
+int l_n_value, li_chk
+
+// EIS DB
+SQLEIS 							= 	CREATE transaction
+SQLEIS.DBMS       			= 	ProfileString(gs_inifile,"DATABASE_EIS","DBMS",			" ")
+SQLEIS.ServerName 			= 	ProfileString(gs_inifile,"DATABASE_EIS","ServerName",	" ")
+SQLEIS.Database   			= 	ProfileString(gs_inifile,"DATABASE_EIS","Database",		" ")
+SQLEIS.LogID      				= 	ProfileString(gs_inifile,"DATABASE_EIS","LogId",			" ")
+SQLEIS.LogPass    			= 	ProfileString(gs_inifile,"DATABASE_EIS","LogPass",		" ")
+SQLEIS.DBParm 				= 	"CommitOnDisconnect='No'"
+SQLEIS.AutoCommit 			= 	True
+
+gs_appname						= 	ProfileString(gs_inifile,"PARAMETER","AppName"," ")
+
+connect using SQLEIS;
+
+If SQLEIS.sqlcode <> 0 then
+	disconnect using sqleis ;
+	destroy sqleis
+	uo_status.st_message.text = "EIS 서버에 접근할수 없습니다."
+	return -1
+end if
+
+dw_all_down.settransobject(sqleis)
+
+if dw_all_down.retrieve(istr_mh.from_date, istr_mh.to_date) > 0 then
+	integer li_rowcnt, li_cnt, li_currow
+	string ls_areacode
+	datastore lds_01
+
+	lds_01 = create datastore
+	lds_01.dataobject = "d_pism018i_01_all_jin"
+	lds_01.settransobject(sqleis)
+	
+	li_rowcnt = lds_01.retrieve('J','S','%',istr_mh.from_date, istr_mh.to_date)
+	for li_cnt = 1 to li_rowcnt
+		li_currow = dw_all_down.insertrow(0)
+		dw_all_down.setitem(li_currow,"Areacode",'J')
+		dw_all_down.setitem(li_currow,"Divisioncode",'S')
+		dw_all_down.setitem(li_currow,"WorkCenter",lds_01.getitemstring(li_cnt,"WorkCenter"))
+		dw_all_down.setitem(li_currow,"WorkDay",lds_01.getitemstring(li_cnt,"WorkDay"))
+		dw_all_down.setitem(li_currow,"WorkCenterName",lds_01.getitemstring(li_cnt,"WorkCenterName"))
+		dw_all_down.setitem(li_currow,"DailyStatus",lds_01.getitemstring(li_cnt,"DailyStatus"))
+		dw_all_down.setitem(li_currow,"InputTime",lds_01.getitemdatetime(li_cnt,"InputTime"))
+		dw_all_down.setitem(li_currow,"Remark",lds_01.getitemstring(li_cnt,"Remark"))
+		dw_all_down.setitem(li_currow,"InputEmp",lds_01.getitemstring(li_cnt,"InputEmp"))
+		dw_all_down.setitem(li_currow,"EmpName",lds_01.getitemstring(li_cnt,"EmpName"))
+		dw_all_down.setitem(li_currow,"LastDate",lds_01.getitemdatetime(li_cnt,"LastDate"))
+	next
+	
+	lds_01.reset()
+	li_rowcnt = lds_01.retrieve('J','H','%',istr_mh.from_date, istr_mh.to_date)
+	for li_cnt = 1 to li_rowcnt
+		li_currow = dw_all_down.insertrow(0)
+		dw_all_down.setitem(li_currow,"Areacode",'J')
+		dw_all_down.setitem(li_currow,"Divisioncode",'H')
+		dw_all_down.setitem(li_currow,"WorkCenter",lds_01.getitemstring(li_cnt,"WorkCenter"))
+		dw_all_down.setitem(li_currow,"WorkDay",lds_01.getitemstring(li_cnt,"WorkDay"))
+		dw_all_down.setitem(li_currow,"WorkCenterName",lds_01.getitemstring(li_cnt,"WorkCenterName"))
+		dw_all_down.setitem(li_currow,"DailyStatus",lds_01.getitemstring(li_cnt,"DailyStatus"))
+		dw_all_down.setitem(li_currow,"InputTime",lds_01.getitemdatetime(li_cnt,"InputTime"))
+		dw_all_down.setitem(li_currow,"Remark",lds_01.getitemstring(li_cnt,"Remark"))
+		dw_all_down.setitem(li_currow,"InputEmp",lds_01.getitemstring(li_cnt,"InputEmp"))
+		dw_all_down.setitem(li_currow,"EmpName",lds_01.getitemstring(li_cnt,"EmpName"))
+		dw_all_down.setitem(li_currow,"LastDate",lds_01.getitemdatetime(li_cnt,"LastDate"))
+	next
+
+	destroy lds_01
+
+	f_save_to_excel_execute(dw_all_down,'1')
+//	// 엑셀저장 시작
+//	
+//	If dw_all_down.RowCount() = 0 Then Return 
+//
+//	l_s_docname = Parent.Title 
+//	
+//	l_n_value = GetFileSaveName("저장 하기", l_s_docname, l_s_named, "xls", "Excel files (*.xls), *.xls")
+//	if l_n_value = 1 then
+//		li_Chk = dw_all_down.saveas(l_s_docname, HTMLTABLE!, true) 
+////		li_Chk = dw_all_down.saveas(l_s_docname, Excel!, true)
+//		If li_Chk = -1 Then 
+//			f_pism_messagebox(StopSign!, -1, "확 인", "파일저장 오류 입니다.") 
+//		End If 
+//	end if
+//	
+//	if l_n_value = 1 and li_chk <> -1 then
+//		OleObject     myOleObject
+//		int           i_Result
+//		String        excel_title
+//		
+//		myOleObject = Create OleObject //ole 오브젝트 생성
+//		
+//		i_Result = myOleObject.ConnectToNewObject( "excel.application" )
+//		// 엑셀에 연결
+//		excel_title = myOleObject.Application.Caption
+//		
+//		myOleObject.Application.Visible = True
+//		
+//		myOleObject.WorkBooks.Open(l_s_docname)
+//		myOleObject.WindowState = 3 
+//		// 엑셀윈도우의 상태 지정 1-normal, 2-min, 3-max
+//		
+//		myoleobject.DisConnectObject() //연결종료
+//		Destroy myoleobject //오브젝트 제거
+//	end if	
+else
+	uo_status.st_message.text = "조회할 정보가 없습니다."
+end if
+
+disconnect using sqleis ;
+destroy sqleis
+	
+return 0
+end event
+
+type dw_all_down from datawindow within w_pism018i
+boolean visible = false
+integer x = 2761
+integer y = 292
+integer width = 686
+integer height = 400
+integer taborder = 21
+boolean bringtotop = true
+string dataobject = "d_pism018i_01_all"
+boolean livescroll = true
+borderstyle borderstyle = stylelowered!
+end type
 
 type gb_3 from groupbox within w_pism018i
 integer x = 9

@@ -583,6 +583,7 @@ l_s_docname = Parent.Title
 l_n_value = GetFileSaveName("저장 하기", l_s_docname, l_s_named, "xls", "Excel files (*.xls), *.xls")
 if l_n_value = 1 then
 	li_Chk = dw_download.saveas(l_s_docname, HTMLTABLE!, true) 
+//	li_Chk = dw_download.saveas(l_s_docname, Excel!, true)
 	If li_Chk = -1 Then 
 		f_pism_messagebox(StopSign!, -1, "확 인", "파일저장 오류 입니다.") 
 		Return 

@@ -2,7 +2,7 @@
 -- procedure name : pbwip.sp_wip_05
 -- desc : WIP History Deploy Check ( include iocd = 03 )
 
-drop procedure pbwip.sp_wip_05;
+--drop procedure pbwip.sp_wip_05;
 
 create procedure pbwip.sp_wip_05 (
 in a_comltd varchar(2),
@@ -23,7 +23,9 @@ declare p_adjdt    char(8);
 declare p_chkitno  char(15);
 declare p_chkdate  char(8);
 declare p_selcnt   numeric(5,0);
+declare p_selcnt2  numeric(5,0);
 declare p_calcnt   numeric(5,0);
+declare p_calcnt2  numeric(5,0);
 declare p_rtn      char(1);
 declare p_chkcnt   integer;
 declare at_end integer default 0;
@@ -71,6 +73,20 @@ fetch wipchk_cur into p_plant,p_dvsn,p_srty,p_srno,
 while at_end = 0 do
  if p_chkitno <> p_pitno or p_chkdate <> p_adjdt then
    if p_srty = 'RP' or p_srty = 'SS' then
+     select count(*) into p_selcnt
+     from pbwip.wip004
+     where wdcmcd = a_comltd and wdprsrty = p_srty and
+      wdprsrno = p_srno and wdprsrno1 = p_srno1 and
+      wdprsrno2 = p_srno2 and wddate = p_adjdt and
+      wdiocd = '2';
+
+     select count(*) into p_selcnt2
+     from pbwip.wip004
+     where wdcmcd = a_comltd and wdprsrty = p_srty and
+      wdprsrno = p_srno and wdprsrno1 = p_srno1 and
+      wdprsrno2 = p_srno2 and wddate = p_adjdt and
+      wdiocd = '3';
+
      set p_rtn = pbwip.sf_wip_bom(a_comltd,p_plant,p_dvsn,
                 p_pitno,p_adjdt,'I');
    else
@@ -89,7 +105,15 @@ while at_end = 0 do
                 tcmcd = comltd and tplnt = xplant and
                 tdvsn = div and tcitn = itno and
                 ( cls = '10' or cls = '40' or cls = '50') and
-                topcd <> '2' ;
+                topcd <> '2'  and twkct = '9999';
+      select ifnull(count(*),0) into p_calcnt2
+       from qtemp.bomtemp01,pbinv.inv101
+        where tcmcd = a_comltd and tplnt = p_plant and
+                tdvsn = p_dvsn and
+                tcmcd = comltd and tplnt = xplant and
+                tdvsn = div and tcitn = itno and
+                ( cls = '10' or cls = '40' or cls = '50') and
+                topcd <> '2'  and twkct = '8888';
     else
         select ifnull(count(*),0) into p_calcnt
         from qtemp.bomtemp01,pbinv.inv101
@@ -103,7 +127,7 @@ while at_end = 0 do
  else
         set p_calcnt = 0;
  end if;
- if p_selcnt < p_calcnt then
+ if p_selcnt < p_calcnt or p_selcnt2 < p_calcnt2 then
     insert into qtemp.wiptemp02(tcmcd,tprsrty,tprsrno,
        tprsrno1,tprsrno2,tplant,tdvsn,tprno,tdate,
        tselcnt,tcalcnt)

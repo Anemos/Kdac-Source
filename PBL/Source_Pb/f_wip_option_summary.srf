@@ -57,6 +57,12 @@ for ll_cntx = 1 to ll_rowcnt
 	ls_iocd = trim(ds_option_main.getitemstring(ll_cntx,"wip001_waiocd"))
 	lc_convqty = ds_option_main.getitemnumber(ll_cntx,"inv101_convqty")
 	
+	if ls_iocd = '3' then //BOM호환 유상인경우만
+	
+	else
+		
+	end if
+	
 	SELECT "PBWIP"."WIP001"."WAUSQT1" + "PBWIP"."WIP001"."WAUSQT2" + "PBWIP"."WIP001"."WAUSQT3" as com_usqt,
    		 "PBWIP"."WIP001"."WAUSQT1",
 			 "PBWIP"."WIP001"."WAUSQT2",
@@ -103,7 +109,7 @@ for ll_cntx = 1 to ll_rowcnt
 	ds_option_arrange.reset()
 	//ds_option_wip004.reset()
 	
-	ll_rowcnt2 = ds_option_sub.retrieve(a_cmcd,a_plant,a_dvsn,ls_itno,ls_yymmdd,ls_orct,lc_convqty)
+	ll_rowcnt2 = ds_option_sub.retrieve(a_cmcd,a_plant,a_dvsn,ls_itno,ls_yymmdd,ls_orct,lc_convqty,ls_iocd)
 	if ll_rowcnt2 < 1 then
 		continue
 	end if

@@ -812,7 +812,7 @@ for ll_cnt = 1 to dw_rtn042u_01.rowcount()
 		
 			SELECT Peempno INTO :ls_sign_empno
 			FROM PBCOMMON.DAC003
-			WHERE Pedept = :ls_dept AND Pejikchek = '3'
+			WHERE Pedept = :ls_dept AND Pejikchek = '3' AND Peout <> '*'
 			using sqlca;
 			
 			// 라우팅시스템운영자 팀장설정

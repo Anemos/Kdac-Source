@@ -286,7 +286,8 @@ for l_n_loopcnt = 1 to l_n_totalcnt
 	l_n_rclbcnt = dw_1.getitemnumber(l_n_loopcnt,"rclbcnt")
 	l_s_rcnvcd  = 'N'
 	l_s_rcgrde  = ''
-
+	
+	// 장비유무 체크
 	select count(*) into :l_n_chkcount from pbrtn.rtn017
 	where rgcmcd = '01' and rgplant = :l_s_plant and rgdvsn = :l_s_dvsn and rgitno = :l_s_itno and 
 			rgline1 = :l_s_rcline1 and rgline2 = :l_s_rcline2 and rgopno = :l_s_rcopno using sqlca;
@@ -295,6 +296,9 @@ for l_n_loopcnt = 1 to l_n_totalcnt
 	else
 		l_s_rcmcyn = 'N'
 	end if
+	//부대작업 체크
+	
+	
 	if isnull(l_d_rcbmtm)  = true then l_d_rcbmtm  = 0 
 	if isnull(l_d_rcbltm)  = true then l_d_rcbltm  = 0 
 	if isnull(l_d_rcbstm)  = true then l_d_rcbstm  = 0 

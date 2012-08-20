@@ -37,12 +37,13 @@ declare p_rautqt   numeric(15,4);
 declare p_rautat   numeric(11,0);
 declare p_clqt     numeric(15,4);
 declare p_clat     numeric(11,0);
+declare p_unit     char(2);
 declare retcode    integer default 0;
 
 --Get input, use, on hand data
 declare cal_claim cursor for
   select wfitno,wfscrp,wfretn,wfavrg,wfusqt1,
-    wfusqt3,wfohqt,wfohat,wfphqt
+    wfusqt3,wfohqt,wfohat,wfphqt,wfunit
   from pbwip.wip009
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
@@ -71,7 +72,7 @@ open cal_claim;
 inc_loop:
 loop
   fetch cal_claim into p_itno,p_scrp,p_retn,p_avrg,
-    p_usqt, p_usqt7, p_ohqt, p_ohat, p_phqt;
+    p_usqt, p_usqt7, p_ohqt, p_ohat, p_phqt, p_unit;
   if retcode = 1 then
     leave inc_loop;
   end if;
@@ -124,6 +125,9 @@ loop
     end if;
   else
     set p_clqt = p_usqt7 + p_diffqt - p_lautqt;
+  end if;
+  if p_unit = 'EA' then
+    set p_clqt = CEILING(p_clqt);
   end if;
   set p_clat = decimal((p_clqt * p_avrg),11,0);
   -- Result Data Update

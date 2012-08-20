@@ -37,7 +37,6 @@ String 		gs_tag		,	gs_path
 
 
 end variables
-
 global type kdac from application
 string appname = "kdac"
 end type
@@ -60,6 +59,7 @@ function boolean DeleteFileA(ref string filename) LIBRARY "Kernel32.dll"
 
 
 end prototypes
+
 type variables
 n_macip uo_macip
 
@@ -341,13 +341,13 @@ Destroy		uo_macip
 
 g_s_company = '01'
 if f_spacechk(g_s_empno) = -1 then
-	fc1		= 	FindWindowA(0,ls_devname )
-	if	fc1 <> 0 then
+//	fc1		= 	FindWindowA(0,ls_devname )
+//	if	fc1 <> 0 then
 		open(w_top)	
-	else
-		messagebox("실행오류", "실행파일 선택 오류..kdac.exe가 아닌 ~r~n~r~nkdacdown.exe를 실행하시기 바랍니다")
-		halt close 
-	end if
+//	else
+//		messagebox("실행오류", "실행파일 선택 오류..kdac.exe가 아닌 ~r~n~r~nkdacdown.exe를 실행하시기 바랍니다")
+//		halt close 
+//	end if
 else
 	SELECT	autarea,autplnt, autdiv,autext1,out_emp_name	,emp_level 
 		INTO 	:g_s_autarea, :g_s_autplnt, :g_s_autdiv,:g_s_autext1,:g_s_kornm ,:gs_userlevel  

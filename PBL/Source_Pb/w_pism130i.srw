@@ -23,13 +23,20 @@ type dw_header from u_pism_dw within w_pism130i
 end type
 type dw_mhdetaillist from u_pism_dw within w_pism130i
 end type
+type cb_all_down from commandbutton within w_pism130i
+end type
+type dw_all_down from datawindow within w_pism130i
+end type
 end forward
 
 global type w_pism130i from w_pism_sheet02
+integer width = 3968
 tab_work tab_work
 dw_mhlist dw_mhlist
 dw_header dw_header
 dw_mhdetaillist dw_mhdetaillist
+cb_all_down cb_all_down
+dw_all_down dw_all_down
 end type
 global w_pism130i w_pism130i
 
@@ -60,11 +67,15 @@ this.tab_work=create tab_work
 this.dw_mhlist=create dw_mhlist
 this.dw_header=create dw_header
 this.dw_mhdetaillist=create dw_mhdetaillist
+this.cb_all_down=create cb_all_down
+this.dw_all_down=create dw_all_down
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.tab_work
 this.Control[iCurrent+2]=this.dw_mhlist
 this.Control[iCurrent+3]=this.dw_header
 this.Control[iCurrent+4]=this.dw_mhdetaillist
+this.Control[iCurrent+5]=this.cb_all_down
+this.Control[iCurrent+6]=this.dw_all_down
 end on
 
 on w_pism130i.destroy
@@ -73,6 +84,8 @@ destroy(this.tab_work)
 destroy(this.dw_mhlist)
 destroy(this.dw_header)
 destroy(this.dw_mhdetaillist)
+destroy(this.cb_all_down)
+destroy(this.dw_all_down)
 end on
 
 event resize;call super::resize;//il_resize_count ++
@@ -328,5 +341,153 @@ boolean hscrollbar = true
 boolean vscrollbar = true
 boolean hsplitscroll = true
 integer ii_selection = 0
+end type
+
+type cb_all_down from commandbutton within w_pism130i
+integer x = 3456
+integer y = 24
+integer width = 457
+integer height = 92
+integer taborder = 30
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+string text = "전공장다운"
+end type
+
+event clicked;string l_s_docname, l_s_named
+int l_n_value, li_chk
+
+if String(tab_work.SelectedTab) <> '1' then
+	uo_status.st_message.text = "공수투입현황만 전사다운로드가 가능합니다."
+	return -1
+end if
+
+// EIS DB
+SQLEIS 							= 	CREATE transaction
+SQLEIS.DBMS       			= 	ProfileString(gs_inifile,"DATABASE_EIS","DBMS",			" ")
+SQLEIS.ServerName 			= 	ProfileString(gs_inifile,"DATABASE_EIS","ServerName",	" ")
+SQLEIS.Database   			= 	ProfileString(gs_inifile,"DATABASE_EIS","Database",		" ")
+SQLEIS.LogID      				= 	ProfileString(gs_inifile,"DATABASE_EIS","LogId",			" ")
+SQLEIS.LogPass    			= 	ProfileString(gs_inifile,"DATABASE_EIS","LogPass",		" ")
+SQLEIS.DBParm 				= 	"CommitOnDisconnect='No'"
+SQLEIS.AutoCommit 			= 	True
+
+gs_appname						= 	ProfileString(gs_inifile,"PARAMETER","AppName"," ")
+
+connect using SQLEIS;
+
+If SQLEIS.sqlcode <> 0 then
+	disconnect using sqleis ;
+	destroy sqleis
+	uo_status.st_message.text = "EIS 서버에 접근할수 없습니다."
+	return -1
+end if
+
+dw_all_down.settransobject(sqleis)
+
+if dw_all_down.retrieve(istr_mh.from_date, istr_mh.to_date, String(tab_work.SelectedTab)) > 0 then
+	integer li_rowcnt, li_cnt, li_currow
+	string ls_areacode
+	datastore lds_01
+
+	lds_01 = create datastore
+	lds_01.dataobject = "d_pism130i_01_all_jin"
+	lds_01.settransobject(sqleis)
+	
+	li_rowcnt = lds_01.retrieve('J','S',istr_mh.from_date, istr_mh.to_date, String(tab_work.SelectedTab))
+	for li_cnt = 1 to li_rowcnt
+		li_currow = dw_all_down.insertrow(0)
+		dw_all_down.setitem(li_currow,"Areacode",'J')
+		dw_all_down.setitem(li_currow,"Divisioncode",'S')
+		dw_all_down.setitem(li_currow,"WorkCenter",lds_01.getitemstring(li_cnt,"WorkCenter"))
+		dw_all_down.setitem(li_currow,"WorkCenterName",lds_01.getitemstring(li_cnt,"WorkCenterName"))
+		dw_all_down.setitem(li_currow,"Seq1",lds_01.getitemnumber(li_cnt,"Seq1"))
+		dw_all_down.setitem(li_currow,"Seq2",lds_01.getitemnumber(li_cnt,"Seq2"))
+		dw_all_down.setitem(li_currow,"dispLevel",lds_01.getitemstring(li_cnt,"dispLevel"))
+		dw_all_down.setitem(li_currow,"dispName",lds_01.getitemstring(li_cnt,"dispName"))
+		dw_all_down.setitem(li_currow,"dispMH",lds_01.getitemnumber(li_cnt,"dispMH"))
+		dw_all_down.setitem(li_currow,"dispRate",lds_01.getitemnumber(li_cnt,"dispRate"))
+	next
+	
+	lds_01.reset()
+	li_rowcnt = lds_01.retrieve('J','H',istr_mh.from_date, istr_mh.to_date, String(tab_work.SelectedTab))
+	for li_cnt = 1 to li_rowcnt
+		li_currow = dw_all_down.insertrow(0)
+		dw_all_down.setitem(li_currow,"Areacode",'J')
+		dw_all_down.setitem(li_currow,"Divisioncode",'H')
+		dw_all_down.setitem(li_currow,"WorkCenter",lds_01.getitemstring(li_cnt,"WorkCenter"))
+		dw_all_down.setitem(li_currow,"WorkCenterName",lds_01.getitemstring(li_cnt,"WorkCenterName"))
+		dw_all_down.setitem(li_currow,"Seq1",lds_01.getitemnumber(li_cnt,"Seq1"))
+		dw_all_down.setitem(li_currow,"Seq2",lds_01.getitemnumber(li_cnt,"Seq2"))
+		dw_all_down.setitem(li_currow,"dispLevel",lds_01.getitemstring(li_cnt,"dispLevel"))
+		dw_all_down.setitem(li_currow,"dispName",lds_01.getitemstring(li_cnt,"dispName"))
+		dw_all_down.setitem(li_currow,"dispMH",lds_01.getitemnumber(li_cnt,"dispMH"))
+		dw_all_down.setitem(li_currow,"dispRate",lds_01.getitemnumber(li_cnt,"dispRate"))
+	next
+
+	destroy lds_01
+
+	f_save_to_excel_execute(dw_all_down,'1')
+//	// 엑셀저장 시작
+//	
+//	If dw_all_down.RowCount() = 0 Then Return 
+//
+//	l_s_docname = Parent.Title 
+//	
+//	l_n_value = GetFileSaveName("저장 하기", l_s_docname, l_s_named, "xls", "Excel files (*.xls), *.xls")
+//	if l_n_value = 1 then
+//		li_Chk = dw_all_down.saveas(l_s_docname, HTMLTABLE!, true) 
+////		li_Chk = dw_all_down.saveas(l_s_docname, Excel!, true)
+//		If li_Chk = -1 Then 
+//			f_pism_messagebox(StopSign!, -1, "확 인", "파일저장 오류 입니다.") 
+//		End If 
+//	end if
+//	
+//	if l_n_value = 1 and li_chk <> -1 then
+//		OleObject     myOleObject
+//		int           i_Result
+//		String        excel_title
+//		
+//		myOleObject = Create OleObject //ole 오브젝트 생성
+//		
+//		i_Result = myOleObject.ConnectToNewObject( "excel.application" )
+//		// 엑셀에 연결
+//		excel_title = myOleObject.Application.Caption
+//		
+//		myOleObject.Application.Visible = True
+//		
+//		myOleObject.WorkBooks.Open(l_s_docname)
+//		myOleObject.WindowState = 3 
+//		// 엑셀윈도우의 상태 지정 1-normal, 2-min, 3-max
+//		
+//		myoleobject.DisConnectObject() //연결종료
+//		Destroy myoleobject //오브젝트 제거
+//	end if	
+else
+	uo_status.st_message.text = "조회할 정보가 없습니다."
+end if
+
+disconnect using sqleis ;
+destroy sqleis
+	
+return 0
+end event
+
+type dw_all_down from datawindow within w_pism130i
+boolean visible = false
+integer x = 3547
+integer y = 164
+integer width = 325
+integer height = 400
+integer taborder = 21
+boolean bringtotop = true
+string dataobject = "d_pism130i_01_all"
+boolean livescroll = true
+borderstyle borderstyle = stylelowered!
 end type
 

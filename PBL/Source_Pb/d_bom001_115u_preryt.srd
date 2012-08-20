@@ -17,7 +17,7 @@ table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=bomt02_
  column=(type=char(4) updatewhereclause=yes name=acc300_slprcd dbname="ACC300.SLPRCD" )
  column=(type=char(30) updatewhereclause=yes name=dac002_coitname dbname="DAC002.COITNAME" )
  column=(type=char(2) updatewhereclause=yes name=acc300_sldiv dbname="ACC300.SLDIV" )
- retrieve="  SELECT ~"PBPDM~".~"BOMT02~".~"RCMCD~",
+ retrieve="  SELECT DISTINCT ~"PBPDM~".~"BOMT02~".~"RCMCD~",
 			~"PBPDM~".~"BOMT02~".~"RYEAR~",   
          ~"PBPDM~".~"BOMT02~".~"RMONTH~",   
          ~"PBPDM~".~"BOMT02~".~"RCUST~",

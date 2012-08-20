@@ -70,8 +70,8 @@ end if
 ls_dategap = trim(dw_wip045i_01.getitemstring(1,"inv101_xunit"))
 
 ls_todt = dw_wip045i_01.getitemstring(1,"wip001_wainptdt")
-if f_dateedit(ls_todt + '01') = space(8) then
-	uo_status.st_message.text = "기준날짜가 올바르지 않습니다."
+if f_dateedit(ls_todt + '01') = space(8) or ls_todt = mid(g_s_date,1,6) then
+	uo_status.st_message.text = "마감기준년월을 확인해 주시기 바랍니다."
 	return 0
 end if
 

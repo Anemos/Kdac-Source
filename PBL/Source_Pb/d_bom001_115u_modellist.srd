@@ -12,7 +12,7 @@ table(column=(type=char(1) updatewhereclause=yes name=bomt02_rplant dbname="BOMT
  column=(type=decimal(1) updatewhereclause=yes name=rcost dbname="BOMT02.RCOST" )
  column=(type=char(4) updatewhereclause=yes name=acc300_slprcd dbname="ACC300.SLPRCD" )
  column=(type=char(2) updatewhereclause=yes name=acc300_sldiv dbname="ACC300.SLDIV" )
- retrieve=" SELECT 	~"PBPDM~".~"BOMT02~".~"RPLANT~",
+ retrieve=" SELECT 	DISTINCT ~"PBPDM~".~"BOMT02~".~"RPLANT~",
 			~"PBPDM~".~"BOMT02~".~"RDIV~",   
          ~"PBPDM~".~"BOMT02~".~"RMDNO~",   
          ~"PBPDM~".~"BOMT02~".~"RCOST~",   

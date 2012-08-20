@@ -83,7 +83,7 @@ for	i	=	1	to	ln_count
 		sqlxx.ServerName 		= 	trim(dw_4.object.servername[i])
 		sqlxx.DBMS       		= 	trim(dw_4.object.serverdbms[i])
 		sqlxx.Database   		= 	trim(dw_4.object.serverdatabase[i])
-		sqlxx.LogId      			= 	trim(dw_4.object.serverlogid[i])
+		sqlxx.LogId      		= 	trim(dw_4.object.serverlogid[i])
 		sqlxx.LogPass    		= 	trim(dw_4.object.serverpassword[i])
 		if 	trim(dw_4.object.serverautocommit[i]) = "T" then
 			sqlxx.autocommit	= 	true
@@ -586,7 +586,7 @@ if 	ln_rowcount	>	0	then
 			for 	ln_row = ln_rowcount to 1 step -1
 				 	if 	dw_1.isselected( ln_row ) = true then
 						ls_name = trim(dw_1.object.file_nm[ln_row])
-						delete from comm702
+						delete from pbcommon.comm702
 							where system_nm = :is_system_nm and file_nm = :ls_name
 						using sqlca ;
 						wf_server_update(ls_name,0,0,ls_blob,'Y','',ls_blob)
