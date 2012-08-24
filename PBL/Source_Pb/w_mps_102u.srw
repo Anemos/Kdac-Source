@@ -953,9 +953,12 @@ else
 	messagebox("확인","생산계획 계산을 위한 상태가 아닙니다.")
 	return 0
 end if
+
+// 품목별 출하계획수량
 ids_1 = create datastore 
 ids_1.dataobject = 'd_mpsu02_02'
 ids_1.settransobject(Sqlca)
+// 생산계획수량
 ids_2 = create datastore
 ids_2.dataobject = 'd_mpsu02_03'
 ids_2.settransobject(Sqlca)
@@ -991,6 +994,9 @@ for i = 1 to l_n_count
 //		if l_s_texpm[1] >=  0 then
 //			l_s_tpplnm[1] =  0
 //		end if
+
+		// 기말예상재고량을 기준으로 생산계획수량을 누적으로 차감해서 12개월치를 계산함
+		//* l_s_texpm > 0 보다 크다는 것은 재고가 존재한다는 것을 의미함. 따라서 생산을 할 필요가 없다는 뜻
 		l_s_texpm[2]    = l_s_texpm[1] - ids_1.object.qty02[i]
 		l_s_texpm[3]    = l_s_texpm[2] - ids_1.object.qty03[i]		
 		l_s_texpm[4]    = l_s_texpm[3] - ids_1.object.qty04[i]		
@@ -1003,6 +1009,8 @@ for i = 1 to l_n_count
 		l_s_texpm[10]    = l_s_texpm[9] - ids_1.object.qty10[i]
 		l_s_texpm[11]    = l_s_texpm[10] - ids_1.object.qty11[i]
 		l_s_texpm[12]    = l_s_texpm[11] - ids_1.object.qty12[i]
+		
+
 		if ids_1.object.qty01[i] = 0 or l_s_texpm[1] >= 0 then
 			l_s_tpplnm[1] = 0
 		else
@@ -1065,6 +1073,7 @@ for i = 1 to l_n_count
 			l_s_tpplnm[12] = l_s_texpm[12] * -1
 		end if
 		
+		// Lot-Size 에 맞는 생산수량으로 재계산
 		if ids_1.object.mps001_altsz[i] <> 0 then
 			for j = 1 to 12
 				if l_s_tpplnm[j] <> 0 then
@@ -1072,6 +1081,8 @@ for i = 1 to l_n_count
 				end if
 			next
 		end if
+		
+		// tpplnm 의 누적생산계획수량을 전월 생산계획수량을 빼서 순수 해당월 생산계획수량으로 변환
 		ids_2.object.dplnq01[l_n_row] = l_s_tpplnm[1]
 		if l_s_tpplnm[2] = 0 then
 			ids_2.object.dplnq02[l_n_row] = 0
@@ -1194,6 +1205,8 @@ for i = 1 to l_n_count
 //		ids_2.object.dplnq05[l_n_row] = 0
 //		ids_2.object.dplnq06[l_n_row] = 0
 //	end if
+
+	// 내수용 생산계획량 계산
 	if ids_1.object.qty01[i] <> 0 then
 		ids_2.object.ddplnq01[l_n_row] = ( ids_1.object.mps002_bqtyd01[i] / ids_1.object.qty01[i]) * ids_2.object.dplnq01[l_n_row]
 	end if
@@ -1232,6 +1245,7 @@ for i = 1 to l_n_count
 		ids_2.object.ddplnq12[l_n_row] = ( ids_1.object.mps002_bqtyd12[i] / ids_1.object.qty12[i]) * ids_2.object.dplnq12[l_n_row]
 	end if
 	
+	// 수출용 생산계획량 계산
 	ids_2.object.deplnq01[l_n_row] = ids_2.object.dplnq01[l_n_row] - ids_2.object.ddplnq01[l_n_row]
 	ids_2.object.deplnq02[l_n_row] = ids_2.object.dplnq02[l_n_row] - ids_2.object.ddplnq02[l_n_row]
 	ids_2.object.deplnq03[l_n_row] = ids_2.object.dplnq03[l_n_row] - ids_2.object.ddplnq03[l_n_row]

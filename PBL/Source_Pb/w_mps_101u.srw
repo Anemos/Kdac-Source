@@ -274,6 +274,7 @@ wrkday2 = integer(sle_3.text)
 //			l_s_pcs102 += sdqt[i]
 //		next 
 //	end if
+   //** 잔여출하량 계산
 	dw.object.mps001_aslqa[dw_row] = l_s_pcs102
 	if ( ( dw.object.mps001_aslqa[dw_row] - l_s_rpmq ) >= 0 ) or dw.object.mps001_aslqa[dw_row] <= 0 then
 		dw.object.mps001_aslqr[dw_row] = 0
@@ -303,6 +304,7 @@ if dw.object.mps001_atype[dw_row] <> 'B' then
 //				l_s_pcs101 += sdqt[i]
 //			next 
 // 	end if
+		//** 잔여생산량 계산
 		dw.object.mps001_apdqa[dw_row] = l_s_pcs101 
 		if ( ( dw.object.mps001_apdqa[dw_row] - l_s_rpmq ) >= 0 ) or dw.object.mps001_apdqa[dw_row] <= 0 then
 			dw.object.mps001_apdqr[dw_row] = 0

@@ -797,6 +797,7 @@ if i_s_chkxplant <> l_s_xplant or i_s_chkdvsn <> l_s_dvsn then
 	else
 		l_s_chk_Dvsn = l_s_dvsn
 	end if
+	// 해당공장의 잔여 작업일 가져오기
 	i_s_workday = long(mid(f_get_workday_mps(f_relativedate(g_s_date,-1),l_s_chk_dvsn),1,2))
 end if
 
@@ -869,6 +870,8 @@ ids_data5.object.asfsd[l_s_count]   = l_s_asfsd
 	else
 		if l_s_cls = '30' then
 			if  ( i_s_workday * l_s_asfsd ) <> 0 then
+				// 운영재고량 = 월평균출하계획량 / 기준년월작업일수 * 운영재고일 (?)
+				// i_s_workday : 현재일의 전일 부터 말일까지 근무일수
 				ids_data5.object.asfsq[l_s_count] =  l_s_avgqty / ( i_s_workday * l_s_asfsd )
 			else
 				ids_data5.object.asfsq[l_s_count] = 0
