@@ -99,10 +99,27 @@ ORDER BY BB.ZPLANT, BB.ZDIV, BB.ZMDNO, BB.ZSERIAL
 -- 목표MH SUM조회
 ( SELECT A.AREACODE as AreaCode, A.DIVISIONCODE as DivisionCode, A.WORKCENTER as WorkCenter,
 A.ITEMCODE as ItemCode, A.SubLineCode, A.SublineNo,
-SUM(A.TARMH) AS TarSum, 0 AS StdSum, 0 as ActSum
+SUM(A.TARMH) / C.cnt AS TarSum, 0 AS StdSum, 0 as ActSum
 FROM TMHMONTHTARGET A INNER JOIN TMSTDEPT B
-	ON A.WorkCenter = B.DEPTCODE WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
-	GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo ) SS_TAR
+	ON A.WorkCenter = B.DEPTCODE 
+	INNER JOIN 
+  ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
+	    BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
+    FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
+      DivisionCode = aa.DivisionCode,
+      WorkCenter = aa.WorkCenter,
+      ItemCode = aa.ItemCode,
+      SubLineCode = aa.SubLineCode,
+      SubLineNo = aa.SubLineNo
+    FROM TMHMONTHTARGET aa INNER JOIN TMSTDEPT bb
+	    ON aa.WorkCenter = bb.DEPTCODE
+    WHERE aa.tarMonth = '2012.08' AND aa.TARMH <> 0 
+    ) BB
+    GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) C
+ON A.AreaCode = C.AreaCode AND A.DivisionCode = C.DivisionCode AND
+	A.WorkCenter = C.WorkCenter AND A.ItemCode = C.ItemCode
+WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
+GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo, C.cnt ) SS_TAR
 
 -- 실적MH 조회
 ( SELECT XX.AreaCode as AreaCode, XX.DivisionCode as DivisionCode, XX.WorkCenter as workcenter, XX.ItemCode as ItemCode, 
@@ -135,7 +152,7 @@ WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9
 GROUP BY aa.AreaCode, aa.DivisionCode, aa.WorkCenter, aa.ItemCode, aa.SubLineCode, aa.SubLineNo ) AA
 INNER JOIN 
 ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
-	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, BB.SublineCode, BB.SublineNo, count(*) as cnt
+	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
 FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
   DivisionCode = aa.DivisionCode,
   WorkCenter = aa.WorkCenter,
@@ -146,14 +163,14 @@ FROM TMSTROUTING aa INNER JOIN TMSTDEPT bb
 	ON aa.WorkCenter = bb.DEPTCODE
 WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9999.12.31') >= '2012.08.09'
  ) BB
-GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode, BB.SublineCode, BB.SublineNo ) CC
+GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) CC
 ON AA.AreaCode = CC.AreaCode AND AA.DivisionCode = CC.DivisionCode AND
 	AA.WorkCenter = CC.WorkCenter AND AA.ItemCode = CC.ItemCode
 WHERE AA.BasicTime <> 0
 GROUP BY AA.AreaCode, AA.DivisionCode, AA.WorkCenter, AA.ItemCode, AA.SubLineCode, AA.SublineNo, CC.cnt ) SS_STD
 
 
--- BOM구조별 표준MH 목표MH 실적MH
+-- BOM구조별 표준MH 목표MH 실적MH : 대체라인별로 MH표시
 SELECT BB.ZPLANT, BB.ZDIV, BB.ZMDNO, BB.ZITNO, BB.ZDESC, BB.ZLEVEL, BB.ZSRCE,BB.ZUNITQTY,SS_STD.WorkCenter,
 SS_STD.SublineCode, SS_STD.SublineNo,
 CAST((ISNULL(SS_STD.StdSum,0)) AS NUMERIC(12,5)) AS STDMH,
@@ -166,7 +183,7 @@ FROM [ipis_daegu].ipis.dbo.BOM113 BB LEFT OUTER JOIN
 FROM
 ( SELECT AA.AreaCode as AreaCode, AA.DivisionCode as DivisionCode, AA.WorkCenter as WorkCenter,
 AA.ItemCode as ItemCode, AA.SubLineCode as SublineCode, AA.SublineNo as SublineNo,
-0 as TarSum, CAST((SUM(AA.BasicTime) / 3600) / CC.cnt AS NUMERIC(12,5)) AS StdSum, 0 as ActSum
+0 as TarSum, CAST((SUM(AA.BasicTime) / 3600) AS NUMERIC(12,5)) AS StdSum, 0 as ActSum
 FROM ( SELECT AreaCode = aa.AreaCode,
   DivisionCode = aa.DivisionCode,
   WorkCenter = aa.WorkCenter,
@@ -182,7 +199,7 @@ WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9
 GROUP BY aa.AreaCode, aa.DivisionCode, aa.WorkCenter, aa.ItemCode, aa.SubLineCode, aa.SubLineNo ) AA
 INNER JOIN 
 ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
-	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, BB.SublineCode as SublineCode, BB.SublineNo as SublineNo, count(*) as cnt
+	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
 FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
   DivisionCode = aa.DivisionCode,
   WorkCenter = aa.WorkCenter,
@@ -193,7 +210,7 @@ FROM TMSTROUTING aa INNER JOIN TMSTDEPT bb
 	ON aa.WorkCenter = bb.DEPTCODE
 WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9999.12.31') >= '2012.08.09'
  ) BB
-GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode, BB.SublineCode, BB.SublineNo ) CC
+GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) CC
 ON AA.AreaCode = CC.AreaCode AND AA.DivisionCode = CC.DivisionCode AND
 	AA.WorkCenter = CC.WorkCenter AND AA.ItemCode = CC.ItemCode
 WHERE AA.BasicTime <> 0
@@ -202,11 +219,28 @@ GROUP BY AA.AreaCode, AA.DivisionCode, AA.WorkCenter, AA.ItemCode, AA.SubLineCod
 UNION ALL
 
 SELECT A.AREACODE as AreaCode, A.DIVISIONCODE as DivisionCode, A.WORKCENTER as WorkCenter,
-A.ITEMCODE as ItemCode, A.SubLineCode as SublineCode, A.SublineNo as SublineNo,
+A.ITEMCODE as ItemCode, A.SubLineCode, A.SublineNo,
 SUM(A.TARMH) AS TarSum, 0 AS StdSum, 0 as ActSum
 FROM TMHMONTHTARGET A INNER JOIN TMSTDEPT B
-	ON A.WorkCenter = B.DEPTCODE WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
-	GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo
+	ON A.WorkCenter = B.DEPTCODE 
+	INNER JOIN 
+  ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
+	    BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
+    FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
+      DivisionCode = aa.DivisionCode,
+      WorkCenter = aa.WorkCenter,
+      ItemCode = aa.ItemCode,
+      SubLineCode = aa.SubLineCode,
+      SubLineNo = aa.SubLineNo
+    FROM TMHMONTHTARGET aa INNER JOIN TMSTDEPT bb
+	    ON aa.WorkCenter = bb.DEPTCODE
+    WHERE aa.tarMonth = '2012.08' AND aa.TARMH <> 0 
+    ) BB
+    GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) C
+ON A.AreaCode = C.AreaCode AND A.DivisionCode = C.DivisionCode AND
+	A.WorkCenter = C.WorkCenter AND A.ItemCode = C.ItemCode
+WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
+GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo, C.cnt
 
 UNION ALL
 
@@ -226,7 +260,7 @@ BB.ZITNO = SS_STD.ItemCode
 WHERE BB.ZPLANT = 'D' AND BB.ZDIV = 'M'
 ORDER BY BB.ZPLANT, BB.ZDIV, BB.ZMDNO, BB.ZSERIAL
 
--- 제품별 표준MH 목표MH 실적MH
+-- 제품별 표준MH 목표MH 실적MH : 품번별 대체라인수에 대한 MH 평균값 적용
 SELECT BB.ZPLANT, BB.ZDIV, BB.ZMDNO, CC.ITEMNAME,
 CAST(SUM(ISNULL(SS_STD.StdSum,0) * BB.ZUNITQTY) AS NUMERIC(12,5)) AS STDMH,
 CAST(SUM(ISNULL(SS_STD.TarSum,0) * BB.ZUNITQTY) AS NUMERIC(12,5)) AS TARMH,
@@ -236,7 +270,7 @@ FROM [ipis_daegu].ipis.dbo.BOM113 BB LEFT OUTER JOIN
 	TMP.ItemCode as ItemCode, SUM(TMP.TarSum) as TarSum, SUM(TMP.StdSum) as StdSum, Sum(TMP.ActSum) as ActSum
 FROM
 ( SELECT AA.AreaCode as AreaCode, AA.DivisionCode as DivisionCode, AA.WorkCenter as WorkCenter,
-AA.ItemCode as ItemCode, AA.SubLineCode, AA.SublineNo,
+AA.ItemCode as ItemCode,
 0 as TarSum, CAST((SUM(AA.BasicTime) / 3600) / CC.cnt AS NUMERIC(12,5)) AS StdSum, 0 as ActSum
 FROM ( SELECT AreaCode = aa.AreaCode,
   DivisionCode = aa.DivisionCode,
@@ -253,7 +287,7 @@ WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9
 GROUP BY aa.AreaCode, aa.DivisionCode, aa.WorkCenter, aa.ItemCode, aa.SubLineCode, aa.SubLineNo ) AA
 INNER JOIN 
 ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
-	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, BB.SublineCode, BB.SublineNo, count(*) as cnt
+	BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
 FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
   DivisionCode = aa.DivisionCode,
   WorkCenter = aa.WorkCenter,
@@ -264,33 +298,50 @@ FROM TMSTROUTING aa INNER JOIN TMSTDEPT bb
 	ON aa.WorkCenter = bb.DEPTCODE
 WHERE isnull(aa.ApplyDate,'1900.01.01') <= '2012.08.09' AND isnull(aa.EndDate,'9999.12.31') >= '2012.08.09'
  ) BB
-GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode, BB.SublineCode, BB.SublineNo ) CC
+GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) CC
 ON AA.AreaCode = CC.AreaCode AND AA.DivisionCode = CC.DivisionCode AND
 	AA.WorkCenter = CC.WorkCenter AND AA.ItemCode = CC.ItemCode
 WHERE AA.BasicTime <> 0
-GROUP BY AA.AreaCode, AA.DivisionCode, AA.WorkCenter, AA.ItemCode, AA.SubLineCode, AA.SublineNo, CC.cnt
+GROUP BY AA.AreaCode, AA.DivisionCode, AA.WorkCenter, AA.ItemCode, CC.cnt
 
 UNION ALL
 
 SELECT A.AREACODE as AreaCode, A.DIVISIONCODE as DivisionCode, A.WORKCENTER as WorkCenter,
-A.ITEMCODE as ItemCode, A.SubLineCode, A.SublineNo,
-SUM(A.TARMH) AS TarSum, 0 AS StdSum, 0 as ActSum
+A.ITEMCODE as ItemCode,
+SUM(A.TARMH) / C.cnt AS TarSum, 0 AS StdSum, 0 as ActSum
 FROM TMHMONTHTARGET A INNER JOIN TMSTDEPT B
-	ON A.WorkCenter = B.DEPTCODE WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
-	GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo
+	ON A.WorkCenter = B.DEPTCODE 
+	INNER JOIN 
+  ( SELECT BB.AreaCode as AreaCode, BB.DivisionCode as DivisionCode, 
+	    BB.WorkCenter as WorkCenter, BB.ItemCode as ItemCode, count(*) as cnt
+    FROM (SELECT DISTINCT AreaCode = aa.AreaCode,
+      DivisionCode = aa.DivisionCode,
+      WorkCenter = aa.WorkCenter,
+      ItemCode = aa.ItemCode,
+      SubLineCode = aa.SubLineCode,
+      SubLineNo = aa.SubLineNo
+    FROM TMHMONTHTARGET aa INNER JOIN TMSTDEPT bb
+	    ON aa.WorkCenter = bb.DEPTCODE
+    WHERE aa.tarMonth = '2012.08' AND aa.TARMH <> 0 
+    ) BB
+    GROUP BY BB.AreaCode, BB.DivisionCode, BB.WorkCenter, BB.ItemCode ) C
+ON A.AreaCode = C.AreaCode AND A.DivisionCode = C.DivisionCode AND
+	A.WorkCenter = C.WorkCenter AND A.ItemCode = C.ItemCode
+WHERE tarMonth = '2012.08' AND A.TARMH <> 0 
+GROUP BY A.AREACODE, A.DIVISIONCODE, A.WORKCENTER, A.ITEMCODE, A.SubLineCode, A.SublineNo, C.cnt
 
 UNION ALL
 
 SELECT XX.AreaCode as AreaCode, XX.DivisionCode as DivisionCode, XX.WorkCenter as workcenter, XX.ItemCode as ItemCode, 
-XX.SubLineCode, XX.SublineNo,
-0 as TarSum, 0 as StdSum, CAST (XX.ACTINMH AS NUMERIC(12,5)) AS ActSum
+0 as TarSum, 0 as StdSum, CAST (SUM(XX.ACTINMH) AS NUMERIC(12,5)) AS ActSum
 FROM
 ( SELECT AreaCode, DivisionCode, WorkCenter, ItemCode, SubLineCode, SublineNo,
   CAST ( SUM(ActInMH) / SUM(pQty) AS NUMERIC(12,5))  AS ACTINMH
 FROM TMHMONTHPRODLINE_S
 WHERE AreaCode = 'D' AND DivisionCode = 'M' AND sMonth >= '2012.01' AND sMonth <= '2012.07'
 AND pQty <> 0 AND ActInMH <> 0
-GROUP BY AreaCode, DivisionCode, WorkCenter, ItemCode, SubLineCode, SublineNo ) XX ) TMP
+GROUP BY AreaCode, DivisionCode, WorkCenter, ItemCode, SubLineCode, SublineNo ) XX
+GROUP BY XX.AreaCode, XX.DivisionCode, XX.WorkCenter, XX.ItemCode ) TMP
 GROUP BY TMP.AreaCode, TMP.DivisionCode, TMP.ItemCode ) SS_STD
 ON BB.ZPLANT = SS_STD.AreaCode AND BB.ZDIV = SS_STD.DivisionCode AND
 BB.ZITNO = SS_STD.ItemCode 
