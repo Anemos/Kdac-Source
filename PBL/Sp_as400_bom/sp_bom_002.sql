@@ -1,7 +1,7 @@
 -- file name : pbpdm.sp_bom_002
 -- procedure name : pbpdm.sp_bom_002
 -- desc : Creation BOM109, 고객사유상사급제외 재료비 생성
--- a_chk : FULL ('A'), 전체 ('B'), 공장별('C') to 'E'
+-- a_chk : FULL ('A'), 전사 ('B'), 공장별('C') to 'E'
 --         ONLY 재료비산출('N')
 --         Create BOM113 'K'
 --         Create BOM115 'M'
@@ -18,6 +18,7 @@ begin
 declare sqlcode integer default 0;
 declare p_plant char(1);
 declare p_dvsn char(1);
+declare p_yyyymm char(6);
 declare at_end integer default 0;
 declare not_found condition for '02000';
 
@@ -37,6 +38,8 @@ if a_chk <> 'A' and a_chk <> 'B' and a_chk <> 'C' and
   return;
 end if;
 
+set p_yyyymm = substring(a_applydate,1,6);
+
 open inv902_cursor;
 inc_loop:
 loop
@@ -52,6 +55,25 @@ loop
 end loop;
 close inv902_cursor;
 
--- update ygcost in 
+-- update purchase information
+call pbpdm.sp_bom_105(a_comltd,a_applydate,a_createdate);
+-- update ygcost
+if p_yyyymm <> substring(a_createdate,1,6) then
+  update pbpdm.bom113
+  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  
+  update pbpdm.bom115
+  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+else
+  update pbpdm.bom113d
+  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+
+  update pbpdm.bom115d
+  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+end if;
 
 end

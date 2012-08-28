@@ -71,6 +71,7 @@ declare p_ygchk  char(1);
 declare p_ygcst decimal(15,6);
 declare p_oplant char(1);
 declare p_odvsn char(1);
+declare p_costchk char(1);
 declare at_end integer default 0;
 declare not_found condition for '02000';
 
@@ -120,7 +121,8 @@ declare continue handler for sqlstate '42704'
  tscoutcost numeric(15,6) not null,tscmovecost numeric(15,6) not null,
  tscinputcost numeric(15,6) not null,tsubpaycd char(1) not null,
  topchk char(1) not null, toplant char(1) not null,
- todvsn char(1) not null, tcalculate2 char(1) not null);
+ todvsn char(1) not null, tcalculate2 char(1) not null,
+ tcostchk char(1) not null);
 
 delete from qtemp.tmp_bom;
 
@@ -130,6 +132,9 @@ set p_beforedvsn = a_dvsn;
 set p_xyear = substring(a_date,1,6);
 set p_qty = 1;
 set p_qty1 = 1;
+set p_calculate = 'Y'
+set p_ygchk = '';
+set p_costchk = 'N';
 
 set p_currentmonth = substring(concat(year(curdate()),
   concat(right(concat('0',month(curdate())),2),
@@ -287,7 +292,7 @@ if sqlcode <> 0 or p_chkcnt < 1 then
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
     values(a_comltd,a_plant,a_dvsn,p_pitno,
        p_option,0,p_pitno,p_pitno,1,1,'9999',
        '','',p_opcd,'','','','Y',
@@ -300,7 +305,7 @@ if sqlcode <> 0 or p_chkcnt < 1 then
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,'',
-       a_plant,a_dvsn,'N');
+       a_plant,a_dvsn,'N',p_costchk);
     return 'N';
   else
     if trim(p_exdvsn) <> '' then
@@ -321,6 +326,32 @@ where c.pcmcd = a_comltd and c.plant = p_beforeplant and
       ( c.pedte <> ' ' and c.pedtm <= a_date
                 and c.pedte >= a_date ));
 
+if p_ygchk <> 'Y' then
+  if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
+    select pbpur.f_getcost3(p_srce,p_pitno) into p_inputcost
+    from pbcommon.comm000;
+    
+    set p_inputcost = ifnull(p_inputcost,0);
+    set p_movecost = p_inputcost;
+    set p_outcost = p_inputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+else
+  if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
+    select pbpdm.sf_bom_106(p_pitno) into p_scinputcost
+    from pbcommon.comm000;
+    
+    set p_scinputcost = ifnull(p_scinputcost,0)
+    set p_scmovecost = p_scinputcost;
+    set p_scoutcost = p_scinputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+end if;
+
 set p_oplant = p_beforeplant;
 set p_odvsn = p_beforedvsn;
 
@@ -331,7 +362,7 @@ set p_odvsn = p_beforedvsn;
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
   values(a_comltd,a_plant,a_dvsn,p_pitno,
        p_option,0,p_pitno,p_pitno,1,1,'9999',
        '','',p_opcd,p_explant,p_exdvsn,'','Y',
@@ -344,7 +375,7 @@ set p_odvsn = p_beforedvsn;
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,'',
-       p_oplant,p_odvsn,'N');
+       p_oplant,p_odvsn,'N',p_costchk);
 
 if a_chk = 'C' or a_chk = 'D' or a_chk = 'G' or
      a_chk = 'H' or a_chk = 'J' then
@@ -565,6 +596,32 @@ if at_end = 1 then
    set at_end = 0;
 end if;
 
+if p_ygchk <> 'Y' then
+  if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
+    select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
+    from pbcommon.comm000;
+    
+    set p_inputcost = ifnull(p_inputcost,0);
+    set p_movecost = p_inputcost;
+    set p_outcost = p_inputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+else
+  if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
+    select pbpdm.sf_bom_106(p_citno) into p_scinputcost
+    from pbcommon.comm000;
+    
+    set p_scinputcost = ifnull(p_scinputcost,0)
+    set p_scmovecost = p_scinputcost;
+    set p_scoutcost = p_scinputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+end if;
+
 set p_chkcnt = p_chkcnt + 1;
 set p_rtnserl = trim(pbwip.sf_wip_002(p_chkcnt,3));
 insert into qtemp.tmp_bom(tcmcd,tplnt,tdvsn,tmodl,
@@ -574,7 +631,7 @@ insert into qtemp.tmp_bom(tcmcd,tplnt,tdvsn,tmodl,
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
 values(a_comltd,p_plant,p_dvsn,p_pitno,
        p_option,p_level,p_pitno,p_citno,p_qty,p_qty1,p_wkct,
        p_edtm,p_edte,p_opcd,p_explant,p_exdvsn,p_oscd,p_calculate,
@@ -587,7 +644,7 @@ values(a_comltd,p_plant,p_dvsn,p_pitno,
        decimal(truncate(p_qty1 * p_scmovecost,3),10,3),
        decimal(truncate(p_qty1 * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,p_opchk,
-       p_oplant,p_odvsn,p_calculate2);
+       p_oplant,p_odvsn,p_calculate2,p_costchk);
 end loop;
 close bomchk_cur01;
 
@@ -842,6 +899,32 @@ if at_end = 1 then
    set at_end = 0;
 end if;
 
+if p_ygchk <> 'Y' then
+  if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
+    select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
+    from pbcommon.comm000;
+    
+    set p_inputcost = ifnull(p_inputcost,0);
+    set p_movecost = p_inputcost;
+    set p_outcost = p_inputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+else
+  if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
+    select pbpdm.sf_bom_106(p_citno) into p_scinputcost
+    from pbcommon.comm000;
+    
+    set p_scinputcost = ifnull(p_scinputcost,0)
+    set p_scmovecost = p_scinputcost;
+    set p_scoutcost = p_scinputcost;
+    set p_costchk = 'Y';
+  else
+    set p_costchk = 'N';
+  end if;
+end if;
+
  if p_popcd <> '2' and p_opcd = '2' then
    set p_opchk = p_opcd;
  else
@@ -858,7 +941,7 @@ end if;
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
  values(a_comltd,p_plant,p_dvsn,a_itno,
        p_option,p_lev01,p_pitno,p_citno,p_qty1,p_qty,p_wkct,
        p_edtm,p_edte,p_opcd,p_explant,p_exdvsn,p_oscd,p_calculate,
@@ -871,7 +954,7 @@ end if;
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,p_opchk,
-       p_oplant,p_odvsn,p_calculate2);
+       p_oplant,p_odvsn,p_calculate2,p_costchk);
  end loop;
  close bomchk_cur01;
  set at_end = 0;

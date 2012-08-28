@@ -43,5 +43,5 @@ select decimal(
     into p_ygcst
     from pbcommon.comm000;
 
-return p_ygcst;
+return ifnull(p_ygcst,0);
 end
