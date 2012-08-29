@@ -1,1 +1,0 @@
-regsvr32 c:\kdac\aspemail.dll /s
