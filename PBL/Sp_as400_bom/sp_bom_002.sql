@@ -52,17 +52,18 @@ loop
   call pbpdm.sp_bom_001(a_comltd,p_plant,p_dvsn,
        a_applydate,a_createdate,a_chk);
 
+  -- update purchase information
+  call pbpdm.sp_bom_105(a_comltd,p_plant,p_dvsn,
+       a_applydate,a_createdate);
 end loop;
 close inv902_cursor;
 
--- update purchase information
-call pbpdm.sp_bom_105(a_comltd,a_applydate,a_createdate);
 -- update ygcost
 if p_yyyymm <> substring(a_createdate,1,6) then
   update pbpdm.bom113
   set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
   where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
-  
+
   update pbpdm.bom115
   set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
   where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';

@@ -1483,7 +1483,7 @@ end event
 type st_1 from statictext within w_bom307i
 integer x = 2665
 integer y = 188
-integer width = 823
+integer width = 859
 integer height = 52
 boolean bringtotop = true
 integer textsize = -10
@@ -1494,7 +1494,7 @@ fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
 long backcolor = 12632256
-string text = "계산소요시간:90분~~120분"
+string text = "계산소요시간:120분~~150분"
 boolean focusrectangle = false
 end type
 

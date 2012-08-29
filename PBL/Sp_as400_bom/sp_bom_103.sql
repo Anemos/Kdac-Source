@@ -83,7 +83,7 @@ loop
     set p_explant = p_plant;
     set p_exdiv = p_dvsn;
   end if;
-  
+
 if p_yyyymm = substring(a_createdate,1,6) then
   insert into pbpdm.bom113d
   ( zcmcd,zdate,zplant,zdiv,zmdcd,zmdno,
@@ -126,7 +126,7 @@ if p_yyyymm = substring(a_createdate,1,6) then
     on a.tcmcd = c.comltd and a.tplnt = c.xplant and
       a.tdvsn = c.div and a.tcitn = c.itno
   where a.tserl = p_tserl;
-else  
+else
   insert into pbpdm.bom113
   ( zcmcd,zdate,zplant,zdiv,zmdcd,zmdno,
     zserial,zlevel,
@@ -160,7 +160,9 @@ else
     a.twkct,a.topcd,a.toption,a.tedtm,
     a.tedte,tcalculate,p_explant,p_exdiv,tcomcd,tsubpaycd,ifnull(p_ygcst,0),
     p_damdang,p_prunt,p_ptod,
-    p_pcurr,p_ptotdan,p_prutc,p_pvsrno,p_pvend,tcalculate2,
+    p_pcurr,case when a.zsrce = '02' then a.tinputcost
+                 when a.zsrce = '04' then a.tinputcost else 0 end,
+    p_prutc,p_pvsrno,p_pvend,tcalculate2,
     pbpdm.sf_bom_105(a.tcitn),a.tcostchk
   from qtemp.tmp_bom a inner join pbinv.inv002 b
     on a.tcmcd = b.comltd and a.tcitn = b.itno

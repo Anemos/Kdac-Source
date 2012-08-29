@@ -41,7 +41,8 @@ select decimal(
               and b.xstop = 'O' and a.gcost <> 0)
         end,15,6)
     into p_ygcst
-    from pbcommon.comm000;
+    from pbcommon.comm000
+    fetch first 1 row only;
 
 return ifnull(p_ygcst,0);
 end

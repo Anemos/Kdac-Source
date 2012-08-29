@@ -132,7 +132,7 @@ set p_beforedvsn = a_dvsn;
 set p_xyear = substring(a_date,1,6);
 set p_qty = 1;
 set p_qty1 = 1;
-set p_calculate = 'Y'
+set p_calculate = 'Y';
 set p_ygchk = '';
 set p_costchk = 'N';
 
@@ -326,15 +326,17 @@ where c.pcmcd = a_comltd and c.plant = p_beforeplant and
       ( c.pedte <> ' ' and c.pedtm <= a_date
                 and c.pedte >= a_date ));
 
-if p_ygchk <> 'Y' then
+if p_srce = '01' or p_srce = '02' or p_srce = '04' then
+ if p_ygchk <> 'Y' then
   if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
     select pbpur.f_getcost3(p_srce,p_pitno) into p_inputcost
     from pbcommon.comm000;
-    
+
     set p_inputcost = ifnull(p_inputcost,0);
     set p_movecost = p_inputcost;
     set p_outcost = p_inputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
@@ -342,14 +344,18 @@ else
   if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
     select pbpdm.sf_bom_106(p_pitno) into p_scinputcost
     from pbcommon.comm000;
-    
-    set p_scinputcost = ifnull(p_scinputcost,0)
+
+    set p_scinputcost = ifnull(p_scinputcost,0);
     set p_scmovecost = p_scinputcost;
     set p_scoutcost = p_scinputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
+ end if;
+else
+ set p_costchk = 'N';
 end if;
 
 set p_oplant = p_beforeplant;
@@ -596,15 +602,17 @@ if at_end = 1 then
    set at_end = 0;
 end if;
 
-if p_ygchk <> 'Y' then
+if p_srce = '01' or p_srce = '02' or p_srce = '04' then
+ if p_ygchk <> 'Y' then
   if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
     select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
     from pbcommon.comm000;
-    
+
     set p_inputcost = ifnull(p_inputcost,0);
     set p_movecost = p_inputcost;
     set p_outcost = p_inputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
@@ -612,14 +620,18 @@ else
   if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
     select pbpdm.sf_bom_106(p_citno) into p_scinputcost
     from pbcommon.comm000;
-    
-    set p_scinputcost = ifnull(p_scinputcost,0)
+
+    set p_scinputcost = ifnull(p_scinputcost,0);
     set p_scmovecost = p_scinputcost;
     set p_scoutcost = p_scinputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
+ end if;
+else
+ set p_costchk = 'N';
 end if;
 
 set p_chkcnt = p_chkcnt + 1;
@@ -899,15 +911,17 @@ if at_end = 1 then
    set at_end = 0;
 end if;
 
-if p_ygchk <> 'Y' then
+if p_srce = '01' or p_srce = '02' or p_srce = '04' then
+ if p_ygchk <> 'Y' then
   if p_inputcost = 0 and p_movecost = 0 and p_outcost = 0 then
     select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
     from pbcommon.comm000;
-    
+
     set p_inputcost = ifnull(p_inputcost,0);
     set p_movecost = p_inputcost;
     set p_outcost = p_inputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
@@ -915,14 +929,18 @@ else
   if p_scinputcost = 0 and p_scmovecost = 0 and p_scoutcost = 0 then
     select pbpdm.sf_bom_106(p_citno) into p_scinputcost
     from pbcommon.comm000;
-    
-    set p_scinputcost = ifnull(p_scinputcost,0)
+
+    set p_scinputcost = ifnull(p_scinputcost,0);
     set p_scmovecost = p_scinputcost;
     set p_scoutcost = p_scinputcost;
     set p_costchk = 'Y';
+    set at_end = 0;
   else
     set p_costchk = 'N';
   end if;
+ end if;
+else
+ set p_costchk = 'N';
 end if;
 
  if p_popcd <> '2' and p_opcd = '2' then

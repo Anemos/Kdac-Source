@@ -5,6 +5,8 @@
 drop procedure pbpdm.sp_bom_105;
 create procedure pbpdm.sp_bom_105 (
 in a_comltd char(2),
+in a_plant char(1),
+in a_dvsn char(1),
 in a_applydate char(8),
 in a_createdate char(8))
 language sql
@@ -32,18 +34,15 @@ set at_end = 0;
 set p_yyyymm = substring(a_applydate,1,6);
 set p_tcitn = '';
 
-if p_yyyymm = substring(a_createdate,1,6) then
-  return;
-end if;
-
 inc_loop:
 loop
- select a.zitno
+ select zitno
  into p_tcitn
- from pbpdm.bom113 a
- where a.zcmcd = a_comltd and zdate = p_yyyymm and
+ from pbpdm.bom113
+ where zcmcd = a_comltd and zdate = p_yyyymm and
+  zplant = a_plant and zdiv = a_dvsn and
   zsrce = '01' and zitno > p_tcitn
- order by a.zitno
+ order by zitno
  fetch first 1 row only;
 
   if sqlcode <> 0 or at_end = 1 then
@@ -60,7 +59,7 @@ loop
   set p_pvsrno = '';
   set p_pvend = '';
   set p_purno = '';
-  
+
     select truncate(xcost,4), xunit1, rtrim(purno)
       into p_prutc, p_prunt, p_purno
     from pbpur.opm102
@@ -91,19 +90,33 @@ loop
         set at_end = 0;
       end if;
     end if;
-  
-  update pbpdm.bom113
-  set zdamdang = p_damdang,
-    zprunt = p_prunt,
-    zptod = p_ptod,
-    zpcurr = p_pcurr,
-    zptotdan = p_ptotdan,
-    zprutc = p_prutc,
-    zpvsrno = p_pvsrno,
-    zpvend = p_pvend
-  where a.zcmcd = a_comltd and zdate = p_yyyymm and
-    zsrce = '01' and zitno = p_tcitn;
-  
+  if p_yyyymm = substring(a_createdate,1,6) then
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zptotdan = p_ptotdan,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = a_createdate and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  else
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zptotdan = p_ptotdan,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = p_yyyymm and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  end if;
   set at_end = 0;
 end loop;
 
@@ -111,18 +124,19 @@ set at_end = 0;
 set p_tcitn = '';
 inc_loop2:
 loop
- select a.zitno
+ select zitno
  into p_tcitn
- from pbpdm.bom113 a
- where a.zcmcd = a_comltd and zdate = p_yyyymm and
+ from pbpdm.bom113
+ where zcmcd = a_comltd and zdate = p_yyyymm and
+  zplant = a_plant and zdiv = a_dvsn and
   zsrce = '02' and zitno > p_tcitn
- order by a.zitno
+ order by zitno
  fetch first 1 row only;
 
   if sqlcode <> 0 or at_end = 1 then
      leave inc_loop2;
   end if;
-  
+
   -- First Step
   set p_damdang = '';
   set p_prunt = '';
@@ -133,7 +147,7 @@ loop
   set p_pvsrno = '';
   set p_pvend = '';
   set p_purno = '';
-  
+
     set p_pcurr = 'WON';
     select a.vsrno, substring(ifnull(b.dsheet,''),1,4),
       ifnull(c.vndnm,'')
@@ -155,28 +169,41 @@ loop
     else
       if p_dsheet = 'EXPT' then
         select xplan into p_damdang from pbinv.inv101
-        where comltd = a_comltd and xplant = p_plant and
-              div = p_dvsn and itno = p_tcitn;
+        where comltd = a_comltd and xplant = a_plant and
+              div = a_dvsn and itno = p_tcitn;
         if at_end = 1 then
           set p_damdang = '';
           set at_end = 0;
         end if;
       end if;
     end if;
-    set p_ptotdan = p_inputcost;
-  
-  update pbpdm.bom113
-  set zdamdang = p_damdang,
-    zprunt = p_prunt,
-    zptod = p_ptod,
-    zpcurr = p_pcurr,
-    zptotdan = p_ptotdan,
-    zprutc = p_prutc,
-    zpvsrno = p_pvsrno,
-    zpvend = p_pvend
-  where a.zcmcd = a_comltd and zdate = p_yyyymm and
-    zsrce = '01' and zitno = p_tcitn;
-  
+
+  if p_yyyymm = substring(a_createdate,1,6) then
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = a_createdate and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  else
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = p_yyyymm and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  end if;
+
   set at_end = 0;
 end loop;
 
@@ -184,18 +211,19 @@ set at_end = 0;
 set p_tcitn = '';
 inc_loop3:
 loop
- select a.zitno
+ select zitno
  into p_tcitn
- from pbpdm.bom113 a
- where a.zcmcd = a_comltd and zdate = p_yyyymm and
+ from pbpdm.bom113
+ where zcmcd = a_comltd and zdate = p_yyyymm and
+  zplant = a_plant and zdiv = a_dvsn and
   zsrce = '04' and zitno > p_tcitn
- order by a.zitno
+ order by zitno
  fetch first 1 row only;
 
   if sqlcode <> 0 or at_end = 1 then
      leave inc_loop3;
   end if;
-  
+
   -- First Step
   set p_damdang = '';
   set p_prunt = '';
@@ -206,7 +234,7 @@ loop
   set p_pvsrno = '';
   set p_pvend = '';
   set p_purno = '';
-  
+
     set p_pcurr = 'WON';
     select a.vsrno, substring(ifnull(b.dsheet,''),1,4),
       ifnull(c.vndnm,'')
@@ -228,28 +256,41 @@ loop
     else
       if p_dsheet = 'EXPT' then
         select xplan into p_damdang from pbinv.inv101
-        where comltd = a_comltd and xplant = p_plant and
-              div = p_dvsn and itno = p_tcitn;
+        where comltd = a_comltd and xplant = a_plant and
+              div = a_dvsn and itno = p_tcitn;
         if at_end = 1 then
           set p_damdang = '';
           set at_end = 0;
         end if;
       end if;
     end if;
-    set p_ptotdan = p_inputcost;
-  
-  update pbpdm.bom113
-  set zdamdang = p_damdang,
-    zprunt = p_prunt,
-    zptod = p_ptod,
-    zpcurr = p_pcurr,
-    zptotdan = p_ptotdan,
-    zprutc = p_prutc,
-    zpvsrno = p_pvsrno,
-    zpvend = p_pvend
-  where a.zcmcd = a_comltd and zdate = p_yyyymm and
-    zsrce = '01' and zitno = p_tcitn;
-  
+
+  if p_yyyymm = substring(a_createdate,1,6) then
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = a_createdate and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  else
+    update pbpdm.bom113d
+    set zdamdang = p_damdang,
+      zprunt = p_prunt,
+      zptod = p_ptod,
+      zpcurr = p_pcurr,
+      zprutc = p_prutc,
+      zpvsrno = p_pvsrno,
+      zpvend = p_pvend
+    where zcmcd = a_comltd and zdate = p_yyyymm and
+      zplant = a_plant and zdiv = a_dvsn and
+      zsrce = '01' and zitno = p_tcitn;
+  end if;
+
   set at_end = 0;
 end loop;
 
