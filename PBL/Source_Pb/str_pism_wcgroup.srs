@@ -1,6 +1,0 @@
-$PBExportHeader$str_pism_wcgroup.srs
-global type str_pism_wcgroup from structure
-	datawindow		dw_wcgroup
-	datawindow		dw_wcitem
-end type
-

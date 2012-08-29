@@ -1,9 +1,0 @@
-$PBExportHeader$p_move_workcenter.srp
-PIPELINE(source_connect=IPIS_인터페이스,destination_connect=AS/400,type=refresh,commit=100,errors=100)
-SOURCE(name="EleBom",COLUMN(type=varchar,name="ppitn",dbtype="varchar(255)",nulls_allowed=yes)
- COLUMN(type=varchar,name="pcitn",dbtype="varchar(255)",nulls_allowed=yes)
- COLUMN(type=varchar,name="pwkct",dbtype="varchar(255)",nulls_allowed=yes))
-RETRIEVE(statement="SELECT  distinct EleBom.ppitn as ppitn,             EleBom.pcitn as pcitn,             EleBom.pwkct as pwkct              FROM EleBom   ")
-DESTINATION(name="PBCOMMON.EleBom",COLUMN(type=varchar,name="ppitn",dbtype="VARCHAR(255)",nulls_allowed=yes)
- COLUMN(type=varchar,name="pcitn",dbtype="VARCHAR(255)",nulls_allowed=yes)
- COLUMN(type=varchar,name="pwkct",dbtype="VARCHAR(255)",nulls_allowed=yes))

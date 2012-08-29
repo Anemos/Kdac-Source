@@ -1,9 +1,0 @@
-$PBExportHeader$str_open_parm.srs
-$PBExportComments$지역, 공장, 계정, 품번 Pass Structure Object
-global type str_open_parm from structure
-	string		xplant
-	string		div
-	string		cls[]
-	string		itno
-end type
-

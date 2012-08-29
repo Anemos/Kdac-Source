@@ -1,5 +1,0 @@
-$PBExportHeader$str_par.srs
-global type str_par from structure
-	string		str_parameter
-end type
-

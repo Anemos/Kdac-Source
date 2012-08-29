@@ -1,8 +1,0 @@
-$PBExportHeader$str_rgbquad.srs
-global type str_rgbquad from structure
-	character		rgbBlue
-	character		rgbGreen
-	character		rgbRed
-	character		rgbReserver
-end type
-

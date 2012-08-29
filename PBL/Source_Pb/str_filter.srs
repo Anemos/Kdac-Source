@@ -1,6 +1,0 @@
-$PBExportHeader$str_filter.srs
-global type str_filter from structure
-    datawindow dw
-    string title
-end type
-

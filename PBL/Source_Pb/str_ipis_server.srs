@@ -1,6 +1,0 @@
-$PBExportHeader$str_ipis_server.srs
-$PBExportComments$구조체 - 서버트랙잭션, 서버 ID
-global type str_ipis_server from structure
-	string		s_serverid
-	transaction		t_sqlpis
-end type

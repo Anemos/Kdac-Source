@@ -1,7 +1,0 @@
-$PBExportHeader$filetime.srs
-$PBExportComments$Win32 API find data structure.
-global type filetime from structure
-	unsignedlong		dwLowDateTime
-	unsignedlong		dwHighDateTime
-end type
-
