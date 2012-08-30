@@ -1,0 +1,42 @@
+$PBExportHeader$d_bom999_implo_03.srd
+$PBExportComments$BOM상위전개시 사용
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=ppitn dbname="BOM999.PPITN" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BOM999.PQTYM" )
+ column=(type=char(1) updatewhereclause=yes name=popcd dbname="BOM999.POPCD" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BOM999.PWKCT" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BOM999.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="BOM999.PEDTE" )
+ retrieve=" SELECT ~"PBPDM~".~"BOM999~".~"PPITN~",~"PBPDM~".~"BOM999~".~"PQTYM~",~"PBPDM~".~"BOM999~".~"POPCD~",~"PBPDM~".~"BOM999~".~"PWKCT~" ,
+         ~"PBPDM~".~"BOM999~".~"PEDTM~",~"PBPDM~".~"BOM999~".~"PEDTE~"
+    FROM ~"PBPDM~".~"BOM999~"  
+   WHERE ( ~"PBPDM~".~"BOM999~".~"PCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM999~".~"PLANT~" = :A_PLANT ) AND 
+			( ~"PBPDM~".~"BOM999~".~"PDVSN~" = :A_DIV ) AND  
+         ( ~"PBPDM~".~"BOM999~".~"PCITN~" = :A_ITNO ) AND  
+         (( trim(~"PBPDM~".~"BOM999~".~"PEDTE~") =  ''  and ~"PBPDM~".~"BOM999~".~"PEDTM~" <= :a_date ) or  
+			(  trim(~"PBPDM~".~"BOM999~".~"PEDTE~") <> ''  and ~"PBPDM~".~"BOM999~".~"PEDTM~" <= :a_date  and ~"PBPDM~".~"BOM999~".~"PEDTE~" >= :a_date ))
+
+
+         
+" data.storage=disk arguments=(("A_PLANT", string),("A_DIV", string),("A_ITNO", string),("A_DATE", string)) )
+text(band=header alignment="0" text="Ppitn" border="0" color="0" x="9" y="4" height="76" width="471" html.valueishtml="0"  name=ppitn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pqtym" border="0" color="0" x="489" y="4" height="76" width="1367" html.valueishtml="0"  name=pqtym_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Popcd" border="0" color="0" x="1865" y="4" height="76" width="23" html.valueishtml="0"  name=popcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pwkct" border="0" color="0" x="1897" y="4" height="76" width="119" html.valueishtml="0"  name=pwkct_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pedtm" border="0" color="0" x="2025" y="4" height="76" width="247" html.valueishtml="0"  name=pedtm_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pedte" border="0" color="0" x="2281" y="4" height="76" width="247" html.valueishtml="0"  name=pedte_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=ppitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="489" y="0" height="76" width="1367" format="[general]" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="1865" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=popcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1897" y="0" height="76" width="119" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="2025" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2281" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,98 @@
+$PBExportHeader$d_bom001_citn.srd
+$PBExportComments$History 하위품번 데이타윈도우 오브젝트
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=8 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(15) update=yes updatewhereclause=yes name=pcitn dbname="BOM001.PCITN" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtym dbname="BOM001.PQTYM" )
+ column=(type=char(4) updatewhereclause=yes name=pwkct dbname="BOM001.PWKCT" )
+ column=(type=char(8) updatewhereclause=yes name=pedtm dbname="BOM001.PEDTM" )
+ column=(type=char(8) updatewhereclause=yes name=pedte dbname="BOM001.PEDTE" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=ppitn dbname="BOM001.PPITN" )
+ column=(type=char(1) updatewhereclause=yes name=plant dbname="BOM001.PLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pdvsn dbname="BOM001.PDVSN" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=prout dbname="BOM001.PROUT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=pchdt dbname="BOM001.PCHDT" )
+ column=(type=char(1) updatewhereclause=yes name=pexdv dbname="BOM001.PEXDV" )
+ column=(type=char(1) updatewhereclause=yes name=pchcd dbname="BOM001.PCHCD" )
+ column=(type=char(1) updatewhereclause=yes name=poscd dbname="BOM001.POSCD" )
+ column=(type=char(8) updatewhereclause=yes name=pindt dbname="BOM001.PINDT" )
+ column=(type=char(6) updatewhereclause=yes name=pemno dbname="BOM001.PEMNO" )
+ column=(type=char(1) updatewhereclause=yes name=popcd dbname="BOM001.POPCD" )
+ column=(type=char(1) updatewhereclause=yes name=pebst dbname="BOM001.PEBST" )
+ column=(type=decimal(3) updatewhereclause=yes name=pqtye dbname="BOM001.PQTYE" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM001~".~"PCITN~",   
+         ~"PBPDM~".~"BOM001~".~"PQTYM~",   
+         ~"PBPDM~".~"BOM001~".~"PWKCT~",   
+         ~"PBPDM~".~"BOM001~".~"PEDTM~",   
+         ~"PBPDM~".~"BOM001~".~"PEDTE~",   
+         ~"PBPDM~".~"BOM001~".~"PPITN~", 
+         ~"PBPDM~".~"BOM001~".~"PLANT~",  
+         ~"PBPDM~".~"BOM001~".~"PDVSN~",   
+         ~"PBPDM~".~"BOM001~".~"PROUT~",   
+         ~"PBPDM~".~"BOM001~".~"PCHDT~",   
+         ~"PBPDM~".~"BOM001~".~"PEXDV~",   
+         ~"PBPDM~".~"BOM001~".~"PCHCD~",   
+         ~"PBPDM~".~"BOM001~".~"POSCD~",   
+         ~"PBPDM~".~"BOM001~".~"PINDT~",   
+         ~"PBPDM~".~"BOM001~".~"PEMNO~",   
+         ~"PBPDM~".~"BOM001~".~"POPCD~",   
+         ~"PBPDM~".~"BOM001~".~"PEBST~",   
+         ~"PBPDM~".~"BOM001~".~"PQTYE~"  
+    FROM ~"PBPDM~".~"BOM001~"  
+   WHERE ( ~"PBPDM~".~"BOM001~".~"PCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM001~".~"PLANT~" = :A_PLANT ) AND 
+         ( ~"PBPDM~".~"BOM001~".~"PDVSN~" = :A_DIV ) AND  
+         ( ~"PBPDM~".~"BOM001~".~"PPITN~" = :A_PITNO ) AND
+			( (~"PBPDM~".~"BOM001~".~"PEDTM~" <= ~"PBPDM~".~"BOM001~".~"PEDTE~" AND ~"PBPDM~".~"BOM001~".~"PEDTE~" <> ' ' AND ~"PBPDM~".~"BOM001~".~"PEDTE~" >= :a_date )
+          OR  
+         ( ~"PBPDM~".~"BOM001~".~"PEDTE~" = ' ' ))      
+UNION ALL
+  SELECT ~"PBPDM~".~"BOM002~".~"HCITN~",   
+         ~"PBPDM~".~"BOM002~".~"HQTYM~",   
+         ~"PBPDM~".~"BOM002~".~"HWKCT~",   
+         ~"PBPDM~".~"BOM002~".~"HEDTM~",   
+         ~"PBPDM~".~"BOM002~".~"HEDTE~",   
+         ~"PBPDM~".~"BOM002~".~"HPITN~",
+         ~"PBPDM~".~"BOM002~".~"HPLANT~",   
+         ~"PBPDM~".~"BOM002~".~"HDVSN~",   
+         ~"PBPDM~".~"BOM002~".~"HROUT~",   
+         ~"PBPDM~".~"BOM002~".~"HCHDT~",   
+         ~"PBPDM~".~"BOM002~".~"HEXDV~",   
+         ~"PBPDM~".~"BOM002~".~"HCHCD~",   
+         ~"PBPDM~".~"BOM002~".~"HOSCD~",   
+         ~"PBPDM~".~"BOM002~".~"HINDT~",   
+         ~"PBPDM~".~"BOM002~".~"HEMNO~",   
+         ~"PBPDM~".~"BOM002~".~"HOPCD~",   
+         ~"PBPDM~".~"BOM002~".~"HEBST~",   
+         ~"PBPDM~".~"BOM002~".~"HQTYE~"  
+    FROM ~"PBPDM~".~"BOM002~"  
+   WHERE ( ~"PBPDM~".~"BOM002~".~"HCMCD~" = '01' ) AND
+			( ~"PBPDM~".~"BOM002~".~"HPLANT~" = :A_PLANT ) AND 
+         ( ~"PBPDM~".~"BOM002~".~"HDVSN~"  = :A_DIV ) AND  
+         ( ~"PBPDM~".~"BOM002~".~"HPITN~"  = :A_PITNO ) AND  
+         ( (~"PBPDM~".~"BOM002~".~"HEDTM~" <= ~"PBPDM~".~"BOM002~".~"HEDTE~" AND ~"PBPDM~".~"BOM002~".~"HEDTE~" <> ' ' AND ~"PBPDM~".~"BOM002~".~"HEDTE~" >= :a_date )
+          OR  
+         ( ~"PBPDM~".~"BOM002~".~"HEDTE~" = ' ' ))
+        " arguments=(("A_PLANT", string),("A_DIV", string),("A_PITNO", string),("A_DATE", string)) )
+text(band=header alignment="2" text="하위품번" border="0" color="16777215" x="9" y="0" height="60" width="352" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품   명" border="0" color="16777215" x="370" y="0" height="60" width="549" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="단위" border="0" color="16777215" x="928" y="0" height="60" width="142" html.valueishtml="0"  name=t_8 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="원단위량" border="0" color="16777215" x="1079" y="0" height="60" width="251" html.valueishtml="0"  name=t_3 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="조코드" border="0" color="16777215" x="1339" y="0" height="60" width="197" html.valueishtml="0"  name=t_4 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="시작일" border="0" color="16777215" x="1545" y="0" height="60" width="251" html.valueishtml="0"  name=t_5 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="종료일" border="0" color="16777215" x="1806" y="0" height="60" width="247" html.valueishtml="0"  name=t_6 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="원단위량" border="0" color="16777215" x="1079" y="0" height="60" width="251" html.valueishtml="0"  name=t_7 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="0" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="0" expression=" f_bom_get_itemname (  pcitn  )"border="0" color="0" x="370" y="0" height="76" width="549" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="352" format="[general]" html.valueishtml="0"  name=pcitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="1079" y="0" height="76" width="251" format="[general]" html.valueishtml="0"  name=pqtym visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="1339" y="0" height="76" width="197" format="[general]" html.valueishtml="0"  name=pwkct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1545" y="0" height="76" width="251" format="[general]" html.valueishtml="0"  name=pedtm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="1806" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=pedte visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="2" expression=" f_bom_get_danwi( pcitn )"border="0" color="0" x="928" y="0" height="76" width="142" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

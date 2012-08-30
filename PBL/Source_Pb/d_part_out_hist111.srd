@@ -1,0 +1,111 @@
+$PBExportHeader$d_part_out_hist111.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=hist_div dbname="hist_div" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=area_code dbname="part_out.area_code" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=factory_code dbname="part_out.factory_code" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=part_code dbname="part_out.part_code" )
+ column=(type=char(100) updatewhereclause=yes name=part_master_part_name dbname="part_master.part_name" )
+ column=(type=char(100) updatewhereclause=yes name=part_master_part_spec dbname="part_master.part_spec" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=out_qty dbname="part_out.out_qty" )
+ column=(type=decimal(1) updatewhereclause=yes name=part_ohqty dbname="part_ohqty" )
+ column=(type=char(2) updatewhereclause=yes name=part_master_part_unit dbname="part_master.part_unit" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=dept_code dbname="part_out.dept_code" )
+ column=(type=char(9) update=yes updatewhereclause=yes name=equip_code dbname="part_out.equip_code" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=part_used dbname="part_out.part_used" )
+ column=(type=char(16) update=yes updatewhereclause=yes name=wo_code dbname="part_out.wo_code" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=out_serial dbname="part_out.out_serial" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=invy_state dbname="part_out.invy_state" values="»ç¿ë°¡	U/¿ä¼ö¸®	R/ÆóÇ°	S/ºÎ¿Ü	X/" )
+ column=(type=datetime update=yes updatewhereclause=yes name=out_date dbname="part_out.out_date" )
+ column=(type=char(14) update=yes updatewhereclause=yes name=part_tag dbname="part_out.part_tag" )
+ retrieve="
+  SELECT 'ºÒÃâ' as hist_div,
+a.area_code as area_code,   
+         a.factory_code as factory_code,   
+         a.part_code as part_code,
+			b.part_name as part_name,
+			b.part_spec as part_spec,
+			a.out_qty as out_qty,
+			b.normal_qty + b.repair_qty + b.etc_qty + b.scram_qty as part_ohqty, 
+			b.part_unit as part_unit,
+			a.dept_code as dept_code,
+			a.equip_code as equip_code,
+			a.part_used as part_used,
+			a.wo_code as wo_code, 
+			a.out_serial as out_serial, 
+			a.invy_state as invy_state,
+			a.out_date as out_date,   
+         a.part_tag as part_tag
+    FROM part_out a,   
+         part_master b  
+   WHERE ( a.area_code = b.area_code ) and
+			( a.factory_code = b.factory_code ) and
+			( a.part_code = b.part_code ) and  
+         ( a.area_code = :aaa ) AND  
+         ( a.factory_code = :bbb )  and
+			convert(varchar(10),a.out_date,120) between :ccc and :ddd  
+
+union
+  SELECT '¹Ý³³' as hist_div,
+a.area_code as area_code,   
+         a.factory_code as factory_code,   
+         a.part_code as part_code,
+			b.part_name  as part_name,
+			b.part_spec  as part_spec,
+			a.return_qty as out_qty,
+			b.normal_qty + b.repair_qty + b.etc_qty + b.scram_qty as part_ohqty,
+			b.part_unit as part_unit,
+			a.dept_code as dept_code,
+			a.equip_code as equip_code,
+			a.part_used as part_used,      
+         a.wo_code as wo_code,
+			a.return_serial as out_serial,
+			a.invy_state as invy_state,    
+			a.return_date as out_date,  
+			a.part_tag as part_tag
+    FROM part_return a,   
+         part_master b  
+   WHERE ( a.area_code = b.area_code ) and 
+			( a.factory_code = b.factory_code ) and 
+			( a.part_code = b.part_code ) and  
+         ( a.area_code = :aaa ) AND  
+         ( a.factory_code = :bbb )  and
+			convert(varchar(10),a.return_date,120) between :ccc and :ddd  " arguments=(("aaa", string),("bbb", string),("ccc", string),("ddd", string))  sort="hist_div D out_date D " )
+group(level=1 header.height=0 trailer.height=80 by=("hist_div" , "area_code" , "factory_code" , "part_code" , "part_ohqty" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø" border="6" color="33554432" x="229" y="8" height="56" width="439" html.valueishtml="0"  name=part_code_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="ÀüÇ¥¹øÈ£" border="6" color="33554432" x="1865" y="8" height="56" width="411" html.valueishtml="0"  name=part_tag_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="ÀÛ¸í¹øÈ£" border="6" color="33554432" x="2286" y="8" height="56" width="466" html.valueishtml="0"  name=wo_code_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="Àåºñ¹øÈ£" border="6" color="33554432" x="3616" y="8" height="56" width="302" html.valueishtml="0"  name=equip_code_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="ÀÏÀÚ" border="6" color="33554432" x="3927" y="8" height="56" width="507" html.valueishtml="0"  name=out_date_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="Àç°í»óÅÂ" border="6" color="33554432" x="4443" y="8" height="56" width="251" html.valueishtml="0"  name=invy_state_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¼ö·®" border="6" color="33554432" x="4704" y="8" height="56" width="329" html.valueishtml="0"  name=out_qty_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="±¸ºÐ" border="6" color="0" x="9" y="8" height="56" width="210" html.valueishtml="0"  name=hist_div_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="ºÎ¼­" border="6" color="33554432" x="2761" y="8" height="56" width="302" html.valueishtml="0"  name=dept_code_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="Ç°¸í" border="6" color="0" x="677" y="8" height="56" width="576" html.valueishtml="0"  name=part_master_part_name_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="±Ô°Ý" border="6" color="0" x="1262" y="8" height="56" width="594" html.valueishtml="0"  name=part_master_part_spec_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="¿ëµµ" border="6" color="33554432" x="3072" y="8" height="56" width="366" html.valueishtml="0"  name=part_used_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="´ÜÀ§" border="6" color="33554432" x="3447" y="8" height="56" width="160" html.valueishtml="0"  name=part_master_part_unit_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="229" y="8" height="68" width="439" format="[general]" html.valueishtml="0"  name=part_code  tag="Ç°¹ø" visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="33554432" x="1865" y="8" height="68" width="411" format="[general]" html.valueishtml="0"  name=part_tag  tag="ºÒÃâÀüÇ¥¹øÈ£" visible="1" edit.limit=14 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="2286" y="8" height="68" width="466" format="[general]" html.valueishtml="0"  name=wo_code  tag="ÀÛ¸í¹øÈ£" visible="1" edit.limit=16 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="33554432" x="3616" y="8" height="68" width="302" format="[general]" html.valueishtml="0"  name=equip_code  tag="Àåºñ¹øÈ£" visible="1" edit.limit=9 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="33554432" x="3927" y="8" height="68" width="507" format="[shortdate] [time]" html.valueishtml="0"  name=out_date visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="4443" y="8" height="68" width="251" format="[general]" html.valueishtml="0"  name=invy_state visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="4704" y="8" height="68" width="329" format="[general]" html.valueishtml="0"  name=out_qty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="68" width="210" format="[general]" html.valueishtml="0"  name=hist_div visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="2761" y="8" height="68" width="302" format="[general]" html.valueishtml="0"  name=dept_code  tag="ºÎ¼­" visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="677" y="8" height="68" width="576" format="[general]" html.valueishtml="0"  name=part_master_part_name  tag="Ç°¸í" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1262" y="8" height="68" width="594" format="[general]" html.valueishtml="0"  name=part_master_part_spec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="3072" y="8" height="68" width="366" format="[general]" html.valueishtml="0"  name=part_used  tag="¿ëµµ" visible="1" dddw.name=dd_used dddw.displaycolumn=used_name dddw.datacolumn=used_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="3447" y="8" height="68" width="160" format="[general]" html.valueishtml="0"  name=part_master_part_unit visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="ÇöÀç°í :" border="0" color="0" x="3616" y="12" height="56" width="302" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="0" expression=" part_ohqty "border="0" color="33554432" x="3927" y="12" height="56" width="507" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="ÇÕ°è:" border="0" color="0" x="4443" y="12" height="56" width="251" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression="sum(out_qty for group 1)"border="0" color="33554432" x="4704" y="12" height="56" width="329" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,65 @@
+$PBExportHeader$f_get_lastday_of_month.srf
+$PBExportComments$Get last day of month(arg int fi_month, int fi_year, Return integer)
+global type f_get_lastday_of_month from function_object
+end type
+
+forward prototypes
+global function integer f_get_lastday_of_month (integer fi_month, integer fi_year)
+end prototypes
+
+global function integer f_get_lastday_of_month (integer fi_month, integer fi_year);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_get_lastday_of_month
+//	Access		: public
+//	Arguments	: Int	fi_month					Month(1-12)
+//					  int	fi_year					Year(1900- )
+//	Returns		: int	li_lastday_of_month	해당월의 마지막 일자
+//	Description	: 윤달의 고려하여 기준월의 마지막 일자를 구한다.(기준월의 일수)
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lim Jae keun
+// 						  |||||                
+//							 q O-O p  그날이 올때까정
+//							_(  v  )________
+//				-oOo---oOo-------Oooo--Oooo
+// Coded Date	: 1999. 03. 06
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Int		li_lastday_of_month
+Boolean	lb_leap_year
+
+CHOOSE CASE fi_month
+	CASE 1, 3, 5, 7, 8, 10, 12
+		li_lastday_of_month = 31
+	CASE 4, 6, 9, 11
+		li_lastday_of_month = 30
+	CASE 2
+	//If a year is divisible by 100 without a remainder, then it is
+	//NOT a leap year
+
+		If Mod(fi_year,100) = 0 Then
+			lb_leap_year = False
+
+	//If the year is not divisible by 100, but is by 4 then it is a
+	//leap year
+
+		ElseIf Mod(fi_year,4) = 0 Then
+			lb_leap_year = True
+
+	//If neither case is true then it is not a leap year
+
+		Else 
+			lb_leap_year = False
+		End If
+
+	//If it is a leap year, February has 29 days, otherwise 28
+
+		If lb_leap_year Then
+			li_lastday_of_month = 29
+		Else
+			li_lastday_of_month = 28
+		End If
+
+End CHOOSE
+
+//Return the number of days in the relevant month
+Return li_lastday_of_month
+end function
+

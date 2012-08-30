@@ -1,0 +1,215 @@
+$PBExportHeader$d_bom118i_retrieve.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes name=xplant dbname="INV101.XPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=div dbname="INV101.DIV" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itno dbname="INV101.ITNO" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=cls dbname="INV101.CLS" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=srce dbname="INV101.SRCE" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=pdcd dbname="INV101.PDCD" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xunit dbname="INV101.XUNIT" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=unit1 dbname="INV101.UNIT1" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=costdiv dbname="INV101.COSTDIV" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=comltd dbname="INV101.COMLTD" initial="01" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xplan dbname="INV101.XPLAN" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=mlan dbname="INV101.MLAN" )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=convqty dbname="INV101.CONVQTY" initial="0" )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=convqty1 dbname="INV101.CONVQTY1" initial="0" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=autcd dbname="INV101.AUTCD" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=mdno dbname="INV101.MDNO" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=wloc dbname="INV101.WLOC" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=wccd dbname="INV101.WCCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=iscd dbname="INV101.ISCD" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=isbox dbname="INV101.ISBOX" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=nuse dbname="INV101.NUSE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=abccd dbname="INV101.ABCCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=kbcd dbname="INV101.KBCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=mass dbname="INV101.MASS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=irtcd dbname="INV101.IRTCD" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=maxq dbname="INV101.MAXQ" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=minq dbname="INV101.MINQ" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=saft dbname="INV101.SAFT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=sfwq dbname="INV101.SFWQ" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=adjqty dbname="INV101.ADJQTY" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=orpt dbname="INV101.ORPT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=puls dbname="INV101.PULS" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=isls dbname="INV101.ISLS" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=pult dbname="INV101.PULT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=bgqty dbname="INV101.BGQTY" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=bgamt dbname="INV101.BGAMT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=intqty dbname="INV101.INTQTY" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=intamt dbname="INV101.INTAMT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=outqty dbname="INV101.OUTQTY" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=outamt dbname="INV101.OUTAMT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=ohuqty dbname="INV101.OHUQTY" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=ohrqty dbname="INV101.OHRQTY" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=ohsqty dbname="INV101.OHSQTY" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=ohamt dbname="INV101.OHAMT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=exqty dbname="INV101.EXQTY" initial="0" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=costav dbname="INV101.COSTAV" initial="0" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=costls dbname="INV101.COSTLS" initial="0" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=saup dbname="INV101.SAUP" initial="0" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=saud dbname="INV101.SAUD" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=iunpr dbname="INV101.IUNPR" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=iunrc dbname="INV101.IUNRC" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=ispqt dbname="INV101.ISPQT" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=iperp dbname="INV101.IPERP" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=ipeis dbname="INV101.IPEIS" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=iperp1 dbname="INV101.IPERP1" initial="0" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=pksz dbname="INV101.PKSZ" initial="0" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=shpcd dbname="INV101.SHPCD" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=iludt dbname="INV101.ILUDT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=lpdt dbname="INV101.LPDT" )
+ column=(type=char(13) update=yes updatewhereclause=yes name=mcno dbname="INV101.MCNO" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=fobcost dbname="INV101.FOBCOST" initial="0" )
+ column=(type=char(3) update=yes updatewhereclause=yes name=curr dbname="INV101.CURR" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=chkcd dbname="INV101.CHKCD" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=hscd dbname="INV101.HSCD" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=txrt dbname="INV101.TXRT" initial="0" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=fstdt dbname="INV101.FSTDT" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=indus dbname="INV101.INDUS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=comcd dbname="INV101.COMCD" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=extd dbname="INV101.EXTD" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=inptid dbname="INV101.INPTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=inptdt dbname="INV101.INPTDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updtid dbname="INV101.UPDTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=updtdt dbname="INV101.UPDTDT" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ipaddr dbname="INV101.IPADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=macaddr dbname="INV101.MACADDR" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_spec dbname="INV002.SPEC" )
+ column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="DAC007.PRNAME" )
+ column=(type=char(15) updatewhereclause=yes name=inv902_extd dbname="INV902.EXTD" )
+ column=(type=char(20) updatewhereclause=yes name=inptname dbname="INPTNAME" )
+ retrieve="  SELECT ~"PBINV~".~"INV101~".~"XPLANT~",   
+         ~"PBINV~".~"INV101~".~"DIV~",   
+         ~"PBINV~".~"INV101~".~"ITNO~",   
+         ~"PBINV~".~"INV101~".~"CLS~",   
+         ~"PBINV~".~"INV101~".~"SRCE~",   
+         ~"PBINV~".~"INV101~".~"PDCD~",   
+         ~"PBINV~".~"INV101~".~"XUNIT~",   
+         ~"PBINV~".~"INV101~".~"UNIT1~",   
+         ~"PBINV~".~"INV101~".~"COSTDIV~",   
+         ~"PBINV~".~"INV101~".~"COMLTD~",   
+         ~"PBINV~".~"INV101~".~"XPLAN~",   
+         ~"PBINV~".~"INV101~".~"MLAN~",   
+         ~"PBINV~".~"INV101~".~"CONVQTY~",   
+         ~"PBINV~".~"INV101~".~"CONVQTY1~",   
+         ~"PBINV~".~"INV101~".~"AUTCD~",   
+         ~"PBINV~".~"INV101~".~"MDNO~",   
+         ~"PBINV~".~"INV101~".~"WLOC~",   
+         ~"PBINV~".~"INV101~".~"WCCD~",   
+         ~"PBINV~".~"INV101~".~"ISCD~",   
+         ~"PBINV~".~"INV101~".~"ISBOX~",   
+         ~"PBINV~".~"INV101~".~"NUSE~",   
+         ~"PBINV~".~"INV101~".~"ABCCD~",   
+         ~"PBINV~".~"INV101~".~"KBCD~",   
+         ~"PBINV~".~"INV101~".~"MASS~",   
+         ~"PBINV~".~"INV101~".~"IRTCD~",   
+         ~"PBINV~".~"INV101~".~"MAXQ~",   
+         ~"PBINV~".~"INV101~".~"MINQ~",   
+         ~"PBINV~".~"INV101~".~"SAFT~",   
+         ~"PBINV~".~"INV101~".~"SFWQ~",   
+         ~"PBINV~".~"INV101~".~"ADJQTY~",   
+         ~"PBINV~".~"INV101~".~"ORPT~",   
+         ~"PBINV~".~"INV101~".~"PULS~",   
+         ~"PBINV~".~"INV101~".~"ISLS~",   
+         ~"PBINV~".~"INV101~".~"PULT~",   
+         ~"PBINV~".~"INV101~".~"BGQTY~",   
+         ~"PBINV~".~"INV101~".~"BGAMT~",   
+         ~"PBINV~".~"INV101~".~"INTQTY~",   
+         ~"PBINV~".~"INV101~".~"INTAMT~",   
+         ~"PBINV~".~"INV101~".~"OUTQTY~",   
+         ~"PBINV~".~"INV101~".~"OUTAMT~",   
+         ~"PBINV~".~"INV101~".~"OHUQTY~",   
+         ~"PBINV~".~"INV101~".~"OHRQTY~",   
+         ~"PBINV~".~"INV101~".~"OHSQTY~",   
+         ~"PBINV~".~"INV101~".~"OHAMT~",   
+         ~"PBINV~".~"INV101~".~"EXQTY~",   
+         ~"PBINV~".~"INV101~".~"COSTAV~",   
+         ~"PBINV~".~"INV101~".~"COSTLS~",   
+         ~"PBINV~".~"INV101~".~"SAUP~",   
+         ~"PBINV~".~"INV101~".~"SAUD~",   
+         ~"PBINV~".~"INV101~".~"IUNPR~",   
+         ~"PBINV~".~"INV101~".~"IUNRC~",   
+         ~"PBINV~".~"INV101~".~"ISPQT~",   
+         ~"PBINV~".~"INV101~".~"IPERP~",   
+         ~"PBINV~".~"INV101~".~"IPEIS~",   
+         ~"PBINV~".~"INV101~".~"IPERP1~",   
+         ~"PBINV~".~"INV101~".~"PKSZ~",   
+         ~"PBINV~".~"INV101~".~"SHPCD~",   
+         ~"PBINV~".~"INV101~".~"ILUDT~",   
+         ~"PBINV~".~"INV101~".~"LPDT~",   
+         ~"PBINV~".~"INV101~".~"MCNO~",   
+         ~"PBINV~".~"INV101~".~"FOBCOST~",   
+         ~"PBINV~".~"INV101~".~"CURR~",   
+         ~"PBINV~".~"INV101~".~"CHKCD~",   
+         ~"PBINV~".~"INV101~".~"HSCD~",   
+         ~"PBINV~".~"INV101~".~"TXRT~",   
+         ~"PBINV~".~"INV101~".~"FSTDT~",   
+         ~"PBINV~".~"INV101~".~"INDUS~",   
+         ~"PBINV~".~"INV101~".~"COMCD~",   
+         ~"PBINV~".~"INV101~".~"EXTD~",   
+         ~"PBINV~".~"INV101~".~"INPTID~",   
+         ~"PBINV~".~"INV101~".~"INPTDT~",   
+         ~"PBINV~".~"INV101~".~"UPDTID~",   
+         ~"PBINV~".~"INV101~".~"UPDTDT~",   
+         ~"PBINV~".~"INV101~".~"IPADDR~",   
+         ~"PBINV~".~"INV101~".~"MACADDR~",   
+         ~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV002~".~"SPEC~",   
+         ~"PBCOMMON~".~"DAC007~".~"PRNAME~",   
+         ~"PBINV~".~"INV902~".~"EXTD~",
+			( SELECT PENAMEK FROM PBCOMMON.DAC003 WHERE PEEMPNO = ~"PBINV~".~"INV101~".~"INPTID~" ) AS INPTNAME 
+    FROM ~"PBINV~".~"INV101~",   
+         ~"PBINV~".~"INV002~",   
+         ~"PBCOMMON~".~"DAC007~",   
+         ~"PBINV~".~"INV902~"  
+   WHERE ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBINV~".~"INV002~".~"COMLTD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" ) and  
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" = ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBINV~".~"INV902~".~"COMLTD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBINV~".~"INV902~".~"XPLANT~" ) and  
+         ( ~"PBINV~".~"INV101~".~"DIV~" = ~"PBINV~".~"INV902~".~"DIV~" ) and  
+         ( ( ~"PBINV~".~"INV101~".~"INPTDT~" like :a_date ) AND  
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"CLS~" = '30' ) )    
+" arguments=(("a_date", string))  sort="xplant A div A pdcd A itno A inptdt A " )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="1125" y="0" height="72" width="489" html.valueishtml="0"  name=itno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="3141" y="0" height="72" width="174" html.valueishtml="0"  name=cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="3323" y="0" height="72" width="265" html.valueishtml="0"  name=srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç°í´ÜÀ§" border="0" color="16777215" x="3598" y="0" height="72" width="315" html.valueishtml="0"  name=xunit_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="A.B.C ÄÚµå" border="0" color="16777215" x="3922" y="0" height="72" width="366" html.valueishtml="0"  name=abccd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÇ¸ÅÆò±Õ´Ü°¡(¼öÃâ)" border="0" color="16777215" x="4297" y="0" height="72" width="667" html.valueishtml="0"  name=saup_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÇ¸ÅÆò±Õ´Ü°¡(³»¼ö)" border="0" color="16777215" x="4974" y="0" height="72" width="722" html.valueishtml="0"  name=saud_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1623" y="0" height="72" width="722" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="9" y="0" height="72" width="471" html.valueishtml="0"  name=inv902_extd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô°Ý" border="0" color="16777215" x="2354" y="0" height="72" width="777" html.valueishtml="0"  name=inv002_spec_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="0" color="16777215" x="489" y="0" height="72" width="626" html.valueishtml="0"  name=dac007_prname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="3141" y="0" height="72" width="174" format="[general]" html.valueishtml="0"  name=cls  tag="°èÁ¤" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="3323" y="0" height="72" width="265" format="[general]" html.valueishtml="0"  name=srce  tag="±¸ÀÔ¼±" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="3598" y="0" height="72" width="315" format="[general]" html.valueishtml="0"  name=xunit  tag="Àç°í´ÜÀ§" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=22 alignment="2" tabsequence=32766 border="0" color="33554432" x="3922" y="0" height="72" width="366" format="[general]" html.valueishtml="0"  name=abccd  tag="A.B.C ÄÚµå" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1125" y="0" height="72" width="489" format="[general]" html.valueishtml="0"  name=itno  tag="Ç°¹ø" visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=76 alignment="0" tabsequence=32766 border="0" color="0" x="1623" y="0" height="72" width="722" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=79 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="471" format="[general]" html.valueishtml="0"  name=inv902_extd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=77 alignment="0" tabsequence=32766 border="0" color="0" x="2354" y="0" height="72" width="777" format="[general]" html.valueishtml="0"  name=inv002_spec visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=78 alignment="0" tabsequence=32766 border="0" color="33554432" x="489" y="0" height="72" width="626" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=48 alignment="1" tabsequence=32766 border="0" color="33554432" x="4297" y="0" height="72" width="667" format="#,##0.00" html.valueishtml="0"  name=saup  tag="ÆÇ¸ÅÆò±Õ´Ü°¡(¼öÃâ)" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=49 alignment="1" tabsequence=32766 border="0" color="33554432" x="4974" y="0" height="72" width="722" format="#,##0.00" html.valueishtml="0"  name=saud  tag="ÆÇ¸ÅÆò±Õ´Ü°¡(³»¼ö)" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=header alignment="2" text="µî·ÏÀÏÀÚ" border="0" color="16777215" x="5705" y="0" height="72" width="448" html.valueishtml="0"  name=inptdt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="µî·ÏÀÚ¸í" border="0" color="16777215" x="6162" y="0" height="72" width="370" html.valueishtml="0"  name=inptname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=71 alignment="2" tabsequence=32766 border="0" color="33554432" x="5710" y="0" height="72" width="443" format="XXXX.XX.XX" html.valueishtml="0"  name=inptdt visible="1" editmask.mask="XXXX.XX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=80 alignment="2" tabsequence=0 border="0" color="33554432" x="6167" y="0" height="72" width="366" html.valueishtml="0"  name=inptname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="inv902_extd	dac007_prname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,146 @@
+$PBExportHeader$d_bom120i_check_old.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=xcmcd dbname="BOM017.XCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xplant dbname="BOM017.XPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xdiv dbname="BOM017.XDIV" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=xitno dbname="BOM017.XITNO" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xgubun dbname="BOM017.XGUBUN" values="BOM 변경	B/호환품목 변경	O/" )
+ column=(type=char(19) update=yes updatewhereclause=yes key=yes name=xchtime dbname="BOM017.XCHTIME" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=xqtyb dbname="BOM017.XQTYB" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=xqtya dbname="BOM017.XQTYA" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=xwkctb dbname="BOM017.XWKCTB" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=xwkcta dbname="BOM017.XWKCTA" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xedtm dbname="BOM017.XEDTM" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xedte dbname="BOM017.XEDTE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexplantb dbname="BOM017.XEXPLANTB" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexdivb dbname="BOM017.XEXDIVB" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexplanta dbname="BOM017.XEXPLANTA" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexdiva dbname="BOM017.XEXDIVA" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xchcd dbname="BOM017.XCHCD" values="입력	A/수정	R/삭제	D/하위복사	C/상위복사	P/유무상전환	S/주,부품번 교체	X/" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xsheetno dbname="BOM017.XSHEETNO" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xinemp dbname="BOM017.XINEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xinchk dbname="BOM017.XINCHK" values="요청대기	N/요청완료	Y/" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xintime dbname="BOM017.XINTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xplemp dbname="BOM017.XPLEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xplchk dbname="BOM017.XPLCHK" values="승인대기	N/P//L 승인	Y/P//L 반려	C/ 	 /" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xpltime dbname="BOM017.XPLTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xdlemp dbname="BOM017.XDLEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xdlchk dbname="BOM017.XDLCHK" values="승인대기	N/팀장승인	Y/팀장반려	C/ 	 /" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xdltime dbname="BOM017.XDLTIME" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xmacaddr dbname="BOM017.XMACADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xipaddr dbname="BOM017.XIPADDR" )
+ column=(type=char(100) update=yes updatewhereclause=yes name=xdesc dbname="BOM017.XDESC" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_inputname dbname="BOM017.INPUTNAME" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_plname dbname="BOM017.PLNAME" )
+ column=(type=char(10) updatewhereclause=yes name=dac003_dlname dbname="BOM017.DLNAME" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM017~".~"XCMCD~",   
+         ~"PBPDM~".~"BOM017~".~"XPLANT~",   
+         ~"PBPDM~".~"BOM017~".~"XDIV~",   
+         ~"PBPDM~".~"BOM017~".~"XITNO~",   
+         ~"PBPDM~".~"BOM017~".~"XGUBUN~",   
+         ~"PBPDM~".~"BOM017~".~"XCHTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XQTYB~",   
+         ~"PBPDM~".~"BOM017~".~"XQTYA~",   
+         ~"PBPDM~".~"BOM017~".~"XWKCTB~",   
+         ~"PBPDM~".~"BOM017~".~"XWKCTA~",   
+         ~"PBPDM~".~"BOM017~".~"XEDTM~",   
+         ~"PBPDM~".~"BOM017~".~"XEDTE~",   
+         ~"PBPDM~".~"BOM017~".~"XEXPLANTB~",   
+         ~"PBPDM~".~"BOM017~".~"XEXDIVB~",   
+         ~"PBPDM~".~"BOM017~".~"XEXPLANTA~",   
+         ~"PBPDM~".~"BOM017~".~"XEXDIVA~",   
+         ~"PBPDM~".~"BOM017~".~"XCHCD~",   
+         ~"PBPDM~".~"BOM017~".~"XSHEETNO~",   
+         ~"PBPDM~".~"BOM017~".~"XINEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XINCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XINTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XPLEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XPLCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XPLTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XDLEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XDLCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XDLTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XMACADDR~",   
+         ~"PBPDM~".~"BOM017~".~"XIPADDR~",   
+         ~"PBPDM~".~"BOM017~".~"XDESC~",   
+         ~"PBINV~".~"INV002~".~"ITNM~"  ,
+	    A.PENAMEK AS INPUTNAME,B.PENAMEK AS PLNAME ,C.PENAMEK AS DLNAME
+    FROM ~"PBPDM~".~"BOM017~",   
+         ~"PBINV~".~"INV002~"  ,~"PBCOMMON~".~"DAC003~" A, ~"PBCOMMON~".~"DAC003~" B, ~"PBCOMMON~".~"DAC003~" C 
+   WHERE
+		 ( ~"PBPDM~".~"BOM017~".~"XITNO~" 		= ~"PBINV~".~"INV002~".~"ITNO~" ) and  
+        	 ( ~"PBPDM~".~"BOM017~".~"XCMCD~" 	= ~"PBINV~".~"INV002~".~"COMLTD~" )    and
+        	 ( ~"PBPDM~".~"BOM017~".~"XCMCD~" 	= '01' )    and
+           ( ~"PBPDM~".~"BOM017~".~"XINEMP~" 	= A.PEEMPNO ) and  
+           ( ~"PBPDM~".~"BOM017~".~"XPLEMP~" 	= B.PEEMPNO ) and  
+           ( ~"PBPDM~".~"BOM017~".~"XDLEMP~" 	= C.PEEMPNO ) and
+		( ~"PBPDM~".~"BOM017~".~"XINTIME~"  	between :ag_intime_from	and :ag_intime_to ) and		
+		( ~"PBPDM~".~"BOM017~".~"XPLTIME~"  	between :ag_pltime_from	and :ag_pltime_to ) and		
+		( ~"PBPDM~".~"BOM017~".~"XDLTIME~"  	between :ag_dltime_from	and :ag_dltime_to ) and		
+	     ( ~"PBPDM~".~"BOM017~".~"XINCHK~" 		like			:ag_inchk	)	and
+	     ( ~"PBPDM~".~"BOM017~".~"XPLCHK~"		like			:ag_plchk	)	and
+	     ( ~"PBPDM~".~"BOM017~".~"XDLCHK~" 	like			:ag_dlchk	)
+" update="PBPDM.BOM017" updatewhere=0 updatekeyinplace=yes arguments=(("ag_intime_from", string),("ag_intime_to", string),("ag_pltime_from", string),("ag_pltime_to", string),("ag_dltime_from", string),("ag_dltime_to", string),("ag_inchk", string),("ag_plchk", string),("ag_dlchk", string))  sort="xcmcd A xsheetno A dac003_inputname A " )
+text(band=header alignment="2" text="구분" border="0" color="16777215" x="4827" y="0" height="72" width="343" html.valueishtml="0"  name=xgubun_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경전 원단위량" border="0" color="16777215" x="5961" y="0" height="72" width="480" html.valueishtml="0"  name=xqtyb_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경후 원단위량" border="0" color="16777215" x="6450" y="0" height="72" width="475" html.valueishtml="0"  name=xqtya_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경전 조코드" border="0" color="16777215" x="6935" y="0" height="72" width="421" html.valueishtml="0"  name=xwkctb_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경후 조코드" border="0" color="16777215" x="7365" y="0" height="72" width="416" html.valueishtml="0"  name=xwkcta_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="적용시작일" border="0" color="16777215" x="7790" y="0" height="72" width="343" html.valueishtml="0"  name=xedtm_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="적용완료일" border="0" color="16777215" x="8142" y="0" height="72" width="334" html.valueishtml="0"  name=xedte_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경전 이체지역" border="0" color="16777215" x="8485" y="0" height="72" width="521" html.valueishtml="0"  name=xexplantb_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경전 이체공장" border="0" color="16777215" x="9015" y="0" height="72" width="485" html.valueishtml="0"  name=xexdivb_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경후 이체지역" border="0" color="16777215" x="9509" y="0" height="72" width="517" html.valueishtml="0"  name=xexplanta_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경후 이체공장" border="0" color="16777215" x="10034" y="0" height="72" width="507" html.valueishtml="0"  name=xexdiva_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경내용" border="0" color="16777215" x="5179" y="0" height="72" width="773" html.valueishtml="0"  name=xdesc_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="담당자 확인시간" border="0" color="16777215" x="704" y="0" height="72" width="603" html.valueishtml="0"  name=xintime_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L 확인시간" border="0" color="16777215" x="1637" y="0" height="72" width="658" html.valueishtml="0"  name=xpltime_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="팀장확인시간" border="0" color="16777215" x="2624" y="0" height="72" width="718" html.valueishtml="0"  name=xdltime_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경구분" border="0" color="16777215" x="3351" y="0" height="72" width="270" html.valueishtml="0"  name=xchcd_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L" border="0" color="16777215" x="1317" y="0" height="72" width="311" html.valueishtml="0"  name=dac003_plname_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="팀장" border="0" color="16777215" x="2304" y="0" height="72" width="311" html.valueishtml="0"  name=dac003_dlname_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="변경품번" border="0" color="16777215" x="3630" y="0" height="72" width="457" html.valueishtml="0"  name=xitno_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품 명" border="0" color="16777215" x="4096" y="0" height="72" width="722" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="담당자" border="0" color="16777215" x="384" y="0" height="72" width="311" html.valueishtml="0"  name=dac003_inputname_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="요청번호" border="0" color="16777215" x="9" y="0" height="72" width="366" html.valueishtml="0"  name=xsheetno_t visible="1"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="담당자 확인" border="0" color="16777215" x="10551" y="0" height="72" width="343" html.valueishtml="0"  name=xinchk_t visible="0"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L 확인" border="0" color="16777215" x="10903" y="0" height="72" width="325" html.valueishtml="0"  name=xplchk_t visible="0"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="팀장확인" border="0" color="16777215" x="11237" y="0" height="72" width="306" html.valueishtml="0"  name=xdlchk_t visible="0"  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="4827" y="0" height="72" width="343" format="[general]" html.valueishtml="0"  name=xgubun visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="0" tabsequence=32766 border="0" color="33554432" x="5179" y="0" height="72" width="773" format="[general]" html.valueishtml="0"  name=xdesc visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="2" tabsequence=32766 border="0" color="33554432" x="704" y="0" height="72" width="603" format="[general]" html.valueishtml="0"  name=xintime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="2" tabsequence=32766 border="0" color="33554432" x="1637" y="0" height="72" width="658" format="[general]" html.valueishtml="0"  name=xpltime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="5961" y="0" height="72" width="480" format="[general]" html.valueishtml="0"  name=xqtyb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="6450" y="0" height="72" width="475" format="[general]" html.valueishtml="0"  name=xqtya visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="6935" y="0" height="72" width="421" format="[general]" html.valueishtml="0"  name=xwkctb visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="7365" y="0" height="72" width="416" format="[general]" html.valueishtml="0"  name=xwkcta visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="7790" y="0" height="72" width="343" format="[general]" html.valueishtml="0"  name=xedtm visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="8142" y="0" height="72" width="334" format="[general]" html.valueishtml="0"  name=xedte visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="2" tabsequence=32766 border="0" color="33554432" x="2624" y="0" height="72" width="718" format="[general]" html.valueishtml="0"  name=xdltime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="3351" y="0" height="72" width="270" format="[general]" html.valueishtml="0"  name=xchcd visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=33 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xplchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="1317" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=dac003_plname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xdlchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="2304" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=dac003_dlname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="33554432" x="8485" y="0" height="72" width="521" format="[general]" html.valueishtml="0"  name=xexplantb visible="1" dddw.name=dddw_plant_bom120i dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="9015" y="0" height="72" width="485" format="[general]" html.valueishtml="0"  name=xexdivb visible="1" dddw.name=dddw_div_bom120i dddw.displaycolumn=dac002_coitname dddw.datacolumn=div dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="33554432" x="9509" y="0" height="72" width="517" format="[general]" html.valueishtml="0"  name=xexplanta visible="1" dddw.name=dddw_plant_bom120i dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="33554432" x="10034" y="0" height="72" width="507" format="[general]" html.valueishtml="0"  name=xexdiva visible="1" dddw.name=dddw_div_bom120i dddw.displaycolumn=dac002_coitname dddw.datacolumn=div dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="3630" y="0" height="72" width="457" format="[general]" html.valueishtml="0"  name=xitno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="0" tabsequence=32766 border="0" color="33554432" x="4096" y="0" height="72" width="722" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=32 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xinchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="384" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=dac003_inputname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="72" width="366" format="@@-@@-@@@@" html.valueishtml="0"  name=xsheetno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xinchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="10551" y="0" height="72" width="343" format="[general]" html.valueishtml="0"  name=xinchk visible="0" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xplchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="10903" y="0" height="72" width="325" format="[general]" html.valueishtml="0"  name=xplchk visible="0" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="2" tabsequence=32766 border="0" color="33554432~tif( xdlchk = 'N',rgb(0,0,255),rgb(0,0,0))" x="11237" y="0" height="72" width="306" format="[general]" html.valueishtml="0"  name=xdlchk visible="0" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="새굴림" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="xsheetno")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

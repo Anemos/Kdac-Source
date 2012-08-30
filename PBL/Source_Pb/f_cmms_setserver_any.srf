@@ -1,0 +1,46 @@
+$PBExportHeader$f_cmms_setserver_any.srf
+$PBExportComments$공장별설비DB CONNECT(TRANSACTION객체임의생성)
+global type f_cmms_setserver_any from function_object
+end type
+
+forward prototypes
+global function boolean f_cmms_setserver_any (string as_plant, string as_div, transaction as_transaction)
+end prototypes
+
+global function boolean f_cmms_setserver_any (string as_plant, string as_div, transaction as_transaction);string ls_area,ls_servername,ls_dbms,ls_database,ls_logid,ls_logpass,ls_dbparm,ls_serverid
+
+CHOOSE CASE as_plant
+	CASE 'D'
+			ls_serverid = 'DAEGU'
+	CASE 'J'
+			ls_serverid	= 'JIN'		
+	CASE 'Y'
+			ls_serverid	= 'YEO'		
+	CASE 'B'
+			ls_serverid	= 'BUP'		
+	CASE 'K'
+			ls_serverid	= 'KUN'					
+END CHOOSE
+
+select servername,serverdbms,serverdatabase,serverlogid,serverpassword,serverdbparm into
+		:ls_servername,:ls_dbms,:ls_database,:ls_logid,:ls_logpass,:ls_dbparm from comm001
+	where  serverid = :ls_serverid
+using sqlpis ;
+if sqlpis.sqlcode <> 0 then
+	return false 
+end if
+as_transaction.ServerName 	= ls_servername
+as_transaction.DBMS       	= ls_dbms
+as_transaction.Database   	= 'CMMS'
+as_transaction.LogId      	= ls_logid
+as_transaction.LogPass    	= ls_logpass
+as_transaction.DBParm     	= ls_dbparm
+as_transaction.Autocommit   	= True
+disconnect using as_transaction;
+connect using as_transaction;
+if as_transaction.sqlcode <> 0 then
+	return false
+end if
+Return true
+end function
+

@@ -1,0 +1,20 @@
+$PBExportHeader$f_cmms_sysdate.srf
+$PBExportComments$System의 날짜와 시간을 알수 있다.
+global type f_cmms_sysdate from function_object
+end type
+
+forward prototypes
+global function datetime f_cmms_sysdate ()
+end prototypes
+
+global function datetime f_cmms_sysdate ();datetime ld_sys_date
+
+SELECT getdate()
+INTO : ld_sys_date
+FROM sysobjects using sqlcmms;
+
+return ld_sys_date
+
+
+end function
+

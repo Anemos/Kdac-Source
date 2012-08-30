@@ -1,0 +1,22 @@
+$PBExportHeader$f_date_week.srf
+$PBExportComments$요일을 리턴한다.(외부함수)
+global type f_date_week from function_object
+end type
+
+forward prototypes
+global function string f_date_week (string as_date)
+end prototypes
+
+global function string f_date_week (string as_date);//요일 - 요일 번호를 리턴한다.
+//
+//        Return : "월"-"일"
+
+string week_no,week[7],week_nm
+
+week = {"일","월", "화", "수", "목", "금", "토"}
+week_no =  ef_dateproc( as_date , " ", 0, 0, 3)
+week_nm = week[integer(week_no) + 1]
+
+return week_nm
+end function
+

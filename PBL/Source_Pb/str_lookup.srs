@@ -1,0 +1,12 @@
+$PBExportHeader$str_lookup.srs
+$PBExportComments$lookup 화면을 열때 넘겨주는 structure
+global type str_lookup from structure
+	string		ls_dataobject
+	string		ls_value
+	long		ll_x
+	long		ll_y
+	datawindow		ldw
+	date		ldt
+	string		ls_col
+end type
+

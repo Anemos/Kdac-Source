@@ -1,0 +1,29 @@
+$PBExportHeader$f_date_term.srf
+$PBExportComments$두 날짜 사이의 기간을 구한다.(외부함수)
+global type f_date_term from function_object
+end type
+
+forward prototypes
+global function integer f_date_term (string as_date1, string as_date2, integer ai_div)
+end prototypes
+
+global function integer f_date_term (string as_date1, string as_date2, integer ai_div);//기간 - 두 날짜 사이의 기간을 구한다.(div = 1:일수, 2:주수, 3:개월수)
+//
+//        Return : String number 기간 (div에 따라 일수, 주수, 개월수)
+//
+//        Example :
+//                 string rtn
+//
+//                 rtn = gf_date_term(sle_1.text, sle_2.text, 1);
+//                 sle_11.text = rtn + " 일"
+//                 rtn = gf_date_term(sle_1.text, sle_2.text, 2);
+//                 sle_12.text = rtn + " 주"
+//                 rtn = gf_date_term(sle_1.text, sle_2.text, 3);
+//                 sle_13.text = rtn + " 개월"
+string ls_rtn
+
+ls_rtn =  ef_dateproc( as_date1 ,as_date2, 0, ai_div, 7)
+
+return integer(ls_rtn)
+end function
+

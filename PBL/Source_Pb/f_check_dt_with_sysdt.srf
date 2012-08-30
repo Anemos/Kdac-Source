@@ -1,0 +1,71 @@
+$PBExportHeader$f_check_dt_with_sysdt.srf
+$PBExportComments$날짜 확인  0 : 비교안함  1: 현재일자 이후성공  2: 현재일자 이전 성공
+global type f_check_dt_with_sysdt from function_object
+end type
+
+forward prototypes
+global function integer f_check_dt_with_sysdt (string a_date, integer a_chk)
+end prototypes
+
+global function integer f_check_dt_with_sysdt (string a_date, integer a_chk);////////////////////////////////////////////////////////////////////////
+//    f_check_dt_with_sysdt(string a_date, integer a_chk)
+//    Return 0 - Validation Fail
+//           1 - Validation Success
+//    Argument  string a_date  - 확인하고자 하는 날짜 문자열(yyyymmdd)
+//              integer a_chk  - 현재일자와 비교 여부
+//                               0 - 비교안함
+//                               1 - 현재일자 이후 일자만 성공(현재 포함)
+//                               2 - 현재일자 이전 일자만 성공(현재 포함)
+//                               3 - 현재일자 이후 일자만 성공(현재일자 에러)
+//                               4 - 현재일자 이전 일자만 성공(현재일자 에러)
+////////////////////////////////////////////////////////////////////////
+
+datetime ld_datetime
+date ld_date
+string ls_date, ls_result
+int li_pos
+
+// 필요없는 문자 삭제 및 변환
+//ls_result = f_dust_out(a_date, '/' )
+ls_result = a_date
+ls_date = Mid(ls_result,1,4) +'-' + Mid(ls_result,5,2) +'-' +Mid(ls_result,7,2)   // yyyy-mm-dd
+
+if Not IsDate(ls_date) then 
+	messagebox("Date Err","날짜 입력이 잘못되었습니다.")
+	return 0     // date type 오류
+end if
+
+// 현재일자와 비교
+SELECT SYSDATE INTO :ld_datetime FROM DUAL;
+
+Choose Case a_chk
+	Case 1
+		ld_date = Date(ld_datetime)  // Extract date
+		if Date(ls_date) < ld_date then
+			messagebox("Date Err","현재일자 이후 일자를 입력하십시오.")
+			return 0   // Not proper date
+		end if
+	Case 2
+		ld_date = Date(ld_datetime)  // Extract date
+		if Date(ls_date) > ld_date then
+			messagebox("Date Err","현재일자 이전 일자를 입력하십시오.")
+			return 0   // Not proper date
+		end if
+	Case 3
+		ld_date = Date(ld_datetime)  // Extract date
+		if Date(ls_date) <= ld_date then
+			messagebox("Date Err","현재일자를 제외한 이후 일자를 입력하십시오.")
+			return 0   // Not proper date
+		end if
+	Case 4
+		ld_date = Date(ld_datetime)  // Extract date
+		if Date(ls_date) >= ld_date then
+			messagebox("Date Err","현재일자를 제외한 이전 일자를 입력하십시오.")
+			return 0   // Not proper date
+		end if
+End Choose
+
+return 1  // Success
+
+end function
+

@@ -1,0 +1,81 @@
+$PBExportHeader$f_down_to_excel.srf
+$PBExportComments$dw를 Excel로 내린다.
+global type f_down_to_excel from function_object
+end type
+
+forward prototypes
+global subroutine f_down_to_excel (datawindow dw2)
+end prototypes
+
+global subroutine f_down_to_excel (datawindow dw2);string ls_save_file, named
+string ls_xls_path, xls, ls_run
+integer li_value, li_file, kkkkk
+datawindow dw1
+dw1=dw2
+
+li_value = GetFileSaveName("엑셀로 저장",ls_save_file,named,"xls","Excel files(*.xls),*.xls")
+If li_value = 1 then
+	setpointer(Hourglass!)
+	dw1.saveas(ls_save_file,excel!,true)
+	setpointer(arrow!)
+//	ls_xls_path = "excel"
+//
+//	If fileexists("excel.exe") = false then
+//		// Profile file check
+//		If fileexists("c:\dmi.ini") = true then   // Profile file이 있을 때
+//			ls_xls_path = profilestring("c:\dmi.ini","External Programs","Excel","")
+//			If trim(ls_xls_path) = "" or isnull(ls_xls_path) then  // Profile file에 excel정보가 없을 때 
+//				messagebox("Unload excel","Excel.exe 파일이 현재 디렉토리나 패스에 존재해야 합니다."+ "~r"+ &
+//												  "Excel.exe 파일을 찾아 선택하십시오.")
+//				li_value = GetFileOpenName("Select Excel.exe",ls_xls_path, xls, "exe","run files(*.exe),*.exe")
+//				If li_value = 1 then
+//					SetProfileString("c:\dmi.ini","External Programs","Excel",ls_xls_path)
+//				else
+//					return
+//				End If
+//			End If
+//			
+//		else   // Profile file 이 없을 때   
+//			messagebox("Unload excel","Excel.exe 파일이 현재 디렉토리나 패스에 존재해야 합니다."+ "~r"+ &
+//											  "Excel.exe 파일을 찾아 선택하십시오.")
+//			li_value = GetFileOpenName("Select Excel.exe",ls_xls_path, xls, "exe","run files(*.exe),*.exe")
+//			If li_value = 1 then   // Profile file 생성
+//				li_file = fileopen("c:\dmi.ini",Linemode!,Write!, LockReadWrite!, AppEnd!)
+//				FileWrite(li_file,"")
+//				FileClose(li_file)
+//				SetProfileString("c:\dmi.ini","External Programs","Excel",ls_xls_path)
+//			else
+//				return
+//			End If
+//		End If
+//		
+//	End If
+//
+//	ls_run = ls_xls_path + '   ' + ls_save_file
+	// Excel 실행
+//	If run("~"" + ls_xls_path + "~" " + "~"" + ls_save_file + "~"") = 1 then   // Excel실행되면
+////		setremote("r1c1","대분류","Excel",ls_save_file)
+////		setremote("r1c2","","Excel",ls_save_file)
+////		setremote("r1c3","중분류(1)","Excel",ls_save_file)
+////		setremote("r1c4","","Excel",ls_save_file)
+////		setremote("r1c5","중분류(2)","Excel",ls_save_file)
+////		setremote("r1c6","","Excel",ls_save_file)
+////		setremote("r1c7","소분류(1)","Excel",ls_save_file)
+////		setremote("r1c8","","Excel",ls_save_file)
+////		setremote("r1c9","소분류(2)","Excel",ls_save_file)
+////		setremote("r1c10","","Excel",ls_save_file)
+//	else  // 엑셀실행 실패 또는 패스가 틀릴때 엑셀 선택후 재실행
+//		messagebox("Unload excel","Excel.exe 파일이 현재 디렉토리나 패스에 존재해야 합니다."+ "~r"+ &
+//										  "Excel.exe 파일을 찾아 선택하십시오.")
+//		li_value = GetFileOpenName("Select Excel.exe",ls_xls_path, xls, "exe","run files(*.exe),*.exe")
+//		If li_value = 1 then
+//			SetProfileString("c:\dmi.ini","External Programs","Excel",ls_xls_path)
+//			run(ls_run)
+//		else
+//			return
+//		End If
+//	End If
+End If
+
+end subroutine
+

@@ -1,0 +1,60 @@
+$PBExportHeader$d_wo2_list.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=wo_code dbname="wo_hist.wo_code" )
+ column=(type=char(50) updatewhereclause=yes name=wo_base dbname="wo_hist.wo_base" )
+ column=(type=char(30) updatewhereclause=yes name=wo_mh dbname="wo_hist.wo_mh" )
+ column=(type=number updatewhereclause=yes name=wo_esttime_hour dbname="wo_hist.wo_esttime_hour" )
+ column=(type=number updatewhereclause=yes name=wo_esttime_minute dbname="wo_hist.wo_esttime_minute" )
+ column=(type=datetime updatewhereclause=yes name=wo_float_date dbname="wo_hist.wo_float_date" )
+ column=(type=datetime updatewhereclause=yes name=wo_estend_date dbname="wo_hist.wo_estend_date" )
+ column=(type=datetime updatewhereclause=yes name=wo_acc_date dbname="wo_hist.wo_acc_date" )
+ column=(type=datetime updatewhereclause=yes name=wo_start_date dbname="wo_hist.wo_start_date" )
+ column=(type=datetime updatewhereclause=yes name=wo_end_date dbname="wo_hist.wo_end_date" )
+ column=(type=char(30) updatewhereclause=yes name=equip_code dbname="wo_hist.equip_code" )
+ retrieve="  SELECT wo_hist.wo_code,   
+         wo_hist.wo_base,   
+         wo_hist.wo_mh,   
+         wo_hist.wo_esttime_hour,   
+         wo_hist.wo_esttime_minute,   
+         wo_hist.wo_float_date,   
+         wo_hist.wo_estend_date,   
+         wo_hist.wo_acc_date,   
+         wo_hist.wo_start_date,   
+         wo_hist.wo_end_date,   
+         wo_hist.equip_code  
+    FROM wo_hist LEFT OUTER JOIN equip_master
+		ON wo_hist.equip_code = equip_master.equip_code AND wo_hist.area_code = equip_master.area_code AND
+			wo_hist.factory_code = equip_master.factory_code" )
+text(band=header alignment="2" text="작명번호" border="6" color="0" x="9" y="8" height="56" width="686" html.valueishtml="0"  name=wo_code_t  tag="작명번호" visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="의뢰자-근거" border="6" color="0" x="1403" y="8" height="56" width="795" html.valueishtml="0"  name=wo_base_t  tag="의뢰자-근거" visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="예정 M/H" border="6" color="0" x="2208" y="8" height="56" width="599" html.valueishtml="0"  name=wo_mh_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="예정시간(시)" border="6" color="0" x="2816" y="8" height="56" width="571" html.valueishtml="0"  name=wo_esttime_hour_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="예정시간(분)" border="6" color="0" x="3397" y="8" height="56" width="576" html.valueishtml="0"  name=wo_esttime_minute_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="작명발행일자" border="6" color="0" x="3982" y="8" height="56" width="599" html.valueishtml="0"  name=wo_float_date_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="완료예정일자" border="6" color="0" x="4590" y="8" height="56" width="599" html.valueishtml="0"  name=wo_estend_date_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="고장발생일시" border="6" color="0" x="5198" y="8" height="56" width="599" html.valueishtml="0"  name=wo_acc_date_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="정비투입일시" border="6" color="0" x="5806" y="8" height="56" width="599" html.valueishtml="0"  name=wo_start_date_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="정비완료일시" border="6" color="0" x="6414" y="8" height="56" width="599" html.valueishtml="0"  name=wo_end_date_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="장비번호" border="6" color="0" x="704" y="8" height="56" width="690" html.valueishtml="0"  name=equip_code_t  tag="장비번호" visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="4" height="76" width="686" format="[general]" html.valueishtml="0"  name=wo_code  tag="작명번호" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="1403" y="4" height="76" width="795" format="[general]" html.valueishtml="0"  name=wo_base visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="2208" y="4" height="76" width="599" format="[general]" html.valueishtml="0"  name=wo_mh  tag="예정 M/H" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="2816" y="4" height="76" width="571" format="[general]" html.valueishtml="0"  name=wo_esttime_hour visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="3397" y="4" height="76" width="576" format="[general]" html.valueishtml="0"  name=wo_esttime_minute visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="3982" y="4" height="76" width="599" format="[shortdate]" html.valueishtml="0"  name=wo_float_date  tag="" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="4590" y="4" height="76" width="599" format="[shortdate] " html.valueishtml="0"  name=wo_estend_date  tag="" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="5198" y="4" height="76" width="599" format="[shortdate] [time]" html.valueishtml="0"  name=wo_acc_date  tag="" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="5806" y="4" height="76" width="599" format="[shortdate] [time]" html.valueishtml="0"  name=wo_start_date  tag="" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="6414" y="4" height="76" width="599" format="[shortdate] [time]" html.valueishtml="0"  name=wo_end_date  tag="" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="704" y="4" height="76" width="690" format="[general]" html.valueishtml="0"  name=equip_code  tag="장비번호" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

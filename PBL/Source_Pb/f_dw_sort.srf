@@ -1,0 +1,25 @@
+$PBExportHeader$f_dw_sort.srf
+$PBExportComments$컬럼 헤더를 클릭했을때 해당 컬럼을 기준으로 sort 오름차순, 내림차순으로 toggle
+global type f_dw_sort from function_object
+end type
+
+forward prototypes
+global subroutine f_dw_sort (datawindow pdw, string ps_sortorder)
+end prototypes
+
+global subroutine f_dw_sort (datawindow pdw, string ps_sortorder);string ls_ColName
+
+ls_colname = pdw.GetObjectAtPointer()
+if pos(ls_colname, '_t') <= 0 then return
+
+ls_colname = Mid(ls_colname, 1, pos(ls_colname,'_t')-1)
+
+if upper(ps_sortorder) = 'A' then
+	pdw.SetSort(ls_colname + ' a')       // 오름차순
+else 
+	pdw.SetSort(ls_colname + ' d')       // 내림차순
+end if
+pdw.Sort()
+return
+end subroutine
+

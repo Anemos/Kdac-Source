@@ -1,0 +1,133 @@
+$PBExportHeader$d_bom121i_01.srd
+$PBExportComments$BOMÀÛ¾÷ÀÌ·Â
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=96 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=xcmcd dbname="BOM017.XCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xplant dbname="BOM017.XPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xdiv dbname="BOM017.XDIV" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=xpitno dbname="BOM017.XPITNO" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=xitno dbname="BOM017.XITNO" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xgubun dbname="BOM017.XGUBUN" )
+ column=(type=char(30) update=yes updatewhereclause=yes key=yes name=xchtime dbname="BOM017.XCHTIME" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=xqtyb dbname="BOM017.XQTYB" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=xqtya dbname="BOM017.XQTYA" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=xwkctb dbname="BOM017.XWKCTB" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=xwkcta dbname="BOM017.XWKCTA" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xedtm dbname="BOM017.XEDTM" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xedte dbname="BOM017.XEDTE" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexplantb dbname="BOM017.XEXPLANTB" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexdivb dbname="BOM017.XEXDIVB" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexplanta dbname="BOM017.XEXPLANTA" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xexdiva dbname="BOM017.XEXDIVA" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xchcd dbname="BOM017.XCHCD" values="ÀÔ·Â	A/¼öÁ¤	R/»èÁ¦	D/" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=xsheetno dbname="BOM017.XSHEETNO" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xinemp dbname="BOM017.XINEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xinchk dbname="BOM017.XINCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xintime dbname="BOM017.XINTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xplemp dbname="BOM017.XPLEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xplchk dbname="BOM017.XPLCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xpltime dbname="BOM017.XPLTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xdlemp dbname="BOM017.XDLEMP" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xdlchk dbname="BOM017.XDLCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=xdltime dbname="BOM017.XDLTIME" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xmacaddr dbname="BOM017.XMACADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=xipaddr dbname="BOM017.XIPADDR" )
+ column=(type=char(100) update=yes updatewhereclause=yes name=xdesc dbname="BOM017.XDESC" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xmailflag dbname="BOM017.XMAILFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=xplanemp dbname="BOM017.XPLANEMP" )
+ column=(type=char(1000) update=yes updatewhereclause=yes name=xcontents dbname="BOM017.XCONTENTS" )
+ retrieve="  SELECT ~"PBPDM~".~"BOM017~".~"XCMCD~",   
+         ~"PBPDM~".~"BOM017~".~"XPLANT~",   
+         ~"PBPDM~".~"BOM017~".~"XDIV~",   
+         ~"PBPDM~".~"BOM017~".~"XPITNO~",   
+         ~"PBPDM~".~"BOM017~".~"XITNO~",   
+         ~"PBPDM~".~"BOM017~".~"XGUBUN~",   
+         ~"PBPDM~".~"BOM017~".~"XCHTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XQTYB~",   
+         ~"PBPDM~".~"BOM017~".~"XQTYA~",   
+         ~"PBPDM~".~"BOM017~".~"XWKCTB~",   
+         ~"PBPDM~".~"BOM017~".~"XWKCTA~",   
+         ~"PBPDM~".~"BOM017~".~"XEDTM~",   
+         ~"PBPDM~".~"BOM017~".~"XEDTE~",   
+         ~"PBPDM~".~"BOM017~".~"XEXPLANTB~",   
+         ~"PBPDM~".~"BOM017~".~"XEXDIVB~",   
+         ~"PBPDM~".~"BOM017~".~"XEXPLANTA~",   
+         ~"PBPDM~".~"BOM017~".~"XEXDIVA~",   
+         ~"PBPDM~".~"BOM017~".~"XCHCD~",   
+         ~"PBPDM~".~"BOM017~".~"XSHEETNO~",   
+         ~"PBPDM~".~"BOM017~".~"XINEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XINCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XINTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XPLEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XPLCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XPLTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XDLEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XDLCHK~",   
+         ~"PBPDM~".~"BOM017~".~"XDLTIME~",   
+         ~"PBPDM~".~"BOM017~".~"XMACADDR~",   
+         ~"PBPDM~".~"BOM017~".~"XIPADDR~",   
+         ~"PBPDM~".~"BOM017~".~"XDESC~",   
+         ~"PBPDM~".~"BOM017~".~"XMAILFLAG~",   
+         ~"PBPDM~".~"BOM017~".~"XPLANEMP~",   
+         ~"PBPDM~".~"BOM017~".~"XCONTENTS~"  
+    FROM ~"PBPDM~".~"BOM017~"  
+ WHERE  	~"PBPDM~".~"BOM017~".~"XCMCD~" = '01' AND  ~"PBPDM~".~"BOM017~".~"XPLANT~" = :a_plant AND   
+         ~"PBPDM~".~"BOM017~".~"XDIV~" = :a_dvsn AND 
+			~"PBPDM~".~"BOM017~".~"XITNO~" LIKE :a_itno AND ~"PBPDM~".~"BOM017~".~"XINEMP~" LIKE :a_empno
+" update="PBPDM.BOM017" updatewhere=1 updatekeyinplace=no arguments=(("a_plant", string),("a_dvsn", string),("a_itno", string),("a_empno", string)) )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="60" width="215" html.valueishtml="0"  name=xplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="233" y="8" height="60" width="146" html.valueishtml="0"  name=xdiv_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðÇ°¹ø" border="0" color="16777215" x="389" y="8" height="60" width="512" html.valueishtml="0"  name=xpitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚÇ°¹ø" border="0" color="16777215" x="910" y="8" height="60" width="512" html.valueishtml="0"  name=xitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏ½Ã" border="0" color="16777215" x="1431" y="8" height="60" width="992" html.valueishtml="0"  name=xchtime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ø´ÜÀ§(º¯°æÀü)" border="0" color="16777215" x="2432" y="8" height="60" width="530" html.valueishtml="0"  name=xqtyb_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ø´ÜÀ§(º¯°æÈÄ)" border="0" color="16777215" x="2971" y="8" height="60" width="507" html.valueishtml="0"  name=xqtya_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷Àå(º¯°æÀü)" border="0" color="16777215" x="3488" y="8" height="60" width="471" html.valueishtml="0"  name=xwkctb_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÛ¾÷Àå(º¯°æÈÄ)" border="0" color="16777215" x="3968" y="8" height="60" width="512" html.valueishtml="0"  name=xwkcta_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àû¿ëÀÏÀÚ" border="0" color="16777215" x="4489" y="8" height="60" width="329" html.valueishtml="0"  name=xedtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿Ï·áÀÏÀÚ" border="0" color="16777215" x="4827" y="8" height="60" width="315" html.valueishtml="0"  name=xedte_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌÃ¼Áö¿ª(º¯°æÀü)" border="0" color="16777215" x="5152" y="8" height="60" width="553" html.valueishtml="0"  name=xexplantb_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌÃ¼°øÀå(º¯°æÀü)" border="0" color="16777215" x="5714" y="8" height="60" width="567" html.valueishtml="0"  name=xexdivb_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌÃ¼°øÀå(º¯°æÈÄ)" border="0" color="16777215" x="6290" y="8" height="60" width="571" html.valueishtml="0"  name=xexplanta_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÌÃ¼°øÀå(º¯°æÈÄ)" border="0" color="16777215" x="6871" y="8" height="60" width="526" html.valueishtml="0"  name=xexdiva_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ã³¸®±¸ºÐ" border="0" color="16777215" x="7406" y="8" height="60" width="343" html.valueishtml="0"  name=xchcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Xsheetno" border="0" color="16777215" x="7758" y="8" height="60" width="329" html.valueishtml="0"  name=xsheetno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´çÀÚ" border="0" color="16777215" x="8096" y="8" height="60" width="256" html.valueishtml="0"  name=xinemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»ÀÏ½Ã" border="0" color="16777215" x="8361" y="8" height="60" width="640" html.valueishtml="0"  name=xintime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L" border="0" color="16777215" x="9010" y="8" height="60" width="261" html.valueishtml="0"  name=xplemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Xpltime" border="0" color="16777215" x="9280" y="8" height="60" width="640" html.valueishtml="0"  name=xpltime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÀÀå" border="0" color="16777215" x="9929" y="8" height="60" width="261" html.valueishtml="0"  name=xdlemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤³»¿ª" border="0" color="16777215" x="10199" y="8" height="60" width="1975" html.valueishtml="0"  name=xdesc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="4" height="84" width="215" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=20 border="0" color="33554432" x="233" y="4" height="84" width="146" format="[general]" html.valueishtml="0"  name=xdiv visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=30 border="0" color="33554432" x="389" y="4" height="84" width="512" format="[general]" html.valueishtml="0"  name=xpitno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=40 border="0" color="33554432" x="910" y="4" height="84" width="512" format="[general]" html.valueishtml="0"  name=xitno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=50 border="0" color="33554432" x="1431" y="4" height="84" width="992" format="[general]" html.valueishtml="0"  name=xchtime visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=160 border="0" color="33554432" x="7406" y="4" height="84" width="343" format="[general]" html.valueishtml="0"  name=xchcd visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="2" tabsequence=170 border="0" color="33554432" x="7758" y="4" height="84" width="329" format="[general]" html.valueishtml="0"  name=xsheetno visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="2" tabsequence=180 border="0" color="33554432" x="8096" y="4" height="84" width="256" format="[general]" html.valueishtml="0"  name=xinemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="0" tabsequence=190 border="0" color="33554432" x="8361" y="4" height="84" width="640" format="[general]" html.valueishtml="0"  name=xintime visible="1" edit.limit=19 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="2" tabsequence=200 border="0" color="33554432" x="9010" y="4" height="84" width="261" format="[general]" html.valueishtml="0"  name=xplemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="0" tabsequence=210 border="0" color="33554432" x="9280" y="4" height="84" width="640" format="[general]" html.valueishtml="0"  name=xpltime visible="1" edit.limit=19 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="2" tabsequence=220 border="0" color="33554432" x="9929" y="4" height="84" width="261" format="[general]" html.valueishtml="0"  name=xdlemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="0" tabsequence=230 border="0" color="33554432" x="10199" y="4" height="84" width="1975" format="[general]" html.valueishtml="0"  name=xdesc visible="1" edit.limit=100 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=80 border="0" color="33554432" x="3488" y="4" height="84" width="471" format="[general]" html.valueishtml="0"  name=xwkctb visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=90 border="0" color="33554432" x="3968" y="4" height="84" width="512" format="[general]" html.valueishtml="0"  name=xwkcta visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=100 border="0" color="33554432" x="4489" y="4" height="84" width="329" format="[general]" html.valueishtml="0"  name=xedtm visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=110 border="0" color="33554432" x="4827" y="4" height="84" width="315" format="[general]" html.valueishtml="0"  name=xedte visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=120 border="0" color="33554432" x="5152" y="4" height="84" width="553" format="[general]" html.valueishtml="0"  name=xexplantb visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=130 border="0" color="33554432" x="5714" y="4" height="84" width="567" format="[general]" html.valueishtml="0"  name=xexdivb visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=140 border="0" color="33554432" x="6290" y="4" height="84" width="571" format="[general]" html.valueishtml="0"  name=xexplanta visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=150 border="0" color="33554432" x="6871" y="4" height="84" width="526" format="[general]" html.valueishtml="0"  name=xexdiva visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=60 border="0" color="33554432" x="2432" y="4" height="84" width="530" format="[general]" html.valueishtml="0"  name=xqtyb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=70 border="0" color="33554432" x="2971" y="4" height="84" width="507" format="[general]" html.valueishtml="0"  name=xqtya visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 
