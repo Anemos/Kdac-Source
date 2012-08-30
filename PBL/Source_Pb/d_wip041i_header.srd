@@ -1,0 +1,154 @@
+$PBExportHeader$d_wip041i_header.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=172 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=160 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes name=wbcmcd dbname="WIP002.WBCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=wbplant dbname="WIP002.WBPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=wbdvsn dbname="WIP002.WBDVSN" )
+ column=(type=char(5) update=yes updatewhereclause=yes name=wborct dbname="WIP002.WBORCT" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=wbitno dbname="WIP002.WBITNO" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=wbyear dbname="WIP002.WBYEAR" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbmonth dbname="WIP002.WBMONTH" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbrev dbname="WIP002.WBREV" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=wbiocd dbname="WIP002.WBIOCD" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbitcl dbname="WIP002.WBITCL" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbsrce dbname="WIP002.WBSRCE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbpdcd dbname="WIP002.WBPDCD" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=wbunit dbname="WIP002.WBUNIT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=wbtype dbname="WIP002.WBTYPE" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=wbdesc dbname="WIP002.WBDESC" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=wbspec dbname="WIP002.WBSPEC" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=wbscrp dbname="WIP002.WBSCRP" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=wbretn dbname="WIP002.WBRETN" )
+ column=(type=decimal(5) update=yes updatewhereclause=yes name=wbavrg1 dbname="WIP002.WBAVRG1" )
+ column=(type=decimal(5) update=yes updatewhereclause=yes name=wbavrg2 dbname="WIP002.WBAVRG2" )
+ column=(type=decimal(2) updatewhereclause=yes name=bgqt dbname="BGQT" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbbgat1 dbname="WIP002.WBBGAT1" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbbgat2 dbname="WIP002.WBBGAT2" )
+ column=(type=decimal(2) updatewhereclause=yes name=inqt dbname="INQT" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbinat1 dbname="WIP002.WBINAT1" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbinat2 dbname="WIP002.WBINAT2" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbinat3 dbname="WIP002.WBINAT3" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbinat4 dbname="WIP002.WBINAT4" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt1 dbname="USQT1" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat1 dbname="WIP002.WBUSAT1" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt2 dbname="USQT2" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat2 dbname="WIP002.WBUSAT2" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt3 dbname="USQT3" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat3 dbname="WIP002.WBUSAT3" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt4 dbname="USQT4" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat4 dbname="WIP002.WBUSAT4" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt5 dbname="USQT5" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat5 dbname="WIP002.WBUSAT5" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt6 dbname="USQT6" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat6 dbname="WIP002.WBUSAT6" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt7 dbname="USQT7" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat7 dbname="WIP002.WBUSAT7" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqt8 dbname="USQT8" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat8 dbname="WIP002.WBUSAT8" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusat9 dbname="WIP002.WBUSAT9" )
+ column=(type=decimal(2) updatewhereclause=yes name=usqta dbname="USQTA" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=wbusata dbname="WIP002.WBUSATA" )
+ column=(type=decimal(0) updatewhereclause=yes name=wbinat dbname="WBINAT" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" )
+ retrieve="  SELECT ~"PBWIP~".~"WIP002~".~"WBCMCD~",   
+         ~"PBWIP~".~"WIP002~".~"WBPLANT~",   
+         ~"PBWIP~".~"WIP002~".~"WBDVSN~",   
+         ~"PBWIP~".~"WIP002~".~"WBORCT~",   
+         ~"PBWIP~".~"WIP002~".~"WBITNO~",   
+         ~"PBWIP~".~"WIP002~".~"WBYEAR~",   
+         ~"PBWIP~".~"WIP002~".~"WBMONTH~",   
+         ~"PBWIP~".~"WIP002~".~"WBREV~",   
+         ~"PBWIP~".~"WIP002~".~"WBIOCD~",   
+         ~"PBWIP~".~"WIP002~".~"WBITCL~",   
+         ~"PBWIP~".~"WIP002~".~"WBSRCE~",   
+         ~"PBWIP~".~"WIP002~".~"WBPDCD~",   
+         ~"PBWIP~".~"WIP002~".~"WBUNIT~",   
+         ~"PBWIP~".~"WIP002~".~"WBTYPE~",   
+         ~"PBWIP~".~"WIP002~".~"WBDESC~",   
+         ~"PBWIP~".~"WIP002~".~"WBSPEC~",   
+         ~"PBWIP~".~"WIP002~".~"WBSCRP~",   
+         ~"PBWIP~".~"WIP002~".~"WBRETN~",   
+         ~"PBWIP~".~"WIP002~".~"WBAVRG1~",   
+         ~"PBWIP~".~"WIP002~".~"WBAVRG2~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBBGQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS BGQT,   
+         ~"PBWIP~".~"WIP002~".~"WBBGAT1~",   
+         ~"PBWIP~".~"WIP002~".~"WBBGAT2~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBINQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS INQT,   
+         ~"PBWIP~".~"WIP002~".~"WBINAT1~",   
+         ~"PBWIP~".~"WIP002~".~"WBINAT2~",   
+         ~"PBWIP~".~"WIP002~".~"WBINAT3~",   
+         ~"PBWIP~".~"WIP002~".~"WBINAT4~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT1~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT1,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT1~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT2~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT2,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT2~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT3~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT3,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT3~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT4~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT4,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT4~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT5~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT5,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT5~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT6~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT6,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT6~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT7~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT7,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT7~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQT8~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQT8,   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT8~",   
+         ~"PBWIP~".~"WIP002~".~"WBUSAT9~",   
+         DECIMAL( ~"PBWIP~".~"WIP002~".~"WBUSQTA~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,2) AS USQTA,   
+         ~"PBWIP~".~"WIP002~".~"WBUSATA~",
+         ~"PBWIP~".~"WIP002~".~"WBINAT1~" + ~"PBWIP~".~"WIP002~".~"WBINAT2~" +
+			~"PBWIP~".~"WIP002~".~"WBINAT3~" + ~"PBWIP~".~"WIP002~".~"WBINAT4~" as wbinat,
+			~"PBINV~".~"INV101~".~"CONVQTY~" 
+    FROM ~"PBWIP~".~"WIP002~", ~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = :a_cmcd ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = :a_plant ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = :a_dvsn ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBORCT~" = :a_orct ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBITNO~" = :a_itno ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBYEAR~" = :a_yyyy ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBMONTH~" = :a_mm )" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_orct", string),("a_itno", string),("a_yyyy", string),("a_mm", string)) )
+text(band=header alignment="2" text="사용내역" border="0" color="16777215" x="530" y="4" height="68" width="6181" html.valueishtml="0"  name=wbusqt1_t visible="1"  font.face="굴림체" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+button(band=header text="타계정수량/금액"filename=""action="0" border="0" color="0" x="2981" y="76" height="96" width="686" vtextalign="0" htextalign="0"  name=b_usqt5 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="투입수량/금액"filename=""action="0" border="0" color="0" x="0" y="0" height="172" width="603" vtextalign="0" htextalign="0"  name=b_inqt visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="정상수량/금액"filename=""action="0" border="0" color="0" x="603" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt1 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="무상수량/금액"filename=""action="0" border="0" color="0" x="1198" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt2 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="유상수량/금액"filename=""action="0" border="0" color="0" x="1792" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt3 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="출하수량/금액"filename=""action="0" border="0" color="0" x="2386" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt4 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="타부서수량/금액"filename=""action="0" border="0" color="0" x="3666" y="76" height="96" width="686" vtextalign="0" htextalign="0"  name=b_usqt6 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="불량수량/금액"filename=""action="0" border="0" color="0" x="4352" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt7 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="조정수량/금액"filename=""action="0" border="0" color="0" x="4946" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqt8 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="금액조정"filename=""action="0" border="0" color="0" x="5541" y="76" height="96" width="581" vtextalign="0" htextalign="0"  name=b_usqt9 visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=header text="실사수량/금액"filename=""action="0" border="0" color="0" x="6121" y="76" height="96" width="594" vtextalign="0" htextalign="0"  name=b_usqta visible="1"  font.face="굴림체" font.height="-11" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=44 alignment="1" tabsequence=32766 border="2" color="0" x="4946" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat8  tag="사용금액(조정)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=47 alignment="1" tabsequence=32766 border="2" color="0" x="6121" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusata  tag="사용금액(실사차이)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=45 alignment="1" tabsequence=32766 border="2" color="0" x="5541" y="80" height="76" width="576" format="[general]" html.valueishtml="0"  name=wbusat9  tag="사용금액(금액조정)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=42 alignment="1" tabsequence=32766 border="2" color="0" x="4352" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat7  tag="사용금액(공정불량)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=40 alignment="1" tabsequence=32766 border="2" color="0" x="3666" y="80" height="76" width="681" format="[general]" html.valueishtml="0"  name=wbusat6  tag="사용금액(타부서불출)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=38 alignment="1" tabsequence=32766 border="2" color="0" x="2981" y="80" height="76" width="681" format="[general]" html.valueishtml="0"  name=wbusat5  tag="사용금액(타계정)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=36 alignment="1" tabsequence=32766 border="2" color="0" x="2386" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat4  tag="사용금액(출하)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="1" tabsequence=32766 border="2" color="0" x="1792" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat3  tag="사용금액(유상반출)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=32 alignment="1" tabsequence=32766 border="2" color="0" x="1198" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat2  tag="사용금액(반출)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=48 alignment="1" tabsequence=32766 border="2" color="0" x="0" y="80" height="76" width="599" format="[general]" html.valueishtml="0"  name=wbinat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="1" tabsequence=32766 border="2" color="0" x="603" y="80" height="76" width="590" format="[general]" html.valueishtml="0"  name=wbusat1  tag="사용금액(정상)" visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="2" color="0" x="0" y="0" height="76" width="599" format="[general]" html.valueishtml="0"  name=inqt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="1" tabsequence=32766 border="2" color="0" x="603" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqt1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="1" tabsequence=32766 border="2" color="0" x="1198" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqt2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=33 alignment="1" tabsequence=32766 border="2" color="0" x="1792" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqt3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=35 alignment="1" tabsequence=32766 border="2" color="0" x="2386" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqt4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="2" color="0" x="2981" y="0" height="76" width="681" format="[general]" html.valueishtml="0"  name=usqt5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=39 alignment="1" tabsequence=32766 border="2" color="0" x="3666" y="0" height="76" width="681" format="[general]" html.valueishtml="0"  name=usqt6 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=41 alignment="1" tabsequence=32766 border="2" color="0" x="4352" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqt7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=43 alignment="1" tabsequence=32766 border="2" color="0" x="5541" y="0" height="76" width="576" format="[general]" html.valueishtml="0"  name=usqt8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=46 alignment="1" tabsequence=32766 border="2" color="0" x="6121" y="0" height="76" width="590" format="[general]" html.valueishtml="0"  name=usqta visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

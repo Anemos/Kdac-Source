@@ -111,8 +111,8 @@ event resize;call super::resize;Integer ls_split = 20 	// splitbar 의 Height 또�
 Integer ls_gap = 10 		// window 와 dw_control 의 Gap은 5
 Integer ls_status = 100 // statusbar 의 높이는 120 ( Gap 포함 )
 
-dw_bom308i_01.Width = newwidth 	- ( ls_gap * 3 )
-dw_bom308i_01.Height= newheight - ( dw_bom308i_01.y + ls_status )
+dw_bom308i_01.Width = newwidth 	- ( ls_gap * 3 + 20)
+dw_bom308i_01.Height= newheight - ( dw_bom308i_01.y + ls_status + 20 )
 end event
 
 event open;call super::open;dw_bom308i_01.settransobject(sqlca)
@@ -134,11 +134,17 @@ ls_plant 	= trim(mid(ls_rtncd,1,1)) + '%'
 ls_div   	= trim(mid(ls_rtncd,2,1)) + '%' 
 ls_pdcd  	= trim(mid(ls_rtncd,3,2)) + '%' 
 ls_fromdt = mid(ls_applydate,1,6) + '01'
-ls_todt = ls_applydate
+ls_todt = mid(ls_applydate,1,6) + '31'
 
 
 dw_bom308i_01.reset()
-dw_bom308i_01.retrieve(g_s_company, ls_fromdt, ls_todt, ls_applydate, ls_plant, ls_div, ls_pdcd )
+if dw_bom308i_01.retrieve(g_s_company, ls_fromdt, ls_todt, ls_applydate, ls_plant, ls_div, ls_pdcd ) > 0 then
+	uo_status.st_message.text = "조회되었습니다."
+else
+	uo_status.st_message.text = "조회할 데이타가 없습니다"
+end if
+
+return 0
 
 end event
 
@@ -146,7 +152,7 @@ type uo_status from w_origin_sheet02`uo_status within w_bom308i
 end type
 
 type st_3 from statictext within w_bom308i
-integer x = 64
+integer x = 55
 integer y = 168
 integer width = 288
 integer height = 72
@@ -234,7 +240,7 @@ event selectionchanged;wf_reset()
 end event
 
 type uo_1 from uo_plandiv_pdcd within w_bom308i
-integer x = 69
+integer x = 59
 integer y = 28
 integer taborder = 70
 boolean bringtotop = true
@@ -277,17 +283,19 @@ borderstyle borderstyle = stylelowered!
 end type
 
 type dw_bom308i_01 from u_vi_std_datawindow within w_bom308i
-integer x = 27
+integer x = 9
 integer y = 296
 integer width = 3346
 integer height = 1616
 integer taborder = 11
 boolean bringtotop = true
 string dataobject = "d_bom308i_01"
+boolean hscrollbar = true
+boolean vscrollbar = true
 end type
 
 type gb_3 from groupbox within w_bom308i
-integer x = 23
+integer x = 9
 integer y = 12
 integer width = 4562
 integer height = 264

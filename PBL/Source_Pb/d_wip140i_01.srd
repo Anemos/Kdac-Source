@@ -1,0 +1,137 @@
+$PBExportHeader$d_wip140i_01.srd
+$PBExportComments$Àç°ø ¹Ì´Ü°¡Ç° ¸®½ºÆ®
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=76 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=inv101_plant dbname="WIP002.PLANT" )
+ column=(type=char(1) updatewhereclause=yes name=inv101_div dbname="WIP002.DIV" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="WIP002.PDCD" )
+ column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="WIP002.PRNAME" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="WIP002.CLS" )
+ column=(type=char(12) updatewhereclause=yes name=inv101_itno dbname="WIP002.ITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="WIP002.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_xunit dbname="WIP002.XUNIT" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="WIP002.SRCE" )
+ column=(type=char(6) updatewhereclause=yes name=workgubun dbname="WORKGUBUN" )
+ column=(type=decimal(0) updatewhereclause=yes name=purcost dbname="PURCOST" )
+ column=(type=decimal(4) updatewhereclause=yes name=bgqt dbname="BGQT" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt dbname="USQT" )
+ column=(type=decimal(4) updatewhereclause=yes name=ohqt dbname="OHQT" )
+ retrieve="SELECT CC.XPLANT AS PLANT,
+	CC.DIV AS DIV,
+	CC.PDCD AS PDCD,
+	DD.PRNAME AS PRNAME,
+	CC.CLS AS CLS,
+	CC.ITNO AS ITNO,
+	BB.ITNM AS ITNM,
+	CC.XUNIT AS XUNIT,
+	CC.SRCE AS SRCE,
+   '¶óÀÎ' AS WORKGUBUN,
+   CASE WHEN (CC.CLS = '10' AND ( CC.SRCE = '01' OR CC.SRCE = '02' OR CC.SRCE = '03' )) THEN
+     DECIMAL(( SELECT pbpur.f_getcost3(CC.SRCE,CC.ITNO) FROM PBCOMMON.COMM000 ) / IFNULL(CC.~"CONVQTY~",1),15, 0)
+   ELSE 0 END AS PURCOST,
+	DECIMAL(AA.WBBGQT / IFNULL(CC.~"CONVQTY~",1),15,4) AS BGQT,
+	DECIMAL((AA.WBUSQT1 + AA.WBUSQT2 + AA.WBUSQT3 + AA.WBUSQT4 + AA.WBUSQT5 + AA.WBUSQT6 + AA.WBUSQT7 + AA.WBUSQT8 + AA.WBUSQTA) 
+					/ IFNULL(CC.~"CONVQTY~",1),15,4) AS USQT,
+   DECIMAL(((AA.WBBGQT + AA.WBINQT) - (AA.WBUSQT1 + AA.WBUSQT2 + AA.WBUSQT3 + AA.WBUSQT4 + AA.WBUSQT5 + AA.WBUSQT6 + AA.WBUSQT7 + AA.WBUSQT8 + AA.WBUSQTA)) 
+					/ IFNULL(CC.~"CONVQTY~",1),15,4) AS OHQT
+FROM PBWIP.WIP002 AA INNER JOIN PBINV.INV002 BB
+		ON AA.WBCMCD = BB.COMLTD AND AA.WBITNO = BB.ITNO 
+		INNER JOIN PBINV.INV101 CC
+		ON AA.WBCMCD = CC.COMLTD AND AA.WBPLANT = CC.XPLANT AND
+			AA.WBDVSN = CC.DIV AND AA.WBITNO = CC.ITNO 
+		INNER JOIN PBCOMMON.DAC007 DD
+		ON CC.COMLTD = DD.COMLTD AND CC.PDCD = DD.PRPRCD
+WHERE AA.WBCMCD = :ag_cmcd AND AA.WBYEAR = :ag_year AND AA.WBMONTH = :ag_month AND AA.WBIOCD = '1' AND AA.WBAVRG1 = 0
+
+UNION ALL
+SELECT CC.XPLANT AS PLANT,
+	CC.DIV AS DIV,
+	CC.PDCD AS PDCD,
+	DD.PRNAME AS PRNAME,
+	CC.CLS AS CLS,
+	CC.ITNO AS ITNO,
+	BB.ITNM AS ITNM,
+	CC.XUNIT AS XUNIT,
+	CC.SRCE AS SRCE,
+   '¾÷Ã¼' AS WORKGUBUN,
+   CASE WHEN (CC.CLS = '10' AND ( CC.SRCE = '01' OR CC.SRCE = '02' OR CC.SRCE = '03' )) THEN
+     DECIMAL(( SELECT pbpur.f_getcost3(CC.SRCE,CC.ITNO) FROM PBCOMMON.COMM000 ) / IFNULL(CC.~"CONVQTY~",1),15, 0)
+   ELSE 0 END AS PURCOST,
+	DECIMAL(AA.WBBGQT / IFNULL(CC.~"CONVQTY~",1),15,4) AS BGQT,
+	DECIMAL((AA.WBUSQT1 + AA.WBUSQT2 + AA.WBUSQT3 + AA.WBUSQT4 + AA.WBUSQT5 + AA.WBUSQT6 + AA.WBUSQT7 + AA.WBUSQT8 + AA.WBUSQTA) 
+					/ IFNULL(CC.~"CONVQTY~",1),15,4) AS USQT,
+   DECIMAL(((AA.WBBGQT + AA.WBINQT) - (AA.WBUSQT1 + AA.WBUSQT2 + AA.WBUSQT3 + AA.WBUSQT4 + AA.WBUSQT5 + AA.WBUSQT6 + AA.WBUSQT7 + AA.WBUSQT8 + AA.WBUSQTA)) 
+					/ IFNULL(CC.~"CONVQTY~",1),15,4) AS OHQT
+FROM PBWIP.WIP002 AA INNER JOIN PBINV.INV002 BB
+		ON AA.WBCMCD = BB.COMLTD AND AA.WBITNO = BB.ITNO 
+		INNER JOIN PBINV.INV101 CC
+		ON AA.WBCMCD = CC.COMLTD AND AA.WBPLANT = CC.XPLANT AND
+			AA.WBDVSN = CC.DIV AND AA.WBITNO = CC.ITNO 
+		INNER JOIN PBCOMMON.DAC007 DD
+		ON CC.COMLTD = DD.COMLTD AND CC.PDCD = DD.PRPRCD
+WHERE AA.WBCMCD = :ag_cmcd AND AA.WBYEAR = :ag_year AND AA.WBMONTH = :ag_month AND AA.WBIOCD = '2' AND AA.WBAVRG1 = 0" arguments=(("ag_cmcd", string),("ag_year", string),("ag_month", string))  sort="inv101_plant A inv101_div A inv101_pdcd A workgubun A " )
+group(level=1 header.height=0 trailer.height=76 by=("inv101_plant" , "inv101_div" ) header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=0 trailer.height=76 by=("inv101_plant" , "inv101_div" , "inv101_pdcd" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="68" width="192" html.valueishtml="0"  name=inv101_plant_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="210" y="8" height="68" width="192" html.valueishtml="0"  name=inv101_div_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°" border="0" color="16777215" x="411" y="8" height="68" width="192" html.valueishtml="0"  name=inv101_pdcd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º¸í" border="0" color="16777215" x="613" y="8" height="68" width="658" html.valueishtml="0"  name=dac007_prname_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="1280" y="8" height="68" width="416" html.valueishtml="0"  name=inv101_itno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1705" y="8" height="68" width="965" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç°ø±¸ºÐ" border="0" color="16777215" x="3090" y="8" height="68" width="288" html.valueishtml="0"  name=workgubun_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="2889" y="8" height="68" width="192" html.valueishtml="0"  name=inv101_srce_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="2679" y="8" height="68" width="201" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àü¿ù±â¸»±Ý¾×" border="0" color="16777215" x="4347" y="8" height="68" width="521" html.valueishtml="0"  name=t_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ç¿ù»ç¿ë¼ö·®" border="0" color="16777215" x="4878" y="8" height="68" width="503" html.valueishtml="0"  name=usqt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ç¿ù»ç¿ë±Ý¾×" border="0" color="16777215" x="5390" y="8" height="68" width="498" html.valueishtml="0"  name=t_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ç¿ù±â¸»¼ö·®" border="0" color="16777215" x="5897" y="8" height="68" width="576" html.valueishtml="0"  name=ohqt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ç¿ù±â¸»±Ý¾×" border="0" color="16777215" x="6482" y="8" height="68" width="521" html.valueishtml="0"  name=t_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°¡´Ü°¡" border="0" color="16777215" x="3387" y="8" height="68" width="384" html.valueishtml="0"  name=purcost_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àü¿ù±â¸»¼ö·®" border="0" color="16777215" x="3781" y="8" height="68" width="558" html.valueishtml="0"  name=bgqt_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="613" y="4" height="72" width="658" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=60 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1280" y="4" height="72" width="416" format="[general]" html.valueishtml="0"  name=inv101_itno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="72" width="192" format="[general]" html.valueishtml="0"  name=inv101_plant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="210" y="4" height="72" width="192" format="[general]" html.valueishtml="0"  name=inv101_div visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="411" y="4" height="72" width="192" format="[general]" html.valueishtml="0"  name=inv101_pdcd visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="2889" y="4" height="72" width="192" format="[general]" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="3090" y="4" height="72" width="288" format="[general]" html.valueishtml="0"  name=workgubun visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1705" y="4" height="72" width="965" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="2679" y="4" height="72" width="201" format="[general]" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="4878" y="4" height="72" width="503" format="[general]" html.valueishtml="0"  name=usqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="33554432" x="5897" y="4" height="72" width="576" format="[general]" html.valueishtml="0"  name=ohqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" bgqt  *  purcost "border="0" color="33554432" x="4347" y="4" height="72" width="521" format="#,##0" html.valueishtml="0"  name=compute_1 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" usqt  *  purcost "border="0" color="33554432" x="5390" y="4" height="72" width="498" format="#,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" ohqt  *  purcost "border="0" color="33554432" x="6482" y="4" height="72" width="521" format="#,##0" html.valueishtml="0"  name=compute_3 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="33554432" x="3781" y="4" height="72" width="558" format="[general]" html.valueishtml="0"  name=bgqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3387" y="4" height="72" width="384" format="#,##0" html.valueishtml="0"  name=purcost visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.2 alignment="2" text="Á¦Ç°±ºÇÕ" border="0" color="0" x="3387" y="4" height="68" width="384" html.valueishtml="0"  name=t_4 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="°øÀåÇÕ" border="0" color="0" x="3387" y="4" height="68" width="384" html.valueishtml="0"  name=t_5 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=summary alignment="2" text="Àü»çÇÕ" border="0" color="0" x="3387" y="4" height="68" width="384" html.valueishtml="0"  name=t_6 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.2 alignment="1" expression="sum(usqt for group 2)"border="0" color="33554432" x="4878" y="4" height="68" width="503" format="#,##0" html.valueishtml="0"  name=compute_16 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(ohqt for group 2)"border="0" color="33554432" x="5897" y="4" height="68" width="576" format="#,##0" html.valueishtml="0"  name=compute_17 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum( bgqt  *  purcost  for group 2)"border="0" color="33554432" x="4347" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_18 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum( usqt  *  purcost  for group 2)"border="0" color="33554432" x="5390" y="4" height="68" width="498" format="#,##0" html.valueishtml="0"  name=compute_19 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum( ohqt  *  purcost  for group 2)"border="0" color="33554432" x="6482" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_20 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.2 alignment="1" expression="sum(bgqt for group 2)"border="0" color="33554432" x="3781" y="4" height="68" width="558" format="#,##0" html.valueishtml="0"  name=compute_21 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(usqt for all)"border="0" color="33554432" x="4878" y="4" height="68" width="503" format="#,##0" html.valueishtml="0"  name=compute_5 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(ohqt for all)"border="0" color="33554432" x="5897" y="4" height="68" width="576" format="#,##0" html.valueishtml="0"  name=compute_6 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum( bgqt  *  purcost  for all)"border="0" color="33554432" x="4347" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_7 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum( usqt  *  purcost  for all)"border="0" color="33554432" x="5390" y="4" height="68" width="498" format="#,##0" html.valueishtml="0"  name=compute_8 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum( ohqt  *  purcost  for all)"border="0" color="33554432" x="6482" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_9 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(bgqt for all)"border="0" color="33554432" x="3781" y="4" height="68" width="558" format="#,##0" html.valueishtml="0"  name=compute_4 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(usqt for group 1)"border="0" color="33554432" x="4878" y="4" height="68" width="503" format="#,##0" html.valueishtml="0"  name=compute_11 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(ohqt for group 1)"border="0" color="33554432" x="5897" y="4" height="68" width="576" format="#,##0" html.valueishtml="0"  name=compute_12 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum( bgqt  *  purcost  for group 1)"border="0" color="33554432" x="4347" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_13 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum( usqt  *  purcost  for group 1)"border="0" color="33554432" x="5390" y="4" height="68" width="498" format="#,##0" html.valueishtml="0"  name=compute_14 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum( ohqt  *  purcost  for group 1)"border="0" color="33554432" x="6482" y="4" height="68" width="521" format="#,##0" html.valueishtml="0"  name=compute_15 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(bgqt for group 1)"border="0" color="33554432" x="3781" y="4" height="68" width="558" format="#,##0" html.valueishtml="0"  name=compute_10 visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

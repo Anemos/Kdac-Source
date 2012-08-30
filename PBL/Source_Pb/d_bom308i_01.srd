@@ -12,7 +12,7 @@ table(column=(type=char(1) updatewhereclause=yes name=zplant dbname="BOM113.ZPLA
  column=(type=char(50) updatewhereclause=yes name=zspec dbname="BOM113.ZSPEC" )
  column=(type=char(2) updatewhereclause=yes name=zsrce dbname="BOM113.ZSRCE" )
  retrieve="SELECT DISTINCT A.ZPLANT, A.ZDIV, A.ZITNO, A.ZDESC, A.ZSPEC, A.ZSRCE
-FROM PBPDM.BOM113 A INNER JOIN ( SELECT DISTINCT COMLTD, XPLANT, DIV, ITNO FROM PBINV.INV401
+FROM PBPDM.BOM113D A INNER JOIN ( SELECT DISTINCT COMLTD, XPLANT, DIV, ITNO FROM PBINV.INV401
 	WHERE COMLTD = '01' AND SLIPTYPE IN ('RM','SM','SA','SR','IW') AND
 		TDTE4 >= :ag_fromdt AND TDTE4 <= :ag_todt ) B
 	ON A.ZCMCD = B.COMLTD AND A.ZPLANT = B.XPLANT AND
