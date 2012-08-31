@@ -90,21 +90,8 @@ loop
         set at_end = 0;
       end if;
     end if;
-  if p_yyyymm = substring(a_createdate,1,6) then
-    update pbpdm.bom113d
-    set zdamdang = p_damdang,
-      zprunt = p_prunt,
-      zptod = p_ptod,
-      zpcurr = p_pcurr,
-      zptotdan = p_ptotdan,
-      zprutc = p_prutc,
-      zpvsrno = p_pvsrno,
-      zpvend = p_pvend
-    where zcmcd = a_comltd and zdate = a_createdate and
-      zplant = a_plant and zdiv = a_dvsn and
-      zsrce = '01' and zitno = p_tcitn;
-  else
-    update pbpdm.bom113d
+
+    update pbpdm.bom113
     set zdamdang = p_damdang,
       zprunt = p_prunt,
       zptod = p_ptod,
@@ -116,9 +103,9 @@ loop
     where zcmcd = a_comltd and zdate = p_yyyymm and
       zplant = a_plant and zdiv = a_dvsn and
       zsrce = '01' and zitno = p_tcitn;
-  end if;
+
   set at_end = 0;
-end loop;
+end loop inc_loop;
 
 set at_end = 0;
 set p_tcitn = '';
@@ -178,20 +165,7 @@ loop
       end if;
     end if;
 
-  if p_yyyymm = substring(a_createdate,1,6) then
-    update pbpdm.bom113d
-    set zdamdang = p_damdang,
-      zprunt = p_prunt,
-      zptod = p_ptod,
-      zpcurr = p_pcurr,
-      zprutc = p_prutc,
-      zpvsrno = p_pvsrno,
-      zpvend = p_pvend
-    where zcmcd = a_comltd and zdate = a_createdate and
-      zplant = a_plant and zdiv = a_dvsn and
-      zsrce = '01' and zitno = p_tcitn;
-  else
-    update pbpdm.bom113d
+    update pbpdm.bom113
     set zdamdang = p_damdang,
       zprunt = p_prunt,
       zptod = p_ptod,
@@ -201,11 +175,10 @@ loop
       zpvend = p_pvend
     where zcmcd = a_comltd and zdate = p_yyyymm and
       zplant = a_plant and zdiv = a_dvsn and
-      zsrce = '01' and zitno = p_tcitn;
-  end if;
+      zsrce = '02' and zitno = p_tcitn;
 
   set at_end = 0;
-end loop;
+end loop inc_loop2;
 
 set at_end = 0;
 set p_tcitn = '';
@@ -265,20 +238,7 @@ loop
       end if;
     end if;
 
-  if p_yyyymm = substring(a_createdate,1,6) then
-    update pbpdm.bom113d
-    set zdamdang = p_damdang,
-      zprunt = p_prunt,
-      zptod = p_ptod,
-      zpcurr = p_pcurr,
-      zprutc = p_prutc,
-      zpvsrno = p_pvsrno,
-      zpvend = p_pvend
-    where zcmcd = a_comltd and zdate = a_createdate and
-      zplant = a_plant and zdiv = a_dvsn and
-      zsrce = '01' and zitno = p_tcitn;
-  else
-    update pbpdm.bom113d
+    update pbpdm.bom113
     set zdamdang = p_damdang,
       zprunt = p_prunt,
       zptod = p_ptod,
@@ -288,10 +248,9 @@ loop
       zpvend = p_pvend
     where zcmcd = a_comltd and zdate = p_yyyymm and
       zplant = a_plant and zdiv = a_dvsn and
-      zsrce = '01' and zitno = p_tcitn;
-  end if;
+      zsrce = '04' and zitno = p_tcitn;
 
   set at_end = 0;
-end loop;
+end loop inc_loop3;
 
 end

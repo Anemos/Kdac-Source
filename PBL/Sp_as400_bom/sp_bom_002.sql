@@ -51,30 +51,56 @@ loop
   -- call sp_bom_101
   call pbpdm.sp_bom_001(a_comltd,p_plant,p_dvsn,
        a_applydate,a_createdate,a_chk);
-
-  -- update purchase information
-  call pbpdm.sp_bom_105(a_comltd,p_plant,p_dvsn,
+  
+  if p_yyyymm <> substring(a_createdate,1,6) then
+    -- update purchase information
+    call pbpdm.sp_bom_105(a_comltd,p_plant,p_dvsn,
        a_applydate,a_createdate);
+  end if;
 end loop;
 close inv902_cursor;
 
 -- update ygcost
 if p_yyyymm <> substring(a_createdate,1,6) then
-  update pbpdm.bom113
-  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
-  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
-
-  update pbpdm.bom115
-  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
-  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  if a_chk = 'A' then
+    update pbpdm.bom113
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+    
+    update pbpdm.bom115
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
+  if a_chk = 'C' or a_chk = 'K' then
+    update pbpdm.bom113
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
+  if a_chk = 'B' or a_chk = 'M' then
+    update pbpdm.bom115
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
 else
-  update pbpdm.bom113d
-  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
-  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
-
-  update pbpdm.bom115d
-  set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
-  where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  if a_chk = 'A' then
+    update pbpdm.bom113d
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+    
+    update pbpdm.bom115d
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
+  if a_chk = 'C' or a_chk = 'K' then
+    update pbpdm.bom113d
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
+  if a_chk = 'B' or a_chk = 'M' then
+    update pbpdm.bom115d
+    set zygcst = ifnull(pbpdm.sf_bom_106(zitno),0)
+    where zcmcd = a_comltd and zdate = p_yyyymm and zygchk = 'Y';
+  end if;
 end if;
 
 end

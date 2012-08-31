@@ -608,7 +608,7 @@ if p_srce = '01' or p_srce = '02' or p_srce = '04' then
     select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
     from pbcommon.comm000;
 
-    set p_inputcost = ifnull(p_inputcost,0);
+    set p_inputcost = decimal(ifnull(p_inputcost,0) / p_convqty,15,6);
     set p_movecost = p_inputcost;
     set p_outcost = p_inputcost;
     set p_costchk = 'Y';
@@ -621,7 +621,7 @@ else
     select pbpdm.sf_bom_106(p_citno) into p_scinputcost
     from pbcommon.comm000;
 
-    set p_scinputcost = ifnull(p_scinputcost,0);
+    set p_scinputcost = decimal(ifnull(p_scinputcost,0) / p_convqty,15,6);
     set p_scmovecost = p_scinputcost;
     set p_scoutcost = p_scinputcost;
     set p_costchk = 'Y';
@@ -917,7 +917,7 @@ if p_srce = '01' or p_srce = '02' or p_srce = '04' then
     select pbpur.f_getcost3(p_srce,p_citno) into p_inputcost
     from pbcommon.comm000;
 
-    set p_inputcost = ifnull(p_inputcost,0);
+    set p_inputcost = decimal(ifnull(p_inputcost,0) / p_convqty,15,6);
     set p_movecost = p_inputcost;
     set p_outcost = p_inputcost;
     set p_costchk = 'Y';
@@ -930,7 +930,7 @@ else
     select pbpdm.sf_bom_106(p_citno) into p_scinputcost
     from pbcommon.comm000;
 
-    set p_scinputcost = ifnull(p_scinputcost,0);
+    set p_scinputcost = decimal(ifnull(p_scinputcost,0) / p_convqty,15,6);
     set p_scmovecost = p_scinputcost;
     set p_scoutcost = p_scinputcost;
     set p_costchk = 'Y';
