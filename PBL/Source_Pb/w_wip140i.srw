@@ -53,7 +53,7 @@ ls_applymonth = mid(string(uo_1.uf_yyyymm()),5,2)
 
 dw_wip140i_01.reset()
 if dw_wip140i_01.retrieve(g_s_company,ls_applyyear, ls_applymonth) < 1 then
-	uo_status.st_message.text = "조회된 정보가 없습니다."
+	uo_status.st_message.text = "조회된 미단가 품목이 없습니다."
 else
 	uo_status.st_message.text = "미단가 재공품목이 조회되었습니다."
 end if
