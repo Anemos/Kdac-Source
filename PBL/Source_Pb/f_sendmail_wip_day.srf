@@ -1,0 +1,75 @@
+$PBExportHeader$f_sendmail_wip_day.srf
+$PBExportComments$Mail 보내는 Global Function
+global type f_sendmail_wip_day from function_object
+end type
+
+forward prototypes
+global function integer f_sendmail_wip_day (string ag_type, string as_mailaddress, string as_subject, string as_body, string as_attach)
+end prototypes
+
+global function integer f_sendmail_wip_day (string ag_type, string as_mailaddress, string as_subject, string as_body, string as_attach);////////////////////////////////////////////////////////////////////////////////////////////
+// * 메일 보내기 *                                                  
+//
+// Argument: {MailAddress(보낼사람 메일주소), Subject(제목), Body(내용), Attach(첨부파일)}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+//메일 주소 Check
+If Len(as_MailAddress) < 1 Or Pos(as_MailAddress, "@") = 0 Or Pos(as_MailAddress, ".") = 0 Then
+//	MessageBox("Error", "이메일 주소가 잘못되었습니다.")
+	Return 1
+End If
+
+If Match( lower(as_MailAddress), "@kdac.co.kr") = False Then		
+//	MessageBox("확인", "받는사람 이메일 주소가 잘못되었습니다." &
+//				+ "~n~r종합정보시스템-관리-인사관리-개인정보수정 개인정보수정화면에서 " &
+//				+ "~n~받는사람 e-mail주소를 kdac.co.kr메일로 수정토록 조치바람.", Exclamation!)
+	Return 1
+End If
+
+
+OLEobject	Mail  // 등록한 컴포넌트를  OLE 객체로 선언.
+
+Mail = Create OLEobject // OLE 객체 생성.
+
+Int Rtn
+
+// 레지스트리에 등록된 외부 컴포넌트(AspEmail.dll)에 Access해서 파워빌더에서 사용가능한
+// OLE 객체로 생성.
+Rtn = Mail.ConnectToNewObject("SoftArtisans.SMTPMail")
+
+If Rtn <> 0 Then      // Access에 실패하면...
+//	MessageBox("확인", "자동메일발송 기능을 실행할 수 없습니다. ~n~r 노츠에서 KDAC종합정보시스템 메일발송 관련 파일을 다운받아 설치바랍니다!", Exclamation!)
+	Return 1
+End If
+
+Mail.ContentType 	= ag_type                        // 메일 내용을 HTML 형식으로 보낼것인가 여부를 결정. text, html
+Mail.CustomCharSet 	= 	'euc-kr'   					// 문자셋(여기서 한글 관련 
+Mail.ContentTransferEncoding =	4						// 본문 내용을 Encoding
+Mail.RemoteHost 		=	'smf.kdac.co.kr'              // SMTP 서버(우리는 Notes!!) 설정.
+Mail.FromAddress		= 'kskim@kdac.co.kr'  // 보내는 사람 주소 설정.
+Mail.FromName  = 'Wip System'   // 보내는 사람 이름 설정.
+Mail.AddRecipient('', as_MailAddress ) // 받는 사람 메일주소 설정.
+Mail.Subject 				= 	as_subject					// 제목
+Mail.Live 					= 	TRUE 							// 
+Mail.HtmlText 				= 	as_Body 						//본문 내용
+Mail.SMTPLog 			=	"c:\kdac\smtplog.txt"		// 메일 전송 Log파일을 해당 PC에 기록(현재 버전에서는 전체 Log 관리가 아닌 1회 Log만 관리)
+
+If as_Attach <> "" Then Mail.AddAttachment( as_Attach )  // 파일 첨부.
+
+Mail.SendMail                         //   --->  메일 발송.
+
+//버퍼를 지운다. 
+Mail.ClearAllRecipients() 
+Mail.ClearAttachments() 
+Mail.ClearBCCs() 
+Mail.ClearBodyText() 
+Mail.ClearCCs() 
+Mail.ClearExtraHeaders() 
+Mail.ClearRecipients() 
+Destroy Mail
+
+//MessageBox("확인!", as_Subject + " 메일이 발송 되었습니다.")
+
+Return 0
+end function
+

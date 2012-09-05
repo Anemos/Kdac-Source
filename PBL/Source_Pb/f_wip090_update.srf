@@ -1,0 +1,114 @@
+$PBExportHeader$f_wip090_update.srf
+$PBExportComments$이월과 경리확정취소 상태코드 함수
+global type f_wip090_update from function_object
+end type
+
+forward prototypes
+global function integer f_wip090_update (string a_plant, string a_dvsn, string a_code, string a_gubun)
+end prototypes
+
+global function integer f_wip090_update (string a_plant, string a_dvsn, string a_code, string a_gubun);//********************************************************************
+// a_code : '040'(이월완료) => Running date와 마감월을 Update
+//        : '090'(경리마감) 
+//        a_gubun '2'(취소) => '060' ~ '080'까지 진행상태로 설정
+//                'C'(확정) => '010' ~ '040'까지 진행상태로 설정
+//********************************************************************
+string ls_code, ls_postcode, ls_cttp
+string ls_offdate, ls_rundate
+
+ls_cttp = 'WIP' + a_dvsn
+if a_code = '040' and f_spacechk(a_plant) = -1 then
+	ls_code = ls_cttp + '040'
+	//Running Date가져오기
+	SELECT distinct "PBWIP"."WIP090"."WZDATE" INTO :ls_offdate
+		FROM "PBWIP"."WIP090"  
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )
+           	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return -1
+	end if
+	//이월 Update
+	UPDATE "PBWIP"."WIP090"  
+     SET "WZSTSCD" = 'C'
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )
+           	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return -1
+	end if
+	//Run Date와 마감월 이월
+	ls_postcode = ls_cttp + '090'
+	ls_rundate = uf_wip_addmonth(ls_offdate,1)
+	UPDATE "PBWIP"."WIP090"  
+     SET "WZDATE" = :ls_rundate,   
+         "WZEDDT" = :ls_offdate  
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )   
+           	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return -1
+	end if
+	//이월후의 작업을 진행상태로 셋팅
+	UPDATE "PBWIP"."WIP090"  
+     SET "WZSTSCD" = '2'
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
+         	( (substr("PBWIP"."WIP090"."WZCTTP",5,3) > '040') AND
+				  (substr("PBWIP"."WIP090"."WZCTTP",5,3) <= '090') )   
+           	using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return -1
+	end if
+end if
+
+if a_code = '090' then
+	if a_gubun = '2' then
+		ls_code = ls_cttp + '060'
+		ls_postcode = ls_cttp + '080'
+		//이월후의 작업을 진행상태로 셋팅
+		UPDATE "PBWIP"."WIP090"  
+		  SET "WZSTSCD" = '2'
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
+					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
+					( ("PBWIP"."WIP090"."WZCTTP" >= :ls_code) AND
+					  ("PBWIP"."WIP090"."WZCTTP" <= :ls_postcode) )   
+					using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return -1
+		end if
+		UPDATE "PBWIP"."WIP090"  
+		  SET "WZSTSCD" = '2'
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
+					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
+					("PBWIP"."WIP090"."WZCTTP" = :ls_cttp) 
+					using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return -1
+		end if
+	end if
+	if a_gubun = 'C' then
+		ls_code = ls_cttp + '010'
+		ls_postcode = ls_cttp + '040'
+		//이월후의 작업을 진행상태로 셋팅
+		UPDATE "PBWIP"."WIP090"  
+		  SET "WZSTSCD" = '2'
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
+					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
+					( ("PBWIP"."WIP090"."WZCTTP" >= :ls_code) AND
+					  ("PBWIP"."WIP090"."WZCTTP" <= :ls_postcode) )   
+					using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return -1
+		end if
+		UPDATE "PBWIP"."WIP090"  
+		  SET "WZSTSCD" = 'C'
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
+					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
+					("PBWIP"."WIP090"."WZCTTP" = :ls_cttp) 
+					using sqlca;
+		if sqlca.sqlcode <> 0 then
+			return -1
+		end if
+	end if
+end if
+
+return 0
+end function
+

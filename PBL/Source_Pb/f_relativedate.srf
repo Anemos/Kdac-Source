@@ -1,0 +1,26 @@
+$PBExportHeader$f_relativedate.srf
+$PBExportComments$날짜 더하기
+global type f_relativedate from function_object
+end type
+
+forward prototypes
+global function string f_relativedate (string ag_s_date, integer ag_n_day)
+end prototypes
+
+global function string f_relativedate (string ag_s_date, integer ag_n_day);
+/////////////////////////////////////////////////////////////////////
+// 
+//  String 날짜를 받아 원하는 날수를 더하여 String 날짜로 Return
+//
+//           input : yyyymmdd, day
+//           output: yyyymmdd
+//
+/////////////////////////////////////////////////////////////////////
+
+string l_s_date
+
+l_s_date = String(RelativeDate(Date(String(ag_s_date,"@@@@-@@-@@")),ag_n_day),"yyyymmdd")
+
+RETURN(l_s_date)
+end function
+

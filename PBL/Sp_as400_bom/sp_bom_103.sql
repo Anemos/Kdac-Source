@@ -160,8 +160,8 @@ else
     a.twkct,a.topcd,a.toption,a.tedtm,
     a.tedte,tcalculate,p_explant,p_exdiv,tcomcd,tsubpaycd,ifnull(p_ygcst,0),
     p_damdang,p_prunt,p_ptod,
-    p_pcurr,case when a.zsrce = '02' then a.tinputcost
-                 when a.zsrce = '04' then a.tinputcost else 0 end,
+    p_pcurr,case when d.srce = '02' then a.tinputcost
+                 when d.srce = '04' then a.tinputcost else 0 end,
     p_prutc,p_pvsrno,p_pvend,tcalculate2,
     pbpdm.sf_bom_105(a.tcitn),a.tcostchk
   from qtemp.tmp_bom a inner join pbinv.inv002 b
