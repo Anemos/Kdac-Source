@@ -7,7 +7,21 @@ forward prototypes
 global subroutine f_win_center_move (window fw_win)
 end prototypes
 
-global subroutine f_win_center_move (window fw_win);environment env
+global subroutine f_win_center_move (window fw_win);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_win_center_move
+//	Access		: public
+//	Arguments	: window fw_win
+//	Returns		: None
+//	Description	: 윈도우의 위치를 화면의 가운데로 move한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lim Jae keun
+// 						  |||||                
+//							 q O-O p  그날이 올때까정
+//							_(  v  )________
+//				-oOo---oOo-------Oooo--Oooo
+// Coded Date	: 1999. 03. 06
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+environment env
 long ll_x, ll_y
 
 GetEnvironment(env)

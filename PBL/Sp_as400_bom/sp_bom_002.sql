@@ -47,7 +47,8 @@ loop
   if sqlcode <> 0 or at_end = 1 then
      leave inc_loop;
   end if;
-
+  
+  if p_plant <> 'D' then
   -- call sp_bom_101
   call pbpdm.sp_bom_001(a_comltd,p_plant,p_dvsn,
        a_applydate,a_createdate,a_chk);
@@ -55,8 +56,11 @@ loop
   if p_yyyymm <> substring(a_createdate,1,6) then
     -- update purchase information
     call pbpdm.sp_bom_105(a_comltd,p_plant,p_dvsn,
-       a_applydate,a_createdate);
+      a_applydate,a_createdate);
   end if;
+  end if;
+  
+  set at_end = 0;
 end loop;
 close inv902_cursor;
 
