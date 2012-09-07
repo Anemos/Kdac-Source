@@ -9,6 +9,8 @@ type cb_down from commandbutton within w_wip_run
 end type
 type cbx_check from checkbox within w_wip_run
 end type
+type uo_parameter from u_parameter_wip within w_wip_run
+end type
 type dw_2 from datawindow within w_wip_run
 end type
 type dw_1 from datawindow within w_wip_run
@@ -31,24 +33,23 @@ type uo_date from u_today within w_wip_run
 end type
 type ddlb_1 from dropdownlistbox within w_wip_run
 end type
-type uo_parameter from u_parameter_wip within w_wip_run
-end type
 end forward
 
 global type w_wip_run from window
-integer width = 3945
-integer height = 1696
+integer width = 3909
+integer height = 1592
 boolean titlebar = true
-string title = "일일재공 마감프로그램"
+string title = "wip_execute"
 boolean controlmenu = true
 boolean minbox = true
 boolean maxbox = true
 boolean resizable = true
-long backcolor = 12632256
+long backcolor = 79741120
 event ue_postopen pbm_custom01
 cb_option_post cb_option_post
 cb_down cb_down
 cbx_check cbx_check
+uo_parameter uo_parameter
 dw_2 dw_2
 dw_1 dw_1
 dw_interface dw_interface
@@ -60,7 +61,6 @@ st_vertical st_vertical
 st_date st_date
 uo_date uo_date
 ddlb_1 ddlb_1
-uo_parameter uo_parameter
 end type
 global w_wip_run w_wip_run
 
@@ -107,6 +107,7 @@ public subroutine wf_flag_update ()
 public subroutine wf_quater_qtycheck (string arg_year, string arg_month)
 public function boolean wf_cross_post (string ag_plant, string ag_dvsn)
 public function string wf_get_host_datetime ()
+public function boolean wf_inout_pre (string ag_plant, string ag_dvsn)
 public function boolean wf_wiprun ()
 public function boolean wf_auto_download ()
 public function boolean wf_average_post (string ag_plant, string ag_dvsn)
@@ -115,7 +116,6 @@ public function boolean wf_connect_check (ref transaction rt_source, ref transac
 public function boolean wf_transfer (string ag_plant, string ag_dvsn)
 public function boolean wf_inout_post (string ag_plant, string ag_dvsn)
 public function integer wf_create_wip014 (string ag_plant, string ag_dvsn, string ag_applydate)
-public function boolean wf_inout_pre (string ag_plant, string ag_dvsn, string ag_applydate, string ag_closedate)
 end prototypes
 
 event ue_postopen;ib_open = True
@@ -131,14 +131,10 @@ ii_first_parameter_y = uo_parameter.Y + (uo_parameter.Height / 2)
 ii_first_pipe_y		= uo_pipe.Y + (uo_pipe.Height / 2)
 ddlb_1.text = '이월전마감'
 is_cycle = 'PRE'
+cbx_check.checked = True
 
 wf_connect(gs_ini_file, 'MIS', 'IPIS', it_source, it_destination)
 g_s_datetime = wf_get_host_datetime()
-
-wf_auto_download()
-Timer(600)
-
-
 
 end event
 
@@ -426,7 +422,7 @@ st_horizontal.SetPosition(ToTop!)
 SetRedraw(True)
 end subroutine
 
-public function boolean wf_cross_pre (string ag_plant, string ag_dvsn);// 이월전 크로스체크
+public function boolean wf_cross_pre (string ag_plant, string ag_dvsn);// 이월전 크로스체크 로직
 string ls_fromdt, ls_todt
 
 ls_fromdt = is_applydate + '01'
@@ -468,7 +464,7 @@ end function
 public function boolean wf_cross_post_update (datawindow arg_dw);// 이월후 크로스체크 에러 업데이트
 integer li_cntx, li_rowcnt, li_chk
 string ls_errorcd, ls_cmcd, ls_srty, ls_srno, ls_srno1, ls_srno2, ls_plant, ls_dvsn, ls_xuse, ls_rtngubun
-string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_adjdate, ls_time, ls_srce, ls_cls, ls_nextdt
+string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_adjdate, ls_srce, ls_cls, ls_nextdt
 dec{4} lc_qty, lc_qty2
 decimal{4} l_n_wdchqt,l_n_wausqt1,l_n_wausqt2,l_n_wausqt3,l_n_wausqt4,l_n_wausqt5,l_n_wausqt6,l_n_wausqt7,&
 			  l_n_wausqt8,l_n_wausqta,l_n_chkqty
@@ -482,7 +478,7 @@ ls_nextdt = uf_wip_addmonth(ls_adjdate,1)
 
 arg_dw.accepttext()
 li_rowcnt = arg_dw.rowcount()
-ls_time = mid(is_currenttime,1,2) + mid(is_currenttime,4,2) + mid(is_currenttime,7,2)
+
 for li_cntx = 1 to li_rowcnt
 	ls_errorcd = arg_dw.getitemstring(li_cntx,"errorcode")
 	choose case ls_errorcd
@@ -539,7 +535,7 @@ for li_cntx = 1 to li_rowcnt
 					A_MACADDR = ' ',   
 					A_INPTID = ' ',   
 					A_INPTDT = :is_currentdate,   
-					A_INPTTM = :ls_time,   
+					A_INPTTM = :g_s_datetime,   
 					A_ADJDT = :ls_adjdate,   
 					A_NEXTDT = :ls_nextdt  using sqlca;
 
@@ -580,7 +576,7 @@ for li_cntx = 1 to li_rowcnt
 					A_MACADDR = ' ',   
 					A_INPTID = ' ',   
 					A_INPTDT = :is_currentdate,   
-					A_INPTTM = :ls_time,   
+					A_INPTTM = :g_s_datetime,   
 					A_ADJDT = :ls_adjdate,   
 					A_NEXTDT = :ls_nextdt  using sqlca;
 			
@@ -636,13 +632,12 @@ end function
 
 public function boolean wf_cross_pre_update (datawindow arg_dw);integer li_cntx, li_rowcnt, li_chk
 string ls_errorcd, ls_cmcd, ls_srty, ls_srno, ls_srno1, ls_srno2, ls_plant, ls_dvsn, ls_xuse, ls_rtngubun
-string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_cls, ls_srce, ls_time
+string ls_slno, ls_itno, ls_usge, ls_vsrno, ls_date, ls_date2, ls_cls, ls_srce
 dec{4} lc_qty, lc_qty2
 string ls_wdslty, ls_wdsrno
 arg_dw.accepttext()
 li_rowcnt = arg_dw.rowcount()
 
-ls_time = mid(is_currenttime,1,2) + mid(is_currenttime,4,2) + mid(is_currenttime,7,2)
 for li_cntx = 1 to li_rowcnt
 	ls_errorcd = arg_dw.getitemstring(li_cntx,"errorcode")
 	choose case ls_errorcd
@@ -685,7 +680,7 @@ for li_cntx = 1 to li_rowcnt
 							( pedte <> ' ' and pedtm <= :ls_date and pedte >= :ls_date ))
 					using sqlca;
 				if li_chk < 1 then
-//					messagebox("BOM ERROR","해당날짜에 BOM미적용 품번 : " + ls_itno)
+					messagebox("BOM ERROR","해당날짜에 BOM미적용 품번 : " + ls_itno)
 					continue
 				end if
 				// END
@@ -699,7 +694,7 @@ for li_cntx = 1 to li_rowcnt
          		A_MACADDR = ' ',   
          		A_INPTID = '000030',   
          		A_INPTDT = :is_currentdate,   
-         		A_INPTTM = :ls_time  using sqlca;
+         		A_INPTTM = :g_s_datetime  using sqlca;
 				
 				execute up_wip07;
 				//uo_status.st_message.text = ls_srty + ls_srno + ls_srno1 + ls_srno2 + " 데이타생성 완료"
@@ -739,7 +734,7 @@ for li_cntx = 1 to li_rowcnt
 						A_MACADDR = ' ',   
 						A_INPTID = '000030',   
 						A_INPTDT = :is_currentdate,   
-						A_INPTTM = :ls_time  using sqlca;
+						A_INPTTM = :g_s_datetime  using sqlca;
 				
 				execute up_wip06;
 //				//uo_status.st_message.text = ls_srty + ls_srno + ls_srno1 + ls_srno2 + " 데이타생성 완료"
@@ -932,7 +927,7 @@ into		:ls_date, :ls_time
 from		pbcommon.comm000
 using		it_source;
 
-g_s_datetime	= ls_date + ' ' + ls_time
+g_s_datetime	= mid(ls_date + ' ' + ls_time,1,19)
 
 is_currentdate	=	string(date(ls_date),"YYYYMMDD")
 g_s_date = is_currentdate
@@ -943,6 +938,47 @@ Return g_s_datetime
 
 end function
 
+public function boolean wf_inout_pre (string ag_plant, string ag_dvsn);//이월전 재공BOM사용량 확인로직
+string ls_fromdate, ls_todate, ls_mysql
+
+ls_fromdate = is_applydate + '01'
+ls_todate = f_relativedate(is_currentdate,-1)
+
+ DECLARE up_wip_051 PROCEDURE FOR PBWIP.SP_WIP_051  
+         A_COMLTD = '01',   
+         A_PLANT = :ag_plant,   
+         A_DVSN = :ag_dvsn,   
+         A_FROMDATE = :ls_fromdate,
+			A_TODATE = :ls_todate using sqlca;
+
+ execute up_wip_051;
+
+ls_mysql = " DROP TABLE QTEMP.WIPTEMP02"
+Execute Immediate :ls_mysql ;
+ls_mysql = " DROP TABLE QTEMP.BOMTEMP01"
+Execute Immediate :ls_mysql ;
+
+Close up_wip_051;
+
+//--이월전 수불체크
+If Not f_wip_inout_wip001('01',ag_plant,ag_dvsn,is_applydate,dw_2) Then
+	Return False
+End If
+
+// Error Update
+dw_2.accepttext()
+
+If dw_2.rowcount() > 0 Then
+	If dw_2.Update() = 1 Then
+		Return True
+	Else
+		Return False
+	End If
+Else
+	Return True
+End If
+end function
+
 public function boolean wf_wiprun ();//----------------------
 // 이월전작업 : 010 ~ 040,  이월후작업 : 050 ~ 080
 //----------------------
@@ -951,8 +987,9 @@ Int		li_return, rowcount, li_second,	li_cycletime
 Long		ll_start_time, ll_end_time, ll_currow
 String	ls_interface_gubun, ls_source, ls_destination
 String	ls_pipeline_name, ls_interface_name, ls_parm, ls_fail_gubun
-String	ls_century, ls_year, ls_month, ls_date
-String	ls_datetime,	ls_EndDateTime, ls_startdate, ls_enddate, ls_applydate, ls_closedate
+String	ls_today, ls_nextmonth, ls_century, ls_year, ls_month, ls_date,&
+			ls_yesterday,	ls_YesterMonth
+String	ls_lastdate, ls_lasttime, ls_datetime,	ls_EndDateTime
 DateTime	ldt_lastdatetime
 Date		ld_lastdate, ld_currentDate
 Time		lt_lasttime, lt_currenttime, lt_jobtime
@@ -977,25 +1014,17 @@ dw_1.SetPosition(ToTop!)
 st_horizontal.SetPosition(ToTop!)
 st_vertical.SetPosition(ToTop!)
 
+//ls_today			=	String(Date(f_pisc_get_date_nowtime()), 'yyyy.mm.dd')
+//ls_nextmonth	=	f_pisc_get_date_nextmonth(Left(ls_today, 7))					// 2003.02
+//ls_yesterday	=	String(RelativeDate(Date(ls_today), -1), 'yyyymmdd')
+//ls_lastdate		=	String(ldt_lastdatetime, 'yyyymmdd')
+//ls_lasttime		=	String(ldt_lastdatetime, 'hh:mm')
+//ls_YesterMonth	=	left(String(RelativeDate(Date(left(ls_today,7)+'.01'), -1), 'yyyymmdd'),6)
 If is_cycle = 'POST' then
 	is_applydate = uo_parameter.dw_1.getItemString( 1, 'wzeddt')
 Else
 	is_applydate = uo_parameter.dw_1.getItemString( 1, 'wzdate')
 End If
-
-//일일 마감일자 및 전월일자 가져오기
-ls_startdate = string(f_relativedate(is_currentdate,-1),"@@@@-@@-@@") + " 19:59:59"
-ls_enddate = string(is_currentdate,"@@@@-@@-@@") + " 20:00:00"
-
-// 일일마감 작업시간별 일자 설정
-if g_s_datetime > ls_startdate and g_s_datetime < ls_enddate then
-	ls_applydate = f_relativedate(is_currentdate,-1)
-else
-	ls_applydate = is_currentdate
-end if
-
-//전월일자 가져오기
-ls_closedate = uo_parameter.dw_1.getItemString( 1, 'wzeddt')
 
 //insert result
 ll_currow = dw_1.insertrow(0)
@@ -1012,9 +1041,9 @@ CHOOSE CASE is_wip_id
 		dw_2.settransobject(sqlca)
 		lb_rtn = wf_cross_pre(is_wip_plant, is_wip_gubun)
 	CASE '020'
-		dw_2.dataobject = 'd_wip_inout_wip002derror'
+		dw_2.dataobject = 'd_wip_inout_wip001error'
 		dw_2.settransobject(sqlca)
-		lb_rtn = wf_inout_pre(is_wip_plant, mid(is_wip_gubun,4,1), ls_applydate, ls_closedate)
+		lb_rtn = wf_inout_pre(is_wip_plant, mid(is_wip_gubun,4,1))
 	CASE '030'
 		dw_2.dataobject = 'd_wip_option_wip004'
 		dw_2.settransobject(sqlca)
@@ -1037,23 +1066,6 @@ CHOOSE CASE is_wip_id
 		dw_2.dataobject = "d_wip_cost_error"
 		dw_2.settransobject(sqlca)
 		lb_rtn = wf_average_post(is_wip_plant, mid(is_wip_gubun,4,1))
-	CASE '090'
-		dw_2.dataobject = ''
-		lb_rtn = f_wip_day_inv506d_all('01', ls_applydate, ls_closedate)
-		if lb_rtn then
-			lb_rtn = f_wip_day_wip002ds_all('01', ls_applydate, ls_closedate)
-		end if
-		if lb_rtn then
-			//***************************
-			//* 재공 담당자에게 확정요청메일 발송.
-			//* 성공 : 0, 실패 : -1
-			//***************************
-			string ls_emailtitle, ls_chtime, ls_flag, ls_email, ls_gubun, ls_message
-
-			ls_emailtitle = "<BR><B> [일간재공마감작업] 정상적 처리완료되었습니다.</B></BR>" &
-					+ "<B> 일간재공마감일자 : " + ls_applydate + " </B>"
-			li_return = f_SendMail_wip_day( "html", "kskim@kdac.co.kr", "일간재공마감 작업정보", ls_emailtitle, "" )
-		end if
 END CHOOSE
 
 //get ending time
@@ -1066,10 +1078,10 @@ dw_1.setitem(ll_currow,'job_error', dw_2.rowcount() )
 dw_1.setitem(ll_currow,'job_end', ls_Enddatetime)
 dw_1.setitem(ll_currow,'job_time', (ll_end_time - ll_start_time)/1000 )
 
-//// wip090 flag update
-//if lb_rtn then
-//	wf_flag_update()
-//end if
+// wip090 flag update
+if lb_rtn then
+	wf_flag_update()
+end if
 
 Return true
 end function
@@ -1079,23 +1091,25 @@ Long		ll_row, i
 Int		rowcount
 String   ls_plant, ls_gubun
 
-// server 연결이 안되었거나 야간엔 돌지 않는다...
-If Not wf_connect_check(SQLCA, it_destination) Then	
-	// 10분 간격으로 변경
-	Timer(600)
-	return true
-End If
-
 ll_row	= dw_interface.Rowcount()
 
 For i = 1 To ll_row
+	// server 연결이 안되었거나 야간엔 돌지 않는다...
+	If Not wf_connect_check(SQLCA, it_destination) Then	
+		// 10분 간격으로 변경
+		Timer(600)
+		Exit
+	End If
+
 	is_wip_plant = dw_interface.GetItemString( i, 'wip_plant')
 	is_wip_gubun = dw_interface.GetItemString( i, 'wip_gubun')
 	is_wip_id = dw_interface.GetItemString( i, 'wip_id')
 	is_wip_desc = dw_interface.GetItemString( i, 'wzdesc')
 	
-	If NOT (is_cycle = 'PRE' and cbx_check.checked) Then
-		continue
+	If is_cycle = 'PRE' and cbx_check.checked Then
+		If is_wip_id <> '010' and is_wip_id <> '020' Then
+			continue
+		End If
 	End If
 	
 	If is_wip_gubun ='ALL' then
@@ -1175,15 +1189,20 @@ public function boolean wf_average_post (string ag_plant, string ag_dvsn);//****
 string ls_year, ls_month, ls_mm01, ls_adjdate, ls_postdate, ls_currentdate
 string ls_pbdiv, ls_pdcd, ls_xplant, ls_div
 integer li_cnt, li_rowcnt
-dec{0} lc_pbmatw
+dec{0} lc_pbmatw, lc_bgat
 datastore ds_cost_pcc950
 
 if ag_plant = 'Y' then
 	return true
 end if
-// 무상사급정산 추가품번 생성
+
 ls_year 		= mid(is_applydate,1,4)
 ls_month 	= mid(is_applydate,5,2)
+ls_adjdate = left(is_applydate,6)                                     //마감월
+ls_postdate = uf_wip_addmonth(ls_adjdate, 1)                          //이월
+ls_currentdate = is_currentdate + is_currenttime
+
+// 무상사급정산 추가품번 생성
 If ls_month = '03' or ls_month = '06' or ls_month = '09' or ls_month = '12' then
 	Choose Case ls_month
 		Case '03'
@@ -1244,11 +1263,8 @@ else
 		end if
 	end if
 end if
-//원가계산관리 기말재공금액 생성 : 2007.06.20
-ls_adjdate = left(is_applydate,6)                                     //마감월
-ls_postdate = uf_wip_addmonth(ls_adjdate, 1)                          //이월
-ls_currentdate = is_currentdate + is_currenttime
 
+//원가계산관리 기말재공금액 생성 : 2007.06.20
 ds_cost_pcc950 = create datastore                  			              
 ds_cost_pcc950.dataobject = "d_wip_cost_pcc950"
 ds_cost_pcc950.settransobject(sqlca)
@@ -1278,6 +1294,91 @@ if li_rowcnt > 0 then
 	next
 end if
 destroy ds_cost_pcc950
+
+// 재공수불금액 재공구분별 합계
+DELETE FROM PBWIP.WIP018
+WHERE WBCMCD = '01' AND WBYYMMDD = :is_currentdate AND 
+		WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn
+using sqlca;
+
+INSERT INTO PBWIP.WIP018
+( WBCMCD,WBYYMMDD,WBYEAR,WBMONTH,WBPLANT,WBDVSN,WBIOCD,
+WBBGAT1,WBINAT1,WBINAT2,WBINAT3,WBINAT4,
+WBUSAT1,WBUSAT2,WBUSAT3,WBUSAT4,WBUSAT5,WBUSAT6,WBUSAT7,WBUSAT8,
+WBUSAT9,WBUSATA,WBOHAT1,WBOHATA,WBINPTDT )
+SELECT wbcmcd,:is_currentdate,wbyear,wbmonth,wbplant,wbdvsn,wbiocd,
+SUM(wbbgat1) as bgat1,SUM(wbinat1) as inat1,SUM(wbinat2) as inat2,SUM(wbinat3) as inat3,SUM(wbinat4) as inat4,
+SUM(wbusat1) as usat1,SUM(wbusat2) as usat2,SUM(wbusat3) as usat3,SUM(wbusat4) as usat4,SUM(wbusat5) as usat5,
+SUM(wbusat6) as usat6,SUM(wbusat7) as usat7,SUM(wbusat8) as usat8,
+SUM(wbusat9) as usat9,SUM(wbusata) as usata,
+SUM( wbbgat1 + wbinat1 + wbinat2 +
+       wbinat3 + wbinat4 -
+       (wbusat1 + wbusat2 + wbusat3 + wbusat4 + wbusat5 +
+       wbusat6 + wbusat7 + wbusat8 + wbusat9 + wbusata)) as ohat1,
+0,
+''
+FROM PBWIP.WIP002
+WHERE WBCMCD = '01' AND WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD <> '3'
+GROUP BY WBCMCD,WBYEAR,WBMONTH,WBPLANT,WBDVSN,WBIOCD
+using sqlca;
+
+SELECT SUM(WBBGAT1) INTO :lc_bgat
+FROM PBWIP.WIP002
+WHERE WBCMCD = '01' AND WBYEAR||WBMONTH = :ls_postdate AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD = '1'
+using sqlca;
+
+UPDATE PBWIP.WIP018
+SET WBOHATA = :lc_bgat
+WHERE WBCMCD = '01' AND WBYYMMDD = :is_currentdate AND WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD = '1'
+using sqlca;
+
+SELECT SUM(WBBGAT1) INTO :lc_bgat
+FROM PBWIP.WIP002
+WHERE WBCMCD = '01' AND WBYEAR||WBMONTH = :ls_postdate AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD = '2'
+using sqlca;
+
+UPDATE PBWIP.WIP018
+SET WBOHATA = :lc_bgat
+WHERE WBCMCD = '01' AND WBYYMMDD = :is_currentdate AND WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD = '2'
+using sqlca;
+
+INSERT INTO PBWIP.WIP018
+( WBCMCD,WBYYMMDD,WBYEAR,WBMONTH,WBPLANT,WBDVSN,WBIOCD,
+WBBGAT1,WBINAT1,WBINAT2,WBINAT3,WBINAT4,
+WBUSAT1,WBUSAT2,WBUSAT3,WBUSAT4,WBUSAT5,WBUSAT6,WBUSAT7,WBUSAT8,
+WBUSAT9,WBUSATA,WBOHAT1,WBOHATA,WBINPTDT )
+SELECT wccmcd,:is_currentdate,wcyear,wcmonth,wcplant,wcdvsn,'4',
+SUM(wcbgat1) as bgat1,SUM(wcinat1) as inat1,SUM(0) as inat2,SUM(0) as inat3,SUM(0) as inat4,
+SUM(wcusat1) as usat1,SUM(wcusat2) as usat2,SUM(wcusat3) as usat3,SUM(wcusat4) as usat4,SUM(wcusat5) as usat5,
+SUM(wcusat6) as usat6,SUM(wcusat7) as usat7,SUM(wcusat8) as usat8,
+SUM(wcusat9) as usat9,SUM(0) as usata,
+SUM(WCBGAT1 + WCINAT1 - ( WCUSAT1 + WCUSAT2 + WCUSAT3 +
+WCUSAT4 + WCUSAT5 + WCUSAT6 + WCUSAT7 + WCUSAT8 + WCUSAT9)) as ohat1,
+0,
+''
+FROM PBWIP.WIP003
+WHERE WCCMCD = '01' AND WCYEAR = :ls_year AND WCMONTH = :ls_month AND
+		WCPLANT = :ag_plant AND WCDVSN = :ag_dvsn
+GROUP BY WCCMCD,WCYEAR,WCMONTH,WCPLANT,WCDVSN
+using sqlca;
+
+SELECT SUM(WCBGAT1) INTO :lc_bgat
+FROM PBWIP.WIP003
+WHERE WCCMCD = '01' AND WCYEAR||WCMONTH = :ls_postdate AND
+		WCPLANT = :ag_plant AND WCDVSN = :ag_dvsn
+using sqlca;
+
+UPDATE PBWIP.WIP018
+SET WBOHATA = :lc_bgat
+WHERE WBCMCD = '01' AND WBYYMMDD = :is_currentdate AND WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn AND WBIOCD = '4'
+using sqlca;
 
 return true
 end function
@@ -1344,7 +1445,7 @@ ul_handle1 = rt_source.DBHandle()
 
 If ul_handle1 > 0 Then
 	If cbx_check.checked and is_cycle = 'PRE' then
-		If String(Today(), 'hhmmss') >= '201500' and String(Today(), 'hhmmss') <= '203000' Then
+		If String(Today(), 'hhmmss') >= '060000' and String(Today(), 'hhmmss') <= '070000' Then
 			Return True
 		Else
 			Return False
@@ -1354,12 +1455,26 @@ If ul_handle1 > 0 Then
 	End If
 Else
 	return False
+//	lb_connect = wf_connect(gs_ini_file, 'MIS', 'IPIS', it_source, it_destination)
+//	If lb_connect Then
+//		If cbx_check.checked and is_cycle = 'PRE' then
+//			If String(Today(), 'hhmmss') >= '060000' and String(Today(), 'hhmmss') <= '075000' Then
+//				Return True
+//			Else
+//				Return False
+//			End If
+//		Else
+//			return lb_connect
+//		End If
+//	else
+//		Return lb_connect
+//	end if
 End If	
 end function
 
 public function boolean wf_transfer (string ag_plant, string ag_dvsn);//-- 재공이월
-string ls_fromdt, ls_todt
-string ls_curyear, ls_curmonth, ls_nextyear, ls_nextmonth
+string ls_fromdt, ls_todt, ls_lastdate
+string ls_curyear, ls_curmonth, ls_nextyear, ls_nextmonth, ls_lastyear, ls_lastmonth
 long ll_count
 dec{4} lc_sumqty001, lc_sumqty002
 dec{0} lc_sumamt001, lc_sumamt002
@@ -1370,6 +1485,9 @@ ls_curyear = mid(ls_fromdt,1,4)
 ls_curmonth = mid(ls_fromdt,5,2)
 ls_nextyear = mid(ls_todt,1,4)
 ls_nextmonth = mid(ls_todt,5,2)
+ls_lastdate = uf_wip_addmonth(is_applydate,-1)
+ls_lastyear = mid(ls_lastdate,1,4)
+ls_lastmonth = mid(ls_lastdate,5,2)
 
  DECLARE up_wip_01 PROCEDURE FOR PBWIP.SP_WIP_01  
 	A_YY01 = :ls_curyear,   
@@ -1421,6 +1539,39 @@ If f_carry_over_stock('01', is_applydate) = -1 then
 	Messagebox("경고", "창고재공 이월시에 에러가 발생하였습니다.")
 	Return False
 End If
+
+// 이체단가정보 이월
+select count(*) into :ll_count from pbpdm.bom010
+where acmcd = '01' and ayear = :ls_curyear and amont = :ls_curmonth
+using sqlca;
+
+if ll_count < 1 then
+	insert into pbpdm.bom010
+	( acmcd,ayear,amont,aplant,advsn,aitno,aclsb,asrce,
+	acost,aeitno,acitno,aqtym,aqty,aempno,alastdate )
+	select acmcd,:ls_curyear,:ls_curmonth,aplant,advsn,aitno,aclsb,asrce,
+	acost,aeitno,acitno,aqtym,aqty,aempno,alastdate
+	from pbpdm.bom010
+	where acmcd = '01' and ayear = :ls_lastyear and amont = :ls_lastmonth
+	using sqlca;
+end if
+
+// 고객사유상사급 공제단가 이월
+select count(*) into :ll_count from pbpdm.bom016
+where fcmcd = '01' and fdate =:is_applydate
+using sqlca;
+
+if ll_count < 1 then
+	insert into pbpdm.bom016
+	( fcmcd,fgubun,fdate,fplant,fdvsn,fpdcd,fmdno,
+	fcmcst,fcicst,fcocst,fcostdiv,fcrdt,fcomcd,fxcost,fwcost )
+	select fcmcd,fgubun,:is_applydate,fplant,fdvsn,fpdcd,fmdno,
+	fcmcst,fcicst,fcocst,fcostdiv,fcrdt,fcomcd,fxcost,fwcost
+	from pbpdm.bom016
+	where fcmcd = '01' and fdate =:ls_lastdate
+	using sqlca;
+end if
+
 //재공밸런스 초기화 - 전공장
 If f_carry_over_wip001('01') = -1 Then
 	Return False
@@ -1433,12 +1584,6 @@ end if
 If f_wip090_update(' ', ' ', '040', ' ') <> 0 Then
 	Return False
 End If
-//BOM LowLevel Update
-
-//Reorganize PBWIP.WIP001, PBWIP.WIP002, PBWIP.WIP003, PBWIP.WIP004
-//sqlca.SP_RGZPF01('PBWIP', 'WIP001')
-//sqlca.SP_RGZPF01('PBWIP', 'WIP002')
-//sqlca.SP_RGZPF01('PBWIP', 'WIP003')
 
 Return True
 end function
@@ -1685,132 +1830,11 @@ CLOSE wip014_cur;
 return 0
 end function
 
-public function boolean wf_inout_pre (string ag_plant, string ag_dvsn, string ag_applydate, string ag_closedate);// 이월전 재공BOM사용량 확인로직
-string ls_nextdate
-string ls_closeyy, ls_closemm
-integer li_count
-
-//전월일자 가져오기
-ls_closeyy = mid(ag_closedate,1,4)
-ls_closemm = mid(ag_closedate,5,2)
-
-// 해당공장 일일재공 수불이월
-SELECT COUNT(*) INTO :li_count
-FROM PBWIP.WIP002D
-WHERE WBCMCD = '01' AND WBYYMMDD = :ag_applydate AND
-		WBPLANT = :ag_plant AND WBDVSN = :ag_dvsn
-using sqlca;
-
-if li_count = 0 then
-	INSERT INTO PBWIP.WIP002D
-	( WBCMCD,WBYYMMDD,WBPLANT,WBDVSN,WBORCT,WBITNO,WBIOCD,WBAVRG1,WBAVRG2,WBBGQT,WBBGAT1,WBBGAT2,
-	WBINQT,WBINAT1,WBINAT2,WBINAT3,WBINAT4,WBUSQT1,WBUSAT1,WBUSQT2,WBUSAT2,WBUSQT3,WBUSAT3,
-	WBUSQT4,WBUSAT4,WBUSQT5,WBUSAT5,WBUSQT6,WBUSAT6,WBUSQT7,WBUSAT7,WBUSQT8,WBUSAT8,WBUSAT9,
-	WBUSQTA,WBUSATA,WBOHQT,WBOHAT1,WBOHAT2,WBSCRP,WBRETN,WBPLAN,WBIPADDR,WBMACADDR,WBINPTDT,WBUPDTDT )
-	SELECT WACMCD,:ag_applydate,WAPLANT,WADVSN,WAORCT,WAITNO,WAIOCD,WAAVRG1,WAAVRG2,WABGQT,WABGAT1,WABGAT2,
-	WAINQT,WAINAT1,WAINAT2,WAINAT3,WAINAT4,WAUSQT1,WAUSAT1,WAUSQT2,WAUSAT2,WAUSQT3,WAUSAT3,
-	WAUSQT4,WAUSAT4,WAUSQT5,WAUSAT5,WAUSQT6,WAUSAT6,WAUSQT7,WAUSAT7,WAUSQT8,WAUSAT8,WAUSAT9,
-	0,0,WAOHQT,WAOHAT1,WAOHAT2,WASCRP,WARETN,WAPLAN,WAIPADDR,WAMACADDR,WAINPTDT,WAUPDTDT
-	FROM PBWIP.WIP001
-	WHERE WACMCD = '01' AND WAPLANT = :ag_plant AND
-			WADVSN = :ag_dvsn
-	using sqlca;
-end if
-
-// 해당공장 일일창고재공 수불이월
-SELECT COUNT(*) INTO :li_count
-FROM PBWIP.WIP003D
-WHERE WCCMCD = '01' AND WCYYMMDD = :ag_applydate AND
-		WCPLANT = :ag_plant AND WCDVSN = :ag_dvsn
-using sqlca;
-
-if li_count = 0 then
-	INSERT INTO PBWIP.WIP003D
-	( WCCMCD,WCPLANT,WCDVSN,WCITNO,WCYYMMDD,WCITCL,WCSRCE,WCPDCD,WCAVRG1,WCAVRG2,
-		WCBGQT,WCBGAT1,WCBGAT2,WCINQT,WCINAT1,WCINAT2,WCUSQT1,WCUSAT1,WCUSQT2,WCUSAT2,
-		WCUSQT3,WCUSAT3,WCUSQT4,WCUSAT4,WCUSQT5,WCUSAT5,WCUSQT6,WCUSAT6,WCUSAT7,WCUSQT8,
-		WCUSAT8,WCUSAT9,WCOHQT,WCOHAT1,WCOHAT2,WCIPADDR,WCMACADDR,WCINPTDT,WCUPDTDT )
-	SELECT A.COMLTD, A.XPLANT, A.DIV, A.ITNO, :ag_applydate, A.CLS, A.SRCE, SUBSTRING(A.PDCD,1,2),
-		IFNULL(B.WCAVRG1,A.COSTAV),0,A.BGQTY,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,(A.OHUQTY + A.OHRQTY + A.OHSQTY),0,0,'','',:is_currentdate,:is_currentdate
-	FROM PBINV.INV101 A LEFT OUTER JOIN PBWIP.WIP003 B
-		ON A.COMLTD = B.WCCMCD AND A.XPLANT = B.WCPLANT AND
-			A.DIV = B.WCDVSN AND A.ITNO = B.WCITNO AND
-			B.WCYEAR = :ls_closeyy AND B.WCMONTH = :ls_closemm
-	WHERE A.COMLTD = '01' AND A.XPLANT = :ag_plant AND 
-			A.DIV = :ag_dvsn AND A.SRCE = '04'
-	using sqlca;
-end if
-
-//--일일재공 창고 수불체크
-If Not f_wip_calc_qtyinvd('01',ag_plant,ag_dvsn,ag_applydate) Then
-	Return False
-End If
-
-//--일일재공 라인/업체 수불체크
-If Not f_wip_inout_wip002d('01',ag_plant,ag_dvsn,ag_applydate,dw_2) Then
-	Return False
-End If
-
-// Error Update
-dw_2.accepttext()
-
-If dw_2.rowcount() > 0 Then
-	If dw_2.Update() = 1 Then	
-		//전장 AS품 현재공을 0으로 설정
-		if ag_plant = 'D' and ag_dvsn = 'A' then
-			UPDATE "PBWIP"."WIP002D"  
-			  SET "WBUSQT8" = "WBUSQT8" + "WBOHQT",   
-					"WBUSAT8" = "WBUSAT8" + "WBOHAT1",
-					"WBOHQT" = 0,
-					"WBOHAT1" = 0
-			WHERE ( "PBWIP"."WIP002D"."WBCMCD" = '01' ) AND  
-					( "PBWIP"."WIP002D"."WBPLANT" = 'D' ) AND  
-					( "PBWIP"."WIP002D"."WBDVSN" = 'A' ) AND
-					( "PBWIP"."WIP002D"."WBIOCD" IN ('1','2') ) AND
-					( "PBWIP"."WIP002D"."WBYYMMDD" = :ag_applydate ) AND
-					( {fn substring("PBWIP"."WIP002D"."WBITNO",2,1)} = 'S' ) AND  
-					( "PBWIP"."WIP002D"."WBITNO" <> 'PS0270' )
-			using sqlca;
-
-			if sqlca.sqlcode <> 0 then
-				return false
-			end if
-		end if
-		//공조기 KD/AS품 현재공을 0으로 설정
-		if ag_plant = 'D' and ag_dvsn = 'H' then
-			UPDATE "PBWIP"."WIP002D"  
-			  SET "WBUSQT8" = "WBUSQT8" + "WBOHQT",   
-					"WBUSAT8" = "WBUSAT8" + "WBOHAT1",
-					"WBOHQT" = 0,
-					"WBOHAT1" = 0
-			WHERE ( "PBWIP"."WIP002D"."WBCMCD" = '01' ) AND  
-					( "PBWIP"."WIP002D"."WBPLANT" = 'D' ) AND  
-					( "PBWIP"."WIP002D"."WBDVSN" = 'H' ) AND
-					( "PBWIP"."WIP002D"."WBIOCD" IN ('1','2') ) AND
-					( "PBWIP"."WIP002D"."WBYYMMDD" = :ag_applydate ) AND
-					( "PBWIP"."WIP002D"."WBITNO" IN ('640484K','640484V','640485K','640485V','640486K','640486V') )
-			using sqlca;
-
-			if sqlca.sqlcode <> 0 then
-				return false
-			end if
-		end if
-	Else
-		Return False
-	End If
-Else
-	Return True
-End If
-
-Return True
-end function
-
 on w_wip_run.create
 this.cb_option_post=create cb_option_post
 this.cb_down=create cb_down
 this.cbx_check=create cbx_check
+this.uo_parameter=create uo_parameter
 this.dw_2=create dw_2
 this.dw_1=create dw_1
 this.dw_interface=create dw_interface
@@ -1822,10 +1846,10 @@ this.st_vertical=create st_vertical
 this.st_date=create st_date
 this.uo_date=create uo_date
 this.ddlb_1=create ddlb_1
-this.uo_parameter=create uo_parameter
 this.Control[]={this.cb_option_post,&
 this.cb_down,&
 this.cbx_check,&
+this.uo_parameter,&
 this.dw_2,&
 this.dw_1,&
 this.dw_interface,&
@@ -1836,14 +1860,14 @@ this.uo_button,&
 this.st_vertical,&
 this.st_date,&
 this.uo_date,&
-this.ddlb_1,&
-this.uo_parameter}
+this.ddlb_1}
 end on
 
 on w_wip_run.destroy
 destroy(this.cb_option_post)
 destroy(this.cb_down)
 destroy(this.cbx_check)
+destroy(this.uo_parameter)
 destroy(this.dw_2)
 destroy(this.dw_1)
 destroy(this.dw_interface)
@@ -1855,7 +1879,6 @@ destroy(this.st_vertical)
 destroy(this.st_date)
 destroy(this.uo_date)
 destroy(this.ddlb_1)
-destroy(this.uo_parameter)
 end on
 
 event closequery;UnsignedLong ul_handle
@@ -1963,13 +1986,14 @@ end type
 
 event clicked;//-- 이월후 옵션 체크
 string ls_plant, ls_dvsn
-integer li_rtn
+integer li_rtn, li_selrow
 
 dw_2.dataobject = 'd_wip_option_wip004'
 dw_2.settransobject(sqlca)
 
-ls_plant = 'D' 
-ls_dvsn = 'V'
+li_selrow = dw_interface.getselectedrow(0)
+ls_plant= dw_interface.GetItemString( li_selrow, 'wip_plant')
+ls_dvsn = mid(dw_interface.GetItemString( li_selrow, 'wip_gubun'),4,1)
 is_applydate = uo_parameter.dw_1.getItemString( 1, 'wzeddt')
 li_rtn = MessageBox("확인", ls_plant + ls_dvsn + ": 마감월 : " + is_applydate + " 에 대해 호환조정작업을 하시겠습니까" &
 			, Exclamation!, OKCancel!, 2)
@@ -2007,8 +2031,8 @@ event clicked;f_save_to_excel(dw_2)
 end event
 
 type cbx_check from checkbox within w_wip_run
-integer x = 2555
-integer y = 172
+integer x = 2651
+integer y = 184
 integer width = 635
 integer height = 80
 integer taborder = 100
@@ -2019,11 +2043,23 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
-long backcolor = 12632256
-boolean enabled = false
-string text = "일일재공마감"
+long backcolor = 67108864
+string text = "재공수불체크용"
 boolean checked = true
 end type
+
+type uo_parameter from u_parameter_wip within w_wip_run
+event destroy ( )
+integer x = 1248
+integer y = 256
+integer width = 2601
+integer height = 564
+integer taborder = 50
+end type
+
+on uo_parameter.destroy
+call u_parameter_wip::destroy
+end on
 
 type dw_2 from datawindow within w_wip_run
 integer x = 1979
@@ -2182,7 +2218,7 @@ integer x = 1243
 integer y = 4
 integer taborder = 30
 boolean border = false
-long backcolor = 12632256
+long backcolor = 79741120
 end type
 
 on uo_button.destroy
@@ -2265,7 +2301,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "굴림"
 long textcolor = 33554432
-long backcolor = 12632256
+long backcolor = 67108864
 boolean enabled = false
 string text = "Work Date :"
 alignment alignment = right!
@@ -2308,7 +2344,6 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "굴림"
 long textcolor = 33554432
-boolean enabled = false
 boolean sorted = false
 string item[] = {"이월전마감","이월후마감"}
 borderstyle borderstyle = stylelowered!
@@ -2330,18 +2365,4 @@ ElseIf index = 2 Then
 End If	
 
 end event
-
-type uo_parameter from u_parameter_wip within w_wip_run
-event destroy ( )
-integer x = 1248
-integer y = 256
-integer width = 2601
-integer height = 564
-integer taborder = 50
-long backcolor = 12632256
-end type
-
-on uo_parameter.destroy
-call u_parameter_wip::destroy
-end on
 

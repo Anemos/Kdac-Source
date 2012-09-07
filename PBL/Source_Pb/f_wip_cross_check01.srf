@@ -1,0 +1,163 @@
+$PBExportHeader$f_wip_cross_check01.srf
+$PBExportComments$크로스 체크(전공장,시작일,완료일)
+global type f_wip_cross_check01 from function_object
+end type
+
+forward prototypes
+global function boolean f_wip_cross_check01 (string a_cmcd, string a_fromdt, string a_todt, datawindow a_dw)
+end prototypes
+
+global function boolean f_wip_cross_check01 (string a_cmcd, string a_fromdt, string a_todt, datawindow a_dw);//재공관리자를 위한 전공장 크로스체크
+//자재히스토리(INV401)과 재공히스토리(WIP004)와의 상호 에러체크
+//@인수 a_fromdate(8자리), a_todate(8자리), a_curmonth(6자리)
+//해당 SQL문에서 에러가 발생할경우 해당 에러항목을 RESPONS 윈도우에 보여줌
+integer li_cnt,li_rowcnt, li_currow
+string ls_gubun,ls_cmcd,ls_plant,ls_dvsn,ls_srty,ls_srno,ls_itno,ls_psrty,ls_psrno
+string ls_cls, ls_srce
+dec{1} lc_tqty,lc_prqt
+string ls_tdte4, ls_date
+datastore ds_cross_inv401, ds_cross_wip004, ds_cross_qtydate
+
+ds_cross_inv401 = create datastore
+ds_cross_inv401.dataobject = "d_wip_cross01_inv401"
+ds_cross_inv401.settransobject(sqlca)
+
+ds_cross_wip004 = create datastore
+ds_cross_wip004.dataobject = "d_wip_cross01_wip004"
+ds_cross_wip004.settransobject(sqlca)
+
+ds_cross_qtydate = create datastore
+ds_cross_qtydate.dataobject = "d_wip_cross01_qtydate"
+ds_cross_qtydate.settransobject(sqlca)
+
+//변경된 업체코드 재공이력에서 선삭제
+DELETE FROM PBWIP.WIP004 A
+WHERE A.WDCMCD = :a_cmcd AND A.WDPLANT LIKE '%' AND A.WDDVSN LIKE '%' AND A.WDPRSRTY = 'RP' AND
+	A.WDDATE >= :a_fromdt AND A.WDDATE <= :a_todt AND
+	EXISTS( SELECT * FROM PBINV.INV401 B
+		WHERE A.WDCMCD = B.COMLTD AND A.WDPRSRTY = B.SLIPTYPE AND
+			A.WDPRSRNO = B.SRNO AND A.WDPRSRNO1 = B.SRNO1 AND
+			A.WDPRSRNO2 = SRNO2 AND A.WDCHDPT <> B.VSRNO )
+using sqlca;
+			
+DELETE FROM PBWIP.WIP004 A
+WHERE A.WDCMCD = :a_cmcd AND A.WDPLANT LIKE '%' AND A.WDDVSN LIKE '%' AND A.WDPRSRTY = 'IS' AND
+	A.WDDATE >= :a_fromdt AND A.WDDATE <= :a_todt AND
+	EXISTS( SELECT * FROM PBINV.INV401 B
+		WHERE A.WDCMCD = B.COMLTD AND A.WDPRSRTY = B.SLIPTYPE AND
+			A.WDPRSRNO = B.SRNO AND A.WDPRSRNO1 = B.SRNO1 AND
+			A.WDPRSRNO2 = SRNO2 AND A.WDPRDPT <> B.VSRNO )
+using sqlca;
+
+//CHILD NOT FOUND - INV401 EXCEPTION JOIN WIP004
+li_rowcnt = ds_cross_inv401.retrieve(a_cmcd,a_fromdt,a_todt,mid(a_fromdt,1,6))
+
+for li_cnt = 1 to li_rowcnt
+	li_currow = a_dw.insertrow(0)
+	a_dw.setitem(li_currow,"errorcode", '1')
+	a_dw.setitem(li_currow,"inv401_comltd", ds_cross_inv401.getitemstring(li_cnt,"comltd"))
+	a_dw.setitem(li_currow,"inv401_sliptype", ds_cross_inv401.getitemstring(li_cnt,"sliptype"))
+	a_dw.setitem(li_currow,"inv401_srno", ds_cross_inv401.getitemstring(li_cnt,"srno"))
+	a_dw.setitem(li_currow,"inv401_srno1", ds_cross_inv401.getitemstring(li_cnt,"srno1"))
+	a_dw.setitem(li_currow,"inv401_srno2", ds_cross_inv401.getitemstring(li_cnt,"srno2"))
+	a_dw.setitem(li_currow,"inv401_xplant", ds_cross_inv401.getitemstring(li_cnt,"xplant"))
+	a_dw.setitem(li_currow,"inv401_div", ds_cross_inv401.getitemstring(li_cnt,"div"))
+	a_dw.setitem(li_currow,"inv401_slno", ds_cross_inv401.getitemstring(li_cnt,"slno"))
+	a_dw.setitem(li_currow,"inv401_itno", ds_cross_inv401.getitemstring(li_cnt,"itno"))
+	a_dw.setitem(li_currow,"inv401_cls", ds_cross_inv401.getitemstring(li_cnt,"cls"))
+	a_dw.setitem(li_currow,"inv401_srce", ds_cross_inv401.getitemstring(li_cnt,"srce"))
+	a_dw.setitem(li_currow,"inv401_xuse", ds_cross_inv401.getitemstring(li_cnt,"xuse"))
+	a_dw.setitem(li_currow,"inv401_rtngub", ds_cross_inv401.getitemstring(li_cnt,"rtngub"))
+	a_dw.setitem(li_currow,"inv401_vsrno", ds_cross_inv401.getitemstring(li_cnt,"vsrno"))
+	a_dw.setitem(li_currow,"inv401_dept", ds_cross_inv401.getitemstring(li_cnt,"dept"))
+	a_dw.setitem(li_currow,"inv401_tdte4", ds_cross_inv401.getitemstring(li_cnt,"tdte4"))
+	a_dw.setitem(li_currow,"inv401_tqty1", ds_cross_inv401.getitemdecimal(li_cnt,"tqty1"))
+	a_dw.setitem(li_currow,"inv401_tqty2", ds_cross_inv401.getitemdecimal(li_cnt,"tqty2"))
+	a_dw.setitem(li_currow,"inv401_tqty3", ds_cross_inv401.getitemdecimal(li_cnt,"tqty3"))
+	a_dw.setitem(li_currow,"inv401_tqty4", ds_cross_inv401.getitemdecimal(li_cnt,"tqty4"))
+	a_dw.setitem(li_currow,"chgdate", ds_cross_inv401.getitemstring(li_cnt,"tdte4"))
+	a_dw.setitem(li_currow,"chgqty", ds_cross_inv401.getitemdecimal(li_cnt,"tqty4"))
+	a_dw.setitem(li_currow,"inv401_updtdt", ds_cross_inv401.getitemstring(li_cnt,"updtdt"))
+next
+
+//PARENT NOT FOUND - WIP004 EXCEPTION JOIN INV401
+li_rowcnt = ds_cross_wip004.retrieve(a_cmcd,a_fromdt,a_todt,mid(a_fromdt,1,6))
+
+for li_cnt = 1 to li_rowcnt
+	li_currow = a_dw.insertrow(0)
+	a_dw.setitem(li_currow,"errorcode", '2')
+	a_dw.setitem(li_currow,"inv401_comltd", ds_cross_wip004.getitemstring(li_cnt,"wdcmcd"))
+	a_dw.setitem(li_currow,"inv401_sliptype", ds_cross_wip004.getitemstring(li_cnt,"wdprsrty"))
+	a_dw.setitem(li_currow,"inv401_srno", ds_cross_wip004.getitemstring(li_cnt,"wdprsrno"))
+	a_dw.setitem(li_currow,"inv401_srno1", ds_cross_wip004.getitemstring(li_cnt,"wdprsrno1"))
+	a_dw.setitem(li_currow,"inv401_srno2", ds_cross_wip004.getitemstring(li_cnt,"wdprsrno2"))
+	a_dw.setitem(li_currow,"inv401_xplant", ds_cross_wip004.getitemstring(li_cnt,"wdplant"))
+	a_dw.setitem(li_currow,"inv401_div", ds_cross_wip004.getitemstring(li_cnt,"wddvsn"))
+	a_dw.setitem(li_currow,"inv401_slno", ds_cross_wip004.getitemstring(li_cnt,"wdslno"))
+	a_dw.setitem(li_currow,"inv401_itno", ds_cross_wip004.getitemstring(li_cnt,"wdprno"))
+	a_dw.setitem(li_currow,"inv401_cls", ' ')
+	a_dw.setitem(li_currow,"inv401_srce", ' ')
+	a_dw.setitem(li_currow,"inv401_xuse", ' ')
+	a_dw.setitem(li_currow,"inv401_rtngub", ' ')
+	a_dw.setitem(li_currow,"inv401_vsrno", ' ')
+	a_dw.setitem(li_currow,"inv401_dept", ' ')
+	a_dw.setitem(li_currow,"inv401_tdte4", ds_cross_wip004.getitemstring(li_cnt,"wddate"))
+	a_dw.setitem(li_currow,"inv401_tqty1", 0)
+	a_dw.setitem(li_currow,"inv401_tqty2", 0)
+	a_dw.setitem(li_currow,"inv401_tqty3", 0)
+	a_dw.setitem(li_currow,"inv401_tqty4", ds_cross_wip004.getitemdecimal(li_cnt,"wdprqt"))
+	a_dw.setitem(li_currow,"chgdate", ds_cross_wip004.getitemstring(li_cnt,"wddate"))
+	a_dw.setitem(li_currow,"chgqty", ds_cross_wip004.getitemdecimal(li_cnt,"wdprqt"))
+next
+
+//QTY, DATE NOT MATCH - 불출/반납수량 과 입고날짜가 수정된 경우
+li_rowcnt = ds_cross_qtydate.retrieve(a_cmcd,a_fromdt,a_todt,mid(a_fromdt,1,6))
+
+for li_cnt = 1 to li_rowcnt
+	ls_srty = ds_cross_qtydate.getitemstring(li_cnt,"inv401_sliptype")
+	ls_cls = ds_cross_qtydate.getitemstring(li_cnt,"inv401_cls")
+	ls_srce = ds_cross_qtydate.getitemstring(li_cnt,"inv401_srce")
+//	if ls_srty = 'RS' then
+//		if ls_cls = '10' and ls_srce = '03' then
+//			lc_tqty = ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty2") &
+//							+ ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty3") &
+//							+ ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty4")
+//			lc_prqt = ds_cross_qtydate.getitemdecimal(li_cnt,"wip004_wdprqt")
+//	      if lc_tqty = lc_prqt then
+//				continue
+//			end if
+//		end if
+//	end if
+	li_currow = a_dw.insertrow(0)
+	a_dw.setitem(li_currow,"errorcode", '3')
+	a_dw.setitem(li_currow,"inv401_comltd", ds_cross_qtydate.getitemstring(li_cnt,"inv401_comltd"))
+	a_dw.setitem(li_currow,"inv401_sliptype", ds_cross_qtydate.getitemstring(li_cnt,"inv401_sliptype"))
+	a_dw.setitem(li_currow,"inv401_srno", ds_cross_qtydate.getitemstring(li_cnt,"inv401_srno"))
+	a_dw.setitem(li_currow,"inv401_srno1", ds_cross_qtydate.getitemstring(li_cnt,"inv401_srno1"))
+	a_dw.setitem(li_currow,"inv401_srno2", ds_cross_qtydate.getitemstring(li_cnt,"inv401_srno2"))
+	a_dw.setitem(li_currow,"inv401_xplant", ds_cross_qtydate.getitemstring(li_cnt,"inv401_xplant"))
+	a_dw.setitem(li_currow,"inv401_div", ds_cross_qtydate.getitemstring(li_cnt,"inv401_div"))
+	a_dw.setitem(li_currow,"inv401_slno", ds_cross_qtydate.getitemstring(li_cnt,"inv401_slno"))
+	a_dw.setitem(li_currow,"inv401_itno", ds_cross_qtydate.getitemstring(li_cnt,"inv401_itno"))
+	a_dw.setitem(li_currow,"inv401_cls", ds_cross_qtydate.getitemstring(li_cnt,"inv401_cls"))
+	a_dw.setitem(li_currow,"inv401_srce", ds_cross_qtydate.getitemstring(li_cnt,"inv401_srce"))
+	a_dw.setitem(li_currow,"inv401_xuse", ds_cross_qtydate.getitemstring(li_cnt,"inv401_xuse"))
+	a_dw.setitem(li_currow,"inv401_rtngub", ds_cross_qtydate.getitemstring(li_cnt,"inv401_rtngub"))
+	a_dw.setitem(li_currow,"inv401_vsrno", ds_cross_qtydate.getitemstring(li_cnt,"inv401_vsrno"))
+	a_dw.setitem(li_currow,"inv401_dept", ds_cross_qtydate.getitemstring(li_cnt,"inv401_dept"))
+	a_dw.setitem(li_currow,"inv401_tdte4", ds_cross_qtydate.getitemstring(li_cnt,"inv401_tdte4"))
+	a_dw.setitem(li_currow,"inv401_tqty1", ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty1"))
+	a_dw.setitem(li_currow,"inv401_tqty2", ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty2"))
+	a_dw.setitem(li_currow,"inv401_tqty3", ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty3"))
+	a_dw.setitem(li_currow,"inv401_tqty4", ds_cross_qtydate.getitemdecimal(li_cnt,"inv401_tqty4"))
+	a_dw.setitem(li_currow,"chgdate", ds_cross_qtydate.getitemstring(li_cnt,"wip004_wddate"))
+	a_dw.setitem(li_currow,"chgqty", ds_cross_qtydate.getitemdecimal(li_cnt,"wip004_wdprqt"))
+next
+
+destroy ds_cross_wip004
+destroy ds_cross_inv401
+destroy ds_cross_qtydate
+
+return true
+end function
+

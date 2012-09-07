@@ -284,6 +284,6 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 33554432
-long backcolor = 12632256
+long backcolor = 67108864
 end type
 

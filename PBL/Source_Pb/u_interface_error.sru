@@ -31,7 +31,7 @@ global type u_interface_error from userobject
 integer width = 1975
 integer height = 260
 boolean border = true
-long backcolor = 12632256
+long backcolor = 79741120
 long tabtextcolor = 33554432
 long picturemaskcolor = 536870912
 event ue_repair ( )
@@ -146,7 +146,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 79741120
 boolean enabled = false
 alignment alignment = center!
 boolean focusrectangle = false
@@ -164,7 +164,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 79741120
 boolean enabled = false
 alignment alignment = center!
 boolean focusrectangle = false
@@ -182,7 +182,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 255
-long backcolor = 12632256
+long backcolor = 79741120
 boolean enabled = false
 alignment alignment = center!
 boolean focusrectangle = false
@@ -200,7 +200,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 79741120
 boolean enabled = false
 alignment alignment = center!
 boolean focusrectangle = false
@@ -237,7 +237,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 74481808
 string text = " Time "
 end type
 
@@ -253,7 +253,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 74481808
 string text = "Errors"
 end type
 
@@ -269,7 +269,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 74481808
 string text = " Written "
 end type
 
@@ -284,7 +284,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 41943040
-long backcolor = 12632256
+long backcolor = 74481808
 string text = " Read "
 end type
 

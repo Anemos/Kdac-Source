@@ -1,0 +1,83 @@
+$PBExportHeader$d_wip_inout_vndr07.srd
+$PBExportComments$유상사급품에 대한 해당전표별 데이타오브젝트
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=68 color="536870912" )
+summary(height=4 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV401.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INV401.DIV" )
+ column=(type=char(15) updatewhereclause=yes name=itno dbname="INV401.ITNO" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="INV401.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="INV401.SRCE" )
+ column=(type=char(5) updatewhereclause=yes name=vsrno dbname="INV401.VSRNO" )
+ column=(type=char(2) updatewhereclause=yes name=sliptype dbname="INV401.SLIPTYPE" )
+ column=(type=char(2) updatewhereclause=yes name=xuse dbname="INV401.XUSE" )
+ column=(type=char(2) updatewhereclause=yes name=rtngub dbname="INV401.RTNGUB" )
+ column=(type=decimal(4) updatewhereclause=yes name=com_qty dbname="COM_QTY" )
+ column=(type=decimal(0) updatewhereclause=yes name=com_amt dbname="COM_AMT" )
+ retrieve="SELECT XPLANT, DIV, ITNO,CLS,SRCE,VSRNO, SLIPTYPE, XUSE, RTNGUB,SUM(TQTY4) AS COM_QTY, SUM(TRAMT) AS COM_AMT
+FROM PBINV.INV401
+WHERE (COMLTD = :a_cmcd) AND (XPLANT = :a_plant) AND (DIV = :a_dvsn) AND (SUBSTR(TDTE4,1,6) = :a_adjdt)
+		AND ((SLIPTYPE IN ('IS','RS','IP')) AND CLS IN ('10','40','50'))
+      AND XUSE = '07'
+		AND SUBSTR(VSRNO,1,1) = 'D' AND TQTY4 <> 0
+GROUP BY XPLANT,DIV,ITNO,CLS,SRCE,VSRNO,SLIPTYPE, XUSE, RTNGUB
+
+UNION ALL
+
+SELECT XPLANT, DIV, ITNO,CLS,SRCE,VSRNO, SLIPTYPE, XUSE, RTNGUB,SUM(TQTY4) AS COM_QTY, SUM(TRAMT) AS COM_AMT
+FROM PBINV.INV401
+WHERE (COMLTD = :a_cmcd) AND (XPLANT = :a_plant) AND (DIV = :a_dvsn) AND (SUBSTR(TDTE4,1,6) = :a_adjdt)
+		AND ((SLIPTYPE IN ('IS','RS','IP')) AND CLS IN ('10','40','50'))
+      AND XUSE = '07'
+		AND SUBSTR(VSRNO,1,1) = 'D' AND TQTY4 = 0
+GROUP BY XPLANT,DIV,ITNO,CLS,SRCE,VSRNO,SLIPTYPE, XUSE, RTNGUB
+
+UNION ALL
+
+SELECT WDPLANT, WDDVSN, WDITNO,WDITCL,WDSRCE,WDCHDPT, WDSLTY,WDUSGE,'', SUM(WDCHQT) AS COM_QTY, SUM(0) AS COM_AMT
+FROM PBWIP.WIP004
+WHERE (WDCMCD = :a_cmcd) AND (WDPLANT = :a_plant) AND (WDDVSN = :a_dvsn) AND (SUBSTR(WDDATE,1,6) = :a_adjdt)
+		AND WDIOCD = '3' AND (WDSLTY IN ('IE','WR','WC','WX'))
+GROUP BY WDPLANT,WDDVSN,WDITNO,WDITCL,WDSRCE,WDCHDPT,WDSLTY,WDUSGE
+
+UNION ALL
+
+SELECT WAPLANT, WADVSN, WAITNO,' ',' ',WAORCT, ' ', ' ', ' ', 0 AS COM_QTY, 0 AS COM_AMT
+FROM PBWIP.WIP001	
+WHERE (WACMCD = :a_cmcd) AND (WAPLANT = :a_plant ) AND (WADVSN = :a_dvsn )
+		AND (WAIOCD = '3')
+		AND ( NOT ( WABGQT = 0 AND WABGAT1 = 0 AND WABGAT2 = 0 AND WAINQT = 0 AND WAINAT1 = 0 AND WAINAT2 = 0 AND
+                 WAINAT3 = 0 AND WAINAT4 = 0 AND WAUSQT1 = 0 AND WAUSAT1 = 0 AND WAUSQT2 = 0 AND WAUSAT2 = 0 AND
+					  WAUSQT3 = 0 AND WAUSAT3 = 0 AND WAUSQT4 = 0 AND WAUSAT4 = 0 AND WAUSQT5 = 0 AND WAUSAT5 = 0 AND
+					  WAUSQT6 = 0 AND WAUSAT6 = 0 AND WAUSQT7 = 0 AND WAUSAT7 = 0 AND  WAUSQT8 = 0 AND WAUSAT8 = 0 AND
+					  WAOHQT = 0 AND WAOHAT1 = 0 ))
+
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_adjdt", string))  sort="vsrno A itno A sliptype A " )
+text(band=header alignment="2" text="지역" border="0" color="0" x="5" y="4" height="60" width="128" html.valueishtml="0"  name=xplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="공장" border="0" color="0" x="137" y="4" height="60" width="128" html.valueishtml="0"  name=div_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품번" border="0" color="0" x="270" y="4" height="60" width="343" html.valueishtml="0"  name=itno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="전표구분" border="0" color="0" x="617" y="4" height="60" width="256" html.valueishtml="0"  name=sliptype_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="불출용도" border="0" color="0" x="901" y="4" height="60" width="256" html.valueishtml="0"  name=xuse_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반납구분" border="0" color="0" x="1161" y="4" height="60" width="256" html.valueishtml="0"  name=rtngub_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고량/총량" border="0" color="0" x="1870" y="4" height="60" width="366" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입출고금액" border="0" color="0" x="2240" y="4" height="60" width="407" html.valueishtml="0"  name=tramt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="5" y="4" height="72" width="64" format="[general]" html.valueishtml="0"  name=xplant  tag="지역" visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="137" y="4" height="60" width="87" format="[general]" html.valueishtml="0"  name=div  tag="공장" visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="270" y="4" height="60" width="343" format="[general]" html.valueishtml="0"  name=itno  tag="품번" visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="617" y="4" height="60" width="110" format="[general]" html.valueishtml="0"  name=sliptype  tag="전표구분" visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="901" y="4" height="72" width="96" format="[general]" html.valueishtml="0"  name=xuse  tag="불출용도" visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1161" y="4" height="60" width="110" format="[general]" html.valueishtml="0"  name=rtngub  tag="반납구분   {'  ',01,02,03}" visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1481" y="0" height="60" width="110" format="[general]" html.valueishtml="0"  name=cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1623" y="4" height="60" width="110" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="1797" y="4" height="60" width="457" format="[general]" html.valueishtml="0"  name=com_qty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2281" y="4" height="60" width="480" format="[general]" html.valueishtml="0"  name=com_amt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2770" y="4" height="60" width="183" format="[general]" html.valueishtml="0"  name=vsrno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,76 @@
+$PBExportHeader$d_wip_option_post_main.srd
+$PBExportComments$È£È¯ÁÖÇ°¹ø ¿ÀºêÁ§Æ®(ÀÌ¿ùÈÄ)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=4 color="536870912" )
+summary(height=76 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=bom003_opitn dbname="BOM003.OPITN" )
+ column=(type=char(2) updatewhereclause=yes name=wip002_wbcmcd dbname="WIP002.WBCMCD" )
+ column=(type=char(1) updatewhereclause=yes name=wip002_wbplant dbname="WIP002.WBPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wip002_wbdvsn dbname="WIP002.WBDVSN" )
+ column=(type=char(1) updatewhereclause=yes name=wip002_wbiocd dbname="WIP002.WBIOCD" )
+ column=(type=char(5) updatewhereclause=yes name=wip002_wborct dbname="WIP002.WBORCT" )
+ column=(type=char(4) updatewhereclause=yes name=wip002_wbyear dbname="WIP002.WBYEAR" )
+ column=(type=char(2) updatewhereclause=yes name=wip002_wbmonth dbname="WIP002.WBMONTH" )
+ column=(type=long updatewhereclause=yes name=com_ohqt dbname="COM_OHQT" )
+ column=(type=long updatewhereclause=yes name=com_usqt1 dbname="COM_USQT1" )
+ column=(type=long updatewhereclause=yes name=com_usqt2 dbname="COM_USQT2" )
+ column=(type=long updatewhereclause=yes name=com_usqt3 dbname="COM_USQT3" )
+ column=(type=long updatewhereclause=yes name=com_usqtsum dbname="COM_USQTSUM" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" initial="0" )
+ retrieve="  SELECT DISTINCT ~"PBPDM~".~"BOM003~".~"OPITN~",
+			~"PBWIP~".~"WIP002~".~"WBCMCD~",   
+         ~"PBWIP~".~"WIP002~".~"WBPLANT~",   
+         ~"PBWIP~".~"WIP002~".~"WBDVSN~",      
+         ~"PBWIP~".~"WIP002~".~"WBIOCD~", 
+			~"PBWIP~".~"WIP002~".~"WBORCT~",
+			~"PBWIP~".~"WIP002~".~"WBYEAR~",
+			~"PBWIP~".~"WIP002~".~"WBMONTH~",
+			0 as com_ohqt,
+			0 as com_usqt1,
+			0 as com_usqt2,
+			0 as com_usqt3,
+			0 as com_usqtsum,
+			~"PBINV~".~"INV101~".~"CONVQTY~"
+    FROM ~"PBPDM~".~"BOM003~",   
+         ~"PBWIP~".~"WIP002~",
+			~"PBINV~".~"INV101~"
+   WHERE ( ~"PBPDM~".~"BOM003~".~"OCMCD~" = ~"PBWIP~".~"WIP002~".~"WBCMCD~" ) and
+			( ~"PBPDM~".~"BOM003~".~"OPLANT~" = ~"PBWIP~".~"WIP002~".~"WBPLANT~" ) and
+			( ~"PBPDM~".~"BOM003~".~"ODVSN~" = ~"PBWIP~".~"WIP002~".~"WBDVSN~" ) and
+			( ~"PBPDM~".~"BOM003~".~"OPITN~" = ~"PBWIP~".~"WIP002~".~"WBITNO~" ) and
+			( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and
+			( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and
+			( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and
+			( ~"PBWIP~".~"WIP002~".~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and   
+         ( ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = :a_cmcd  ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = :a_plant  ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = :a_dvsn  ) AND  
+			( ~"PBWIP~".~"WIP002~".~"WBYEAR~"||~"PBWIP~".~"WIP002~".~"WBMONTH~" = :a_adjdate  ) AND 
+			( ~"PBWIP~".~"WIP002~".~"WBIOCD~" IN ('1','2','3')  ) AND 
+         ((~"PBPDM~".~"BOM003~".~"OEDTE~" = ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_lastdate ) OR
+			(~"PBPDM~".~"BOM003~".~"OEDTE~" <> ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_lastdate 
+                                          AND ~"PBPDM~".~"BOM003~".~"OEDTE~" >= :a_lastdate )))
+	ORDER BY ~"PBPDM~".~"BOM003~".~"OPITN~" ASC,~"PBWIP~".~"WIP002~".~"WBORCT~" ASC  " arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_adjdate", string),("a_lastdate", string)) )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="0" y="4" height="76" width="146" format="[general]" html.valueishtml="0"  name=wip002_wbcmcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="160" y="4" height="76" width="361" format="[general]" html.valueishtml="0"  name=wip002_wbplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="544" y="4" height="76" width="169" format="[general]" html.valueishtml="0"  name=wip002_wbdvsn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="745" y="4" height="76" width="229" format="[general]" html.valueishtml="0"  name=wip002_wbiocd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="987" y="4" height="76" width="274" format="[general]" html.valueishtml="0"  name=wip002_wborct visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1275" y="4" height="76" width="219" format="[general]" html.valueishtml="0"  name=wip002_wbyear visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1504" y="4" height="76" width="238" format="[general]" html.valueishtml="0"  name=wip002_wbmonth visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="1760" y="4" height="60" width="480" format="[general]" html.valueishtml="0"  name=bom003_opitn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="2277" y="0" height="60" width="128" format="[general]" html.valueishtml="0"  name=com_ohqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="2437" y="0" height="60" width="128" format="[general]" html.valueishtml="0"  name=com_usqt1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2601" y="8" height="60" width="128" format="[general]" html.valueishtml="0"  name=com_usqt2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="2761" y="12" height="60" width="128" format="[general]" html.valueishtml="0"  name=com_usqt3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="2939" y="12" height="60" width="398" format="[general]" html.valueishtml="0"  name=com_usqtsum visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="3337" y="0" height="60" width="1376" format="[general]" html.valueishtml="0"  name=inv101_convqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

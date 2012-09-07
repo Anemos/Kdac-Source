@@ -1,0 +1,39 @@
+$PBExportHeader$f_carry_over_stock.srf
+$PBExportComments$창고재고 이월
+global type f_carry_over_stock from function_object
+end type
+
+forward prototypes
+global function integer f_carry_over_stock (string a_cmcd, string a_yyyymm)
+end prototypes
+
+global function integer f_carry_over_stock (string a_cmcd, string a_yyyymm);//*****************************************************************
+// 창고재공 이월
+// 품목재고 DB(INV101)에서 사급품을 창고재공DB(WIP003)으로 CREATION
+// INSERT SELECT문 사용( 마감월의 다음달 레코드를 생성 )
+//*****************************************************************
+string ls_nextdt, ls_yyyy, ls_mm, ls_yyyy01, ls_mm01, ls_cmcd
+
+ls_nextdt = uf_wip_addmonth(a_yyyymm,1)
+ls_yyyy01 = mid(a_yyyymm,1,4)
+ls_mm01 = mid(a_yyyymm,5,2)
+ls_yyyy = mid(ls_nextdt,1,4)
+ls_mm = mid(ls_nextdt,5,2)
+ls_cmcd = a_cmcd
+
+DECLARE up_wip_19 PROCEDURE FOR PBWIP.SP_WIP_19  
+         A_CMCD = :a_cmcd,   
+         A_YY01 = :ls_yyyy01,   
+         A_MM01 = :ls_mm01,   
+         A_YY02 = :ls_yyyy,   
+         A_MM02 = :ls_mm  using sqlca;
+
+EXECUTE up_wip_19;
+
+if sqlca.sqlcode < 0 then
+	return -1
+end if
+
+return 0
+end function
+

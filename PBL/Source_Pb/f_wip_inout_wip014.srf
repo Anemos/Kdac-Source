@@ -1,0 +1,403 @@
+$PBExportHeader$f_wip_inout_wip014.srf
+$PBExportComments$특정일시 CUTOFF 재공생성
+global type f_wip_inout_wip014 from function_object
+end type
+
+forward prototypes
+global subroutine f_wip_inout_wip014 (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, string a_day, string a_hour)
+end prototypes
+
+global subroutine f_wip_inout_wip014 (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, string a_day, string a_hour);//***********************************************************************************
+//
+// 실시간 CUTOFF 재공수량 생성
+// WIP002 과 WIP004, INV401 을 상호비교하여 재공밸런스(WIP002)와 불일치하는 데이타를 찾는다.
+// 인수 : 회사, 지역, 공장, 적용년월, 에러데이타윈도우
+// 반환값 : TRUE, FALSE
+//
+//***********************************************************************************
+long ll_rowcnt,ll_rowcnt1,ll_rowcnt2,ll_cnt,ll_cntx, ll_findrow, ll_currow, ll_cnty
+string ls_check, ls_cttp, ls_slty, ls_xuse, ls_rtngub, ls_cls, ls_srce, ls_nuse
+string ls_itno, ls_orct, ls_orct2, ls_year, ls_month, ls_fromdt, ls_todt, ls_datetype, ls_stringtype, ls_cutoffdate
+long ll_totcnt, ll_totsum, ll_totcur
+dec{4} lc_qty[1 to 13], lc_chkqty, lc_convqty
+dec{0} lc_chkamt
+datastore ds_inout_line_013, ds_inout_wip002
+
+//***********************************************************************************
+// 라인 수불확인 : d_wip_inout_line
+// 조회데이타 : 지역, 공장, 품번, 계정, 구입선, 부서, 전표타입, 불출용도, 반납구분, 수량합, 금액합
+// INV401 => 계정(10,40,50), 전표타입(IS,RS,SA,SR),VSRNO가 업체가 아닌것
+//        => SA,SR이면서 10/03이 아닌것
+// UNION
+// WIP004 => 재공구분:라인, 전표구분(IE,WR,WC)
+// 정열 : 품번 ASC, 전표타입 ASC
+//***********************************************************************************
+ds_inout_line_013 = create datastore									
+ds_inout_line_013.dataobject = "d_wip_inout_line_014"
+ds_inout_line_013.settransobject(sqlca)
+
+ds_inout_wip002 = create datastore
+ds_inout_wip002.dataobject = "d_wip_inout_wip002"											//정열 : 제품군 Asc, 품번 Asc
+ds_inout_wip002.settransobject(sqlca)
+
+ls_year = mid(a_adjdt,1,4)
+ls_month = mid(a_adjdt,5,2)
+ls_fromdt = a_adjdt + '01'
+ls_todt = f_relativedate(a_adjdt + a_day,-1)
+ls_cutoffdate = a_adjdt + a_day
+ls_datetype = string(ls_cutoffdate,"@@@@-@@-@@") + " " + a_hour + ":00:00"
+ls_stringtype = a_hour + "0000"
+
+
+ds_inout_line_013.retrieve(a_cmcd,a_plant,a_dvsn,ls_fromdt, ls_todt,ls_datetype,ls_stringtype)
+ll_rowcnt = ds_inout_line_013.rowcount()
+
+ds_inout_wip002.retrieve(a_cmcd,a_plant,a_dvsn,ls_year,ls_month,'1')										
+ll_rowcnt1 = ds_inout_wip002.rowcount()
+
+DELETE FROM PBWIP.WIP013
+WHERE WBYEAR = :ls_year AND WBMONTH = :ls_month AND
+	WBCMCD = :a_cmcd AND WBPLANT = :a_plant AND
+	WBDVSN = :a_dvsn
+using sqlca;
+
+ls_orct = '9999'
+//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),실사(11),현재공(12)
+lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
+ll_findrow = 1
+ll_totcnt = 0
+ll_totsum = ll_rowcnt + ll_rowcnt2
+
+If ll_rowcnt > 0 Then
+	ls_check = trim(ds_inout_line_013.getitemstring(1,"itno"))
+	SELECT "PBINV"."INV101"."CONVQTY", "PBINV"."INV101"."NUSE"
+				INTO :lc_convqty, :ls_nuse
+				FROM "PBINV"."INV101", "PBINV"."INV402"
+				WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV402"."COMLTD" ) AND
+						( "PBINV"."INV101"."XPLANT" = "PBINV"."INV402"."XPLANT" ) AND
+						( "PBINV"."INV101"."DIV" = "PBINV"."INV402"."DIV" ) AND
+						( "PBINV"."INV101"."ITNO" = "PBINV"."INV402"."ITNO" ) AND
+						( "PBINV"."INV402"."COMLTD" = :a_cmcd ) AND
+						( "PBINV"."INV402"."XPLANT" = :a_plant ) AND
+						( "PBINV"."INV402"."DIV" = :a_dvsn ) AND
+						( "PBINV"."INV402"."ITNO" = :ls_check ) AND
+						( "PBINV"."INV402"."XYEAR" = :a_adjdt ) 
+						using sqlca;
+	If sqlca.sqlcode <> 0 Then
+		lc_convqty = 1
+	End If
+End If
+
+//재공라인품번 수불체크루틴
+for ll_cnt = 1 to ll_rowcnt	
+	ll_totcnt = ll_totcnt + 1
+	ls_itno = trim(ds_inout_line_013.getitemstring(ll_cnt,"itno"))
+	
+	//최종루틴 처리
+	if ll_cnt = ll_rowcnt then
+		if ls_check <> ls_itno then
+			ll_findrow = ds_inout_wip002.find("wip002_wborct = '9999' and wip002_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
+			if ll_findrow > 0 then
+				lc_qty[1] = ds_inout_wip002.getitemdecimal(ll_findrow,"wip002_wbbgqt")
+				//lc_qty[1] = 0
+			end if
+			lc_qty[12] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
+								+ lc_qty[8] + lc_qty[9] + lc_qty[10] )					
+			//라인실사재공 생성 (WIP013)
+			INSERT INTO PBWIP.WIP013(WBYEAR, WBMONTH, WBCMCD, WBPLANT, WBDVSN, WBITNO, WBORCT, WBBGQT,
+				WBINQT, WBUSQT1, WBUSQT2, WBUSQT3, WBUSQT4, WBUSQT5, WBUSQT6, WBUSQT7, WBUSQT8, WBOHQT)
+			VALUES(:ls_year, :ls_month, :a_cmcd, :a_plant, :a_dvsn, :ls_check, :ls_orct, :lc_qty[1],
+				:lc_qty[2], :lc_qty[3], :lc_qty[4], :lc_qty[5], :lc_qty[6], :lc_qty[7], :lc_qty[8],
+				:lc_qty[9], :lc_qty[10], :lc_qty[12])
+			using sqlca;
+											
+			lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			
+			ls_check = ls_itno
+			SELECT "PBINV"."INV101"."CONVQTY", "PBINV"."INV101"."NUSE"
+				INTO :lc_convqty, :ls_nuse
+				FROM "PBINV"."INV101", "PBINV"."INV402"
+				WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV402"."COMLTD" ) AND
+						( "PBINV"."INV101"."XPLANT" = "PBINV"."INV402"."XPLANT" ) AND
+						( "PBINV"."INV101"."DIV" = "PBINV"."INV402"."DIV" ) AND
+						( "PBINV"."INV101"."ITNO" = "PBINV"."INV402"."ITNO" ) AND
+						( "PBINV"."INV402"."COMLTD" = :a_cmcd ) AND
+						( "PBINV"."INV402"."XPLANT" = :a_plant ) AND
+						( "PBINV"."INV402"."DIV" = :a_dvsn ) AND
+						( "PBINV"."INV402"."ITNO" = :ls_check ) AND
+						( "PBINV"."INV402"."XYEAR" = :a_adjdt ) 
+						using sqlca;
+			If sqlca.sqlcode <> 0 Then
+				lc_convqty = 1
+			End If
+		end if
+
+		ls_slty = ds_inout_line_013.getitemstring(ll_cnt,"sliptype")
+		ls_xuse = ds_inout_line_013.getitemstring(ll_cnt,"xuse")
+		ls_rtngub = trim(ds_inout_line_013.getitemstring(ll_cnt,"rtngub"))
+		ls_cls = ds_inout_line_013.getitemstring(ll_cnt,"cls")
+		ls_srce = ds_inout_line_013.getitemstring(ll_cnt,"srce")
+		
+		choose case ls_slty
+			case 'RP'
+				if (a_plant = 'D' and (a_dvsn = 'A' or a_dvsn = 'V')) then
+					//전장에서 50/04품번이 입고되면 사급완성품창고로 이동한다.
+				else
+					//전장을 제외한 공장인경우, 라인에 투입된다.
+					if (ls_cls = '50' and ls_srce = '04') then
+						if a_plant = 'B' or a_plant = 'K' then
+							if ls_nuse <> 'Y' then
+								lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							end if
+						else
+							lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						end if
+					end if
+				end if
+			case 'IS'
+				if (ls_xuse = '04' or ls_xuse = '07' or ls_xuse = '06') then
+					//라인재공과 무관한 불출용도 임
+//					if ls_xuse = '07' then
+//						lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+//						lc_amt[2] = lc_amt[2] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+//						lc_qty[5] = lc_qty[5] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+//						lc_amt[6] = lc_qty[6] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+//					end if
+				else
+					//불출용도가 '03','05'인 경우와 금액만 투입된 경우에 투입과 동시에 타계정사용으로 처리
+					if ls_cls <> '10' and ls_srce = '04' then
+						lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+					else
+						lc_chkqty = ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+						lc_chkamt = ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+						if (lc_chkqty = 0 and lc_chkamt <> 0) then
+							//lc_amt[3] = lc_amt[3] + lc_chkamt
+						else
+							lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							//lc_amt[2] = lc_amt[2] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+							if (ls_xuse = '03' or ls_xuse = '05') then
+								lc_qty[7] = lc_qty[7] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							end if
+						end if
+					end if
+				end if
+			case 'RS'
+				if (ls_xuse = '04' or ls_xuse = '07' or ls_xuse = '06') then
+					//라인재공과 무관한 불출용도임
+				else
+					if ls_rtngub <> '02' then
+						//소재불량 반납
+						lc_chkqty = ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+						lc_chkamt = ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+						if (lc_chkqty = 0 and lc_chkamt <> 0) then
+							//lc_amt[3] = lc_amt[3] - lc_chkamt
+						else
+							lc_qty[2] = lc_qty[2] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							//lc_amt[2] = lc_amt[2] - ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+						end if
+						
+						if (ls_xuse = '03' or ls_xuse = '05') then
+							lc_qty[7] = lc_qty[7] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							//lc_amt[8] = lc_qty[7] * (lc_costav / lc_convqty)
+						end if
+					else
+						//작업불량에 반납
+						if ls_srce <> '03' then
+							lc_qty[9] = lc_qty[9] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							//lc_amt[10] = lc_qty[9] * (lc_costav / lc_convqty)
+						end if
+					end if
+				end if
+			case 'SA'
+				if (ls_srce <> '04') or (ls_cls = '10' and ls_srce = '04') then
+					lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+					lc_qty[6] = lc_qty[6] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+				end if
+			case 'SR'
+				if (ls_srce <> '04') or (ls_cls = '10' and ls_srce = '04') then
+					lc_qty[2] = lc_qty[2] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+					lc_qty[6] = lc_qty[6] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+				end if
+			case 'WC','WR','IE','WX'
+				choose case ls_xuse
+					case '01'	//정상사용
+						lc_qty[3] = lc_qty[3] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					case '02'	//반출사용
+						lc_qty[4] = lc_qty[4] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					case '03'	//유상반출사용
+						lc_qty[5] = lc_qty[5] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					case '06'	//타부서불출사용
+						lc_qty[8] = lc_qty[8] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					case '07'	//불량 사용
+						lc_qty[9] = lc_qty[9] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					case '08'   //조정수량
+						lc_qty[10] = lc_qty[10] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				end choose
+		end choose
+		
+		ll_findrow = ds_inout_wip002.find("wip002_wborct = '9999' and wip002_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
+		if ll_findrow > 0 then
+			lc_qty[1] = ds_inout_wip002.getitemdecimal(ll_findrow,"wip002_wbbgqt")
+			//lc_qty[1] = 0
+		end if
+		lc_qty[12] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
+							+ lc_qty[8] + lc_qty[9] + lc_qty[10])	
+		//라인실사재공생성
+		INSERT INTO PBWIP.WIP013(WBYEAR, WBMONTH, WBCMCD, WBPLANT, WBDVSN, WBITNO, WBORCT, WBBGQT,
+				WBINQT, WBUSQT1, WBUSQT2, WBUSQT3, WBUSQT4, WBUSQT5, WBUSQT6, WBUSQT7, WBUSQT8, WBOHQT)
+			VALUES(:ls_year, :ls_month, :a_cmcd, :a_plant, :a_dvsn, :ls_check, :ls_orct, :lc_qty[1],
+				:lc_qty[2], :lc_qty[3], :lc_qty[4], :lc_qty[5], :lc_qty[6], :lc_qty[7], :lc_qty[8],
+				:lc_qty[9], :lc_qty[10], :lc_qty[12])
+			using sqlca;
+		
+		exit
+	end if
+	
+	if ls_check <> ls_itno then			//투입수량,투입금액,사용수량을 비교
+		ll_findrow = ds_inout_wip002.find("wip002_wborct = '9999' and wip002_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
+		if ll_findrow > 0 then
+			lc_qty[1] = ds_inout_wip002.getitemdecimal(ll_findrow,"wip002_wbbgqt")
+			//lc_qty[1] = 0
+		end if
+		lc_qty[12] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
+							+ lc_qty[8] + lc_qty[9] + lc_qty[10])					
+		//라인실사재공생성
+		INSERT INTO PBWIP.WIP013(WBYEAR, WBMONTH, WBCMCD, WBPLANT, WBDVSN, WBITNO, WBORCT, WBBGQT,
+				WBINQT, WBUSQT1, WBUSQT2, WBUSQT3, WBUSQT4, WBUSQT5, WBUSQT6, WBUSQT7, WBUSQT8, WBOHQT)
+			VALUES(:ls_year, :ls_month, :a_cmcd, :a_plant, :a_dvsn, :ls_check, :ls_orct, :lc_qty[1],
+				:lc_qty[2], :lc_qty[3], :lc_qty[4], :lc_qty[5], :lc_qty[6], :lc_qty[7], :lc_qty[8],
+				:lc_qty[9], :lc_qty[10], :lc_qty[12])
+			using sqlca;
+		
+		lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		ls_check = ls_itno
+		
+		SELECT "PBINV"."INV101"."CONVQTY", "PBINV"."INV101"."NUSE"
+			INTO :lc_convqty, :ls_nuse
+			FROM "PBINV"."INV101", "PBINV"."INV402"
+			WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV402"."COMLTD" ) AND
+					( "PBINV"."INV101"."XPLANT" = "PBINV"."INV402"."XPLANT" ) AND
+					( "PBINV"."INV101"."DIV" = "PBINV"."INV402"."DIV" ) AND
+					( "PBINV"."INV101"."ITNO" = "PBINV"."INV402"."ITNO" ) AND
+					( "PBINV"."INV402"."COMLTD" = :a_cmcd ) AND
+					( "PBINV"."INV402"."XPLANT" = :a_plant ) AND
+					( "PBINV"."INV402"."DIV" = :a_dvsn ) AND
+					( "PBINV"."INV402"."ITNO" = :ls_check ) AND
+					( "PBINV"."INV402"."XYEAR" = :a_adjdt ) 
+					using sqlca;
+		If sqlca.sqlcode <> 0 Then
+			lc_convqty = 1
+		End If
+	end if
+	ls_slty = ds_inout_line_013.getitemstring(ll_cnt,"sliptype")
+	ls_xuse = ds_inout_line_013.getitemstring(ll_cnt,"xuse")
+	ls_rtngub = trim(ds_inout_line_013.getitemstring(ll_cnt,"rtngub"))
+	ls_cls = ds_inout_line_013.getitemstring(ll_cnt,"cls")
+	ls_srce = ds_inout_line_013.getitemstring(ll_cnt,"srce")
+	
+	choose case ls_slty
+		case 'RP'
+			if (a_plant = 'D' and (a_dvsn = 'A' or a_dvsn = 'V')) then
+				//전장에서 50/04품번이 입고되면 사급완성품창고로 이동한다.
+			else
+				//전장을 제외한 공장인경우, 라인에 투입된다.
+				if (ls_cls = '50' and ls_srce = '04') then
+					if a_plant = 'B' or a_plant = 'K' then
+						if ls_nuse <> 'Y' then
+							lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						end if
+					else
+						lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+					end if
+				end if
+			end if
+		case 'IS'
+			if (ls_xuse = '04' or ls_xuse = '07' or ls_xuse = '06') then
+				//라인재공과 무관한 불출용도 임
+//				if ls_xuse = '07' then
+//					lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+//					lc_amt[2] = lc_amt[2] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+//					lc_qty[5] = lc_qty[5] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+//					lc_amt[6] = lc_qty[6] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+//				end if
+			else
+				//불출용도가 '03','05'인 경우와 금액만 투입된 경우에 투입과 동시에 타계정사용으로 처리
+				if ls_cls <> '10' and ls_srce = '04' then
+					lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+				else
+					lc_chkqty = ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					lc_chkamt = ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+					if (lc_chkqty = 0 and lc_chkamt <> 0) then
+						//lc_amt[3] = lc_amt[3] + lc_chkamt
+					else
+						lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						//lc_amt[2] = lc_amt[2] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+						if (ls_xuse = '03' or ls_xuse = '05') then
+							lc_qty[7] = lc_qty[7] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+							//lc_amt[8] = lc_qty[7] * (lc_costav / lc_convqty)
+						end if
+					end if
+				end if
+			end if
+		case 'RS'
+			if (ls_xuse = '04' or ls_xuse = '07' or ls_xuse = '06') then
+				//라인재공과 무관한 불출용도임
+			else
+				if ls_rtngub <> '02' then
+					//소재불량 반납
+					lc_chkqty = ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+					//lc_chkamt = ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+					if (lc_chkqty = 0 and lc_chkamt <> 0) then
+						//lc_amt[3] = lc_amt[3] - lc_chkamt
+					else
+						lc_qty[2] = lc_qty[2] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						//lc_amt[2] = lc_amt[2] - ds_inout_line_013.getitemdecimal(ll_cnt,"com_amt")
+					end if
+					
+					if (ls_xuse = '03' or ls_xuse = '05') then
+						lc_qty[7] = lc_qty[7] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						//lc_amt[8] = lc_qty[7] * (lc_costav / lc_convqty)
+					end if
+				else
+					//작업불량에 반납
+					if ls_srce <> '03' then
+						lc_qty[9] = lc_qty[9] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+						//lc_amt[10] = lc_qty[9] * (lc_costav / lc_convqty)
+					end if
+				end if
+			end if
+		case 'SA'
+			if ls_srce <> '04' or (ls_cls = '10' and ls_srce = '04') then
+				lc_qty[2] = lc_qty[2] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+				lc_qty[6] = lc_qty[6] + (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+			end if
+		case 'SR'
+			if ls_srce <> '04' or (ls_cls = '10' and ls_srce = '04') then
+				lc_qty[2] = lc_qty[2] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+				lc_qty[6] = lc_qty[6] - (ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
+			end if
+		case 'WC','WR','IE','WX'
+			choose case ls_xuse
+				case '01'	//정상사용
+					lc_qty[3] = lc_qty[3] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '02'	//반출사용
+					lc_qty[4] = lc_qty[4] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '03'	//유상반출사용
+					lc_qty[5] = lc_qty[5] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '06'	//타부서불출사용
+					lc_qty[8] = lc_qty[8] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '07'	//불량 사용
+					lc_qty[9] = lc_qty[9] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '08'   //조정수량
+					lc_qty[10] = lc_qty[10] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case '09'   //실사차이
+					lc_qty[11] = lc_qty[11] + ds_inout_line_013.getitemdecimal(ll_cnt,"com_qty")
+				case else
+					messagebox("재공사용용도", ls_itno + ":" + ls_orct2 + " 에러")
+			end choose
+	end choose
+next
+
+end subroutine
+

@@ -1,0 +1,40 @@
+$PBExportHeader$d_wip_create_cutoff.srd
+$PBExportComments$CUTOFF이후 재공사용량계산(50/04)
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=68 color="536870912" )
+summary(height=4 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=wdplant dbname="WIP016.WDPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wddvsn dbname="WIP016.WDDVSN" )
+ column=(type=char(15) updatewhereclause=yes name=wditno dbname="WIP016.WDITNO" )
+ column=(type=decimal(4) updatewhereclause=yes name=com_qty dbname="COM_QTY" )
+ retrieve="SELECT AA.WDPLANT, AA.WDDVSN, AA.WDITNO,
+	SUM(AA.WDCHQT) AS COM_QTY
+FROM PBWIP.WIP016 AA INNER JOIN PBINV.INV101 BB
+	ON AA.WDCMCD = BB.COMLTD AND AA.WDPLANT = BB.XPLANT AND AA.WDDVSN = BB.DIV AND AA.WDPRNO = BB.ITNO
+WHERE AA.WDCMCD = :a_cmcd AND AA.WDPLANT = :a_plant 
+	AND AA.WDDVSN = :a_dvsn 
+	AND AA.WDDATE >= :a_fromdt AND AA.WDDATE <= :a_todt
+	AND AA.WDIOCD = '1' AND AA.WDSLTY <> 'WR'
+	AND BB.CLS = '30' AND AA.WDITCL = '50'
+GROUP BY AA.WDPLANT, AA.WDDVSN, AA.WDITNO" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_fromdt", string),("a_todt", string)) )
+text(band=header alignment="2" text="지역" border="0" color="0" x="5" y="4" height="60" width="128" html.valueishtml="0"  name=xplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="공장" border="0" color="0" x="137" y="4" height="60" width="128" html.valueishtml="0"  name=div_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품번" border="0" color="0" x="270" y="4" height="60" width="343" html.valueishtml="0"  name=itno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="전표구분" border="0" color="0" x="617" y="4" height="60" width="256" html.valueishtml="0"  name=sliptype_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="불출용도" border="0" color="0" x="901" y="4" height="60" width="256" html.valueishtml="0"  name=xuse_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="반납구분" border="0" color="0" x="1161" y="4" height="60" width="256" html.valueishtml="0"  name=rtngub_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입고량/총량" border="0" color="0" x="1870" y="4" height="60" width="366" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="입출고금액" border="0" color="0" x="2240" y="4" height="60" width="407" html.valueishtml="0"  name=tramt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1797" y="4" height="60" width="457" format="[general]" html.valueishtml="0"  name=com_qty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="23" y="4" height="60" width="105" format="[general]" html.valueishtml="0"  name=wdplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="151" y="4" height="60" width="142" format="[general]" html.valueishtml="0"  name=wddvsn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="338" y="0" height="60" width="480" format="[general]" html.valueishtml="0"  name=wditno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

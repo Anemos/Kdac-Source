@@ -1,0 +1,130 @@
+$PBExportHeader$d_wip_cross_inv401.srd
+$PBExportComments$inv401 left outer join wip004
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes key=yes name=comltd dbname="INV401.COMLTD" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=sliptype dbname="INV401.SLIPTYPE" )
+ column=(type=char(8) updatewhereclause=yes key=yes name=srno dbname="INV401.SRNO" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=srno1 dbname="INV401.SRNO1" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=srno2 dbname="INV401.SRNO2" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV401.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INV401.DIV" )
+ column=(type=char(12) updatewhereclause=yes name=slno dbname="INV401.SLNO" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="INV401.ITNO" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="INV401.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="INV401.SRCE" )
+ column=(type=char(2) updatewhereclause=yes name=xuse dbname="INV401.XUSE" )
+ column=(type=char(2) updatewhereclause=yes name=rtngub dbname="INV401.RTNGUB" )
+ column=(type=char(5) updatewhereclause=yes name=vsrno dbname="INV401.VSRNO" )
+ column=(type=char(6) updatewhereclause=yes name=dept dbname="INV401.DEPT" )
+ column=(type=char(8) updatewhereclause=yes name=tdte4 dbname="INV401.TDTE4" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty1 dbname="INV401.TQTY1" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty2 dbname="INV401.TQTY2" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty3 dbname="INV401.TQTY3" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty4 dbname="INV401.TQTY4" )
+ column=(type=char(19) updatewhereclause=yes name=updtdt dbname="INV401.UPDTDT" )
+ retrieve="SELECT ~"PBINV~".~"INV401~".~"COMLTD~",
+         ~"PBINV~".~"INV401~".~"SLIPTYPE~",
+         ~"PBINV~".~"INV401~".~"SRNO~",
+         ~"PBINV~".~"INV401~".~"SRNO1~",
+         ~"PBINV~".~"INV401~".~"SRNO2~",
+         ~"PBINV~".~"INV401~".~"XPLANT~",
+         ~"PBINV~".~"INV401~".~"DIV~",
+         ~"PBINV~".~"INV401~".~"SLNO~",
+         ~"PBINV~".~"INV401~".~"ITNO~",
+         ~"PBINV~".~"INV401~".~"CLS~",
+         ~"PBINV~".~"INV401~".~"SRCE~",
+         ~"PBINV~".~"INV401~".~"XUSE~",
+         ~"PBINV~".~"INV401~".~"RTNGUB~",
+         ~"PBINV~".~"INV401~".~"VSRNO~",
+         ~"PBINV~".~"INV401~".~"DEPT~",
+         ~"PBINV~".~"INV401~".~"TDTE4~",
+      ~"PBINV~".~"INV401~".~"TQTY1~",
+      ~"PBINV~".~"INV401~".~"TQTY2~",
+      ~"PBINV~".~"INV401~".~"TQTY3~",
+         ~"PBINV~".~"INV401~".~"TQTY4~",
+		~"PBINV~".~"INV401~".~"UPDTDT~"
+    FROM ~"PBINV~".~"INV401~"
+  WHERE ~"PBINV~".~"INV401~".~"COMLTD~" = :a_cmcd AND ~"PBINV~".~"INV401~".~"XPLANT~" = :a_plant AND ~"PBINV~".~"INV401~".~"DIV~" = :a_div
+    AND ~"PBINV~".~"INV401~".~"TDTE4~" >= :a_fromdt AND ~"PBINV~".~"INV401~".~"TDTE4~" <= :a_todt AND
+      (~"PBINV~".~"INV401~".~"SLIPTYPE~" in ('RM','SM','IS','RS','RP','SS')) AND
+         (~"PBINV~".~"INV401~".~"CLS~" in ('10','30','40','50')) AND
+      (NOT ( (~"PBINV~".~"INV401~".~"SLIPTYPE~" = 'IS' OR ~"PBINV~".~"INV401~".~"SLIPTYPE~" = 'RS') AND
+      ((~"PBINV~".~"INV401~".~"CLS~" = '10' OR ~"PBINV~".~"INV401~".~"CLS~" = '40' OR ~"PBINV~".~"INV401~".~"CLS~" = '50') AND
+      (~"PBINV~".~"INV401~".~"SRCE~" <> '03' )))) AND
+		(NOT ((~"PBINV~".~"INV401~".~"SLIPTYPE~" = 'SS') AND (~"PBINV~".~"INV401~".~"SRCE~" <> '04' OR ~"PBINV~".~"INV401~".~"INVSTCD~" <> 'U'))) AND
+      ( NOT (~"PBINV~".~"INV401~".~"TQTY1~" = 0 AND ~"PBINV~".~"INV401~".~"TQTY2~" = 0 AND
+           ~"PBINV~".~"INV401~".~"TQTY3~" = 0 AND ~"PBINV~".~"INV401~".~"TQTY4~" = 0 )) AND
+      ( NOT EXISTS (SELECT ~"PBWIP~".~"WIP004~".~"WDSLTY~"
+                FROM ~"PBWIP~".~"WIP004~"
+                WHERE ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = :a_cmcd ) AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = :a_plant ) AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = :a_div ) AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDDATE~" >= :a_fromdt ) AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDDATE~" <= :a_todt ) AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDPRSRTY~" = ~"PBINV~".~"INV401~".~"SLIPTYPE~") AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDPRSRNO~" = ~"PBINV~".~"INV401~".~"SRNO~") AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDPRSRNO1~" = ~"PBINV~".~"INV401~".~"SRNO1~") AND
+                    ( ~"PBWIP~".~"WIP004~".~"WDPRSRNO2~" = ~"PBINV~".~"INV401~".~"SRNO2~") )) AND
+		( EXISTS (SELECT * FROM ~"PBPDM~".~"BOM001~"
+					WHERE ~"PBPDM~".~"BOM001~".~"PCMCD~" = :a_cmcd AND
+						~"PBPDM~".~"BOM001~".~"PLANT~" = :a_plant AND
+						~"PBPDM~".~"BOM001~".~"PDVSN~" = :a_div AND
+						~"PBINV~".~"INV401~".~"COMLTD~" = ~"PBPDM~".~"BOM001~".~"PCMCD~" AND 
+						~"PBINV~".~"INV401~".~"XPLANT~" = ~"PBPDM~".~"BOM001~".~"PLANT~" AND 
+						~"PBINV~".~"INV401~".~"DIV~" = ~"PBPDM~".~"BOM001~".~"PDVSN~" AND 
+						~"PBINV~".~"INV401~".~"ITNO~" = ~"PBPDM~".~"BOM001~".~"PPITN~" AND
+              		(( ~"PBPDM~".~"BOM001~".~"PEDTE~" = ' '  and ~"PBPDM~".~"BOM001~".~"PEDTM~" <= ~"PBINV~".~"INV401~".~"TDTE4~" ) or
+              		( ~"PBPDM~".~"BOM001~".~"PEDTE~" <> ' ' and ~"PBPDM~".~"BOM001~".~"PEDTM~" <= ~"PBINV~".~"INV401~".~"TDTE4~"
+                       and ~"PBPDM~".~"BOM001~".~"PEDTE~" >= ~"PBINV~".~"INV401~".~"TDTE4~" ))))" update="PBINV.INV401" updatewhere=0 updatekeyinplace=no arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_fromdt", string),("a_todt", string)) )
+text(band=header alignment="2" text="Comltd" border="0" color="0" x="5" y="4" height="64" width="187" html.valueishtml="0"  name=comltd_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Sliptype" border="0" color="0" x="197" y="4" height="64" width="215" html.valueishtml="0"  name=sliptype_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Srno" border="0" color="0" x="416" y="4" height="64" width="247" html.valueishtml="0"  name=srno_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Srno1" border="0" color="0" x="667" y="4" height="64" width="155" html.valueishtml="0"  name=srno1_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Srno2" border="0" color="0" x="827" y="4" height="64" width="155" html.valueishtml="0"  name=srno2_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Xplant" border="0" color="0" x="987" y="4" height="64" width="160" html.valueishtml="0"  name=xplant_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Div" border="0" color="0" x="1152" y="4" height="64" width="82" html.valueishtml="0"  name=div_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Slno" border="0" color="0" x="1239" y="4" height="64" width="357" html.valueishtml="0"  name=slno_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Itno" border="0" color="0" x="1600" y="4" height="64" width="357" html.valueishtml="0"  name=itno_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Cls" border="0" color="0" x="1961" y="4" height="64" width="87" html.valueishtml="0"  name=cls_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Srce" border="0" color="0" x="2053" y="4" height="64" width="123" html.valueishtml="0"  name=srce_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Xuse" border="0" color="0" x="2181" y="4" height="64" width="128" html.valueishtml="0"  name=xuse_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rtngub" border="0" color="0" x="2313" y="4" height="64" width="187" html.valueishtml="0"  name=rtngub_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Vsrno" border="0" color="0" x="2505" y="4" height="64" width="165" html.valueishtml="0"  name=vsrno_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Dept" border="0" color="0" x="2674" y="4" height="64" width="192" html.valueishtml="0"  name=dept_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tdte4" border="0" color="0" x="2871" y="4" height="64" width="251" html.valueishtml="0"  name=tdte4_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tqty1" border="0" color="0" x="3127" y="4" height="64" width="329" html.valueishtml="0"  name=tqty1_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tqty2" border="0" color="0" x="3461" y="4" height="64" width="329" html.valueishtml="0"  name=tqty2_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tqty3" border="0" color="0" x="3794" y="4" height="64" width="329" html.valueishtml="0"  name=tqty3_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tqty4" border="0" color="0" x="4128" y="4" height="64" width="329" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="5" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=comltd visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="197" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=sliptype visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="416" y="4" height="76" width="306" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="731" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=srno1 visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="827" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=srno2 visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="987" y="4" height="76" width="55" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="1152" y="4" height="76" width="55" format="[general]" html.valueishtml="0"  name=div visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1239" y="4" height="76" width="357" format="[general]" html.valueishtml="0"  name=slno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1600" y="4" height="76" width="357" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="1961" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=cls visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="2053" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="2181" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=xuse visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="2313" y="4" height="76" width="82" format="[general]" html.valueishtml="0"  name=rtngub visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="2505" y="4" height="76" width="165" format="[general]" html.valueishtml="0"  name=vsrno visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="2674" y="4" height="76" width="192" format="[general]" html.valueishtml="0"  name=dept visible="1" edit.limit=6 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="2871" y="4" height="76" width="251" format="[general]" html.valueishtml="0"  name=tdte4 visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="3127" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=tqty1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="3461" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=tqty2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="3794" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=tqty3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="4128" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=tqty4 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="0" x="4466" y="8" height="64" width="512" format="[general]" html.valueishtml="0"  name=updtdt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 
