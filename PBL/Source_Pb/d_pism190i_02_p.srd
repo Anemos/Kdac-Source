@@ -1,0 +1,28 @@
+$PBExportHeader$d_pism190i_02_p.srd
+$PBExportComments$일별 종합효율/가동율/작업효율/LPI 현황 - Nested
+release 7;
+datawindow(units=3 timer_interval=0 color=16777215 processing=4 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 635 print.margin.right = 635 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no  crosstab.dynamic = yes grid.lines=0 grid.columnmove=no selected.mouse=no )
+header[1](height=0 color="536870912" )
+header[2](height=502 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=555 color="536870912" )
+table(column=(type=number updatewhereclause=yes name=seq dbname="seq" )
+ column=(type=char(20) updatewhereclause=yes name=workcenter dbname="workcenter" )
+ column=(type=char(20) updatewhereclause=yes name=workcentername dbname="workcentername" )
+ column=(type=char(20) updatewhereclause=yes name=dispname dbname="dispname" )
+ column=(type=number updatewhereclause=yes name=dispmh dbname="dispmh" )
+ procedure="1 execute dbo.sp_pism190i_02;1 @ps_area = :ps_area, @ps_div = :ps_div, @ps_wc = :ps_wc, @ps_FromDate = :ps_FromDate, @ps_ToDate = :ps_ToDate" arguments=(("ps_area", string),("ps_div", string),("ps_wc", string),("ps_FromDate", string),("ps_ToDate", string))  sort="workcenter A seq A " )
+text(band=header[2] alignment="2" text="조" border="2" color="0" x="238" y="80" height="396" width="4921"  name=t_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header[2] alignment="2" text="구분" border="2" color="0" x="5212" y="80" height="396" width="2434"  name=t_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header[2] alignment="2" text="@sday" border="2" color="0" x="7699" y="80" height="396" width="1349"  name=t_4  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="1" tabsequence=32766 border="0" color="33554432" x="52" y="26" height="26" width="52" format="[general]"  name=seq edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="158" y="26" height="26" width="26" format="[general]"  name=workcenter edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="238" y="132" height="396" width="4921" format="[general]"  name=workcentername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="5212" y="132" height="396" width="2434" format="[general]"  name=dispname edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="7699" y="132" height="396" width="1349" format="#,##0.0"  name=dispmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes crosstab.repeat=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="공장 TOTAL" border="0" color="0" x="238" y="132" height="370" width="4921"  name=t_1 visible="1~tif(  workcenter = 'XXXXX' and  dispname = '종합효율', 1, 0 )"  font.face="굴림체" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+ crosstab(band = foreground  crosstabonly = yes 
+ columns = "sday" rows = "seq, workcenter, workcentername, dispname" values = "sum(dispmh for crosstab)" sourcenames = "sday, workcenter, workcentername, seq, dispname, dispmh")
+sparse(names="workcentername")htmltable(border="0" cellpadding="1" cellspacing="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

@@ -1,0 +1,23 @@
+$PBExportHeader$f_pism_check_tmhlabtac.srf
+global type f_pism_check_tmhlabtac from function_object
+end type
+
+forward prototypes
+global function integer f_pism_check_tmhlabtac (string ag_day, string ag_dept)
+end prototypes
+
+global function integer f_pism_check_tmhlabtac (string ag_day, string ag_dept);integer  li_labtacChk   
+
+SELECT  count(DGEMPNO) INTO :li_labtacChk   
+ 	FROM TMHLABTAC
+WHERE dgday = :ag_day and dgdepte = :ag_dept and isnull(dgtimer,0) > 0  using sqlpis ;
+
+if li_labtacChk > 0 then
+	return li_labtacChk   
+else
+	return 0
+end if
+
+
+end function
+

@@ -17,9 +17,9 @@ end forward
 
 global type u_today from userobject
 string tag = "u_today"
-integer width = 416
+integer width = 457
 integer height = 84
-long backcolor = 79218872
+long backcolor = 79741120
 long tabtextcolor = 33554432
 long tabbackcolor = 15793151
 long picturemaskcolor = 536870912
@@ -38,36 +38,25 @@ end type
 global u_today u_today
 
 type variables
-Int		ii_Day, ii_Month, ii_Year
-String	is_old_column
-String	ls_DateFormat
-Date		id_date_selected
+Int ii_Day, ii_Month, ii_Year
+String is_old_column
+String ls_DateFormat
+Date id_date_selected
 
 end variables
 
 forward prototypes
 public function integer unhighlight_column (string as_column)
 public subroutine draw_month (integer year, integer month)
-public function integer days_in_month (integer month, integer year)
 public function integer highlight_column (string as_column)
 public function string get_month_string (integer as_month)
 public subroutine enter_day_numbers (integer ai_start_day_num, integer ai_days_in_month)
 public subroutine init_cal (date ad_start_date)
 public function integer get_month_number (string as_month)
 public subroutine set_date_format (string as_date_format)
+public function integer days_in_month (integer month, integer year)
+public function date get_date ()
 end prototypes
-
-event ue_variable_set;string us_date, us_today
-
-us_date	= String(Date(sle_date.Text), 'YYYY.MM.DD')
-us_today	= String(Today(), 'YYYY.MM.DD')
-
-If us_date > us_today Then
-	id_date_selected = today()
-	init_cal(id_date_selected)
-	set_date_format ('yyyy.mm.dd')
-End If
-end event
 
 event ue_size;GraphicObject	uo_which_control
 
@@ -79,7 +68,7 @@ Else
 		If uo_which_control.Tag = "u_today" Then 
 			Return
 		Else
-			width  = 417
+			width  = 457
 			height = 85
 		End If
 	End If
@@ -157,30 +146,6 @@ dw_cal.SetRedraw(TRUE)
 
 end subroutine
 
-public function integer days_in_month (integer month, integer year);//Most cases are straight forward in that there are a fixed number of 
-//days in 11 of the 12 months.  February is, of course, the problem.
-//In a leap year February has 29 days, otherwise 28.
-
-Integer		li_DaysInMonth, li_Days[12] = {31,28,31,30,31,30,31,31,30,31,30,31}
-
-// Get the number of days per month for a non leap year.
-li_DaysInMonth = li_Days[Month]
-
-// Check for a leap year.
-If Month = 2 Then
-	// If the year is a leap year, change the number of days.
-	// Leap Year Calculation:
-	//	Year divisible by 4, but not by 100, unless it is also divisible by 400
-	If ( (Mod(Year,4) = 0 And Mod(Year,100) <> 0) Or (Mod(Year,400) = 0) ) Then
-		li_DaysInMonth = 29
-	End If
-End If
-
-//Return the number of days in the relevant month
-Return li_DaysInMonth
-
-end function
-
 public function integer highlight_column (string as_column);//Highlight the current column/date
 
 string ls_return
@@ -199,29 +164,29 @@ public function string get_month_string (integer as_month);String ls_month
 
 CHOOSE CASE as_month
 	CASE 1
-		ls_month = "1 êÅ"
+		ls_month = "1 ¿ù"
 	CASE 2
-		ls_month = "2 êÅ"
+		ls_month = "2 ¿ù"
 	CASE 3
-		ls_month = "3 êÅ"
+		ls_month = "3 ¿ù"
 	CASE 4
-		ls_month = "4 êÅ"
+		ls_month = "4 ¿ù"
 	CASE 5
-		ls_month = "5 êÅ"
+		ls_month = "5 ¿ù"
 	CASE 6
-		ls_month = "6 êÅ"
+		ls_month = "6 ¿ù"
 	CASE 7
-		ls_month = "7 êÅ"
+		ls_month = "7 ¿ù"
 	CASE 8
-		ls_month = "8 êÅ"
+		ls_month = "8 ¿ù"
 	CASE 9
-		ls_month = "9 êÅ"
+		ls_month = "9 ¿ù"
 	CASE 10
-		ls_month = "10 êÅ"
+		ls_month = "10 ¿ù"
 	CASE 11
-		ls_month = "11 êÅ"
+		ls_month = "11 ¿ù"
 	CASE 12
-		ls_month = "12 êÅ"
+		ls_month = "12 ¿ù"
 END CHOOSE
 
 return ls_month
@@ -343,6 +308,57 @@ If Not isnull(id_date_selected) then
 End If
 end subroutine
 
+public function integer days_in_month (integer month, integer year);//Most cases are straight forward in that there are a fixed number of 
+//days in 11 of the 12 months.  February is, of course, the problem.
+//In a leap year February has 29 days, otherwise 28.
+
+Int nDaysInMonth
+Boolean bLeapYear
+
+CHOOSE CASE month
+	CASE 1, 3, 5, 7, 8, 10, 12
+		nDaysInMonth = 31
+	CASE 4, 6, 9, 11
+		nDaysInMonth = 30
+	CASE 2
+	//If a year is divisible by 100 without a remainder, then it is
+	//NOT a leap year
+
+		If Mod(year,100) = 0 then
+			bLeapYear = False
+
+	//If the year is not divisible by 100, but is by 4 then it is a
+	//leap year
+
+		ElseIf Mod(year,4) = 0 then 
+			bLeapYear = True
+
+	//If neither case is true then it is not a leap year
+
+		Else 
+			bLeapYear = False
+		End If
+
+	//If it is a leap year, February has 29 days, otherwise 28
+
+		If bLeapYear then
+			nDaysInMonth = 29
+		Else
+			nDaysInMonth = 28
+		End If
+
+END CHOOSE
+
+//Return the number of days in the relevant month
+return nDaysInMonth
+end function
+
+public function date get_date ();date ldt
+
+ldt = Date(mid(sle_date.text,1,4) + '-' + mid(sle_date.text,6,2) + '-' + mid(sle_date.text,9,2))
+return ldt
+end function
+
 on u_today.create
 this.pb_next=create pb_next
 this.pb_prev=create pb_prev
@@ -364,19 +380,13 @@ destroy(this.pb_ddlb)
 destroy(this.dw_cal)
 end on
 
-event constructor;width  = 417
+event constructor;width  = 457
 height = 85
 
 BringToTop = True
-id_date_selected = Today()
-id_date_selected = RelativeDate(id_date_selected, -1)
-ls_dateformat = "YYYY.MM.DD"
-sle_date.Text = String(id_date_selected, 'YYYY.MM.DD')
-
-ii_month	= Month(id_date_selected)
-ii_year	= Year(id_date_selected)
-ii_day	= Day(id_date_selected)
-
+id_date_selected = date(string(g_s_date,"@@@@-@@-@@"))
+init_cal(id_date_selected)
+set_date_format ('yyyy-mm-dd')
 TriggerEvent("ue_variable_set")
 end event
 
@@ -384,14 +394,16 @@ type pb_next from picturebutton within u_today
 string tag = "u_today"
 integer x = 535
 integer y = 92
-integer width = 73
+integer width = 78
 integer height = 88
 integer taborder = 20
-integer textsize = -12
-integer weight = 400
+integer textsize = -8
+integer weight = 700
+fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Arial"
+fontfamily fontfamily = modern!
+string facename = "±¼¸²"
+string text = ">>"
 string picturename = "next1.bmp"
 string disabledname = "next1.bmp"
 alignment htextalign = left!
@@ -428,11 +440,13 @@ integer y = 92
 integer width = 73
 integer height = 88
 integer taborder = 30
-integer textsize = -12
-integer weight = 400
+integer textsize = -8
+integer weight = 700
+fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Arial"
+fontfamily fontfamily = modern!
+string facename = "±¼¸²"
+string text = "<<"
 string picturename = "prior1.bmp"
 string disabledname = "prior1.bmp"
 alignment htextalign = left!
@@ -465,17 +479,17 @@ end event
 type sle_date from singlelineedit within u_today
 event ue_keyenter pbm_keydown
 string tag = "u_today"
-integer width = 343
+integer width = 384
 integer height = 80
 integer taborder = 40
-integer textsize = -10
+integer textsize = -9
 integer weight = 400
 fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
-long textcolor = 33554432
-long backcolor = 16776960
+long textcolor = 16777215
+long backcolor = 27699859
 boolean autohscroll = false
 integer limit = 10
 borderstyle borderstyle = stylelowered!
@@ -487,21 +501,21 @@ End If
 end event
 
 event losefocus;If IsDate(Text) Then
-	Text = String(Date(Text),"yyyy.mm.dd")
+	Text = String(Date(Text),"yyyy-mm-dd")
 	id_date_selected = date(Text)
 	
 	init_cal(date(Text))
-	set_date_format ( 'yyyy.mm.dd' )
+	set_date_format ( 'yyyy-mm-dd' )
 	
 	Parent.TriggerEvent("ue_variable_set")
 	Parent.TriggerEvent("ue_valid_check")
 	Parent.TriggerEvent("ue_size")
 Else
 	gb_focus = True
-	MessageBox("Invalid Date", "Invalid date format~n~rDate will be linitialize")
-	init_cal(today())
-	id_date_selected = today()
-	set_date_format ( 'yyyy.mm.dd' )
+	MessageBox("Invalid Date", "ÀÏÀÚ°¡ Àß¸ø ÀÔ·ÂµÇ¾ú½À´Ï´Ù...~n~r¿À´Ã ³¯Â¥·Î ÃÊ±âÈ­ ÇÕ´Ï´Ù ....")
+	init_cal(date(string(g_s_date,"@@@@-@@-@@")))
+	id_date_selected = date(string(g_s_date,"@@@@-@@-@@"))
+	set_date_format ( 'yyyy-mm-dd' )
 	Parent.TriggerEvent("ue_variable_set")
 	Parent.TriggerEvent("ue_valid_check")
 	SetFocus()	
@@ -512,7 +526,7 @@ end event
 
 event getfocus;String ls_return
 
-Parent.width  = 417
+Parent.width  = 457
 Parent.height = 85
 Parent.TriggerEvent("ue_variable_set")
 
@@ -530,16 +544,17 @@ end event
 type pb_ddlb from picturebutton within u_today
 event clicked pbm_bnclicked
 string tag = "u_today"
-integer x = 343
-integer width = 73
-integer height = 80
+integer x = 379
+integer width = 78
+integer height = 84
 integer taborder = 50
 integer textsize = -8
-integer weight = 400
+integer weight = 700
+fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "MS Sans Serif"
-string picturename = "ddlb.bmp"
+string text = "<"
 alignment htextalign = left!
 end type
 
@@ -551,7 +566,7 @@ date 	ld_date
 Parent.BringToTop = True
 
 If Parent.height > 85 then
-	Parent.width  = 417
+	Parent.width  = 457
 	Parent.height = 85
 	Parent.TriggerEvent("ue_variable_set")
 	Parent.TriggerEvent("ue_valid_check")
@@ -640,7 +655,7 @@ is_old_column = ls_clickedcolumn
 //Return the chosen date into the SingleLineEdit in the chosen format
 id_date_selected = date(ii_year, ii_month, ii_Day)
 sle_date.text = String( id_date_selected, ls_dateformat )
-parent.width  = 417
+parent.width  = 457
 parent.height = 85
 Parent.TriggerEvent("ue_variable_set")
 Parent.TriggerEvent("ue_valid_check")

@@ -1,0 +1,18 @@
+$PBExportHeader$d_pism140i_2p.srd
+$PBExportComments$일별 공수투입현황 - Report
+release 7;
+datawindow(units=3 timer_interval=0 color=1073741824 processing=5 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 635 print.margin.right = 635 print.margin.top = 635 print.margin.bottom = 635 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=1746 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=26 color="536870912" )
+detail(height=846 color="536870912"  height.autosize=yes)
+table(column=(type=char(10) updatewhereclause=yes name=a dbname="a" )
+ unbound = "yes"arguments=(("as_area", string),("as_div", string),("as_wc", string),("as_fromdate", string),("as_todate", string)) )
+text(band=header alignment="0" text="[ 일별 공수투입 현황 ]" border="0" color="0" x="0" y="52" height="582" width="6244"  name=t_1  font.face="굴림체" font.height="-14" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="~t'기간 : ' +  as_fromdate + ~" ~~ ~" +  as_todate " border="0" color="0" x="6376" y="238" height="396" width="7699"  name=t_2  font.face="굴림체" font.height="-11" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression="'출력일자 : ' + string( today(), ~"YYYY.MM.DD~" )"border="0" color="0" x="0" y="1349" height="343" width="4418" format="[GENERAL]"  name=compute_6  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+report(band=detail dataobject="d_pism140i_02_p" x="6006" y="26" height="793" width="4736" border="0"  height.autosize=yes criteria="" nest_arguments=((" as_area "),(" as_div "),(" as_wc "),(" as_fromdate "),(" as_todate ")) trail_footer = yes  name=dw_prt  slideleft=yes  slideup=directlyabove )
+report(band=detail dataobject="d_pism130i_01_header_p" x="52" y="26" height="793" width="5953" border="0"  height.autosize=yes criteria="" nest_arguments=(("'2'")) trail_footer = yes  name=dw_2  slideup=directlyabove )
+text(band=foreground alignment="0" text="공장 & 조" border="0" color="0" x="26" y="846" height="396" width="6985"  name=t_divwc  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

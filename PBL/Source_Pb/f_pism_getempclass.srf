@@ -1,0 +1,23 @@
+$PBExportHeader$f_pism_getempclass.srf
+global type f_pism_getempclass from function_object
+end type
+
+forward prototypes
+global function string f_pism_getempclass (string as_empno, ref string rs_classname)
+end prototypes
+
+global function string f_pism_getempclass (string as_empno, ref string rs_classname);String ls_CalssID, ls_ClassName 
+		  
+  SELECT TMSTEMP.EmpClass,   
+         TMSTCODE.CodeName  
+    INTO :ls_CalssID,   
+         :rs_classname   
+    FROM TMSTCODE,   
+         TMSTEMP  
+   WHERE ( TMSTCODE.CodeID = TMSTEMP.EmpClass ) and  
+         ( ( TMSTCODE.CodeGroup = 'OEMPCLASS' ) AND  
+           ( TMSTEMP.EmpNo = :as_empNo ) ) Using SqlPIS  ;
+
+Return ls_CalssID 
+end function
+

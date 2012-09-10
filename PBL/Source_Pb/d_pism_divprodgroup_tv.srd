@@ -1,0 +1,66 @@
+$PBExportHeader$d_pism_divprodgroup_tv.srd
+$PBExportComments$제품그룹내 모델그룹 - Treeview
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TMSTPRODUCTGROUP.AreaCode" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TMSTPRODUCTGROUP.DivisionCode" )
+ column=(type=long update=yes updatewhereclause=yes name=blev dbname="TMSTPRODUCTGROUP.Blev" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=productgroup dbname="TMSTPRODUCTGROUP.ProductGroup" )
+ column=(type=char(3) updatewhereclause=yes name=modelgroup dbname="ModelGroup" )
+ column=(type=char(30) updatewhereclause=yes name=label dbname="TMSTPRODUCTGROUP.Label" )
+ column=(type=long updatewhereclause=yes name=modcnt dbname="modCnt" )
+ retrieve="Select A.AreaCode, 
+		 A.DivisionCode, 
+		 1 Blev, 
+		 A.ProductGroup, 
+		 '' ModelGroup, 
+		 A.ProductGroupName Label,
+		 ( Select Count(Distinct ModelGroup) From TMSTMODELGROUP  
+			 Where ( Areacode = A.AreaCode ) And 
+					 ( DivisionCode = A.DivisionCode ) And 
+					 ( ProductGroup = A.ProductGroup ) ) modCnt 
+  From TMSTPRODUCTGROUP A 
+ Where ( A.AreaCode = :as_area ) And 
+		 ( A.DivisionCode = :as_div ) 
+Union  
+Select A.AreaCode, 
+		 A.DivisionCode, 
+		 2 Blev, 
+		 A.ProductGroup, 
+		 A.ModelGroup, 
+		 A.ModelGroupName,
+		 ( Select Count(Distinct BmdNO) From TMSTBOMDATA B, TMSTMODEL C 
+			 Where ( B.Areacode = A.AreaCode ) And 
+					 ( B.DivisionCode = A.DivisionCode ) And 
+					 ( B.BMDCD = A.ProductGroup ) And 
+					 ( B.Areacode = C.AreaCode ) And 
+					 ( B.DivisionCode = C.DivisionCode ) And 
+					 ( B.BMDCD = C.ProductGroup ) And 
+					 ( B.BMDNO = C.ItemCode ) And 
+					 ( C.ModelGroup = A.ModelGroup ) And 
+					 ( B.Blev = 1 ) ) modCnt 
+  From TMSTMODELGROUP A 
+ Where ( A.AreaCode = :as_area ) And 
+		 ( A.DivisionCode = :as_div ) 
+Order By ProductGroup, ModelGroup 
+" update="TMSTPRODUCTGROUP" updatewhere=1 updatekeyinplace=no arguments=(("as_area", string),("as_div", string)) )
+text(band=header alignment="2" text="Areacode" border="0" color="0" x="9" y="8" height="64" width="251"  name=areacode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Divisioncode" border="0" color="0" x="270" y="8" height="64" width="329"  name=divisioncode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Blev" border="0" color="0" x="608" y="8" height="64" width="329"  name=blev_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Productgroup" border="0" color="0" x="946" y="8" height="64" width="352"  name=productgroup_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Modcnt" border="0" color="0" x="2272" y="4" height="76" width="251"  name=t_3  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Modelgroup" border="0" color="0" x="1307" y="4" height="76" width="146"  name=t_2  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Label" border="0" color="0" x="1463" y="4" height="76" width="800"  name=t_1  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="0" x="9" y="8" height="76" width="251" format="[general]"  name=areacode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="0" x="270" y="8" height="76" width="329" format="[general]"  name=divisioncode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=30 border="0" color="0" x="608" y="8" height="76" width="329" format="[general]"  name=blev edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="0" color="0" x="946" y="8" height="76" width="352" format="[general]"  name=productgroup edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="2272" y="20" height="64" width="251" format="[general]"  name=modcnt edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1307" y="12" height="64" width="146" format="[general]"  name=modelgroup edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1463" y="0" height="64" width="800" format="[general]"  name=label edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

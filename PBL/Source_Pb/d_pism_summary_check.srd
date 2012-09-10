@@ -1,0 +1,141 @@
+$PBExportHeader$d_pism_summary_check.srd
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=136 color="536870912" )
+summary(height=4 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tmhmonthprod_s_areacode dbname="TMHMONTHPROD_S.AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmhmonthprod_s_divisioncode dbname="TMHMONTHPROD_S.DivisionCode" )
+ column=(type=char(5) updatewhereclause=yes name=tmhmonthprod_s_workcenter dbname="TMHMONTHPROD_S.WorkCenter" )
+ column=(type=char(30) updatewhereclause=yes name=tmstworkcenter_workcentername dbname="TMSTWORKCENTER.WorkCenterName" )
+ column=(type=char(12) updatewhereclause=yes name=tmhmonthprod_s_itemcode dbname="TMHMONTHPROD_S.ItemCode" )
+ column=(type=char(7) updatewhereclause=yes name=tmhmonthprod_s_smonth dbname="TMHMONTHPROD_S.sMonth" )
+ column=(type=long updatewhereclause=yes name=tmhmonthprod_s_pqty dbname="TMHMONTHPROD_S.pQty" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonthprod_s_prod_unusemh dbname="PROD_UnuseMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonthprod_s_prod_actmh dbname="PROD_ActMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonthprod_s_prod_actinmh dbname="PROD_ActInMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonthprod_s_prod_basicmh dbname="PROD_BasicMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonth_s_mh_unusemh dbname="MH_UnuseMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonth_s_mh_actmh dbname="MH_ActMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonth_s_mh_actinmh dbname="MH_ActInMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=tmhmonth_s_mh_basicmh dbname="MH_BasicMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=prodline_unusemh dbname="PRODLINE_UnuseMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=prodline_actmh dbname="PRODLINE_ActMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=prodline_actinmh dbname="PRODLINE_ActInMH" )
+ column=(type=decimal(1) updatewhereclause=yes name=prodline_basicmh dbname="PRODLINE_BasicMH" )
+ retrieve="  SELECT A.AreaCode,   
+         A.DivisionCode,   
+         A.WorkCenter,   
+			D.WorkCenterName, 
+         A.ItemCode,   
+         A.sMonth,   
+         A.pQty,   
+         cast( A.UnuseMH as Numeric(6,1) ) PROD_UnuseMH,   
+         cast( A.ActMH as Numeric(6,1) )  PROD_ActMH,  
+         cast( A.ActInMH as Numeric(6,1) ) PROD_ActInMH,  
+         cast( A.BasicMH as Numeric(6,1) ) PROD_BasicMH, 
+         cast( B.UnuseMH as Numeric(6,1) ) MH_UnuseMH,   
+         cast( B.ActMH   as Numeric(6,1) ) MH_ActMH,   
+         cast( B.ActInMH as Numeric(6,1) ) MH_ActInMH,   
+         cast( B.BasicMH as Numeric(6,1) ) MH_BasicMH, 
+         cast( SUM(IsNull(C.UnuseMH,0)) as Numeric(6,1) ) PRODLINE_UnuseMH,   
+         cast( SUM(IsNull(C.ActMH,0))   as Numeric(6,1) ) PRODLINE_ActMH,  
+         cast( SUM(IsNull(C.ActInMH,0)) as Numeric(6,1) ) PRODLINE_ActInMH,  
+         cast( SUM(IsNull(C.BasicMH,0)) as Numeric(6,1) ) PRODLINE_BasicMH 
+    FROM TMHMONTHPROD_S A,
+			TMHMONTH_S B,
+			TMHMONTHPRODLINE_S C, 
+			TMSTWORKCENTER D
+WHERE ( A.Areacode = B.Areacode ) And 
+		( A.DivisionCode = B.DivisionCode ) And 
+		( A.WorkCenter = B.WorkCenter ) And 
+		( A.sMonth = B.sMonth ) And 
+		( A.Areacode = C.Areacode ) And 
+		( A.DivisionCode = C.DivisionCode ) And 
+		( A.WorkCenter = C.WorkCenter ) And 
+		( A.sMonth = C.sMonth ) And 
+		( A.ItemCode = C.ItemCode ) And 
+		( A.Areacode = D.AreaCode ) And 
+		( A.DivisionCode = D.DivisionCode ) And 
+		( A.WorkCenter = D.WorkCenter ) 
+Group By A.AreaCode,   
+         A.DivisionCode,   
+         A.WorkCenter,   
+			D.WorkCenterName, 
+         A.ItemCode,   
+         A.sMonth,   
+         A.pQty,   
+         A.UnuseMH,   
+         A.ActMH,  
+         A.ActInMH,  
+         A.BasicMH, 
+         B.UnuseMH,   
+         B.ActMH,   
+         B.ActInMH,   
+         B.BasicMH  
+"  sort="tmhmonthprod_s_areacode A tmhmonthprod_s_divisioncode A tmhmonthprod_s_workcenter A tmhmonthprod_s_smonth A tmhmonthprod_s_itemcode A " )
+group(level=1 header.height=0 trailer.height=80 by=("tmhmonthprod_s_areacode" , "tmhmonthprod_s_divisioncode" , "tmhmonthprod_s_workcenter" , "tmhmonthprod_s_smonth" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="0" x="9" y="8" height="60" width="142"  name=tmhmonthprod_s_areacode_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="°øÀå" border="0" color="0" x="160" y="8" height="60" width="160"  name=tmhmonthprod_s_divisioncode_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="0" x="1440" y="8" height="60" width="338"  name=tmhmonthprod_s_itemcode_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="³â¿ù" border="0" color="0" x="1143" y="8" height="60" width="288"  name=tmhmonthprod_s_smonth_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="»ý»ê¼ö·®" border="0" color="0" x="1787" y="8" height="60" width="315"  name=tmhmonthprod_s_pqty_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Á¶" border="0" color="0" x="329" y="8" height="60" width="805"  name=t_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="prod_s
+À¯ÈÞ" border="0" color="0" x="2112" y="8" height="120" width="229"  name=tmhmonthprod_s_prod_unusemh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="mh_s
+À¯ÈÞ" border="0" color="0" x="2574" y="8" height="120" width="224"  name=tmhmonth_s_mh_unusemh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="line_s
+À¯ÈÞ" border="0" color="0" x="2350" y="8" height="120" width="215"  name=prodline_unusemh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="prod S
+½ÇÅõ" border="0" color="0" x="3607" y="8" height="120" width="283"  name=tmhmonthprod_s_prod_actinmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=header alignment="2" text="mh_s
+½ÇÅõ" border="0" color="0" x="4178" y="12" height="120" width="256"  name=tmhmonth_s_mh_actinmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=header alignment="2" text="line_s
+½ÇÅõ" border="0" color="0" x="3899" y="8" height="120" width="270"  name=prodline_actinmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=header alignment="2" text="prod S
+Ç¥ÁØ" border="0" color="0" x="4443" y="8" height="120" width="265"  name=tmhmonthprod_s_prod_basicmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="31253996" )
+text(band=header alignment="2" text="mh_S
+Ç¥ÁØ" border="0" color="0" x="5019" y="12" height="120" width="261"  name=tmhmonth_s_mh_basicmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="31253996" )
+text(band=header alignment="2" text="line_s
+Ç¥ÁØ" border="0" color="0" x="4718" y="8" height="120" width="293"  name=prodline_basicmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="31253996" )
+text(band=header alignment="2" text="prod S
+½Çµ¿" border="0" color="0" x="2807" y="8" height="120" width="274"  name=tmhmonthprod_s_prod_actmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="mh_S
+½Çµ¿" border="0" color="0" x="3351" y="8" height="120" width="247"  name=tmhmonth_s_mh_actmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="line_s
+½Çµ¿" border="0" color="0" x="3090" y="8" height="120" width="251"  name=prodline_actmh_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="142" format="[general]"  name=tmhmonthprod_s_areacode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="160" y="8" height="76" width="160" format="[general]"  name=tmhmonthprod_s_divisioncode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1440" y="8" height="76" width="338" format="[general]"  name=tmhmonthprod_s_itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="1143" y="8" height="76" width="288" format="[general]"  name=tmhmonthprod_s_smonth edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="0" x="1787" y="8" height="76" width="315" format="[general]"  name=tmhmonthprod_s_pqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="'[' +  tmhmonthprod_s_workcenter + '] ' +  tmstworkcenter_workcentername "border="0" color="0" x="329" y="16" height="60" width="805" format="[GENERAL]"  name=compute_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="0" x="2112" y="8" height="76" width="229" format="[general]"  name=tmhmonthprod_s_prod_unusemh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="0" x="2350" y="8" height="76" width="215" format="[general]"  name=prodline_unusemh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="0" x="3607" y="8" height="76" width="283" format="[general]"  name=tmhmonthprod_s_prod_actinmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="0" x="4178" y="8" height="76" width="256" format="[general]"  name=tmhmonth_s_mh_actinmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="3899" y="8" height="76" width="270" format="[general]"  name=prodline_actinmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="0" x="4443" y="8" height="76" width="265" format="[general]"  name=tmhmonthprod_s_prod_basicmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="31253996" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="5019" y="8" height="76" width="261" format="[general]"  name=tmhmonth_s_mh_basicmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="31253996" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="4718" y="8" height="76" width="293" format="[general]"  name=prodline_basicmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="31253996" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="2807" y="8" height="76" width="274" format="[general]"  name=tmhmonthprod_s_prod_actmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="3351" y="8" height="76" width="247" format="[general]"  name=tmhmonth_s_mh_actmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="3090" y="8" height="76" width="251" format="[general]"  name=prodline_actmh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="2574" y="8" height="76" width="224" format="[general]"  name=tmhmonth_s_mh_unusemh edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum( truncate(   tmhmonthprod_s_prod_actinmh, 1 ) for group 1 ) "border="0" color="0" x="3607" y="4" height="72" width="283" format="#,##0.0"  name=prod_s_actin  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( ( prod_s_actin <>  line_s_actin ) or ( prod_s_actin <>  tmhmonth_s_mh_actinmh ) or  ( tmhmonth_s_mh_actinmh <>  line_s_actin ) , rgb( 255,0,0), rgb(255,255,255) )" )
+compute(band=trailer.1 alignment="1" expression="sum(  truncate(  prodline_actinmh, 1 ) for group 1 ) "border="0" color="0" x="3899" y="4" height="72" width="270" format="#,##0.0"  name=line_s_actin  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( ( prod_s_actin <>  line_s_actin ) or ( prod_s_actin <>  tmhmonth_s_mh_actinmh ) or  ( tmhmonth_s_mh_actinmh <>  line_s_actin ) , rgb( 255,0,0), rgb(255,255,255) )" )
+compute(band=trailer.1 alignment="1" expression="sum(  truncate(  tmhmonthprod_s_prod_basicmh, 1 ) for group 1 ) "border="0" color="0" x="4443" y="4" height="72" width="265" format="#,##0.0"  name=prod_s_basic  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( ( prod_s_basic <>  line_s_basic ) or ( prod_s_basic <>  tmhmonth_s_mh_basicmh ) or ( tmhmonth_s_mh_basicmh <>  line_s_basic ), rgb( 255,0,0), rgb(255,255,255) )" )
+compute(band=trailer.1 alignment="1" expression="sum( truncate(  prodline_basicmh, 1 ) for group 1 ) "border="0" color="0" x="4718" y="4" height="72" width="293" format="#,##0.0"  name=line_s_basic  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( ( prod_s_basic <>  line_s_basic ) or ( prod_s_basic <>  tmhmonth_s_mh_basicmh ) or ( tmhmonth_s_mh_basicmh <>  line_s_basic ), rgb( 255,0,0), rgb(255,255,255) )" )
+compute(band=trailer.1 alignment="1" expression="truncate( tmhmonth_s_mh_actmh , 1 )"border="0" color="0" x="3351" y="12" height="60" width="247" format="[GENERAL]"  name=mh_s_act  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression=" tmhmonth_s_mh_actinmh "border="0" color="0" x="4178" y="8" height="60" width="256" format="[GENERAL]"  name=mh_s_actin  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression=" tmhmonth_s_mh_basicmh "border="0" color="0" x="5019" y="8" height="60" width="261" format="[GENERAL]"  name=mh_s_basic  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression="truncate( tmhmonth_s_mh_unusemh , 1 )"border="0" color="0" x="2574" y="12" height="60" width="224" format="#,##0.0"  name=mh_s_unuse  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=trailer.1 alignment="1" expression="sum(  truncate( tmhmonthprod_s_prod_unusemh, 1 )  for group 1 ) "border="0" color="0" x="2112" y="4" height="72" width="229" format="#,##0.0"  name=prod_s_unuse  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( prod_s_unuse =  mh_s_unuse , rgb(255,255,255), rgb( 255,0,0) )" )
+compute(band=trailer.1 alignment="1" expression="sum( truncate( prodline_unusemh, 1 ) for group 1 ) "border="0" color="0" x="2350" y="4" height="72" width="215" format="#,##0.0"  name=line_s_unuse  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( line_s_unuse =  mh_s_unuse , rgb(255,255,255), rgb( 255,0,0) )" )
+compute(band=trailer.1 alignment="1" expression="sum(  truncate(  tmhmonthprod_s_prod_actmh, 1 ) for group 1 )"border="0" color="0" x="2807" y="4" height="72" width="274" format="#,##0.0"  name=prod_s_act  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( prod_s_act =  mh_s_act , rgb(255,255,255), rgb( 255,0,0) )" )
+compute(band=trailer.1 alignment="1" expression="sum( truncate(  prodline_actmh, 1 ) for group 1 )"border="0" color="0" x="3090" y="4" height="72" width="251" format="#,##0.0"  name=line_s_act  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="16777215~tif( line_s_act =  mh_s_act , rgb(255,255,255), rgb( 255,0,0) )" )
+
+sparse(names="tmhmonthprod_s_areacode	tmhmonthprod_s_divisioncode	compute_1	tmhmonthprod_s_smonth")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

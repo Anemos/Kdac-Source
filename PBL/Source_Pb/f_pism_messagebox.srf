@@ -1,0 +1,41 @@
+$PBExportHeader$f_pism_messagebox.srf
+$PBExportComments$MessageBox
+global type f_pism_messagebox from function_object
+end type
+
+forward prototypes
+global function integer f_pism_messagebox (icon msgtype, integer msgnum, string headtext, string detailtext)
+end prototypes
+
+global function integer f_pism_messagebox (icon msgtype, integer msgnum, string headtext, string detailtext);//Struct_msg stMessage
+Integer RetCode
+
+//stMessage.CodeNum = MsgNum
+//stMessage.HeadText = HeadText
+//stMessage.DetailText = DetailText
+//stMessage.Button1 = Button1
+//stMessage.Button2 = Button2
+
+w_frame.GetActiveSheet().SetRedraw(True)
+
+CHOOSE CASE MsgType
+CASE Information! 
+		RetCode = MessageBox(HeadText, detailtext, Information!, OK!, 1)
+
+//		OpenWithParm( w_r_infomsg, stMessage )
+	CASE Question! 
+		RetCode = MessageBox(HeadText, detailtext, Question!, YesNo!, 1)
+
+//		OpenWithParm( w_r_questmsg, stMessage )
+	CASE StopSign! 
+		Beep(5)
+		RetCode = MessageBox(HeadText, detailtext, StopSign!, OK!, 1)
+
+END CHOOSE
+
+//RetCode = Message.DoubleParm	
+
+return RetCode
+
+end function
+

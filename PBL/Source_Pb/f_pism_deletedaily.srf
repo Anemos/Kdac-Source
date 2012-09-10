@@ -1,0 +1,123 @@
+$PBExportHeader$f_pism_deletedaily.srf
+$PBExportComments$작업일보 삭제
+global type f_pism_deletedaily from function_object
+end type
+
+forward prototypes
+global function integer f_pism_deletedaily (string as_area, string as_div, string as_wc, string as_wday)
+end prototypes
+
+global function integer f_pism_deletedaily (string as_area, string as_div, string as_wc, string as_wday);/*************************/
+/*     작업일보 삭제     */
+/*************************/
+Integer ri_err 
+String ls_Month 
+
+/////////////////////////////////////////////////////////////////////////////////
+
+  INSERT INTO TDELETE ( TableName, DeleteData, DeleteTime, LastEmp )  
+	 Select 'TMHDAILYDETAIL', AreaCode + '/' + DivisionCode + '/' + rtrim(ltrim(WorkCenter)) + '/' + WorkDay + 
+	 		  '/' + rtrim(ltrim(EmpGubun)) + '/' + mhGubun + '/' + mhCode, 
+				GetDate(), :g_s_empno 
+		From TMHDAILYDETAIL 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+   DELETE FROM TMHDAILYDETAIL 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+  INSERT INTO TDELETE ( TableName, DeleteData, DeleteTime, LastEmp )  
+	 Select 'TMHDAILYSUB', AreaCode + '/' + DivisionCode + '/' + rtrim(ltrim(WorkCenter)) + '/' + WorkDay + 
+	 		  '/' + mhGubun + '/' + mhCode + rtrim(ltrim(Cast(seqNo as Char(2)))), 
+				GetDate(), :g_s_empno 
+		From TMHDAILYSUB 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+   DELETE FROM TMHDAILYSUB
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ; 
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+/////////////////////////////////////////////////////////////////////////////////
+	
+   DELETE FROM TMHREALPROD     
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+   DELETE FROM TMHDAILY 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+/////////////////////////////////////////////////////////////////////////////////
+  
+  INSERT INTO TDELETE ( TableName, DeleteData, DeleteTime, LastEmp )  
+	 Select 'TMHDAILYSTATUS', AreaCode + '/' + DivisionCode + '/' + rtrim(ltrim(WorkCenter)) + '/' + WorkDay,  
+				GetDate(), :g_s_empno  
+		From TMHDAILYSTATUS 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+
+   DELETE FROM TMHDAILYSTATUS 
+	 WHERE ( AreaCode = :as_area ) AND  
+	       ( DivisionCode = :as_div ) AND  
+	       ( WorkCenter = :as_wc ) And 
+	       ( WorkDay = :as_wday ) Using SqlPIS ;
+	If Not f_pism_sqlchkopt(False) Then Goto Exit_pr 
+	
+/////////////////////////////////////////////////////////////////////////////////
+  
+	ls_Month = Mid(as_wday, 1, 7) 
+	Declare proc_sumMonth Procedure For sp_pism010u_sumMonth &
+			 :as_area, :as_div, :as_wc, :ls_Month, @ri_err = 0 Output 
+	USING sqlPIS ;
+	Execute proc_sumMonth ;
+	If SqlPIS.SqlCode = 0 Then 
+		Fetch proc_sumMonth Into :ri_err ;
+		If SqlPIS.SqlCode <> 0 Then
+			f_pism_Messagebox(StopSign!, -1, "집계오류", "해당월 공수 및 생산수량 집계에 실패했습니다.") 
+			Close proc_sumMonth ;
+			Goto Exit_pr 			
+		End If
+	Else
+		Close proc_sumMonth ;
+		
+		RollBack Using SqlPIS ;
+		Return -1 
+	End If
+	Close proc_sumMonth ;
+	
+	Commit USING  sqlPIS;
+	sqlPIS.AutoCommit = True 
+
+Return 1 
+
+Exit_pr: 
+
+Return -1 
+end function
+

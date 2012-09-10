@@ -1,0 +1,22 @@
+$PBExportHeader$d_pism_wcitemgroup_dd.srd
+$PBExportComments$À¯»ç±º¸í dddw
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=wcitemgroup dbname="wcItemGroup" )
+ column=(type=char(30) updatewhereclause=yes name=inputname dbname="inputName" )
+ column=(type=long updatewhereclause=yes name=inschk dbname="TMHWCITEM.insChk" initial="0" )
+ retrieve="  SELECT DISTINCT IsNull(TMHWCITEM.wcItemGroup,'') wcItemGroup,
+			IsNull(TMHWCITEM.wcItemGroup,'') inputName, 
+			1 insChk  
+    FROM TMHWCITEM  
+   WHERE ( TMHWCITEM.AreaCode = :as_area ) AND  
+         ( TMHWCITEM.DivisionCode = :as_div ) AND  
+         ( TMHWCITEM.WorkCenter = :as_wc ) " arguments=(("as_area", string),("as_div", string),("as_wc", string)) )
+text(band=header alignment="2" text="À¯»ç±º ¸íÄª" border="2" color="16777215" x="9" y="8" height="60" width="946"  name=t_2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="0" color="0" x="9" y="8" height="80" width="946" format="[general]"  name=inputname edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-11" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

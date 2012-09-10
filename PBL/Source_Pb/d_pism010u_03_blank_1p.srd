@@ -1,0 +1,108 @@
+$PBExportHeader$d_pism010u_03_blank_1p.srd
+$PBExportComments$ÀÛ¾÷ÀÏº¸(Ç°¹øº° »ý»ê¼ö·®) - Report (°©Áö¿ë)
+release 8;
+datawindow(units=3 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 1 print.margin.left = 0 print.margin.right = 0 print.margin.top = 0 print.margin.bottom = 0 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=899 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=555 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tmhwcitem_divisioncode dbname="TMHWCITEM.DivisionCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmhwcitem_areacode dbname="TMHWCITEM.AreaCode" )
+ column=(type=char(5) updatewhereclause=yes name=tmhwcitem_workcenter dbname="TMHWCITEM.WorkCenter" )
+ column=(type=char(30) updatewhereclause=yes name=tmhwcitem_wcitemgroup dbname="TMHWCITEM.wcItemGroup" )
+ column=(type=char(12) updatewhereclause=yes name=tmhwcitem_itemcode dbname="TMHWCITEM.ItemCode" )
+ column=(type=char(7) updatewhereclause=yes name=tmhwcitem_sublinecode dbname="TMHWCITEM.subLineCode" )
+ column=(type=char(1) updatewhereclause=yes name=tmhwcitem_sublineno dbname="TMHWCITEM.subLineNo" )
+ column=(type=decimal(0) updatewhereclause=yes name=tmhwcitem_seq dbname="TMHWCITEM.seq" )
+ column=(type=char(1) updatewhereclause=yes name=useflag dbname="TMHWCITEM.useFlag" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ItemName" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemspec dbname="TMSTITEM.ItemSpec" )
+ retrieve="  SELECT Top 26 A.DivisionCode,   
+   	 	A.AreaCode,   
+ 		   A.WorkCenter,   
+      	A.wcItemGroup, 
+      	A.ItemCode,   
+		   A.subLineCode,  
+		   A.subLineNo,   
+			A.seq, 
+			A.useFlag, 
+			B.ItemName,   
+		 	B.ItemSpec  
+   From TMHWCITEM A,    
+        TMSTITEM B 
+  Where ( A.ItemCode *= B.ItemCode ) and  
+        ( ( A.AreaCode = :as_area ) AND  
+          ( A.DivisionCode = :as_div ) AND  
+          ( A.WorkCenter = :as_wc ) And 
+			 ( IsNull(A.UseFlag,'') <> '0' ) ) 
+Order By A.seq asc, 
+      	A.wcItemGroup asc, 
+      	A.ItemCode asc,   
+		   A.subLineCode asc,  
+		   A.subLineNo asc 
+" arguments=(("as_area", string),("as_div", string),("as_wc", string))  sort="tmhwcitem_seq A tmhwcitem_wcitemgroup A tmhwcitem_itemcode A tmhwcitem_sublinecode A tmhwcitem_sublineno A " )
+group(level=1 header.height=0 trailer.height=0 by=("group_col" ) header.color="536870912" trailer.color="536870912" )
+line(band=header x1="0" y1="0" x2="0" y2="899"  name=l_4 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="À¯»ç±º" border="0" color="0" x="26" y="105" height="661" width="3095" html.valueishtml="0"  name=wcitemgroup_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="3148" y1="0" x2="3148" y2="899"  name=l_5 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="0" x="3201" y="105" height="661" width="1984" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="5265" y1="0" x2="5265" y2="899"  name=l_6 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="0" x="5318" y="105" height="661" width="4736" html.valueishtml="0"  name=itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="10080" y1="0" x2="10080" y2="899"  name=l_7 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="±Ô°Ý" border="0" color="0" x="10133" y="105" height="661" width="3254" html.valueishtml="0"  name=itemspec_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="13414" y1="0" x2="13414" y2="899"  name=l_8 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="¶óÀÎ
+ÄÚµå" border="0" color="0" x="13467" y="105" height="740" width="1137" html.valueishtml="0"  name=sublinecode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="14631" y1="0" x2="14631" y2="899"  name=l_9 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="´ë
+Ã¼" border="0" color="0" x="14710" y="105" height="687" width="317" html.valueishtml="0"  name=sublineno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="15107" y1="449" x2="19817" y2="449"  name=l_17 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="»ý»ê¼ö·®" border="0" color="0" x="15531" y="79" height="317" width="1957" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="ºÒ·®¼ö·®" border="0" color="0" x="17991" y="79" height="317" width="1772" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+line(band=header x1="17912" y1="0" x2="17912" y2="899"  name=l_10 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="16483" y1="476" x2="16483" y2="873"  name=l_11 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="15081" y1="0" x2="15081" y2="899"  name=l_13 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="ÁÖ°£" border="0" color="0" x="15398" y="529" height="291" width="846" html.valueishtml="0"  name=daypqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+text(band=header alignment="2" text="¾ß°£" border="0" color="0" x="16774" y="529" height="291" width="899" html.valueishtml="0"  name=nightpqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+text(band=header alignment="2" text="ÁÖ°£" border="0" color="0" x="17965" y="529" height="291" width="740" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+text(band=header alignment="2" text="¾ß°£" border="0" color="0" x="18917" y="529" height="291" width="793" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="19817" y1="0" x2="19817" y2="899"  name=l_14 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="18838" y1="476" x2="18838" y2="873"  name=l_12 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="22277" y1="0" x2="22277" y2="899"  name=l_16 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="20981" y1="0" x2="20981" y2="899"  name=l_15 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="À¯ÈÞ
+°ø¼ö" border="0" color="0" x="19949" y="105" height="714" width="926" html.valueishtml="0"  name=unusemh_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+text(band=header alignment="2" text="½Çµ¿
+°ø¼ö" border="0" color="0" x="21034" y="105" height="714" width="1217" html.valueishtml="0"  name=actmh_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215"  height.autosize=yes)
+line(band=header x1="0" y1="0" x2="22277" y2="0"  name=l_1 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=header x1="0" y1="846" x2="22277" y2="846"  name=l_2 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="0" x2="0" y2="582"  name=l_19 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+compute(band=detail alignment="1" expression="getrow() - ( last( getrow() for 1 ) - count(1 for 1) )"border="0" color="0" x="2169" y="53" height="423" width="899" format="[GENERAL]" html.valueishtml="0"  name=gr_row visible="1~t0"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression="getrow()"border="0" color="0" x="2936" y="1482" height="502" width="1481" format="[GENERAL]" html.valueishtml="0"  name=row visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="79" y="106" height="370" width="3042" format="[general]" html.valueishtml="0"  name=tmhwcitem_wcitemgroup visible="1~tif( if(isNull( tmhwcitem_wcitemgroup ), '',  tmhwcitem_wcitemgroup ) = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="3148" y1="0" x2="3148" y2="582"  name=l_20 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="3201" y="106" height="370" width="2037" format="[general]" html.valueishtml="0"  name=tmhwcitem_itemcode visible="1~tif(  useflag = '3', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="5265" y1="0" x2="5265" y2="582"  name=l_21 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="5344" y="106" height="370" width="4736" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1~tif(  useflag = '3', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="10080" y1="0" x2="10080" y2="582"  name=l_22 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="10160" y="106" height="370" width="3227" format="[general]" html.valueishtml="0"  name=tmstitem_itemspec visible="1~tif(  useflag = '3', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="13414" y1="0" x2="13414" y2="582"  name=l_23 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="14631" y1="0" x2="14631" y2="582"  name=l_24 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="13467" y="106" height="370" width="1137" format="[general]" html.valueishtml="0"  name=tmhwcitem_sublinecode visible="1~tif(  useflag = '3', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="14710" y="106" height="370" width="317" format="[general]" html.valueishtml="0"  name=tmhwcitem_sublineno visible="1~tif(  useflag = '3', 0, 1 )" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="if( if( IsNull(tmhwcitem_wcitemgroup),'', tmhwcitem_wcitemgroup ) = '', string(getrow()),  tmhwcitem_wcitemgroup )"border="0" color="0" x="17885" y="53" height="476" width="1481" format="[GENERAL]" html.valueishtml="0"  name=group_col visible="1~t0"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+line(band=detail x1="17912" y1="0" x2="17912" y2="582"  name=l_26 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="16483" y1="0" x2="16483" y2="582"  name=l_30 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="15081" y1="0" x2="15081" y2="582"  name=l_25 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="19817" y1="0" x2="19817" y2="582"  name=l_27 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="18838" y1="0" x2="18838" y2="582"  name=l_31 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="22277" y1="0" x2="22277" y2="608"  name=l_29 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="20981" y1="0" x2="20981" y2="582"  name=l_28 visible="1" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="21246" y="26" height="502" width="793" format="[general]" html.valueishtml="0"  name=tmhwcitem_seq visible="1~t0" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=detail alignment="0" expression="getrow()"border="0" color="0" x="20028" y="0" height="502" width="820" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1~t0"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+line(band=detail x1="3175" y1="529" x2="22277" y2="529"  name=l_18 visible="1~tif(  gr_row = count( 1 for 1 ), 0, 1)" pen.style="0" pen.width="26~t2" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="0" y1="529" x2="22277" y2="529"  name=l_32 visible="1~tif(  gr_row = count( 1 for 1 ), 1, 0 )" pen.style="0" pen.width="26" pen.color="0"  background.mode="2" background.color="16777215" )
+
+sparse(names="tmhwcitem_wcitemgroup	tmhwcitem_itemcode	tmstitem_itemname	tmstitem_itemspec	tmhwcitem_sublinecode	tmhwcitem_sublineno")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

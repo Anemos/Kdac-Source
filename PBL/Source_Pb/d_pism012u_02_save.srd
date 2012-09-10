@@ -1,0 +1,78 @@
+$PBExportHeader$d_pism012u_02_save.srd
+$PBExportComments$작업일보작성용 품번목록(Target) - Grid
+release 7;
+datawindow(units=0 timer_interval=0 color=16777215 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TMHWCITEM.AreaCode" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TMHWCITEM.DivisionCode" )
+ column=(type=char(5) update=yes updatewhereclause=yes key=yes name=workcenter dbname="TMHWCITEM.WorkCenter" )
+ column=(type=char(10) updatewhereclause=yes name=applydate dbname="ApplyDate" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=wcitemgroup dbname="TMHWCITEM.wcItemGroup" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="TMHWCITEM.ItemCode" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(100) updatewhereclause=yes name=itemspec dbname="ItemSpec" )
+ column=(type=char(7) update=yes updatewhereclause=yes key=yes name=sublinecode dbname="TMHWCITEM.subLineCode" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=sublineno dbname="TMHWCITEM.subLineNo" )
+ column=(type=decimal(4) updatewhereclause=yes name=basictime dbname="BasicTime" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes key=yes name=seq dbname="TMHWCITEM.Seq" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=useflag dbname="TMHWCITEM.UseFlag" )
+ column=(type=char(1) updatewhereclause=yes name=wcitemgroupchk dbname="wcitemgroupchk" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TMHWCITEM.LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TMHWCITEM.LastDate" )
+ retrieve="  SELECT A.AreaCode,   
+         A.DivisionCode,   
+         A.WorkCenter,   
+	 Cast( :as_dispDay as Char(10)) ApplyDate, 
+	 A.wcItemGroup, 
+         A.ItemCode,   
+         Cast( '' as VarChar(100)) ItemName,   
+         Cast( '' as VarChar(100)) ItemSpec, 
+         A.subLineCode,   
+         A.subLineNo,
+	 		Cast( 0.0000 as Numeric(9,4)) BasicTime, 
+         A.Seq,   
+         A.UseFlag, 
+	 '0' wcitemgroupchk,
+			A.LastEmp, 
+			A.LastDate 
+    FROM TMHWCITEM A 
+   WHERE ( ( A.AreaCode = :as_area ) AND  
+           ( A.DivisionCode = :as_div ) AND  
+           ( A.WorkCenter = :as_wc ) ) " update="TMHWCITEM" updatewhere=1 updatekeyinplace=no arguments=(("as_area", string),("as_div", string),("as_wc", string),("as_dispday", string))  sort="seq A wcitemgroup A itemcode A sublinecode A sublineno A " )
+text(band=header alignment="2" text="Areacode" border="0" color="0" x="9" y="8" height="64" width="251"  name=areacode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Divisioncode" border="0" color="0" x="270" y="8" height="64" width="329"  name=divisioncode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Workcenter" border="0" color="0" x="608" y="8" height="64" width="306"  name=workcenter_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Wcitemgroup" border="0" color="0" x="1239" y="8" height="64" width="850"  name=wcitemgroup_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Itemcode" border="0" color="0" x="2098" y="8" height="64" width="357"  name=itemcode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Itemname" border="0" color="0" x="2464" y="8" height="64" width="850"  name=itemname_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Itemspec" border="0" color="0" x="3323" y="8" height="64" width="850"  name=itemspec_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Sublinecode" border="0" color="0" x="4183" y="8" height="64" width="325"  name=sublinecode_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Sublineno" border="0" color="0" x="4517" y="8" height="64" width="261"  name=sublineno_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Seq" border="0" color="0" x="4786" y="8" height="64" width="329"  name=seq_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Useflag" border="0" color="0" x="5125" y="8" height="64" width="197"  name=useflag_t  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Applydate" border="0" color="0" x="923" y="4" height="64" width="306"  name=t_1  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Wcitemgroupchk" border="0" color="0" x="5330" y="4" height="64" width="297"  name=t_2  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Basictime" border="0" color="0" x="5637" y="4" height="76" width="2341"  name=t_4  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Lastemp" border="0" color="0" x="7986" y="4" height="76" width="151"  name=t_3  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Lastdate" border="0" color="0" x="8146" y="4" height="76" width="503"  name=t_5  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="251" format="[general]"  name=areacode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="270" y="8" height="76" width="329" format="[general]"  name=divisioncode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="608" y="8" height="76" width="306" format="[general]"  name=workcenter edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1239" y="8" height="76" width="850" format="[general]"  name=wcitemgroup edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2098" y="8" height="76" width="357" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="2464" y="8" height="76" width="850" format="[general]"  name=itemname edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="3323" y="8" height="76" width="850" format="[general]"  name=itemspec edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="4183" y="8" height="76" width="325" format="[general]"  name=sublinecode edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="4517" y="8" height="76" width="261" format="[general]"  name=sublineno edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="4786" y="8" height="76" width="329" format="[general]"  name=seq edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="0" x="5125" y="8" height="76" width="197" format="[general]"  name=useflag edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="923" y="12" height="64" width="306" format="[general]"  name=applydate edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="5330" y="0" height="64" width="297" format="[general]"  name=wcitemgroupchk edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="5637" y="0" height="64" width="2341" format="[general]"  name=basictime edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="7986" y="0" height="64" width="151" format="[general]"  name=lastemp edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="8146" y="0" height="64" width="503" format="[shortdate] [time]"  name=lastdate edit.limit=0 edit.case=any edit.autoselect=yes  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )

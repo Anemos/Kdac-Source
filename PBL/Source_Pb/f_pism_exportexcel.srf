@@ -1,0 +1,259 @@
+$PBExportHeader$f_pism_exportexcel.srf
+global type f_pism_exportexcel from function_object
+end type
+
+forward prototypes
+global subroutine f_pism_exportexcel (datawindow adw, string as_filename)
+end prototypes
+
+global subroutine f_pism_exportexcel (datawindow adw, string as_filename);//변수 선언
+int object_count, object_index, object_max
+string objects, object_name, object_list[], object_select, object_band, object_type
+string detail_object_spec, detail_objects[], detail_object_labels, s_header, header_text[]
+string s_trailer1, s_trailer1_object[], s_footer, s_footer_object[], s_footer_data
+boolean object_visible, b_detail = false, b_trailer1= false, b_summury = false, b_footer = false
+int i_trailer1_count = 0, i_detail_count = 0, i_footer_count = 0
+
+//데이터윈도우의 모든 오브젝트를 읽어온다.
+objects = adw.describe("Datawindow.Objects" )
+
+int i_pos, i, i_target, j, i_target_row, i_row = 1
+
+object_max = 1
+i_pos = 1
+
+//오브젝트들을 탭을 구분으로 하나씩 분리해 저장한다.
+do while(true)
+  i_target = pos(objects, '~t', i_pos)
+if i_target = 0 then 
+ object_list[object_max] = mid(objects, i_pos, len(objects))
+ exit
+end if
+  object_list[object_max] = mid(objects, i_pos, i_target - i_pos)
+i_pos = i_target + 1
+object_max++
+loop
+
+//각 오브젝트들이 속해 있는 밴드와 타입, visible여부를 알아내어서
+//오브젝트의 갯수와 각 변수들에 저장을 한다.
+for object_index = 1 to object_max 
+object_name = trim(object_list[object_index])
+object_band = upper(adw.describe( object_name + ".band" ))
+object_type = upper(adw.describe( object_name + ".type" ))
+object_visible = adw.describe( object_name + ".visible" ) = "1" 
+  if object_visible then //보이는 오브젝트만 처리
+ choose case object_band
+  case "TRAILER.1" //그룹밴드
+   b_trailer1 = true
+   if (object_type = "COLUMN" or object_type = "COMPUTE" or object_type = "TEXT") then
+          i_trailer1_count++
+              s_trailer1_object[i_trailer1_count] = object_name
+   end if
+  case "DETAIL" //Detail 밴드
+           if (object_type = "COLUMN" or object_type = "COMPUTE") then
+              object_select = object_select + "/" + object_name
+      i_detail_count++         
+         end if
+  case "FOOTER" //Footer 밴드
+   b_footer = true
+   if (object_type = "COLUMN" or object_type = "COMPUTE" or object_type = "TEXT") then
+          i_footer_count++
+              s_footer_object[i_footer_count] = object_name
+   end if
+   end choose
+  end if
+next
+
+i_target = 0 ; i_pos = 1 ; object_max = 1
+
+adw.SetRedraw(false)
+//컬럼의 순서를 알아내기 위한 작업을 한다.
+object_select = '1/1' + object_select
+adw.modify("datawindow.selected= '" + object_select + "'")
+
+object_select = adw.describe("datawindow.selected")
+
+detail_object_spec = right(object_select, len(object_select) - 4)
+
+detail_object_spec = detail_object_spec + '/'
+adw.modify(" datawindow.selected=''")
+adw.SetRedraw(true)
+
+
+i_pos = 1
+object_max = 1
+
+//각 컬럼의 이름을 배치된 순서대로 다시 저장한다.
+do while(true)
+  i_target = pos(detail_object_spec, '/', i_pos)
+if i_target = 0 then 
+ detail_objects[object_max] = mid(detail_object_spec,i_pos, len(detail_object_spec))
+ exit
+end if
+  detail_objects[object_max] = mid(detail_object_spec,i_pos, i_target - i_pos)
+i_pos = i_target + 1
+object_max++
+loop
+
+//헤드에 있는 텍스트들의 text값을 저장한다.
+for object_index = 1 to object_max 
+object_name = detail_objects[object_index]
+if detail_object_labels <> '' then detail_object_labels = detail_object_labels + '~t'
+ if adw.describe( object_name + "_t.visible" ) <> '!' then
+  detail_object_labels = detail_object_labels + adw.describe(object_name + "_t.text")
+ else 
+    detail_object_labels = detail_object_labels + "?"
+ end if
+next
+//요기까지 detail 밴드의 화면상에 보이는 컬럼들만 detail_objects에 담는다.
+
+detail_object_labels = detail_object_labels + "~r~n"
+
+//엑셀과 연결 시작
+oleobject export_object
+uint excel_handle, excel_state
+string excel_title
+
+export_object = create oleobject
+
+export_object.connecttonewobject("excel.application")
+
+excel_title = export_object.Application.Caption
+
+export_object.Application.Visible = True
+//excel_handle = FindWindowA( 0, excel_title )
+//SetFocus( excel_handle )
+
+//파일작성
+long row_count, start_row
+string data_buffer, s_select, filename, s_syn, s_trailer1_data
+int file_num, ii
+
+filename = "c:\export.txt"
+start_row = 1
+
+row_count = adw.rowcount()
+if row_count = 0 then Return 
+
+if fileexists(filename) then 
+// DeleteFileA(filename)
+	FileDelete ( filename )
+end if
+
+file_num = fileopen(filename, streammode!, write!, lockreadwrite!, append!)
+
+//각 로우별로 데이터를 읽어서 파일에 기록한다.
+for start_row = 1 to row_count
+  s_select = string(start_row) + "/" + string(start_row) + "/" +detail_object_spec
+ adw.modify(" Datawindow.selected = '" + s_select + "'")
+   data_buffer = adw.describe("datawindow.selected.data") + "~r~n"
+ if start_row = 1 then data_buffer = detail_object_labels + data_buffer
+   if b_trailer1 then //그룹이 존재한다면
+  i_target_row = adw.FindGroupChange(start_row, 1) - 1
+    if i_target_row = start_row then
+   for i = 1 to i_trailer1_count
+     if upper(adw.describe( s_trailer1_object[i] + ".type" )) = "COMPUTE" then
+      s_syn = adw.describe(s_trailer1_object[i] + ".expression")
+              s_syn = adw.Describe("Evaluate('" + s_syn + "',"  + string(start_row) + ")")
+              if i = 1 then
+      for ii = 1 to i_detail_count - i_trailer1_count - 1
+       s_trailer1_data = s_trailer1_data + '~t'
+        next
+      end if
+      s_trailer1_data = s_trailer1_data + '~t' + s_syn  
+      elseif upper(adw.describe( s_trailer1_object[i] + ".type" )) = "COLUMN" then
+      s_syn = adw.Describe("Evaluate('LookUpDisplay(" + s_trailer1_object[i] + ") '," + &
+                          string(start_row) + ")")
+              if i = 1 then
+       for ii = 1 to i_detail_count - i_trailer1_count - 1
+        s_trailer1_data = s_trailer1_data + '~t'
+       next
+      end if
+      s_trailer1_data = s_trailer1_data + '~t' + s_syn           
+      elseif upper(adw.describe( s_trailer1_object[i] + ".type" )) = "TEXT" then
+      s_syn = adw.Describe(s_trailer1_object[i] + ".text")
+              if i = 1 then
+       for ii = 1 to i_detail_count - i_trailer1_count - 1
+        s_trailer1_data = s_trailer1_data + '~t'
+       next
+      end if
+      s_trailer1_data = s_trailer1_data + '~t' + s_syn                  
+      end if
+     next
+   data_buffer = data_buffer + "~r~n" + s_trailer1_data + "~r~n"
+   end if
+end if
+filewrite(file_num, data_buffer)
+setnull(data_buffer)
+s_trailer1_data = ''
+next
+
+//Footer 밴드를 마지막으로 파일에 덧붙힌다.
+if b_footer then
+  for i = 1 to i_footer_count
+    if upper(adw.describe( s_footer_object[i] + ".type" )) = "COMPUTE" then
+     s_syn = adw.describe(s_footer_object[i] + ".expression")
+       s_syn = adw.Describe("Evaluate('" + s_syn + "',"  + string(row_count) + ")")
+         if i = 1 then
+    for ii = 1 to i_detail_count - i_footer_count - 1
+      s_footer_data = s_footer_data + '~t'
+      next
+     end if
+   s_footer_data = s_footer_data + '~t' + s_syn  
+    elseif upper(adw.describe( s_footer_object[i] + ".type" )) = "COLUMN" then
+   s_syn = adw.Describe("Evaluate('LookUpDisplay(" + s_footer_object[i] + ") '," + &
+                         string(row_count) + ")")
+         if i = 1 then
+    for ii = 1 to i_detail_count - i_footer_count - 1
+      s_footer_data = s_footer_data + '~t'
+      next
+     end if          
+     s_footer_data = s_footer_data + '~t' + s_syn           
+    elseif upper(adw.describe( s_footer_object[i] + ".type" )) = "TEXT" then
+   s_syn = adw.Describe(s_footer_object[i] + ".text")
+         if i = 1 then
+    for ii = 1 to i_detail_count - i_footer_count - 1
+      s_footer_data = s_footer_data + '~t'
+      next
+     end if    
+       s_footer_data = s_footer_data + '~t' + s_syn                  
+    end if
+  next
+data_buffer = "~r~n" + s_footer_data 
+filewrite(file_num, data_buffer)
+end if
+
+fileclose(file_num)
+
+export_object.statusbar = "Importing data...."
+export_object.workbooks.opentext(filename)
+export_object.windows("export.txt").caption = "Export Workbook"
+
+//엑셀파일의 포맷을 실시한다.
+
+//자동 칸맞춤을 적용한다.
+export_object.Worksheets[1].Columns.AutoFit
+
+//헤드 줄은 bold로 지정한다.
+export_object.rows("1:1").select
+export_object.selection.font.bold = true
+export_object.selection.font.italic = false
+
+
+//export_object.statusbar = " Formatting labels....."
+export_object.rows("1:1").select
+//셀들의 줄맞춤을 실시한다.
+export_object.selection.wraptext  = true
+export_object.selection.horizontalalignment = true
+export_object.selection.verticalalignment = true
+
+//미리보기에서 헤드셀들은 반복되어 나타나게 한다.
+export_object.Activesheet.PageSetup.PrintTitleRows = "$1:$1"
+export_object.Application.Activeworkbook.SaveAs(as_filename) 
+
+export_object.DisConnectObject() //연결종료
+
+Destroy export_object //오브젝트 제거  
+
+end subroutine
+
