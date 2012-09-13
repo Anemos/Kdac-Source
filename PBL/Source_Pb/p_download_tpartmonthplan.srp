@@ -1,0 +1,16 @@
+$PBExportHeader$p_download_tpartmonthplan.srp
+$PBExportComments$download tpartmonthplan (Interface DB) - 임시
+PIPELINE(source_connect=AS/400,destination_connect=대구 Interface,type=refresh,commit=100,errors=0,keyname="tmispvmt19")
+SOURCE(name="PVMT19",COLUMN(type=varchar,name="compute_0001",dbtype="VARCHAR(2)",nulls_allowed=no)
+ COLUMN(type=varchar,name="compute_0002",dbtype="VARCHAR(1)",nulls_allowed=no)
+ COLUMN(type=char,name="VDDIV",dbtype="CHAR(1)",nulls_allowed=no)
+ COLUMN(type=char,name="VDITNO",dbtype="CHAR(12)",nulls_allowed=no)
+ COLUMN(type=char,name="VDYEAR",dbtype="CHAR(6)",nulls_allowed=no)
+ COLUMN(type=decimal,name="VDMPLN1",dbtype="NUMERIC(8,1)",nulls_allowed=no))
+RETRIEVE(statement="SELECT DISTINCT  '01', ' ',VDDIV, VDITNO,VDYEAR,VDMPLN1  FROM PBPUR.PVMT19    WHERE	VDYEAR = :ag_date And VDMPLN1 > 0",arguments((ag_date,String)))
+DESTINATION(name="tmispvmt19",COLUMN(type=char,name="COMLTD",dbtype="char(2)",key=yes,nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="XPLANT",dbtype="char(1)",key=yes,nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="DIV",dbtype="char(1)",key=yes,nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="ITNO",dbtype="char(15)",key=yes,nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=char,name="VDYEAR",dbtype="char(6)",nulls_allowed=no,initial_value="spaces")
+ COLUMN(type=decimal,name="VDMPLN1",dbtype="decimal(9,1)",nulls_allowed=no,initial_value="0"))

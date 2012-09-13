@@ -1,0 +1,34 @@
+$PBExportHeader$f_get_daychgtts.srf
+$PBExportComments$전일대비 매도율 return
+global type f_get_daychgtts from function_object
+end type
+
+forward prototypes
+global function decimal f_get_daychgtts (string a_s_comltd, string a_s_date, string a_s_exut, decimal a_n_exrates)
+end prototypes
+
+global function decimal f_get_daychgtts (string a_s_comltd, string a_s_date, string a_s_exut, decimal a_n_exrates);string l_s_date
+dec    l_n_chg, l_n_usd
+
+SELECT max("PBCOMMON"."DAC005"."EXDATE")  
+  INTO :l_s_date
+  FROM "PBCOMMON"."DAC005"  
+ WHERE "PBCOMMON"."DAC005"."COMLTD" = :a_s_comltd and
+		 "PBCOMMON"."DAC005"."EXDATE" < :a_s_date   and
+		 "PBCOMMON"."DAC005"."EXUT"   = :a_s_exut   using sqlca;
+
+SELECT "PBCOMMON"."DAC005"."EXRATES"  
+  INTO :l_n_usd
+  FROM "PBCOMMON"."DAC005"  
+ WHERE "PBCOMMON"."DAC005"."COMLTD" = :a_s_comltd and
+		 "PBCOMMON"."DAC005"."EXDATE" = :l_s_date   and
+		 "PBCOMMON"."DAC005"."EXUT"   = :a_s_exut   using sqlca;
+if sqlca.sqlcode <> 0 or l_n_usd = 0 then
+	l_n_chg = 0
+else
+	l_n_chg = a_n_exrates - l_n_usd
+end if
+
+return l_n_chg
+end function
+

@@ -1,0 +1,45 @@
+$PBExportHeader$f_get_itemproperty.srf
+$PBExportComments$해당품번에 대한 정보(inv101,inv002)
+global type f_get_itemproperty from function_object
+end type
+
+forward prototypes
+global function integer f_get_itemproperty (string a_comltd, string a_plant, string a_dvsn, string a_itno, datawindow a_dw)
+end prototypes
+
+global function integer f_get_itemproperty (string a_comltd, string a_plant, string a_dvsn, string a_itno, datawindow a_dw);string itemprop[1 TO 6]
+
+  SELECT "PBINV"."INV002"."ITNM",   
+         "PBINV"."INV002"."SPEC",   
+         "PBINV"."INV101"."CLS",   
+         "PBINV"."INV101"."SRCE",   
+         "PBINV"."INV101"."PDCD",   
+         "PBINV"."INV101"."XUNIT"  
+    INTO :itemprop[1],   
+         :itemprop[2],   
+         :itemprop[3],   
+         :itemprop[4],   
+         :itemprop[5],   
+         :itemprop[6]  
+    FROM "PBINV"."INV101",   
+         "PBINV"."INV002"  
+   WHERE ( "PBINV"."INV101"."COMLTD" = "PBINV"."INV002"."COMLTD" ) and  
+         ( "PBINV"."INV101"."ITNO" = "PBINV"."INV002"."ITNO" ) and  
+         ( ( "PBINV"."INV101"."COMLTD" = :a_comltd ) AND  
+         ( "PBINV"."INV101"."XPLANT" = :a_plant ) AND  
+         ( "PBINV"."INV101"."DIV" = :a_dvsn ) AND  
+         ( "PBINV"."INV101"."ITNO" = :a_itno ) )   using sqlca;
+
+if sqlca.sqlcode = 0 then
+	a_dw.setitem(1,"inv002_itnm",itemprop[1])
+	a_dw.setitem(1,"inv002_spec",itemprop[2])
+	a_dw.setitem(1,"inv101_cls",itemprop[3])
+	a_dw.setitem(1,"inv101_srce",itemprop[4])
+	a_dw.setitem(1,"inv101_pdcd",mid(itemprop[5],1,2))
+	a_dw.setitem(1,"inv101_xunit",itemprop[6])
+	return 0
+else
+	return -1
+end if
+end function
+

@@ -1,0 +1,52 @@
+$PBExportHeader$m_usermanage.srm
+forward
+global type m_usermanage from menu
+end type
+type m_f from menu within m_usermanage
+end type
+type m_x from menu within m_f
+end type
+type m_f from menu within m_usermanage
+m_x m_x
+end type
+end forward
+
+global type m_usermanage from menu
+m_f m_f
+end type
+global m_usermanage m_usermanage
+
+on m_usermanage.create
+m_usermanage=this
+this.m_f=create m_f
+this.Item[]={this.m_f}
+end on
+
+on m_usermanage.destroy
+destroy(this.m_f)
+end on
+
+type m_f from menu within m_usermanage
+m_x m_x
+end type
+
+on m_f.create
+this.Text="ÆÄÀÏ(&F)"
+this.m_x=create m_x
+this.Item[]={this.m_x}
+end on
+
+on m_f.destroy
+destroy(this.m_x)
+end on
+
+type m_x from menu within m_f
+end type
+
+on m_x.create
+this.Text="´Ý±â(&C)"
+end on
+
+event clicked;close(parentwindow)
+end event
+

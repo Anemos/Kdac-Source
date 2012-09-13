@@ -1,0 +1,82 @@
+$PBExportHeader$d_bpm504_secitem.srd
+$PBExportComments$∫Œ«∞∏Ò ªÛºº¡§∫∏ µ•¿Ã≈∏¿©µµøÏ
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=64 color="536870912" )
+summary(height=92 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes name=ocmcd dbname="BPM505.OCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=oplant dbname="BPM505.OPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=odvsn dbname="BPM505.ODVSN" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=opitn dbname="BPM505.OPITN" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=ofitn dbname="BPM505.OFITN" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=ochdt dbname="BPM505.OCHDT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=oedtm dbname="BPM505.OEDTM" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=oedte dbname="BPM505.OEDTE" )
+ column=(type=decimal(2) update=yes updatewhereclause=yes name=orate dbname="BPM505.ORATE" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=ofocd dbname="BPM505.OFOCD" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=oemno dbname="BPM505.OEMNO" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=oindt dbname="BPM505.OINDT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=ochcd dbname="BPM505.OCHCD" )
+ column=(type=char(2) updatewhereclause=yes name=bpm503_cls dbname="BPM503.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=bpm503_srce dbname="BPM503.SRCE" )
+ column=(type=char(50) updatewhereclause=yes name=bpm502_itnm dbname="BPM502.ITNM" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM505~".~"OCMCD~",
+         ~"PBBPM~".~"BPM505~".~"OPLANT~", 
+         ~"PBBPM~".~"BPM505~".~"ODVSN~",   
+         ~"PBBPM~".~"BPM505~".~"OPITN~",   
+         ~"PBBPM~".~"BPM505~".~"OFITN~",   
+         ~"PBBPM~".~"BPM505~".~"OCHDT~",   
+         ~"PBBPM~".~"BPM505~".~"OEDTM~",   
+         ~"PBBPM~".~"BPM505~".~"OEDTE~",   
+         ~"PBBPM~".~"BPM505~".~"ORATE~",   
+         ~"PBBPM~".~"BPM505~".~"OFOCD~",   
+         ~"PBBPM~".~"BPM505~".~"OEMNO~",   
+         ~"PBBPM~".~"BPM505~".~"OINDT~",   
+         ~"PBBPM~".~"BPM505~".~"OCHCD~",
+         ~"PBBPM~".~"BPM503~".~"CLS~", 
+         ~"PBBPM~".~"BPM503~".~"SRCE~",
+         ~"PBBPM~".~"BPM502~".~"ITNM~"  
+    FROM ~"PBBPM~".~"BPM505~" INNER JOIN ~"PBBPM~".~"BPM503~"
+		ON ( ~"PBBPM~".~"BPM505~".~"OPLANT~" = ~"PBBPM~".~"BPM503~".~"XPLANT~" ) AND
+			( ~"PBBPM~".~"BPM505~".~"REVNO~" = ~"PBBPM~".~"BPM503~".~"REVNO~" ) AND
+         ( ~"PBBPM~".~"BPM505~".~"ODVSN~" = ~"PBBPM~".~"BPM503~".~"DIV~" ) AND  
+         ( ~"PBBPM~".~"BPM505~".~"OFITN~" = ~"PBBPM~".~"BPM503~".~"ITNO~" ) AND
+			( ~"PBBPM~".~"BPM505~".~"XYEAR~" = ~"PBBPM~".~"BPM503~".~"XYEAR~" )
+		INNER JOIN ~"PBBPM~".~"BPM502~"
+		ON ( ~"PBBPM~".~"BPM505~".~"OFITN~" = ~"PBBPM~".~"BPM502~".~"ITNO~" ) AND
+  			( ~"PBBPM~".~"BPM505~".~"XYEAR~" = ~"PBBPM~".~"BPM502~".~"XYEAR~" ) AND
+			( ~"PBBPM~".~"BPM505~".~"REVNO~" = ~"PBBPM~".~"BPM502~".~"REVNO~" )
+   WHERE ( ~"PBBPM~".~"BPM505~".~"OCMCD~" = '01' ) AND
+			( ~"PBBPM~".~"BPM505~".~"XYEAR~" = :a_year ) AND
+			( ~"PBBPM~".~"BPM505~".~"REVNO~" = :a_revno ) AND
+			( ~"PBBPM~".~"BPM505~".~"OPLANT~" = :a_PLANT ) AND
+         ( ~"PBBPM~".~"BPM505~".~"ODVSN~" = :a_div ) AND  
+         ( ~"PBBPM~".~"BPM505~".~"OPITN~" = :a_itmnbr ) AND      
+         ( (~"PBBPM~".~"BPM505~".~"OEDTM~" <= ~"PBBPM~".~"BPM505~".~"OEDTE~" AND ~"PBBPM~".~"BPM505~".~"OEDTE~" <> ' ' AND ~"PBBPM~".~"BPM505~".~"OEDTE~" >= :a_date )
+          OR  
+         ( ~"PBBPM~".~"BPM505~".~"OEDTE~" = ' ' ))   
+ORDER BY ~"PBBPM~".~"BPM505~".~"OFITN~" ASC   
+" arguments=(("a_year", string),("a_revno", string),("a_plant", string),("a_div", string),("a_itmnbr", string),("a_date", string)) )
+text(band=header alignment="2" text="«∞   π¯" border="2" color="16777215" x="0" y="4" height="60" width="549" html.valueishtml="0"  name=ofitn_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="«∞    ∏Ì" border="2" color="16777215" x="553" y="4" height="60" width="1010" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∞Ë¡§" border="2" color="16777215" x="1568" y="4" height="60" width="174" html.valueishtml="0"  name=t_2 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±∏¿‘º±" border="2" color="16777215" x="1746" y="4" height="60" width="219" html.valueishtml="0"  name=t_3 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿˚øÎ¿œ" border="2" color="16777215" x="1970" y="4" height="60" width="338" html.valueishtml="0"  name=oedtm_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="øœ∑·¿œ" border="2" color="16777215" x="2313" y="4" height="60" width="338" html.valueishtml="0"  name=oedte_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»£»Ø¿≤" border="2" color="16777215" x="2656" y="4" height="60" width="224" html.valueishtml="0"  name=t_4 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="2" color="0" x="0" y="0" height="76" width="549" format="[general]" html.valueishtml="0"  name=ofitn pointer="HyperLink!" visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="12632256~tif(  oedte <> '       ' and oedte <= a_date , rgb(255, 128, 128),  rgb(192, 192, 192) )" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="2" color="0" x="553" y="0" height="76" width="1010" format="[general]" html.valueishtml="0"  name=bpm502_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="2" color="0" x="1568" y="0" height="76" width="174" format="[general]" html.valueishtml="0"  name=bpm503_cls visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="2" color="0" x="1746" y="0" height="76" width="219" format="[general]" html.valueishtml="0"  name=bpm503_srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="2" color="0" x="1970" y="0" height="76" width="338" format="[general]" html.valueishtml="0"  name=oedtm pointer="HyperLink!" visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="12632256~tif(  oedte <> '       ' and oedte <= a_date , rgb(255, 128, 128),  rgb(192, 192, 192) )" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="2" color="0" x="2313" y="0" height="76" width="338" format="[general]" html.valueishtml="0"  name=oedte pointer="HyperLink!" visible="1" edit.limit=8 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="12632256~tif(  oedte <> '       ' and oedte <= a_date , rgb(255, 128, 128),  rgb(192, 192, 192) )" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="2" color="0" x="2656" y="0" height="76" width="224" format="[general]" html.valueishtml="0"  name=orate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=summary alignment="1" expression="sum(orate for all)"border="2" color="0" x="2656" y="4" height="76" width="224" format="[general]" html.valueishtml="0"  name=com_orate visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

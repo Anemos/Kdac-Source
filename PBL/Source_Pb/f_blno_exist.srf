@@ -1,0 +1,28 @@
+$PBExportHeader$f_blno_exist.srf
+$PBExportComments$blno 존재유무 CHECK
+global type f_blno_exist from function_object
+end type
+
+forward prototypes
+global function integer f_blno_exist (string as_blno)
+end prototypes
+
+global function integer f_blno_exist (string as_blno);/******************************************************************/
+/* control (opm105)에서   B/L NO 존재여부 check                   */
+/* Argument value arg_key : B/L no                                */
+/* RETURN  1 : 성공                                               */
+/*        -1 : 실패                                               */
+/******************************************************************/
+Int li_cnt
+
+SELECT count(*)  INTO :li_cnt 
+ FROM  "PBPUR"."OPM105"
+WHERE "PBPUR"."OPM105"."COMLTD" = '01' AND "PBPUR"."OPM105"."BLNO" = :as_blno using sqlca;
+if li_cnt <= 0 then 
+	return -1
+end if
+
+return 1
+
+end function
+

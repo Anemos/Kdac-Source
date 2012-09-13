@@ -1,20 +1,28 @@
 $PBExportHeader$f_sysdate.srf
-$PBExportComments$System의 날짜와 시간을 알수 있다.
+$PBExportComments$System Date 가져오기(Oracle Server)
 global type f_sysdate from function_object
 end type
 
 forward prototypes
-global function datetime f_sysdate ()
+global subroutine f_sysdate ()
 end prototypes
 
-global function datetime f_sysdate ();datetime ld_sys_date
+global subroutine f_sysdate ();///////////////////////////////////////////////
+//					system date & time            //
+///////////////////////////////////////////////
+datetime		ls_date
 
-SELECT getdate()
-INTO : ld_sys_date
-FROM sysobjects ;
+select	current	date,	current	time	into	:g_s_datetime,:g_s_time		from   pbcommon.comm000 
+using 		sqlca ;
+if 	sqlca.sqlcode	<>	0	then
+	select	current_timestamp into :ls_date from comm000
+	using 		sqlpis ;
+	g_s_datetime	=	string(ls_date,'YYYY-MM-DD HH:MM:SS')
+else
+	g_s_datetime 	= 	g_s_datetime	+	" "		+	g_s_time
+end if
+g_s_date		=	mid(g_s_datetime,1,4) + mid(g_s_datetime,6,2) + mid(g_s_datetime,9,2)
 
-return ld_sys_date
 
-
-end function
+end subroutine
 

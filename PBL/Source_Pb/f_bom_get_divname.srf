@@ -1,0 +1,37 @@
+$PBExportHeader$f_bom_get_divname.srf
+$PBExportComments$공장명 가져오는 함수
+global type f_bom_get_divname from function_object
+end type
+
+forward prototypes
+global function string f_bom_get_divname (string a_plant, string a_div)
+end prototypes
+
+global function string f_bom_get_divname (string a_plant, string a_div);string ls_plant,ls_div,ls_gubun
+
+ls_gubun = "SLE220" 
+
+SELECT 	"PBCOMMON"."DAC002"."COITNAME"  INTO :ls_plant FROM "PBCOMMON"."DAC002"  
+	WHERE "PBCOMMON"."DAC002"."COMLTD" 	= '01' 		AND
+			"PBCOMMON"."DAC002"."COGUBUN" = :ls_gubun AND 
+			"PBCOMMON"."DAC002"."COCODE" 	= :a_plant 
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	ls_plant = ''
+end if
+
+
+ls_gubun = "DAC030" 
+
+SELECT 	"PBCOMMON"."DAC002"."COITNAME"  INTO :ls_div FROM "PBCOMMON"."DAC002"  
+	WHERE "PBCOMMON"."DAC002"."COMLTD" 	= '01' 		AND
+			"PBCOMMON"."DAC002"."COGUBUN" = :ls_gubun AND 
+			"PBCOMMON"."DAC002"."COCODE" 	= :a_div 
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	ls_div = ''
+end if
+return	ls_plant + "  "  + ls_div
+
+end function
+

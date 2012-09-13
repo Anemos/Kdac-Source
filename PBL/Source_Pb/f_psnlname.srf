@@ -1,0 +1,51 @@
+$PBExportHeader$f_psnlname.srf
+$PBExportComments$동명이인선택
+global type f_psnlname from function_object
+end type
+
+forward prototypes
+global function string f_psnlname (string a_s_kor_nm)
+end prototypes
+
+global function string f_psnlname (string a_s_kor_nm);//////  동일 성명 Check 함수  /////////////////////////////////////////
+//																							//
+// InPut  Argument	=> 1) 구		분 : 찾고자하는 선택에 따라 	   	//
+//     						2) 성		명 : 찾고자하는 성명 					//
+// OutPut Argument	=> 1) 개인번호 : 선택된 개인번호 			   	//
+//                                                    					//
+//////////////////////////////  1998.09.01   대우정보시스템(주)  //////
+
+integer   l_n_rowcount
+string    l_s_emp_no,	l_s_kor_nm,		l_s_resdno
+
+a_s_kor_nm 	= 	trim(a_s_kor_nm)
+
+SELECT COUNT(*) 				INTO 	:l_n_rowcount
+ FROM pbper.per001
+WHERE	penamek =		:a_s_kor_nm
+  AND peout = ' '
+  USING sqlcc;
+
+
+
+CHOOSE CASE	l_n_rowcount
+	CASE is < 1  													// 자료가 1건도 없는 경우
+//	   MessageBox("확 인", '처리 하고자하는 성명(자료)이 없습니다.')
+		l_s_emp_no	=	''
+
+	CASE 1															// 자료가 1건만 있는 경우
+				SELECT peempno
+					 INTO :l_s_emp_no
+					 FROM pbper.per001
+					WHERE	penamek	=		:a_s_kor_nm
+					  AND peout = ' '
+					USING sqlcc;
+					
+	CASE is > 1														// 자료가 2건이상인  경우
+		OpenWithParm(w_psnl001i,a_s_kor_nm)
+		l_s_emp_no  = 	mid(Message.StringParm, 1, 6)		// 개인번호
+END CHOOSE
+
+return l_s_emp_no
+end function
+

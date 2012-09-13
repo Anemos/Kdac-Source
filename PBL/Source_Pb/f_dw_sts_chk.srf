@@ -1,0 +1,28 @@
+$PBExportHeader$f_dw_sts_chk.srf
+$PBExportComments$dw상태 확인
+global type f_dw_sts_chk from function_object
+end type
+
+forward prototypes
+global function integer f_dw_sts_chk (datawindow arg_dw, string arg_level)
+end prototypes
+
+global function integer f_dw_sts_chk (datawindow arg_dw, string arg_level);Integer  Net = -1
+
+IF arg_level = "5" THEN
+	arg_dw.AcceptText()
+	IF arg_dw.ModifiedCount() > 0 THEN
+		Net=MessageBox("확인",f_message("U080"),question!,yesnocancel!,2)
+	ELSE
+		RETURN -1
+	END IF
+ELSE
+		RETURN -1
+END IF
+
+RETURN Net
+
+
+
+end function
+

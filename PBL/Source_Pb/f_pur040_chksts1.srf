@@ -1,0 +1,52 @@
+$PBExportHeader$f_pur040_chksts1.srf
+$PBExportComments$dw상태체크(dw, row, buffer(long))
+global type f_pur040_chksts1 from function_object
+end type
+
+forward prototypes
+global function string f_pur040_chksts1 (datawindow ads_1, long al_row, long al_buffer, string as_column)
+end prototypes
+
+global function string f_pur040_chksts1 (datawindow ads_1, long al_row, long al_buffer, string as_column);string ls_sts, ls_buffer
+long  ll_col
+
+if as_column = '0' then
+	dwitemstatus ldws_1
+	if al_buffer = 1 then
+		ls_buffer = 'primary!'
+	  ldws_1 = ads_1.getitemstatus(al_row, long(as_column), primary!)
+	elseif al_buffer = 2 then
+		ldws_1 = ads_1.getitemstatus(al_row, long(as_column), delete!)
+		ls_buffer = 'delete!'
+	elseif al_buffer = 3 then
+		ldws_1 = ads_1.getitemstatus(al_row, long(as_column), filter!)
+		ls_buffer = 'filter!'
+	end if
+else
+	if al_buffer = 1 then
+		ls_buffer = 'primary!'
+	  ldws_1 = ads_1.getitemstatus(al_row, as_column, primary!)
+	elseif al_buffer = 2 then
+		ldws_1 = ads_1.getitemstatus(al_row, as_column, delete!)
+		ls_buffer = 'delete!'
+	elseif al_buffer = 3 then
+		ldws_1 = ads_1.getitemstatus(al_row, as_column, filter!)
+		ls_buffer = 'filter!'
+	end if
+end if
+
+if ldws_1 = New!  then
+	ls_sts = 'New!'
+elseif ldws_1 = Newmodified! then
+	ls_sts = 'Newmodified!'
+elseif ldws_1 = datamodified! then
+	ls_sts = 'Datamodified!'
+elseif ldws_1 = Notmodified! then
+  ls_sts = 'Notmodified!'
+else
+	ls_sts = 'sts chk error'
+end if
+messagebox(ls_buffer, string(al_row) + '행: ' + ls_sts)
+return ls_sts
+end function
+

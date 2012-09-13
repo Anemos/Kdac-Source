@@ -1,0 +1,24 @@
+$PBExportHeader$f_inv402_outqty.srf
+$PBExportComments$BOM Looping Check ÇÔ¼ö
+global type f_inv402_outqty from function_object
+end type
+
+forward prototypes
+global function string f_inv402_outqty (string a_plant, string a_div, string a_itno, string a_xyear)
+end prototypes
+
+global function string f_inv402_outqty (string a_plant, string a_div, string a_itno, string a_xyear);dec{1} 	ln_outqty
+dec		ln_outamt
+
+select sum(outqty),sum(outamt) into :ln_outqty,:ln_outamt from pbinv.inv402
+where comltd = '01' and xplant = :a_plant and div = :a_div and itno = :a_itno and
+		xyear like substring(:a_xyear,1,4) || '%' and xyear <= :a_xyear 
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	return ''
+end if
+return string(ln_outqty) + ',' + string(ln_outamt)
+
+
+end function
+

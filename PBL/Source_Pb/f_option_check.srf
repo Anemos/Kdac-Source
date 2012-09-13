@@ -1,0 +1,81 @@
+$PBExportHeader$f_option_check.srf
+$PBExportComments$Option 前格狼 惑困 前格 Checking
+global type f_option_check from function_object
+end type
+
+forward prototypes
+global function integer f_option_check (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global function integer f_option_check (string a_plant, string a_div, string a_itno);string 	ls_div,ls_oitno[],ls_itno,ls_citno,ls_pitno,ls_chkitno[50,500],ls_kitno
+integer 	i = 0,j = 0,k = 0,p = 0,ln_chk = 0
+
+ls_itno = trim(a_itno)
+ls_div  = trim(a_div)
+
+declare optchk_cur cursor for 
+  select 	"PBPDM"."BOM003"."OFITN" from "PBPDM"."BOM003"
+     where 	"PBPDM"."BOM003"."OPITN" = :ls_itno AND
+           	"PBPDM"."BOM003"."ODVSN" = :ls_div AND  "PBPDM"."BOM003"."OPLANT" = :a_plant AND 
+    		(( trim("PBPDM"."BOM003"."OEDTE") =  ''  and "PBPDM"."BOM003"."OEDTM" <= :g_s_date ) or  
+			(  trim("PBPDM"."BOM003"."OEDTE") <> ''  and "PBPDM"."BOM003"."OEDTM" <= :g_s_date  and "PBPDM"."BOM003"."OEDTE" >= :g_s_date ))
+  using SQLCA ;
+
+open optchk_cur ;
+  ls_oitno[1] 	= a_itno
+  i 				= 1
+  do while true
+    fetch optchk_cur into :ls_citno ;
+    if sqlca.sqlcode <> 0 then
+		exit
+	 end if 
+	 i 				= i + 1
+    ls_oitno[i] 	= trim(ls_citno)
+  loop
+close optchk_cur ;
+
+declare bom_cur cursor for 
+  select 	"PBPDM"."BOM001"."PPITN" from "PBPDM"."BOM001"
+     where 	"PBPDM"."BOM001"."PCITN" = :ls_pitno AND
+           	"PBPDM"."BOM001"."PDVSN" = :ls_div AND  "PBPDM"."BOM001"."PLANT" = :a_plant AND
+          (( trim("PBPDM"."BOM001"."PEDTE") =  ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date ) or  
+			 (  trim("PBPDM"."BOM001"."PEDTE") <> ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date  and "PBPDM"."BOM001"."PEDTE" >= :g_s_date ))   
+  using SQLCA ;
+
+for j = 1 to i
+	ls_pitno = trim(ls_oitno[j])
+	k 			= 0
+	open bom_cur ;  
+	do while true
+		fetch bom_cur into :ls_kitno ;
+		if sqlca.sqlcode <> 0 then
+			exit
+		end if 
+		p = p + 1
+		k = k + 1
+		if p <> 1 then
+			if ls_kitno = ls_chkitno[j,k] then
+				continue
+			end if
+		end if
+		ls_chkitno[j,k] = trim(ls_kitno)
+   loop
+   close bom_cur ;
+next
+
+if p = 0 then return 0
+
+for j = 2 to i
+		for k = 1 to 100
+			if isnull(ls_chkitno[1,k]) = true and isnull(ls_chkitno[j,k]) = true then
+				exit
+			end if
+         if ls_chkitno[1,k] <> ls_chkitno[j,k] then
+				return 1
+			end if
+		next
+next
+return 0
+ 
+end function
+

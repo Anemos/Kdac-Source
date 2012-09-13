@@ -1,0 +1,160 @@
+$PBExportHeader$f_mandantory_chk_insa.srf
+$PBExportComments$필수항목 Check
+global type f_mandantory_chk_insa from function_object
+end type
+
+forward prototypes
+global function integer f_mandantory_chk_insa (datawindow arg_dw)
+end prototypes
+
+global function integer f_mandantory_chk_insa (datawindow arg_dw);//////////////////////////////////////////////////////////////////////////
+// * 기능강화(UPGRADE) 필수입력사항 Check 함수 *
+//
+// -> 칼럼의 배경색값에 조건(If문...)을 준 경우에도 Check...
+//																		2002. 11. 3 박병주
+//////////////////////////////////////////////////////////////////////////
+
+arg_dw.AcceptText()
+
+String 	ls_ColCnt
+Long 		ll_RowCnt
+
+ls_ColCnt = arg_dw.Object.DataWindow.Column.Count
+ll_RowCnt = arg_dw.RowCount()
+
+Long		ll_Row = 0, ll_i
+String	ls_ColType, ls_ColName, ls_ColText, ls_Color_Syntax, ls_Color
+Any		la_ColValue
+
+Do While ll_Row <= ll_RowCnt
+	ll_Row = arg_dw.GetNextModified(ll_Row, Primary!)
+	If ll_Row = 0 Then Exit
+	
+	For ll_i = 1 To Dec(ls_ColCnt) 
+		ls_ColType = Upper(arg_dw.Describe('#' + String(ll_i) + '.ColType'))
+		ls_ColName = arg_dw.Describe('#' + String(ll_i) + '.Name')
+		
+		ls_Color_Syntax = arg_dw.Describe(ls_ColName + '.BackGround.Color')
+		
+		If Pos( ls_Color_Syntax, 'if', 1 ) = 0 Then
+			ls_Color = ls_Color_Syntax
+		Else				
+			ls_Color_Syntax = Mid( ls_Color_Syntax, Pos( ls_Color_Syntax, 'if', 1 ) )
+			ls_Color_Syntax = Left( ls_Color_Syntax, Len(ls_Color_Syntax) - 1 )			
+			ls_Color = arg_dw.Describe( "Evaluate('" + ls_Color_Syntax +"', " + String(ll_Row) + ")" )		
+		End If
+		
+		Choose Case Left(ls_ColType, 3)
+			Case 'CHA'
+				la_ColValue = Trim(arg_dw.GetItemString(ll_Row, ls_ColName))
+				If Long( ls_Color ) = 15793151 Then
+					If IsNull(la_ColValue) Or la_ColValue = "" Or la_ColValue = ' ' Then
+						ls_ColText = arg_dw.Describe(ls_ColName + '_t.Text')
+						MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+						arg_dw.SetRow(ll_Row)
+						arg_dw.SetColumn(ll_i)
+						arg_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+			Case 'INT', 'DEC', 'LON', 'NUM', 'REA'
+				
+				la_ColValue = arg_dw.GetItemDecimal(ll_Row, ls_ColName)				
+				If Long( ls_Color ) = 15793151 Then
+					If IsNull(la_ColValue) Or la_ColValue = 0 Then
+						ls_ColText = arg_dw.Describe(ls_ColName + '_t.Text')
+						
+//						If la_ColValue < 0 Then
+//							MessageBox('확인!', ls_ColText + '는(은) 음수값이 들어간 항목입니다.', Exclamation!)
+//						Else
+							MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+//						End If
+						arg_dw.SetRow(ll_Row)
+						arg_dw.SetColumn(ll_i)
+						arg_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+			Case 'DAT'
+				la_ColValue = arg_dw.GetItemDateTime(ll_Row, ls_ColName)
+				If Long( ls_Color ) = 15793151 Then
+					If IsNull(la_ColValue) Then
+						ls_ColText = arg_dw.Describe(ls_ColName + '_t.Text')
+						MessageBox('확인!', ls_ColText + '는(은) 필수입력 항목입니다.', Exclamation!)
+						arg_dw.SetRow(ll_Row)
+						arg_dw.SetColumn(ll_i)
+						arg_dw.SetFocus( )
+						
+						Return -1
+					End If
+				End If
+				
+		End Choose
+		
+	Next
+	
+Loop
+
+
+Return 1
+////필수항목 Check
+//String     ls_colcount, ls_colname, ls_colvalue, ls_coltext, ls_data_type
+//Long       ii, ll_row = 0, ll_rowcount
+//Any        la_colvalue
+//
+//ls_colcount = arg_dw.Object.DataWindow.Column.Count
+//ll_rowcount = arg_dw.RowCount()
+//DO WHILE  ll_row <= ll_rowcount
+//	ll_row = arg_dw.GetNextModified(ll_row, Primary!)
+//   IF ll_row = 0 THEN EXIT
+//	FOR  ii = 1  TO Dec(ls_colcount)
+//   	  ls_data_type = Upper(arg_dw.Describe("#" + String(ii) + ".ColType") ) 
+//		  ls_colname   = arg_dw.Describe("#" + String(ii) + ".Name")
+//		  CHOOSE CASE Left(ls_data_type, 3)
+//			 CASE "CHA" 	
+//  		          la_colvalue  = arg_dw.GetItemString(ll_row, ii)
+//				    IF IsNull(la_colvalue) OR la_colvalue = "" THEN
+//						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15793151 THEN
+//							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+//							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+//							 arg_dw.SetRow(ll_row)
+//							 arg_dw.Setcolumn(ii)
+////							 arg_dw.Modify(ls_colname + ".Background.Color = '65535'")
+//							 RETURN -1
+//						 END IF
+//					 END IF
+//			 CASE "INT", "DEC", "LON", "NUM", "REA"	
+//  		          la_colvalue  = arg_dw.GetItemNumber(ll_row, ii)
+//				    IF IsNull(la_colvalue) OR la_colvalue = 0 THEN
+//						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15793151 THEN
+//							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+//							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+//							 arg_dw.SetRow(ll_row)
+//							 arg_dw.Setcolumn(ii)
+////							 arg_dw.Modify(ls_colname + ".Background.Color = '65535'")
+//							 RETURN -1
+//						 END IF
+//					 END IF
+//			 CASE "DAT" 	
+//  		          la_colvalue  = arg_dw.GetItemDatetime(ll_row, ii)
+//				    IF IsNull(la_colvalue) THEN
+//						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15793151 THEN
+//							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+//							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+//							 arg_dw.SetRow(ll_row)
+//							 arg_dw.Setcolumn(ii)
+////							 arg_dw.Modify(ls_colname + ".Background.Color = '65535'")
+//							 RETURN -1
+//						 END IF
+//					 END IF
+//		  END CHOOSE
+//	NEXT
+//LOOP
+//
+//RETURN 1
+end function
+

@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_tot_dckqt.srf
+$PBExportComments$업체/전표번호/품번별 총발행량
+global type f_get_tot_dckqt from function_object
+end type
+
+forward prototypes
+global function decimal f_get_tot_dckqt (string as_plant, string as_div, string as_vsrno, string as_slno, string as_itno)
+end prototypes
+
+global function decimal f_get_tot_dckqt (string as_plant, string as_div, string as_vsrno, string as_slno, string as_itno);Dec{1} ld_tdckqt
+
+SELECT SUM("PBPUR"."PUR507"."AQTY")  INTO :ld_tdckqt  
+ FROM "PBPUR"."PUR507" 
+WHERE ( "PBPUR"."PUR507"."COMLTD" = '01')     AND ( "PBPUR"."PUR507"."XPLANT" = :as_plant ) AND
+		( "PBPUR"."PUR507"."DIV"   = :as_div  ) AND ( "PBPUR"."PUR507"."VSRNO" = :as_vsrno  ) AND
+		( "PBPUR"."PUR507"."SLNO"  = :as_slno ) AND ( "PBPUR"."PUR507"."ITNO"  = :as_itno  )  using sqlca ;
+if isnull(ld_tdckqt) or sqlca.sqlcode <> 0 then
+	ld_tdckqt = 0
+end if	
+
+return ld_tdckqt
+end function
+

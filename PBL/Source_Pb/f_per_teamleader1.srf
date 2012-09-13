@@ -1,0 +1,162 @@
+$PBExportHeader$f_per_teamleader1.srf
+$PBExportComments$Argument 사번(승인자)의 부서코드 list return
+global type f_per_teamleader1 from function_object
+end type
+
+forward prototypes
+global function string f_per_teamleader1 (string as_empno)
+end prototypes
+
+global function string f_per_teamleader1 (string as_empno);
+string ls_dept, ls_deptall, ls_jikchek
+int    ln_cnt, ln_i
+
+select pejikchek
+into  :ls_jikchek
+from   pbper.per001
+where  peempno = :as_empno using sqlca;
+
+if sqlca.sqlcode <> 0 then return 'emperr'
+
+if ls_jikchek = '3' then
+	select count(*)  into :ln_cnt
+	from   pbcommon.dac001
+	where  duse    = ' ' and
+		    dtodt   = 0   and
+			 dsys1   = 'X' and
+			 dlevel2 = '3' and
+			 dempno  = :as_empno ;
+	if ln_cnt > 4 then
+		return 'error3'
+	end if
+	 
+	declare run_cur cursor for
+		select dcode
+		  from pbcommon.dac001
+		 where duse    = ' ' and
+		       dtodt   = 0   and
+				 dsys1   = 'X' and
+				 dlevel2 = '3' and
+				 dempno  = :as_empno ;
+				 
+	open run_cur ;
+	
+	for ln_i = 1 to ln_cnt
+		fetch run_cur into :ls_dept ;
+		ls_deptall = ls_deptall + ls_dept
+	next
+	
+	close run_cur ;
+	
+elseif ls_jikchek = '4' then
+	
+	SELECT count(*)  into :ln_cnt
+	  fROM pbcommon.dac001
+	 where duse    = ' ' and
+			 dtodt   = 0   and
+			 dsys1   = 'X' and
+			 ( dlevel2 = '3' and 
+			   dempno in (' ', '*') and
+			   ddiv3 in (SELECT ddiv3
+							   fROM pbcommon.dac001
+							  where duse    = ' ' and
+									  dtodt   = 0   and
+									  dsys1   = 'X' and
+									  dlevel2 = '4' and       
+									  dempno  = :as_empno) or
+				dlevel2 = '4' and 
+			   dempno = :as_empno ) ;
+	if ln_cnt > 4 then
+		return 'error3'
+	end if
+				 
+	declare run_cur1 cursor for
+		SELECT dcode
+		  fROM pbcommon.dac001
+		 where duse    = ' ' and
+				 dtodt   = 0   and
+				 dsys1   = 'X' and
+				 ( dlevel2 = '3' and 
+			      dempno in (' ', '*') and
+				   ddiv3 in (SELECT ddiv3
+								   fROM pbcommon.dac001
+								  where duse    = ' ' and
+										  dtodt   = 0   and
+										  dsys1   = 'X' and
+									     dlevel2 = '4' and       
+										  dempno  = :as_empno) or
+					dlevel2 = '4' and 
+			      dempno = :as_empno ) ;
+	 
+	OPEN run_cur1 ;
+	
+	for ln_i = 1 to ln_cnt
+		fetch run_cur1 into :ls_dept ;
+		ls_deptall = ls_deptall + ls_dept
+	next
+	
+	close run_cur1 ;
+	
+elseif ls_jikchek = '5' then
+	
+	SELECT count(*)  into :ln_cnt
+	  fROM pbcommon.dac001
+	 where duse    = ' ' and
+			 dtodt   = 0   and
+			 dsys1   = 'X' and
+			 dlevel2 = '3' and 
+			 dempno in (' ', '*') and
+			 ( dlevel1 in (SELECT dlevel1
+								  fROM pbcommon.dac001
+								 where duse    = ' ' and
+										 dtodt   = 0   and
+										 dsys1   = 'X' and
+										 dlevel2 = '5' and      
+										 dempno  = :as_empno) or
+				ddiv3 in (SELECT ddiv3
+								fROM pbcommon.dac001
+							  where duse    = ' ' and
+									  dtodt   = 0   and
+									  dsys1   = 'X' and
+									  dlevel2 = '4' and       
+									  dempno  = :as_empno) ) ;
+	if ln_cnt > 4 then
+		return 'error3'
+	end if
+	
+	declare run_cur2 cursor for
+		SELECT dcode
+		  fROM pbcommon.dac001
+		 where duse    = ' ' and
+				 dtodt   = 0   and
+				 dsys1   = 'X' and
+				 dlevel2 = '3' and 
+			    dempno in (' ', '*') and
+				 ( dlevel1 in (SELECT dlevel1
+								     fROM pbcommon.dac001
+								    where duse    = ' ' and
+										    dtodt   = 0   and
+										    dsys1   = 'X' and
+										    dlevel2 = '5' and      
+										    dempno  = :as_empno) or
+					ddiv3 in (SELECT ddiv3
+								   fROM pbcommon.dac001
+								  where duse    = ' ' and
+										  dtodt   = 0   and
+										  dsys1   = 'X' and
+									     dlevel2 = '4' and       
+										  dempno  = :as_empno) ) ;
+	 
+	OPEN run_cur2 ;
+	
+	for ln_i = 1 to ln_cnt
+		fetch run_cur2 into :ls_dept ;
+		ls_deptall = ls_deptall + ls_dept
+	next
+	
+	close run_cur2 ;
+end if
+
+return ls_deptall
+end function
+

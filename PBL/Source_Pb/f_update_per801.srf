@@ -1,0 +1,68 @@
+$PBExportHeader$f_update_per801.srf
+$PBExportComments$control DB update(per801)
+global type f_update_per801 from function_object
+end type
+
+forward prototypes
+global subroutine f_update_per801 (string ag_gubun, decimal ag_serial)
+end prototypes
+
+global subroutine f_update_per801 (string ag_gubun, decimal ag_serial);string ls_yy ,ls_noyy 
+long  ll_serial
+int   ln_no
+
+ll_serial = ag_serial  
+ls_yy = mid(g_s_date,1,4)
+
+//messagebox('f_update_801', ag_gubun + "   " + string(ll_serial) )
+
+select max(pbper.per801.noyy)
+into :ls_noyy
+from  pbper.per801
+where  pbper.per801.nogb = :ag_gubun  using sqlcc ;
+
+//messagebox('f_update_801', ls_noyy)
+//messagebox('f_update_801', ag_serial)
+if ls_yy = ls_noyy  then   /////////같은년도면 
+   if ag_gubun = '1'  then  /////정규직
+		update pbper.per801
+		set    noserno = :ll_serial
+		where pbper.per801.noyy = :ls_yy  and
+				pbper.per801.nogb = :ag_gubun  using sqlcc ;
+	else                     //////협력사원
+		
+		update pbper.per801
+		set    noserno = :ll_serial
+		where pbper.per801.noyy = :ls_yy  and
+				pbper.per801.nogb = :ag_gubun  using sqlcc ;
+		if ag_gubun = '4' and ag_serial = 499 then
+			update pbper.per801
+			set noserno = noserno + 1
+			where noyy = :ls_yy and nogb = '41' 
+			using sqlcc ;
+			
+		elseif ag_gubun = '5' and ag_serial = 999 then
+			update pbper.per801
+			set noserno = noserno + 1
+			where noyy = :ls_yy and nogb = '51' 
+			using sqlcc ;
+			
+		else
+		end if
+		
+	end if
+				
+else          /////////다른년도이면
+	  if ag_gubun = '5' then
+		  ln_no = 501             //////대구협력사원신규사번(501부터)
+	  elseif ag_gubun = '4'  then
+		  ln_no = 101             //////진천협력사원신규사번(101부터)
+	  else
+	     ln_no = 1
+	  end if
+	  insert into  pbper.per801(noyy, nogb, noserno)
+	               VALUES (:ls_yy , :ag_gubun, :ln_no)
+	  using sqlcc ;
+end if
+end subroutine
+

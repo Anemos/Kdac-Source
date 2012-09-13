@@ -1,0 +1,31 @@
+$PBExportHeader$f_wip_use_delete.srf
+$PBExportComments$재공 사용량 삭제(WIP001)
+global type f_wip_use_delete from function_object
+end type
+
+forward prototypes
+global function integer f_wip_use_delete (string ag_comltd, string ag_sliptype, string ag_srno, string ag_srno1, string ag_srno2)
+end prototypes
+
+global function integer f_wip_use_delete (string ag_comltd, string ag_sliptype, string ag_srno, string ag_srno1, string ag_srno2);integer li_rtn
+
+// 사용내역삭제
+select count(*) into :li_rtn
+from pbwip.wip004
+where wdcmcd = :ag_comltd and wdprsrty = :ag_sliptype and wdprsrno = :ag_srno and
+		wdprsrno1 = :ag_srno1 and wdprsrno2 = :ag_srno2  using sqlca;
+if li_rtn > 0 then
+	// 재공 사용량 조정
+	DECLARE up_wip08 PROCEDURE FOR PBWIP.SP_WIP_08  
+			A_COMLTD = :ag_comltd,   
+			A_PRSRTY = :ag_sliptype,   
+			A_PRSRNO = :ag_srno,   
+			A_PRSRNO1 = :ag_srno1,   
+			A_PRSRNO2 = :ag_srno2  using sqlca;
+	
+	execute up_wip08;		
+end if
+
+return 0
+end function
+

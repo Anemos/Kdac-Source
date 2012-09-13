@@ -1,0 +1,75 @@
+$PBExportHeader$f_get_accflowupdate.srf
+$PBExportComments$결산진행관련 UPDATE
+global type f_get_accflowupdate from function_object
+end type
+
+forward prototypes
+global function integer f_get_accflowupdate (string a_s_company, string a_s_gubun, string a_s_ser, string a_s_yy, string a_s_mm)
+end prototypes
+
+global function integer f_get_accflowupdate (string a_s_company, string a_s_gubun, string a_s_ser, string a_s_yy, string a_s_mm);  //return  0 - success, 1 -  미존재  ERROR , 2&3 - UPDATE ERROR
+string l_s_menu,l_s_name
+
+long l_n_rcnt 
+
+select "PBACC"."ACC280"."ACMENUCD","PBACC"."ACC280"."ACNAME"
+into :l_s_menu, :l_s_name
+from   "PBACC"."ACC280"
+where  "PBACC"."ACC280"."COMLTD"   = :a_s_company and
+		 "PBACC"."ACC280"."ACGUBUN"   = :a_s_gubun   and
+		 "PBACC"."ACC280"."ACSER" = :a_s_ser    and 
+		 "PBACC"."ACC280"."ACYY" = ''    and 
+		 "PBACC"."ACC280"."ACMM" = '' using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	return 1
+end if 
+
+
+
+select count(*)
+into :l_n_rcnt
+from   "PBACC"."ACC280"
+where  "PBACC"."ACC280"."COMLTD"   = :a_s_company and
+		 "PBACC"."ACC280"."ACGUBUN"   = :a_s_gubun   and
+		 "PBACC"."ACC280"."ACSER" = :a_s_ser    and 
+		 "PBACC"."ACC280"."ACYY" = :a_s_yy      and 
+		 "PBACC"."ACC280"."ACMM" = :a_s_mm using sqlca ;
+
+if sqlca.sqlcode <> 0 or isnull(l_n_rcnt) then
+	l_n_rcnt = 0
+end if 
+
+if l_n_rcnt > 0 then
+	
+	UPDATE "PBACC"."ACC280"
+		SET "ACEMPNO" = :g_s_empno, "ACDTTM" = :g_s_datetime, 
+			 "IPADDR" = :g_s_ipaddr ,  "MACADDR" = :g_s_macaddr
+	WHERE  "PBACC"."ACC280"."COMLTD"   = :a_s_company and
+		 "PBACC"."ACC280"."ACGUBUN"   = :a_s_gubun   and
+		 "PBACC"."ACC280"."ACSER" = :a_s_ser  and 
+		 "PBACC"."ACC280"."ACYY" = :a_s_yy      and 
+		 "PBACC"."ACC280"."ACMM" = :a_s_mm       using sqlca ;
+		 
+	if sqlca.sqlcode <> 0 then
+		return 2
+	end if 
+else 
+	insert into "PBACC"."ACC280"  
+				( "COMLTD",      "ACGUBUN",       "ACSER",       "ACYY",        "ACMM",
+				  "ACMENUCD" ,   "ACNAME" ,       "ACEMPNO",     "ACDTTM",      "EXTD",
+				   "IPADDR",	  "MACADDR" )  
+	  values ( :g_s_company,  :a_s_gubun,      :a_s_ser,      :a_s_yy,       :a_s_mm,
+	           :l_s_menu,     :l_s_name,       :g_s_empno,    :g_s_datetime, ' ',
+              :g_s_ipaddr,	  :g_s_macaddr  )  using sqlca;
+	if sqlca.sqlcode <> 0 then
+		return 3
+	end if 
+end if 
+
+return 0 
+	
+	
+	
+end function
+

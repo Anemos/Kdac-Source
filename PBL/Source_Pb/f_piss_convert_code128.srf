@@ -1,0 +1,57 @@
+$PBExportHeader$f_piss_convert_code128.srf
+global type f_piss_convert_code128 from function_object
+end type
+
+forward prototypes
+global function string f_piss_convert_code128 (string ag_type, string ag_input)
+end prototypes
+
+global function string f_piss_convert_code128 (string ag_type, string ag_input);//------------------------------------
+// Code128 Barcode ±âÁØ
+// ag_type 'A' => li_startvalue = 103
+// ag_type 'B' => li_startvalue = 104
+// ag_type 'C' => li_startvalue = 105
+//------------------------------------
+
+string ls_modchar, ls_curchar
+integer li_startvalue, li_totalvalue, li_resultvalue, li_ascii, li_addvalue
+long ll_len, ll_cnt, ll_total
+
+choose case ag_type
+	case 'A'
+		li_startvalue = 103
+	case 'B'
+		li_startvalue = 104
+	case 'C'
+		li_startvalue = 105
+	case else
+		return space(1)
+end choose
+
+li_totalvalue = li_startvalue
+ll_len = Len(trim(ag_input))
+for ll_cnt = 1 to ll_len
+	ls_curchar = Mid(ag_input,ll_cnt,1)
+	li_ascii = asc(ls_curchar)
+	if li_ascii = 194 then
+		li_addvalue = 0
+	elseif li_ascii > 126 then
+		li_addvalue = li_ascii - 100
+	else
+		li_addvalue = li_ascii - 32
+	end if
+	li_totalvalue = li_totalvalue + (li_addvalue * ll_cnt)
+next
+
+li_resultvalue = Mod(li_totalvalue, 103)
+if li_resultvalue = 0 then
+	li_resultvalue = 194
+elseif li_resultvalue > 94 then
+	li_resultvalue = li_resultvalue + 100
+else
+	li_resultvalue = li_resultvalue + 32
+end if
+
+ls_modchar = Char(li_resultvalue)
+return ag_input + ls_modchar
+end function

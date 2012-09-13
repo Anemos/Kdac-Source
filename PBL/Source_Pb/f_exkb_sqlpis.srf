@@ -1,0 +1,78 @@
+$PBExportHeader$f_exkb_sqlpis.srf
+$PBExportComments$ipis 입고확정시 호출함수
+global type f_exkb_sqlpis from function_object
+end type
+
+forward prototypes
+global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty)
+end prototypes
+
+global function integer f_exkb_sqlpis (string fs_srno, string fs_kbno, string fs_itno, string fs_xplant1, string fs_div1, decimal fd_kbqty);string ls_areacode,ls_divisioncode,ls_kbno,ls_srno
+ls_srno				= left(fs_srno,11)
+ls_areacode 		= mid(fs_kbno,1,1)
+ls_divisioncode 	= mid(fs_kbno,2,1)
+ls_kbno 				= 'EX' + fs_kbno
+
+if f_connection_sqlserver(fs_xplant1,fs_div1) = false then
+	return 3  // sqlserver connection 실패
+end if
+
+update TINV
+set moveinvqty 	= moveinvqty - :fd_kbqty,
+	 lastdate     	= getdate(),
+	 lastemp      	= 'Y'       
+ where AreaCode     = :fs_xplant1
+	and divisioncode = :fs_div1
+	and itemcode     = :fs_itno
+using sqlpis ;
+
+if sqlpis.sqlnrows <> 1 then
+	return 4  // 해당 Data 없음
+end if
+
+update TSHIPINV
+	set moveconfirmdate = convert(char(10),getdate(),102),
+		 moveconfirmtime = getdate(),
+		 lastdate        = getdate(),
+		 lastemp        = 'Y'
+ where AreaCode         = :fs_xplant1
+	and divisioncode     = :fs_div1
+	and srno             = :ls_srno
+	and fromareacode     = :ls_areacode
+	and fromdivisioncode = :ls_divisioncode
+	and moverequireno    = :ls_kbno
+	and itemcode 			= :fs_itno
+using sqlpis ;
+
+if sqlpis.sqlnrows <> 1 then
+	return 5  // 해당 Data 없음
+end if
+
+if f_connection_sqlserver(ls_areacode,ls_divisioncode) = false then
+	return 1  // sqlserver connection 실패
+end if
+
+update tshipinv
+	set moveconfirmflag = 'Y',
+		 sendflag        = 'Y',
+		 moveconfirmdate = convert(char(10),getdate(),102),
+		 moveconfirmtime = getdate(),		 
+		 lastdate        = getdate(),		 
+		 lastemp         = 'Y'
+ where AreaCode         = :ls_areacode
+	and divisioncode     = :ls_divisioncode
+	and moverequireno    = :ls_kbno
+	and fromareacode     = :fs_xplant1
+	and fromdivisioncode = :fs_div1
+	and itemcode 			= :fs_itno
+	and srno					= :ls_srno
+using sqlpis ;
+
+if sqlpis.sqlnrows <> 1 then
+	return 2 // 해당 Data 없음
+end if
+
+return 0
+
+end function
+

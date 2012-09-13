@@ -1,0 +1,124 @@
+$PBExportHeader$f_pur041_down_cost1.srf
+$PBExportComments$IPIS품목단가다운로드(보완)
+global type f_pur041_down_cost1 from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_down_cost1 (ref string rs_msg, datawindow fdw_ipis_temp, datawindow fdw_kdac, any fs_str_ipis[])
+end prototypes
+
+global function integer f_pur041_down_cost1 (ref string rs_msg, datawindow fdw_ipis_temp, datawindow fdw_kdac, any fs_str_ipis[]);//as_gubun 'C','U', 'D'
+//pdpur103  업데이트
+/*
+   2008.08.14 : f_pur041_down_cost 보완.
+	업체별 품목단가 interface 로 전달.
+	pdpur103 update 
+*/
+Integer li_index
+long   ll_rtn
+Long ln_i, ln_ins
+
+//Str_ipis_server lstr_ipis
+
+
+//품목단가는 공장 1개인 'INT' : 인터페이스 공장
+li_index = f_ipis_server_get_transaction(fs_str_ipis,'X','X')
+if li_index = -1 then
+	rs_msg = "공장연결에 실패하였습니다."
+	return -1
+else
+	//lstr_ipis = fs_str_ipis[li_index]
+end if
+
+//IPIS DW
+fdw_ipis_temp.dataobject = 'd_ipis_tmispur103'
+fdw_ipis_temp.settransobject(sqlpis)	
+fdw_ipis_temp.Reset()
+
+//업체,품번별
+For ln_i = 1 To fdw_kdac.RowCount()	
+	
+	ln_ins = fdw_ipis_temp.insertrow(0)
+	
+	fdw_ipis_temp.object.CHGDATE[ln_ins] 	  = ''   
+	fdw_ipis_temp.object.CHGCD[ln_ins]      =    fdw_kdac.object.gubun[ln_i] 
+	fdw_ipis_temp.object.comltd[ln_ins]     =    fdw_kdac.object.comltd[ln_i]   
+	fdw_ipis_temp.object.vsrc[ln_ins]       =    fdw_kdac.object.vsrc[ln_i]   
+	fdw_ipis_temp.object.dept[ln_ins]       =    fdw_kdac.object.dept[ln_i]   
+	fdw_ipis_temp.object.vsrno[ln_ins]      =    fdw_kdac.object.vsrno[ln_i]   
+	fdw_ipis_temp.object.itno[ln_ins]       =    fdw_kdac.object.itno[ln_i]   
+	fdw_ipis_temp.object.itno1[ln_ins]      =    fdw_kdac.object.itno1[ln_i]   
+	fdw_ipis_temp.object.itnm1[ln_ins]      =    fdw_kdac.object.itnm1[ln_i]  
+	fdw_ipis_temp.object.spec1[ln_ins]      =    fdw_kdac.object.spec1[ln_i]   
+	fdw_ipis_temp.object.unit1[ln_ins]      =    fdw_kdac.object.unit1[ln_i]   
+	fdw_ipis_temp.object.wsrc[ln_ins]       =    fdw_kdac.object.wsrc[ln_i]   
+	fdw_ipis_temp.object.convqty1[ln_ins]   =    fdw_kdac.object.convqty1[ln_i]   
+	fdw_ipis_temp.object.dadjdt[ln_ins]     =    fdw_kdac.object.dadjdt[ln_i]  
+	fdw_ipis_temp.object.dcurr[ln_ins]      =    fdw_kdac.object.dcurr[ln_i]   
+	fdw_ipis_temp.object.dcost[ln_ins]      =    fdw_kdac.object.dcost[ln_i]   
+	fdw_ipis_temp.object.dsheet[ln_ins]     =    fdw_kdac.object.dsheet[ln_i]   
+	fdw_ipis_temp.object.eadjdt[ln_ins]     =    fdw_kdac.object.eadjdt[ln_i]   
+	fdw_ipis_temp.object.ecurr[ln_ins]      =    fdw_kdac.object.ecurr[ln_i]   
+	fdw_ipis_temp.object.ecost[ln_ins]      =    fdw_kdac.object.ecost[ln_i]   
+	fdw_ipis_temp.object.esheet[ln_ins]     =    fdw_kdac.object.esheet[ln_i]   
+	fdw_ipis_temp.object.arr[ln_ins]        =    fdw_kdac.object.arr[ln_i]   
+	fdw_ipis_temp.object.xpay[ln_ins]       =    fdw_kdac.object.xpay[ln_i]   
+	fdw_ipis_temp.object.vzero[ln_ins]      =    fdw_kdac.object.vzero[ln_i]   
+	fdw_ipis_temp.object.qccd[ln_ins]       =    fdw_kdac.object.qccd[ln_i]   
+	fdw_ipis_temp.object.adjdt[ln_ins]      =    fdw_kdac.object.adjdt[ln_i]   
+	fdw_ipis_temp.object.frpdt[ln_ins]      =    fdw_kdac.object.frpdt[ln_i]   
+	fdw_ipis_temp.object.pqty[ln_ins]       =    fdw_kdac.object.pqty[ln_i]   
+	fdw_ipis_temp.object.xrate[ln_ins]      =    fdw_kdac.object.xrate[ln_i]   
+	fdw_ipis_temp.object.shrt[ln_ins]       =    fdw_kdac.object.shrt[ln_i]   
+	fdw_ipis_temp.object.xplan[ln_ins]      =    fdw_kdac.object.xplan[ln_i]   
+	fdw_ipis_temp.object.strt[ln_ins]       =    fdw_kdac.object.strt[ln_i]   
+	fdw_ipis_temp.object.chcs[ln_ins]       =    fdw_kdac.object.chcs[ln_i]   
+	fdw_ipis_temp.object.fpurno[ln_ins]     =    fdw_kdac.object.fpurno[ln_i]   
+	fdw_ipis_temp.object.fpindt[ln_ins]     =    fdw_kdac.object.fpindt[ln_i]   
+	fdw_ipis_temp.object.fcost[ln_ins]      =    fdw_kdac.object.fcost[ln_i]   
+	fdw_ipis_temp.object.purno[ln_ins]      =    fdw_kdac.object.purno[ln_i]   
+	fdw_ipis_temp.object.pindt[ln_ins]      =    fdw_kdac.object.pindt[ln_i]   
+	fdw_ipis_temp.object.rqno[ln_ins]       =    fdw_kdac.object.rqno[ln_i]   
+	fdw_ipis_temp.object.srno[ln_ins]       =    fdw_kdac.object.srno[ln_i]   
+	fdw_ipis_temp.object.srno1[ln_ins]      =    fdw_kdac.object.srno1[ln_i]   
+	fdw_ipis_temp.object.dkdt[ln_ins]       =    fdw_kdac.object.dkdt[ln_i]   
+	fdw_ipis_temp.object.lcost[ln_ins]      =    fdw_kdac.object.lcost[ln_i]   
+	fdw_ipis_temp.object.xstop[ln_ins]      =    fdw_kdac.object.xstop[ln_i]  
+	fdw_ipis_temp.object.extd[ln_ins]       =    fdw_kdac.object.extd[ln_i]  	
+	
+	fdw_ipis_temp.object.STSCD[ln_ins]      =  ''
+	fdw_ipis_temp.object.DOWNDATE[ln_ins]   =  ''		
+	
+	/* 추후 IPIS 단가 컬럼보완시 추가할 사항 :2009.05.06
+	fdw_ipis_temp.object.pmul[ln_ins]       =    fdw_kdac.object.pmul[ln_i]  
+	fdw_ipis_temp.object.mul[ln_ins]        =    fdw_kdac.object.mul[ln_i]  
+	fdw_ipis_temp.object.cmul[ln_ins]       =    fdw_kdac.object.cmul[ln_i]  
+	fdw_ipis_temp.object.pcost1[ln_ins]     =    fdw_kdac.object.pcost1[ln_i]  
+	fdw_ipis_temp.object.pcost2[ln_ins]     =    fdw_kdac.object.pcost2[ln_i]  
+	fdw_ipis_temp.object.ingot[ln_ins]      =    fdw_kdac.object.ingot[ln_i]  
+	fdw_ipis_temp.object.sogubdt[ln_ins]    =    fdw_kdac.object.sogubdt[ln_i]  
+	
+	fdw_ipis_temp.object.pmul2[ln_ins]      =    fdw_kdac.object.pmul2[ln_i]  
+	fdw_ipis_temp.object.mul2[ln_ins]       =    fdw_kdac.object.mul2[ln_i]  
+	fdw_ipis_temp.object.cmul2[ln_ins]      =    fdw_kdac.object.cmul2[ln_i]  
+	fdw_ipis_temp.object.pcost3[ln_ins]     =    fdw_kdac.object.pcost3[ln_i]  
+	fdw_ipis_temp.object.pcost4[ln_ins]     =    fdw_kdac.object.pcost4[ln_i]  
+	
+	fdw_ipis_temp.object.PXUNIT1[ln_ins]    =    fdw_kdac.object.PXUNIT1[ln_i]  
+	fdw_ipis_temp.object.PXUNIT2[ln_ins]    =    fdw_kdac.object.PXUNIT2[ln_i]  
+	fdw_ipis_temp.object.PBXUNIT1[ln_ins]   =    fdw_kdac.object.PBXUNIT1[ln_i]  
+	fdw_ipis_temp.object.PBXUNIT2[ln_ins]   =    fdw_kdac.object.PBXUNIT2[ln_i] 
+	*/
+Next
+
+//인터페이스 함수에 데이타 전달	
+ll_rtn = f_down_ipis_mis_pur103(rs_msg, fdw_ipis_temp, fs_str_ipis)
+IF ll_rtn = -1 Then
+	Return -1
+End IF	
+
+Return 0
+
+
+end function
+

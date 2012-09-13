@@ -1,0 +1,23 @@
+$PBExportHeader$f_pur041_setvzero.srf
+$PBExportComments$영세율등록
+global type f_pur041_setvzero from function_object
+end type
+
+forward prototypes
+global subroutine f_pur041_setvzero (string as_vsrno, string as_vzero)
+end prototypes
+
+global subroutine f_pur041_setvzero (string as_vsrno, string as_vzero);//영세율수정
+
+update pbpur.pur103
+	 set vzero = :as_vzero
+	 where comltd = '01'
+	 and   vsrno = :as_vsrno
+	 ;
+
+return
+
+  
+ 
+end subroutine
+

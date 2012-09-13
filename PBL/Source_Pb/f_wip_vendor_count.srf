@@ -1,0 +1,40 @@
+$PBExportHeader$f_wip_vendor_count.srf
+$PBExportComments$업체사용량 계산(WIP001)
+global type f_wip_vendor_count from function_object
+end type
+
+forward prototypes
+global function long f_wip_vendor_count (string a_comltd, string a_slipxtype, string a_xplant, string a_div, string a_itno, string a_tdte4)
+end prototypes
+
+global function long f_wip_vendor_count (string a_comltd, string a_slipxtype, string a_xplant, string a_div, string a_itno, string a_tdte4);long ll_count
+
+// bomtemp db 생성
+if a_slipxtype = 'RP' then
+	f_creation_bom_after(a_tdte4,a_xplant,a_div,a_itno,'I','Y')
+	
+	// 호환 부품번의 하위품목 제외한 품번들 찾기 		
+	select count(*) into :ll_count from qtemp.bomtemp,pbinv.inv101
+		where tcmcd = :g_s_company and tplnt = :a_xplant and tdvsn = :a_div and 
+				tcmcd = comltd and tplnt = xplant and tdvsn = div and tcitn = itno and
+				( cls = '10' or cls = '40' or cls = '50') and topcd <> '2' and twkct <> '8888'
+	using sqlca ;
+	
+	return ll_count
+else
+	f_creation_bom_after(a_tdte4,a_xplant,a_div,a_itno,'G','Y')
+	
+	select count(*) into :ll_count from qtemp.bomtemp,pbinv.inv101
+		where tcmcd = :g_s_company and tplnt = :a_xplant and tdvsn = :a_div and 
+				tcmcd = comltd and tplnt = xplant and tdvsn = div and tcitn = itno and
+				( cls = '10' or cls = '40' or cls = '50') and srce <> '03' and topcd <> '2' and twkct <> '8888'
+	using sqlca ;
+	return ll_count
+end if
+
+			
+	
+
+
+end function
+

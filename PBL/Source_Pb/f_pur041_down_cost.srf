@@ -1,0 +1,116 @@
+$PBExportHeader$f_pur041_down_cost.srf
+$PBExportComments$IPIS품목단가다운로드
+global type f_pur041_down_cost from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_down_cost (datawindow idw_temp1, datawindow idw_temp2, ref string ls_msg)
+end prototypes
+
+global function integer f_pur041_down_cost (datawindow idw_temp1, datawindow idw_temp2, ref string ls_msg);//as_gubun 'C','U', 'D'
+//pdpur103  업데이트
+long  ll_row, ll_rcnt, ll_rtn
+
+str_ipis_server lstr_ipis[]
+string ls_areadivision[]
+
+ls_areadivision[1] = '  '
+//트랜잭션 찾기 및 연결확인
+lstr_ipis = f_ipis_server_set_transaction('ALL',ls_areadivision) //전체는 현재 전장만 2007.05
+if UpperBound(lstr_ipis) = 0 or & 
+f_ipis_server_get_transaction(lstr_ipis,'X','X') = -1 then
+   f_ipis_server_rollback_transaction(lstr_ipis)
+   messagebox('업체ipis다운로드오류','인터페이스 객체생성안되거나 를 찾을 수 없습니다. 연락바랍니다!')
+   ls_msg	=  '인터페이스 객체생성안되거나 를 찾을 수 없습니다. 연락바랍니다!'
+	return -1
+end if
+
+ll_row = 1
+idw_temp1.dataobject = 'd_ipis_tmispur103'
+idw_temp1.settransobject(sqlpis)	
+idw_temp1.insertrow(0)
+idw_temp1.object.CHGDATE[1] = ''   
+idw_temp1.object.CHGCD[1]          =   idw_temp2.object.gubun[1] 
+idw_temp1.object.comltd[ll_row]      =  idw_temp2.object.comltd[ll_row]   
+idw_temp1.object.vsrc[ll_row]      =    idw_temp2.object.vsrc[ll_row]   
+idw_temp1.object.dept[ll_row]      =    idw_temp2.object.dept[ll_row]   
+idw_temp1.object.vsrno[ll_row]      =    idw_temp2.object.vsrno[ll_row]   
+idw_temp1.object.itno[ll_row]      =    idw_temp2.object.itno[ll_row]   
+idw_temp1.object.itno1[ll_row]      =    idw_temp2.object.itno1[ll_row]   
+idw_temp1.object.itnm1[ll_row]     =    idw_temp2.object.itnm1[ll_row]  
+idw_temp1.object.spec1[ll_row]      =    idw_temp2.object.spec1[ll_row]   
+idw_temp1.object.unit1[ll_row]      =    idw_temp2.object.unit1[ll_row]   
+idw_temp1.object.wsrc[ll_row]      =    idw_temp2.object.wsrc[ll_row]   
+idw_temp1.object.convqty1[ll_row]      =    idw_temp2.object.convqty1[ll_row]   
+idw_temp1.object.dadjdt[ll_row]     =    idw_temp2.object.dadjdt[ll_row]  
+idw_temp1.object.dcurr[ll_row]      =    idw_temp2.object.dcurr[ll_row]   
+idw_temp1.object.dcost[ll_row]      =    idw_temp2.object.dcost[ll_row]   
+idw_temp1.object.dsheet[ll_row]      =    idw_temp2.object.dsheet[ll_row]   
+idw_temp1.object.eadjdt[ll_row]      =    idw_temp2.object.eadjdt[ll_row]   
+idw_temp1.object.ecurr[ll_row]      =    idw_temp2.object.ecurr[ll_row]   
+idw_temp1.object.ecost[ll_row]      =    idw_temp2.object.ecost[ll_row]   
+idw_temp1.object.esheet[ll_row]      =    idw_temp2.object.esheet[ll_row]   
+idw_temp1.object.arr[ll_row]      =    idw_temp2.object.arr[ll_row]   
+idw_temp1.object.xpay[ll_row]      =    idw_temp2.object.xpay[ll_row]   
+idw_temp1.object.vzero[ll_row]      =    idw_temp2.object.vzero[ll_row]   
+idw_temp1.object.qccd[ll_row]      =    idw_temp2.object.qccd[ll_row]   
+idw_temp1.object.adjdt[ll_row]      =    idw_temp2.object.adjdt[ll_row]   
+idw_temp1.object.frpdt[ll_row]      =    idw_temp2.object.frpdt[ll_row]   
+idw_temp1.object.pqty[ll_row]      =    idw_temp2.object.pqty[ll_row]   
+idw_temp1.object.xrate[ll_row]      =    idw_temp2.object.xrate[ll_row]   
+idw_temp1.object.shrt[ll_row]      =    idw_temp2.object.shrt[ll_row]   
+idw_temp1.object.xplan[ll_row]      =    idw_temp2.object.xplan[ll_row]   
+idw_temp1.object.strt[ll_row]      =    idw_temp2.object.strt[ll_row]   
+idw_temp1.object.chcs[ll_row]      =    idw_temp2.object.chcs[ll_row]   
+idw_temp1.object.fpurno[ll_row]      =    idw_temp2.object.fpurno[ll_row]   
+idw_temp1.object.fpindt[ll_row]      =    idw_temp2.object.fpindt[ll_row]   
+idw_temp1.object.fcost[ll_row]      =    idw_temp2.object.fcost[ll_row]   
+idw_temp1.object.purno[ll_row]      =    idw_temp2.object.purno[ll_row]   
+idw_temp1.object.pindt[ll_row]      =    idw_temp2.object.pindt[ll_row]   
+idw_temp1.object.rqno[ll_row]      =    idw_temp2.object.rqno[ll_row]   
+idw_temp1.object.srno[ll_row]      =    idw_temp2.object.srno[ll_row]   
+idw_temp1.object.srno1[ll_row]      =    idw_temp2.object.srno1[ll_row]   
+idw_temp1.object.dkdt[ll_row]      =    idw_temp2.object.dkdt[ll_row]   
+idw_temp1.object.lcost[ll_row]      =    idw_temp2.object.lcost[ll_row]   
+idw_temp1.object.xstop[ll_row]     =    idw_temp2.object.xstop[ll_row]  
+idw_temp1.object.extd[ll_row]     =    idw_temp2.object.extd[ll_row]  
+
+idw_temp1.object.STSCD[1]   =   ''
+idw_temp1.object.DOWNDATE[1] =  ''	
+
+/* 추후 IPIS 단가 컬럼보완시 추가할 사항 :2009.05.06
+idw_temp1.object.pmul[1]       =    idw_temp2.object.pmul[ll_row]  
+idw_temp1.object.mul[1]        =    idw_temp2.object.mul[ll_row]  
+idw_temp1.object.cmul[1]       =    idw_temp2.object.cmul[ll_row]  
+idw_temp1.object.pcost1[1]     =    idw_temp2.object.pcost1[ll_row]  
+idw_temp1.object.pcost2[1]     =    idw_temp2.object.pcost2[ll_row]  
+idw_temp1.object.ingot[1]      =    idw_temp2.object.ingot[ll_row]  
+idw_temp1.object.sogubdt[1]    =    idw_temp2.object.sogubdt[ll_row]  
+
+idw_temp1.object.pmul2[1]      =    idw_temp2.object.pmul2[ll_row]  
+idw_temp1.object.mul2[1]       =    idw_temp2.object.mul2[ll_row]  
+idw_temp1.object.cmul2[1]      =    idw_temp2.object.cmul2[ll_row]  
+idw_temp1.object.pcost3[1]     =    idw_temp2.object.pcost3[ll_row]  
+idw_temp1.object.pcost4[1]     =    idw_temp2.object.pcost4[ll_row]  
+
+idw_temp1.object.PXUNIT1[1]    =    idw_temp2.object.PXUNIT1[ll_row]  
+idw_temp1.object.PXUNIT2[1]    =    idw_temp2.object.PXUNIT2[ll_row]  
+idw_temp1.object.PBXUNIT1[1]   =    idw_temp2.object.PBXUNIT1[ll_row]  
+idw_temp1.object.PBXUNIT2[1]   =    idw_temp2.object.PBXUNIT2[ll_row] 
+*/
+//인터페이스 함수에 데이타 전달	
+ll_rtn = f_down_ipis_mis_pur103(ls_msg,idw_temp1,lstr_ipis)
+if ll_rtn = -1 then 
+	f_ipis_server_rollback_transaction(lstr_ipis)
+	messagebox('업체ipis다운로드오류',ls_msg)
+  	return -1
+end if
+
+//정상처리 완료, commit시점에는 오류체크없음
+f_ipis_server_commit_transaction(lstr_ipis)
+//
+return 0
+
+
+end function
+

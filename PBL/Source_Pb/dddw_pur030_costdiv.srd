@@ -1,0 +1,19 @@
+$PBExportHeader$dddw_pur030_costdiv.srd
+$PBExportComments$¿ø°¡»ç¾÷Àå-°øÅëDB(rtrim,name=10,code=INV400)
+release 8;
+datawindow(units=0 timer_interval=0 color=79741120 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=compute_0001 dbname="compute_0001" initial=" " validation=" " validationmsg=" " )
+ column=(type=char(10) updatewhereclause=yes name=cocode1 dbname="COCODE1" initial=" " validation=" " validationmsg=" " )
+ column=(type=char(50) updatewhereclause=yes name=compute_0003 dbname="compute_0003" initial=" " validation=" " validationmsg=" " )
+ column=(type=char(6) updatewhereclause=yes name=compute_0004 dbname="compute_0004" initial=" " validation=" " validationmsg=" " )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"PBCOMMON.DAC002~" ) COMPUTE(NAME=~"rtrim(~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COITNAME~~~")~") COMPUTE(NAME=~"rtrim(~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COCODE~~~") as cocode1~") COMPUTE(NAME=~"rtrim(~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COFLNAME~~~")~") COMPUTE(NAME=~"rtrim(~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COGUBUN~~~")~")WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COGUBUN~~~"~"   OP =~"=~"    EXP2 =~"'INV400'~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC002~~~".~~~"COMLTD~~~"~"   OP =~"=~"    EXP2 =~"'01'~" ) ) ORDER(NAME=~"2~" ASC=yes ) " )
+text(band=header alignment="0" text="Cocode1" border="0" color="0" x="343" y="0" height="60" width="119" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="00001" border="0" color="0" x="9" y="0" height="60" width="325" html.valueishtml="0"  name=compute_0001_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="343" y="0" height="80" width="119" format="[general]" html.valueishtml="0"  name=cocode1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="80" width="325" format="[general]" html.valueishtml="0"  name=compute_0001 visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

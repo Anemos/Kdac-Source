@@ -1,0 +1,124 @@
+$PBExportHeader$d_wip023u_history.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=wdcmcd dbname="WIP004.WDCMCD" )
+ column=(type=char(1) updatewhereclause=yes name=wdplant dbname="WIP004.WDPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wddvsn dbname="WIP004.WDDVSN" )
+ column=(type=char(1) updatewhereclause=yes name=wdiocd dbname="WIP004.WDIOCD" )
+ column=(type=char(15) updatewhereclause=yes name=wditno dbname="WIP004.WDITNO" )
+ column=(type=char(2) updatewhereclause=yes name=wdrvno dbname="WIP004.WDRVNO" )
+ column=(type=char(50) updatewhereclause=yes name=wddesc dbname="WIP004.WDDESC" )
+ column=(type=char(50) updatewhereclause=yes name=wdspec dbname="WIP004.WDSPEC" )
+ column=(type=char(2) updatewhereclause=yes name=wdunit dbname="WIP004.WDUNIT" )
+ column=(type=char(2) updatewhereclause=yes name=wditcl dbname="WIP004.WDITCL" )
+ column=(type=char(2) updatewhereclause=yes name=wdsrce dbname="WIP004.WDSRCE" )
+ column=(type=char(2) updatewhereclause=yes name=wdusge dbname="WIP004.WDUSGE" )
+ column=(type=char(2) updatewhereclause=yes name=wdpdcd dbname="WIP004.WDPDCD" )
+ column=(type=char(12) updatewhereclause=yes name=wdslno dbname="WIP004.WDSLNO" )
+ column=(type=char(2) updatewhereclause=yes name=wdprsrty dbname="WIP004.WDPRSRTY" )
+ column=(type=char(8) updatewhereclause=yes name=wdprsrno dbname="WIP004.WDPRSRNO" )
+ column=(type=char(2) updatewhereclause=yes name=wdprsrno1 dbname="WIP004.WDPRSRNO1" )
+ column=(type=char(2) updatewhereclause=yes name=wdprsrno2 dbname="WIP004.WDPRSRNO2" )
+ column=(type=char(15) updatewhereclause=yes name=wdprno dbname="WIP004.WDPRNO" )
+ column=(type=char(5) updatewhereclause=yes name=wdprdpt dbname="WIP004.WDPRDPT" )
+ column=(type=char(5) updatewhereclause=yes name=wdchdpt dbname="WIP004.WDCHDPT" )
+ column=(type=char(8) updatewhereclause=yes name=wddate dbname="WIP004.WDDATE" )
+ column=(type=decimal(1) updatewhereclause=yes name=wdprqt dbname="WIP004.WDPRQT" )
+ column=(type=decimal(4) updatewhereclause=yes name=wdchqt dbname="WIP004.WDCHQT" )
+ column=(type=char(30) updatewhereclause=yes name=wdipaddr dbname="WIP004.WDIPADDR" )
+ column=(type=char(30) updatewhereclause=yes name=wdmacaddr dbname="WIP004.WDMACADDR" )
+ column=(type=char(6) updatewhereclause=yes name=wdinptid dbname="WIP004.WDINPTID" )
+ column=(type=char(6) updatewhereclause=yes name=wdupdtid dbname="WIP004.WDUPDTID" )
+ column=(type=char(8) updatewhereclause=yes name=wdinptdt dbname="WIP004.WDINPTDT" )
+ column=(type=char(6) updatewhereclause=yes name=wdinpttm dbname="WIP004.WDINPTTM" )
+ column=(type=char(8) updatewhereclause=yes name=wdupdtdt dbname="WIP004.WDUPDTDT" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" initial="0" )
+ column=(type=char(12) updatewhereclause=yes name=srno dbname="SRNO" )
+ column=(type=decimal(16) updatewhereclause=yes name=chqty dbname="CHQTY" )
+ column=(type=char(2) updatewhereclause=yes name=wdslty dbname="WIP004.WDSLTY" )
+ column=(type=char(10) updatewhereclause=yes name=wdsrno dbname="WIP004.WDSRNO" )
+ column=(type=decimal(2) updatewhereclause=yes name=inv101_costav dbname="INV101.COSTAV" initial="0" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="INV101.PDCD" )
+ retrieve="  SELECT ~"PBWIP~".~"WIP004~".~"WDCMCD~",   
+         ~"PBWIP~".~"WIP004~".~"WDPLANT~",   
+         ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
+         ~"PBWIP~".~"WIP004~".~"WDIOCD~",   
+         ~"PBWIP~".~"WIP004~".~"WDITNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDRVNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDDESC~",   
+         ~"PBWIP~".~"WIP004~".~"WDSPEC~",   
+         ~"PBWIP~".~"WIP004~".~"WDUNIT~",   
+         ~"PBWIP~".~"WIP004~".~"WDITCL~",   
+         ~"PBWIP~".~"WIP004~".~"WDSRCE~",   
+         ~"PBWIP~".~"WIP004~".~"WDUSGE~",   
+         ~"PBWIP~".~"WIP004~".~"WDPDCD~",   
+         ~"PBWIP~".~"WIP004~".~"WDSLNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRSRTY~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRSRNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRSRNO1~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRSRNO2~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRNO~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRDPT~",   
+         ~"PBWIP~".~"WIP004~".~"WDCHDPT~",   
+         ~"PBWIP~".~"WIP004~".~"WDDATE~",   
+         ~"PBWIP~".~"WIP004~".~"WDPRQT~",   
+         ~"PBWIP~".~"WIP004~".~"WDCHQT~",   
+         ~"PBWIP~".~"WIP004~".~"WDIPADDR~",   
+         ~"PBWIP~".~"WIP004~".~"WDMACADDR~",   
+         ~"PBWIP~".~"WIP004~".~"WDINPTID~",   
+         ~"PBWIP~".~"WIP004~".~"WDUPDTID~",   
+         ~"PBWIP~".~"WIP004~".~"WDINPTDT~",   
+         ~"PBWIP~".~"WIP004~".~"WDINPTTM~",   
+         ~"PBWIP~".~"WIP004~".~"WDUPDTDT~",
+			~"PBINV~".~"INV101~".~"CONVQTY~" ,  
+         ~"PBWIP~".~"WIP004~".~"WDSLTY~"||~"PBWIP~".~"WIP004~".~"WDSRNO~" as srno, 
+			~"PBWIP~".~"WIP004~".~"WDCHQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~" as chqty,  
+         ~"PBWIP~".~"WIP004~".~"WDSLTY~",   
+         ~"PBWIP~".~"WIP004~".~"WDSRNO~",
+			~"PBINV~".~"INV101~".~"COSTAV~",
+			~"PBINV~".~"INV101~".~"PDCD~"  
+    FROM ~"PBWIP~".~"WIP004~",~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = :a_cmcd ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = :a_plant ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = :a_dvsn ) AND  
+         (~"PBWIP~".~"WIP004~".~"WDPRNO~" LIKE :a_itno ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDDATE~" >= :a_fromdt ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDDATE~" <= :a_todt ) AND  
+         ( ~"PBWIP~".~"WIP004~".~"WDSLTY~" = 'IE' ) AND
+			( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd )   
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_itno", string),("a_pdcd", string),("a_fromdt", string),("a_todt", string)) )
+text(band=header alignment="2" text="Àü»ê¹øÈ£" border="2" color="16777215" x="0" y="4" height="60" width="416" html.valueishtml="0"  name=wdsrno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="2" color="16777215" x="421" y="4" height="60" width="507" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=33 alignment="0" tabsequence=32766 border="2" color="0" x="0" y="0" height="72" width="416" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="2" color="0" x="421" y="0" height="72" width="507" format="[general]" html.valueishtml="0"  name=wditno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="2" color="0" x="933" y="0" height="72" width="869" format="[general]" html.valueishtml="0"  name=wddesc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ºÒÃâÀÏÀÚ" border="2" color="16777215" x="3744" y="4" height="60" width="375" html.valueishtml="0"  name=wddate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÒÃâºÎ¼­" border="2" color="16777215" x="2821" y="4" height="60" width="311" html.valueishtml="0"  name=wdprdpt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÒÃâºÎ¼­¸í" border="2" color="16777215" x="3136" y="4" height="60" width="603" html.valueishtml="0"  name=prdptnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áõºù¼­¹øÈ£" border="2" color="16777215" x="2359" y="4" height="60" width="457" html.valueishtml="0"  name=wdslno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="2" color="16777215" x="2158" y="4" height="60" width="197" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="2" color="16777215" x="2007" y="4" height="60" width="146" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÒÃâ¼ö·®" border="2" color="16777215" x="4123" y="4" height="60" width="503" html.valueishtml="0"  name=wdchqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚÀçÀÌµ¿Æò±Õ´Ü°¡" border="2" color="16777215" x="4631" y="4" height="60" width="704" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="2" color="0" x="2821" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=wdprdpt  tag="Parent ÀÔ°í ºÎ¼­" visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="0" expression="f_get_deptnm( wdprdpt ,'5')"border="2" color="0" x="3136" y="0" height="72" width="603" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="2" color="0" x="2359" y="0" height="72" width="457" format="[general]" html.valueishtml="0"  name=wdslno  tag="ÀüÇ¥¹øÈ£(Parent)" visible="1" editmask.mask="XXXX-XX-XXXX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="2" color="0" x="2158" y="0" height="72" width="197" format="[general]" html.valueishtml="0"  name=wdsrce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="2" tabsequence=32766 border="2" color="0" x="3744" y="0" height="72" width="375" format="[general]" html.valueishtml="0"  name=wddate  tag="»ç¿ëÀÏÀÚ(ParentÀüÇ¥ÀÏÀÚ)" visible="1" editmask.mask="XXXX.XX.XX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=34 alignment="1" tabsequence=32766 border="2" color="0" x="4123" y="0" height="72" width="503" format="#,##0.00" html.valueishtml="0"  name=chqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="2" color="0" x="4631" y="0" height="72" width="704" format="[general]" html.valueishtml="0"  name=inv101_costav visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¸í" border="2" color="16777215" x="933" y="4" height="60" width="869" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="2" color="0" x="2007" y="0" height="72" width="146" format="[general]" html.valueishtml="0"  name=wditcl visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="2" color="16777215" x="1806" y="4" height="60" width="197" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=38 alignment="2" tabsequence=0 border="2" color="0" x="1806" y="0" height="72" width="197" html.valueishtml="0"  name=inv101_pdcd visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

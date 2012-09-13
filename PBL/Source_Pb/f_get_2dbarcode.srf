@@ -1,0 +1,30 @@
+$PBExportHeader$f_get_2dbarcode.srf
+$PBExportComments$2D Barcode 변환
+global type f_get_2dbarcode from function_object
+end type
+
+forward prototypes
+global function string f_get_2dbarcode (string ad_datatoencode)
+end prototypes
+
+global function string f_get_2dbarcode (string ad_datatoencode);OLEObject	PBObject 
+Integer		li_return
+String 		ReturnVal
+
+PBObject	=	CREATE OLEObject 
+li_return 	= 	PBObject.ConnectToNewObject( "IDAuto.pdf417") 
+if 	li_return	<>	0	then
+	messagebox("확인","2D Barcode 관련 파일이 없습니다.시스템개발팀에 문의 바랍니다")
+	ReturnVal	=	'Error'
+else
+	PBObject.NarrowBarCM(0.025)
+	PBObject.FontEncode(ad_datatoencode ,5,6,0,0,0,0,ref ReturnVal)
+end if
+
+PBObject.DisConnectObject( )
+Destroy	PBObject
+return 	ReturnVal
+
+
+end function
+

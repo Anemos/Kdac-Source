@@ -1,0 +1,64 @@
+$PBExportHeader$f_pur041_setinv203a.srf
+$PBExportComments$inv203a테이블생성
+global type f_pur041_setinv203a from function_object
+end type
+
+forward prototypes
+global subroutine f_pur041_setinv203a (string a_date, string a_plant, string a_dvsn, string a_itno, string a_chk, string a_dlt)
+end prototypes
+
+global subroutine f_pur041_setinv203a (string a_date, string a_plant, string a_dvsn, string a_itno, string a_chk, string a_dlt);string ls_sql
+long ll_row, ll_rcnt
+//select count(*) into :ll_rcnt from qtemp.INV203A
+//	where tcmcd = :g_s_company 
+//	      and tplnt = :a_plant 
+//			and tdvsn = :a_dvsn
+//			and tmodl = :a_itno
+//using sqlca ;
+if sqlca.sqlcode <> 0 then
+	ls_sql = ' CREATE TABLE "INV203A" (  ' + &
+				'	"COMLTD" CHAR(2) NOT NULL, "XYEAR" CHAR(4) NOT NULL, "DEPT" CHAR(1) NOT NULL,           ' + &
+         	'  "VSRNO" CHAR(8) NOT NULL, "XPLANT" CHAR(1) NOT NULL, "DIV" CHAR(1) NOT NULL,            ' + &
+				'	"ITNO" CHAR(12) NOT NULL, "ADJDT1" CHAR(8) NOT NULL, "DCOST1" NUMERIC(13,2) NOT NULL,   ' + &
+				'	"DCAUSE1" CHAR(2) NOT NULL, "DQTY1" NUMERIC(13,2) NOT NULL,                             ' + &
+				'	"DAMT1" NUMERIC(15,0) NOT NULL, "ECOST1" NUMERIC(13,2) NOT NULL,  ' + &
+				'	"ECAUSE1" CHAR(2) NOT NULL, "EQTY1" NUMERIC(13,2) NOT NULL, ' + &
+				'	"EAMT1" NUMERIC(15,0) NOT NULL, "ADJDT2" CHAR(8) NOT NULL, '  + &
+				'	"DCAUSE2" CHAR(2) NOT NULL, "DCOST2" NUMERIC(13,2) NOT NULL,' + &
+				'	"DQTY2" NUMERIC(13,2) NOT NULL, "DAMT2" NUMERIC(15,0) NOT NULL,  ' + &
+				'	"ECAUSE2" CHAR(2) NOT NULL, "ECOST2" NUMERIC(13,2) NOT NULL, '  + &
+				'	"EQTY2" NUMERIC(13,2) NOT NULL, "EAMT2" NUMERIC(15,0) NOT NULL, ' + &
+ 				'	"ADJDT3" CHAR(8) NOT NULL, "DCAUSE3" CHAR(2) NOT NULL, ' + &
+				'	"DCOST3" NUMERIC(13,2) NOT NULL, "DQTY3" NUMERIC(13,2) NOT NULL, ' + &
+				'	"DAMT3" NUMERIC(15,0) NOT NULL, "ECOST3" NUMERIC(13,2) NOT NULL,  ' + &
+ 				'	 "ECAUSE3" CHAR(2) NOT NULL, "EQTY3" NUMERIC(13,2) NOT NULL, ' + &
+				'	"EAMT3" NUMERIC(15,0) NOT NULL, "ADJDT4" CHAR(8) NOT NULL, ' + &
+				'	"DCAUSE4" CHAR(2) NOT NULL, "DCOST4" NUMERIC(13,2) NOT NULL,  ' + &
+				'	 "DQTY4" NUMERIC(13,2) NOT NULL, "DAMT4" NUMERIC(15,0) NOT NULL, ' + &
+				'	"ECOST4" NUMERIC(13,2) NOT NULL, "ECAUSE4" CHAR(2) NOT NULL, ' + &
+				'	"EQTY4" NUMERIC(13,2) NOT NULL, "EAMT4" NUMERIC(15,0) NOT NULL, ' + &
+				'	"ADJDT5" CHAR(8) NOT NULL, "DCAUSE5" CHAR(2) NOT NULL, ' + &
+				'	"DCOST5" NUMERIC(13,2) NOT NULL, "DQTY5" NUMERIC(13,2) NOT NULL, ' + &
+				'	"DAMT5" NUMERIC(15,0) NOT NULL, "ECOST5" NUMERIC(13,2) NOT NULL, ' + &
+				'	"ECAUSE5" CHAR(2) NOT NULL, "EQTY5" NUMERIC(13,2) NOT NULL, ' + &
+				'	"EAMT5" NUMERIC(15,0) NOT NULL, "INPTID" CHAR(6) NOT NULL, ' + &
+				'	"INPTDT" CHAR(8) NOT NULL , ' + &
+				'	 PRIMARY KEY ("COMLTD", "XYEAR", "DEPT", "VSRNO", "XPLANT", "DIV", "ITNO")) ';
+
+// " CREATE TABLE QTEMP.INV203A ( TCMCD CHAR(2) NOT NULL, TPLNT CHAR(1) NOT NULL,TDVSN CHAR(1) NOT NULL," + & 
+//				" TMODL CHAR(15) NOT NULL, TSERL CHAR(60) NOT NULL, TLEVEL CHAR(2) NOT NULL, TPITN CHAR(15) NOT NULL, " + & 
+//				" TCITN CHAR(15) NOT NULL, TQTYM NUMERIC(8,3) NOT NULL, TQTY1 NUMERIC(8,3) NOT NULL," + & 
+//				" TWKCT CHAR(4) NOT NULL, TEDTM CHAR(8) NOT NULL, TEDTE CHAR(8) NOT NULL, TOPCD CHAR(1) NOT NULL," + & 
+//				" TEXPLANT CHAR(1) NOT NULL, TEXDV CHAR(1) NOT NULL, TOSCD CHAR(1) NOT NULL ) " 
+	Execute Immediate :ls_sql ;
+//else
+//	if a_dlt = 'Y' then
+//		delete from qtemp.INV203A using sqlca ;
+//	elseif l_n_count <> 0 then
+//		return l_n_count
+//	end if
+end if
+//
+
+end subroutine
+

@@ -13,12 +13,11 @@ global function integer f_spacechk (string ag_item);////////////////////////////
 //
 //        input : string
 ///////////////////////////////////////////////////////////////
-
-if isNull(ag_item)    = True  or  &
-   Len(Trim(ag_item)) = 0     then
-   Return -1
+if 	isNull(ag_item)	=	True	or	&
+   	Len(Trim(ag_item))	=	0	then
+   	Return 	-1
 else
-   Return 0
+   	Return 	0
 end if
 end function
 

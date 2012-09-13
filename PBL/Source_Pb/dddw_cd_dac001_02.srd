@@ -1,0 +1,53 @@
+$PBExportHeader$dddw_cd_dac001_02.srd
+$PBExportComments$지역에따른전부서 :부서(내부(dintcode1),외부(dcode)),담당(ddiv3),본부(ddiv5),주재지(dcity) (PBCOMMON.dac001)
+release 9;
+datawindow(units=0 timer_interval=0 color=15793151 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=dcode dbname="DAC001.DCODE" )
+ column=(type=char(20) updatewhereclause=yes name=dfname1 dbname="DAC001.DFNAME1" )
+ column=(type=char(20) updatewhereclause=yes name=dfname2 dbname="DAC001.DFNAME2" )
+ column=(type=char(20) updatewhereclause=yes name=dfname3 dbname="DAC001.DFNAME3" )
+ column=(type=char(20) updatewhereclause=yes name=dfname4 dbname="DAC001.DFNAME4" )
+ column=(type=char(40) updatewhereclause=yes name=dname dbname="DAC001.DNAME" )
+ column=(type=char(1) updatewhereclause=yes name=ddiv5 dbname="DAC001.DDIV5" )
+ column=(type=char(1) updatewhereclause=yes name=ddiv3 dbname="DAC001.DDIV3" )
+ column=(type=char(1) updatewhereclause=yes name=dcity dbname="DAC001.DCITY" )
+ column=(type=char(4) updatewhereclause=yes name=dintcode1 dbname="DAC001.DINTCODE1" )
+ retrieve="  SELECT ~"PBCOMMON~".~"DAC001~".~"DCODE~",  
+         ~"PBCOMMON~".~"DAC001~".~"DFNAME1~", 
+         ~"PBCOMMON~".~"DAC001~".~"DFNAME2~",   
+         ~"PBCOMMON~".~"DAC001~".~"DFNAME3~",   
+         ~"PBCOMMON~".~"DAC001~".~"DFNAME4~",   
+         ~"PBCOMMON~".~"DAC001~".~"DNAME~",   
+         ~"PBCOMMON~".~"DAC001~".~"DDIV5~",   
+         ~"PBCOMMON~".~"DAC001~".~"DDIV3~",   
+         ~"PBCOMMON~".~"DAC001~".~"DCITY~",   
+         ~"PBCOMMON~".~"DAC001~".~"DINTCODE1~"  
+    FROM ~"PBCOMMON~".~"DAC001~"  
+   WHERE ( ~"PBCOMMON~".~"DAC001~".~"DUSE~" = ' ' ) AND  
+         ( ~"PBCOMMON~".~"DAC001~".~"DTODT~" = 0 ) AND  
+         ( ~"PBCOMMON~".~"DAC001~".~"DACTTODT~" = 0 ) and
+         ( ~"PBCOMMON~".~"DAC001~".~"DSYS1~"  = 'X' ) and
+         ( ~"PBCOMMON~".~"DAC001~".~"DSYS2~"  = 'X' ) and 
+         ( ~"PBCOMMON~".~"DAC001~".~"DCITY~"  LIKE :ag_area )
+   ORDER BY ~"PBCOMMON~".~"DAC001~".~"DINTCODE1~"  
+        
+     " arguments=(("ag_area", string)) )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="6" color="0" x="3442" y="4" height="80" width="242" format="[general]" html.valueishtml="0"  name=ddiv5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="6" color="0" x="3689" y="4" height="84" width="251" format="[general]" html.valueishtml="0"  name=ddiv3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="6" color="0" x="3945" y="4" height="76" width="219" format="[general]" html.valueishtml="0"  name=dcity visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="6" color="0" x="4165" y="0" height="60" width="640" format="[general]" html.valueishtml="0"  name=dfname1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="6" color="0" x="14" y="4" height="76" width="1125" format="[general]" html.valueishtml="0"  name=dname  tag="부서명(약칭)" visible="1" edit.limit=40 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="6" color="128" x="1147" y="4" height="76" width="567" format="[general]" html.valueishtml="0"  name=dfname2  tag="부(팀)명" visible="1" edit.limit=20 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="6" color="8388736" x="1723" y="4" height="76" width="576" format="[general]" html.valueishtml="0"  name=dfname3  tag="과명" visible="1" edit.limit=20 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="6" color="32768" x="2309" y="4" height="76" width="567" format="[general]" html.valueishtml="0"  name=dfname4  tag="조명" visible="1" edit.limit=20 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="6" color="16711680" x="2885" y="4" height="76" width="224" format="[general]" html.valueishtml="0"  name=dcode  tag="부서코드" visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="6" color="16711680" x="3118" y="4" height="76" width="306" format="[general]" html.valueishtml="0"  name=dintcode1  tag="내부-조직도" visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial             " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

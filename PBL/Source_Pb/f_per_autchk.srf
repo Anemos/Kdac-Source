@@ -1,0 +1,132 @@
+$PBExportHeader$f_per_autchk.srf
+$PBExportComments$인사카드조회 권한 return Y,N
+global type f_per_autchk from function_object
+end type
+
+forward prototypes
+global function string f_per_autchk (string a_s_empno)
+end prototypes
+
+global function string f_per_autchk (string a_s_empno);string  l_s_autchk, l_s_ulvl, l_s_class, l_s_bonbu, l_s_dept, l_s_gubun , &
+ 	     l_s_class_1, l_s_bonbu_1, l_s_dept_1, l_s_gubun_1 ,ls_pejikchek, ls_pejikchek_1,&
+		  ls_peintdept_1,ls_peintdept,ls_dcode , ls_dempno , ls_pedeptdue_1, ls_pearea, ls_pearea_1
+// 권한 db의 level
+l_s_ulvl   = f_per_lvlchk(g_s_empno)
+
+if l_s_ulvl = '0' or l_s_ulvl = 'A'  then
+	return 'Y'
+end if
+
+if l_s_ulvl = '9' then
+	return 'N'
+end if
+
+
+// 사용자
+select peclass,pebonbu,pedept,pegubun,pejikchek,peintdept ,pedeptdue, pearea
+into :l_s_class_1, :l_s_bonbu_1, :l_s_dept_1, :l_s_gubun_1,:ls_pejikchek_1,:ls_peintdept_1 , :ls_pedeptdue_1, :ls_pearea_1
+from "PBPER"."PER001"
+where peempno = :g_s_empno
+using sqlcc;
+// messagebox("1",g_s_empno+l_s_bonbu_1)
+// 조회할 인사카드 사번
+select peclass,pebonbu,pedept,pegubun,pejikchek,peintdept,pearea 
+into :l_s_class, :l_s_bonbu, :l_s_dept, :l_s_gubun, :ls_pejikchek ,:ls_peintdept,:ls_pearea 
+from "PBPER"."PER001"
+where peempno = :a_s_empno
+using sqlcc;
+
+l_s_autchk = 'Y'
+
+if l_s_ulvl = '1' then //직위이하, 본인 가능
+	if l_s_class_1 < l_s_class or a_s_empno = g_s_empno then	
+		l_s_autchk = 'Y'
+	else
+		l_s_autchk = 'N'
+	end if
+elseif l_s_ulvl = '2' then //담당임원 
+	ls_peintdept = mid(ls_peintdept,1,1) + 'A'                 ///////담당의 내부부서코드
+	select "PBCOMMON"."DAC001"."DCODE",
+	       "PBCOMMON"."DAC001"."DEMPNO"
+	into  :ls_dcode , :ls_dempno
+	from  "PBCOMMON"."DAC001"
+	WHERE ( "PBCOMMON"."DAC001"."DUSE" = ' ' ) AND  
+         ( "PBCOMMON"."DAC001"."DTODT" = 0 ) AND  
+         ( "PBCOMMON"."DAC001"."DACTTODT" = 0 ) and
+         ( "PBCOMMON"."DAC001"."DSYS1"  = 'X' ) and
+			( "PBCOMMON"."DAC001"."DINTCODE1" = :ls_peintdept)
+	using sqlcc ;
+	if sqlcc.sqlcode <> 0  then
+		l_s_autchk = 'N'
+	end if
+	if ls_dempno <> g_s_empno then		
+		l_s_autchk = 'N'
+	end if
+	if l_s_dept = 'R100'  and l_s_dept_1 = 'A000'  then  /////기획담당이 감사실에 조회권한이 있음.
+		l_s_autchk = 'Y'
+	end if
+		
+elseif l_s_ulvl = '3' then //생관팀장 - 같은담당,직위이하
+	if l_s_bonbu_1 = l_s_bonbu and l_s_class_1 < l_s_class then	
+		l_s_autchk = 'Y'
+	else 
+		l_s_autchk = 'N'
+	end if
+elseif l_s_ulvl = '4' then //팀장 - 겸직반영
+	if l_s_bonbu_1 <> l_s_bonbu or &
+ 	   mid(l_s_dept_1,1,2) <> mid(l_s_dept,1,2) then
+		ls_peintdept = mid(ls_peintdept,1,2) 
+		select "PBCOMMON"."DAC001"."DCODE",
+				 "PBCOMMON"."DAC001"."DEMPNO"
+		into  :ls_dcode , :ls_dempno
+		from  "PBCOMMON"."DAC001"
+		WHERE ( "PBCOMMON"."DAC001"."DUSE" = ' ' ) AND  
+				( "PBCOMMON"."DAC001"."DTODT" = 0 ) AND  
+				( "PBCOMMON"."DAC001"."DACTTODT" = 0 ) and
+				( "PBCOMMON"."DAC001"."DSYS1"  = 'X' ) and
+				( "PBCOMMON"."DAC001"."DINTCODE1" = :ls_peintdept)
+		using sqlcc ;
+		if sqlcc.sqlcode <> 0  then
+			l_s_autchk = 'N'
+		end if
+		if ls_dempno <> g_s_empno  then
+			l_s_autchk = 'N'
+		end if
+	end if		
+
+elseif l_s_ulvl = '5' then //노경 - 생산직+직조장
+	if l_s_gubun = '2'  or ( ls_pejikchek = 'A' or ls_pejikchek = 'B' or ls_pejikchek = 'C' ) then
+		l_s_autchk = 'Y'
+	else
+		l_s_autchk = 'N'
+	end if	
+elseif l_s_ulvl = '6' then // 생산직+직조장 +같은부서
+	if l_s_gubun = '2'  or ( ls_pejikchek = 'A' or ls_pejikchek = 'B' or ls_pejikchek = 'C' ) then
+		l_s_autchk = 'Y'
+	else
+		if l_s_bonbu_1 = l_s_bonbu and 	mid(l_s_dept_1,1,2) = mid(l_s_dept,1,2) then	
+			l_s_autchk = 'Y'
+		else
+			l_s_autchk = 'N'
+		end if
+	end if
+elseif l_s_ulvl = '7' then //부장이하 담당전체
+	if l_s_bonbu_1 = l_s_bonbu and l_s_class_1 > '09' then	
+		l_s_autchk = 'Y'
+	else
+		l_s_autchk = 'N'
+	end if
+elseif l_s_ulvl = '8' then // 동일지역 생산직+직조장
+	if ( l_s_gubun = '2'  or ( ls_pejikchek = 'A' or ls_pejikchek = 'B' or ls_pejikchek = 'C' )) &
+	    and ls_pearea = ls_pearea_1 then	
+		l_s_autchk = 'Y' 
+	else
+		l_s_autchk = 'N'
+	end if
+else //권한 미등록시
+	l_s_autchk = 'N'
+end if  
+
+return l_s_autchk
+end function
+

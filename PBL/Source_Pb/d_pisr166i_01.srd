@@ -1,0 +1,112 @@
+$PBExportHeader$d_pisr166i_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=tqqcresult_areacode dbname="TQQCRESULT.AREACODE" )
+ column=(type=char(1) updatewhereclause=yes name=tqqcresult_divisioncode dbname="TQQCRESULT.DIVISIONCODE" )
+ column=(type=char(2) updatewhereclause=yes name=tmstmodel_productgroup dbname="TMSTMODEL.ProductGroup" )
+ column=(type=char(30) updatewhereclause=yes name=tmstproductgroup_productgroupname dbname="TMSTPRODUCTGROUP.ProductGroupName" )
+ column=(type=char(12) updatewhereclause=yes name=tqqcresult_itemcode dbname="TQQCRESULT.ITEMCODE" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ItemName" )
+ column=(type=char(5) updatewhereclause=yes name=tqqcresult_suppliercode dbname="TQQCRESULT.SUPPLIERCODE" )
+ column=(type=char(50) updatewhereclause=yes name=tmstsupplier_supplierkorname dbname="TMSTSUPPLIER.SupplierKorName" )
+ column=(type=char(12) updatewhereclause=yes name=tqqcresult_deliveryno dbname="TQQCRESULT.DELIVERYNO" )
+ column=(type=char(10) updatewhereclause=yes name=tqqcresult_deliverydate dbname="TQQCRESULT.DELIVERYDATE" )
+ column=(type=char(8) updatewhereclause=yes name=tqqcresult_deliverytime dbname="TQQCRESULT.DELIVERYTIME" )
+ column=(type=char(10) updatewhereclause=yes name=tqqcresult_qcdate dbname="TQQCRESULT.QCDATE" )
+ column=(type=char(8) updatewhereclause=yes name=tqqcresult_qctime dbname="TQQCRESULT.QCTIME" )
+ column=(type=char(6) updatewhereclause=yes name=tqqcresult_inspectorcode dbname="TQQCRESULT.INSPECTORCODE" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_empname dbname="TMSTEMP.EmpName" )
+ column=(type=char(1) updatewhereclause=yes name=tqqcresult_qckbflag dbname="TQQCRESULT.qckbflag" values="°£ÆÇ	1/ºñ°£ÆÇ	2/" )
+ column=(type=char(18) updatewhereclause=yes name=preinspector dbname="preinspector" )
+ retrieve="  SELECT AA.AREACODE,   
+         AA.DIVISIONCODE,   
+         BB.ProductGroup,   
+         EE.ProductGroupName,   
+         AA.ITEMCODE,   
+         CC.ItemName,   
+         AA.SUPPLIERCODE,   
+         FF.SupplierKorName,   
+         AA.DELIVERYNO,   
+         AA.DELIVERYDATE,   
+         AA.DELIVERYTIME,   
+         AA.QCDATE,   
+         AA.QCTIME,   
+         AA.INSPECTORCODE,   
+         DD.EmpName,
+			AA.qckbflag,
+			( SELECT Top 1 GG.Inspectorcode + '(' + HH.EmpName + ')' FROM TQQCRESULT GG LEFT OUTER JOIN TMSTEMP HH
+					ON GG.InspectorCode = HH.EmpNo
+				WHERE GG.AreaCode = AA.AreaCode and GG.Divisioncode = AA.DivisionCode and
+						GG.SupplierCode = AA.SupplierCode and GG.ItemCode = AA.ItemCode
+				ORDER BY GG.QcDate DESC, GG.QcTime DESC
+			) as preinspector 
+    FROM TQQCRESULT AA INNER JOIN TMSTMODEL BB
+		ON ( AA.AREACODE = BB.AreaCode ) and  
+         ( AA.DIVISIONCODE = BB.DivisionCode ) and  
+         ( AA.ITEMCODE = BB.ItemCode )   
+         LEFT OUTER JOIN TMSTITEM CC
+		ON ( AA.ItemCode = CC.ItemCode )
+			LEFT OUTER JOIN TMSTEMP  DD
+		ON ( AA.INSPECTORCODE = DD.EmpNo )
+         INNER JOIN TMSTPRODUCTGROUP  EE
+		ON ( EE.AreaCode = BB.AreaCode ) and  
+         ( EE.DivisionCode = BB.DivisionCode ) and  
+         ( EE.ProductGroup = BB.ProductGroup ) 
+         LEFT OUTER JOIN TMSTSUPPLIER FF
+		ON ( AA.SUPPLIERCODE = FF.SupplierCode )
+   WHERE ( AA.AREACODE = :ag_area ) and  
+         ( AA.DIVISIONCODE = :ag_division ) and
+			( BB.ProductGroup  like :ag_productgroup ) and 
+			( AA.SUPPLIERCODE like :ag_suppliercode ) and
+			( ( AA.INSPECTORCODE IS NULL ) OR
+			( ( AA.INSPECTORCODE <> '¹«°Ë»ç' ) and
+			( AA.INSPECTORCODE <> 'kdac' ) and
+			( AA.INSPECTORCODE <> '¿ÜÀÚÇ°' ) ) ) and
+			( AA.DELIVERYDATE >= :ag_fromdate ) and 
+			( AA.DELIVERYDATE <= :ag_todate )
+         
+" arguments=(("ag_area", string),("ag_division", string),("ag_productgroup", string),("ag_suppliercode", string),("ag_fromdate", string),("ag_todate", string))  sort="tmstmodel_productgroup A tqqcresult_itemcode A tqqcresult_deliveryno A " )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="60" width="160" html.valueishtml="0"  name=tqqcresult_areacode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="178" y="8" height="60" width="169" html.valueishtml="0"  name=tqqcresult_divisioncode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="0" color="16777215" x="357" y="8" height="60" width="197" html.valueishtml="0"  name=tmstmodel_productgroup_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¸ðµ¨¸í" border="0" color="16777215" x="562" y="8" height="60" width="471" html.valueishtml="0"  name=tmstproductgroup_productgroupname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="1042" y="8" height="60" width="416" html.valueishtml="0"  name=tqqcresult_itemcode_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1467" y="8" height="60" width="837" html.valueishtml="0"  name=tmstitem_itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾÷Ã¼ÄÚµå" border="0" color="16777215" x="2313" y="8" height="60" width="315" html.valueishtml="0"  name=tqqcresult_suppliercode_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¾÷Ã¼¸í" border="0" color="16777215" x="2638" y="8" height="60" width="690" html.valueishtml="0"  name=tmstsupplier_supplierkorname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³³Ç°Ç¥¹øÈ£" border="0" color="16777215" x="3337" y="8" height="60" width="416" html.valueishtml="0"  name=tqqcresult_deliveryno_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³³Ç°ÀÏÀÚ" border="0" color="16777215" x="3762" y="8" height="60" width="398" html.valueishtml="0"  name=tqqcresult_deliverydate_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³³Ç°½Ã°£" border="0" color="16777215" x="4169" y="8" height="60" width="393" html.valueishtml="0"  name=tqqcresult_deliverytime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»çÀÏÀÚ" border="0" color="16777215" x="4571" y="8" height="60" width="352" html.valueishtml="0"  name=tqqcresult_qcdate_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»ç½Ã°£" border="0" color="16777215" x="4933" y="8" height="60" width="329" html.valueishtml="0"  name=tqqcresult_qctime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»ç¿ø»ç¹ø" border="0" color="16777215" x="5271" y="8" height="60" width="448" html.valueishtml="0"  name=tqqcresult_inspectorcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»ç¿ø¼º¸í" border="0" color="16777215" x="5728" y="8" height="60" width="352" html.valueishtml="0"  name=tmstemp_empname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="6089" y="8" height="60" width="224" html.valueishtml="0"  name=tqqcresult_qckbflag_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°Ë»ç¿¹Á¤ÀÚ" border="0" color="16777215" x="6322" y="8" height="60" width="635" html.valueishtml="0"  name=preinspector_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="562" y="4" height="76" width="471" format="[general]" html.valueishtml="0"  name=tmstproductgroup_productgroupname visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="1042" y="4" height="76" width="416" format="[general]" html.valueishtml="0"  name=tqqcresult_itemcode visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1467" y="4" height="76" width="837" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1" edit.limit=100 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="2313" y="4" height="76" width="315" format="[general]" html.valueishtml="0"  name=tqqcresult_suppliercode visible="1" edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2638" y="4" height="76" width="690" format="[general]" html.valueishtml="0"  name=tmstsupplier_supplierkorname visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="3337" y="4" height="76" width="416" format="[general]" html.valueishtml="0"  name=tqqcresult_deliveryno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="3762" y="4" height="76" width="398" format="[general]" html.valueishtml="0"  name=tqqcresult_deliverydate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="4169" y="4" height="76" width="393" format="[general]" html.valueishtml="0"  name=tqqcresult_deliverytime visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="4571" y="4" height="76" width="352" format="[general]" html.valueishtml="0"  name=tqqcresult_qcdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="33554432" x="4933" y="4" height="76" width="329" format="[general]" html.valueishtml="0"  name=tqqcresult_qctime visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="5271" y="4" height="76" width="448" format="[general]" html.valueishtml="0"  name=tqqcresult_inspectorcode visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="76" width="160" format="[general]" html.valueishtml="0"  name=tqqcresult_areacode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="178" y="4" height="76" width="169" format="[general]" html.valueishtml="0"  name=tqqcresult_divisioncode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="357" y="4" height="76" width="197" format="[general]" html.valueishtml="0"  name=tmstmodel_productgroup visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="33554432" x="5728" y="4" height="76" width="352" format="[general]" html.valueishtml="0"  name=tmstemp_empname visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="33554432" x="6089" y="4" height="76" width="224" format="[general]" html.valueishtml="0"  name=tqqcresult_qckbflag visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="6322" y="4" height="76" width="635" format="[general]" html.valueishtml="0"  name=preinspector visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

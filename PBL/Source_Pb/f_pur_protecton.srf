@@ -1,0 +1,43 @@
+$PBExportHeader$f_pur_protecton.srf
+$PBExportComments$전체컬럼을 프로텍트지정
+global type f_pur_protecton from function_object
+end type
+
+forward prototypes
+global subroutine f_pur_protecton (datawindow arg_dw)
+end prototypes
+
+global subroutine f_pur_protecton (datawindow arg_dw);//Datawindow의 Column 프로텍트ON
+String     ls_colcount, ls_value, ls_coltype, ls_colname
+Long       ll_row = 0, ii, ll_rowcount
+Any        la_colvalue
+
+ls_colcount = arg_dw.Object.DataWindow.Column.Count
+//ll_rowcount = arg_dw.RowCount()
+For ll_row = 1 to 1
+	FOR  ii = 1  TO Dec(ls_colcount)
+     ls_coltype  = arg_dw.Describe("#" + String(ii) + ".ColType")
+     ls_coltype  = LEFT(ls_coltype,3)
+	  ls_colname   = arg_dw.Describe("#" + String(ii) + ".Name")
+	  CHOOSE CASE Upper(ls_coltype)
+		  CASE "NUM", "DEC", "CHA" 	
+			   //arg_dw.object.settaborder(ii, ii)
+				arg_dw.Modify(ls_colname + ".protect = 1")
+		  case else  //나머지는 컬럼이 아니다.
+//		  CASE "CHA"          //Char는 Space로 Setting
+//           la_colvalue = arg_dw.GetItemString(ll_row, ii)
+//			  IF IsNull(la_colvalue) THEN
+//				  arg_dw.SetItem(ll_row,ii,'')
+//			  END IF
+//		  CASE "NUM", "DEC"   //Number는 0으로 Setting
+//           la_colvalue = arg_dw.GetItemDecimal(ll_row, ii)
+//			  IF IsNull(la_colvalue) THEN
+//				  arg_dw.SetItem(ll_row,ii,0)
+//			  END IF
+	  END CHOOSE
+	NEXT
+Next
+
+
+end subroutine
+

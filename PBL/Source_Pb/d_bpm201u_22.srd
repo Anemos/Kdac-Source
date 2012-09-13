@@ -1,0 +1,92 @@
+$PBExportHeader$d_bpm201u_22.srd
+$PBExportComments$»ç¾÷°èÈ¹Ç°¸ñ»ó¼¼Á¤º¸µî·Ï
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=344 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=div dbname="BPM503.DIV" initial=" " )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itno dbname="BPM503.ITNO" initial=" " )
+ column=(type=char(2) update=yes updatewhereclause=yes name=cls dbname="BPM503.CLS" initial=" " )
+ column=(type=char(2) update=yes updatewhereclause=yes name=srce dbname="BPM503.SRCE" initial=" " )
+ column=(type=char(4) update=yes updatewhereclause=yes name=pdcd dbname="BPM503.PDCD" initial=" " )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=xyear dbname="BPM503.XYEAR" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=revno dbname="BPM503.REVNO" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=xplant dbname="BPM503.XPLANT" initial=" " )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xunit dbname="BPM503.XUNIT" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes name=costdiv dbname="BPM503.COSTDIV" initial=" " )
+ column=(type=char(2) update=yes updatewhereclause=yes name=xplan dbname="BPM503.XPLAN" initial=" " )
+ column=(type=char(2) update=yes updatewhereclause=yes name=mlan dbname="BPM503.MLAN" initial=" " )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=convqty dbname="BPM503.CONVQTY" initial="1" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=comcd dbname="BPM503.COMCD" initial="N" values="À¯»ó	Y/¹«»ó	O/ºñ´ë»ó	N/" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=extd dbname="BPM503.EXTD" initial=" " )
+ column=(type=char(6) update=yes updatewhereclause=yes name=inptid dbname="BPM503.INPTID" initial=" " )
+ column=(type=char(19) update=yes updatewhereclause=yes name=inptdt dbname="BPM503.INPTDT" initial=" " )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updtid dbname="BPM503.UPDTID" initial=" " )
+ column=(type=char(19) update=yes updatewhereclause=yes name=updtdt dbname="BPM503.UPDTDT" initial=" " )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ipaddr dbname="BPM503.IPADDR" initial=" " )
+ column=(type=char(30) update=yes updatewhereclause=yes name=macaddr dbname="BPM503.MACADDR" initial=" " )
+ column=(type=char(8) update=yes updatewhereclause=yes name=crtdt dbname="BPM503.CRTDT" )
+ column=(type=char(2) updatewhereclause=yes name=bomunit dbname="BOMUNIT" )
+ retrieve="  SELECT a.DIV,   
+        a.ITNO,   
+        a.CLS,   
+        a.SRCE,   
+        a.PDCD,   
+        a.XYEAR, 
+        a.revno,  
+        a.XPLANT,   
+        a.XUNIT,   
+        a.COSTDIV,   
+        a.XPLAN,   
+        a.MLAN,   
+        a.CONVQTY,   
+        a.COMCD,   
+        a.EXTD,   
+        a.INPTID,   
+        a.INPTDT,   
+        a.UPDTID,   
+        a.UPDTDT,   
+        a.IPADDR,   
+        a.MACADDR,   
+        a.CRTDT,
+        (select coalesce(max(xunit),'') from pbbpm.bpm502 x
+         where x.xyear = a.xyear
+          and  x.revno = a.revno
+          and  x.itno = a.itno) bomunit  
+   FROM PBBPM.BPM503 a 
+   WHERE (a.XYEAR = :a_xyear ) AND  
+         (a.revno = :a_revno ) AND  
+         (a.XPLANT = :a_xplant ) AND  
+         (a.DIV = :a_div ) AND  
+         (a.ITNO = :a_itno )    
+" update="PBBPM.BPM503" updatewhere=0 updatekeyinplace=yes arguments=(("a_xyear", string),("a_revno", string),("a_xplant", string),("a_div", string),("a_itno", string)) )
+text(band=detail alignment="1" text="°è    Á¤" border="0" color="0" x="1152" y="28" height="60" width="256" html.valueishtml="0"  name=cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="ÀÚÀç´ã´ç" border="0" color="0" x="1152" y="120" height="60" width="256" html.valueishtml="0"  name=mlan_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="°í°´»çÀ¯»ó" border="0" color="0" x="1088" y="212" height="60" width="320" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Á¦    Ç°" border="0" color="0" x="3374" y="28" height="60" width="256" html.valueishtml="0"  name=pdcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=40 border="5" color="0" x="3662" y="28" height="64" width="786" format="[general]" html.valueishtml="0"  name=pdcd visible="1" dddw.name=dddw_pur030_pdcd2 dddw.displaycolumn=dac007_prname dddw.datacolumn=dac004_pdcd dddw.percentwidth=0 dddw.lines=8 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.autohscroll=yes dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=9 alignment="0" tabsequence=70 border="5" color="0" x="3662" y="120" height="64" width="786" format="[general]" html.valueishtml="0"  name=xunit visible="1" dddw.name=dddw_pur030_xunit dddw.displaycolumn=cocode dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=14 alignment="0" tabsequence=90 border="5" color="0" x="1454" y="212" height="64" width="718" format="[general]" html.valueishtml="0"  name=comcd visible="1" radiobuttons.columns=3 radiobuttons.scale=no radiobuttons.threed=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=12 alignment="0" tabsequence=50 border="5" color="0" x="1454" y="120" height="64" width="718" format="[general]" html.valueishtml="0"  name=mlan visible="1" dddw.name=dddw_mlan_inv dddw.displaycolumn=coitname dddw.datacolumn=code dddw.percentwidth=100 dddw.lines=6 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="5" color="0" x="1454" y="28" height="64" width="718" format="[general]" html.valueishtml="0"  name=cls visible="1" dddw.name=dddw_bpm002_cls dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=160 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=detail alignment="1" text="±¸ ÀÔ ¼±" border="0" color="0" x="2299" y="28" height="60" width="256" html.valueishtml="0"  name=srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="±¸¸Å´ã´ç" border="0" color="0" x="2290" y="120" height="60" width="265" html.valueishtml="0"  name=xplan_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="º¯È¯°è¼ö" border="0" color="0" x="2290" y="212" height="60" width="265" html.valueishtml="0"  name=convqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=30 border="5" color="0" x="2597" y="28" height="64" width="558" format="[general]" html.valueishtml="0"  name=srce visible="1" dddw.name=dddw_bpm002_srce dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=200 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="Àç°í´ÜÀ§" border="0" color="0" x="3374" y="120" height="60" width="256" html.valueishtml="0"  name=xunit_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=80 border="5" color="0" x="2597" y="212" height="64" width="562" format="[general]" html.valueishtml="0"  name=convqty visible="1" editmask.mask="###,##0.00" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=detail alignment="0" expression="f_get_xplannm_tms( srce , xplan )"border="5" color="0" x="352" y="212" height="64" width="558" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="0"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=23 alignment="0" tabsequence=32766 border="5" color="0" x="3662" y="208" height="64" width="791" format="[general]" html.valueishtml="0"  name=bomunit visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=detail alignment="2" text="»ý¼ºÀÏ" border="0" color="0" x="142" y="120" height="60" width="192" html.valueishtml="0"  name=wloc_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Ç°    ¹ø" border="0" color="0" x="78" y="28" height="60" width="256" html.valueishtml="0"  name=itno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="357" y="28" height="64" width="558" format="[general]" html.valueishtml="0" protect="0~tif(isRowNew(),0,1)"  name=itno visible="1" edit.limit=0 edit.case=upper edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="12632256~tif(isRowNew(),rgb(160,200,239),rgb(192,192,192))" )
+column(band=detail id=22 alignment="0" tabsequence=32766 border="5" color="0" x="357" y="120" height="60" width="558" format="[general]" html.valueishtml="0"  name=crtdt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=detail alignment="1" text="BOM´ÜÀ§" border="0" color="0" x="3351" y="212" height="60" width="288" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=60 border="5" color="0" x="2597" y="120" height="64" width="558" format="[general]" html.valueishtml="0"  name=xplan visible="1" dddw.name=dddw_pur030_xplan5 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

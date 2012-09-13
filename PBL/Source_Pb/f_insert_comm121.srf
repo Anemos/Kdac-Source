@@ -1,0 +1,209 @@
+$PBExportHeader$f_insert_comm121.srf
+$PBExportComments$kdac종합정보시스템사용자id부여
+global type f_insert_comm121 from function_object
+end type
+
+forward prototypes
+global function boolean f_insert_comm121 (string ag_empno)
+end prototypes
+
+global function boolean f_insert_comm121 (string ag_empno);//////////f_insert_comm121(l_s_new_no)////////////////////////////////
+//////////kdac종합정보시스템 id 부여 함수/////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+integer i,ln_count, li_cnt
+string  ls_area
+blob    bs_empno
+String  ls_deptcode,ls_emplevel
+
+SELECT  pedept  
+  Into :ls_deptcode   
+FROM pbcommon.dac003
+WHERE   peempno =   :ag_empno 
+Using   SqlCa ;
+
+if  isNumber(ag_empno)  =   true    then
+    if  ls_deptcode =   '2300'  then
+        ls_emplevel =   '1'
+    else
+        ls_emplevel =   '2'
+    end if
+else
+    ls_emplevel =   '3'
+end if
+
+bs_empno = blob('D' + ag_empno + '0' )
+
+datastore ds_1
+
+sqlxx = CREATE transaction
+ds_1	= Create Datastore
+ds_1.dataobject = 'd_comm001_retrieve'
+ds_1.settransobject(Sqlpis)
+
+ln_count = ds_1.retrieve()
+
+for i = 1 to ln_count
+	// remote autodown 관련
+	ls_area 				= trim(ds_1.object.serverid[i])
+	sqlxx.ServerName 	= trim(ds_1.object.servername[i])
+	sqlxx.DBMS       	= trim(ds_1.object.serverdbms[i])
+	sqlxx.Database   	= trim(ds_1.object.serverdatabase[i])
+	sqlxx.LogId      	= trim(ds_1.object.serverlogid[i])
+	sqlxx.LogPass    	= trim(ds_1.object.serverpassword[i])
+//	if trim(ds_1.object.serverautocommit[i]) = "T" then
+		sqlxx.autocommit = true
+//	else
+//		sqlxx.autocommit = false
+//	end if
+//	
+	sqlxx.DBParm     = trim(ds_1.object.serverdbparm[i])
+
+	connect using sqlxx;
+	if sqlxx.sqlcode <> 0 then
+		messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다.')
+		disconnect using sqlxx;
+		destroy sqlxx 
+		destroy ds_1
+		return false
+	end if
+	
+	if sqlxx.dbms	=	"ODBC"	then
+		select count(*)
+		into  :li_cnt
+		from  pbcommon.comm121
+		where emp_no  = :ag_empno  
+		using sqlxx ;
+	else
+		select count(*)
+		into  :li_cnt
+		from  comm121
+		where emp_no  = :ag_empno  
+		using sqlxx ; 
+	End if
+			
+	IF li_cnt = 0  then
+		if sqlxx.dbms	=	"ODBC"	then
+			insert into pbcommon.comm121 
+			(emp_no,usests,autarea,autplnt,autdiv,autext1,autext2,
+			 inpt_id,inpt_dt,updt_id,updt_dt,ip_addr,mac_addr,out_emp_name,out_vendor,emp_level)
+			values 
+			(:ag_empno,' ',' ',' ',' ',' ',' ','ADMIN',:g_s_datetime,'ADMIN',:g_s_datetime,
+			 :g_s_ipaddr,:g_s_macaddr,'','',:ls_emplevel)
+			using sqlxx ;
+			
+			updateblob pbcommon.comm121
+			set emp_pwd = :bs_empno
+			where emp_no = :ag_empno using sqlxx ;
+			
+		else
+			insert into comm121 
+			(emp_no,usests,autarea,autplnt,autdiv,autext1,autext2,
+			inpt_id,inpt_dt,updt_id,updt_dt,ip_addr,mac_addr,out_emp_name,out_vendor,emp_level)
+			values 
+			(:ag_empno,' ',' ',' ',' ',' ',' ','ADMIN',:g_s_datetime,'ADMIN',:g_s_datetime,
+			 :g_s_ipaddr,:g_s_macaddr,'','',:ls_emplevel)
+			using sqlxx ;
+			
+			updateblob comm121
+			set emp_pwd = :bs_empno
+			where emp_no = :ag_empno using sqlxx ;
+		End if		
+		
+		if sqlxx.sqlcode <> 0  then
+			messagebox("확인",sqlxx.sqlerrtext)
+			disconnect using sqlxx;
+			destroy sqlxx 
+			destroy ds_1
+			return false
+		END IF
+	End if
+		
+	disconnect using sqlxx;
+next
+
+destroy sqlxx 
+destroy ds_1
+return true
+
+
+
+//blob    l_s_empno
+//
+//l_s_empno 	= blob('D' + a_empno + '0' )
+//
+//sqlxx 		= CREATE transaction
+//sqlxx.DBMS  = "MSS Microsoft SQL Server 6.x"
+//
+//for i = 1 to 7
+//	// remote autodown 관련
+//	if i = 1 then
+//		sqlxx.ServerName = "192.168.113.248,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area         = "군산"
+//	elseif i = 2 then
+//		sqlxx.ServerName = "192.168.103.249,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area         = "전장"
+//	elseif i = 3 then
+//		sqlxx.ServerName = "192.168.108.249,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area         = "기계"
+//	elseif i = 4 then
+//		sqlxx.ServerName = "192.168.109.249,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area         = "공조"
+//	elseif i = 5 then
+//		sqlxx.ServerName = "192.168.112.72,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area         = "진천"
+//	elseif i = 6 then
+//		sqlxx.ServerName = "192.168.115.93,1433"
+//		sqlxx.Database   = "IPIS"
+//		sqlxx.LogId      = "sa"
+//		sqlxx.LogPass    = "goipis"
+//		ls_area          = "Bupyong"
+//	elseif i = 7 then
+//		sqlxx.DBMS       = "ODBC"
+//		sqlxx.autocommit = true
+//		sqlxx.DBParm     =  "ConnectString='DSN=CA/400 ODBC FOR PB;UID=casinv;PWD=dpainv',PBCatalogOwner='PBCOMMON',CommitOnDisconnect='No',DisableBind=1" 
+//		ls_area          = "대구"	
+//	end if 
+//	connect using sqlxx;
+//	if sqlxx.sqlcode <> 0 then
+//		messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다. update 불가.')
+//		continue
+//	end if
+//	
+//	insert into comm121 
+//	(emp_no,usests,autarea,autplnt,autdiv,autext1,autext2,inpt_id,inpt_dt,updt_id,updt_dt,ip_addr,mac_addr,out_emp_name,out_vendor)
+//	values 
+//	(:a_empno,' ',' ',' ',' ',' ',' ','ADMIN',:g_s_datetime,'ADMIN',:g_s_datetime,
+//	 :g_s_ipaddr,:g_s_macaddr,'','')
+//	using sqlxx ;
+//	
+//	updateblob comm121
+//		set emp_pwd = :l_s_empno
+//	where emp_no = :a_empno using sqlxx ;
+//	
+//	if sqlxx.sqlcode = 0 then
+//		commit using sqlxx;
+//	else
+//		messagebox("확인",sqlxx.sqlerrtext)
+//		rollback using sqlxx;
+//	end if
+//	disconnect using sqlxx;
+//next
+//destroy sqlxx 
+end function
+

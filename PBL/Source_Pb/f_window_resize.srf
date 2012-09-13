@@ -1,0 +1,58 @@
+$PBExportHeader$f_window_resize.srf
+global type f_window_resize from function_object
+end type
+
+forward prototypes
+global subroutine f_window_resize (window ag_win)
+end prototypes
+
+global subroutine f_window_resize (window ag_win);Double ratioW, ratioH , l_d_height
+Integer i, j,k, ll_controls, ll_sub_controls,ll_third_controls
+environment env
+DragObject	ldo
+
+getenvironment(env)
+
+if env.screenwidth = 1024 and env.screenheight = 768 then
+  	ratioW = 4658  / 3652
+	ratioH = 2524  / 1888
+else
+	return 
+end if
+
+ ll_controls = UpperBound(ag_win.Control)
+ FOR i = 1 TO ll_controls
+	
+	ldo = ag_win.Control[i]
+
+ //   f_window_Resize_01(ldo,ratioH,ratioW)	
+	
+	if typeof(ldo) = userobject!  then
+	   userobject uso
+	   uso = ldo
+	   ll_sub_controls = UpperBound(uso.Control)
+   	   FOR j = 1 TO ll_sub_controls
+		   ldo = uso.Control[j]
+		//   f_window_Resize_01(ldo,ratioH,ratioW)	
+	   NEXT
+    elseif typeof(ldo) = tab!  then
+	   tab   tpage
+	   tpage = ldo
+	   ll_sub_controls = UpperBound(tpage.Control)
+   	   FOR j = 1 TO ll_sub_controls
+		   ldo = tpage.Control[j]
+		   userobject uso2
+		   uso2 = ldo
+		   ll_third_controls = UpperBound(uso2.Control)
+		   FOR k = 1 TO ll_third_controls
+			   ldo = uso2.Control[k]
+			//   f_window_Resize_01(ldo,ratioH,ratioW)	
+		   NEXT
+	   NEXT
+	end if
+ NEXT
+ 
+return  
+ 
+end subroutine
+

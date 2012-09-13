@@ -1,0 +1,24 @@
+$PBExportHeader$d_per001i_01.srd
+$PBExportComments$자격,면허 ddw
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=cogubun dbname="DAC002.COGUBUN" )
+ column=(type=char(10) updatewhereclause=yes name=cocode dbname="DAC002.COCODE" )
+ column=(type=char(50) updatewhereclause=yes name=coflname dbname="DAC002.COFLNAME" )
+ column=(type=char(30) updatewhereclause=yes name=coitname dbname="DAC002.COITNAME" )
+ retrieve="SELECT  ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" ,
+           ~"PBCOMMON~".~"DAC002~".~"COCODE~" ,
+           ~"PBCOMMON~".~"DAC002~".~"COFLNAME~" ,
+           ~"PBCOMMON~".~"DAC002~".~"COITNAME~"     
+        FROM ~"PBCOMMON~".~"DAC002~"      
+        WHERE ( ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = 'PER334' ) " )
+column(band=detail id=2 alignment="0" tabsequence=10 border="5" color="0" x="14" y="8" height="72" width="1189" format="[general]" html.valueishtml="0"  name=cocode visible="1" dddw.name=dddw_cd_per317 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=6 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

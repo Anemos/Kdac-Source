@@ -1,0 +1,14 @@
+$PBExportHeader$d_dept_pura.srd
+$PBExportComments$¿î¿µºÎ¼­
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=dept dbname="dept" )
+ )
+text(band=header alignment="2" text="Dept" border="0" color="33554432" x="9" y="8" height="60" width="855" html.valueishtml="0"  name=dept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="0" height="76" width="855" format="[general]" html.valueishtml="0"  name=dept visible="1" dddw.name=dddw_use_dept_pura dddw.displaycolumn=coflname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=upper dddw.imemode=0 dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

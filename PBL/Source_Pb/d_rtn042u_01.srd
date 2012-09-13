@@ -1,0 +1,89 @@
+$PBExportHeader$d_rtn042u_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=sel_chk dbname="SEL_CHK" values="	Y/	N" )
+ column=(type=char(6) updatewhereclause=yes name=gubun dbname="GUBUN" values="À¯»çÇ°¹ø	RTN011/°øÁ¤Á¤º¸	RTN013/" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=rtn011_rainemp dbname="RTN011.RAINEMP" )
+ column=(type=char(10) updatewhereclause=yes name=inempname dbname="INEMPNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rtn011_rainchk dbname="RTN011.RAINCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=rtn011_raintime dbname="RTN011.RAINTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=rtn011_raplemp dbname="RTN011.RAPLEMP" )
+ column=(type=char(10) updatewhereclause=yes name=plempname dbname="PLEMPNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rtn011_raplchk dbname="RTN011.RAPLCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=rtn011_rapltime dbname="RTN011.RAPLTIME" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=rtn011_radlemp dbname="RTN011.RADLEMP" )
+ column=(type=char(10) updatewhereclause=yes name=dlempname dbname="DLEMPNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rtn011_radlchk dbname="RTN011.RADLCHK" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=rtn011_radltime dbname="RTN011.RADLTIME" )
+ retrieve="  SELECT DISTINCT ' ' as sel_chk, 
+			'RTN011' as GUBUN,   
+			AA.~"RAINEMP~",
+			( SELECT IFNULL(BB.~"PENAMEK~",'') FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RAINEMP~" = BB.~"PEEMPNO~" ) AS INEMPNAME,
+			AA.~"RAINCHK~",
+			AA.~"RAINTIME~",
+			AA.~"RAPLEMP~",
+			( SELECT IFNULL(BB.~"PENAMEK~",'') FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RAPLEMP~" = BB.~"PEEMPNO~" ) AS PLEMPNAME,
+			AA.~"RAPLCHK~",
+			AA.~"RAPLTIME~",
+			AA.~"RADLEMP~",
+			( SELECT IFNULL(BB.~"PENAMEK~",'') FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RADLEMP~" = BB.~"PEEMPNO~" ) AS DLEMPNAME,
+			AA.~"RADLCHK~",
+			AA.~"RADLTIME~"  
+    FROM ~"PBRTN~".~"RTN011~" AA 
+   WHERE ( ( AA.~"RAINEMP~" like :ag_inemp AND AA.~"RAINCHK~" = :ag_inchk ) OR   
+         ( AA.~"RAPLEMP~" like :ag_inemp AND AA.~"RAPLCHK~" = :ag_plchk ) OR   
+         ( AA.~"RADLEMP~" like :ag_inemp ) ) AND  
+         ( AA.~"RADLCHK~" = 'N' )
+
+UNION ALL
+
+	  SELECT DISTINCT ' ' as sel_chk, 
+			'RTN013' as GUBUN,       
+         AA.~"RCINEMP~", 
+			( SELECT BB.~"PENAMEK~" FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RCINEMP~" = BB.~"PEEMPNO~" ) AS INEMPNAME,
+         AA.~"RCINCHK~",   
+         AA.~"RCINTIME~",   
+         AA.~"RCPLEMP~",
+			( SELECT BB.~"PENAMEK~" FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RCPLEMP~" = BB.~"PEEMPNO~" ) AS PLEMPNAME,   
+         AA.~"RCPLCHK~",   
+         AA.~"RCPLTIME~",   
+         AA.~"RCDLEMP~", 
+			( SELECT BB.~"PENAMEK~" FROM ~"PBCOMMON~".~"DAC003~" BB WHERE AA.~"RCDLEMP~" = BB.~"PEEMPNO~" ) AS DLEMPNAME,   
+         AA.~"RCDLCHK~",   
+         AA.~"RCDLTIME~"
+	FROM ~"PBRTN~".~"RTN013~" AA 
+   WHERE ( ( AA.~"RCINEMP~" like :ag_inemp AND AA.~"RCINCHK~" = :ag_inchk ) OR  
+         ( AA.~"RCPLEMP~" like :ag_inemp AND AA.~"RCPLCHK~" = :ag_plchk ) OR  
+         ( AA.~"RCDLEMP~" like :ag_inemp ) ) AND  
+         ( AA.~"RCDLCHK~" = 'N' )  " arguments=(("ag_inemp", string),("ag_inchk", string),("ag_plchk", string))  sort="gubun D rtn011_rainemp A rtn011_raplemp A rtn011_radlemp A " )
+button(band=header text="v" enabled=yes action="0" border="0" color="0" x="0" y="4" height="72" width="169" vtextalign="0" htextalign="0"  name=b_yes visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+button(band=header text="v" enabled=yes action="0" border="0" color="0" x="0" y="4" height="72" width="169" vtextalign="0" htextalign="0"  name=b_none visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="´ã´çÀÚ" border="0" color="16777215" x="1093" y="8" height="60" width="457" html.valueishtml="0"  name=inempname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿äÃ»ÀÏ½Ã" border="0" color="16777215" x="1559" y="8" height="60" width="832" html.valueishtml="0"  name=rtn011_raintime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="178" y="8" height="60" width="485" html.valueishtml="0"  name=gubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L ¸í" border="0" color="16777215" x="2875" y="8" height="60" width="425" html.valueishtml="0"  name=plempname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="P/L »ç¹ø" border="0" color="16777215" x="2400" y="8" height="60" width="466" html.valueishtml="0"  name=rtn011_raplemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ã´ç»ç¹ø" border="0" color="16777215" x="672" y="8" height="60" width="411" html.valueishtml="0"  name=rtn011_rainemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="½ÂÀÎÀÏ½Ã" border="0" color="16777215" x="3310" y="8" height="60" width="933" html.valueishtml="0"  name=rtn011_rapltime_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÀÀå »ç¹ø" border="0" color="16777215" x="4251" y="8" height="60" width="379" html.valueishtml="0"  name=rtn011_radlemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÆÀÀå¸í" border="0" color="16777215" x="4640" y="8" height="60" width="421" html.valueishtml="0"  name=dlempname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="4" height="76" width="160" format="[general]" html.valueishtml="0"  name=sel_chk visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=yes checkbox.threed=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="4" color="0" x="178" y="4" height="76" width="485" format="[general]" html.valueishtml="0"  name=gubun visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="4" color="33554432" x="1093" y="4" height="76" width="457" format="[general]" html.valueishtml="0"  name=inempname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="4" color="33554432" x="1559" y="4" height="76" width="832" format="[general]" html.valueishtml="0"  name=rtn011_raintime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="4" color="33554432" x="2875" y="4" height="76" width="425" format="[general]" html.valueishtml="0"  name=plempname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="4" color="33554432" x="672" y="4" height="76" width="411" format="[general]" html.valueishtml="0"  name=rtn011_rainemp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="4" color="33554432" x="2400" y="4" height="76" width="466" format="[general]" html.valueishtml="0"  name=rtn011_raplemp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="4" color="33554432" x="3310" y="4" height="76" width="933" format="[general]" html.valueishtml="0"  name=rtn011_rapltime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="4" color="33554432" x="4251" y="4" height="76" width="379" format="[general]" html.valueishtml="0"  name=rtn011_radlemp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="4" color="33554432" x="4640" y="4" height="76" width="421" format="[general]" html.valueishtml="0"  name=dlempname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

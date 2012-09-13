@@ -1,0 +1,72 @@
+$PBExportHeader$d_wip023u_list.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=ip_chk dbname="IP_CHK" values="	Y/	N" )
+ column=(type=char(60) updatewhereclause=yes name=tserl dbname="TSERL" )
+ column=(type=char(2) updatewhereclause=yes name=tlevel dbname="TLEVEL" )
+ column=(type=char(15) updatewhereclause=yes name=tcitn dbname="TCITN" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="SRCE" )
+ column=(type=char(2) updatewhereclause=yes name=xunit dbname="XUNIT" )
+ column=(type=decimal(4) updatewhereclause=yes name=convqty dbname="CONVQTY" )
+ column=(type=decimal(18) updatewhereclause=yes name=tcqty dbname="TCQTY" )
+ column=(type=decimal(2) updatewhereclause=yes name=costav dbname="COSTAV" )
+ column=(type=char(2) updatewhereclause=yes name=rvno dbname="RVNO" )
+ column=(type=char(50) updatewhereclause=yes name=spec dbname="SPEC" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="CLS" )
+ column=(type=char(4) updatewhereclause=yes name=pdcd dbname="PDCD" )
+ column=(type=decimal(3) updatewhereclause=yes name=issue_qty dbname="ISSUE_QTY" )
+ column=(type=char(1) updatewhereclause=yes name=cp_chk dbname="CP_CHK" )
+ column=(type=char(10) updatewhereclause=yes name=chk_srno dbname="CHK_SRNO" )
+ retrieve=" SELECT  ' ' as ip_chk,  ~"QTEMP~".~"BOMTEMP02~".~"TSERL~",
+
+~"QTEMP~".~"BOMTEMP02~".~"TLEVEL~",
+
+~"QTEMP~".~"BOMTEMP02~".~"TCITN~",
+
+~"PBINV~".~"INV002~".~"ITNM~",
+
+~"PBINV~".~"INV101~".~"SRCE~",
+
+~"PBINV~".~"INV101~".~"XUNIT~",
+
+~"PBINV~".~"INV101~".~"CONVQTY~",
+
+~"QTEMP~".~"BOMTEMP02~".~"TQTY1~" / ~"PBINV~".~"INV101~".~"CONVQTY~" as tcqty , ~"PBINV~".~"INV101~".~"COSTAV~",~"PBINV~".~"INV002~".~"RVNO~" ,
+
+~"PBINV~".~"INV002~".~"SPEC~", ~"PBINV~".~"INV101~".~"CLS~", ~"PBINV~".~"INV101~".~"PDCD~",
+ 
+0.000 as Issue_Qty , ' ' as cp_chk, '          ' as chk_srno
+FROM ~"QTEMP~".~"BOMTEMP02~",~"PBINV~".~"INV002~",~"PBINV~".~"INV101~"       
+WHERE  ~"QTEMP~".~"BOMTEMP02~".~"TCITN~" = ~"PBINV~".~"INV002~".~"ITNO~"    AND ~"QTEMP~".~"BOMTEMP02~".~"TCITN~" = ~"PBINV~".~"INV101~".~"ITNO~"   AND
+       ~"QTEMP~".~"BOMTEMP02~".~"TCMCD~" = ~"PBINV~".~"INV002~".~"COMLTD~"  AND ~"QTEMP~".~"BOMTEMP02~".~"TCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" AND
+       ~"QTEMP~".~"BOMTEMP02~".~"TPLNT~" = ~"PBINV~".~"INV101~".~"XPLANT~"  AND ~"QTEMP~".~"BOMTEMP02~".~"TDVSN~" = ~"PBINV~".~"INV101~".~"DIV~"
+ ORDER BY 1
+  " )
+text(band=header alignment="0" text="º±≈√" border="2" color="16777215" x="5" y="0" height="60" width="128" html.valueishtml="0"  name=t_8 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º“ø‰«∞π¯" border="2" color="16777215" x="453" y="0" height="60" width="434" html.valueishtml="0"  name=t_2 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º“ ø‰ «∞ ∏Ì" border="2" color="16777215" x="891" y="0" height="60" width="914" html.valueishtml="0"  name=t_3 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿⁄¿Á¥‹¿ß" border="2" color="16777215" x="2048" y="0" height="60" width="288" html.valueishtml="0"  name=t_5 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±∏¿‘º±" border="2" color="16777215" x="1810" y="0" height="60" width="233" html.valueishtml="0"  name=t_4 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="∫“√‚ºˆ∑Æ" border="2" color="16777215" x="2702" y="0" height="60" width="421" html.valueishtml="0"  name=t_7 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ø¯¥‹¿ß∑Æ" border="2" color="16777215" x="2341" y="0" height="60" width="357" html.valueishtml="0"  name=t_6 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="LEVEL" border="2" color="16777215" x="137" y="0" height="60" width="311" html.valueishtml="0"  name=t_1 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=20 border="2" color="0" x="5" y="0" height="68" width="128" format="[general]" html.valueishtml="0" protect="0~tif( srce = '03' or cls = '30' , 1, 0)"  name=ip_chk visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="0" background.color="12632256~tif( srce = '03' or cls = '30' , rgb(192,192,192), rgb(255,255,255))" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="2" color="0" x="891" y="0" height="68" width="914" format="[general]" html.valueishtml="0"  name=itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="2" color="0" x="1810" y="0" height="68" width="233" format="[general]" html.valueishtml="0"  name=srce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="1" tabsequence=10 border="2" color="0" x="2697" y="0" height="68" width="421" format="[general]" html.valueishtml="0" protect="0~tif(  A_GUBUN = 'I', 1, 0 )"  name=issue_qty visible="1" editmask.mask="###,###,###.000" editmask.imemode=0 editmask.focusrectangle=no  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="2" color="0" x="2048" y="0" height="68" width="288" format="[general]" html.valueishtml="0"  name=xunit visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="2" color="0" x="2341" y="0" height="68" width="357" format="[general]" html.valueishtml="0"  name=tcqty visible="1" editmask.mask="###,###.000" editmask.imemode=0 editmask.focusrectangle=no  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="2" color="0" x="453" y="0" height="68" width="434" format="[general]" html.valueishtml="0"  name=tcitn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="2" color="0" x="137" y="0" height="68" width="311" format="[general]" html.valueishtml="0"  name=tlevel visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=17 alignment="0" tabsequence=30 border="2" color="0" x="3141" y="8" height="60" width="530" html.valueishtml="0"  name=chk_srno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

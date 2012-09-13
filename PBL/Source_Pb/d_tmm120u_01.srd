@@ -1,0 +1,43 @@
+$PBExportHeader$d_tmm120u_01.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=productid dbname="TMM008.PRODUCTID" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=productname dbname="TMM008.PRODUCTNAME" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=divcode dbname="TMM008.DIVCODE" values="	Y/	N" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TMM008.LASTEMP" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=lastdate dbname="TMM008.LASTDATE" )
+ column=(type=long updatewhereclause=yes name=del_check dbname="TMM008.DEL_CHECK" )
+ retrieve="  SELECT ~"PBGMS~".~"TMM008~".~"PRODUCTID~",   
+         ~"PBGMS~".~"TMM008~".~"PRODUCTNAME~",   
+         ~"PBGMS~".~"TMM008~".~"DIVCODE~",   
+         ~"PBGMS~".~"TMM008~".~"LASTEMP~",   
+         ~"PBGMS~".~"TMM008~".~"LASTDATE~",
+			TMP_CHECK.DEL_CHECK
+FROM ~"PBGMS~".~"TMM008~",
+	( SELECT	~"PBGMS~".~"TMM008~".~"PRODUCTID~" AS PRODUCTID, 
+		SUM(CASE WHEN IFNULL(~"PBGMS~".~"TMM002~".~"PRODUCTID~",'') = '' THEN 0 ELSE 1 END) AS DEL_CHECK  
+    	FROM ~"PBGMS~".~"TMM008~" LEFT OUTER JOIN ~"PBGMS~".~"TMM002~"
+		ON ~"PBGMS~".~"TMM008~".~"PRODUCTID~" = ~"PBGMS~".~"TMM002~".~"PRODUCTID~" 
+	  GROUP BY ~"PBGMS~".~"TMM008~".~"PRODUCTID~" ) TMP_CHECK
+WHERE ~"PBGMS~".~"TMM008~".~"PRODUCTID~" = TMP_CHECK.PRODUCTID
+" update="PBGMS.TMM008" updatewhere=1 updatekeyinplace=no )
+text(band=header alignment="2" text="Á¦Ç°ÄÚµå" border="0" color="16777215" x="9" y="8" height="60" width="334" html.valueishtml="0"  name=productid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°¸í" border="0" color="16777215" x="352" y="8" height="60" width="1632" html.valueishtml="0"  name=productname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áß´Ü" border="0" color="16777215" x="1993" y="8" height="60" width="201" html.valueishtml="0"  name=divcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ" border="0" color="16777215" x="2203" y="8" height="60" width="315" html.valueishtml="0"  name=lastemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏ" border="0" color="16777215" x="2528" y="8" height="60" width="992" html.valueishtml="0"  name=lastdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2528" y="4" height="72" width="992" format="[general]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2203" y="4" height="72" width="315" format="[general]" html.valueishtml="0"  name=lastemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=10 border="0" color="33554432" x="9" y="4" height="72" width="334" format="[general]" html.valueishtml="0" protect="0~tif(  del_check > 0, 1, 0 )"  name=productid visible="1" editmask.mask="!!" editmask.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="33554432" x="352" y="4" height="72" width="1632" format="[general]" html.valueishtml="0" protect="0~tif(  del_check > 0, 1, 0 )"  name=productname visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=3 alignment="2" tabsequence=30 border="0" color="33554432" x="1993" y="4" height="72" width="201" format="[general]" html.valueishtml="0"  name=divcode visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=yes checkbox.threed=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_fornamt.srf
+$PBExportComments$매출중간 db의 외화금액 가져오기
+global type f_get_fornamt from function_object
+end type
+
+forward prototypes
+global function decimal f_get_fornamt (string a_s_company, string a_s_slip)
+end prototypes
+
+global function decimal f_get_fornamt (string a_s_company, string a_s_slip);dec l_n_fornamt
+
+ SELECT  SUM("PBACC"."ACC517"."MEFORNAMT") INTO :l_n_fornamt
+ FROM   "PBACC"."ACC517"
+ WHERE  "PBACC"."ACC517"."COMLTD" = :a_s_company AND
+        "PBACC"."ACC517"."MSLGB" = 'A' AND
+		  "PBACC"."ACC517"."MSLSLIP" = :a_s_slip
+ USING SQLCA;
+ 
+ IF SQLCA.SQLCODE<> 0 THEN
+	  l_n_fornamt= 0
+	 
+ end if 
+
+
+return l_n_fornamt
+end function
+

@@ -1,0 +1,63 @@
+$PBExportHeader$f_pisc_retrieve_dddw_shift.srf
+$PBExportComments$dddw을 조회하는 함수 - 주/야 구분
+global type f_pisc_retrieve_dddw_shift from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_retrieve_dddw_shift (datawindow fdw_1, string fs_areacode, string fs_divisioncode, boolean fb_allflag, ref string rs_shiftcode, ref string rs_shiftname)
+end prototypes
+
+global subroutine f_pisc_retrieve_dddw_shift (datawindow fdw_1, string fs_areacode, string fs_divisioncode, boolean fb_allflag, ref string rs_shiftcode, ref string rs_shiftname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_shift
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드
+//						boolean			fb_allflag				조회된 주/야 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (주/야코드는 '%', 주/야명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_shiftcode			선택된 주/야 코드 (reference)
+//						string			rs_shiftname			선택된 주/야 명 (reference)
+//	Returns		: none
+//	Description	: 조을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_shiftcode = ''
+		rs_shiftname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_shiftcode		= Trim(ldwc_1.GetItemString(1, 'shiftcode'))
+		rs_shiftname	= Trim(ldwc_1.GetItemString(1, 'shiftname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_shiftcode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'shiftname', 10)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_shiftcode		= Trim(ldwc_1.GetItemString(1, 'shiftcode'))
+			rs_shiftname	= Trim(ldwc_1.GetItemString(1, 'shiftname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_shiftcode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'shiftname', 10)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'shiftcode', 'ALL')
+			ldwc_1.Setitem(1, 'shiftname', '전체')
+			rs_shiftcode = '%'
+			rs_shiftname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'shiftname', 10)
+		End If
+	End If
+End If
+end subroutine
+

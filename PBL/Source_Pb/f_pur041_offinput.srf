@@ -1,0 +1,333 @@
+$PBExportHeader$f_pur041_offinput.srf
+$PBExportComments$오퍼자동입력(opm103,opm104)
+global type f_pur041_offinput from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_offinput (string ls_purno, string ls_srno)
+end prototypes
+
+global function integer f_pur041_offinput (string ls_purno, string ls_srno);string  ls_srno1, ls_srno1_old, ls_vsrno, ls_vsrno1, ls_xplan, ls_curr, ls_stcd,ls_bocd
+string  ls_itno, ls_itno1, ls_itnm, ls_date, ls_insp, ls_xpay, ls_xremark1, ls_xremark2,ls_tod,ls_tod1,ls_tod2,ls_tlgubun
+string  ls_shdt,ls_shdt1, ls_shdt2, ls_shdt3, ls_shdt4, ls_shdt5,ls_vldt,ls_xuse
+string  ls_bunit, ls_xunit, ls_iunit
+dec {6}  ld_conv1, ld_conv2
+long     ll_rcnt , ll_row, ll_row_1 , ll_sded
+dec  {2}  ld_ofamt,  ld_unof, ld_ofqty,ld_hc
+dec  {5}  ld_xcost
+
+//2008.08.06
+String ls_xplant , ls_div, ls_cls
+
+datastore ds_opm102
+datastore ds_opm103, ds_opm104
+setpointer(hourglass!)
+		 
+		 select "VSRNO", "VSRNO1", "CURR", "XPLAN", "STCD","BOCD"  
+		 into   :ls_vsrno, :ls_vsrno1, :ls_curr, :ls_xplan, :ls_stcd,:ls_bocd
+		 from  "PBPUR"."OPM101"
+		 WHERE "PBPUR"."OPM101"."COMLTD"  = '01'      AND
+		       "PBPUR"."OPM101"."PURNO"   = :ls_purno and  
+				 "PBPUR"."OPM101"."SRNO"    = :ls_srno  
+				 USING SQLCA ;
+		 IF SQLCA.SQLCODE <> 0 OR TRIM(ls_xplan) = '' THEN
+			 messagebox('확인', '발주head없음, 발주번호' + string(ls_purno + ls_srno) + ' 확인바랍니다.', Exclamation!)
+			 RETURN -1
+		 END IF
+		 if ls_bocd = 'B' and g_s_empno <> 'ADMIN' then
+			 messagebox('확인', '작업불가, B/O 발주입니다!', Exclamation!)
+			 RETURN -1
+		 end if
+		 if ls_stcd <> 'C' then
+			 messagebox('확인', '확정안된 발주입니다!', Exclamation!)
+			 RETURN -1
+		 end if
+		 //offer no결정
+		 SELECT coalesce(max("PBPUR"."OPM103"."SRNO1"),'')  
+       INTO :ls_srno1  
+       FROM "PBPUR"."OPM103"  
+       WHERE ( "PBPUR"."OPM103"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM103"."PURNO" = :ls_purno ) AND  
+         ( "PBPUR"."OPM103"."SRNO"  = :ls_srno )   using sqlca;
+		ls_srno1_old = ls_srno1	
+      if f_spacechk(ls_srno1) = -1 or sqlca.sqlcode <> 0 then
+			 ls_srno1 = '01'
+			 ls_srno1_old = ''
+		else
+          ls_srno1 = string(long(ls_srno1) + 1, "00")			
+		end if
+	
+		 ///////////////////// set head data //////////////////////////////
+		 	 	 
+		 ds_opm102 = create datastore
+		 ds_opm102.dataobject = 'd_pur050_opm102_02'
+		 ds_opm102.settransobject(sqlca)
+		 
+		 ds_opm103 = create datastore
+		 ds_opm103.dataobject = 'd_opm401u_11'
+		 ds_opm103.settransobject(sqlca)
+		 
+		 ds_opm104 = create datastore
+		 ds_opm104.dataobject = 'd_opm401u_12'
+		 ds_opm104.settransobject(sqlca)
+		 
+		 ll_rcnt = ds_opm102.retrieve(ls_purno, ls_srno)  
+	
+		 if ll_rcnt < 1 then
+			 messagebox('확인', '발주detail없음, 발주번호' + string(ls_purno + ls_srno) + ' 확인바랍니다.')
+			 RETURN -1
+		 end if
+
+		 
+//---------- OPM104 오퍼 DETAIL -----------------------//		
+		 For ll_row = 1 to ll_rcnt
+		 ////////////////////// get head data /////////////////////////////
+		     ld_unof    = ds_opm102.GetItemNumber(ll_row, "unof")
+		     if ld_unof <= 0 then
+			     continue
+		     end if
+			  ls_itno    = trim(ds_opm102.GetItemString(ll_row,"itno")) //자재품번
+			  ls_itno1   = trim(ds_opm102.object.itno1[ll_row])  //외자업체품번
+			  ld_xcost   = ds_opm102.GetItemnumber(ll_row,"xcost")
+			  //ls_itnm    = f_pur040_getitnm(ls_itno)
+			  //2008.08.06
+			  ls_xplant  = trim(ds_opm102.GetItemString(ll_row,"xplant"))
+			  ls_div		 = trim(ds_opm102.GetItemString(ll_row,"div"))	
+			  //---- end ---
+			  
+			  select coalesce(max(itnm),''),coalesce(max(xunit),'')  //품명,bom단위
+			  into :ls_itnm, :ls_bunit
+			  from  pbinv.inv002
+			  where  comltd = '01'
+			  and    itno = :ls_itno ;
+			  
+			  //지역,공장으로 하지 않는가?? 2008.08.06
+			  //inv101 미존재시   재고단위 = bom단위(inv002)  ,  전환팩터 = 1 로 해야되는건 아닌가?? 
+			  select coalesce(max(xunit),''),coalesce(max(convqty),0) //재고단위,전환팩터
+			  into :ls_xunit, :ld_conv1
+			  from  pbinv.inv101
+			  where comltd = '01'
+			    and xplant = :ls_xplant		//2008.08.06
+				 and div    = :ls_div			//2008.08.06
+			    and itno   = :ls_itno ;			  
+			  
+			  ls_iunit = trim(ds_opm102.object.xunit1[ll_row])   //구매단위(pur103)
+			  ld_conv2 = ds_opm102.object.convqty[ll_row]        //컨버전팩터 (pur103_convqty1) : 정계수
+			  
+			  if ld_conv2 = 0 then  //역컨버전팩터 가져오기
+				  select coalesce(max(dcost),0) into :ld_conv2
+				  from  pbpur.pur103
+				  where comltd = '01'
+				  and   dept = 'I'
+				  and   vsrno = :ls_vsrno1
+				  and   itno = :ls_itno;
+				  
+				  if ld_conv2 <> 0 then
+					  ld_conv2 = 1 / ld_conv2
+				  end if
+			  end if
+			  
+			///////////////////// set Detail data : opm104 //////////////////////////////
+		     ll_row_1 = ds_opm104.insertrow(0)
+		     ds_opm104.SetItem(ll_row_1,"opm104_comltd", '01' )                 ////회사
+		     ds_opm104.SetItem(ll_row_1,"opm104_itno",  ls_itno)                ////품번
+			  ds_opm104.SetItem(ll_row_1,"opm104_purno", ls_purno)    
+			  ds_opm104.SetItem(ll_row_1,"opm104_srno",  ls_srno)
+           ds_opm104.SetItem(ll_row_1,"opm104_srno1", ls_srno1)
+			  ds_opm104.SetItem(ll_row_1,"inv002_itnm", ls_itnm)
+			  
+			  ds_opm104.SetItem(ll_row_1,"opm102_unof", ld_unof)      
+			  ds_opm104.SetItem(ll_row_1,"opm104_ofqty", ld_unof)      
+			  
+			  ds_opm104.SetItem(ll_row_1,"opm104_xcost", ld_xcost )  
+			  ds_opm104.object.opm104_ofamt[ll_row_1] = round(ld_xcost * ld_unof,2)
+			  ld_ofamt = ld_ofamt + round(ld_xcost * ld_unof,2)
+			  ////발주단가
+			  //bom, 자재, 구매단위 전환관련 셋팅
+			  ds_opm104.object.opm104_bunit[ll_row_1] = ls_bunit
+			  ds_opm104.object.opm104_xunit[ll_row_1] = ls_xunit
+			  ds_opm104.object.opm104_iunit[ll_row_1] = ls_iunit
+			  ds_opm104.object.opm104_conv1[ll_row_1] = ld_conv1
+			  ds_opm104.object.opm104_conv2[ll_row_1] = ld_conv2
+			  
+			  //2008.08.06  opm102_cls로 비교하면 되지않는가??
+			  ls_cls = Trim(ds_opm102.object.cls[ll_row])
+			  If Trim(ls_cls) = "10" Then
+			  //if mid(ls_purno,2,2) = '10' or mid(ls_purno,3,2) = '10' then
+				  if ls_bunit <> ls_iunit or ls_xunit <> ls_iunit then
+					if ls_bunit <> 'GM' and ls_bunit <> 'KG' and ls_bunit <> 'LB' &
+					  or ls_xunit <> 'GM' and ls_xunit <> 'KG' and ls_xunit <> 'LB' &
+					  or ls_iunit <> 'GM' and ls_iunit <> 'KG' and ls_iunit <> 'LB' then
+						  ds_opm104.object.opm104_dspcd[ll_row_1] = 'A'
+					  end if
+					/* //2008.08.07
+					  if ls_bunit <> 'GM' and ls_bunit <> 'KG' and ls_bunit <> 'LB' &
+					  or ls_xunit <> 'GM' and ls_xunit <> 'KG' and ls_xunit <> 'LB' &
+					  or ls_iunit <> 'GM' and ls_iunit <> 'KG' and ls_iunit <> 'LB' then
+						  ds_opm104.object.opm104_dspcd[ll_row_1] = 'A'
+					  end if
+					 */ 
+				  end if
+			  end if
+		Next
+//-------END : OPM104 오퍼 DETAIL -----------------------//		
+
+//---------- OPM103 오퍼 HEAD -----------------------//				  
+		IF ds_opm104.rowcount() > 0 THEN         
+
+				  SELECT "PBPUR"."OPM101"."XPAY",curr,xplan,xuse,tod,tod1,tod2,hc
+	    			INTO :ls_xpay,:ls_curr,:ls_xplan,:ls_xuse,:ls_tod,:ls_tod1,:ls_tod2,:ld_hc
+					FROM "PBPUR"."OPM101"  
+					WHERE ( "PBPUR"."OPM101"."COMLTD" = '01' ) AND  
+							( "PBPUR"."OPM101"."PURNO" = :ls_purno ) AND  
+							( "PBPUR"."OPM101"."SRNO" = :ls_srno )   ;
+							
+					SELECT max(shdt1),max(shdt2),max(shdt3),max(shdt4),max(shdt5) 
+					INTO :ls_shdt1,:ls_shdt2,:ls_shdt3,:ls_shdt4,:ls_shdt5  
+					FROM "PBPUR"."OPM102"  
+					WHERE ( "PBPUR"."OPM102"."COMLTD" = '01' ) AND  
+							( "PBPUR"."OPM102"."PURNO" = :ls_purno ) AND  
+							( "PBPUR"."OPM102"."SRNO" = :ls_srno )   ;
+					
+					//분할납기일이 가장 늦은날을 기준으로 선적만기일 계산.
+					if trim(ls_shdt5) <> '' then
+						ls_shdt = ls_shdt5
+					elseif trim(ls_shdt4) <> '' then
+						ls_shdt = ls_shdt4
+					elseif trim(ls_shdt3) <> '' then
+						ls_shdt = ls_shdt3
+					elseif trim(ls_shdt2) <> '' then	
+						ls_shdt = ls_shdt2
+		         else
+						ls_shdt = ls_shdt1
+					end if	
+					
+					if ls_xplan = '3C' then //박민정씨만 60일 2006.11.23
+					   ll_sded = 60
+					else
+						ll_sded = 30
+					end if
+					//messagebox('ll_sded',string(ll_sded))
+					//선적만기일.
+               ls_date = f_pur040_relativedate(ls_shdt, ll_sded)
+					if mid(ls_date,1,6) = mid(ls_shdt,1,6) then
+						ls_shdt = f_pur040_relativedate(ls_date, 1) //같은달이면 하루추가
+					else
+						ls_shdt = f_pur040_relativemonth(mid(ls_date,1,6),1) + '01'
+						ls_shdt = f_pur040_relativedate(ls_shdt, -1)   //마지막날
+					end if
+					//오퍼유효일
+               ls_date = f_pur040_relativedate(ls_shdt, 30)
+					if mid(ls_date,1,6) = mid(ls_shdt,1,6) then  //같은달이면 하루 추가
+						ls_vldt = f_pur040_relativedate(ls_date, 1)
+					else
+						//ls_vldt = mid(ls_date,1,6) + mid(ls_shdt,7,2) 
+						ls_vldt = f_pur040_relativemonth(mid(ls_date,1,6),1) + '01'
+						ls_vldt = f_pur040_relativedate(ls_vldt, -1) //마지막날
+					end if
+
+			///////////////////// set head data : opm103 ////////////////////////////// 
+			 if ds_opm103.rowcount() < 1 then
+				ds_opm103.insertrow(0)
+			 end if
+			 //문제발생 : INV280 ' ' 인값이 존재함.  : 'G' : COD
+			 select coalesce(max(coitnamee),'')  into :ls_tlgubun
+			 from pbcommon.dac002
+			 where comltd = '01'
+			 and  cogubun = 'INV280'
+			 and  cocode = :ls_xpay ;			 
+			 
+			 ds_opm103.SetItem(1,"comltd", '01' )
+			 ds_opm103.SetItem(1,"purno",  ls_purno)
+			 ds_opm103.SetItem(1,"srno",  ls_srno)
+			 ds_opm103.SetItem(1,"srno1", ls_srno1)
+			 ds_opm103.SetItem(1,"vsrno", ls_vsrno )
+			 ds_opm103.SetItem(1,"vsrno1", ls_vsrno1)
+			 ds_opm103.SetItem(1,"ofdt",  g_s_date)
+			 ds_opm103.object.shdt[1] = ls_shdt  //선적일
+			 ds_opm103.object.vldt[1] = ls_vldt  //유효일
+			 ds_opm103.object.opm101_xuse[1] = ls_xuse //내수수출구분
+			 ds_opm103.SetItem(1,"curr",  ls_curr)
+			 ds_opm103.SetItem(1,"xplan", ls_xplan)
+			 ds_opm103.SetItem(1,"insp", 'C')   //inspection
+			 ds_opm103.object.xpay[1] = ls_xpay	//OPM101_XPAY
+			 ds_opm103.object.tlgubun[1] = trim(ls_tlgubun)
+			 
+			if ls_srno1 = '01' then //첫번째오퍼에 HC전부 더해줌
+			   ds_opm103.object.ofamt[1] = ld_ofamt + ld_hc
+			else
+				ds_opm103.object.ofamt[1] = ld_ofamt
+			end if
+			 ds_opm103.object.tod[1] = ls_tod
+			 ds_opm103.object.tod1[1] = ls_tod1
+			 ds_opm103.object.tod2[1] = ls_tod2
+			 ds_opm103.SetItem(1,"xremark1", ls_xremark1)
+			 ds_opm103.SetItem(1,"xremark2", ls_xremark2)
+		    ds_opm103.object.stcd[1] = 'C'  //오퍼확정으로 
+			 
+	 ELSE  //detail잔량 없으면 바로나가기 
+		 destroy ds_opm102
+		 destroy ds_opm103
+		 destroy ds_opm104
+		 return 1
+	 END IF
+			 
+	 f_pur040_inptid01(ds_opm103)
+	 f_pur040_inptid01(ds_opm104)
+	 f_pur040_nullchk02(ds_opm103)
+	 f_pur040_nullchk02(ds_opm104)
+	 
+	 for ll_row = ds_opm104.rowcount() to 1 step -1
+
+		ls_itno = ds_opm104.getItemstring(ll_row,"opm104_itno")
+		ld_ofqty = ds_opm104.getItemnumber(ll_row,"opm104_ofqty")
+		UPDATE "PBPUR"."OPM102"  
+      SET "UNOF"   = "UNOF"  - :ld_ofqty,
+	      "UPDTID"  = :g_s_empno,
+			"UPDTDT"  = :g_s_datetime,
+			"IPADDR"  = :g_s_macaddr,
+			"MACADDR" = :g_s_ipaddr	
+      WHERE ( "PBPUR"."OPM102"."COMLTD" = '01' ) AND  
+            ( "PBPUR"."OPM102"."PURNO" = :ls_purno ) AND  
+            ( "PBPUR"."OPM102"."SRNO" = :ls_srno ) AND  
+            ( "PBPUR"."OPM102"."ITNO" = :ls_itno )   
+      using sqlca;	
+		//2008.09.17추가
+		IF SQLCA.SQLCODE <> 0 OR SQLCA.SQLNROWS <= 0 Then
+			//ls_msg = "[주관부서/업체/품번 = "+ ls_dept+"/"+ls_vsrno+"/"+ls_itno+" ] 업체단가EXTEND 입력중 오류발생! : " + string(sqlca.sqlerrtext)
+			MessageBox('확인', '발주Detail(OPM102) UPDATE오류! [[발주번호/Serial/품번 = ' +ls_purno +"/"+ls_srno+"/"+ls_itno + " ]~r~n[오류내용 : " + string(sqlca.sqlerrtext) + " ]")
+			RETURN -1
+		end if
+			
+    next
+	 
+	 IF ds_opm103.Update() <> 1  Then
+		  messagebox('확인', '오퍼head저장오류, 오퍼번호' + string(ls_purno + ls_srno + ls_srno1) + ' 확인바랍니다.')
+		  RETURN -1
+	 end if
+	 
+	 IF ds_opm104.Update() <> 1  Then
+		  messagebox('확인', '오퍼detail저장오류, 오퍼번호' + string(ls_purno + ls_srno + ls_srno1) + ' 확인바랍니다.')
+		  RETURN -1
+	 End if
+	 
+	 destroy ds_opm102
+	 destroy ds_opm103
+	 destroy ds_opm104
+	 
+	 Return 1
+	
+Setpointer(arrow!)
+
+
+
+
+
+
+
+
+
+
+
+end function
+

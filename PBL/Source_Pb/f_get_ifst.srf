@@ -1,0 +1,61 @@
+$PBExportHeader$f_get_ifst.srf
+$PBExportComments$품명/규격/단위/Maker/폐기물 용도/구매담당( ag_s_itno, ag_n_gubun)
+global type f_get_ifst from function_object
+end type
+
+forward prototypes
+global function string f_get_ifst (string ag_itno, integer ag_no)
+end prototypes
+
+global function string f_get_ifst (string ag_itno, integer ag_no);///////////////////////////////////////////////////////////
+//        [ 품명, 규격, 단위, Maker관리, 폐기물 용도  ]
+//
+//          ag_no :  1  - 품명
+//				 			2  - 규격
+//							3	- 단위
+//							4	- Maker관리
+//							5  - 폐기물 용도
+//							6  - 구매담당자 
+//							7  - 구매담당자(1)
+/////////////////////////////////////////////////////////////
+
+String ls_itnm , ls_spec, ls_xunit, ls_maker, ls_xuse ,ls_xplan, ls_xplan_y
+
+SELECT "PBINV"."INV002"."ITNM",  "PBINV"."INV002"."SPEC",
+		 "PBINV"."INV002"."XUNIT", "PBINV"."INV002"."MAKER" ,
+		 "PBINV"."INV002"."BKDESN01" ,"PBINV"."INV002"."XPLAN" ,"PBINV"."INV002"."EXTD" 
+ INTO :ls_itnm, :ls_spec, :ls_xunit, :ls_maker , :ls_xuse ,:ls_xplan, :ls_xplan_y
+ FROM "PBINV"."INV002"
+WHERE "PBINV"."INV002"."COMLTD" = '01' 
+ and "PBINV"."INV002"."ITNO" = :ag_itno  ;
+
+IF sqlca.sqlcode = 0 Then
+	IF ag_no = 1 Then    //품명
+		Return Trim(ls_itnm)
+	ElseIF ag_no = 2 Then  //규격
+		Return Trim(ls_spec)
+	ElseIF ag_no = 3 Then  //단위
+		Return Trim(ls_xunit)
+	ElseIF ag_no = 4 Then //Maker
+		Return Trim(ls_maker)
+	ElseIF ag_no = 5 Then // 폐기물 용도
+		Return Trim(ls_xuse)
+	ElseIF ag_no = 6 Then // 구매담당자
+		Return Trim(ls_xplan)
+	ELSEIF ag_no = 7 Then // 구매담당자 (1)
+		Return left(ls_xplan,1)
+	ElseIF ag_no = 8 Then // 여주(구매담당)
+		Return Trim(ls_xplan_y)
+	End IF
+ElseIF sqlca.sqlcode = 100 Then	
+//	MessageBox("알림","Row not Found!")
+	Return ' '
+Else
+//	MessageBox("알림","the statement failed")
+	Return ' '
+End IF
+
+
+	
+end function
+

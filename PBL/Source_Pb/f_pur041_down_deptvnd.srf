@@ -1,0 +1,84 @@
+$PBExportHeader$f_pur041_down_deptvnd.srf
+$PBExportComments$IPIS주관부서업체다운로드 2009.12.03
+global type f_pur041_down_deptvnd from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_down_deptvnd (ref string rs_msg, datawindow idw_temp1, datawindow idw_temp2, any fs_str_ipis[])
+end prototypes
+
+global function integer f_pur041_down_deptvnd (ref string rs_msg, datawindow idw_temp1, datawindow idw_temp2, any fs_str_ipis[]);//as_gubun 'C','U', 'D'
+/*
+   2009.12.03 : f_pur041_down_vendor1 복사해서 Modify.
+	업체별 품목단가 interface 로 전달.
+	: pur102 업데이트
+*/
+
+//long  ll_row, ll_rcnt
+Integer li_index
+long   ll_rtn
+//Long ln_i, ln_ins
+
+//품목단가는 공장 1개인 'INT' : 인터페이스 공장
+li_index = f_ipis_server_get_transaction(fs_str_ipis,'X','X')
+if li_index = -1 then
+	rs_msg = "공장연결에 실패하였습니다."
+	return -1
+else
+	//lstr_ipis = fs_str_ipis[li_index]
+end if
+/*
+str_ipis_server lstr_ipis[]
+string ls_areadivision[]
+
+ls_areadivision[1] = '  '
+//트랜잭션 찾기 및 연결확인
+lstr_ipis = f_ipis_server_set_transaction('ALL',ls_areadivision) //전체는 현재 전장만 2007.05
+if UpperBound(lstr_ipis) = 0 or & 
+f_ipis_server_get_transaction(lstr_ipis,'X','X') = -1 then
+   f_ipis_server_rollback_transaction(lstr_ipis)
+   messagebox('업체ipis다운로드오류','인터페이스 트랜잭션를 찾을 수 없습니다. 연락바랍니다!')
+   rs_msg	=  '인터페이스 트랜잭션를 찾을 수 없습니다. 연락바랍니다!'
+	return -1
+end if
+*/
+IF idw_temp2.RowCount() > 0 Then
+	idw_temp1.reset()
+	idw_temp1.dataobject = 'd_ipis_tmispur102'
+	idw_temp1.settransobject(sqlpis)	
+	idw_temp1.insertrow(0)
+	idw_temp1.object.CHGCD[1] =   idw_temp2.object.gubun[1] 
+	idw_temp1.object.VSRNO[1] =   idw_temp2.object.vsrno[1] 
+	idw_temp1.object.INSIDE[1] =  idw_temp2.object.inside[1]  
+	idw_temp1.object.KBCD[1] =    idw_temp2.object.kbcd[1] 
+	idw_temp1.object.VANCD[1] =   idw_temp2.object.vancd[1] 
+	idw_temp1.object.JSCD[1]  =   idw_temp2.object.jscd[1] 
+	idw_temp1.object.XSTOP[1] =   idw_temp2.object.xstop[1] 
+	idw_temp1.object.STSCD[1] =   '' 
+	idw_temp1.object.DOWNDATE[1] = ''  
+//Else
+//	rs_msg = "주관부서 정보가 없습니다.(pur102, idw_temp2)"
+//	Return -1
+End If
+
+//인터페이스 함수에 데이타 전달	
+ll_rtn = f_down_ipis_mis_pur102(rs_msg, idw_temp1, fs_str_ipis)	
+IF ll_rtn = -1 Then
+	Return -1
+End IF	
+
+//	ll_rtn = f_down_ipis_mis_pur102(rs_msg,idw_temp1,lstr_ipis)
+//	if ll_rtn = -1 then 
+//		f_ipis_server_rollback_transaction(lstr_ipis)
+//		messagebox('업체ipis다운로드오류',rs_msg)
+//		return -1
+//	end if
+
+////정상처리 완료, commit시점에는 오류체크없음
+//f_ipis_server_commit_transaction(lstr_ipis)
+//
+Return 0
+
+
+end function
+

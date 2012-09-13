@@ -1,0 +1,78 @@
+$PBExportHeader$d_pisr200i_01.srd
+$PBExportComments$업체이원화발주현황조회
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=128 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(5) updatewhereclause=yes name=suppliercode dbname="SupplierCode" )
+ column=(type=long updatewhereclause=yes name=orderrate dbname="OrderRate" )
+ column=(type=char(1) updatewhereclause=yes name=parttype dbname="PartType" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=yes name=modelid dbname="ModelID" )
+ column=(type=char(30) updatewhereclause=yes name=suppliername dbname="SupplierName" )
+ column=(type=long updatewhereclause=yes name=orderqty_3 dbname="OrderQty_3" )
+ column=(type=long updatewhereclause=yes name=orderqty_1 dbname="OrderQty_1" )
+ column=(type=long updatewhereclause=yes name=napipcnt_3 dbname="NapipCnt_3" )
+ column=(type=long updatewhereclause=yes name=napipobeycnt_3 dbname="NapipObeyCnt_3" )
+ column=(type=long updatewhereclause=yes name=napipcnt_1 dbname="NapipCnt_1" )
+ column=(type=long updatewhereclause=yes name=napipobeycnt_1 dbname="NapipObeyCnt_1" )
+ procedure="1 execute dbo.sp_pisr200i_01;1 @ps_areaCode = :ps_areaCode, @ps_divCode = :ps_divCode, @ps_itemCode = :ps_itemCode, @ps_applyDate = :ps_applyDate" arguments=(("ps_areaCode", string),("ps_divCode", string),("ps_itemCode", string),("ps_applyDate", string))  sort="itemcode A suppliercode A " )
+group(level=1 header.height=0 trailer.height=92 by=("itemcode" ) header.color="536870912" trailer.color="10789024" )
+text(band=header alignment="2" text="부품
+구분" border="0" color="16777215" x="9" y="4" height="120" width="201"  name=parttype_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품번
+" border="0" color="16777215" x="219" y="4" height="120" width="352"  name=itemcode_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="업체
+코드" border="0" color="16777215" x="1390" y="4" height="120" width="238"  name=suppliercode_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="기준
+이원화율" border="0" color="16777215" x="2181" y="4" height="120" width="288"  name=orderrate_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="품명
+" border="0" color="16777215" x="581" y="4" height="120" width="576"  name=itemname_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="배번호
+" border="0" color="16777215" x="1166" y="0" height="120" width="215"  name=modelid_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="업체명
+" border="0" color="16777215" x="1637" y="4" height="120" width="535"  name=suppliername_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="최근3개월
+발주수량" border="0" color="8388608" x="2478" y="4" height="120" width="325"  name=orderqty_3_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="가입고
+간판매수" border="0" color="8388608" x="3017" y="4" height="120" width="274"  name=napipcnt_3_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="간판
+준수율" border="0" color="8388608" x="3301" y="4" height="120" width="219"  name=t_1  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="발주
+비율" border="0" color="8388608" x="2811" y="4" height="120" width="197"  name=t_3  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="당월
+발주수량" border="0" color="8388608" x="3529" y="4" height="120" width="297"  name=orderqty_1_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="가입고
+간판매수" border="0" color="8388608" x="4041" y="4" height="120" width="283"  name=napipcnt_1_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="간판
+준수율" border="0" color="8388608" x="4334" y="4" height="120" width="219"  name=t_2  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="발주
+비율" border="0" color="8388608" x="3835" y="4" height="120" width="197"  name=t_4  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="4" height="84" width="201" format="[general]"  name=parttype dddw.name=dddw_rparttypel_01 dddw.displaycolumn=parttype_name dddw.datacolumn=parttype_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="0" x="3017" y="4" height="84" width="274" format="#,##0"  name=napipcnt_3 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+compute(band=detail alignment="2" expression="round(  if(isNull(  napipobeycnt_3 ),0,  napipobeycnt_3 )/ if(   napipcnt_3 = 0, 1,   napipcnt_3 ) * 100, 1 )"border="0" color="0" x="3301" y="4" height="84" width="219" format="[General]"  name=compute_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=detail alignment="2" expression="round(  orderqty_3 / sum(   orderqty_3 for group 1 ) * 100, 1 )"border="0" color="0" x="2811" y="4" height="84" width="197" format="[General]"  name=compute_3  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="0" x="3529" y="4" height="84" width="297" format="#,##0"  name=orderqty_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15780518" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="4041" y="4" height="84" width="283" format="#,##0"  name=napipcnt_1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="15780518" )
+compute(band=detail alignment="2" expression="round(  if(isNull(  napipobeycnt_1 ),0,  napipobeycnt_1 )/ if(   napipcnt_1 = 0, 1,   napipcnt_1 ) * 100, 1 )"border="0" color="0" x="4334" y="4" height="84" width="219" format="[General]"  name=compute_2  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=detail alignment="2" expression="round(  orderqty_1 / sum(   orderqty_1 for group 1 ) * 100, 1 )"border="0" color="0" x="3835" y="4" height="84" width="197" format="[General]"  name=compute_4  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="2181" y="4" height="84" width="288" format="[general]"  name=orderrate edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1637" y="4" height="84" width="535" format="[general]"  name=suppliername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1390" y="4" height="84" width="238" format="[general]"  name=suppliercode edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="1166" y="4" height="84" width="215" format="[general]"  name=modelid edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="581" y="4" height="84" width="576" format="[general]"  name=itemname edit.limit=100 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="219" y="4" height="84" width="352" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="2478" y="4" height="84" width="325" format="#,##0"  name=orderqty_3 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12639424" )
+text(band=trailer.1 alignment="2" text="[ 품번계 ]" border="0" color="8388608" x="1637" y="4" height="84" width="535"  name=t_5  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+compute(band=trailer.1 alignment="2" expression="sum(  orderrate  for group 1 )"border="0" color="8388608" x="2181" y="4" height="84" width="288" format="[GENERAL]"  name=compute_7  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+compute(band=trailer.1 alignment="2" expression="sum(   orderqty_3 for group 1 )"border="0" color="8388608" x="2478" y="4" height="84" width="325" format="#,##0"  name=compute_5  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+compute(band=trailer.1 alignment="2" expression="sum(   orderqty_1 for group 1 )"border="0" color="8388608" x="3529" y="4" height="84" width="297" format="#,##0"  name=compute_6  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+
+sparse(names="parttype	itemcode	itemname	modelid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

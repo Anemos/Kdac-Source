@@ -1,0 +1,52 @@
+$PBExportHeader$f_up_ipis_mis_tsrconfirm02.srf
+$PBExportComments$SR취소입력
+global type f_up_ipis_mis_tsrconfirm02 from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_tsrconfirm02 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_tsrconfirm02 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_flag, ls_srno, ls_checksrno, ls_canceldate, ls_userid, ls_inputdate, ls_prtcd
+integer	li_cnt, li_index
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	
+	ls_srno				= trim(ag_dwo.GetItemString(li_cnt, 'SRNo'))	
+	
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+			 
+	SELECT PRTCD 
+	INTO :ls_prtcd
+	FROM PBSLE.SLE301
+	WHERE COMLTD = '01' AND SRNO = :ls_srno 
+	Using lstr_ipis.t_sqlpis;
+	
+	IF ls_prtcd <> '3' THEN
+		ag_message = "상태코드를 확인하십시요."
+		return -1
+	END IF
+	
+	UPDATE	pbsle.sle301
+	SET		prtcd= '2', updtid = :g_s_empno, updtdt = :g_s_date                             
+	WHERE		comltd = '01' and	srno = :ls_srno
+	Using lstr_ipis.t_sqlpis;
+	
+	if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+		ag_message = "취소SR확정에 실패하였습니다. SLE301"
+		f_ipis_transaction_errorlog(' ',g_s_winid,'f_up_ipis_mis_tsrconfirm02',&
+			lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if		
+next
+
+return 0
+end function
+

@@ -1,0 +1,67 @@
+$PBExportHeader$f_iget_kbser.srf
+$PBExportComments$이체간판 최종간판Serial 증가함수
+global type f_iget_kbser from function_object
+end type
+
+forward prototypes
+global function integer f_iget_kbser (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno, string as_gubun)
+end prototypes
+
+global function integer f_iget_kbser (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno, string as_gubun);int    li_Ser, li_TSer, li_kb //일련번호 
+
+//일련번호 받아오기
+SELECT "PBINV"."INV604"."KBSER", "PBINV"."INV604"."KBSERT"  
+    INTO :li_Ser, :li_TSer
+FROM "PBINV"."INV604"  
+WHERE ( "PBINV"."INV604"."COMLTD"  = '01'        ) AND  
+		( "PBINV"."INV604"."XPLANT"  = :as_xplant  ) AND 
+		( "PBINV"."INV604"."DIV"     = :as_div     ) AND
+		( "PBINV"."INV604"."XPLANT1" = :as_xplant1 ) AND 
+		( "PBINV"."INV604"."DIV1"    = :as_div1    ) AND
+		( "PBINV"."INV604"."ITNO"    = :as_itno    )   Using sqlca ;
+  
+if sqlca.sqlcode = 0 then
+	
+	if as_gubun  = "N" then   //  일련번호 증가
+	   
+		li_kb = li_Ser + 1	
+		
+	   UPDATE "PBINV"."INV604"  
+	   SET    "KBSER"  = :li_kb  
+	   WHERE ( "PBINV"."INV604"."COMLTD"  = '01'        ) AND  
+				( "PBINV"."INV604"."XPLANT"  = :as_xplant  ) AND 
+				( "PBINV"."INV604"."DIV"     = :as_div     ) AND
+				( "PBINV"."INV604"."XPLANT1" = :as_xplant1 ) AND 
+				( "PBINV"."INV604"."DIV1"    = :as_div1    ) AND
+				( "PBINV"."INV604"."ITNO"    = :as_itno    )  Using sqlca ;
+	   if sqlca.sqlcode <> 0 then
+			rollback using sqlca;
+	   else
+			commit using sqlca;
+	   end if
+   else 
+		li_kb = li_TSer + 1	
+		
+		UPDATE "PBINV"."INV604"  
+	   SET    "KBSERT"  = :li_kb  
+	   WHERE ( "PBINV"."INV604"."COMLTD"  = '01'        ) AND  
+				( "PBINV"."INV604"."XPLANT"  = :as_xplant  ) AND 
+				( "PBINV"."INV604"."DIV"     = :as_div     ) AND
+				( "PBINV"."INV604"."XPLANT1" = :as_xplant1 ) AND 
+				( "PBINV"."INV604"."DIV1"    = :as_div1    ) AND
+				( "PBINV"."INV604"."ITNO"    = :as_itno    )  Using sqlca ;
+				
+	   if sqlca.sqlcode <> 0 then
+			rollback using sqlca;
+	   else
+			commit using sqlca;
+	   end if
+	end if
+else
+  messagebox("sql문장 오류","sql문장 오류")
+  return 0
+end if
+
+return li_kb
+end function
+

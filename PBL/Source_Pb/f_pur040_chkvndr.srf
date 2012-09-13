@@ -1,0 +1,37 @@
+$PBExportHeader$f_pur040_chkvndr.srf
+$PBExportComments$사업자번호체계확인
+global type f_pur040_chkvndr from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_chkvndr (string as_vndr)
+end prototypes
+
+global function integer f_pur040_chkvndr (string as_vndr);//테스트업체 수정하이텍 130-08-33579, 이렌트 212-81-43315
+//
+integer  ll_num[], ll_numx
+string ls_num
+
+ll_num[1] = integer(mid(as_vndr, 1, 1)) * 1   // 업체번호가 양식에 맞는지 체크.....
+ll_num[2] = integer(mid(as_vndr, 2, 1)) * 3   
+ll_num[3] = integer(mid(as_vndr, 3, 1)) * 7
+ll_num[4] = integer(mid(as_vndr, 4, 1)) * 1
+ll_num[5] = integer(mid(as_vndr, 5, 1)) * 3
+ll_num[6] = integer(mid(as_vndr, 6, 1)) * 7
+ll_num[7] = integer(mid(as_vndr, 7, 1)) * 1
+ll_num[8] = integer(mid(as_vndr, 8, 1)) * 3
+ll_num[9] = integer(mid(as_vndr, 9, 1)) * 5
+ls_num = string(ll_num[9])
+ll_num[10] = integer(mid(ls_num, 1, 1))
+ll_num[11] = integer(mid(ls_num, 2, 1))
+ll_num[12] = integer(mid(as_vndr, 10, 1)) * 1
+
+ll_numx = ll_num[1] + ll_num[2] + ll_num[3] + ll_num[4] + ll_num[5] + ll_num[6] + ll_num[7] + ll_num[8] + &
+         ll_num[10] + ll_num[11] + ll_num[12]
+			
+if mod(ll_numx, 10) <> 0 then
+	return -1
+end if
+return 0
+end function
+

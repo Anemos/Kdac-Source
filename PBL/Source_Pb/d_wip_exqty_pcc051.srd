@@ -1,0 +1,62 @@
+$PBExportHeader$d_wip_exqty_pcc051.srd
+$PBExportComments$이체품재공 원가테이블 생성
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=acmcd dbname="ACMCD" )
+ column=(type=char(1) updatewhereclause=yes name=aplant dbname="APLANT" )
+ column=(type=char(1) updatewhereclause=yes name=advsn dbname="ADVSN" )
+ column=(type=char(4) updatewhereclause=yes name=pdcd dbname="PDCD" )
+ column=(type=char(15) updatewhereclause=yes name=aeitno dbname="AEITNO" )
+ column=(type=decimal(11) updatewhereclause=yes name=ohqt dbname="OHQT" )
+ retrieve="select tmp.acmcd, tmp.aplant, tmp.advsn, tmp.pdcd, tmp.aeitno, sum(tmp.ohqt) as ohqt
+from ( select a.acmcd, a.aplant, a.advsn, b.pdcd, a.aeitno, a.acitno, c.wbiocd, a.aclsb, a.asrce, (a.aqty * c.wbbgqt / b.convqty) as ohqt
+from pbpdm.bom010a a inner join pbinv.inv101 b
+  on a.acmcd = b.comltd and a.aplant = b.xplant and
+    a.advsn = b.div and a.aitno = b.itno
+  inner join pbwip.wip002 c
+  on a.acmcd = c.wbcmcd and a.aplant = c.wbplant and
+	  a.advsn = c.wbdvsn and a.aitno = c.wbitno and
+	  c.wbyear = :ag_postyear and c.wbmonth = :ag_postmonth
+  inner join pbacc.pcc051 d
+  on a.acmcd = d.comltd and a.ayear = d.pryy and
+	  a.amont = d.prmm and a.aplant = d.prtplant and
+	  a.advsn = d.prtdiv and a.aeitno = d.pritno
+where a.acmcd = '01' and a.ayear = :ag_year and a.amont = :ag_month and
+     c.wbiocd in ('1','2') and c.wbbgqt <> 0
+
+union all
+
+select a.acmcd, a.aplant, a.advsn, b.pdcd, a.aeitno, a.acitno, '3', a.aclsb, a.asrce, (a.aqty * (b.ohuqty + b.ohrqty + b.ohsqty)) as ohqt
+from pbpdm.bom010a a inner join pbinv.inv402 b
+  on a.acmcd = b.comltd and a.aplant = b.xplant and
+    a.advsn = b.div and a.aitno = b.itno and
+	 b.xyear = a.ayear||a.amont
+  inner join pbacc.pcc051 d
+  on a.acmcd = d.comltd and a.ayear = d.pryy and
+	  a.amont = d.prmm and a.aplant = d.prtplant and
+	  a.advsn = d.prtdiv and a.aeitno = d.pritno
+where a.acmcd = '01' and a.ayear = :ag_year and a.amont = :ag_month and
+     b.srce = '04' and (b.ohuqty <> 0 or b.ohrqty <> 0 or b.ohsqty <> 0 ) ) tmp
+group by tmp.acmcd, tmp.aplant, tmp.advsn, tmp.pdcd, tmp.aeitno" arguments=(("ag_year", string),("ag_month", string),("ag_postyear", string),("ag_postmonth", string)) )
+text(band=header alignment="0" text="Acmcd" border="0" color="0" x="9" y="4" height="76" width="247" html.valueishtml="0"  name=acmcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Aplant" border="0" color="0" x="265" y="4" height="76" width="421" html.valueishtml="0"  name=aplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Advsn" border="0" color="0" x="695" y="4" height="76" width="343" html.valueishtml="0"  name=advsn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pdcd" border="0" color="0" x="1047" y="4" height="76" width="398" html.valueishtml="0"  name=pdcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Aeitno" border="0" color="0" x="1454" y="4" height="76" width="471" html.valueishtml="0"  name=aeitno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Ohqt" border="0" color="0" x="1934" y="4" height="76" width="1367" html.valueishtml="0"  name=ohqt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=acmcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="265" y="0" height="76" width="421" format="[general]" html.valueishtml="0"  name=aplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="695" y="0" height="76" width="343" format="[general]" html.valueishtml="0"  name=advsn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="1047" y="0" height="76" width="398" format="[general]" html.valueishtml="0"  name=pdcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="1454" y="0" height="76" width="471" format="[general]" html.valueishtml="0"  name=aeitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1934" y="0" height="76" width="1367" format="[general]" html.valueishtml="0"  name=ohqt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

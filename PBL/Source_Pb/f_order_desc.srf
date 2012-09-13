@@ -1,0 +1,189 @@
+$PBExportHeader$f_order_desc.srf
+$PBExportComments$발령 description
+global type f_order_desc from function_object
+end type
+
+forward prototypes
+global function string f_order_desc (string ag_)
+global function string f_order_desc (string ag_oddescrip, string ag_odkicd1, string ag_odkicd2, string ag_odcompany1, string ag_order, string ag_deptk, string ag_odjikcheck)
+end prototypes
+
+global function string f_order_desc (string ag_);string  ls_oddescrip  , ls_odkicd1 ,  ls_odkicd2 ,ls_odcompany1 ,ls_return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return ls_return
+end function
+
+global function string f_order_desc (string ag_oddescrip, string ag_odkicd1, string ag_odkicd2, string ag_odcompany1, string ag_order, string ag_deptk, string ag_odjikcheck);string  ls_oddescrip  , ls_odkicd1 ,  ls_odkicd2 ,ls_odcompany1 ,ls_return, ls_odjikcheck
+choose case ag_order
+
+case 'A1', 'A2','A3', 'C1'
+
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER355'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 //messagebox('ls_odkicd2', ls_odkicd2 )
+	 if ag_odkicd2 <> ''  then 
+	    ls_return =  ag_deptk + " " + ls_odkicd1 +  " " + "수습 " + ag_odkicd2 + " 개월"
+	else
+		 ls_return =  ag_deptk + " " + ls_odkicd1 +  " " 
+	end if
+case 'C4','E7','G7'
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odcompany1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER001'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odcompany1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odcompany1 = ''
+	 end if
+	 ls_return =  ls_odcompany1 
+ case 'D1','D2','D3','D4'
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER356'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 ls_return = ag_deptk + " " +  ls_odkicd1 	
+ CASE 'G1'	//////해임
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odjikcheck
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER353'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odjikcheck  
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odjikcheck = ''
+	 end if
+	 ls_return = ls_odjikcheck	 
+ case 'L1'
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER357'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 ls_return = ls_odkicd1 		 
+case 'M1','M2','M3','M4','M5','M6','M7','R5'
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER358'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 ls_return = ls_odkicd1 	 
+CASE 'N1','N2','N3','N4','N5'	
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER320'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 ls_return = ls_odkicd1 	 	 
+CASE 'Q5'	
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER320'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odcompany1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER001'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odcompany1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odcompany1 = ''
+	 end if
+	 
+	 ls_return = ls_odkicd1 	 
+	 ls_return = ls_return + " " +  ls_odcompany1 
+CASE 'S1'	
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER394'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 ls_return = ls_odkicd1 
+CASE 'P5'	
+	 
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odcompany1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER001'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odcompany1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odcompany1 = ''
+	 end if 
+	 ls_return = ag_deptk + " " + ls_odcompany1 
+case 'F2'	,'G2'	 
+	 SELECT "PBCOMMON"."DAC002"."COITNAME"
+	 INTO   :ls_odkicd1
+	 FROM "PBCOMMON"."DAC002"  
+	 WHERE "PBCOMMON"."DAC002"."COGUBUN" = 'PER305'  and
+				"PBCOMMON"."DAC002"."COCODE"  = :ag_odkicd1   
+	 using sqlcc ;
+	 if sqlcc.sqlcode <> 0 then
+		ls_odkicd1 = ''
+	 end if
+	 IF ag_order = 'F2' THEN
+	    ls_return = ls_odkicd1 
+	 ELSE
+		 ls_return = ls_odkicd1 
+	 END IF
+CASE ELSE
+	
+END CHOOSE
+return ls_return + ' ' + ag_oddescrip
+end function
+

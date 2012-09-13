@@ -1,0 +1,24 @@
+$PBExportHeader$dddw_pdcd_pura.srd
+$PBExportComments$Á¦Ç°±º ( DAC160 )
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(60) updatewhereclause=yes name=coitnamee dbname="DAC007.COITNAMEE" )
+ column=(type=char(8) updatewhereclause=yes name=cocode2 dbname="COCODE2" initial=" " )
+ retrieve="SELECT PRNAME AS COITNAMEE , SUBSTRING(PRPRCD,1,2) AS COCODE2
+FROM PBCOMMON.DAC007
+WHERE COMLTD = '01'
+ AND SUBSTRING(PRPRCD,3,2) = '  '
+ AND rtrim(substring(PRPRCD,1,2)) not like '_' 
+ORDER BY 2 ASC   
+" )
+text(band=header alignment="0" text="Cocode2" border="0" color="0" x="9" y="4" height="68" width="311" html.valueishtml="0"  name=cocode2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Coitnamee" border="0" color="0" x="329" y="4" height="68" width="1915" html.valueishtml="0"  name=coitnamee_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="76" width="311" format="[general]" html.valueishtml="0"  name=cocode2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="334" y="0" height="76" width="1911" html.valueishtml="0"  name=coitnamee visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

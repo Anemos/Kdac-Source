@@ -1,0 +1,21 @@
+$PBExportHeader$f_per001_classrtn.srf
+$PBExportComments$f_classrtn¿ª µ•√º
+global type f_per001_classrtn from function_object
+end type
+
+forward prototypes
+global function string f_per001_classrtn (string a_s_empno)
+end prototypes
+
+global function string f_per001_classrtn (string a_s_empno);string l_s_class, l_s_clsnm
+
+select peclass into :l_s_class
+from pbper.per001
+where pbper.per001.peempno = :a_s_empno
+using sqlcc;
+
+l_s_clsnm = mid(f_get_dac002codenm('PER306',l_s_class),1,10)
+
+return l_s_clsnm
+end function
+

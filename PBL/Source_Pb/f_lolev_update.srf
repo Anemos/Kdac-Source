@@ -1,0 +1,89 @@
+$PBExportHeader$f_lolev_update.srf
+$PBExportComments$Item Master Lolev Update ÇÔ¼ö
+global type f_lolev_update from function_object
+end type
+
+forward prototypes
+global subroutine f_lolev_update (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global subroutine f_lolev_update (string a_plant, string a_div, string a_itno);string 	ls_div,ls_pitno,ls_citno,ls_itno,ls_chkitno[50,500]
+integer 	i = 0,j = 0,k = 0,p = 0,ln_chk,ln_lowlevel,ln_level
+
+ls_itno = trim(a_itno)
+ls_div  = trim(a_div)
+
+select lolevel into:ln_level from PBINV.INV002
+	   where  itno = :ls_itno using sqlca;
+
+declare bomchk_cur cursor for 
+  select "PBPDM"."BOM001"."PCITN" from "PBPDM"."BOM001"
+     where 	"PBPDM"."BOM001"."PLANT" = :a_plant AND
+	  			"PBPDM"."BOM001"."PDVSN" = :a_div AND
+	  			"PBPDM"."BOM001"."PPITN" = :ls_itno AND  
+           (( trim("PBPDM"."BOM001"."PEDTE") =  ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date ) or  
+			  (  trim("PBPDM"."BOM001"."PEDTE") <> ''  and "PBPDM"."BOM001"."PEDTM" <= :g_s_date  and "PBPDM"."BOM001"."PEDTE" >= :g_s_date ))
+
+     using SQLCA ;
+
+open bomchk_cur ;
+ln_level = ln_level + 1
+do while true
+	fetch bomchk_cur into :ls_citno ;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+	ls_citno = trim(ls_citno)
+	select lolevel into:ln_lowlevel from PBINV.INV002
+		where itno = :ls_citno 
+	using sqlca;
+	if ln_lowlevel < ln_level then
+		update PBINV.INV002 set lolevel = :ln_level 
+			where itno = :ls_citno  
+		using sqlca;
+		k 					= k + 1 
+		ls_chkitno[1,k] 	= trim(ls_citno)
+	end if
+loop
+close bomchk_cur ;
+
+if k = 0 then 
+	return
+end if
+
+for i = 1 to 50
+	ln_level 		= ln_level + 1	
+	for j = 1 to k
+		ls_itno 	= ls_chkitno[i,j]
+		open bomchk_cur ;
+		do while true
+			fetch bomchk_cur into: ls_citno;
+			if sqlca.sqlcode <> 0 then			  
+				exit
+			end if
+			ls_citno = trim(ls_citno)
+			select lolevel into:ln_lowlevel from PBINV.INV002
+				where itno = :ls_citno 
+			using sqlca;
+			if ln_lowlevel < ln_level then
+				update PBINV.INV002 set lolevel = :ln_level  
+					where itno = :ls_citno  
+				using sqlca;
+				p = p + 1
+				ls_chkitno[i+1,p] = trim(ls_citno)
+			end if
+		loop
+		close bomchk_cur;
+	next 
+	if p = 0 then
+		return
+	end if
+	k = p
+	p = 0
+next	
+return	
+	
+	
+	
+end subroutine
+

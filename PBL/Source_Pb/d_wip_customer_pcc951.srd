@@ -1,0 +1,138 @@
+$PBExportHeader$d_wip_customer_pcc951.srd
+$PBExportComments$원가계산관리 - 기말재공금액(공제분)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=84 color="536870912" )
+summary(height=92 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=comltd dbname="COMLTD" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="DIV" )
+ column=(type=char(2) updatewhereclause=yes name=pdcd dbname="PDCD" )
+ column=(type=decimal(0) updatewhereclause=yes name=bgat dbname="BGAT" )
+ retrieve="SELECT TMP.CMCD AS COMLTD,
+	TMP.PLANT AS XPLANT,
+	TMP.DVSN AS DIV,
+	TMP.PDCD AS PDCD,
+	SUM(TMP.OHAT) AS BGAT
+FROM ( SELECT ~"PBWIP~".~"WIP002~".~"WBCMCD~" as cmcd,
+       ~"PBWIP~".~"WIP002~".~"WBPLANT~" as plant,   
+       ~"PBWIP~".~"WIP002~".~"WBDVSN~" as dvsn,   
+       TMP_COST.~"PDCD~" as pdcd,
+       sum(DEC((~"PBWIP~".~"WIP002~".~"WBBGQT~" + ~"PBWIP~".~"WIP002~".~"WBINQT~" - (~"PBWIP~".~"WIP002~".~"WBUSQT1~" + ~"PBWIP~".~"WIP002~".~"WBUSQT2~"
+			+ ~"PBWIP~".~"WIP002~".~"WBUSQT3~" + ~"PBWIP~".~"WIP002~".~"WBUSQT4~" + ~"PBWIP~".~"WIP002~".~"WBUSQT5~" + ~"PBWIP~".~"WIP002~".~"WBUSQT6~" + ~"PBWIP~".~"WIP002~".~"WBUSQT7~"
+			+ ~"PBWIP~".~"WIP002~".~"WBUSQT8~" + ~"PBWIP~".~"WIP002~".~"WBUSQTA~")) * TMP_COST.~"COSTAV~" / TMP_COST.~"CONVQTY~",15,0)) as ohat
+  FROM ~"PBWIP~".~"WIP002~" INNER JOIN ( SELECT   ~"PBINV~".~"INV402~".~"COMLTD~" AS COMLTD,
+		~"PBINV~".~"INV402~".~"XPLANT~" AS XPLANT,
+		~"PBINV~".~"INV402~".~"DIV~" AS DIV,
+		~"PBINV~".~"INV402~".~"ITNO~" AS ITNO,
+		SUBSTR(~"PBINV~".~"INV402~".~"PDCD~",1,2) AS PDCD,
+		~"PBINV~".~"INV101~".~"CONVQTY~" AS CONVQTY,
+   	CASE 	WHEN ~"PBPDM~".~"BOM016~".~"FCOCST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCOCST~"
+        	WHEN ~"PBPDM~".~"BOM016~".~"FCMCST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCMCST~"
+         WHEN ~"PBPDM~".~"BOM016~".~"FCICST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCICST~"
+         ELSE  ~"PBPDM~".~"BOM016~".~"FXCOST~" END AS COSTAV
+  	FROM ~"PBINV~".~"INV101~",
+		~"PBINV~".~"INV402~",
+		~"PBPDM~".~"BOM016~"
+	WHERE ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBINV~".~"INV402~".~"COMLTD~" ) and  
+       	( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBINV~".~"INV402~".~"XPLANT~" ) and  
+       	( ~"PBINV~".~"INV101~".~"DIV~" = ~"PBINV~".~"INV402~".~"DIV~" ) and  
+       	( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBINV~".~"INV402~".~"ITNO~" ) and
+			( ~"PBPDM~".~"BOM016~".~"FCMCD~" = ~"PBINV~".~"INV402~".~"COMLTD~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FPLANT~" = ~"PBINV~".~"INV402~".~"XPLANT~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FDVSN~" = ~"PBINV~".~"INV402~".~"DIV~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FMDNO~" = ~"PBINV~".~"INV402~".~"ITNO~" ) and 
+		 	( ~"PBPDM~".~"BOM016~".~"FDATE~" = ~"PBINV~".~"INV402~".~"XYEAR~" ) and 
+		 	( ~"PBPDM~".~"BOM016~".~"FGUBUN~" = 'B' ) and
+		 	( ~"PBINV~".~"INV402~".~"COMLTD~" = :ag_cmcd ) AND
+		 	( ~"PBINV~".~"INV402~".~"XPLANT~" <> 'Y' ) AND
+		 	( ~"PBINV~".~"INV402~".~"XYEAR~" = :ag_date ) ) 
+	TMP_COST
+		ON ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = TMP_COST.~"COMLTD~" ) and  
+       	( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = TMP_COST.~"XPLANT~" ) and  
+       	( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = TMP_COST.~"DIV~" ) and  
+       	( ~"PBWIP~".~"WIP002~".~"WBITNO~" = TMP_COST.~"ITNO~" )
+ WHERE ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = :ag_cmcd ) and  
+       ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" <> 'Y' ) and    
+       ( ~"PBWIP~".~"WIP002~".~"WBYEAR~"||~"PBWIP~".~"WIP002~".~"WBMONTH~" = :ag_date  ) and
+		 ( ~"PBWIP~".~"WIP002~".~"WBIOCD~" IN ('1','2') ) and
+		 NOT ( ~"PBWIP~".~"WIP002~".~"WBBGQT~"= 0 AND ~"PBWIP~".~"WIP002~".~"WBBGAT1~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINQT~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINAT1~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBINAT2~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINAT3~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQT1~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT1~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBUSQT2~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT2~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQT3~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT3~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBUSQT4~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT4~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQT5~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT5~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBUSQT6~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT6~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQT7~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT7~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBUSQT8~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT8~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT9~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQTA~" = 0 AND
+        ~"PBWIP~".~"WIP002~".~"WBUSATA~" = 0 )  
+GROUP BY ~"PBWIP~".~"WIP002~".~"WBCMCD~",   
+         ~"PBWIP~".~"WIP002~".~"WBPLANT~",   
+         ~"PBWIP~".~"WIP002~".~"WBDVSN~",   
+         TMP_COST.~"PDCD~"
+
+UNION ALL
+
+  SELECT ~"PBWIP~".~"WIP003~".~"WCCMCD~" as cmcd,
+         ~"PBWIP~".~"WIP003~".~"WCPLANT~" as plant,   
+         ~"PBWIP~".~"WIP003~".~"WCDVSN~" as dvsn,   
+         TMP_COST.~"PDCD~" as pdcd,
+         sum(DEC(TMP_COST.~"OHQT~" * TMP_COST.~"COSTAV~",15,0)) as ohat
+    FROM ~"PBWIP~".~"WIP003~",( SELECT   ~"PBINV~".~"INV402~".~"COMLTD~" AS COMLTD,
+		~"PBINV~".~"INV402~".~"XPLANT~" AS XPLANT,
+		~"PBINV~".~"INV402~".~"DIV~" AS DIV,
+		~"PBINV~".~"INV402~".~"ITNO~" AS ITNO,
+		SUBSTR(~"PBINV~".~"INV402~".~"PDCD~",1,2) AS PDCD,
+		~"PBINV~".~"INV101~".~"CONVQTY~" AS CONVQTY,
+   	~"PBPDM~".~"BOM016~".~"FWCOST~" AS COSTAV,
+    (~"PBINV~".~"INV402~".~"BGUQTY~" + ~"PBINV~".~"INV402~".~"BGRQTY~" + ~"PBINV~".~"INV402~".~"BGSQTY~") AS BGQT,
+		(~"PBINV~".~"INV402~".~"OHUQTY~" + ~"PBINV~".~"INV402~".~"OHRQTY~" + ~"PBINV~".~"INV402~".~"OHSQTY~") AS OHQT
+  	FROM ~"PBINV~".~"INV101~",
+		~"PBINV~".~"INV402~",
+		~"PBPDM~".~"BOM016~"
+	WHERE ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBINV~".~"INV402~".~"COMLTD~" ) and  
+       	( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBINV~".~"INV402~".~"XPLANT~" ) and  
+       	( ~"PBINV~".~"INV101~".~"DIV~" = ~"PBINV~".~"INV402~".~"DIV~" ) and  
+       	( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBINV~".~"INV402~".~"ITNO~" ) and
+			( ~"PBPDM~".~"BOM016~".~"FCMCD~" = ~"PBINV~".~"INV402~".~"COMLTD~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FPLANT~" = ~"PBINV~".~"INV402~".~"XPLANT~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FDVSN~" = ~"PBINV~".~"INV402~".~"DIV~" ) and  
+       	( ~"PBPDM~".~"BOM016~".~"FMDNO~" = ~"PBINV~".~"INV402~".~"ITNO~" ) and 
+		 	( ~"PBPDM~".~"BOM016~".~"FDATE~" = ~"PBINV~".~"INV402~".~"XYEAR~" ) and 
+		 	( ~"PBPDM~".~"BOM016~".~"FGUBUN~" = 'B' ) and
+		 	( ~"PBINV~".~"INV402~".~"COMLTD~" = :ag_cmcd ) AND
+		 	( ~"PBINV~".~"INV402~".~"XPLANT~" <> 'Y' ) AND
+		 	( ~"PBINV~".~"INV402~".~"XYEAR~" = :ag_date ) ) 
+	TMP_COST 
+   WHERE ( ~"PBWIP~".~"WIP003~".~"WCCMCD~" = TMP_COST.~"COMLTD~" ) and  
+         ( ~"PBWIP~".~"WIP003~".~"WCPLANT~" = TMP_COST.~"XPLANT~" ) and  
+         ( ~"PBWIP~".~"WIP003~".~"WCDVSN~" = TMP_COST.~"DIV~" ) and  
+         ( ~"PBWIP~".~"WIP003~".~"WCITNO~" = TMP_COST.~"ITNO~" ) and 
+         ( ~"PBWIP~".~"WIP003~".~"WCYEAR~"||~"PBWIP~".~"WIP003~".~"WCMONTH~" = :ag_date )  and
+         (~"PBWIP~".~"WIP003~".~"WCBGAT1~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCINAT1~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT1~" <> 0 or
+          ~"PBWIP~".~"WIP003~".~"WCUSAT2~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT3~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT4~" <> 0 or
+          ~"PBWIP~".~"WIP003~".~"WCUSAT5~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT6~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT7~" <> 0 or
+          ~"PBWIP~".~"WIP003~".~"WCUSAT8~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT9~" <> 0 or TMP_COST.~"BGQT~" <> 0 or TMP_COST.~"OHQT~" <> 0)  
+GROUP BY ~"PBWIP~".~"WIP003~".~"WCCMCD~",   
+         ~"PBWIP~".~"WIP003~".~"WCPLANT~",   
+         ~"PBWIP~".~"WIP003~".~"WCDVSN~",   
+         TMP_COST.~"PDCD~"
+) TMP
+GROUP BY TMP.CMCD, TMP.PLANT, TMP.DVSN, TMP.PDCD
+" arguments=(("ag_cmcd", string),("ag_date", string)) )
+text(band=header alignment="2" text="회사" border="0" color="16777215" x="5" y="4" height="72" width="229" html.valueishtml="0"  name=comltd_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="공장" border="0" color="16777215" x="462" y="4" height="72" width="219" html.valueishtml="0"  name=div_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="지역" border="0" color="16777215" x="238" y="4" height="72" width="219" html.valueishtml="0"  name=xplant_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="제품군" border="0" color="16777215" x="686" y="4" height="72" width="329" html.valueishtml="0"  name=pdcd_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="재공금액" border="0" color="16777215" x="1019" y="4" height="72" width="1083" html.valueishtml="0"  name=bgat_t visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="5" y="4" height="72" width="229" format="[general]" html.valueishtml="0"  name=comltd visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="462" y="4" height="72" width="219" format="[general]" html.valueishtml="0"  name=div visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="238" y="4" height="72" width="219" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="686" y="4" height="72" width="329" format="[general]" html.valueishtml="0"  name=pdcd visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="1019" y="4" height="72" width="1083" format="[general]" html.valueishtml="0"  name=bgat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(bgat for all)"border="0" color="33554432" x="1019" y="4" height="72" width="1083" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="굴림체" font.height="-12" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

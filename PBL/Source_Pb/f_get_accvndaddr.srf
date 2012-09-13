@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_accvndaddr.srf
+$PBExportComments$업체주소 return
+global type f_get_accvndaddr from function_object
+end type
+
+forward prototypes
+global function string f_get_accvndaddr (string a_s_company, string a_vsrno)
+end prototypes
+
+global function string f_get_accvndaddr (string a_s_company, string a_vsrno);String 	ls_vndnm
+
+SELECT	"PBACC"."ACC020"."CUADDR"	INTO	:ls_vndnm	FROM	"PBACC"."ACC020" 
+WHERE  "PBACC"."ACC020"."COMLTD" 	= 		:a_s_company	and
+       		"PBACC"."ACC020"."CUCODE" 	= 		:a_vsrno     
+Using 	Sqlca ;
+
+if 	Sqlca.sqlcode <> 0 then
+	ls_vndnm	=	" "
+end if
+ 
+return	ls_vndnm
+ 
+end function
+

@@ -1,0 +1,43 @@
+$PBExportHeader$f_pur040_clrspecial1.srf
+$PBExportComments$정해진 특수문자제거
+global type f_pur040_clrspecial1 from function_object
+end type
+
+forward prototypes
+global function string f_pur040_clrspecial1 (string as_string)
+end prototypes
+
+global function string f_pur040_clrspecial1 (string as_string);//정해진 특수문자만 제거
+//Carriage Return(CR, ascii code:13)  => \r
+//Line Feed(LF, ascii code:10)   => \n
+integer  ll_num
+char lc_chk
+string ls_string
+//asc 47 '/'이하,  58 ~ 64, 91 ~ 161
+as_string = trim(as_string)
+for ll_num = 1  to len(trim(as_string))
+	lc_chk = mid(as_string,ll_num,1)
+	if lc_chk = ' ' &  
+	or lc_chk = '-' &
+	or lc_chk = '_' &
+	or lc_chk = '/' then  
+	   ls_string = ls_string + lc_chk
+		continue
+	end if
+		
+	if isnull(lc_chk) &
+	or lc_chk = ' ' &  
+	or lc_chk = '-' &
+	or lc_chk = '_' &
+	or lc_chk = '/' &  
+	or asc(lc_chk) <= 47 & 
+	or (asc(lc_chk) >= 58 and asc(lc_chk) <= 64) &
+	or (asc(lc_chk) >= 91 and asc(lc_chk) < 161) then
+		continue
+	end if
+	ls_string = ls_string + lc_chk
+next
+
+return ls_string
+end function
+

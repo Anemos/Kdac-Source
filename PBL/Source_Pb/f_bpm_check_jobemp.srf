@@ -1,0 +1,24 @@
+$PBExportHeader$f_bpm_check_jobemp.srf
+$PBExportComments$확정자 검증 함수
+global type f_bpm_check_jobemp from function_object
+end type
+
+forward prototypes
+global function integer f_bpm_check_jobemp (string ag_year, string ag_revno, string ag_winid, string ag_empno)
+end prototypes
+
+global function integer f_bpm_check_jobemp (string ag_year, string ag_revno, string ag_winid, string ag_empno);integer li_count
+
+SELECT COUNT(*) INTO :li_count
+FROM PBBPM.BPM519
+WHERE COMLTD = :g_s_company AND XYEAR = :ag_year AND REVNO = :ag_revno AND Windowid = :ag_winid AND
+	( JOBEMPNO = :ag_empno  OR JOBEMPNO2 = :ag_empno OR TASKMANAGER = :ag_empno) 
+using sqlca;
+
+if li_count > 0 then
+	return 0
+else
+	return -1
+end if
+end function
+

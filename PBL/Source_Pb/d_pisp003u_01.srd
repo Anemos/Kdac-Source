@@ -1,0 +1,48 @@
+$PBExportHeader$d_pisp003u_01.srd
+$PBExportComments$∆Ú¡ÿ»≠ Cycle º≥¡§- ∂Û¿Œ ¡∂»∏
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=136 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=68 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(15) updatewhereclause=yes name=areaname dbname="AreaName" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(15) updatewhereclause=yes name=divisionname dbname="DivisionName" )
+ column=(type=char(5) updatewhereclause=yes name=workcenter dbname="WorkCenter" )
+ column=(type=char(30) updatewhereclause=yes name=workcentername dbname="WorkCenterName" )
+ column=(type=char(1) updatewhereclause=yes name=linecode dbname="LineCode" )
+ column=(type=char(100) updatewhereclause=yes name=lineshortname dbname="LineShortName" )
+ column=(type=char(100) updatewhereclause=yes name=linefullname dbname="LineFullName" )
+ column=(type=char(1) updatewhereclause=yes name=maxcyclegubun dbname="MaxCycleGubun" )
+ column=(type=long updatewhereclause=yes name=cyclecount dbname="CycleCount" values="√÷¥Ÿ Cycle	0/1 Cycle	1/2 Cycle	2/4 Cycle	4/8 Cycle	8/16 Cycle	16/32 Cycle	32/" )
+ procedure="1 execute dbo.sp_pisp003u_01;1 @ps_areacode = :ps_areacode, @ps_divisioncode = :ps_divisioncode, @ps_workcenter = :ps_workcenter" arguments=(("ps_areacode", string),("ps_divisioncode", string),("ps_workcenter", string)) )
+text(band=header alignment="2" text="
+¡∂ƒ⁄µÂ" border="0" color="16777215" x="9" y="12" height="120" width="293"  name=workcenter_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+¡∂∏Ì" border="0" color="16777215" x="311" y="12" height="120" width="590"  name=workcentername_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+∂Û¿Œƒ⁄µÂ" border="0" color="16777215" x="910" y="12" height="120" width="279"  name=linecode_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+∂Û¿Œ¥‹√‡∏Ì" border="0" color="16777215" x="1198" y="12" height="120" width="430"  name=lineshortname_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+∂Û¿Œ∏Ì" border="0" color="16777215" x="1637" y="12" height="120" width="992"  name=linefullname_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+∆Ú¡ÿ»≠ Cycle" border="0" color="16777215" x="2638" y="12" height="120" width="466"  name=cyclecount_t  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=11 alignment="2" tabsequence=60 border="0" color="8388736" x="2638" y="4" height="60" width="466" format="[general]"  name=cyclecount ddlb.limit=0 ddlb.allowedit=no ddlb.case=upper ddlb.useasborder=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=10 border="0" color="0" x="9" y="4" height="60" width="293" format="[general]"  name=workcenter edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=20 border="0" color="0" x="311" y="4" height="60" width="590" format="[general]"  name=workcentername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=30 border="0" color="16711680" x="910" y="4" height="60" width="279" format="[general]"  name=linecode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=40 border="0" color="8388608" x="1198" y="4" height="60" width="430" format="[general]"  name=lineshortname edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=50 border="0" color="8388608" x="1637" y="4" height="60" width="992" format="[general]"  name=linefullname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.displayonly=yes  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="9" y="4" height="60" width="293"  name=t_1  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="311" y="4" height="60" width="590"  name=t_2  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="910" y="4" height="60" width="279"  name=t_3  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="1198" y="4" height="60" width="430"  name=t_4  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=footer alignment="1" expression="RowCount() + ' ∞≥ ∂Û¿Œ'"border="0" color="8388608" x="1637" y="4" height="60" width="992" format="[GENERAL]"  name=compute_1  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="2638" y="4" height="60" width="466"  name=t_5  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+
+sparse(names="workcenter	workcentername")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

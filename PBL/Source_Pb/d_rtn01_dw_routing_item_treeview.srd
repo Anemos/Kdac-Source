@@ -1,0 +1,87 @@
+$PBExportHeader$d_rtn01_dw_routing_item_treeview.srd
+$PBExportComments$´ëÃ¼Ç°¹ø DB & BALANCE DB Exist Item
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=rtn011_racmcd dbname="RTN011.RACMCD" )
+ column=(type=char(1) updatewhereclause=yes name=rtn011_raplant dbname="RTN011.RAPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=rtn011_radvsn dbname="RTN011.RADVSN" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="INV101.PDCD" )
+ column=(type=char(12) updatewhereclause=yes name=rtn011_raitno dbname="RTN011.RAITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN011~".~"RACMCD~",
+         ~"PBRTN~".~"RTN011~".~"RAPLANT~",
+         ~"PBRTN~".~"RTN011~".~"RADVSN~",
+         ~"PBINV~".~"INV101~".~"PDCD~" ,
+         ~"PBRTN~".~"RTN011~".~"RAITNO~",
+         ~"PBINV~".~"INV002~".~"ITNM~"  
+    FROM ~"PBRTN~".~"RTN011~",   
+         ~"PBINV~".~"INV101~",   
+         ~"PBINV~".~"INV002~" 
+   WHERE ( ~"PBINV~".~"INV002~".~"COMLTD~" = ~"PBRTN~".~"RTN011~".~"RACMCD~" ) and
+         ( ~"PBRTN~".~"RTN011~".~"RAITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" ) and 
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBRTN~".~"RTN011~".~"RACMCD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBRTN~".~"RTN011~".~"RAPLANT~" ) and
+         ( ~"PBRTN~".~"RTN011~".~"RADVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBRTN~".~"RTN011~".~"RAITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and  
+         ( ( ~"PBRTN~".~"RTN011~".~"RACMCD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd ) AND  
+         ( ~"PBRTN~".~"RTN011~".~"RADVSN~"  = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN011~".~"RAPLANT~" = :a_plant ) )
+     GROUP BY  ~"PBRTN~".~"RTN011~".~"RACMCD~",
+             ~"PBRTN~".~"RTN011~".~"RAPLANT~",
+             ~"PBRTN~".~"RTN011~".~"RADVSN~",
+             ~"PBINV~".~"INV101~".~"PDCD~",
+             ~"PBRTN~".~"RTN011~".~"RAITNO~",
+             ~"PBINV~".~"INV002~".~"ITNM~"
+  
+
+union 
+
+   SELECT ~"PBRTN~".~"RTN013~".~"RCCMCD~",
+          ~"PBRTN~".~"RTN013~".~"RCPLANT~",
+          ~"PBRTN~".~"RTN013~".~"RCDVSN~",
+          ~"PBINV~".~"INV101~".~"PDCD~" ,
+          ~"PBRTN~".~"RTN013~".~"RCITNO~",
+          ~"PBINV~".~"INV002~".~"ITNM~"  
+    FROM ~"PBRTN~".~"RTN013~",   
+         ~"PBINV~".~"INV101~",   
+         ~"PBINV~".~"INV002~" 
+   WHERE ( ~"PBINV~".~"INV002~".~"COMLTD~" = ~"PBRTN~".~"RTN013~".~"RCCMCD~" ) and
+         ( ~"PBRTN~".~"RTN013~".~"RCITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" ) and 
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBRTN~".~"RTN013~".~"RCCMCD~" ) and  
+         ( ~"PBINV~".~"INV101~".~"XPLANT~" = ~"PBRTN~".~"RTN013~".~"RCPLANT~" ) and
+         ( ~"PBRTN~".~"RTN013~".~"RCDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBRTN~".~"RTN013~".~"RCITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and  
+         ( ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCDVSN~"  = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCPLANT~" = :a_plant ) AND 
+         ( TRIM(~"PBINV~".~"INV101~".~"SRCE~") in ( '','03','04' ) ) )  
+
+   GROUP BY  ~"PBRTN~".~"RTN013~".~"RCCMCD~",
+             ~"PBRTN~".~"RTN013~".~"RCPLANT~",
+             ~"PBRTN~".~"RTN013~".~"RCDVSN~",
+             ~"PBINV~".~"INV101~".~"PDCD~",
+             ~"PBRTN~".~"RTN013~".~"RCITNO~",
+             ~"PBINV~".~"INV002~".~"ITNM~"
+
+ ORDER BY 4,5
+
+" arguments=(("a_plant", string),("a_div", string),("a_pdcd", string)) )
+text(band=header alignment="2" text="Ç° ¸í" border="0" color="16777215" x="581" y="4" height="56" width="914" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="0" color="16777215" x="9" y="4" height="56" width="233" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="251" y="4" height="56" width="320" html.valueishtml="0"  name=rtn011_raitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="64" width="233" format="[general]" html.valueishtml="0"  name=inv101_pdcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=0 border="0" color="0" x="256" y="0" height="64" width="315" html.valueishtml="0"  name=rtn011_raitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="581" y="0" height="64" width="914" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="inv101_pdcd")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

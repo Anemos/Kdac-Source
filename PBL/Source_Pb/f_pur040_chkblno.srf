@@ -1,0 +1,22 @@
+$PBExportHeader$f_pur040_chkblno.srf
+$PBExportComments$B/L특수문자및공백체크
+global type f_pur040_chkblno from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_chkblno (string as_blno)
+end prototypes
+
+global function integer f_pur040_chkblno (string as_blno);integer  ll_num
+char lc_chk
+
+
+for ll_num = 1  to len(trim(as_blno))
+	lc_chk = mid(as_blno,ll_num,1)
+	if isnumber(lc_chk) = false and (lc_chk < 'A' or lc_chk > 'Z') then
+		return -1
+	end if
+next
+return 0
+end function
+

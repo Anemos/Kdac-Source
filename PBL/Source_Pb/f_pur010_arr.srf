@@ -1,0 +1,33 @@
+$PBExportHeader$f_pur010_arr.srf
+$PBExportComments$운임조건 (업체전산번호,운임조건)
+global type f_pur010_arr from function_object
+end type
+
+forward prototypes
+global subroutine f_pur010_arr (string ag_vsrno, ref string ag_arr)
+end prototypes
+
+global subroutine f_pur010_arr (string ag_vsrno, ref string ag_arr);///////////////////////////////////////
+// 운임조건 : 업체 Master DB
+//
+//       argument : ag_vsrno   - 업체
+//                  ref ag_arr - 운임조건
+//
+//////////////////////////////////////////
+
+//업체 Master DB
+SELECT "PBPUR"."PUR101"."ARR"  
+ INTO :ag_arr  
+FROM "PBPUR"."PUR101"  
+WHERE ( "PBPUR"."PUR101"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR101"."SCGUBUN" = 'S' ) AND  
+		( "PBPUR"."PUR101"."DIGUBUN" = 'D' ) AND  
+		( "PBPUR"."PUR101"."VSRNO" = :ag_vsrno ) Using sqlca;
+		
+IF sqlca.sqlcode <> 0 Then
+	ag_arr = ' '
+End IF
+			
+
+end subroutine
+

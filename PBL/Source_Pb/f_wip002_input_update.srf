@@ -1,0 +1,262 @@
+$PBExportHeader$f_wip002_input_update.srf
+$PBExportComments$[이월재공] 라인 업체 투입  함수
+global type f_wip002_input_update from function_object
+end type
+
+forward prototypes
+global function integer f_wip002_input_update (string ag_comltd, string ag_applydate, string ag_sliptype, string ag_xplant, string ag_div, string ag_itno, string ag_cls, string ag_srce, decimal ag_convqty, string ag_xuse, string ag_rtngub, string ag_dept, string ag_vsrno, string ag_tdte4, decimal ag_tqty4, integer ag_tramt, transaction ag_transaction, ref string ag_message)
+end prototypes
+
+global function integer f_wip002_input_update (string ag_comltd, string ag_applydate, string ag_sliptype, string ag_xplant, string ag_div, string ag_itno, string ag_cls, string ag_srce, decimal ag_convqty, string ag_xuse, string ag_rtngub, string ag_dept, string ag_vsrno, string ag_tdte4, decimal ag_tqty4, integer ag_tramt, transaction ag_transaction, ref string ag_message);string ls_wkct, ls_iocd, ls_nextdt, ls_nextyear, ls_nextmonth, ls_year, ls_month, ls_check
+dec{4} lc_wbbgqt, lc_tqty4
+dec{0} lc_wbbgat, lc_tramt
+
+ls_year = mid(ag_applydate,1,4)
+ls_month = mid(ag_applydate,5,2)
+ls_nextdt = f_relative_month(ag_applydate,1)
+ls_nextyear = mid(ls_nextdt,1,4)
+ls_nextmonth = mid(ls_nextdt,5,2)
+
+if ag_applydate < mid(ag_tdte4,1,6) then
+	ls_check = 'F'
+	lc_tqty4 = (-1) * ag_tqty4
+	lc_tramt = (-1) * ag_tramt
+else
+	ls_check = 'B'
+	lc_tqty4 = ag_tqty4
+	lc_tramt = ag_tramt
+end if
+
+choose case ag_sliptype
+	case 'IS','IP'
+   	if ag_xuse = '01' or ag_xuse = '02' or ag_xuse = '03' or ag_xuse = '05' then
+			ls_wkct = '9999'
+			ls_iocd = '1'
+		elseif ag_xuse = '04' then
+      	ls_wkct = ag_vsrno
+      	ls_iocd = '2'
+		elseif ag_xuse = '07' then
+      	ls_wkct = ag_vsrno
+      	ls_iocd = '3'
+	   else
+			return 0
+		end if
+		// 마감월 수정
+		update pbwip.wip002
+		  set wbinqt = wbinqt + (:lc_tqty4 * :ag_convqty),
+				wbinat1 = wbinat1 + :lc_tramt
+		  where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+				  wbplant = :ag_xplant and
+				  wbdvsn = :ag_div and wbitno = :ag_itno and
+				  wborct = :ls_wkct and wbiocd = :ls_iocd
+		using ag_transaction;
+		
+//		if ag_transaction.sqlnrows < 1 then
+//			ag_message = "재공마감월 투입 에러 IS: " + ag_transaction.sqlerrtext
+//			return -1
+//		end if
+		
+		update pbwip.wip001
+		set wainqt = wainqt - (:lc_tqty4 * :ag_convqty),
+				wainat1 = wainat1 - :lc_tramt
+		where wacmcd = :ag_comltd and waplant = :ag_xplant and
+				wadvsn = :ag_div and waitno = :ag_itno and
+				waorct = :ls_wkct and waiocd = :ls_iocd
+		using ag_transaction;
+	case 'RS'
+		if ag_xuse = '01' or ag_xuse = '02' or ag_xuse = '03' or ag_xuse = '05' then
+			ls_wkct = '9999'
+			ls_iocd = '1'
+		elseif ag_xuse = '04' then
+      	ls_wkct = ag_vsrno
+      	ls_iocd = '2'
+		elseif ag_xuse = '07' then
+      	ls_wkct = ag_vsrno
+      	ls_iocd = '3'
+	   else
+			return 0
+		end if
+		
+		// 마감월 수정
+		if ag_rtngub = '02' then
+			update pbwip.wip002
+				set wbusqt7 = wbusqt7 + (:lc_tqty4 * :ag_convqty)
+			  	where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+			  			wbplant = :ag_xplant and 
+					  	wbdvsn = :ag_div and wbitno = :ag_itno and
+					  	wborct = :ls_wkct and wbiocd = :ls_iocd
+			using ag_transaction;
+			
+			update pbwip.wip001
+			set wausqt7 = wausqt7 - (:lc_tqty4 * :ag_convqty)
+			where wacmcd = :ag_comltd and waplant = :ag_xplant and
+					wadvsn = :ag_div and waitno = :ag_itno and
+					waorct = :ls_wkct and waiocd = :ls_iocd
+			using ag_transaction;
+			
+		else
+			update pbwip.wip002
+			  set wbinqt = wbinqt - (:lc_tqty4 * :ag_convqty),
+					wbinat1 = wbinat1 - :lc_tramt
+			  where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+					  wbplant = :ag_xplant and
+					  wbdvsn = :ag_div and wbitno = :ag_itno and
+					  wborct = :ls_wkct and wbiocd = :ls_iocd
+			using ag_transaction;
+			
+			update pbwip.wip001
+			set wainqt = wainqt + (:lc_tqty4 * :ag_convqty),
+					wainat1 = wainat1 + :lc_tramt
+			where wacmcd = :ag_comltd and waplant = :ag_xplant and
+					wadvsn = :ag_div and waitno = :ag_itno and
+					waorct = :ls_wkct and waiocd = :ls_iocd
+			using ag_transaction;
+		end if
+		
+//		if ag_transaction.sqlnrows < 1 then
+//			ag_message = "재공마감월 투입 에러 : RS" + ag_transaction.sqlerrtext
+//			return -1
+//		end if
+		
+	case 'SA'
+   	ls_wkct = '9999'
+      ls_iocd = '1'
+   
+   	update pbwip.wip002
+      set wbinqt = wbinqt + (:lc_tqty4 * :ag_convqty),
+          wbinat1 = wbinat1 + :lc_tramt,
+          wbusqt4 = wbusqt4 + (:lc_tqty4 * :ag_convqty),
+          wbusat4 = wbusat4 + :lc_tramt
+    	where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+		 		wbplant = :ag_xplant and
+          	wbdvsn = :ag_div and wbitno = :ag_itno and
+          	wborct = :ls_wkct
+		using ag_transaction;
+		
+//		if ag_transaction.sqlnrows < 1 then
+//			ag_message = "재공마감월 투입 에러 : SA" + ag_transaction.sqlerrtext
+//			return -1
+//		end if
+		
+		update pbwip.wip001
+		set wainqt = wainqt - (:lc_tqty4 * :ag_convqty),
+          wainat1 = wainat1 - :lc_tramt,
+          wausqt4 = wausqt4 - (:lc_tqty4 * :ag_convqty),
+          wausat4 = wausat4 - :lc_tramt
+		where wacmcd = :ag_comltd and waplant = :ag_xplant and
+				wadvsn = :ag_div and waitno = :ag_itno and
+				waorct = :ls_wkct and waiocd = :ls_iocd
+		using ag_transaction;
+
+	case 'SR'
+   	ls_wkct = '9999'
+   	ls_iocd = '1'
+    
+    	update pbwip.wip002
+      set wbinqt = wbinqt - (:lc_tqty4 * :ag_convqty),
+          wbinat1 = wbinat1 - :lc_tramt,
+          wbusqt4 = wbusqt4 - (:lc_tqty4 * :ag_convqty),
+          wbusat4 = wbusat4 - :lc_tramt
+    	where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+		 		wbplant = :ag_xplant and
+          	wbdvsn = :ag_div and wbitno = :ag_itno and
+          	wborct = :ls_wkct
+		using ag_transaction;
+		
+//		if ag_transaction.sqlnrows < 1 then
+//			ag_message = "재공마감월 투입 에러 : SR" + ag_transaction.sqlerrtext
+//			return -1
+//		end if
+		
+		update pbwip.wip001
+		set wainqt = wainqt + (:lc_tqty4 * :ag_convqty),
+          wainat1 = wainat1 + :lc_tramt,
+          wausqt4 = wausqt4 + (:lc_tqty4 * :ag_convqty),
+          wausat4 = wausat4 + :lc_tramt
+		where wacmcd = :ag_comltd and waplant = :ag_xplant and
+				wadvsn = :ag_div and waitno = :ag_itno and
+				waorct = :ls_wkct and waiocd = :ls_iocd
+		using ag_transaction;
+
+	case 'RP'
+   	if (ag_xplant = 'D' and ( ag_div = 'A' or ag_div = 'V' )) then
+      	return 0
+    	else
+      	if ag_cls = '50' and ag_srce = '04' then
+        		ls_wkct = '9999'
+        		ls_iocd = '1'
+        
+        		update pbwip.wip002
+          	set wbinqt = wbinqt + (:lc_tqty4 * :ag_convqty)
+        		where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+				  		wbplant = :ag_xplant and
+            		wbdvsn = :ag_div and wbitno = :ag_itno and
+            		wborct = :ls_wkct
+				using ag_transaction;
+				
+//				if ag_transaction.sqlnrows < 1 then
+//					ag_message = "재공마감월 투입 에러 : RP" + ag_transaction.sqlerrtext
+//					return -1
+//				end if
+				
+				update pbwip.wip001
+				set wainqt = wainqt - (:lc_tqty4 * :ag_convqty)
+				where wacmcd = :ag_comltd and waplant = :ag_xplant and
+						wadvsn = :ag_div and waitno = :ag_itno and
+						waorct = :ls_wkct and waiocd = :ls_iocd
+				using ag_transaction;
+			else
+				return 0
+      	end if
+  		end if
+end choose
+
+// 마감월 재공
+select (wbbgqt + wbinqt - (wbusqt1 +
+		  wbusqt2 + wbusqt3 + wbusqt4 + wbusqt5 + wbusqt6 + wbusqt7 +
+		  wbusqt8 )),
+		  (wbbgat1 + wbinat1 + wbinat2 + wbinat3 - (wbusat1 +
+		  wbusat2 + wbusat3 + wbusat4 + wbusat5 + wbusat6 + wbusat7 +
+		  wbusat8 + wbusat9))
+into :lc_wbbgqt, :lc_wbbgat
+from pbwip.wip002
+where wbcmcd = :ag_comltd and wbyear = :ls_year and wbmonth = :ls_month and
+		  wbplant = :ag_xplant and
+		  wbdvsn = :ag_div and wbitno = :ag_itno and
+		  wborct = :ls_wkct and wbiocd = :ls_iocd
+using ag_transaction;
+
+// 이월수정
+update pbwip.wip002
+  set wbbgqt = :lc_wbbgqt, wbbgat1 = :lc_wbbgat
+  where wbcmcd = :ag_comltd and wbyear = :ls_nextyear and wbmonth = :ls_nextmonth and
+		  wbplant = :ag_xplant and
+		  wbdvsn = :ag_div and wbitno = :ag_itno and
+		  wborct = :ls_wkct and wbiocd = :ls_iocd
+using ag_transaction;
+
+//if ag_transaction.sqlnrows < 1 then
+//	ag_message = "재공이월 에러 : " + ag_transaction.sqlerrtext
+//	return -1
+//end if
+
+// 당월수정
+update pbwip.wip001
+  set wabgqt = :lc_wbbgqt, wabgat1 = :lc_wbbgat,
+  		waohqt = (:lc_wbbgqt + wainqt - (wausqt1 + wausqt2 + wausqt3 + wausqt4 +
+		  wausqt5 + wausqt6 + wausqt7 + wausqt8)),
+		waohat1 = (:lc_wbbgat + wainat1 + wainat2 + wainat3 - (wausat1 + wausat2 + wausat3 +
+			wausat4 + wausat5 + wausat6 + wausat7 + wausat8 + wausat9))
+  where wacmcd = :ag_comltd and waplant = :ag_xplant and
+		  wadvsn = :ag_div and waitno = :ag_itno and
+		  waorct = :ls_wkct and waiocd = :ls_iocd
+using ag_transaction;
+
+//if ag_transaction.sqlnrows < 1 then
+//	ag_message = "재공현재월 에러 : " + ag_transaction.sqlerrtext
+//	return -1
+//end if
+
+return 0
+end function
+

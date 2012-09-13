@@ -1,0 +1,19 @@
+$PBExportHeader$f_per_cernocrt.srf
+$PBExportComments$제증명서 발급번호(년도/구분)
+global type f_per_cernocrt from function_object
+end type
+
+forward prototypes
+global function string f_per_cernocrt (string a_s_year, string a_s_gb)
+end prototypes
+
+global function string f_per_cernocrt (string a_s_year, string a_s_gb);string l_s_cerno, l_s_serno
+
+l_s_serno = f_per_sernortn(a_s_year, '2')
+
+// a_s_gb : 재직 - 1, 경력 -2, 갑근세납세필증 -3, 원천징수영수증 - 4
+l_s_cerno = mid(a_s_year, 3, 2) + a_s_gb + l_s_serno
+
+return l_s_cerno
+end function
+

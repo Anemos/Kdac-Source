@@ -1,0 +1,22 @@
+$PBExportHeader$f_print_line_feed.srf
+$PBExportComments$print ( line feed )
+global type f_print_line_feed from function_object
+end type
+
+forward prototypes
+global subroutine f_print_line_feed (long id, integer count)
+end prototypes
+
+global subroutine f_print_line_feed (long id, integer count);//
+//	f_print_line_feed	( printer의 줄을 바꾼다.)
+//
+// argument : 	1)	id,		long,		printer open시 부여된 번호
+//					2)	count,	integer,	skip할 line 수
+//
+
+int	ii
+For	ii = 1 to count	step 1
+	PrintSend(id, '~r~n')
+Next
+end subroutine
+

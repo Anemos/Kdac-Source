@@ -1,0 +1,22 @@
+$PBExportHeader$f_empno_mailaddr.srf
+$PBExportComments$직원 Email Address Return   Global Function
+global type f_empno_mailaddr from function_object
+end type
+
+forward prototypes
+global function string f_empno_mailaddr (string as_empno)
+end prototypes
+
+global function string f_empno_mailaddr (string as_empno);// 입력자(직원)  메일주소...
+
+String	MailAddress
+
+SELECT "PEMAIL" INTO :MailAddress
+FROM "PBCOMMON"."DAC003"
+WHERE "PEEMPNO" = :as_empno	Using SQLCA ;
+
+If SQLCA.SQLCode <> 0 Or Match( lower(MailAddress), "@kdac.co.kr") = False Then Return ""
+
+Return MailAddress
+end function
+

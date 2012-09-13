@@ -1,0 +1,44 @@
+$PBExportHeader$f_bom_get_itemvendor.srf
+global type f_bom_get_itemvendor from function_object
+end type
+
+forward prototypes
+global function string f_bom_get_itemvendor (string a_plant, string a_div, string a_itno, string a_date)
+end prototypes
+
+global function string f_bom_get_itemvendor (string a_plant, string a_div, string a_itno, string a_date);string	ls_vend,ls_vendname,ls_dsheet
+
+select	"PBPUR"."PUR402"."VSRNO"   INTO :ls_vend 
+	from 	"PBPUR"."PUR402"
+where 	"PBPUR"."PUR402"."ITNO" 	= :a_itno	and	"PBPUR"."PUR402"."COMLTD" 	= 	:g_s_company	and
+			"PBPUR"."PUR402"."XPLANT" 	= :a_plant	and	"PBPUR"."PUR402"."DIV" 		= 	:a_div			and
+			"PBPUR"."PUR402"."INPTDT"	<= :a_date
+order	by	"PBPUR"."PUR402"."INPTDT"	DESC
+using SQLCA ;
+//if	sqlca.sqlcode	<>	0	then
+//	return ''
+//end if
+select	"PBPUR"."PUR103"."DSHEET"  INTO :ls_dsheet
+	from 	"PBPUR"."PUR103"
+where 	"PBPUR"."PUR103"."VSRNO" 	= :ls_vend	and "PBPUR"."PUR103"."ITNO" = :a_itno	and	
+			"PBPUR"."PUR103"."COMLTD" 	= :g_s_company
+using SQLCA ;
+//if	sqlca.sqlcode	<>	0	then
+//	return ''
+//end if
+select 	"PBPUR"."PUR101"."VNDNM"  INTO :ls_vendname
+	from 	"PBPUR"."PUR101"
+where 	"PBPUR"."PUR101"."VSRNO" = :ls_vend	and	"PBPUR"."PUR101"."COMLTD" = :g_s_company
+using SQLCA ;
+//if	sqlca.sqlcode	<>	0	then
+//	return ''
+//end if
+ls_vendname = string(ls_vendname,"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" )
+if mid(ls_dsheet,1,4) = 'EXPT' then
+	ls_vendname = ls_vendname + 'E'
+end if
+return 	ls_vendname
+  
+  
+end function
+

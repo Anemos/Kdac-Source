@@ -1,0 +1,66 @@
+$PBExportHeader$d_piss_001i_04.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=long update=yes updatewhereclause=yes key=yes identity=yes name=logid dbname="TSHIPSHEET_INTERFACE.LogID" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=shipdate dbname="TSHIPSHEET_INTERFACE.ShipDate" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=areacode dbname="TSHIPSHEET_INTERFACE.AreaCode" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=divisioncode dbname="TSHIPSHEET_INTERFACE.DivisionCode" )
+ column=(type=char(11) update=yes updatewhereclause=yes name=srno dbname="TSHIPSHEET_INTERFACE.SRNo" )
+ column=(type=long update=yes updatewhereclause=yes name=seqno dbname="TSHIPSHEET_INTERFACE.SeqNo" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=misflag dbname="TSHIPSHEET_INTERFACE.MISFlag" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=interfaceflag dbname="TSHIPSHEET_INTERFACE.InterfaceFlag" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=shipsheetno dbname="TSHIPSHEET_INTERFACE.ShipSheetNo" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=kitgubun dbname="TSHIPSHEET_INTERFACE.KITGubun" )
+ column=(type=long update=yes updatewhereclause=yes name=shipqty dbname="TSHIPSHEET_INTERFACE.ShipQty" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TSHIPSHEET_INTERFACE.LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TSHIPSHEET_INTERFACE.LastDate" )
+ retrieve="  SELECT TSHIPSHEET_INTERFACE.LogID,   
+         TSHIPSHEET_INTERFACE.ShipDate,   
+         TSHIPSHEET_INTERFACE.AreaCode,   
+         TSHIPSHEET_INTERFACE.DivisionCode,   
+         TSHIPSHEET_INTERFACE.SRNo,   
+         TSHIPSHEET_INTERFACE.SeqNo,   
+         TSHIPSHEET_INTERFACE.MISFlag,   
+         TSHIPSHEET_INTERFACE.InterfaceFlag,   
+         TSHIPSHEET_INTERFACE.ShipSheetNo,   
+         TSHIPSHEET_INTERFACE.KITGubun,   
+         TSHIPSHEET_INTERFACE.ShipQty,   
+         TSHIPSHEET_INTERFACE.LastEmp,   
+         TSHIPSHEET_INTERFACE.LastDate  
+    FROM TSHIPSHEET_INTERFACE  
+   WHERE TSHIPSHEET_INTERFACE.InterfaceFlag = 'Y'   
+            
+" update="TSHIPSHEET_INTERFACE" updatewhere=1 updatekeyinplace=no  sort="areacode A divisioncode A srno A shipsheetno A " )
+text(band=header alignment="2" text="ÃâÇÏÀÏÀÚ" border="0" color="16777215" x="1600" y="8" height="60" width="361" html.valueishtml="0"  name=shipdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="1970" y="8" height="60" width="151" html.valueishtml="0"  name=areacode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="2130" y="8" height="60" width="169" html.valueishtml="0"  name=divisioncode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="S/R¹øÈ£" border="0" color="16777215" x="2309" y="8" height="60" width="338" html.valueishtml="0"  name=srno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Seq" border="0" color="16777215" x="2656" y="8" height="60" width="133" html.valueishtml="0"  name=seqno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="2798" y="8" height="60" width="165" html.valueishtml="0"  name=misflag_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Interface" border="0" color="16777215" x="2971" y="8" height="60" width="311" html.valueishtml="0"  name=interfaceflag_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ãâ°íÀüÇ¥¹øÈ£" border="0" color="16777215" x="3291" y="8" height="60" width="425" html.valueishtml="0"  name=shipsheetno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Kit¿©ºÎ" border="0" color="16777215" x="3726" y="8" height="60" width="242" html.valueishtml="0"  name=kitgubun_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃâÇÏ¼ö·®" border="0" color="16777215" x="3977" y="8" height="60" width="384" html.valueishtml="0"  name=shipqty_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ" border="0" color="16777215" x="4370" y="8" height="60" width="279" html.valueishtml="0"  name=lastemp_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÏÀÚ" border="0" color="16777215" x="4658" y="8" height="60" width="558" html.valueishtml="0"  name=lastdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿¡·¯»çÀ¯" border="0" color="16777215" x="9" y="8" height="60" width="1582" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2309" y="0" height="68" width="338" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=11 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="2656" y="0" height="68" width="133" format="[general]" html.valueishtml="0"  name=seqno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="2798" y="0" height="68" width="165" format="[general]~tcase( misflag when 'A' then 'µî·Ï' when 'R' then '¼öÁ¤'  when 'D' then '»èÁ¦'  else '' )" html.valueishtml="0"  name=misflag visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="2971" y="0" height="68" width="311" format="[general]~tif ( interfaceflag = 'Y','´ë»ó','ºñ´ë»ó')" html.valueishtml="0"  name=interfaceflag visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="3291" y="0" height="68" width="425" format="[general]" html.valueishtml="0"  name=shipsheetno visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="3726" y="0" height="68" width="242" format="[general]" html.valueishtml="0"  name=kitgubun visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3977" y="0" height="68" width="384" format="[general]" html.valueishtml="0"  name=shipqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="1970" y="0" height="68" width="151" format="[general]" html.valueishtml="0"  name=areacode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="2130" y="0" height="68" width="169" format="[general]" html.valueishtml="0"  name=divisioncode visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="4370" y="0" height="68" width="279" format="[general]" html.valueishtml="0"  name=lastemp visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="2" tabsequence=32766 border="0" color="33554432" x="4658" y="0" height="68" width="558" format="[shortdate] [time]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="0" x="1600" y="0" height="68" width="361" format="[general]" html.valueishtml="0"  name=shipdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="0" expression="f_tshipsheet_interface( misflag , srno , shipdate ,  shipqty , shipsheetno  , kitgubun  )"border="0" color="255" x="9" y="0" height="68" width="1582" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

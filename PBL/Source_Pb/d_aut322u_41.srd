@@ -1,0 +1,85 @@
+$PBExportHeader$d_aut322u_41.srd
+$PBExportComments$SWµî·Ï/»èÁ¦/¼öÁ¤ Á¶È¸°á°ú
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=comltd dbname="COMM812.COMLTD" )
+ column=(type=char(9) update=yes updatewhereclause=yes key=yes name=swkey dbname="COMM812.SWKEY" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=chgdt dbname="COMM812.CHGDT" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=asid dbname="COMM812.ASID" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=asdt dbname="COMM812.ASDT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xplant dbname="COMM812.XPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=div dbname="COMM812.DIV" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=dept dbname="COMM812.DEPT" )
+ column=(type=char(10) updatewhereclause=yes name=chid dbname="COMM812.CHID" )
+ column=(type=char(3) updatewhereclause=yes name=swlgubun dbname="COMM812.SWLGUBUN" )
+ column=(type=char(6) updatewhereclause=yes name=swvgubun dbname="COMM812.SWVGUBUN" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=swnm dbname="COMM812.SWNM" )
+ column=(type=char(30) updatewhereclause=yes name=serialkey dbname="COMM812.SERIALKEY" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=purdt dbname="COMM812.PURDT" )
+ column=(type=char(100) update=yes updatewhereclause=yes name=comment dbname="COMM812.COMMENT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=inptid dbname="COMM812.INPTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=inptdt dbname="COMM812.INPTDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=updtid dbname="COMM812.UPDTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=updtdt dbname="COMM812.UPDTDT" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=ipaddr dbname="COMM812.IPADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=macaddr dbname="COMM812.MACADDR" )
+ retrieve=" SELECT  A.COMLTD,   
+         A.SWKEY,
+			A.CHGDT,   
+         A.ASID,   
+         A.ASDT,   
+         A.XPLANT,   
+         A.DIV,   
+         A.DEPT,
+			A.CHID,   
+         A.SWLGUBUN,
+			A.SWVGUBUN,      
+         A.SWNM,   
+         A.SERIALKEY,
+         A.PURDT,   
+         A.COMMENT,   
+			A.INPTID,   
+         A.INPTDT,   
+         A.UPDTID,   
+         A.UPDTDT,   
+         A.IPADDR,   
+         A.MACADDR
+    FROM PBCOMMON.COMM812  AS A
+			
+   WHERE 
+			A.COMLTD = '01'  AND
+			A.CHGDT BETWEEN :as_fchgdt AND :as_tchgdt AND
+			A.XPLANT   LIKE      :as_xplant      AND
+			A.DIV      LIKE      :as_div         AND
+			A.DEPT     LIKE      :as_dept        AND
+			A.SWLGUBUN LIKE      :as_swlgubun    AND
+			A.SWVGUBUN LIKE      :as_swvgubun    AND
+			A.CHID     LIKE      :as_chid 
+            
+ORDER BY A.XPLANT, A.DIV, A.DEPT, A.CHID, A.CHGDT
+" update="PBCOMMON.COMM812" updatewhere=1 updatekeyinplace=no arguments=(("as_fchgdt", string),("as_tchgdt", string),("as_xplant", string),("as_div", string),("as_dept", string),("as_swlgubun", string),("as_swvgubun", string),("as_chid", string)) )
+group(level=1 header.height=0 trailer.height=0 by=("comltd" , "xplant" , "div" , "dept" , "as_chid" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="0" height="76" width="393" html.valueishtml="0"  name=xplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="SW¸íÄª" border="0" color="16777215" x="2935" y="0" height="76" width="745" html.valueishtml="0"  name=swnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àû¿ëÀÏ" border="0" color="16777215" x="1765" y="0" height="76" width="352" html.valueishtml="0"  name=chgdt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚ»ê¹øÈ£" border="0" color="16777215" x="2126" y="0" height="76" width="361" html.valueishtml="0"  name=asid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÃëµæÀÏ" border="0" color="16777215" x="2496" y="0" height="76" width="430" html.valueishtml="0"  name=asdt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="411" y="0" height="76" width="453" html.valueishtml="0"  name=div_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ¼­" border="0" color="16777215" x="873" y="0" height="76" width="535" html.valueishtml="0"  name=dept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àåºñ¹øÈ£" border="0" color="16777215" x="1417" y="0" height="76" width="338" html.valueishtml="0"  name=chid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="2935" y="0" height="76" width="745" format="[general]" html.valueishtml="0"  name=swnm visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1765" y="0" height="76" width="352" format="[general]" html.valueishtml="0"  name=chgdt visible="1" editmask.mask="####/##/##" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="2126" y="0" height="76" width="361" format="[general]" html.valueishtml="0"  name=asid visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2496" y="0" height="76" width="430" format="[general]" html.valueishtml="0"  name=asdt visible="1" editmask.mask="####/##/##" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="76" width="393" format="[general]" html.valueishtml="0"  name=xplant visible="1" dddw.name=dddw_com000_xplant dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="411" y="0" height="76" width="453" format="[general]" html.valueishtml="0"  name=div visible="1" dddw.name=dddw_com000_div1 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="873" y="0" height="76" width="535" format="[general]" html.valueishtml="0"  name=dept visible="1" dddw.name=dddw_com000_dept dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1417" y="0" height="76" width="338" format="[general]" html.valueishtml="0"  name=chid visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+
+sparse(names="xplant	div	dept	chid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+  

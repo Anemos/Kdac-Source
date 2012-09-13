@@ -1,0 +1,64 @@
+$PBExportHeader$d_pisr050b_03.srd
+$PBExportComments$간판항목  Total ( 공장별, 업체별 )
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=136 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(5) updatewhereclause=yes name=suppliercode dbname="SupplierCode" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(10) updatewhereclause=yes name=applyfrom dbname="ApplyFrom" )
+ column=(type=char(1) updatewhereclause=yes name=parttype dbname="PartType" )
+ column=(type=char(4) updatewhereclause=yes name=partmodelid dbname="PartModelID" )
+ column=(type=char(1) updatewhereclause=yes name=costgubun dbname="CostGubun" )
+ column=(type=long updatewhereclause=yes name=rackqty dbname="RackQty" )
+ column=(type=char(1) updatewhereclause=yes name=useflag dbname="UseFlag" )
+ column=(type=char(11) updatewhereclause=yes name=normalkbsn dbname="NormalKBSN" )
+ column=(type=char(11) updatewhereclause=yes name=tempkbsn dbname="TempKBSN" )
+ column=(type=long updatewhereclause=yes name=partkbprintcount dbname="PartKBPrintCount" )
+ column=(type=long updatewhereclause=yes name=partkbactivecount dbname="PartKBActiveCount" )
+ column=(type=long updatewhereclause=yes name=partkbplancount dbname="PartKBPlanCount" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(100) updatewhereclause=yes name=itemspec dbname="ItemSpec" )
+ column=(type=char(2) updatewhereclause=yes name=productgroup dbname="ProductGroup" )
+ procedure="1 execute dbo.sp_pisr050b_03;1 @ps_areaCode = :ps_areaCode, @ps_divCode = :ps_divCode, @ps_suppCode = :ps_suppCode" arguments=(("ps_areaCode", string),("ps_divCode", string),("ps_suppCode", string))  sort="parttype A productgroup A itemcode A " )
+text(band=header alignment="2" text="부품
+구분" border="0" color="16777215" x="9" y="8" height="120" width="210"  name=parttype_s_f  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+품번" border="0" color="16777215" x="462" y="8" height="120" width="407"  name=itemcode_s_f  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+배번호" border="0" color="16777215" x="1477" y="8" height="120" width="251"  name=partmodelid_s_f  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="수용
+수" border="0" color="16777215" x="1737" y="8" height="120" width="265"  name=rackqty_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="간판
+발행매수" border="0" color="16777215" x="2866" y="8" height="120" width="338"  name=partkbprintcount_t  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="
+품명" border="0" color="16777215" x="878" y="8" height="120" width="590"  name=itemname_s_f  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="제품군
+코드" border="0" color="16777215" x="229" y="8" height="120" width="224"  name=productgroup_s_f  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="사용
+중단" border="0" color="16777215" x="2011" y="8" height="120" width="197"  name=useflag_s  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="정규간판
+최종S/N" border="0" color="16777215" x="2217" y="8" height="120" width="306"  name=t_1  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="임시간판
+최종S/N" border="0" color="16777215" x="2533" y="8" height="120" width="325"  name=t_2  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="발행대기
+간판매수" border="0" color="16777215" x="3214" y="12" height="120" width="302"  name=t_3  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="462" y="8" height="76" width="407" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="210" format="[general]"  name=parttype dddw.name=dddw_rparttypel_01 dddw.displaycolumn=parttype_name dddw.datacolumn=parttype_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="128" x="1477" y="8" height="76" width="251" format="[general]"  name=partmodelid edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="0" x="1737" y="8" height="76" width="265" format="#,##0"  name=rackqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="2866" y="8" height="76" width="338" format="#,##0"  name=partkbprintcount edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="878" y="8" height="76" width="590" format="[general]"  name=itemname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="0" x="229" y="8" height="76" width="224" format="[general]"  name=productgroup edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="2011" y="8" height="76" width="197" format="[general]"  name=useflag visible="1~tif( useflag = 'Y', 1, 0 )" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression="right(normalkbsn, 3)"border="0" color="0" x="2217" y="8" height="76" width="306" format="[GENERAL]"  name=c_normalcount  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="2" expression="right( tempkbsn , 2)"border="0" color="0" x="2533" y="8" height="76" width="325" format="[GENERAL]"  name=c_tempcount  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="long( c_normalcount )  + long(  c_tempcount ) -  partkbprintcount "border="0" color="0" x="3214" y="8" height="76" width="302" format="#,##0"  name=compute_1  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="parttype	productgroup")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

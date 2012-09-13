@@ -1,0 +1,30 @@
+$PBExportHeader$f_pur040_setsosi.srf
+$PBExportComments$두바이트문자처리
+global type f_pur040_setsosi from function_object
+end type
+
+forward prototypes
+global function string f_pur040_setsosi (string ls_itnm)
+end prototypes
+
+global function string f_pur040_setsosi (string ls_itnm);long ll_row, ll_rcnt
+
+ls_itnm = trim(ls_itnm)
+ll_row = len(ls_itnm)
+
+for ll_row = len(ls_itnm)  to 1 step -1 
+	if asc(mid(ls_itnm,ll_row,1)) >= 161 then  //두바이트문자다 2byte shift 이동
+		if asc(mid(ls_itnm,ll_row,1)) = 15 then //si
+		   exit 
+		else
+			ls_itnm = mid(ls_itnm,1,ll_row - 1)
+		end if
+	end if
+next
+
+return ls_itnm
+
+			
+
+end function
+

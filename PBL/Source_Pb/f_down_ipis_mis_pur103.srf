@@ -1,0 +1,132 @@
+$PBExportHeader$f_down_ipis_mis_pur103.srf
+$PBExportComments$업체별구매단가 ( PUR103 - TMISPUR103 공통 )
+global type f_down_ipis_mis_pur103 from function_object
+end type
+
+forward prototypes
+global function integer f_down_ipis_mis_pur103 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_down_ipis_mis_pur103 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_comltd, ls_vsrc, ls_dept, ls_vsrno, ls_itno, ls_itno1
+string ls_itnm1, ls_spec1, ls_unit1, ls_wsrc, ls_dadjdt, ls_dcurr, ls_dsheet, ls_eadjdt
+string ls_ecurr, ls_esheet, ls_arr, ls_xpay, ls_vzero, ls_qccd, ls_adjdt, ls_frpdt
+string ls_xplan, ls_strt, ls_fpurno, ls_fpindt, ls_purno, ls_pindt, ls_rqno, ls_srno, ls_srno1
+string ls_dkdt, ls_xstop, ls_extd, ls_inptid
+integer	li_cnt, li_index
+dec{4} lc_convqty1
+dec{2} lc_dcost, lc_chcs, lc_fcost, lc_lcost
+dec{8} lc_ecost
+dec{1} lc_pqty
+dec{0} lc_xrate, lc_shrt
+str_ipis_server lstr_ipis
+	
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_chgcd = trim(ag_dwo.getitemstring(li_cnt,"chgcd"))
+	ls_comltd = trim(ag_dwo.getitemstring(li_cnt,"comltd"))
+	ls_vsrc = trim(ag_dwo.getitemstring(li_cnt,"vsrc"))
+	ls_dept = trim(ag_dwo.getitemstring(li_cnt,"dept"))
+	if isnull(ls_dept) then ls_dept = ''
+	ls_vsrno = trim(ag_dwo.getitemstring(li_cnt,"vsrno"))
+	if isnull(ls_vsrno) then ls_vsrno = ''
+	ls_itno = trim(ag_dwo.getitemstring(li_cnt,"itno"))
+	if isnull(ls_itno) then ls_itno = ''
+	ls_itno1 = trim(ag_dwo.getitemstring(li_cnt,"itno1"))
+	if isnull(ls_itno1) then ls_itno1 = ''
+	ls_itnm1 = trim(ag_dwo.getitemstring(li_cnt,"itnm1"))
+	if isnull(ls_itnm1) then ls_itnm1 = ''
+	ls_spec1 = trim(ag_dwo.getitemstring(li_cnt,"spec1"))
+	if isnull(ls_spec1) then ls_spec1 = ''
+	ls_unit1 = trim(ag_dwo.getitemstring(li_cnt,"unit1"))
+	if isnull(ls_unit1) then ls_unit1 = ''
+	ls_wsrc = trim(ag_dwo.getitemstring(li_cnt,"wsrc"))
+	if isnull(ls_wsrc) then ls_wsrc = ''
+	ls_dadjdt = trim(ag_dwo.getitemstring(li_cnt,"dadjdt"))
+	if isnull(ls_dadjdt) then ls_dadjdt = ''
+	ls_dcurr = trim(ag_dwo.getitemstring(li_cnt,"dcurr"))
+	if isnull(ls_dcurr) then ls_dcurr = ''
+	ls_dsheet = trim(ag_dwo.getitemstring(li_cnt,"dsheet"))
+	if isnull(ls_dsheet) then ls_dsheet = ''
+	ls_eadjdt = trim(ag_dwo.getitemstring(li_cnt,"eadjdt"))
+	if isnull(ls_eadjdt) then ls_eadjdt = ''
+	ls_ecurr = trim(ag_dwo.getitemstring(li_cnt,"ecurr"))
+	if isnull(ls_ecurr) then ls_ecurr = ''
+	ls_esheet = trim(ag_dwo.getitemstring(li_cnt,"esheet"))
+	if isnull(ls_esheet) then ls_esheet = ''
+	ls_arr = trim(ag_dwo.getitemstring(li_cnt,"arr"))
+	if isnull(ls_arr) then ls_arr = ''
+	ls_xpay = trim(ag_dwo.getitemstring(li_cnt,"xpay"))
+	if isnull(ls_xpay) then ls_xpay = ''
+	ls_vzero = trim(ag_dwo.getitemstring(li_cnt,"vzero"))
+	if isnull(ls_vzero) then ls_vzero = ''
+	ls_qccd = trim(ag_dwo.getitemstring(li_cnt,"qccd"))
+	if isnull(ls_qccd) then ls_qccd = ''
+	ls_adjdt = trim(ag_dwo.getitemstring(li_cnt,"adjdt"))
+	if isnull(ls_adjdt) then ls_adjdt = ''
+	ls_frpdt = trim(ag_dwo.getitemstring(li_cnt,"frpdt"))
+	if isnull(ls_frpdt) then ls_frpdt = ''
+	ls_xplan = trim(ag_dwo.getitemstring(li_cnt,"xplan"))
+	if isnull(ls_xplan) then ls_xplan = ''
+	ls_strt = trim(ag_dwo.getitemstring(li_cnt,"strt"))
+	if isnull(ls_strt) then ls_strt = ''
+	ls_fpurno = trim(ag_dwo.getitemstring(li_cnt,"fpurno"))
+	if isnull(ls_fpurno) then ls_fpurno = ''
+	ls_fpindt = trim(ag_dwo.getitemstring(li_cnt,"fpindt"))
+	if isnull(ls_fpindt) then ls_fpindt = ''
+	ls_purno = trim(ag_dwo.getitemstring(li_cnt,"purno"))
+	if isnull(ls_purno) then ls_purno = ''
+	ls_pindt = trim(ag_dwo.getitemstring(li_cnt,"pindt"))
+	if isnull(ls_pindt) then ls_pindt = ''
+	ls_rqno = trim(ag_dwo.getitemstring(li_cnt,"rqno"))
+	if isnull(ls_rqno) then ls_rqno = ''
+	ls_srno = trim(ag_dwo.getitemstring(li_cnt,"srno"))
+	if isnull(ls_srno) then ls_srno = ''
+	ls_srno1 = trim(ag_dwo.getitemstring(li_cnt,"srno1"))
+	if isnull(ls_srno1) then ls_srno1 = ''
+	ls_dkdt = trim(ag_dwo.getitemstring(li_cnt,"dkdt"))
+	if isnull(ls_dkdt) then ls_dkdt = ''
+	ls_xstop = trim(ag_dwo.getitemstring(li_cnt,"xstop"))
+	if isnull(ls_xstop) then ls_xstop = ''
+	ls_extd = trim(ag_dwo.getitemstring(li_cnt,"extd"))
+	if isnull(ls_extd) then ls_extd = ''
+	ls_inptid = trim(ag_dwo.getitemstring(li_cnt,"inptid"))
+	if isnull(ls_inptid) then ls_inptid = ''
+	lc_convqty1 = ag_dwo.getitemnumber(li_cnt,"convqty1")
+	lc_dcost = ag_dwo.getitemnumber(li_cnt,"dcost")
+	lc_chcs = ag_dwo.getitemnumber(li_cnt,"chcs")
+	lc_fcost = ag_dwo.getitemnumber(li_cnt,"fcost")
+	lc_lcost = ag_dwo.getitemnumber(li_cnt,"lcost")
+	lc_ecost = ag_dwo.getitemnumber(li_cnt,"ecost")
+	lc_pqty = ag_dwo.getitemnumber(li_cnt,"pqty")
+	lc_xrate = ag_dwo.getitemnumber(li_cnt,"xrate")
+	lc_shrt = ag_dwo.getitemnumber(li_cnt,"shrt")
+	SELECT CHAR(CURRENT TIMESTAMP) Into :ls_chgdate FROM PBCOMMON.COMM000 FETCH FIRST 1 ROW ONLY;
+	
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'X')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+	
+	INSERT INTO TMISPUR103(CHGDATE, CHGCD, COMLTD, VSRC, DEPT, VSRNO, ITNO, ITNO1, ITNM1, SPEC1, 
+		UNIT1, WSRC, CONVQTY1, DADJDT, DCURR, DCOST, DSHEET, EADJDT, ECURR, ECOST, ESHEET, 
+		ARR, XPAY, VZERO, QCCD, ADJDT, FRPDT, PQTY, XRATE, SHRT, XPLAN, STRT, CHCS, FPURNO, FPINDT, 
+		FCOST, PURNO, PINDT, RQNO, SRNO, SRNO1, DKDT, LCOST, XSTOP, EXTD, INPTID, STSCD, DOWNDATE)
+	VALUES ( :ls_chgdate,	:ls_chgcd,	:ls_comltd,	:ls_vsrc, :ls_dept, :ls_vsrno, :ls_itno, :ls_itno1, :ls_itnm1, :ls_spec1,
+		:ls_unit1, :ls_wsrc, :lc_convqty1, :ls_dadjdt, :ls_dcurr, :lc_dcost, :ls_dsheet, :ls_eadjdt, :ls_ecurr, :lc_ecost, :ls_esheet,
+		:ls_arr, :ls_xpay, :ls_vzero, :ls_qccd, :ls_adjdt, :ls_frpdt, :lc_pqty, :lc_xrate, :lc_shrt, :ls_xplan, :ls_strt, :lc_chcs, :ls_fpurno, :ls_fpindt,
+		:lc_fcost, :ls_purno, :ls_pindt, :ls_rqno, :ls_srno, :ls_srno1, :ls_dkdt, :lc_lcost, :ls_xstop, :ls_extd, :ls_inptid, 'N', getdate())
+	using lstr_ipis.t_sqlpis;
+			
+	if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+		ag_message = "업체별구매단가 생성시에 에러가 발생하였습니다."
+		f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_pur103',&
+			lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+		return -1
+	end if					
+next
+
+return 0
+end function
+

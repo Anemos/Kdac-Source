@@ -1,0 +1,29 @@
+$PBExportHeader$f_pur040_getobjph.srf
+$PBExportComments$pointer있는object의title(head)가져오기
+global type f_pur040_getobjph from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_getobjph (datawindow adw_1, ref string as_col_nm)
+end prototypes
+
+global function integer f_pur040_getobjph (datawindow adw_1, ref string as_col_nm);string ls_head
+long li_tab_pos, li_old_pos
+
+ls_head = adw_1.GetObjectAtPointer()
+li_old_pos = Pos(ls_head, "_t",1)
+
+DO 
+	li_tab_pos = li_old_pos
+	li_old_pos = Pos(ls_head, "_t", li_tab_pos + 1)
+LOOP UNTIL li_old_pos < 1
+
+IF li_tab_pos > 0 THEN
+//IF li_old_pos > 0 THEN
+   as_col_nm = Mid(ls_head,1,(li_tab_pos - 1))
+	RETURN 1
+ELSE
+	RETURN 0
+END IF
+end function
+

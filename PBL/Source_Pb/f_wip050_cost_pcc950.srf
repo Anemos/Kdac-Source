@@ -1,0 +1,71 @@
+$PBExportHeader$f_wip050_cost_pcc950.srf
+$PBExportComments$원가계산관리 기말재공금액 생성함수
+global type f_wip050_cost_pcc950 from function_object
+end type
+
+forward prototypes
+global function integer f_wip050_cost_pcc950 (string arg_adjdate)
+end prototypes
+
+global function integer f_wip050_cost_pcc950 (string arg_adjdate);string ls_year, ls_month, ls_adjdate, ls_postdate
+string ls_pbdiv, ls_pdcd, ls_xplant, ls_div, ls_keydiv
+integer li_cnt, li_rowcnt
+dec{0} lc_pbmatw
+datastore ds_cost_pcc950
+
+//원가계산관리 기말재공금액 생성 : 2007.06.20
+ls_adjdate = left(arg_adjdate,6)                                     //마감월
+ls_postdate = uf_wip_addmonth(ls_adjdate, 1)                          //이월
+ls_year 		= mid(ls_adjdate,1,4)
+ls_month 	= mid(ls_adjdate,5,2)
+
+ds_cost_pcc950 = create datastore                  			              
+ds_cost_pcc950.dataobject = "d_wip_cost_pcc950"
+ds_cost_pcc950.settransobject(sqlca)
+
+ls_keydiv = ''
+
+DO WHILE TRUE
+	select a.xplant,a.div,concat(a.xplant,a.div)
+	into :ls_xplant, :ls_div, :ls_keydiv
+	 from pbinv.inv902 a inner join pbcommon.dac002 b
+	  on a.div = b.cocode and b.cogubun = 'DAC030' and
+	  a.inptid = 'A' and concat(a.xplant,a.div) > :ls_keydiv
+	order by concat(a.xplant,a.div)
+	fetch first 1 row only
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+
+	if ls_xplant = 'Y' then continue
+	li_rowcnt = ds_cost_pcc950.retrieve('01',ls_xplant,ls_div, ls_postdate, ls_adjdate)
+	if li_rowcnt > 1 then
+		for li_cnt = 1 to li_rowcnt
+			ls_xplant = ds_cost_pcc950.getitemstring(li_cnt,"xplant")
+			ls_div = ds_cost_pcc950.getitemstring(li_cnt,"div")
+			ls_pdcd = ds_cost_pcc950.getitemstring(li_cnt,"pdcd")
+			lc_pbmatw = ds_cost_pcc950.getitemnumber(li_cnt,"bgat")
+			ls_pbdiv = ls_xplant + f_get_accdiv(ls_xplant, ls_div, ls_pdcd)
+			
+			DELETE FROM PBACC.PCC950
+			WHERE COMLTD = '01' AND PBYY = :ls_year AND PBMM = :ls_month AND
+				PBDIV = :ls_pbdiv AND PBPRCD = :ls_pdcd AND PBGUBUN = 'A'
+			using sqlca;
+			
+			INSERT INTO PBACC.PCC950( COMLTD, PBGUBUN, PBYY, PBMM, PBDIV, PBPRCD, PBMATW, EXTD,
+				INPTID, INPTDT, UPDTID, UPDTDT, IPADDR, MACADDR )
+			VALUES('01', 'A', :ls_year,:ls_month,:ls_pbdiv,:ls_pdcd,:lc_pbmatw,' ',
+				'WIP',:g_s_date, 'WIP',:g_s_date, ' ', '')
+			using sqlca;
+			if sqlca.sqlcode <> 0 then
+				return -1
+			end if
+		next
+	end if
+LOOP
+
+return 0
+end function
+

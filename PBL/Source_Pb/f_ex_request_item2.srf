@@ -1,0 +1,158 @@
+$PBExportHeader$f_ex_request_item2.srf
+$PBExportComments$서열공급관련 이체의뢰확정 분할입고적용(ag : dw ) return string
+global type f_ex_request_item2 from function_object
+end type
+
+forward prototypes
+global function string f_ex_request_item2 (string ad_xplant, string ad_div, string ad_xplant1, string ad_div1, string ad_gubun, string ad_dudt, string ad_itno, decimal ad_reqqt, string ad_slno, decimal ad_ser)
+end prototypes
+
+global function string f_ex_request_item2 (string ad_xplant, string ad_div, string ad_xplant1, string ad_div1, string ad_gubun, string ad_dudt, string ad_itno, decimal ad_reqqt, string ad_slno, decimal ad_ser);//**************************************************
+// 서열공급관련 이체의뢰확정정보 생성                      
+// ag_pass => INV601 insert  
+//**************************************************
+String  ls_xplant, ls_div, ls_cls, ls_srce, ls_pdcd, ls_gubun, ls_xplant1, ls_div1, ls_cls1, ls_srce1, ls_itno, ls_dudt
+String  ls_err, ls_key, ls_slno, ls_costdiv, ls_srno, ls_srno1, ls_srno2, ls_ser
+Int    li_rtn, ii
+Long   ll_row, ll_InsertRow
+Dec{0} ld_reqqt
+//datastore 선언
+Datastore lds_inv620
+//****************************************************
+//  ag_pass data validation check!!
+//  8개 항목 필수입력
+//  6개 항목 같은 데이타! 품번, 의뢰량은 다르게
+//  의뢰, 불출 공장 품번존재 및 품목구분 chek
+//****************************************************
+ls_xplant  = ad_xplant
+ls_div     = ad_div
+ls_xplant1 = ad_xplant1
+ls_div1    = ad_div1
+ls_gubun   = ad_gubun
+ls_dudt    = ad_dudt
+ls_itno    = ad_itno
+
+//품목재고(INV101)의 계정구입선 확인("10"-"05") check
+SELECT  A."CLS", A."SRCE", A."PDCD"  
+  INTO :ls_cls, :ls_srce, :ls_pdcd
+  FROM  "PBINV"."INV101" A
+WHERE  A.COMLTD = '01' AND	A.XPLANT = :ls_xplant AND A.DIV = :ls_div AND A.ITNO = :ls_itno 
+Using sqlca;
+
+If sqlca.sqlcode <> 0 Then
+	ls_err = "의뢰품번 미존재"
+	return ls_err
+End If
+
+SELECT  A."CLS", A."SRCE"  
+  INTO :ls_cls1, :ls_srce1
+  FROM  "PBINV"."INV101" A
+WHERE  A.COMLTD = '01' AND	A.XPLANT = :ls_xplant1 AND A.DIV = :ls_div1 AND A.ITNO = :ls_itno 
+Using sqlca;
+
+If sqlca.sqlcode <> 0 Then
+	ls_err = "불출품번 미존재"
+	return ls_err
+End If
+
+if ls_cls = '10' and ls_srce = '05' then		
+  if (ls_cls1 <> '30') then
+	  if ( ls_cls1 = '10' and ls_srce1 <> '03') then
+		  ls_err = "계정확인"
+			return ls_err
+	  end if
+	end if
+end if
+
+if ls_cls = '10' and ls_srce =  '06' then
+  if ((ls_cls1 <> '10' and ls_srce1 <> '04') or ( ls_cls1 <> '40' and ls_srce1 <> '04')  &
+	  or ( ls_cls1 <> '50' and ls_srce1 <> '04')) then
+			ls_err = "계정확인"
+			return ls_err
+  end if
+end if
+
+//품목구분별 editing
+if ls_gubun = 'A' then
+	if Not(ls_cls = '10' And ls_srce = '05') then
+		ls_err = "품목구분확인"
+		return ls_err
+	end if
+end if
+if ls_gubun = 'B' then
+	if Not(ls_cls = '10' And ls_srce = '06') then
+		ls_err = "품목구분확인"
+		return ls_err
+  end if
+end if
+if ls_gubun = 'C' then
+	if ls_cls = '10' then
+		if Not(ls_srce = '01' or ls_srce = '02' or ls_srce = '03' or ls_srce = '04')  then
+			ls_err = "품목구분확인"
+			return ls_err				
+		end if
+	else
+		ls_err = "품목구분확인"
+		return ls_err		
+	end if
+end if
+
+//INV601 DataStore Open
+lds_inv620 = create datastore                  			              
+lds_inv620.dataobject = "d_ex_inv620"
+lds_inv620.settransobject(sqlca)
+
+// 이체전표 번호부여
+ls_key = 'RW' + mid(g_s_date,4,3)
+if trim(ad_slno) = '' then
+	ls_slno = f_get_slno1(ls_key, 'EX')	
+else
+	ls_slno = ad_slno
+end if
+
+ll_InsertRow = lds_inv620.InsertRow(0)
+
+ls_itno   = ad_itno         // 입력 품번
+ld_reqqt  = ad_reqqt
+
+lds_inv620.setitem(ll_InsertRow,'comltd','01')
+lds_inv620.setitem(ll_InsertRow,'xplant',ls_xplant)
+lds_inv620.setitem(ll_InsertRow,'div',ls_div)
+
+ls_key = 'RW' + ls_xplant + ls_div + 'AL' + mid(g_s_date,4,3)
+ls_srno = f_get_ctlno(ls_key) + ls_xplant + ls_div
+
+lds_inv620.setitem(ll_InsertRow,'srno',ls_srno)
+lds_inv620.setitem(ll_InsertRow,'itno',ls_itno)
+lds_inv620.setitem(ll_InsertRow,'gubun',ls_gubun)
+lds_inv620.setitem(ll_InsertRow,'xplant1',ls_xplant1)
+lds_inv620.setitem(ll_InsertRow,'div1',ls_div1)
+lds_inv620.setitem(ll_InsertRow,'pdcd',ls_pdcd)
+lds_inv620.setitem(ll_InsertRow,'cls',ls_cls)
+lds_inv620.setitem(ll_InsertRow,'srce',ls_srce)
+
+lds_inv620.setitem(ll_InsertRow,'reqdt',g_s_date)
+lds_inv620.setitem(ll_InsertRow,'dudt',ls_dudt)
+lds_inv620.setitem(ll_InsertRow,'reqty',ld_reqqt)
+lds_inv620.setitem(ll_InsertRow,'pgubun',ad_ser)
+lds_inv620.setitem(ll_InsertRow,'slno',ls_slno) 
+lds_inv620.setitem(ll_InsertRow,'istcd','S')
+lds_inv620.setitem(ll_InsertRow,'stcd','3')                     //의뢰확정상태
+
+f_null_Kill2( lds_inv620 )
+f_ExtColumn_Set2( lds_inv620 ) 
+
+li_Rtn = lds_inv620.Update(True, False)
+
+If li_Rtn = 1 Then   	
+	lds_inv620.ResetUpdate( )	
+   destroy lds_inv620
+Else
+	messagebox("AA",sqlca.sqlerrtext)
+	destroy lds_inv620
+	ls_err = "의뢰정보생성실패"
+	return ls_err
+End if
+return ls_slno
+end function
+

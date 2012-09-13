@@ -1,0 +1,106 @@
+$PBExportHeader$f_pur041_setaccmab.srf
+$PBExportComments$경리업체등록및수정(ACCMAB)
+global type f_pur041_setaccmab from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_setaccmab (string as_vndr, string as_vndnm, string as_prnm, string as_addr, string as_cutype, string as_cuitem, string as_bank)
+end prototypes
+
+global function integer f_pur041_setaccmab (string as_vndr, string as_vndnm, string as_prnm, string as_addr, string as_cutype, string as_cuitem, string as_bank);//f_pur041_setaccmab : acc020_update (사업자번호, 업체명, 대표자명, 주소, 업태, 종목, 외담대은행 )
+
+long ll_row
+as_vndr = trim(as_vndr)	//2009.01.16
+//경리업체 존재여부 체크
+SELECT count(*)
+INTO :ll_row  
+FROM "PBACC"."ACC020"  
+WHERE "PBACC"."ACC020"."CUCODE" = :as_vndr   ;
+  
+ //if isnull(ll_row) = false and ll_row > 0 then
+ 
+IF ll_row > 0 then  //2009.01.16  
+ 
+	  UPDATE "PBACC"."ACC020"  
+     SET "CUNAME" = :as_vndnm,   
+         "CUREPNAME" = :as_prnm,   
+         "CUADDR" = :as_addr,  
+			"CUTYPE" = :as_cutype,  
+			"CUITEM" = :as_cuitem,
+			extd = :as_bank,   //외담대은행
+			updtdt = :g_s_datetime,
+			updtid = :g_s_empno,
+			ipaddr = :g_s_ipaddr,
+			macaddr = :g_s_macaddr
+     WHERE "PBACC"."ACC020"."COMLTD" = '01' and 
+	        "PBACC"."ACC020"."CUCODE" = :as_vndr   
+		USING SQLCA ;
+		//if sqlca.sqlcode <> 0 then
+		if SQLCA.SQLCODE <> 0 OR SQLCA.SQLNROWS <= 0 THEN	////2009.01.16
+			messagebox('확인','경리업체(ACC020)수정중 오류발생, 연락주세요! [에러내용 : ' + string(sqlca.sqlerrtext) +' ]')
+			Return -1
+		end if
+Else
+
+
+	INSERT INTO "PBACC"."ACC020"  
+				("PBACC"."ACC020"."COMLTD",   
+				"PBACC"."ACC020"."CUCODE",   
+				"PBACC"."ACC020"."CUNAME",   
+				"PBACC"."ACC020"."CUREPNAME",   
+				"PBACC"."ACC020"."CUADDR",   
+				"PBACC"."ACC020"."CUTYPE",   
+				"PBACC"."ACC020"."CUITEM",   
+				"PBACC"."ACC020"."CUTEL",   
+				"PBACC"."ACC020"."CUPOSTNO",   
+				"PBACC"."ACC020"."CUBANK",   
+				"PBACC"."ACC020"."CUBANKNO",   
+				"PBACC"."ACC020"."CUCITY",   
+				"PBACC"."ACC020"."CUDT",   
+				"PBACC"."ACC020"."CUBANKS",   
+				"PBACC"."ACC020"."CUBANKNOS",   
+				"PBACC"."ACC020"."CUDTS",   
+				"PBACC"."ACC020"."EXTD",   
+				"PBACC"."ACC020"."INPTID",   
+				"PBACC"."ACC020"."INPTDT",   
+				"PBACC"."ACC020"."UPDTID",   
+				"PBACC"."ACC020"."UPDTDT",   
+				"PBACC"."ACC020"."IPADDR",   
+				"PBACC"."ACC020"."MACADDR" ) 
+	  VALUES ( '01',
+				  :as_vndr,   
+				  :as_vndnm,   
+				  :as_prnm,   
+				  :as_addr,   
+				  :as_cutype,   
+				  :as_cuitem,   
+				  ' ',   
+				  ' ',   
+				  ' ',   
+				  ' ',   
+				  ' ',   
+				  :g_s_date,   
+				  ' ',   
+				  ' ',   
+				  ' ',   
+				  :as_bank,   
+				  :g_s_empno,   
+				  :g_s_date,
+				  ' ',
+				  ' ',
+				  :g_s_ipaddr,
+				  :g_s_macaddr) 
+	 USING SQLCA ;
+	//if sqlca.sqlcode <> 0 then			  
+	if SQLCA.SQLCODE <> 0 OR SQLCA.SQLNROWS <= 0 THEN	//2009.01.16
+		messagebox('확인','경리업체정보 입력오류! 급히 연락바랍니다!  ~r~n[에러내용 : ' + string(sqlca.sqlerrtext) +' ]' ,Exclamation!)
+		return -1
+	end if
+END IF
+
+return 1
+	//MESSAGEBOX('SQLCOCE',STRING(SQLCA.SQLCODE))		  
+
+
+end function
+

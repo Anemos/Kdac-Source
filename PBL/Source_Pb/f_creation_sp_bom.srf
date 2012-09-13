@@ -1,0 +1,45 @@
+$PBExportHeader$f_creation_sp_bom.srf
+global type f_creation_sp_bom from function_object
+end type
+
+forward prototypes
+global function integer f_creation_sp_bom (string a_date, string a_plant, string a_dvsn, string a_itno, string a_chk, string a_dlt)
+end prototypes
+
+global function integer f_creation_sp_bom (string a_date, string a_plant, string a_dvsn, string a_itno, string a_chk, string a_dlt);integer ln_count 
+string  Mysql
+
+// A_CHK = 'A' --> 공장구분없이 전체전개(10/05,10/06 하위품번도 전개)
+//       = 'B' --> 공장구분없이 전체전개(10/05,10/06 하위품번도 전개)
+//       = 'C' --> 공장별 전개          (10/05,10/06 하위품번 미전개)
+//       = 'D' --> 공장별 전개          (10/05,10/06 하위품번 미전개)
+
+// A_DLT = 'Y' 현재 BOM TEMP DB의 내용을 CLEAR 후 새롭게 CREATION
+
+select 	count(*) into :ln_count from qtemp.bomtemp
+	where tcmcd = :g_s_company and 
+			tplnt = :a_plant 		and 
+			tdvsn = :a_dvsn		and 
+			tmodl = :a_itno
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	Mysql =  " CREATE TABLE QTEMP.BOMTEMP ( TCMCD CHAR(2) NOT NULL, TPLNT CHAR(1) NOT NULL,TDVSN CHAR(1) NOT NULL," + & 
+				" TMODL CHAR(15) NOT NULL, TSERL CHAR(60) NOT NULL, TLEVEL CHAR(2) NOT NULL, TPITN CHAR(15) NOT NULL, " + & 
+				" TCITN CHAR(15) NOT NULL, TQTYM NUMERIC(8,3) NOT NULL, TQTY1 NUMERIC(8,3) NOT NULL," + & 
+				" TWKCT CHAR(4) NOT NULL, TEDTM CHAR(8) NOT NULL, TEDTE CHAR(8) NOT NULL, TOPCD CHAR(1) NOT NULL," + & 
+				" TEXPLANT CHAR(1) NOT NULL, TEXDV CHAR(1) NOT NULL, TOSCD CHAR(1) NOT NULL ) " 
+	Execute Immediate :mysql ;
+else
+	if a_dlt = 'Y' then 
+		delete from qtemp.bomtemp 
+		using sqlca ;
+	elseif ln_count <> 0 then
+		return ln_count
+	end if
+end if
+declare bom_crt procedure for pbpdm.f_bom_01_1 (:a_date,'01',:a_plant,:a_dvsn,:a_itno,:a_chk) ;
+execute bom_crt ;
+return ln_count
+ 
+end function
+

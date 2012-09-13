@@ -1,0 +1,36 @@
+$PBExportHeader$f_per_teamleader.srf
+$PBExportComments$Argument 사번(승인요청자)의  팀장(승인자)사번 return
+global type f_per_teamleader from function_object
+end type
+
+forward prototypes
+global function string f_per_teamleader (string as_empno)
+end prototypes
+
+global function string f_per_teamleader (string as_empno);
+string ls_ldempno, ls_dept, ls_depta
+
+select pedept into :ls_dept
+from   pbper.per001
+where  peempno = :as_empno using sqlca;
+
+if sqlca.sqlcode <> 0 then return 'emperr'
+
+do while true
+	select dempno, dbcode1 into :ls_ldempno, :ls_depta
+	from   pbcommon.dac001
+	where  duse  = ' '      and
+			 dtodt = 0        and
+			 dcode = :ls_dept using sqlcc;
+			 
+	if f_spacechk(ls_ldempno) <> -1 and ls_ldempno <> '*' then
+		exit
+	end if
+	
+	ls_dept = ls_depta
+loop
+
+return ls_ldempno
+
+end function
+

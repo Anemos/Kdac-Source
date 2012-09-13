@@ -1,0 +1,37 @@
+$PBExportHeader$f_kbcd_stop.srf
+$PBExportComments$불출간판품목 존재=>정상불출시 ERROR
+global type f_kbcd_stop from function_object
+end type
+
+forward prototypes
+global function integer f_kbcd_stop (string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function integer f_kbcd_stop (string as_plant, string as_div, string as_itno);/******************************************************************/
+/* 간판진행  (inv105)에서   check                                 */
+/* Argument value arg_key : 지역/공장/품번                        */
+/* 상태코드 ' ' 아닌건 하나라도 존재하면 Erroe 처리               */
+/* Return 1-정상, -1-실패                                         */
+/******************************************************************/
+Int li_cnt
+
+SELECT count(*)  INTO :li_cnt 
+ FROM  "PBINV"."INV105"
+WHERE "PBINV"."INV105"."COMLTD" = '01'    AND "PBINV"."INV105"."XPLANT" = :as_plant AND
+      "PBINV"."INV105"."DIV"    = :as_div AND "PBINV"."INV105"."ITNO"   = :as_itno  AND
+		"PBINV"."INV105"."STCD"   <> ' '  using sqlca;
+
+
+if sqlca.sqlcode <> 0 then
+	return  1
+end if
+
+if li_cnt <= 0 then 
+	return  1
+end if
+
+return -1 
+
+
+end function
+

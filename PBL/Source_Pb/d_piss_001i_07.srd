@@ -1,0 +1,80 @@
+$PBExportHeader$d_piss_001i_07.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 grid.columnmove=no selected.mouse=no )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes name=comltd dbname="INV101.COMLTD" initial="01" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=xplant dbname="INV101.XPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=div dbname="INV101.DIV" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=itno dbname="INV101.ITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=cls dbname="INV101.CLS" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=srce dbname="INV101.SRCE" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=pdcd dbname="INV101.PDCD" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=bgqty dbname="INV101.BGQTY" initial="0" values=" 	0/" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=intqty dbname="INV101.INTQTY" initial="0" values=" 	0/" )
+ column=(type=decimal(1) update=yes updatewhereclause=yes name=outqty dbname="INV101.OUTQTY" initial="0" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=useqty dbname="USEQTY" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=invqty dbname="INV101.INVQTY" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=stockqty dbname="INV101.STOCKQTY" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=shipqty dbname="INV101.SHIPQTY" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=beginqty dbname="INV101.BEGINQTY" values=" 	0/" )
+ column=(type=decimal(1) updatewhereclause=yes name=moveinvqty dbname="INV101.MOVEINVQTY" )
+ column=(type=decimal(1) updatewhereclause=yes name=shipinvqty dbname="INV101.SHIPINVQTY" )
+ retrieve="  SELECT ~"PBINV~".~"INV101~".~"COMLTD~",   
+         ~"PBINV~".~"INV101~".~"XPLANT~",   
+         ~"PBINV~".~"INV101~".~"DIV~",   
+         ~"PBINV~".~"INV101~".~"ITNO~",   
+	      ~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV101~".~"CLS~",   
+         ~"PBINV~".~"INV101~".~"SRCE~",   
+         ~"PBINV~".~"INV101~".~"PDCD~",   
+         ~"PBINV~".~"INV101~".~"BGQTY~",   
+         ~"PBINV~".~"INV101~".~"INTQTY~",   
+         ~"PBINV~".~"INV101~".~"OUTQTY~",   
+         ~"PBINV~".~"INV101~".~"OHUQTY~" +   
+         ~"PBINV~".~"INV101~".~"OHRQTY~" +   
+         ~"PBINV~".~"INV101~".~"OHSQTY~" as USEQTY,
+         0.0 AS INVQTY, 
+         0.0 AS STOCKQTY, 
+         0.0 AS SHIPQTY, 
+         0.0 AS BEGINQTY, 
+         0.0 AS MOVEINVQTY,     
+         0.0 AS SHIPINVQTY
+    FROM ~"PBINV~".~"INV101~" ,~"PBINV~".~"INV002~" 
+   WHERE ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBINV~".~"INV002~".~"COMLTD~" ) AND
+			( ~"PBINV~".~"INV101~".~"ITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" ) AND
+			( ~"PBINV~".~"INV101~".~"COMLTD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"XPLANT~" = :ps_xplant ) AND  
+         ( ~"PBINV~".~"INV101~".~"DIV~" like :ps_div ) AND  
+         ( ~"PBINV~".~"INV101~".~"ITNO~" like :ps_itno ) AND  
+         ( ~"PBINV~".~"INV101~".~"CLS~" in ( '30','10' ) ) AND  
+         ( ~"PBINV~".~"INV101~".~"SRCE~" in ( '','03',' ') )    
+" arguments=(("ps_xplant", string),("ps_div", string),("ps_itno", string))  sort="div A itno A " )
+text(band=header alignment="2" text="계정" border="0" color="16777215" x="1234" y="8" height="72" width="155" html.valueishtml="0"  name=cls_t visible="1"  font.face="굴림체          " font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품    번" border="0" color="16777215" x="9" y="8" height="72" width="466" html.valueishtml="0"  name=itno_t visible="1"  font.face="굴림체          " font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="품      명" border="0" color="16777215" x="485" y="8" height="72" width="741" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="입고수량" border="0" color="16777215" x="1774" y="8" height="72" width="357" html.valueishtml="0"  name=intqty_t visible="1"  font.face="굴림체          " font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="IPIS 입고" border="0" color="16777215" x="3269" y="8" height="72" width="379" html.valueishtml="0"  name=stockqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="불출수량" border="0" color="16777215" x="2139" y="8" height="72" width="379" html.valueishtml="0"  name=outqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="기초수량" border="0" color="16777215" x="1399" y="8" height="72" width="366" html.valueishtml="0"  name=bgqty_t visible="1"  font.face="굴림체          " font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="IPIS 기초" border="0" color="16777215" x="2898" y="8" height="72" width="361" html.valueishtml="0"  name=beginqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="IPIS 불출" border="0" color="16777215" x="3657" y="8" height="72" width="375" html.valueishtml="0"  name=shipqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="IPIS 재고" border="0" color="16777215" x="4041" y="8" height="72" width="389" html.valueishtml="0"  name=invqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="자재재고" border="0" color="16777215" x="2528" y="8" height="72" width="361" html.valueishtml="0"  name=useqty_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1234" y="4" height="72" width="155" format="[general]" html.valueishtml="0"  name=cls  tag="계정" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="72" width="466" format="[general]" html.valueishtml="0"  name=itno  tag="품번" visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=2  font.face="굴림체          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="485" y="4" height="72" width="741" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="0" x="2528" y="4" height="72" width="361" format="#,##0.0" html.valueishtml="0"  name=useqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="@굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="16711935" x="1774" y="4" height="72" width="357" format="#,##0.0" html.valueishtml="0"  name=intqty  tag="월누적 입고수량" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=2 edit.codetable=yes  font.face="굴림체          " font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="16711680" x="2139" y="4" height="72" width="379" format="#,##0.0" html.valueishtml="0"  name=outqty  tag="월누적불출수량" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=2 edit.codetable=yes  font.face="굴림체          " font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="255" x="1399" y="4" height="72" width="366" format="#,##0.0" html.valueishtml="0"  name=bgqty  tag="기초재고수량" visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=2 edit.codetable=yes  font.face="굴림체          " font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=32766 border="0" color="16711935" x="3269" y="4" height="72" width="379" format="#,##0.0" html.valueishtml="0"  name=stockqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="16711680" x="3657" y="4" height="72" width="375" format="#,##0.0" html.valueishtml="0"  name=shipqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="0" x="4041" y="4" height="72" width="389" format="#,##0.0" html.valueishtml="0"  name=invqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="@굴림체" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="0" color="255" x="2898" y="4" height="72" width="361" format="#,##0.0" html.valueishtml="0"  name=beginqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0 edit.codetable=yes  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

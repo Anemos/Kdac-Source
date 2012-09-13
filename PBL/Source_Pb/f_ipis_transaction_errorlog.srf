@@ -1,0 +1,52 @@
+$PBExportHeader$f_ipis_transaction_errorlog.srf
+$PBExportComments$트랜젝션 에러로깅
+global type f_ipis_transaction_errorlog from function_object
+end type
+
+forward prototypes
+global subroutine f_ipis_transaction_errorlog (string ag_chgcd, string ag_winid, string ag_funname, string ag_errortext, string ag_etc, string ag_empno, string ag_ipaddr, string ag_macaddr)
+end prototypes
+
+global subroutine f_ipis_transaction_errorlog (string ag_chgcd, string ag_winid, string ag_funname, string ag_errortext, string ag_etc, string ag_empno, string ag_ipaddr, string ag_macaddr);//************************
+//* 인터페이스함수에 발생하는 에러내역을 로그테이블에서 관리한다.
+//* CREATE TABLE "PBIPIS"."PDERRORLOG" (
+//* 	"CHGDATE" VARCHAR(30) NOT NULL, 
+//* 	"CHGCD" CHAR(1) NOT NULL, 
+//* 	"WINID" CHAR(10) NOT NULL, 
+//* 	"FUNNAME" VARCHAR(100) NOT NULL, 
+//* 	"ERRORTEXT" VARCHAR(250) NOT NULL, 
+//* 	"ETC" VARCHAR(250) NOT NULL, 
+//* 	"EMPNO" CHAR(6) NOT NULL,
+//* 	"IPADDR" VARCHAR(30) NOT NULL,
+//* 	"MACADDR" VARCHAR(30) NOT NULL, PRIMARY KEY ("CHGDATE")) ;
+//************************
+
+transaction l_transaction
+	
+l_transaction = CREATE transaction
+		
+// AS400 Errorlog Connection
+l_transaction.DBMS       = "ODBC"
+l_transaction.autocommit = true
+l_transaction.DBParm     = "ConnectString='DSN=CA/400 ODBC for PB;UID=CASINV;PWD=DPAINV',disablebind=1"
+	
+connect using l_transaction;
+
+If l_transaction.sqlcode <> 0 then
+	disconnect using l_transaction ;
+	destroy l_transaction
+	return
+end if
+
+INSERT INTO PBIPIS.PDERRORLOG (CHGDATE, CHGCD, WINID, FUNNAME, ERRORTEXT, 
+		ETC, EMPNO, IPADDR, MACADDR)
+	VALUES (CHAR(CURRENT TIMESTAMP), :ag_chgcd, :ag_winid, :ag_funname, :ag_errortext, 
+		:ag_etc, :ag_empno, :ag_ipaddr, :ag_macaddr )
+using l_transaction;
+
+disconnect using l_transaction ;
+destroy l_transaction
+
+return
+end subroutine
+

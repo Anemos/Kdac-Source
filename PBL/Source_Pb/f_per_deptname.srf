@@ -1,0 +1,28 @@
+$PBExportHeader$f_per_deptname.srf
+$PBExportComments$ºÎ¼­¸íÄªÀ» get
+global type f_per_deptname from function_object
+end type
+
+forward prototypes
+global function string f_per_deptname (string ag_dcode)
+end prototypes
+
+global function string f_per_deptname (string ag_dcode);string ls_deptname
+
+select dname
+into   :ls_deptname
+from  pbcommon.dac001 
+where pbcommon.dac001.duse = ' ' and 
+      pbcommon.dac001.dtodt = 0  and 
+      pbcommon.dac001.dcode = :ag_dcode using sqlcc ;
+
+if sqlcc.sqlcode <> 0 then
+	return ag_dcode
+end if
+if ls_deptname = ' ' or isnull(ls_deptname)  then
+	return ''
+else
+   return ls_deptname
+end if
+end function
+

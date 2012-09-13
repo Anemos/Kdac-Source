@@ -1,0 +1,48 @@
+$PBExportHeader$f_xplan_pur1.srf
+$PBExportComments$구매담당자(코드,구분) - 내외자
+global type f_xplan_pur1 from function_object
+end type
+
+forward prototypes
+global function string f_xplan_pur1 (string ag_s_code, string as_gubun)
+end prototypes
+
+global function string f_xplan_pur1 (string ag_s_code, string as_gubun);///////////////////////////////////////////////////////////////
+// 구매담당자 (코드)
+//       argument : code
+//                  as_gubun  : 내외자 구분
+//////////////////////////////////////////////////////////////
+String ls_name
+
+If trim(as_gubun) = "" OR isnull(as_gubun) Then
+	//내자
+	SELECT "PBCOMMON"."DAC002"."COITNAME"  
+	INTO :ls_name
+	FROM "PBCOMMON"."DAC002"    
+	WHERE "PBCOMMON"."DAC002"."COMLTD"  = '01' and
+			"PBCOMMON"."DAC002"."COGUBUN" in ('INV050','INV070') and
+			"PBCOMMON"."DAC002"."COCODE"  = :ag_s_code  
+	ORDER BY "PBCOMMON"."DAC002"."COGUBUN"	
+	FETCH FIRST 1 ROW ONLY;	
+	
+Else
+	//외자
+	SELECT "PBCOMMON"."DAC002"."COITNAME"  
+	INTO :ls_name
+	FROM "PBCOMMON"."DAC002"    
+	WHERE "PBCOMMON"."DAC002"."COMLTD"  = '01' and
+			"PBCOMMON"."DAC002"."COGUBUN" in ('INV060','INV070') and
+			"PBCOMMON"."DAC002"."COCODE"  = :ag_s_code  
+	ORDER BY "PBCOMMON"."DAC002"."COGUBUN"	
+	FETCH FIRST 1 ROW ONLY;	
+	
+	
+End IF
+
+		 
+IF sqlca.sqlcode <> 0 Then
+	ls_name = " "
+End IF
+Return ls_name
+end function
+

@@ -1,0 +1,120 @@
+$PBExportHeader$f_pur040_changests2.srf
+$PBExportComments$DS BUFFER속성변경(DS,long(BUFFER),long(STATUS))
+global type f_pur040_changests2 from function_object
+end type
+
+forward prototypes
+global subroutine f_pur040_changests2 (datastore adw_1, long al_buffer, long al_gubun)
+end prototypes
+
+global subroutine f_pur040_changests2 (datastore adw_1, long al_buffer, long al_gubun);//datawindow buffer속성 바꾸기
+//buffer:buffer종류
+//gubun:속성
+
+long ll_row
+dwitemStatus  ldws_1
+
+
+if al_buffer = 1 then
+//gubun = 1  ==> datamodified
+Choose case al_gubun
+case 1
+	for ll_row = 1 to adw_1.rowcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, primary!)
+		if ldws_1 = datamodified! then
+			continue
+		elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+		elseif ldws_1 = Newmodified! then
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+		
+		elseif ldws_1 = Notmodified! then
+		  adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+		end if
+	next
+case 2  //=>Notmodified!
+	for ll_row = 1 to adw_1.rowcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, primary!)
+		if ldws_1 = Notmodified! then
+		    continue
+	   elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, primary!, NotModified!)
+		elseif ldws_1 = Newmodified! then
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, primary!, NotModified!)
+		elseif ldws_1 = datamodified! then
+			adw_1.SetitemStatus(ll_row, 0, primary!, NotModified!)
+		
+		end if
+	next
+case 3  //=>Newmodified!
+	for ll_row = 1 to adw_1.rowcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, primary!)
+		if ldws_1 = Newmodified! then
+			continue
+		elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+		elseif ldws_1 = datamodified! then
+			adw_1.SetitemStatus(ll_row, 0, primary!, New!)
+		elseif ldws_1 = Notmodified! then
+		   adw_1.SetitemStatus(ll_row, 0, primary!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, primary!, New!)
+		end if
+	next
+End choose
+End if
+if al_buffer = 2 then  //delete
+//gubun = 1  ==> datamodified
+Choose case al_gubun
+case 1
+	for ll_row = 1 to adw_1.deletedcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, delete!)
+		if ldws_1 = datamodified! then
+			continue
+		elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+		elseif ldws_1 = Newmodified! then
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+		elseif ldws_1 = Notmodified! then
+		  adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+		end if
+	next
+case 2  //=>Notmodified!
+	for ll_row = 1 to adw_1.deletedcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, delete!)
+		if ldws_1 = Notmodified! then
+		    continue
+	   elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, delete!, NotModified!)
+		elseif ldws_1 = Newmodified! then
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, delete!, NotModified!)
+		elseif ldws_1 = datamodified! then
+			adw_1.SetitemStatus(ll_row, 0, delete!, NotModified!)
+		
+		end if
+	next
+case 3  //=>Newmodified!
+	for ll_row = 1 to adw_1.deletedcount()
+		ldws_1 = adw_1.getitemstatus(ll_row, 0, delete!)
+		if ldws_1 = Newmodified! then
+			continue
+		elseif ldws_1 = New!  then
+			adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+		elseif ldws_1 = datamodified! then
+			adw_1.SetitemStatus(ll_row, 0, delete!, New!)
+		elseif ldws_1 = Notmodified! then
+		   adw_1.SetitemStatus(ll_row, 0, delete!, DataModified!)
+			adw_1.SetitemStatus(ll_row, 0, delete!, New!)
+		end if
+	next
+End choose
+End if
+end subroutine
+

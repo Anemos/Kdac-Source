@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_invpqty4.srf
+$PBExportComments$상태별분할이체불출량
+global type f_get_invpqty4 from function_object
+end type
+
+forward prototypes
+global function decimal f_get_invpqty4 (string as_fsrno, string as_frgubun, string as_togubun)
+end prototypes
+
+global function decimal f_get_invpqty4 (string as_fsrno, string as_frgubun, string as_togubun);Dec{1} ld_pqty
+
+SELECT "PBINV"."INV621"."AQTY" INTO :ld_pqty
+  FROM  "PBINV"."INV621"		
+WHERE "PBINV"."INV621"."COMLTD" = '01' AND "PBINV"."INV621"."SRNO" = :as_fsrno AND
+      "PBINV"."INV621"."STCD" between :as_frgubun  and :as_togubun using sqlca ;
+		
+if isnull(ld_pqty) or sqlca.sqlcode <> 0 then
+	ld_pqty = 0
+end if
+
+return ld_pqty
+end function
+

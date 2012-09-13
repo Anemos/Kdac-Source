@@ -1,0 +1,29 @@
+$PBExportHeader$f_close_autchk.srf
+$PBExportComments$인사마감일체크 (id,레벨,해당년월,일자) - return 0/1
+global type f_close_autchk from function_object
+end type
+
+forward prototypes
+global function integer f_close_autchk (string as_pid, string as_level, string as_tyear, string as_xdate)
+end prototypes
+
+global function integer f_close_autchk (string as_pid, string as_level, string as_tyear, string as_xdate);int li_cnt 
+
+select  count(pid)
+ into :li_cnt
+from pbper.peraut
+where pid  = :as_pid     and
+		level = :as_level  and
+		tyear = :as_tyear  and
+		status = ''        and 
+		(( todt = '' and frdt <= :as_xdate ) or 
+		( todt <> '' and frdt <= :as_xdate and todt >= :as_xdate ))
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	return 	0
+else
+	return 	li_cnt
+end if
+end function
+

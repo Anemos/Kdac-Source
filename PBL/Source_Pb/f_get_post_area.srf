@@ -1,0 +1,28 @@
+$PBExportHeader$f_get_post_area.srf
+$PBExportComments$우편번호의 지역을 get
+global type f_get_post_area from function_object
+end type
+
+forward prototypes
+global function string f_get_post_area (string ag_postno)
+end prototypes
+
+global function string f_get_post_area (string ag_postno);string  l_s_area, l_s_cocode
+
+l_s_cocode = mid(ag_postno,1,2)
+
+select coitname
+into   :l_s_area
+from   pbcommon.dac002
+where  pbcommon.dac002.cogubun = 'PER335' and
+       pbcommon.dac002.cocode  = :l_s_cocode  using  sqlcc ;
+		 
+if sqlcc.sqlcode <> 0 then
+	messagebox('sql Error','우편번호부의 지역 retrieve Error')
+	return ' '
+end if
+		 
+		 
+return l_s_area		 
+end function
+

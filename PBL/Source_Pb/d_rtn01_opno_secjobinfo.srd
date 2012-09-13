@@ -1,0 +1,50 @@
+$PBExportHeader$d_rtn01_opno_secjobinfo.srd
+$PBExportComments$°øÁ¤¹øÈ£¿¡ ÇØ´çÇÏ´Â ºÎ´ëÀ¯Çü
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=60 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=72 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=rfnvmo dbname="RTN016.RFNVMO" )
+ column=(type=char(1) updatewhereclause=yes name=rfmcno dbname="RTN016.RFMCNO" )
+ column=(type=char(1) updatewhereclause=yes name=rfterm dbname="RTN016.RFTERM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rfmctm dbname="RTN016.RFMCTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rflbtm dbname="RTN016.RFLBTM" )
+ column=(type=char(240) updatewhereclause=yes name=rfremk dbname="RTN016.RFREMK" )
+ retrieve="SELECT ~"PBRTN~".~"RTN016~".~"RFNVMO~",   
+          ~"PBRTN~".~"RTN016~".~"RFMCNO~",   
+          ~"PBRTN~".~"RTN016~".~"RFTERM~",   
+          ~"PBRTN~".~"RTN016~".~"RFMCTM~",   
+          ~"PBRTN~".~"RTN016~".~"RFLBTM~",   
+          ~"PBRTN~".~"RTN016~".~"RFREMK~"  
+    FROM ~"PBRTN~".~"RTN016~" 
+    WHERE (~"PBRTN~".~"RTN016~".~"RFCMCD~" = :a_cmcd) AND  
+          (~"PBRTN~".~"RTN016~".~"RFPLANT~" = :a_plant) AND   
+          (~"PBRTN~".~"RTN016~".~"RFDVSN~" = :a_div) AND
+		  (~"PBRTN~".~"RTN016~".~"RFITNO~" = :a_itno) AND
+          (~"PBRTN~".~"RTN016~".~"RFLINE1~" = :a_line1 ) AND ( ~"PBRTN~".~"RTN016~".~"RFLINE2~" = :a_line2 ) AND
+          (~"PBRTN~".~"RTN016~".~"RFOPNO~" = :a_opno) AND
+          (((~"PBRTN~".~"RTN016~".~"RFEDFM~" = '') OR  
+          (~"PBRTN~".~"RTN016~".~"RFEDFM~" <= :a_ajdate)) AND
+          ((~"PBRTN~".~"RTN016~".~"RFEDTO~" = '') OR
+          (~"PBRTN~".~"RTN016~".~"RFEDTO~" >= :a_ajdate)))" arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_itno", string),("a_line1", string),("a_line2", string),("a_opno", string),("a_ajdate", string)) )
+text(band=header alignment="2" text="À¯Çü" border="2" color="16777215" x="9" y="4" height="56" width="704" html.valueishtml="0"  name=rdnvmo_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="2" color="16777215" x="722" y="4" height="56" width="393" html.valueishtml="0"  name=rdmcno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºóµµ" border="2" color="16777215" x="1125" y="4" height="56" width="544" html.valueishtml="0"  name=rdterm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±â°èÀÛ¾÷" border="2" color="16777215" x="1678" y="4" height="56" width="434" html.valueishtml="0"  name=rfmctm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÀÛ¾÷" border="2" color="16777215" x="2121" y="4" height="56" width="384" html.valueishtml="0"  name=rflbtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³»¿ë" border="2" color="16777215" x="2514" y="4" height="56" width="1125" html.valueishtml="0"  name=rfremk_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=detail alignment="0" expression="f_get_coitname('01','RTN020',  rfmcno )"border="0" color="0" x="722" y="0" height="68" width="393" format="[GENERAL]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="0" expression="f_get_coitname('01','RTN010',  rfnvmo )"border="0" color="0" x="9" y="0" height="68" width="704" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="0" expression="if (  rfmcno = '0' , f_get_coitname('01','RTN030',rfterm), f_get_coitname('01','RTN040',rfterm))"border="0" color="0" x="1125" y="0" height="68" width="544" format="[GENERAL]" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="0" x="1678" y="0" height="68" width="434" format="[general]" html.valueishtml="0"  name=rfmctm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="2121" y="0" height="68" width="384" format="[general]" html.valueishtml="0"  name=rflbtm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="2514" y="0" height="68" width="1125" format="[general]" html.valueishtml="0"  name=rfremk visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="compute_1	compute_2	compute_3")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

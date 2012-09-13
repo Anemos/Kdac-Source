@@ -1,0 +1,56 @@
+$PBExportHeader$d_bpm_create_wipitem_bpm509.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=100 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=112 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=comltd dbname="BPM508.COMLTD" )
+ column=(type=char(4) updatewhereclause=yes name=xyear dbname="BPM508.XYEAR" )
+ column=(type=char(2) updatewhereclause=yes name=brev dbname="BPM508.BREV" )
+ column=(type=char(1) updatewhereclause=yes name=bgubun dbname="BPM508.BGUBUN" )
+ column=(type=char(1) updatewhereclause=yes name=bplant dbname="BPM508.BPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=bdiv dbname="BPM508.BDIV" )
+ column=(type=char(12) updatewhereclause=yes name=bchno dbname="BPM508.BCHNO" )
+ column=(type=char(4) updatewhereclause=yes name=bwoct dbname="BPM508.BWOCT" )
+ retrieve="  SELECT DISTINCT AA.~"COMLTD~",   
+         AA.~"XYEAR~",   
+         AA.~"BREV~",   
+         AA.~"BGUBUN~",   
+         AA.~"BPLANT~",   
+         AA.~"BDIV~",   
+         AA.~"BCHNO~",   
+         AA.~"BWOCT~"  
+    FROM ~"PBBPM~".~"BPM508~" AA INNER JOIN ~"PBBPM~".~"BPM503~" BB
+		ON AA.~"XYEAR~" = BB.~"XYEAR~" AND AA.~"BREV~" = BB.~"REVNO~" AND
+			AA.~"BPLANT~" = BB.~"XPLANT~" AND AA.~"BDIV~" = BB.~"DIV~" AND
+			AA.~"BCHNO~" = BB.~"ITNO~"
+   WHERE ( AA.~"COMLTD~" = :ag_cmcd ) AND  
+         ( AA.~"XYEAR~" = :ag_xyear ) AND  
+         ( AA.~"BREV~" = :ag_revno ) AND  
+         ( AA.~"BGUBUN~" = :ag_gubun ) AND  
+			( BB.~"SRCE~" = '03' ) AND 
+         ( AA.~"BWOCT~" = '8888' )    
+" arguments=(("ag_cmcd", string),("ag_xyear", string),("ag_revno", string),("ag_gubun", string)) )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="96" width="265" format="[general]" html.valueishtml="0"  name=comltd  tag="È¸»ç" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="283" y="8" height="96" width="471" format="[general]" html.valueishtml="0"  name=xyear  tag="»ç¾÷°èÈ¹³âµµ" visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="763" y="8" height="96" width="165" format="[general]" html.valueishtml="0"  name=brev  tag="¹öÀü" visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="937" y="8" height="96" width="393" format="[general]" html.valueishtml="0"  name=bgubun  tag="¹èºÎ±¸ºÐ" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1339" y="8" height="96" width="197" format="[general]" html.valueishtml="0"  name=bplant  tag="Áö¿ª" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1545" y="8" height="96" width="229" format="[general]" html.valueishtml="0"  name=bdiv  tag="°øÀå" visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1783" y="8" height="96" width="416" format="[general]" html.valueishtml="0"  name=bchno  tag="ÀÚÇ°¹ø" visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2208" y="8" height="96" width="338" format="[general]" html.valueishtml="0"  name=bwoct  tag="Á¶ÄÚµå" visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="È¸»ç" border="0" color="16777215" x="9" y="8" height="68" width="265" html.valueishtml="0"  name=comltd_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¾÷°èÈ¹³âµµ" border="0" color="16777215" x="283" y="8" height="68" width="471" html.valueishtml="0"  name=xyear_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¹öÀü" border="0" color="16777215" x="763" y="8" height="68" width="165" html.valueishtml="0"  name=brev_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¹èºÎ±¸ºÐ" border="0" color="16777215" x="937" y="8" height="68" width="393" html.valueishtml="0"  name=bgubun_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="1339" y="8" height="68" width="197" html.valueishtml="0"  name=bplant_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="1545" y="8" height="68" width="229" html.valueishtml="0"  name=bdiv_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÚÇ°¹ø" border="0" color="16777215" x="1783" y="8" height="68" width="416" html.valueishtml="0"  name=bchno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="2208" y="8" height="68" width="338" html.valueishtml="0"  name=bwoct_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,225 @@
+$PBExportHeader$f_bom_approve.srf
+global type f_bom_approve from function_object
+end type
+
+forward prototypes
+global function integer f_bom_approve (string a_plant, string a_div, string a_itno, string a_itno1, string a_gubun, string a_chcode, datawindow a_dw, string a_date, integer a_row)
+end prototypes
+
+global function integer f_bom_approve (string a_plant, string a_div, string a_itno, string a_itno1, string a_gubun, string a_chcode, datawindow a_dw, string a_date, integer a_row);Decimal{3}	ld_xqtyb,ld_xqtya
+String			ls_xplemp,ls_xdlemp,ls_datetime, ls_srce, ls_mailflag, ls_pitno, ls_contents
+DataStore		lds_approve
+
+lds_approve					=	Create		DataStore
+lds_approve.dataobject		=	'd_bom_approve'
+lds_approve.settransobject(sqlca) ;
+lds_approve.insertrow(0)
+
+select	char(current_timestamp) into :ls_datetime	from pbcommon.comm000
+using sqlca  ;
+//if	f_spacechk(ls_datetime)	=	-1	then
+//	messagebox("확인","현재 서버시간 정보에 문제가 있습니다. ")
+//	Destroy	lds_approve
+//	return	-2
+//end if
+
+select	xplemp	into	:ls_xplemp	from	pbpdm.bom018
+where	xcmcd =	'01'	and	xinemp	=	:g_s_empno
+using	sqlca	;
+//if	f_spacechk(ls_xplemp)	=	-1	then
+//	messagebox("확인","담당 PL 이 지정되지 않은 입력자입니다")
+//	Destroy	lds_approve
+//	return	-2
+//end if
+
+SELECT peempno INTO :ls_xdlemp FROM  pbcommon.dac003
+WHERE	pedept = substring(:g_s_deptcd,1,2) || '00' and pejikchek = '3' and peout <> '*'
+using	sqlca ;
+
+//if	f_spacechk(ls_xdlemp)	=	-1	then
+//	messagebox("확인","팀장이 지정되지 않은 입력자입니다")
+//	Destroy	lds_approve
+//	return	-2
+//end if
+
+// START 유상사급품단가 대상품번체크
+ls_pitno = a_dw.getitemstring(a_row,'ppitn',primary!,false)
+
+select srce into :ls_srce from pbinv.inv101
+where comltd = '01' and xplant = :a_plant and div = :a_div and
+	itno = :ls_pitno
+using sqlca;
+
+if ls_srce = '01' or ls_srce = '02' or ls_srce = '04' then
+	ls_mailflag = 'Y'
+else
+	ls_mailflag = 'N'
+end if
+// STOP 유상사급품단가 대상품번체크
+
+if	a_gubun	=	"B"	then	// BOM 수정
+	lds_approve.object.xcmcd[1]		=	'01'
+	lds_approve.object.xplant[1]		=	a_plant
+	lds_approve.object.xdiv[1]		=	a_div
+	lds_approve.object.xpitno[1]		=	a_dw.getitemstring(a_row,'ppitn',primary!,false)
+	lds_approve.object.xitno[1]		=	a_dw.getitemstring(a_row,'pcitn',primary!,false)
+	lds_approve.object.xgubun[1]	=	a_gubun
+	lds_approve.object.xchtime[1]	=	ls_datetime
+	lds_approve.object.xchcd[1]		=	a_chcode
+	lds_approve.object.xsheetno[1]	=	''
+	lds_approve.object.xinemp[1]	=	g_s_empno
+	lds_approve.object.xinchk[1]		=	'N'
+	lds_approve.object.xintime[1]		=	''
+	lds_approve.object.xplemp[1]	=	ls_xplemp
+	lds_approve.object.xplchk[1]		=	''
+	lds_approve.object.xpltime[1]		=	''
+	lds_approve.object.xdlemp[1]	=	ls_xdlemp
+	lds_approve.object.xdlchk[1]		=	''
+	lds_approve.object.xdltime[1]		=	''
+	lds_approve.object.xmacaddr[1]	=	g_s_macaddr
+	lds_approve.object.xipaddr[1]	=	g_s_ipaddr
+	lds_approve.object.xplanemp[1]	=	''
+	lds_approve.object.xcontents[1]	=	''
+
+	Choose	Case	a_chcode	
+		Case	'A','R'
+			lds_approve.object.xqtyb[1]		=	a_dw.getitemnumber(a_row,'pqtym',primary!,true)
+			lds_approve.object.xqtya[1]		=	a_dw.getitemnumber(a_row,'pqtym',primary!,false)			
+			lds_approve.object.xwkctb[1]		=	a_dw.getitemstring(a_row,'pwkct',primary!,true)
+			lds_approve.object.xwkcta[1]		=	a_dw.getitemstring(a_row,'pwkct',primary!,false)	
+			lds_approve.object.xedtm[1]		=	a_dw.getitemstring(a_row,'pedtm',primary!,false)
+			lds_approve.object.xedte[1]		=	a_dw.getitemstring(a_row,'pedte',primary!,false)	
+			lds_approve.object.xexplantb[1]	=	a_dw.getitemstring(a_row,'pexplant',primary!,true)
+			lds_approve.object.xexplanta[1]	=	a_dw.getitemstring(a_row,'pexplant',primary!,false)			
+			lds_approve.object.xexdivb[1]	=	a_dw.getitemstring(a_row,'pexdv',primary!,true)
+			lds_approve.object.xexdiva[1]	=	a_dw.getitemstring(a_row,'pexdv',primary!,false)
+			if ls_mailflag = 'Y' then
+				lds_approve.object.xmailflag[1]	=	'X'
+				if a_chcode = 'A' then
+					ls_contents = " 신규입력"
+					lds_approve.object.xmailflag[1]	=	'N'
+				else
+					if lds_approve.object.xqtyb[1] <> lds_approve.object.xqtya[1] then
+						ls_contents = " 원단위변경: " + string(lds_approve.object.xqtyb[1],"#,##0.000") + " => " + string(lds_approve.object.xqtya[1],"#,##0.000")
+						lds_approve.object.xmailflag[1]	=	'N'
+					end if
+					if ( ( lds_approve.object.xwkctb[1] = '8888' or lds_approve.object.xwkctb[1] = '9999') and &
+							( lds_approve.object.xwkcta[1] = '8888' or lds_approve.object.xwkcta[1] = '9999') and &
+							( lds_approve.object.xwkctb[1] <> lds_approve.object.xwkcta[1] ) ) then
+						ls_contents = " 조코드변경: " + lds_approve.object.xwkctb[1] + " => " + lds_approve.object.xwkcta[1]
+						lds_approve.object.xmailflag[1]	=	'N'
+					end if
+				end if
+			else
+				lds_approve.object.xmailflag[1]	=	'X'
+			end if
+			
+			if	a_chcode	=	'A'	then
+				lds_approve.object.xdesc[1]		=	'품번 ' + a_itno	+	ls_contents
+				if	f_spacechk(lds_approve.object.xedtm[1])	=	-1	then
+					lds_approve.object.xedtm[1]	=	a_date
+				end if
+			elseif	a_chcode	=	'R'	then
+				lds_approve.object.xdesc[1]		=	'품번 ' + a_itno	+	ls_contents
+			end if
+		Case	'D' // 삭제
+			if ls_mailflag = 'Y' then 
+				lds_approve.object.xmailflag[1]	=	'N'
+			else
+				lds_approve.object.xmailflag[1]	=	'X'
+			end if
+			lds_approve.object.xdesc[1]		=	'품번 ' + a_itno	+	' 삭제'  
+			lds_approve.object.xedte[1]		=	a_date
+		Case	'P' // 상위품번 복사
+			if ls_mailflag = 'Y' then 
+				lds_approve.object.xmailflag[1]	=	'N'
+			else
+				lds_approve.object.xmailflag[1]	=	'X'
+			end if
+			lds_approve.object.xdesc[1]		=	a_itno1	+	' 상위품번을 '		+	a_itno		+	' 에 Copy '  
+			lds_approve.object.xedtm[1]		=	a_date
+		Case	'C'	// 하위품번 복사
+			if ls_mailflag = 'Y' then 
+				lds_approve.object.xmailflag[1]	=	'N'
+			else
+				lds_approve.object.xmailflag[1]	=	'X'
+			end if
+			lds_approve.object.xdesc[1]		=	a_itno1	+	' 하위품번을 '		+	a_itno		+	' 에 Copy '  
+			lds_approve.object.xedtm[1]		=	a_date
+		Case	'S'	//유무상 전환
+			lds_approve.object.xqtyb[1]		=	a_dw.getitemnumber(a_row,'pqtym',primary!,true)
+			lds_approve.object.xqtya[1]		=	a_dw.getitemnumber(a_row,'pqtym',primary!,false)			
+			lds_approve.object.xwkctb[1]		=	a_dw.getitemstring(a_row,'pwkct',primary!,true)
+			lds_approve.object.xwkcta[1]		=	a_dw.getitemstring(a_row,'pwkct',primary!,false)
+			if ls_mailflag = 'Y' then 
+				lds_approve.object.xmailflag[1]	=	'N'
+			else
+				lds_approve.object.xmailflag[1]	=	'X'
+			end if
+			if a_dw.getitemstring(a_row,'pwkct',primary!,false) = '8888' then
+				lds_approve.object.xdesc[1]		=	a_dw.getitemstring(a_row,'pcitn',primary!,false) +	' 하위품번을 유상으로 전환'
+			else
+				lds_approve.object.xdesc[1]		=	a_dw.getitemstring(a_row,'pcitn',primary!,false) +	' 하위품번을 무상으로 전환'
+			end if
+			lds_approve.object.xedtm[1]		=	a_date
+	End	Choose
+
+elseif	a_gubun	=	"O"	then	// BOM 수정
+	// a_chcode	=	'X' 면 Option 주,부 품목 Change
+	lds_approve.object.xcmcd[1]		=	'01'
+	lds_approve.object.xplant[1]		=	a_plant
+	lds_approve.object.xdiv[1]		=	a_div
+	lds_approve.object.xpitno[1]		=	''
+	lds_approve.object.xitno[1]		=	a_itno
+	lds_approve.object.xgubun[1]	=	a_gubun
+	lds_approve.object.xchtime[1]	=	ls_datetime
+	lds_approve.object.xchcd[1]		=	a_chcode
+	lds_approve.object.xsheetno[1]	=	''
+	lds_approve.object.xinemp[1]	=	g_s_empno
+	lds_approve.object.xinchk[1]		=	'N'
+	lds_approve.object.xintime[1]		=	''
+	lds_approve.object.xplemp[1]	=	ls_xplemp
+	lds_approve.object.xplchk[1]		=	''
+	lds_approve.object.xpltime[1]		=	''
+	lds_approve.object.xdlemp[1]	=	ls_xdlemp
+	lds_approve.object.xdlchk[1]		=	''
+	lds_approve.object.xdltime[1]		=	''
+	lds_approve.object.xmacaddr[1]	=	g_s_macaddr
+	lds_approve.object.xipaddr[1]	=	g_s_ipaddr
+	lds_approve.object.xplanemp[1]	=	''
+	lds_approve.object.xcontents[1]	=	''
+	lds_approve.object.xmailflag[1]	=	'X'
+	
+	if	a_chcode	=	'D'	then
+		lds_approve.object.xedtm[1]		=	''
+		lds_approve.object.xedte[1]		=	a_date
+	else
+		lds_approve.object.xedtm[1]		=	a_dw.getitemstring(a_row,'oedtm',primary!,false)
+		lds_approve.object.xedte[1]		=	a_dw.getitemstring(a_row,'oedte',primary!,false)	
+		if	f_spacechk(lds_approve.object.xedtm[1])	=	-1	then
+			lds_approve.object.xedtm[1]	=	a_date
+		end if
+	end if
+	if	a_chcode	=	'A'	then
+		lds_approve.object.xdesc[1]		=	'Option 주품번 ' + a_itno1	+	' 에 Option 부품번 ' + a_itno + ' 신규 입력'  
+	elseif	a_chcode	=	'R'	then
+		lds_approve.object.xdesc[1]		=	'Option 부품번 ' + a_itno	+	'  수정'  
+	elseif	a_chcode	=	'D'	then
+		lds_approve.object.xdesc[1]		=	'Option 주품번 ' + a_itno	+	' 의 부품목 삭제'  			
+	elseif	a_chcode	=	'X'	then
+		lds_approve.object.xdesc[1]		=	'Option 부품번 ' + a_itno	+	'  주품번으로 교체'  	
+		lds_approve.object.xedtm[1]		=	a_date
+	end if
+end if
+
+lds_approve.update()
+
+Destroy	lds_approve
+return 0
+//
+//('XCMCD','XPLANT','XDIV','XITNO','XGUBUN','XCHTIME','XQTYB','XQTYA','XWKCTB','XWKCTA','XEDTM','XEDTE',
+//'XEXPLANTB','XEXDIVB','XEXPLANTA','XEXDIVA','XCHCD','XSHEETNO','XINEMP','XINCHK','XINTIME',
+//'XPLEMP','XPLCHK','XPLTIME','XDLEMP','XDLCHK','XDLTIME','XMACADDR','XIPADDR')
+//
+end function
+

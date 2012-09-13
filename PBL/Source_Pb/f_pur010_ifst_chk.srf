@@ -1,0 +1,51 @@
+$PBExportHeader$f_pur010_ifst_chk.srf
+$PBExportComments$물성분류존재 여부 체크
+global type f_pur010_ifst_chk from function_object
+end type
+
+forward prototypes
+global function string f_pur010_ifst_chk (string ag_itno)
+end prototypes
+
+global function string f_pur010_ifst_chk (string ag_itno);/////////////////////////////////////////////////////////////////
+//	물성분류체계 체크 
+//			argument : itno
+//									성공 : ' '
+//									실패 : '1'
+//
+//			Using : 구매요구관리
+//
+//////////////////////////////////////////////////////////////////
+String ls_inl, ls_fst, ls_snd, ls_thd
+long ln_cnt
+
+ag_itno = Trim(ag_itno)
+//품목 Master
+SELECT trim(INL), trim(FST), trim(SND), trim(THD)
+ INTO :ls_inl, :ls_fst, :ls_snd, :ls_thd
+FROM PBINV.INV002
+WHERE COMLTD = '01'
+ AND ITNO = :ag_itno Using sqlca;
+ 
+IF sqlca.sqlcode <> 0 or isnull(ls_inl) Then
+	Return '1'
+Else	
+	//물성분류체계
+	SELECT COUNT(*)
+	 INTO :ln_cnt
+	FROM PBINV.INV001
+	WHERE COMLTD = '01'
+	  AND INL = :ls_inl
+	  AND FST = :ls_fst
+	  AND SND = :ls_snd
+	  AND THD = :ls_thd  Using sqlca;
+	  
+	IF ln_cnt = 0 Then 
+		Return '1'
+	Else
+		Return ' '
+	End IF	
+End IF
+
+end function
+

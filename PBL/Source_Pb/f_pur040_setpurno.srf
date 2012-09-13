@@ -1,0 +1,78 @@
+$PBExportHeader$f_pur040_setpurno.srf
+$PBExportComments$업체단가-최초,최종발주기록(업체,품번,발부번호,일자,단가)pur103
+global type f_pur040_setpurno from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_setpurno (string as_vsrno, string as_itno, string as_purno, string as_pindt, decimal ad_xcost)
+end prototypes
+
+global function integer f_pur040_setpurno (string as_vsrno, string as_itno, string as_purno, string as_pindt, decimal ad_xcost);////////////////////////////////////////////////
+// :업체단가최조,최종발주기록
+//	argument : 업체,품번,발주
+// 적용:opm302u   
+////////////////////////////////////////////////
+//2007.07.18
+UPDATE "PBPUR"."PUR103"  
+  SET "FPURNO" = CASE WHEN "FPURNO" = '' AND "FPINDT" = ''  THEN  :as_purno ELSE "FPURNO" END ,
+		"FPINDT" = CASE WHEN "FPURNO" = '' AND "FPINDT" = ''  THEN  :as_pindt ELSE "FPINDT" END ,
+		"FCOST"  = CASE WHEN "FPURNO" = '' AND "FPINDT" = ''  THEN  :ad_xcost ELSE "FCOST" END ,
+		"PURNO"  = :as_purno,   
+		"PINDT"  = :as_pindt,   
+		"LCOST"  = :ad_xcost,   
+		"UPDTID" = :g_s_empno,   
+		"UPDTDT" = :g_s_datetime,   
+		"IPADDR" = :g_s_ipaddr,   
+		"MACADDR" = :g_s_macaddr  
+WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR103"."VSRC" = 'I' ) AND  
+		( "PBPUR"."PUR103"."DEPT" = 'I' ) AND  
+		( "PBPUR"."PUR103"."VSRNO" = :as_vsrno ) AND  
+		( "PBPUR"."PUR103"."ITNO" = :as_itno )   
+USING SQLCA;
+
+Return 0
+/*
+  string ls_fpurno, ls_fpindt
+  dec ld_fcost
+    SELECT coalesce("PBPUR"."PUR103"."FPURNO",''),   
+           coalesce("PBPUR"."PUR103"."FPINDT",''),   
+           coalesce("PBPUR"."PUR103"."FCOST",0)  
+    INTO :ls_fpurno,   
+         :ls_fpindt,   
+         :ld_fcost  
+    FROM "PBPUR"."PUR103"  
+   WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR103"."VSRC" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."DEPT" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."VSRNO" = :as_vsrno ) AND  
+         ( "PBPUR"."PUR103"."ITNO" = :as_itno )   
+           ;
+  if ls_fpurno = '' and ls_fpindt = '' then
+	 ls_fpurno = as_purno
+	 ls_fpindt = as_pindt
+	 ld_fcost = ad_xcost
+  end if
+  
+  
+  UPDATE "PBPUR"."PUR103"  
+     SET "FPURNO" = :ls_fpurno,   
+         "FPINDT" = :ls_fpindt,   
+         "FCOST" = :ld_fcost,   
+         "PURNO" = :as_purno,   
+         "PINDT" = :as_pindt,   
+         "LCOST" = :ad_xcost,   
+         "UPDTID" = :g_s_empno,   
+         "UPDTDT" = :g_s_datetime,   
+         "IPADDR" = :g_s_ipaddr,   
+         "MACADDR" = :g_s_macaddr  
+   WHERE ( "PBPUR"."PUR103"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR103"."VSRC" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."DEPT" = 'I' ) AND  
+         ( "PBPUR"."PUR103"."VSRNO" = :as_vsrno ) AND  
+         ( "PBPUR"."PUR103"."ITNO" = :as_itno )   
+           ;
+*/
+
+end function
+

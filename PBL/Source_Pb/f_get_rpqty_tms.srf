@@ -1,0 +1,33 @@
+$PBExportHeader$f_get_rpqty_tms.srf
+$PBExportComments$발주건별 총입고량 (발주전산번호, 분할발주횟수)
+global type f_get_rpqty_tms from function_object
+end type
+
+forward prototypes
+global function decimal f_get_rpqty_tms (string as_srno, string as_srno1)
+end prototypes
+
+global function decimal f_get_rpqty_tms (string as_srno, string as_srno1);//////////////////////////////////////////////////////////
+//	* 발주건별 총입고량 Return *
+//
+//			argument: 발주전산번호, 분할발주횟수
+//////////////////////////////////////////////////////////
+
+dec{1}	ld_Rpqty
+
+//자재 Trans DB
+SELECT SUM("PBINV"."INV401"."TQTY4")  
+ INTO :ld_Rpqty  
+ FROM "PBINV"."INV401"  
+WHERE ( "PBINV"."INV401"."COMLTD" = :g_s_company ) AND  
+		( "PBINV"."INV401"."SLIPTYPE" = 'RP' ) AND  
+		( "PBINV"."INV401"."SRNO" = :as_srno ) AND  
+		( "PBINV"."INV401"."SRNO1" = :as_srno1 )	Using SQLCA ;
+
+IF SQLCA.SQLCode <> 0 Or IsNull( ld_Rpqty ) Then ld_Rpqty = 0
+
+Return ld_Rpqty
+
+
+end function
+

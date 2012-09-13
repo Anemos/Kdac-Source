@@ -1,0 +1,34 @@
+$PBExportHeader$f_get_lcno.srf
+$PBExportComments$예정원가의 L/C 가져오기
+global type f_get_lcno from function_object
+end type
+
+forward prototypes
+global function string f_get_lcno (string a_s_company, string a_s_slip)
+end prototypes
+
+global function string f_get_lcno (string a_s_company, string a_s_slip);string l_s_no,l_s_invo
+
+ SELECT  "PBACC"."ACC517"."MLCNO","PBACC"."ACC517"."MINVO"  INTO :l_s_no, :l_s_invo
+ FROM   "PBACC"."ACC517"
+ WHERE  "PBACC"."ACC517"."COMLTD" = :a_s_company AND
+        "PBACC"."ACC517"."MSLGB" = 'A' AND
+		  "PBACC"."ACC517"."MSLSLIP" = :a_s_slip
+ USING SQLCA;
+ 
+ IF SQLCA.SQLCODE<> 0 THEN
+	  l_s_no = ''
+	  l_s_invo = ''
+ end if 
+ 
+ if l_s_no = '' then
+	 l_s_no = l_s_invo 
+end if 
+
+
+return l_s_no
+	 
+
+
+end function
+

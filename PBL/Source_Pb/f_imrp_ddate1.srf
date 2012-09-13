@@ -1,0 +1,72 @@
+$PBExportHeader$f_imrp_ddate1.srf
+global type f_imrp_ddate1 from function_object
+end type
+
+forward prototypes
+global function string f_imrp_ddate1 (string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function string f_imrp_ddate1 (string as_xplant, string as_div, string as_itno);///////////////////////////////////////////////////////////////////////////////////////////
+// 미출하 품목중 출하일이 가장 빠른날을 가져온다.
+// 
+///////////////////////////////////////////////////////////////////////////////////////////
+String ls_shdt[], ls_Mindate = '99999999',  ls_date 
+Dec{2} ld_unbl, ld_shqt[]
+int li_shlt, i
+
+
+DECLARE pur102_cur CURSOR FOR
+
+  SELECT "PBPUR"."OPM102"."UNBL", "PBPUR"."PUR102"."SHLT",
+			"PBPUR"."OPM102"."SHQT1", "PBPUR"."OPM102"."SHDT1", 
+			"PBPUR"."OPM102"."SHQT2", "PBPUR"."OPM102"."SHDT2",
+			"PBPUR"."OPM102"."SHQT3", "PBPUR"."OPM102"."SHDT3",
+			"PBPUR"."OPM102"."SHQT4", "PBPUR"."OPM102"."SHDT4",
+			"PBPUR"."OPM102"."SHQT5", "PBPUR"."OPM102"."SHDT5"
+    FROM "PBPUR"."OPM101",   
+         "PBPUR"."OPM102", "PBPUR"."PUR102"  
+   WHERE ( "PBPUR"."OPM101"."COMLTD" = "PBPUR"."OPM102"."COMLTD" ) AND 
+         ( ( "PBPUR"."PUR102"."COMLTD" = "PBPUR"."OPM102"."COMLTD" ) AND 
+			( "PBPUR"."PUR102"."DEPT" = 'I' ) AND
+			( "PBPUR"."PUR102"."VSRNO" = "PBPUR"."OPM101"."VSRNO1" ) AND  
+         ( "PBPUR"."OPM101"."PURNO" = "PBPUR"."OPM102"."PURNO" ) AND  
+         ( "PBPUR"."OPM101"."SRNO" = "PBPUR"."OPM102"."SRNO" ) AND  
+         ( "PBPUR"."OPM101"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."OPM102"."XPLANT" = :as_xplant ) AND  
+         ( "PBPUR"."OPM102"."DIV" = :as_div ) AND  
+         ( "PBPUR"."OPM102"."ITNO" = :as_itno ) AND  
+         ( "PBPUR"."OPM102"."UNBL" > 0 ) AND  
+         ( "PBPUR"."OPM101"."PINDT" >= '20020101' ) ) using sqlca ;
+						 
+			OPEN pur102_cur;  // 조건에 맞는 data open
+		
+			FETCH pur102_cur INTO :ld_unbl, :li_shlt, :ld_shqt[1], :ls_shdt[1], :ld_shqt[2], :ls_shdt[2],:ld_shqt[3], :ls_shdt[3], :ld_shqt[4], :ls_shdt[4], :ld_shqt[5], :ls_shdt[5] ; // cursor에 존재하는 data select
+		
+			                      
+			IF Sqlca.SqlCode <>  0 THEN
+				CLOSE pur102_cur;
+				return '0'
+			End if
+			
+			DO WHILE Sqlca.SqlCode = 0
+				// 분할납기중 UN-BL량의 첫번째 출하날짜를 구한다.
+				For i = 5 To 1 STEP -1  
+					 if Isnull(ld_shqt[i]) Or (ld_shqt[i] = 0) then Continue
+					  ld_unbl = ld_unbl - ld_shqt[i]					  
+					  if ld_unbl <= 0 then exit					
+				Next
+				
+				// 출하날짜 + 선적리드타임(주) => 도착일 
+				ls_date = f_relativedate( ls_shdt[i], (li_shlt * 7) ) 				
+				
+				If ls_date < ls_Mindate then ls_Mindate = ls_date
+						
+				FETCH pur102_cur INTO :ld_unbl, :li_shlt, :ld_shqt[1], :ls_shdt[1], :ld_shqt[2], :ls_shdt[2],:ld_shqt[3], :ls_shdt[3], :ld_shqt[4], :ls_shdt[4], :ld_shqt[5], :ls_shdt[5] ; // cursor에 존재하는 data select
+			
+		   LOOP
+			
+CLOSE pur102_cur;
+
+Return ls_Mindate
+end function
+

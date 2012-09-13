@@ -1,0 +1,32 @@
+$PBExportHeader$f_mplan_pur.srf
+$PBExportComments$자재담당자코드(지역,공장,품번)
+global type f_mplan_pur from function_object
+end type
+
+forward prototypes
+global function string f_mplan_pur (string ag_xplant, string ag_div, string ag_itno)
+end prototypes
+
+global function string f_mplan_pur (string ag_xplant, string ag_div, string ag_itno);////////////////////////////////////////////////
+// 자재담당 코드 구하기
+//		argument : 지역,공장,품번
+//
+/////////////////////////////////////////////////
+String ls_xplan
+
+//Item balance DB pbinv.inv401
+SELECT "PBINV"."INV101"."MLAN"  
+ INTO :ls_xplan  
+FROM "PBINV"."INV101"  
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+		( "PBINV"."INV101"."DIV" = :ag_div ) AND  
+		( "PBINV"."INV101"."ITNO" = :ag_itno ) Using sqlca ;
+		
+IF sqlca.sqlcode <> 0 or f_spacechk(ls_xplan) = -1 Then
+	ls_xplan = ' '
+End IF
+Return ls_xplan
+
+end function
+

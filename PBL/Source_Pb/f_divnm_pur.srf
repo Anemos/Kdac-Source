@@ -1,0 +1,31 @@
+$PBExportHeader$f_divnm_pur.srf
+$PBExportComments$공장명(공장코드)
+global type f_divnm_pur from function_object
+end type
+
+forward prototypes
+global function string f_divnm_pur (string ag_div)
+end prototypes
+
+global function string f_divnm_pur (string ag_div);////////////////////////////////////////////////////////
+//              공장명 구하기
+//              argument : 공장코드
+///////////////////////////////////////////////////////
+
+string ls_divnm
+ 
+ SELECT "PBCOMMON"."DAC002"."COITNAME"
+   INTO :ls_divnm  
+   FROM "PBCOMMON"."DAC002"
+   WHERE "PBCOMMON"."DAC002"."COMLTD" = '01'  AND
+	      ( "PBCOMMON"."DAC002"."COGUBUN" = 'DAC030' ) AND  
+         ( "PBCOMMON"."DAC002"."COCODE" = :ag_div )  ;   
+			
+IF sqlca.sqlcode <> 0 Then
+	return ' '
+Else
+	return ls_divnm
+End IF	
+
+end function
+

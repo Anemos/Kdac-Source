@@ -1,0 +1,74 @@
+$PBExportHeader$f_pisc_retrieve_dddw_line.srf
+$PBExportComments$dddw을 조회하는 함수 - 라인
+global type f_pisc_retrieve_dddw_line from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_retrieve_dddw_line (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_workcenter, string fs_linecode, boolean fb_allflag, ref string rs_linecode, ref string rs_lineshortname, ref string rs_linefullname)
+end prototypes
+
+global subroutine f_pisc_retrieve_dddw_line (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_workcenter, string fs_linecode, boolean fb_allflag, ref string rs_linecode, ref string rs_lineshortname, ref string rs_linefullname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_line
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드
+//						string			fs_workcenter			조회하고자 하는 조 코드
+//						string			fs_linecode				조회하고자 하는 라인 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 라인 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (라인코드는 '%', 라인명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_linecode				선택된 라인 코드 (reference)
+//						string			rs_lineshortname		선택된 라인 단축 명 (reference)
+//						string			rs_linefullname		선택된 라인 명 (reference)
+//	Returns		: none
+//	Description	: 라인을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode, fs_workcenter, fs_linecode)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_linecode = ''
+		rs_lineshortname = ''
+		rs_linefullname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_linecode	= Trim(ldwc_1.GetItemString(1, 'lineCode'))
+		rs_lineshortname	= Trim(ldwc_1.GetItemString(1, 'lineshortname'))
+		rs_linefullname= Trim(ldwc_1.GetItemString(1, 'linefullname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_linecode)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'linefullname', 30)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_linecode	= Trim(ldwc_1.GetItemString(1, 'lineCode'))
+			rs_lineshortname	= Trim(ldwc_1.GetItemString(1, 'lineshortname'))
+			rs_linefullname= Trim(ldwc_1.GetItemString(1, 'linefullname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_linecode)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'linefullname', 30)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'lineCode', 'ALL')
+			ldwc_1.Setitem(1, 'lineshortname', '전체')
+			ldwc_1.Setitem(1, 'linefullname', '전체')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_linecode = '%'
+			rs_lineshortname = '전체'
+			rs_linefullname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'linefullname', 30)
+		End If
+	End If
+End If
+end subroutine
+

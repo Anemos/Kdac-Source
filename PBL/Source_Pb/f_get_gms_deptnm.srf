@@ -1,0 +1,36 @@
+$PBExportHeader$f_get_gms_deptnm.srf
+$PBExportComments$부서명 return ( 계측기 전용 )
+global type f_get_gms_deptnm from function_object
+end type
+
+forward prototypes
+global function string f_get_gms_deptnm (string a_s_dept)
+end prototypes
+
+global function string f_get_gms_deptnm (string a_s_dept);string	ls_fnm
+long   	ln_date
+  
+SELECT 	"PBCOMMON"."DAC001"."DNAME"
+	INTO 	:ls_fnm
+FROM 		"PBCOMMON"."DAC001"  
+WHERE 	"PBCOMMON"."DAC001"."DCODE" 	= :a_s_dept and
+  			"PBCOMMON"."DAC001"."DUSE" 	= ''			and
+  		 	"PBCOMMON"."DAC001"."DTODT" 	= 0
+using sqlca;
+  
+if sqlca.sqlcode <> 0 then
+	SELECT 	"PBCOMMON"."DAC001"."DTODT","PBCOMMON"."DAC001"."DNAME"
+   	INTO 	:ln_date,:ls_fnm
+	FROM 		"PBCOMMON"."DAC001"  
+	WHERE 	"PBCOMMON"."DAC001"."DCODE" = :a_s_dept and
+	 	 		"PBCOMMON"."DAC001"."DUSE" = 'X'
+		order by 1 desc
+   	FETCH FIRST 1 ROW ONLY 
+	using sqlca;
+	if sqlca.sqlcode <> 0 then
+ 		ls_fnm = ""
+	end if
+end if
+return ls_fnm
+end function
+

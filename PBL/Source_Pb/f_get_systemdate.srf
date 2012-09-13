@@ -1,0 +1,20 @@
+$PBExportHeader$f_get_systemdate.srf
+global type f_get_systemdate from function_object
+end type
+
+forward prototypes
+global function string f_get_systemdate (readonly transaction sqltransaction)
+end prototypes
+
+global function string f_get_systemdate (readonly transaction sqltransaction);datetime ls_date
+
+if	sqltransaction.dbms = "ODBC" then
+	select 	current_timestamp	into	:ls_date	from	pbcommon.comm000 
+	using 		sqltransaction ;
+else
+	select 	current_timestamp into :ls_date from comm000 
+	using 		sqltransaction  ;
+end if		
+return string(ls_Date,'YYYY-MM-DD HH:MM:SS')
+end function
+

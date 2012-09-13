@@ -1,0 +1,33 @@
+$PBExportHeader$d_sys_code_task_nextwono.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=32567536 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=2220 color="536870912" )
+table(column=(type=char(30) update=yes updatewhereclause=yes key=yes name=notype dbname="TMSTAUTONO.NOTYPE" )
+ column=(type=char(30) update=yes updatewhereclause=yes key=yes name=noname dbname="TMSTAUTONO.NONAME" )
+ column=(type=char(30) update=yes updatewhereclause=yes key=yes name=nextno dbname="TMSTAUTONO.NEXTNO" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=descript dbname="TMSTAUTONO.DESCRIPT" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=area_code dbname="TMSTAUTONO.AREA_CODE" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=factory_code dbname="TMSTAUTONO.FACTORY_CODE" )
+ retrieve="  SELECT TMSTAUTONO.NOTYPE,
+			TMSTAUTONO.NONAME,
+			TMSTAUTONO.NEXTNO,
+			TMSTAUTONO.DESCRIPT,
+			TMSTAUTONO.AREA_CODE,
+			TMSTAUTONO.FACTORY_CODE  
+    FROM TMSTAUTONO   
+   WHERE TMSTAUTONO.NOTYPE = 'TASK' AND
+			TMSTAUTONO.NONAME = 'NEXTWONO'
+" update="TMSTAUTONO" updatewhere=0 updatekeyinplace=yes )
+groupbox(band=detail text=""border="5" color="0" x="41" y="32" height="320" width="1481"  name=gb_1 visible="1"  font.face="굴림" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="32567536" )
+text(band=detail alignment="0" text="다음작업지시 번호:" border="0" color="0" x="82" y="76" height="56" width="498" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=10 border="5" color="0" x="608" y="76" height="68" width="850" format="[general]" html.valueishtml="0"  name=nextno visible="1" edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="32567536" )
+text(band=detail alignment="0" text="(예방정비 화면에 등록된 스케줄링 기준으로 " border="0" color="0" x="78" y="196" height="56" width="1257" html.valueishtml="0"  name=nextno_t visible="1"  font.face="굴림" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="작업시시를 생성할때 사용되는 작업지시 번호)" border="0" color="0" x="78" y="264" height="56" width="1490" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

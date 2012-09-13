@@ -1,0 +1,101 @@
+$PBExportHeader$f_autdiv_set.srf
+$PBExportComments$권한별 지역공장 Setting
+global type f_autdiv_set from function_object
+end type
+
+forward prototypes
+global subroutine f_autdiv_set (datawindow adw)
+end prototypes
+
+global subroutine f_autdiv_set (datawindow adw);//////////////////////////////////////////////////////////////////////////////////////////
+// * 권한에 따라 지역, 공장 설정 *
+//
+//                        																2002.12.20  박병주
+//
+// 권한등록: -> KDAC종합정보시스템 -> 공통 -> 시스템관리 -> 프로그램 -> 사용자관리.
+//          권한( 지역, 담당, 공장 )
+// 예)
+//    지역 = '' And 담당 = ''    --> 전지역 전공장 권한
+//    지역 = '' And 담당 = 'M'    --> 기계생산담당 ( 다른지역의 M, S 공장 선택 가능 )
+//		                      'J'    --> 진천생산담당 ( 다른지역의 M, S, H 공장 선택 가능 )
+//    지역 = 'D' And 담당 = 'A' And 공장 = 'A'   --> 대구, 전장공장으로 Setting(선택불가).
+//////////////////////////////////////////////////////////////////////////////////////////
+
+string ls_Rtn
+
+If g_s_autarea = '' And g_s_autplnt = '' Then Return   // 전체 권한자.
+
+adw.Object.Xplant[1] = g_s_autarea
+If g_s_autarea <> '' Then adw.Object.Xplant.Protect = 1 // 해당 지역권한만 허가.
+
+DataWindowChild ldwc_div
+
+adw.GetChild( 'div', ldwc_Div )
+ldwc_Div.SetTransObject( SQLCA )
+ldwc_Div.Retrieve( g_s_autarea )
+If g_s_autdiv = '' Then         	// 담당의 전체 권한자.
+	String ls_Div_Syntax
+	Int	 li_Pos_From, li_Pos_To
+	
+	ls_Div_Syntax = ldwc_div.Describe( "DataWindow.Table.Select" )
+	ls_Div_Syntax = f_Replace_With( ls_Div_Syntax, "'01'", "~~~'01~~~'" )
+	ls_Div_Syntax = f_Replace_With( ls_Div_Syntax, "'DAC030'", "~~~'DAC030~~~'" )
+	
+	If g_s_autplnt = 'M' Then        // 기계생산담당
+		li_Pos_From = Pos( ls_Div_Syntax, 'in (' )
+		li_Pos_From += 4
+		li_Pos_To = Pos( ls_Div_Syntax, ')', li_Pos_From )
+		
+		ls_Div_Syntax = Mid( ls_Div_Syntax, 1, li_Pos_From ) + " ~~~'M~~~', ~~~'S~~~' " + &
+							 Mid( ls_Div_Syntax, li_Pos_To )
+		
+		ls_Rtn = ldwc_div.Modify( "DataWindow.Table.Select = '" + ls_Div_Syntax + "'" )		
+	ElseIf g_s_autplnt = 'H' Then   // 공조생산담당
+		li_Pos_From = Pos( ls_Div_Syntax, 'in (' )
+		li_Pos_From += 4
+		li_Pos_To = Pos( ls_Div_Syntax, ')', li_Pos_From )
+		
+		ls_Div_Syntax = Mid( ls_Div_Syntax, 1, li_Pos_From ) + " ~~~'H~~~', ~~~'V~~~' " + &
+							 Mid( ls_Div_Syntax, li_Pos_To )		
+		
+		ls_Rtn = ldwc_div.Modify( "DataWindow.Table.Select = '" + ls_Div_Syntax + "'" )
+	ElseIf g_s_autplnt = 'Q' Then   // 품질경영담당.
+		li_Pos_From = Pos( ls_Div_Syntax, 'in (' )
+		li_Pos_From += 4
+		li_Pos_To = Pos( ls_Div_Syntax, ')', li_Pos_From )
+		
+		ls_Div_Syntax = Mid( ls_Div_Syntax, 1, li_Pos_From ) + " ~~~'D~~~', ~~~'F~~~' " + &
+							 Mid( ls_Div_Syntax, li_Pos_To )		
+		
+		ls_Rtn = ldwc_div.Modify( "DataWindow.Table.Select = '" + ls_Div_Syntax + "'" )
+	ElseIf g_s_autplnt = 'J' Or g_s_autplnt = 'K' Then   // 진천, 군산
+		li_Pos_From = Pos( ls_Div_Syntax, 'in (' )
+		li_Pos_From += 4
+		li_Pos_To = Pos( ls_Div_Syntax, ')', li_Pos_From )
+		
+		ls_Div_Syntax = Mid( ls_Div_Syntax, 1, li_Pos_From ) + " ~~~'M~~~', ~~~'S~~~', ~~~'H~~~' " + &
+							 Mid( ls_Div_Syntax, li_Pos_To )		
+		
+		ls_Rtn = ldwc_div.Modify( "DataWindow.Table.Select = '" + ls_Div_Syntax + "'" )
+		
+	ElseIf g_s_autplnt = 'Y' Then   // 
+		li_Pos_From = Pos( ls_Div_Syntax, 'in (' )
+		li_Pos_From += 4
+		li_Pos_To = Pos( ls_Div_Syntax, ')', li_Pos_From )
+		
+		ls_Div_Syntax = Mid( ls_Div_Syntax, 1, li_Pos_From ) + " ~~~'Y~~~' " + &
+							 Mid( ls_Div_Syntax, li_Pos_To )		
+		
+		ls_Rtn = ldwc_div.Modify( "DataWindow.Table.Select = '" + ls_Div_Syntax + "'" )
+	End If
+	
+	ldwc_Div.Retrieve( g_s_autarea )
+Else  // 해당 공장담당
+	
+	adw.Object.Xplant.Protect = 1
+	
+	adw.Object.Div[1] = g_s_autdiv
+	adw.Object.Div.Protect = 1
+End If
+end subroutine
+

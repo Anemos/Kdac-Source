@@ -1,0 +1,62 @@
+$PBExportHeader$f_pur040_getgubun.srf
+$PBExportComments$장기,구매자금,유상사급 품목구분(pur102,pur105,inv304):
+global type f_pur040_getgubun from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getgubun (string as_vsrno, string as_itno)
+end prototypes
+
+global function string f_pur040_getgubun (string as_vsrno, string as_itno);////////////////////////////////////////////////
+////////////////////////////////////////////////
+string ls_gubun
+long ll_row
+//장기품목여부
+SELECT count(*)
+  INTO :ll_row  
+FROM "PBPUR"."PUR105"  
+WHERE ( "PBPUR"."PUR105"."COMLTD" = '01' ) AND  
+      ( "PBPUR"."PUR105"."DEPT" = 'D' ) AND  
+      ( "PBPUR"."PUR105"."VSRNO" = :as_vsrno ) AND  
+      ( "PBPUR"."PUR105"."ITNO" = :as_itno )  and
+      ( "PBPUR"."PUR105"."CODEALL" = ' ' )   ;  //2008.09.10
+//( "PBPUR"."PUR105"."CODE4" = ' ' )   ;	//2008.09.10 적용시 : 기존 데이타 수정해야됨. CODE4='N', CODE5='N', CODEALL='N', ENDDT=PUR103_ADJDT
+if isnull(ll_row) = false and ll_row >= 1 then
+	ls_gubun = 'Y'	//장기대상
+else
+	ls_gubun = 'N'	//장기비대상
+end if
+
+
+//구매자금여부
+ll_row = 0
+SELECT "PBPUR"."PUR102"."VNDNO"
+ INTO :ll_row  
+FROM "PBPUR"."PUR102"  
+WHERE ( "PBPUR"."PUR102"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR102"."DEPT" = 'D' ) AND  
+		( "PBPUR"."PUR102"."VSRNO" = :as_vsrno )   ;
+ if isnull(ll_row) =false and ll_row >= 1 then
+	ls_gubun = ls_gubun + 'Y'
+ else
+	ls_gubun = ls_gubun + 'N'
+ end if
+ 
+ //유상사급여부
+ll_row = 0
+SELECT count(*)
+  INTO :ll_row  
+FROM "PBINV"."INV304"  
+WHERE ( "PBINV"."INV304"."COMLTD" = '01' ) AND  
+//    ( "PBINV"."INV304"."VSRNO" = :as_vsrno ) AND  	//추후 유상사급 업체추가시 변경해야됨. 2008.09.10
+      ( "PBINV"."INV304"."ITNO" = :as_itno )   ;
+ if isnull(ll_row) =false and ll_row >= 1 then
+	ls_gubun = ls_gubun + 'Y'
+ else
+	ls_gubun = ls_gubun + 'N'
+ end if
+
+return ls_gubun
+
+end function
+

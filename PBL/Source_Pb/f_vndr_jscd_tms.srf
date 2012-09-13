@@ -1,0 +1,26 @@
+$PBExportHeader$f_vndr_jscd_tms.srf
+$PBExportComments$업체코드이용 마감주기코드 Return
+global type f_vndr_jscd_tms from function_object
+end type
+
+forward prototypes
+global function any f_vndr_jscd_tms (string as_dept, string as_vsrno)
+end prototypes
+
+global function any f_vndr_jscd_tms (string as_dept, string as_vsrno);///////////////////////////////////////////////////////////////
+// 정산주기  가져오기
+//                  argument : 업체전산번호
+//////////////////////////////////////////////////////////////
+
+String ls_Jscd
+
+SELECT "PBPUR"."PUR102"."JSCD1" 
+ INTO :ls_Jscd  
+FROM "PBPUR"."PUR102"  // 주관부서별 업체 Master
+WHERE ( "PBPUR"."PUR102"."COMLTD" = '01' ) AND ( "PBPUR"."PUR102"."DEPT" = :as_dept) AND
+      ( "PBPUR"."PUR102"."VSRNO" = :as_vsrno)Using sqlca ;
+If SQLCA.SQLCode <> 0 Then Return ""
+ 
+return ls_Jscd
+end function
+

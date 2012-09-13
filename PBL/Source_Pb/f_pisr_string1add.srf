@@ -1,0 +1,64 @@
+$PBExportHeader$f_pisr_string1add.srf
+$PBExportComments$입력문자 1증가 함수 f_pisr_string_1add( string ) return string + 1
+global type f_pisr_string1add from function_object
+end type
+
+forward prototypes
+global function string f_pisr_string1add (string as_org)
+end prototypes
+
+global function string f_pisr_string1add (string as_org);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_string1add
+//	Access		: reorder
+//	Arguments	: string		as_org	문자값
+//	Returns		: string					입력문자값 + 1 ( 36진수 증가치 )
+//	Description	: 업체별 품번을 Unique하게 구분하기위해 Key값 Count ( 0~9,A~Z 의 36진수 문자값 증가 )
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh_Sang
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+integer li_length, i, li_ascii
+string ls_string[], ls_result, ls_max
+
+ls_max = ''
+li_length = Len ( as_org )
+
+for i=1 to li_length
+	ls_max = Ls_max + 'Z'
+next
+
+if as_org >= ls_max then 
+//	MessageBox( "최대값초과","문자값을 더이상 증가시킬 수 없습니다.", Information! )
+	return ''
+end if 
+
+for i=1 to li_length step 1
+	ls_string[i] = Mid( as_org, i , 1)
+next
+
+do until i < 1
+	i = i - 1
+	li_ascii = asc( ls_string[i] ) + 1 
+	
+	if li_ascii >= 48 and li_ascii <= 57 then 
+		ls_string[i] = char(li_ascii)
+		exit
+	elseif li_ascii > 57 and li_ascii < 65 then
+		ls_string[i] = 'A'
+		exit
+	elseif li_ascii >= 65 and li_ascii <= 90 then
+		ls_string[i] = char(li_ascii)
+		exit
+	elseif li_ascii > 90 then 
+		ls_string[i] = '0'
+	end if
+loop
+
+ls_result = ''
+for i=1 to li_length step 1
+	ls_result = ls_result + ls_string[i]
+next
+
+return ls_result
+end function
+

@@ -1,0 +1,95 @@
+$PBExportHeader$d_per_textup_acnt04.srd
+$PBExportComments$°èÈ¹±ÙÅÂ ÀÏ°ý ¿¢¼¿¾÷·Îµå
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=64 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=8 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(8) update=yes updatewhereclause=yes key=yes name=pay254_xdate dbname="PAY254.XDATE" )
+ column=(type=char(6) update=yes updatewhereclause=yes key=yes name=pay254_empno dbname="PAY254.EMPNO" )
+ column=(type=char(3) update=yes updatewhereclause=yes name=pay254_cdr dbname="PAY254.CDR" )
+ column=(type=char(4) updatewhereclause=yes name=per001_pebonbu dbname="PER001.PEBONBU" )
+ column=(type=char(4) updatewhereclause=yes name=per001_pedept dbname="PER001.PEDEPT" )
+ column=(type=char(10) updatewhereclause=yes name=per001_penamek dbname="PER001.PENAMEK" )
+ column=(type=char(2) updatewhereclause=yes name=per001_peclass dbname="PER001.PECLASS" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pay254_paypart dbname="PAY254.PAYPART" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=pay254_status dbname="PAY254.STATUS" values="°èÈ¹	R/ÀÔ·Â	I/È®Á¤	C/" )
+ column=(type=char(3) updatewhereclause=yes name=per001_pearea dbname="PER001.PEAREA" )
+ column=(type=char(2) updatewhereclause=yes name=per001_pejikchek dbname="PER001.PEJIKCHEK" )
+ column=(type=char(4) updatewhereclause=yes name=per001_peintdept dbname="PER001.PEINTDEPT" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=pay254_extd dbname="PAY254.EXTD" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=pay254_inptid dbname="PAY254.INPTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=pay254_inptdt dbname="PAY254.INPTDT" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=pay254_updtid dbname="PAY254.UPDTID" )
+ column=(type=char(19) update=yes updatewhereclause=yes name=pay254_updtdt dbname="PAY254.UPDTDT" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=pay254_ipaddr dbname="PAY254.IPADDR" )
+ column=(type=char(30) update=yes updatewhereclause=yes name=pay254_macaddr dbname="PAY254.MACADDR" )
+ column=(type=char(2) updatewhereclause=yes name=errcol dbname="ERRCOL" )
+ column=(type=char(72) updatewhereclause=yes name=errtext dbname="ERRTEXT" )
+ retrieve="  SELECT ~"PBPAY~".~"PAY254~".~"XDATE~",
+         ~"PBPAY~".~"PAY254~".~"EMPNO~",
+		    ~"PBPAY~".~"PAY254~".~"CDR~",   
+         ~"PBPER~".~"PER001~".~"PEBONBU~",   
+         ~"PBPER~".~"PER001~".~"PEDEPT~",     
+         ~"PBPER~".~"PER001~".~"PENAMEK~",   
+         ~"PBPER~".~"PER001~".~"PECLASS~",   
+         ~"PBPAY~".~"PAY254~".~"PAYPART~",                               
+         ~"PBPAY~".~"PAY254~".~"STATUS~",   
+         ~"PBPER~".~"PER001~".~"PEAREA~",
+         ~"PBPER~".~"PER001~".~"PEJIKCHEK~",
+         ~"PBPER~".~"PER001~".~"PEINTDEPT~",
+         ~"PBPAY~".~"PAY254~".~"EXTD~",   
+         ~"PBPAY~".~"PAY254~".~"INPTID~",   
+         ~"PBPAY~".~"PAY254~".~"INPTDT~",   
+         ~"PBPAY~".~"PAY254~".~"UPDTID~",   
+         ~"PBPAY~".~"PAY254~".~"UPDTDT~",   
+         ~"PBPAY~".~"PAY254~".~"IPADDR~",   
+         ~"PBPAY~".~"PAY254~".~"MACADDR~",
+         '  ' AS errcol,
+         '                                                                        ' as errtext   
+    FROM  ~"PBPAY~".~"PAY254~",
+          ~"PBPER~".~"PER001~"
+   WHERE ( ~"PBPAY~".~"PAY254~".~"EMPNO~"  = ~"PBPER~".~"PER001~".~"PEEMPNO~" )  AND
+         ( ~"PBPAY~".~"PAY254~".~"XDATE~" BETWEEN :as_frdt and :as_todt ) and
+         ( ~"PBPER~".~"PER001~".~"PEAREA~"  LIKE :as_area || '%' ) and
+			( ~"PBPER~".~"PER001~".~"PEINTDEPT~"  LIKE :as_dept || '%' ) and
+			( ~"PBPAY~".~"PAY254~".~"PAYPART~" LIKE :as_part || '%' ) and
+			( ~"PBPAY~".~"PAY254~".~"STATUS~"  LIKE :as_status || '%' ) and
+			( ~"PBPER~".~"PER001~".~"PEEMPNO~" LIKE :as_empno || '%' ) 
+ORDER BY 
+~"PBPAY~".~"PAY254~".~"XDATE~",
+~"PBPER~".~"PER001~".~"PEINTDEPT~", 
+~"PBPER~".~"PER001~".~"PEJIKCHEK~", 
+~"PBPER~".~"PER001~".~"PECLASS~"         
+" update="PBPAY.PAY254" updatewhere=0 updatekeyinplace=yes arguments=(("as_frdt", string),("as_todt", string),("as_area", string),("as_dept", string),("as_part", string),("as_status", string),("as_empno", string)) )
+text(band=header alignment="2" text="¼øÈ¯ÈÞÁ÷ÀÏ" border="0" color="16777215" x="9" y="8" height="56" width="352" html.valueishtml="0"  name=pay254_xdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="ºÎ¼­" border="0" color="16777215" x="891" y="8" height="56" width="690" html.valueishtml="0"  name=per001_pedept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼º  ¸í" border="0" color="16777215" x="1911" y="8" height="56" width="293" html.valueishtml="0"  name=per001_penamek_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á÷À§" border="0" color="16777215" x="2213" y="8" height="56" width="219" html.valueishtml="0"  name=per001_peclass_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á÷Á¾" border="0" color="16777215" x="2441" y="8" height="56" width="343" html.valueishtml="0"  name=pay254_paypart_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»óÅÂ" border="0" color="16777215" x="2793" y="8" height="56" width="206" html.valueishtml="0"  name=pay254_status_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="»ç¹ø" border="0" color="16777215" x="1591" y="8" height="56" width="311" html.valueishtml="0"  name=pay254_empno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="Á÷Ã¥±¸ºÐ" border="0" color="16777215" x="3008" y="8" height="56" width="251" html.valueishtml="0"  name=per001_pejikchek_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="Errcol" border="0" color="0" x="3269" y="8" height="56" width="105" html.valueishtml="0"  name=errcol_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="¿¡·¯³»¿ë" border="0" color="0" x="3383" y="8" height="56" width="1234" html.valueishtml="0"  name=errtext_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Pay254 Cdr" border="0" color="0" x="4626" y="4" height="60" width="87" html.valueishtml="0"  name=pay254_cdr_t visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="´ã  ´ç" border="0" color="16777215" x="370" y="8" height="56" width="512" html.valueishtml="0"  name=per001_pebonbu_t visible="1"  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="76" width="352" format="@@@@.@@.@@" html.valueishtml="0"  name=pay254_xdate visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="1591" y="4" height="76" width="311" format="[general]" html.valueishtml="0"  name=pay254_empno visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1911" y="4" height="76" width="293" format="[general]" html.valueishtml="0"  name=per001_penamek  tag="¼º  ¸í" visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="33554432" x="2793" y="4" height="76" width="206" format="[general]" html.valueishtml="0"  name=pay254_status visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="2213" y="4" height="76" width="219" format="[general]" html.valueishtml="0"  name=per001_peclass  tag="ÇöÁ÷À§" visible="1" dddw.name=dddw_cd_per306 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2441" y="4" height="76" width="343" format="[general]" html.valueishtml="0"  name=pay254_paypart visible="1" dddw.name=dddw_cd_per003 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="370" y="4" height="76" width="512" format="[general]" html.valueishtml="0"  name=per001_pebonbu  tag="´ã  ´ç" visible="1" dddw.name=dddw_cd_per388 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="891" y="4" height="76" width="690" format="[general]" html.valueishtml="0"  name=per001_pedept  tag="ºÎ¼­ÄÚµå" visible="1" dddw.name=dddw_cd_dac001 dddw.displaycolumn=dname dddw.datacolumn=dcode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="3008" y="4" height="76" width="251" format="[general]" html.valueishtml="0"  name=per001_pejikchek  tag="Á÷Ã¥±¸ºÐ" visible="1" dddw.name=dddw_cd_per353 dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="553648127" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="4626" y="0" height="56" width="87" format="[general]" html.valueishtml="0"  name=pay254_cdr visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=20 alignment="0" tabsequence=32766 border="0" color="255" x="3269" y="4" height="76" width="105" format="[general]" html.valueishtml="0"  name=errcol visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=21 alignment="0" tabsequence=32766 border="0" color="255" x="3383" y="4" height="76" width="1234" format="[general]" html.valueishtml="0"  name=errtext visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

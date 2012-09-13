@@ -1,0 +1,22 @@
+$PBExportHeader$f_get_vsrno.srf
+$PBExportComments$업체전산번호(  사업자번호 )
+global type f_get_vsrno from function_object
+end type
+
+forward prototypes
+global function string f_get_vsrno (string ag_vndr)
+end prototypes
+
+global function string f_get_vsrno (string ag_vndr);String ls_vsrno
+
+SELECT VSRNO	INTO :ls_vsrno
+FROM PBPUR.PUR101
+WHERE COMLTD = '01'
+  AND VNDR = :ag_vndr
+  AND SCGUBUN = 'S'
+  AND DIGUBUN = 'D'
+USING SQLCA;
+
+Return ls_vsrno
+end function
+

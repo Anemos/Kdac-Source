@@ -1,0 +1,40 @@
+$PBExportHeader$f_bom_return_selected.srf
+$PBExportComments$Returns the row numbers of the selected rows of a DataWindow. (arg datawindow fdw_control, ref long fl_row[], Return long)
+global type f_bom_return_selected from function_object
+end type
+
+forward prototypes
+global function long f_bom_return_selected (datawindow fdw_control, ref long fl_row[])
+end prototypes
+
+global function long f_bom_return_selected (datawindow fdw_control, ref long fl_row[]);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_return_selected
+//	Access		: public
+//	Arguments	: DataWindow	fdw_control		the DataWindow control that has rows selected
+//					  Long			fl_row[]			Passed By Reference - Row Number was selected
+//	Returns		: Long			ln_count			Selected Row Count 
+//	Description	: DataWindow의 Selected Row의 수와 Row Number를 구한다.
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Lee Jong-il
+// Coded Date	: 1998. 05. 29
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+long	ln_row, ln_selected_count, ln_index = 1
+
+// 첫번째 SelectedRow()를 구한다.
+ln_row = fdw_control.GetSelectedRow(0)
+
+If ln_row = 0 then
+	// Selected Row가 없는 경우
+	Return 0
+Else
+	// Selected Row가 있는 동안 Looping 
+	Do
+		fl_row[ln_index] = ln_row
+		ln_index++
+		ln_row = fdw_control.GetSelectedRow (ln_row)
+	Loop While ln_row > 0
+	
+	Return ln_index - 1
+End If
+end function
+

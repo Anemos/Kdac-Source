@@ -1,0 +1,49 @@
+$PBExportHeader$f_dac001_dempno.srf
+$PBExportComments$책임자임명(empno) 부서,겸임부서 return -1,1
+global type f_dac001_dempno from function_object
+end type
+
+forward prototypes
+global function integer f_dac001_dempno (string as_empno)
+end prototypes
+
+global function integer f_dac001_dempno (string as_empno);///////////////////////부서코드에 자동으로 책임자 임명 ///////////////////
+string ls_namek, ls_dept, ls_deptdue
+
+select penamek, pedept, pedeptdue
+into :ls_namek, :ls_dept, :ls_deptdue
+from pbper.per001
+where peempno = :as_empno 
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then return -1
+
+if f_spacechk(ls_dept) <> -1 then
+	update "PBCOMMON"."DAC001"
+		set "DEMPNO" = :as_empno, "DEMPNAME" = :ls_namek
+	where  "DCODE"  = :ls_dept  and
+			  "DUSE"  = ''        and
+			  "DTODT" = 0         and
+			  "DSYS1" = 'X'       using sqlcc ;
+			  
+	if sqlcc.sqlnrows <> 1 then
+		return -1
+	End if
+End if
+
+if f_spacechk(ls_deptdue) <> -1 then
+	update "PBCOMMON"."DAC001"
+		set "DEMPNO" = :as_empno, "DEMPNAME" = :ls_namek
+	where  "DCODE"  = :ls_deptdue  and
+			  "DUSE"  = ''           and
+			  "DTODT" = 0            and
+			  "DSYS1" = 'X'       using sqlcc ;
+			  
+	if sqlcc.sqlnrows <> 1 then
+		return -1
+	End if
+End if
+
+return 1
+end function
+

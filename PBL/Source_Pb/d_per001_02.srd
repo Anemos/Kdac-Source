@@ -1,0 +1,18 @@
+$PBExportHeader$d_per001_02.srd
+$PBExportComments$ºÎ¼­
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=dcode dbname="DAC001.DCODE" )
+ column=(type=char(4) updatewhereclause=yes name=dintcode1 dbname="DAC001.DINTCODE1" )
+ column=(type=char(20) updatewhereclause=yes name=dfname2 dbname="DAC001.DFNAME2" )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"PBCOMMON.DAC001~" ) COLUMN(NAME=~"PBCOMMON.DAC001.DCODE~") COLUMN(NAME=~"PBCOMMON.DAC001.DINTCODE1~") COLUMN(NAME=~"PBCOMMON.DAC001.DFNAME2~")WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DUSE~~~"~"   OP =~"=~"    EXP2 =~"' '~"    LOGIC =~"And~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DTODT~~~"~"   OP =~"=~"    EXP2 =~"0~"    LOGIC =~"And~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DACTTODT~~~"~"   OP =~"=~"    EXP2 =~"0~"    LOGIC =~"And~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DFNAME3~~~"~"   OP =~"=~"    EXP2 =~"' '~"    LOGIC =~"And~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DSYS1~~~"~"   OP =~"=~"    EXP2 =~"'X'~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"substr(~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DINTCODE1~~~",1,1)~"   OP =~"=~"    EXP2 =~":a_s_damdang~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DFNAME2~~~"~"   OP =~"<>~"    EXP2 =~"' '~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DFNAME4~~~"~"   OP =~"=~"    EXP2 =~"' '~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"substr(~~~"PBCOMMON~~~".~~~"DAC001~~~".~~~"DINTCODE1~~~",1,1)~"   OP =~"not in~"    EXP2 =~"('A','B')~" ) ) ORDER(NAME=~"PBCOMMON.DAC001.DINTCODE1~" ASC=yes ) ARG(NAME = ~"a_s_damdang~" TYPE = string) " arguments=(("a_s_damdang", string)) )
+column(band=detail id=3 alignment="0" tabsequence=10 border="5" color="0" x="18" y="8" height="72" width="901" format="[general]" html.valueishtml="0"  name=dfname2 visible="1" dddw.name=dddw_cd_dac001 dddw.displaycolumn=dname dddw.datacolumn=dcode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=yes dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.hscrollbar=yes dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

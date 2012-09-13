@@ -1,0 +1,29 @@
+$PBExportHeader$f_get_accenddtchk.srf
+$PBExportComments$마감일자check return
+global type f_get_accenddtchk from function_object
+end type
+
+forward prototypes
+global function string f_get_accenddtchk (string a_s_company, string a_s_sys, string a_s_accode)
+end prototypes
+
+global function string f_get_accenddtchk (string a_s_company, string a_s_sys, string a_s_accode);string l_s_enddt
+
+select "PBACC"."ACC270"."EDENDDT"
+      into :l_s_enddt 
+from "PBACC"."ACC270","PBACC"."ACC010"
+where "PBACC"."ACC270"."COMLTD" = "PBACC"."ACC010"."COMLTD" AND
+      "PBACC"."ACC270"."EDGUBUN" = "PBACC"."ACC010"."ACACCGB" AND
+		 "PBACC"."ACC270"."COMLTD"  = :a_s_company and
+       "PBACC"."ACC270"."EDSYS"   = :a_s_sys     and
+		"PBACC"."ACC010"."ACCODE1"||"PBACC"."ACC010"."ACCODE2"||"PBACC"."ACC010"."ACCODE3"||"PBACC"."ACC010"."ACCODE4"||"PBACC"."ACC010"."ACCODE5" = :a_s_accode and
+		"PBACC"."ACC010"."ACUSE" ='' 
+	   using sqlca; 
+		
+if isnull(l_s_enddt) then
+	l_s_enddt = '' 
+end if		
+return l_s_enddt
+ 
+end function
+

@@ -1,0 +1,46 @@
+$PBExportHeader$d_rtn01_dw_daechae_line2_treeview.srd
+$PBExportComments$Æ¯Á¤ Ç°¹øÀÇ ´ëÃ¼Line1 + 2 Display Treeview
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=rcdvsn dbname="RTN013.RCDVSN" )
+ column=(type=char(12) updatewhereclause=yes name=rcitno dbname="RTN013.RCITNO" )
+ column=(type=char(7) updatewhereclause=yes name=rcline1 dbname="RTN013.RCLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rcline2 dbname="RTN013.RCLINE2" )
+ column=(type=char(1) updatewhereclause=yes name=rcplant dbname="RTN013.RCPLANT" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN013~".~"RCDVSN~",   
+         ~"PBRTN~".~"RTN013~".~"RCITNO~",   
+         ~"PBRTN~".~"RTN013~".~"RCLINE1~",   
+         ~"PBRTN~".~"RTN013~".~"RCLINE2~",   
+         ~"PBRTN~".~"RTN013~".~"RCPLANT~"  
+    FROM ~"PBRTN~".~"RTN013~" INNER JOIN ~"PBINV~".~"INV101~"
+		ON ~"PBRTN~".~"RTN013~".~"RCCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" AND
+			~"PBRTN~".~"RTN013~".~"RCPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" AND
+			~"PBRTN~".~"RTN013~".~"RCDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" AND
+			~"PBRTN~".~"RTN013~".~"RCITNO~" = ~"PBINV~".~"INV101~".~"ITNO~"
+   WHERE ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = '01' ) AND
+			( ~"PBRTN~".~"RTN013~".~"RCPLANT~" = :a_plant ) AND
+			( ~"PBRTN~".~"RTN013~".~"RCDVSN~" = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCITNO~" = :a_itno ) AND    
+         ( ~"PBRTN~".~"RTN013~".~"RCLINE1~" = :a_line1 ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd )   
+GROUP BY ~"PBRTN~".~"RTN013~".~"RCPLANT~",   
+         ~"PBRTN~".~"RTN013~".~"RCDVSN~",   
+         ~"PBRTN~".~"RTN013~".~"RCITNO~",   
+         ~"PBRTN~".~"RTN013~".~"RCLINE1~",   
+         ~"PBRTN~".~"RTN013~".~"RCLINE2~"   
+" arguments=(("a_plant", string),("a_div", string),("a_itno", string),("a_line1", string),("a_pdcd", string)) )
+text(band=header alignment="0" text="Rcline1" border="0" color="0" x="9" y="4" height="60" width="215" html.valueishtml="0"  name=rcline1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Rcline2" border="0" color="0" x="233" y="4" height="60" width="23" html.valueishtml="0"  name=rcline2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Rcplant" border="0" color="0" x="265" y="4" height="60" width="23" html.valueishtml="0"  name=rcplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="215" format="[general]" html.valueishtml="0"  name=rcline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="233" y="0" height="60" width="23" format="[general]" html.valueishtml="0"  name=rcline2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="265" y="0" height="60" width="23" format="[general]" html.valueishtml="0"  name=rcplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

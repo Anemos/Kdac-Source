@@ -1,0 +1,55 @@
+$PBExportHeader$f_piss_itemtype_check.srf
+$PBExportComments$품번 타입가져오기
+global type f_piss_itemtype_check from function_object
+end type
+
+forward prototypes
+global function string f_piss_itemtype_check (string fs_areacode, string fs_divisioncode, string fs_itemcode)
+end prototypes
+
+global function string f_piss_itemtype_check (string fs_areacode, string fs_divisioncode, string fs_itemcode);//return => 1:원재료,2:단품,3:반제품,4:상품,5:완제품
+//itemcalss = '10' and itembysource = '01' or '02' or '04' 면 단품 retrun '2'
+//                 and itembysource = '03' 면 반제품 retrun '3'
+//                 else 원재료 '1'
+//itemclass = '20  면 단품 return '2'
+//itemcalss = '30' 면 완제품 return '5'
+//itemcalss = '35' 면 상품 return '4'
+//itemcalss = '40' 면 단품 return '2'
+//itemcalss = '50' 면 단품 return '2'
+
+string ls_itemclass,ls_itembuysource
+
+select top 1 itemclass,itembuysource
+  into :ls_itemclass,:ls_itembuysource
+  from tmstmodel
+ where areacode = :fs_areacode
+   and divisioncode = :fs_divisioncode
+	and itemcode = :fs_itemcode
+	using sqlpis;
+
+CHOOSE CASE ls_itemclass
+	CASE '10'
+			CHOOSE CASE ls_itembuysource
+				CASE '01','02','04'
+					  return '2'
+				CASE '03'
+					  return '3'
+				CASE ELSE
+					  return '1'
+			END CHOOSE
+	CASE '20'
+			return '2'
+	CASE '30'
+			return '5'
+	CASE '35'
+			return '4'
+	CASE '40'
+			return '2'
+	CASE '50'
+			return '2'
+	CASE ELSE
+		  return 'ERROR'
+END CHOOSE
+
+end function
+

@@ -1,0 +1,68 @@
+$PBExportHeader$f_close_report.srf
+$PBExportComments$열려있는 출력화면 닫기
+global type f_close_report from function_object
+end type
+
+forward prototypes
+global subroutine f_close_report (string ag_value, string ag_title)
+end prototypes
+
+global subroutine f_close_report (string ag_value, string ag_title);////////////////////////////////////////////////////////////////////////
+//	기능 : 출력 Window("w_prt")를 Open할 때 이미 열려져 있으면 닫기
+//			 ag_value = "1" 이면 Title이 같은것
+//			 ag_value = "2" 이면 Tag가   같은것
+// 사용 : w_origin_sheet07->closequery
+////////////////////////////////////////////////////////////////////////
+string	ls_winid, ls_title, ls_tag
+window  	ls_wsheet
+boolean 	lb_valid
+
+//닫고자하는 처음화면이 "w_prt" and "ls_title = ag_title" 이면 닫는다.
+ls_wsheet 	= 	w_frame.GetFirstSheet()
+IF 	IsValid(ls_wsheet) then
+	ls_winid 	= 	ls_wsheet.ClassName()
+	ls_title 	= 	ls_wsheet.title
+	ls_tag   	= 	ls_wsheet.tag
+	if 	ag_value  = "1" then									//Title이 같은것
+		if 	ls_winid = "w_easy_prt" and 	ls_title = ag_title then
+			close(ls_wsheet)
+			return
+		end if
+	elseif	ag_value  = "2" then							//Tag가 같은것
+		if 	ls_winid = "w_easy_prt" and 	ls_tag   = ag_title then
+			close(ls_wsheet)
+			return
+		end if
+	end if
+end if
+
+//닫고자하는 화면이 뒤에 있을때 "w_prt" and "ls_title = ag_title" 이면 닫는다.
+Do
+	if 	isValid(ls_wsheet)	then
+		ls_wsheet 	=	w_frame.GetNextSheet(ls_wsheet)
+	else
+		ls_wsheet 	= 	w_frame.GetFirstSheet()
+	end if
+	
+	lb_valid  	=	isValid(ls_wsheet)
+	
+	if 	lb_valid 	then
+		ls_winid	= 	ls_wsheet.ClassName()
+		ls_title 	= 	ls_wsheet.title
+		ls_tag   	=	ls_wsheet.tag
+		if 	ag_value  = "1" then									//Title이 같은것
+			if 	ls_winid = "w_prt" and 	ls_title = ag_title then
+				close(ls_wsheet)
+				return
+			end if
+		elseif	ag_value  = "2" then							//Tag가 같은것
+			if 	ls_winid = "w_prt" and 	ls_tag   = ag_title then
+				close(ls_wsheet)
+				return
+			end if
+		end if
+	end if
+Loop While	lb_valid
+
+end subroutine
+

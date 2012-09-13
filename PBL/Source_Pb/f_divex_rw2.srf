@@ -1,0 +1,276 @@
+$PBExportHeader$f_divex_rw2.srf
+$PBExportComments$역이체납품 입고정보생성(원재료)
+global type f_divex_rw2 from function_object
+end type
+
+forward prototypes
+global function integer f_divex_rw2 (string as_fsrno, string as_srno2)
+end prototypes
+
+global function integer f_divex_rw2 (string as_fsrno, string as_srno2);String ls_column, ls_errcd, ls_frdt, ls_todt, ls_slip, ls_slno, ls_rpdt, ls_srno1, ls_srno2, & 
+       ls_key, ls_srno, ls_itno, ls_itnm, ls_spec, ls_unit, ls_rev, ls_tdte1, ls_tdte2, ls_tdte3, ls_psrno
+String ls_xplant,  ls_div,  ls_cls,  ls_srce,  ls_pdcd,  ls_plan,  ls_mlan,  ls_dept, ls_chd, ls_use
+String ls_xplant1, ls_div1, ls_cls1, ls_srce1, ls_pdcd1, ls_plan1, ls_mlan1, ls_dept1, ls_cdiv, ls_cdiv1
+Int    li_rtn, ii
+Long   ll_row, ll_currow, ll_ohamt, ll_amt, ll_intamt, ll_outamt, ll_tramt, ll_ohamt1, & 
+       ll_amt1, ll_intamt1, ll_outamt1, ll_tsamt, ll_wamt
+Dec{1} ld_reqty, ld_qty, ld_reqqt, ld_ohqty, ld_intqty, ld_outqty, ld_ohqty1, & 
+       ld_intqty1, ld_outqty1, ld_rqty1, ld_sqty1, ld_rqty, ld_sqty
+Dec{2} ld_cost, ld_cost1, ld_costav, ld_costav1, ld_costls, ld_costls1, ld_wcost, ld_wcost1
+string ls_xtype, ls_rvno, ls_xunit, ls_xunit1, ls_purno
+	
+//이체분할납품 정보
+SELECT SLNO, REQDT, DUDT, REQTY                                          
+INTO  :ls_purno, :ls_tdte1, :ls_tdte2, :ld_reqqt                 
+FROM PBINV.INV620                                                            
+WHERE COMLTD = '01'    AND SRNO = :as_fsrno Using sqlca;
+
+if sqlca.sqlcode <> 0 then
+  return -1
+End if
+
+SELECT XPLANT, DIV, ITNO, XPLANT1, DIV1, AQTY, SLNO, ISDT                                             
+INTO  :ls_xplant, :ls_div, :ls_itno, :ls_xplant1, :ls_div1, :ld_qty, :ls_slno, :ls_tdte3                    
+FROM PBINV.INV621                                                            
+WHERE COMLTD = '01'    AND SRNO = :as_fsrno AND SRNO2= :as_srno2  Using sqlca;
+
+if sqlca.sqlcode <> 0 then
+  return -1
+End if
+
+// 불출지역/불출공장 => 품목재고 Read
+SELECT "PBINV"."INV101"."XUNIT", "PBINV"."INV101"."PDCD",  "PBINV"."INV101"."CLS",   "PBINV"."INV101"."SRCE",  "PBINV"."INV101"."XPLAN",
+		 "PBINV"."INV101"."MLAN",  "PBINV"."INV101"."COSTAV","PBINV"."INV101"."COSTLS",
+		 "PBINV"."INV101"."OHUQTY","PBINV"."INV101"."OHAMT", "PBINV"."INV101"."OHRQTY", "PBINV"."INV101"."OHSQTY",
+		 "PBINV"."INV101"."INTQTY","PBINV"."INV101"."INTAMT","PBINV"."INV101"."OUTQTY","PBINV"."INV101"."OUTAMT"
+  INTO :ls_xunit1, :ls_pdcd1,  :ls_cls1,   :ls_srce1,  :ls_plan1, :ls_mlan1,  :ld_costav1,:ld_costls1,
+		 :ld_ohqty1, :ll_ohamt1, :ld_rqty1, :ld_sqty1,  :ld_intqty1,:ll_intamt1,:ld_outqty1,:ll_outamt1 
+  FROM "PBINV"."INV101" 
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' )    AND ( "PBINV"."INV101"."XPLANT" = :ls_xplant1) AND
+		( "PBINV"."INV101"."DIV"    = :ls_div1) AND ( "PBINV"."INV101"."ITNO"   = :ls_itno)  using sqlca ;
+		
+// 입고지역/입고공장 => 품목재고 Read
+SELECT "PBINV"."INV101"."XUNIT", "PBINV"."INV101"."PDCD",  "PBINV"."INV101"."CLS",  "PBINV"."INV101"."SRCE",  
+		 "PBINV"."INV101"."OHRQTY","PBINV"."INV101"."OHSQTY","PBINV"."INV101"."XPLAN", 
+		 "PBINV"."INV101"."MLAN", "PBINV"."INV101"."COSTAV", "PBINV"."INV101"."COSTLS", "PBINV"."INV101"."OHUQTY",
+		 "PBINV"."INV101"."OHAMT","PBINV"."INV101"."INTQTY","PBINV"."INV101"."INTAMT"
+  INTO :ls_xunit, :ls_pdcd, :ls_cls,  :ls_srce,  :ld_rqty,  :ld_sqty, :ls_plan, :ls_mlan, :ld_costav, :ld_costls,
+		 :ld_ohqty,:ll_ohamt,:ld_intqty,:ll_intamt
+  FROM "PBINV"."INV101" 
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND	( "PBINV"."INV101"."XPLANT" = :ls_xplant) AND
+		( "PBINV"."INV101"."DIV"    = :ls_div) AND	( "PBINV"."INV101"."ITNO"   = :ls_itno)  using sqlca ;
+
+If ls_srce= '04' Then 
+	ld_cost   = ld_costls
+	ld_wcost  = f_get_iwcost( ls_xplant, ls_div, ls_itno)
+	ll_amt    = truncate(ld_wcost * ld_qty,0)
+	ll_tsamt  = truncate(ld_cost  * ld_qty,0)
+else
+	ld_cost   = ld_costav1
+	ll_amt    = truncate(ld_cost  * ld_qty,0)
+	ll_tsamt  = 0
+End If	
+
+ld_intqty1 = ld_intqty1 - ld_qty
+ll_intamt1 = ll_intamt1 - ll_amt
+
+ld_ohqty1 = ld_ohqty1 - ld_qty
+
+// 수량 = 0인데 금액 > 0인경우 입고누적 Column에 남은금액 (+)
+if (ld_ohqty1 + ld_rqty1 + ld_sqty1) = 0 then
+	ll_ohamt1  = ll_ohamt1 - ll_amt			
+	ll_intamt1 = ll_intamt1 - ll_ohamt1
+	ll_amt     = ll_amt + ll_ohamt1
+	ll_ohamt1  = 0
+Else
+	ll_ohamt1 = ll_ohamt1 - ll_amt
+End if
+
+// 재고 Table : 불출지역/공장 Update
+UPDATE "PBINV"."INV101" 
+SET    "OHUQTY" = :ld_ohqty1,  "OHAMT"   = :ll_ohamt1,    "INTQTY" = :ld_intqty1, "INTAMT"  = :ll_intamt1,
+		 "UPDTID" = :g_s_empno,  "UPDTDT"  = :g_s_datetime, "IPADDR" = :g_s_ipaddr, "MACADDR" = :g_s_macaddr
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' )      AND ( "PBINV"."INV101"."XPLANT" = :ls_xplant1) AND
+		( "PBINV"."INV101"."DIV"    = :ls_div1)   AND ( "PBINV"."INV101"."ITNO"   = :ls_itno)  using sqlca ;
+if sqlca.sqlcode <> 0  then
+	messagebox("DataBase Base Error!",sqlca.sqlerrtext)		  
+	return -1
+end if			
+
+//**      trans db 생성<=이체불출 생성       **//
+//**      전표구분 : "IW"-이체불출           **// 
+
+ls_srno  = mid(as_fsrno,1,8)
+ls_srno1 = mid(as_fsrno,9,2)
+ls_srno2 = as_srno2
+
+SELECT ITNM, SPEC, XTYPE, RVNO, XUNIT                                                
+ INTO :ls_itnm, :ls_spec, :ls_xtype, :ls_rvno, :ls_unit                                     
+FROM PBINV.INV002                                                             
+WHERE COMLTD = '01' AND ITNO = :ls_itno Using sqlca;
+
+// 원가사업장
+ls_cdiv1 = f_get_accdiv(ls_xplant1,ls_div1,ls_pdcd1)
+
+//이체불출공장에 따른 부서코드 
+if ls_xplant1 = "J" then
+	ls_dept1 = 'J100'
+end if
+if ls_xplant1 = "K" then
+	ls_dept1 = 'K100'
+end if
+if ls_xplant1 = "D" and ls_div1 = "H" then
+	ls_dept1 = '5600'
+end if
+if ls_xplant1 = "D" and ls_div1 = "V" then
+	ls_dept1 = '5100'
+end if
+if ls_xplant1 = "D" and ls_div1 = "M"  then
+	ls_dept1 = '7A00'
+end if
+if ls_xplant1 = "D" and ls_div1 = "S"  then
+	ls_dept1 = '7100'
+end if
+
+// 이체불출 TRANS 생성
+insert into "PBINV"."INV401"  
+		 ( "COMLTD",      "SLIPTYPE",    "SRNO",        "SRNO1",       "SRNO2",      "XPLANT",  
+			"DIV",         "COSTDIV",     "SLNO",        "ITNO",        "RVNO",       "ITNM",   
+			"SPEC",        "XTYPE",       "XUNIT",       "CLS",         "SRCE",       "PDCD",
+			"XPLAN",       "MLAN",        "RQNO",        "NQC",         "KBCD",       "DUDT",       "PURNO",   
+			"VSRNO",       "VNDR",        "VNDNM",       "XPAY",        "OTXCD",      "LCNO",
+			"LCDT",        "DEPT",        "RTNGUB",      "XUSE",        "RSVSRNO",    "ORNO",   
+			"MCHNO",       "EXFR",        "EXTO",        "RQDIV",       "BLNO",       "EXCH",
+			"CURR",        "FOBAMT",      "TDTE1",       "TDTE2",       "TDTE3",      "TDTE4",
+			"TDTE5",       "TDTE6",       "TQTY1",       "TQTY2",       "TQTY3",      "TQTY4",
+			"XCOST",       "TRAMT",       "TSHSL",       "RTCOM",       "RTQTY",      "SSSRNO",
+			"SSCOM",       "RFCD",        "CHKCD",       "TSAMT",       "TFILL",      "TCTTL",      "DSAG",
+			"MAKER",       "PJTNO",       "INVSTCD",     "INVEST",      "EXTD",       "INPTID",     "INPTDT",
+			"UPDTID",      "UPDTDT",      "IPADDR",      "MACADDR" )  
+VALUES ( :g_s_company,  'IW',          :ls_srno,      :ls_srno1,     :ls_srno2,    :ls_xplant1, 
+			:ls_div1,      :ls_cdiv1,     :ls_slno,      :ls_itno,      :ls_rvno,     :ls_itnm,
+			:ls_spec,      :ls_xtype,     :ls_xunit1,    :ls_cls1,      :ls_srce1,    :ls_pdcd1, 
+			:ls_plan1,     :ls_mlan1,     ' ',           ' ',           ' ',          ' ',         ' ',   
+			' ',           ' ',           ' ',           ' ',           ' ',          ' ',
+			' ',           :ls_dept1,     ' ',           ' ',           ' ',          ' ',   
+			' ',           '  ',          :ls_xplant,    :ls_div,       ' ',          0,
+			' ',           0,             :ls_tdte1,      :ls_tdte2,      :ls_tdte3,     :g_s_date,
+			' ',           ' ',           :ld_reqqt,     0,             0,            :ld_qty,
+			:ld_cost,     :ll_amt,      'C',           ' ',           0,            ' ',
+			' ',           'C',           ' ',           :ll_tsamt,     ' ',          0,           ' ',
+			' ',           ' ',           ' ',           ' ',           ' ',          :g_s_empno,  :g_s_date,
+			:g_s_empno,    :g_s_date,     :g_s_ipaddr,   :g_s_macaddr  )  using sqlca;
+if sqlca.sqlcode <> 0  then
+	messagebox("Database Error!","이체불출 Insert Error" + sqlca.sqlerrtext)	  
+	return -1
+end if	
+
+if ls_srce1 = '06' then
+	ll_amt   = truncate(ld_costls * ld_qty,0)
+	ll_tsamt = truncate(ld_wcost * ld_qty,0) 
+else
+	ll_amt    = ll_amt
+	ll_tsamt  = 0
+end if
+
+	
+ld_intqty = ld_intqty + ld_qty
+ll_intamt = ll_intamt + ll_amt
+ld_ohqty = ld_ohqty + ld_qty
+ll_ohamt = ll_ohamt + ll_amt
+
+// 재고 Table : 입고지역/공장 => 평균단가 계산
+If ls_cls <> '40' Then
+	If (ld_ohqty + ld_rqty + ld_sqty) > 0 Then
+		ld_costav = ll_ohamt / (ld_ohqty + ld_rqty + ld_sqty)
+	End if
+End if
+
+	// 입고지역 단가/금액
+if (ls_cls1 = '10' and ls_srce1 = '06') then
+	ld_cost = ld_costls
+else
+	ld_cost = ld_cost
+end if
+
+
+// 입고지역/공장 Update
+UPDATE "PBINV"."INV101" 
+  SET  "OHUQTY" = :ld_ohqty, "OHAMT"  = :ll_ohamt,    "INTQTY" = :ld_intqty, "INTAMT"  = :ll_intamt, "COSTAV" = :ld_costav, 
+		 "UPDTID" = :g_s_empno,"UPDTDT" = :g_s_datetime,"IPADDR" = :g_s_ipaddr,"MACADDR" = :g_s_macaddr
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' )   AND ( "PBINV"."INV101"."XPLANT" = :ls_xplant) AND
+		( "PBINV"."INV101"."DIV"    = :ls_div) AND ( "PBINV"."INV101"."ITNO"   = :ls_itno)  using sqlca ;
+If sqlca.sqlcode <> 0  Then
+	messagebox("Database Error!","입고지역 재고 Update Error" + sqlca.sqlerrtext)	  
+	Return -1
+End If
+
+//**  *****************************   **// 
+//**  trans db 생성<=이체입고 생성    **//
+//**  전표구분 : "RW"                 **//
+//**  ******************************  **// 
+
+// 이체불출공장에 따른 부서코드 
+if ls_xplant = 'J' then
+	ls_dept = 'J100'
+end if
+if ls_xplant = 'K' then
+	ls_dept = 'K100'
+end if
+if ls_xplant = 'D' and ls_div = 'H' then
+	ls_dept = '5600'
+end if
+if ls_xplant = 'D' and ls_div = 'V' then
+	ls_dept = '5100'
+end if
+if ls_xplant = "D" and ls_div = "M" then
+	ls_dept = '7A00'
+end if
+if ls_xplant = "D" and ls_div = "S" then
+	ls_dept = '7100'
+end if
+
+// 원가사업장
+ls_cdiv = f_get_accdiv(ls_xplant,ls_div,ls_pdcd)
+
+// 입고 trans 생성
+insert into "PBINV"."INV401"  
+		 ( "COMLTD",      "SLIPTYPE",    "SRNO",        "SRNO1",       "SRNO2",      "XPLANT",  
+			"DIV",         "COSTDIV",     "SLNO",        "ITNO",        "RVNO",       "ITNM",   
+			"SPEC",        "XTYPE",       "XUNIT",       "CLS",         "SRCE",       "PDCD",
+			"XPLAN",       "MLAN",        "RQNO",        "NQC",         "KBCD",       "DUDT",       "PURNO",   
+			"VSRNO",       "VNDR",        "VNDNM",       "XPAY",        "OTXCD",      "LCNO",
+			"LCDT",        "DEPT",        "RTNGUB",      "XUSE",        "RSVSRNO",    "ORNO",   
+			"MCHNO",       "EXFR",        "EXTO",        "RQDIV",       "BLNO",       "EXCH",
+			"CURR",        "FOBAMT",      "TDTE1",       "TDTE2",       "TDTE3",      "TDTE4",
+			"TDTE5",       "TDTE6",       "TQTY1",       "TQTY2",       "TQTY3",      "TQTY4",
+			"XCOST",       "TRAMT",       "TSHSL",       "RTCOM",       "RTQTY",      "SSSRNO",
+			"SSCOM",       "RFCD",        "CHKCD",       "TSAMT",       "TFILL",      "TCTTL",      "DSAG",
+			"MAKER",       "PJTNO",       "INVSTCD",     "INVEST",      "EXTD",       "INPTID",     "INPTDT",
+			"UPDTID",      "UPDTDT",      "IPADDR",      "MACADDR" )  
+VALUES ( :g_s_company,  'RW',          :ls_srno,      :ls_srno1,     :ls_srno2,    :ls_xplant, 
+			:ls_div,       :ls_cdiv,      :ls_slno,      :ls_itno,      :ls_rvno,     :ls_itnm,
+			:ls_spec,      :ls_xtype,     :ls_xunit,     :ls_cls,       :ls_srce,     :ls_pdcd, 
+			:ls_plan,      :ls_mlan,      ' ',           ' ',           ' ',          ' ',         ' ',   
+			' ',           ' ',           ' ',           ' ',           ' ',          ' ',
+			' ',           :ls_dept,      ' ',           ' ',           ' ',          ' ',   
+			' ',           '  ',          :ls_xplant1,    :ls_div1,      ' ',          0,
+			' ',           0,             :ls_tdte1,      :ls_tdte2,      :ls_tdte3,     :g_s_date,
+			' ',           ' ',           :ld_reqqt,     0,             0,            :ld_qty,
+			:ld_cost,      :ll_amt,       'C',           ' ',           0,            ' ',
+			' ',           'C',           ' ',           :ll_tsamt,             ' ',          0,           ' ',
+			' ',           ' ',           ' ',           ' ',           ' ',          :g_s_empno,  :g_s_date,
+			:g_s_empno,    :g_s_date,     :g_s_ipaddr,   :g_s_macaddr  )  using sqlca;
+If sqlca.sqlcode <> 0  Then
+	messagebox("DataBase Error!","이체입고 Insert Error" + sqlca.sqlerrtext)		  
+	Return -1
+End if
+
+// 이체의뢰 DB 상태코드 Update
+UPDATE "PBINV"."INV620"   
+  SET "STCD" = 'B'
+WHERE  "COMLTD" = '01' AND "SRNO" = :as_fsrno using sqlca;
+
+Return 0
+end function
+

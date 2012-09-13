@@ -1,0 +1,46 @@
+$PBExportHeader$f_get_datename.srf
+$PBExportComments$¿µ¹® date
+global type f_get_datename from function_object
+end type
+
+forward prototypes
+global function string f_get_datename (string ag_date)
+end prototypes
+
+global function string f_get_datename (string ag_date);string ls_yy , ls_mm , ls_dd , ls_month_name , ls_rtn
+
+ls_yy = mid(ag_date,1,4)
+ls_mm = mid(ag_date,5,2)
+ls_dd = mid(ag_date,7,2)
+
+choose case ls_mm
+	case '01'
+		ls_month_name = 'Jan.'
+	case '02'
+		ls_month_name = 'Feb.'
+	case '03'
+		ls_month_name = 'Mar.'
+	case '04'
+		ls_month_name = 'Apr.'
+	case '05'
+		ls_month_name = 'May.'
+	case '06'
+		ls_month_name = 'Jun.'
+	case '07'
+		ls_month_name = 'Jul.'
+	case '08'
+		ls_month_name = 'Aug.'
+	case '09'
+		ls_month_name = 'Sep.'
+	case '10'
+		ls_month_name = 'Oct.'
+	case '11'
+		ls_month_name = 'Nov.'
+	case '12'
+		ls_month_name = 'Dec.'
+end choose
+	
+ls_rtn = ls_month_name +' ' + ls_dd +', '+ ls_yy	
+return ls_rtn		
+end function
+

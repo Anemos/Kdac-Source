@@ -1,0 +1,100 @@
+$PBExportHeader$f_up_ipis_mis_tsrconfirm01.srf
+$PBExportComments$SR확정
+global type f_up_ipis_mis_tsrconfirm01 from function_object
+end type
+
+forward prototypes
+global function integer f_up_ipis_mis_tsrconfirm01 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[])
+end prototypes
+
+global function integer f_up_ipis_mis_tsrconfirm01 (ref string ag_message, datawindow ag_dwo, any ag_str_ipis[]);string ls_chgdate, ls_chgcd, ls_srno, ls_userid, ls_inputdate, ls_checksrno, ls_chkstcd
+integer	li_cnt, li_index
+str_ipis_server lstr_ipis
+
+for li_cnt = 1 to ag_dwo.rowcount()
+	ls_srno = trim(ag_dwo.getitemstring(li_cnt,"srno"))
+	
+	li_index = f_ipis_server_get_transaction(ag_str_ipis, 'X', 'Z')	
+	if li_index = -1 then
+		ag_message = "공장연결에 실패하였습니다."
+		return -1
+	else
+		lstr_ipis = ag_str_ipis[li_index]
+	end if
+	
+	If Left(ls_srno, 2) = 'EX' Then
+		// 이체인 놈 START
+		SELECT distinct slno into :ls_checksrno
+		FROM pbinv.inv620
+		WHERE slno = :ls_srno AND stcd = '3'
+		using lstr_ipis.t_sqlpis;
+	     
+		If lstr_ipis.t_sqlpis.sqlcode = 0 Then			
+			UPDATE	pbinv.inv620
+			SET		stcd	= '4', updtid = :g_s_empno, updtdt = :g_s_date
+			WHERE		slno	= :ls_srno AND	stcd	= '3'
+			using lstr_ipis.t_sqlpis;
+				
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "이체인 SR : SR확정에 실패하였습니다."
+				f_ipis_transaction_errorlog('','','f_up_ipis_mis_tsrconfirm01',&
+					lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		Else
+			SELECT stcd into :ls_chkstcd 
+			FROM pbinv.inv620
+			WHERE slno = :ls_srno 
+			using lstr_ipis.t_sqlpis;
+				
+			if ls_chkstcd > '3' then
+				//CONTINUE
+			else
+				ag_message = "이체인 SR : SR확정상태입니다."
+//				f_ipis_transaction_errorlog('','','f_up_ipis_mis_tsrconfirm01',&
+//					lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		End If	
+		// END
+	Else		
+		// 이체 아닌놈 START
+		SELECT srno into :ls_checksrno
+		FROM pbsle.sle301
+		WHERE srno	= :ls_srno AND prtcd	= '2'
+		using lstr_ipis.t_sqlpis;
+	
+		If lstr_ipis.t_sqlpis.sqlcode = 0 Then			
+			UPDATE	pbsle.sle301
+			SET		prtcd	= '3', updtid = :g_s_empno, updtdt = :g_s_date
+			WHERE		srno	= :ls_srno AND	prtcd	= '2'
+			using lstr_ipis.t_sqlpis;
+				
+			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
+				ag_message = "이체가 아닌 SR : SR확정에 실패하였습니다."
+				f_ipis_transaction_errorlog('','','f_up_ipis_mis_tsrconfirm01',&
+					lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		Else
+			SELECT prtcd into :ls_chkstcd
+			FROM		pbsle.sle301
+			WHERE		srno	= :ls_srno 
+			using lstr_ipis.t_sqlpis;
+			
+			if ls_chkstcd > '2' then
+				//CONTINUE
+			else
+				ag_message = "이체가 아닌 SR : SR확정상태입니다. " + ls_srno
+				f_ipis_transaction_errorlog('','','f_up_ipis_mis_tsrconfirm01',&
+					lstr_ipis.t_sqlpis.sqlerrtext,ag_message, g_s_empno, g_s_ipaddr, g_s_macaddr)
+				return -1
+			end if
+		End If
+		// END
+	End If
+next
+
+return 0
+end function
+

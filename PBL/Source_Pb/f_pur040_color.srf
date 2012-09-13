@@ -1,0 +1,45 @@
+$PBExportHeader$f_pur040_color.srf
+$PBExportComments$컬럼색상변경(컬럼명,오류유무,색상유무,dw명)
+global type f_pur040_color from function_object
+end type
+
+forward prototypes
+global function integer f_pur040_color (string ag_s_column, integer ag_n_error, integer ag_n_color, datawindow ag_dw_name)
+end prototypes
+
+global function integer f_pur040_color (string ag_s_column, integer ag_n_error, integer ag_n_color, datawindow ag_dw_name);// 15780518 ,        16777215 ,    12632256  ,      65535
+//	  sky               white         gray           yellow
+//rgb(160,200,239)  (255,255,255)  (192,192,192)  (255,255,0) CREAM(255,255,239)  
+string l_s_command
+long 	 l_l_color = 16777215 //	white
+// Argument
+// ag_s_column = column 명, 
+// ag_n_error = error 여부 1:error 0:not error
+// ag_n_color  = column 색상( 1 = Sky[160,200,239]:YELLOW, 2 = White[255,255,255]:YELLOW, 3 = GRAY:YELLOW )
+//                        
+// ag_dw_name  = datawindow명
+ag_dw_name.setredraw(False) //CONTROLs및OBJECTs의 즉각적인 Update보류
+
+if ag_n_error = 0 then
+	choose case ag_n_color
+		case 1
+			l_l_color = 15780519
+		case 2
+			l_l_color = 16777215
+		case 3
+			l_l_color = 12632256
+   end choose
+else
+	l_l_color = 65535 //yellow
+end if
+
+l_s_command	=	ag_s_column + ".Background.Color = " &            
+					+ "~'" + string(l_l_color) + "~'"
+			//		messagebox(' ', l_s_command)
+
+
+ag_dw_name.Modify(l_s_command)
+ag_dw_name.setredraw(True)
+return(0)
+end function
+

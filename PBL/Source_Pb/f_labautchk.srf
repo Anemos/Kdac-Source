@@ -1,0 +1,40 @@
+$PBExportHeader$f_labautchk.srf
+$PBExportComments$권한 db 값 return(생산직)
+global type f_labautchk from function_object
+end type
+
+forward prototypes
+global function string f_autchk (string a_s_empno)
+global function string f_labautchk (string a_s_empno)
+end prototypes
+
+global function string f_autchk (string a_s_empno);string l_s_ulvl
+
+select ulvl into :l_s_ulvl
+from delabo.labmab
+where uusrid = :a_s_empno
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	l_s_ulvl = ''
+end if
+
+return mid(l_s_ulvl,1,1)
+
+end function
+
+global function string f_labautchk (string a_s_empno);string l_s_ulvl
+
+select ulvl into :l_s_ulvl
+from delabo.labmab 
+where uusrid = :a_s_empno
+using sqlcc;
+
+if sqlcc.sqlcode <> 0 then
+	l_s_ulvl = ''
+end if
+
+return mid(l_s_ulvl,1,1)
+
+end function
+

@@ -1,0 +1,32 @@
+$PBExportHeader$f_get_accdeptnm.srf
+$PBExportComments$ºÎ(ÆÀ)´ÜÀ§ ºÎ¼­¸íÄª return
+global type f_get_accdeptnm from function_object
+end type
+
+forward prototypes
+global function string f_get_accdeptnm (string a_s_deptcd)
+end prototypes
+
+global function string f_get_accdeptnm (string a_s_deptcd);string l_s_deptnm, l_s_deptcd
+
+if a_s_deptcd >= '9000' and a_s_deptcd <= '9999' then
+	l_s_deptcd = mid(a_s_deptcd,1,3) + '0'
+else
+	l_s_deptcd = mid(a_s_deptcd,1,2) + '00'
+end if
+
+SELECT "PBCOMMON"."DAC001A"."DNAME"
+INTO   :l_s_deptnm
+FROM   "PBCOMMON"."DAC001A"
+WHERE  "PBCOMMON"."DAC001A"."DCODE" = :a_s_deptcd and  
+		 "PBCOMMON"."DAC001A"."DUSE" = ' '   AND  
+		 "PBCOMMON"."DAC001A"."DTODT" = 0    and
+		 "PBCOMMON"."DAC001A"."DACTTODT" = 0 using sqlca;
+
+IF sqlca.sqlcode <> 0 Then
+	l_s_deptnm = 'error'
+End IF
+
+Return l_s_deptnm
+end function
+

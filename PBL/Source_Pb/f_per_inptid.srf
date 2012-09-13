@@ -1,0 +1,50 @@
+$PBExportHeader$f_per_inptid.srf
+$PBExportComments$등록/수정시 사번/일자/IPADDR Setting
+global type f_per_inptid from function_object
+end type
+
+forward prototypes
+global subroutine f_per_inptid (datawindow arg_dw)
+end prototypes
+
+global subroutine f_per_inptid (datawindow arg_dw);//등록시 등록자/등록일자/수정자/수정일자/IP Addr/Mac Addr Update
+//수정시 수정자/수정일자/IP Addr/Mac Addr Update
+String     ls_colcount, ls_colname
+Long       ii, ll_row = 0, ll_rowcount
+
+ls_colcount = arg_dw.Object.DataWindow.Column.Count
+ll_rowcount = arg_dw.RowCount()
+DO WHILE  ll_row <= ll_rowcount
+	ll_row = arg_dw.GetNextModified(ll_row, Primary!)
+   IF ll_row = 0 THEN EXIT
+   IF arg_dw.GetItemStatus(ll_row, 0, Primary!) = NewModified! THEN
+		FOR  ii = 1  TO Dec(ls_colcount)
+			  ls_colname = arg_dw.Describe("#" + String(ii) + ".Name")
+			IF  Right(ls_colname,6) = 'inptid' OR Right(ls_colname,6) = 'updtid' THEN
+				 arg_dw.SetItem(ll_row,ls_colname,g_s_empno)
+			ELSEIF  Right(ls_colname,6) = 'inptdt' OR Right(ls_colname,6) = 'updtdt' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_datetime)
+			ELSEIF  Right(ls_colname,6) = 'ipaddr' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_ipaddr)
+			ELSEIF  Right(ls_colname,7) = 'macaddr' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_macaddr)
+			END IF
+		NEXT
+   ELSEIF arg_dw.GetItemStatus(ll_row, 0, Primary!) = DataModified! THEN
+		FOR  ii = 1  TO Dec(ls_colcount)
+			  ls_colname = arg_dw.Describe("#" + String(ii) + ".Name")
+			IF  Right(ls_colname,6) = 'updtid' THEN
+				 arg_dw.SetItem(ll_row,ls_colname,g_s_empno)
+			ELSEIF  Right(ls_colname,6) = 'updtdt' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_datetime)
+			ELSEIF  Right(ls_colname,6) = 'ipaddr' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_ipaddr)
+			ELSEIF  Right(ls_colname,7) = 'macaddr' THEN
+					  arg_dw.SetItem(ll_row,ls_colname,g_s_macaddr)
+			END IF
+		NEXT
+	END IF
+LOOP
+
+end subroutine
+

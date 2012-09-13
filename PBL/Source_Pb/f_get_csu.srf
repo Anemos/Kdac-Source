@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_csu.srf
+$PBExportComments$계정/구입선/단위  return
+global type f_get_csu from function_object
+end type
+
+forward prototypes
+global function string f_get_csu (string a_plant, string a_div, string a_itno)
+end prototypes
+
+global function string f_get_csu (string a_plant, string a_div, string a_itno);string ls_cls, ls_srce, ls_unit
+
+SELECT "PBINV"."INV101"."CLS", "PBINV"."INV101"."SRCE", "PBINV"."INV101"."XUNIT"
+ INTO :ls_cls, :ls_srce, :ls_unit
+ FROM "PBINV"."INV101" 
+WHERE "PBINV"."INV101"."COMLTD" = '01'   AND "PBINV"."INV101"."XPLANT" = :a_plant AND
+      "PBINV"."INV101"."DIV"    = :a_div AND "PBINV"."INV101"."ITNO"   = :a_itno  using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	ls_cls  = ' '
+	ls_srce = ' '
+	ls_unit = ' '
+end if
+return string(ls_cls,"@@") + string(ls_srce,"@@") + string(ls_unit,"@@")
+end function
+

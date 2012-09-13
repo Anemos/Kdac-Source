@@ -1,0 +1,117 @@
+$PBExportHeader$f_pur041_mailsend_dept.srf
+$PBExportComments$부서별메일보내기(구분,FROM사번,TO부서,제목,내용)
+global type f_pur041_mailsend_dept from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_mailsend_dept (string as_gubun, string as_from_empno, string as_to_dept, string as_subject, string as_mail_body)
+end prototypes
+
+global function integer f_pur041_mailsend_dept (string as_gubun, string as_from_empno, string as_to_dept, string as_subject, string as_mail_body);//********************부서별 메일발송
+//****************** as_gubun = 'A' 팀장제외, B-팀장포함
+long ll_row
+string ls_name, ls_mail, ls_empno, ls_gubun
+int li_rtn
+//uo_status.st_message.text = ''
+
+setpointer(hourglass!)
+
+
+if as_gubun = 'A' then  //팀장제외
+	ls_gubun = '9'
+else   //팀장포함
+	ls_gubun = ''
+end if
+
+
+
+OLEobject	Mail  // 등록한 컴포넌트를  OLE 객체로 선언.
+Mail = Create OLEobject // OLE 객체 생성.
+
+
+// 레지스트리에 등록된 외부 컴포넌트(AspEmail.dll)에 Access해서 파워빌더에서 사용가능한
+// OLE 객체로 생성.
+li_rtn = Mail.ConnectToNewObject("Persits.MailSender")
+
+If li_rtn <> 0 Then // Access에 실패하면...
+	//MessageBox("Error", "Could not create Mail Object!")
+	MessageBox("Error", "[GWP > 도우미 > 공개자료실 > 전체보기]에서 kdac용 메일발송 프로그램 설치하세요!")
+//	uo_status.st_message.text = "메일 컴포넌트를 설치하시고 작업하시기 바랍니다(노츠자료실참조)."
+   destroy Mail
+	Return -1
+End If
+
+declare cur_mail cursor for
+ select peempno from pbcommon.dac003
+ where  peout <> '*'
+and  pedept = :as_to_dept
+and  pejikchek like :ls_gubun || '%' ;
+
+
+
+//  **담당자 메일보내기 *** //
+Mail.Reset // Mail객체 초기화.
+Mail.IsHTML 	= False  // 메일 내용을 HTML 형식으로 보낼것인가 여부를 결정.
+Mail.Host   	= "mail.kdac.co.kr"  // SMTP 서버(우리는 Notes!!) 설정.
+ls_mail = f_pur040_get_mailaddr(as_from_empno ,'1')  // 보내는 사람 주소 설정.
+
+//messagebox('ls_mail',ls_mail)
+select coalesce(max(penamek),'') into :ls_name
+from pbcommon.dac003
+where peempno = :as_from_empno ;
+
+if match(trim(ls_mail), '@kdac.co.kr') = false or trim(ls_mail) = '@kdac.co.kr' then
+	MessageBox("확인",'이름:' + ls_name + " 메일발송자 메일주소 확인요! kdac메일만 됩니다(....@kdac.co.kr)!",&
+									  exclamation!)
+	Mail.DisConnectObject( )
+	destroy Mail
+	return -2
+end if
+
+Mail.From		= ls_mail   // 보내는 사람 주소 설정.
+Mail.FromName  = as_from_empno + " " + ls_name  // 보내는 사람 이름 설정.
+
+Mail.Subject   = as_subject   // 메일 제목 설정.
+Mail.Body	 = as_mail_body
+
+OPEN cur_mail;
+ DO WHILE TRUE
+	FETCH cur_mail INTO  :ls_empno;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if 
+	
+   ls_mail = f_pur040_get_mailaddr(ls_empno ,'1')  //1-본인, 2-부서장
+	if match(trim(ls_mail), '@kdac.co.kr') = false or trim(ls_mail) = '@kdac.co.kr' then
+		select coalesce(max(penamek),'') into :ls_name
+		from pbcommon.dac003
+		where peempno = :ls_empno ;
+		MessageBox("확인",'이름:' + ls_name + " 메일수신자 메일주소 확인요! kdac메일만 됩니다(....@kdac.co.kr)!",&
+										  exclamation!)	
+		Mail.DisConnectObject( )
+		destroy Mail								  
+		return -3
+	end if
+//	//messagebox('ls_mail',ls_mail)
+//	select coalesce(max(penamek),'') into :ls_name
+//	from pbcommon.dac003
+//	where peempno = :ls_empno ;
+//	Mail.Subject   = as_subject + ls_empno + ls_name // 메일 제목 설정.
+//	Mail.AddAddress('jbshim@kdac.co.kr' ) // 받는 사람 메일주소 설정.	
+	Mail.AddAddress( ls_mail ) // 받는 사람 메일주소 설정.	
+	Mail.Send  //   --->  메일 발송.
+LOOP
+CLOSE cur_mail;	
+
+
+Mail.DisConnectObject( )
+destroy Mail	
+
+setpointer(arrow!)
+return 1
+
+
+
+
+end function
+

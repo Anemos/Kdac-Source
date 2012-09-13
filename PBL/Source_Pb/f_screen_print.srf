@@ -1,0 +1,21 @@
+$PBExportHeader$f_screen_print.srf
+$PBExportComments$화면인쇄 Global Function
+global type f_screen_print from function_object
+end type
+
+forward prototypes
+global subroutine f_screen_print (window aw_win)
+end prototypes
+
+global subroutine f_screen_print (window aw_win);
+Ulong ll_Job
+
+ll_Job = PrintOpen( aw_Win.Title )
+
+aw_Win.Print( ll_Job,  1, 1, 8000, 6000 )
+
+PrintClose( ll_Job )
+
+MessageBox('확인!', "화면인쇄 되었습니다.")
+end subroutine
+

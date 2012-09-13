@@ -1,0 +1,80 @@
+$PBExportHeader$f_pur040_setxplan1.srf
+$PBExportComments$담당수정(여주공장INV002, INV101)-내자담당
+global type f_pur040_setxplan1 from function_object
+end type
+
+forward prototypes
+global function long f_pur040_setxplan1 (string as_itno, string as_xplan)
+end prototypes
+
+global function long f_pur040_setxplan1 (string as_itno, string as_xplan);//여주공장용 extd 
+string ls_xplant, ls_div
+  
+  
+  UPDATE "PBINV"."INV002"  
+     SET "EXTD"   = :as_xplan,   
+	      "XPLAN2" = :as_xplan,   
+         "UPDTID" = :g_s_empno,   
+         "UPDTDT" = :g_s_datetime,   
+         "IPADDR" = :g_s_ipaddr,   
+         "MACADDR" = :g_s_macaddr  
+ WHERE ( "PBINV"."INV002"."COMLTD" = '01' ) AND  
+       ( "PBINV"."INV002"."ITNO" = :as_itno ) AND
+		 ( "PBINV"."INV002"."RROGB" <> 'I' )		//2009.04.01 :외자제외
+		 ;
+if sqlca.sqlcode <> 0 then
+	return -1
+end if
+
+ UPDATE "PBINV"."INV101"  
+     SET "XPLAN" = :as_xplan,   
+         "UPDTID" = :g_s_empno,   
+         "UPDTDT" = :g_s_datetime,   
+         "IPADDR" = :g_s_ipaddr,   
+         "MACADDR" = :g_s_macaddr  
+ WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+       ( "PBINV"."INV101"."XPLANT" = 'Y') and  
+		 ( "PBINV"."INV101"."DIV" = 'Y') and  
+		 ( "PBINV"."INV101"."ITNO" = :as_itno ) AND
+		 ( "PBINV"."INV101"."SRCE" <> '01' ) //2009.04.01 :외자제외
+		 ;
+//if sqlca.sqlcode <> 0 then
+//	return -1
+//end if
+//구매요구도수정 2005.0518..호
+update pbpur.pur302
+set xplan = :as_xplan
+where comltd = '01'
+and  itno = :as_itno
+and  stcd = ''
+and substr(rqno,1,1) = 'Y'
+AND  GUBUN = ' '		//2009.04.01 :외자제외	
+;
+
+declare cur_1 cursor for
+select xplant,div
+from pbinv.inv101
+where comltd = '01'
+and  itno = :as_itno 
+AND SRCE <> '01' 		//2009.04.01 :외자제외
+;
+
+OPEN cur_1;
+DO WHILE TRUE
+FETCH cur_1 INTO  :ls_xplant, :ls_div;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+	f_pur041_down_xplan(ls_xplant,ls_div,as_itno,as_xplan)
+LOOP
+CLOSE cur_1;
+
+//if sqlca.sqlcode <> 0 then
+//	return -1
+//end if
+return 0
+
+			
+
+end function
+

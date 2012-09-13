@@ -1,0 +1,27 @@
+$PBExportHeader$d_wip052i_datastore.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(15) updatewhereclause=yes name=wfitno dbname="WIP006.WFITNO" )
+ retrieve="  SELECT ~"PBWIP~".~"WIP006~".~"WFITNO~"  
+    FROM ~"PBWIP~".~"WIP006~", ~"PBINV~".~"INV101~"  
+   WHERE ( ~"PBWIP~".~"WIP006~".~"WFCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND
+			( ~"PBWIP~".~"WIP006~".~"WFITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
+			(( ~"PBWIP~".~"WIP006~".~"WFYEAR~" = :a_year ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFMONTH~" = :a_month ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFCMCD~" = :a_cmcd ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFPLANT~" = :a_plant ) AND  
+         ( ~"PBWIP~".~"WIP006~".~"WFDVSN~" = :a_dvsn ) AND
+			( ~"PBWIP~".~"WIP006~".~"WFDEPT~" = '9999' ) AND
+			( ~"PBINV~".~"INV101~".~"CLS~" IN ('30','50') OR ~"PBINV~".~"INV101~".~"SRCE~" = '03'))
+ORDER BY ~"PBWIP~".~"WIP006~".~"WFITNO~" ASC   
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_year", string),("a_month", string)) )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="5" y="4" height="76" width="439" format="[general]" html.valueishtml="0"  name=wfitno  tag="Ç°¹ø                                                                                                                                                                                                                                                        " visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

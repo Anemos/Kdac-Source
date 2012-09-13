@@ -1,0 +1,124 @@
+$PBExportHeader$f_pur040_getcostdiv.srf
+$PBExportComments$원가사업장결정(지역,공장,제품)PBACC.ACC060
+global type f_pur040_getcostdiv from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getcostdiv (string as_xplant, string as_div, ref string as_pdcd)
+end prototypes
+
+global function string f_pur040_getcostdiv (string as_xplant, string as_div, ref string as_pdcd);////////////////////////////////////////////////
+// : 원가사업장결정
+////////////////////////////////////////////////
+String ls_costdiv , ls_pdcd
+long ll_rcnt
+
+//2008.10.02
+ls_pdcd = Left(as_pdcd,2) //2자리
+If trim(as_pdcd) = "" Then
+	SELECT COALESCE(MAX(COSTDIV),'') 
+	  INTO :ls_costdiv
+	FROM PBACC.ACC060
+	WHERE COMLTD = '01'
+	 AND XPLANT = :as_xplant
+	 AND DIV    = :as_div
+	 AND PDCD   = ' '		//공백
+	USING SQLCA;		
+Else
+	SELECT COALESCE(MAX(COSTDIV),'') 
+	  INTO :ls_costdiv
+	FROM PBACC.ACC060
+	WHERE COMLTD = '01'
+	 AND XPLANT = :as_xplant
+	 AND DIV    = :as_div
+	 AND PDCD   = :ls_pdcd
+	USING SQLCA;	
+	//해당제품군에 대한 값이 없을 경우. 공백값을 가져온다.
+	IF trim(ls_costdiv) = "" Then
+		SELECT COALESCE(MAX(COSTDIV),'') 
+		  INTO :ls_costdiv
+		FROM PBACC.ACC060
+		WHERE COMLTD = '01'
+		 AND XPLANT = :as_xplant
+		 AND DIV    = :as_div
+		 AND PDCD   = ' '		//공백
+		USING SQLCA; 
+	End IF
+End IF
+
+IF trim(ls_costdiv) = "" Then ls_costdiv = 'E'		//2008.10.09
+
+RETURN ls_costdiv
+
+
+/*  //2008.10.02
+if as_xplant = 'D' then
+	if as_div = 'A' then //전장
+	   if mid(as_pdcd,1,2) = '35' then
+			ls_costdiv = 'Y'
+		elseif mid(as_pdcd,1,2) = '38' then
+			ls_costdiv = 'W'
+		elseif mid(as_pdcd,1,2) = '70' then
+			ls_costdiv = 'C'
+		else
+			ls_costdiv = 'E'
+		end if
+   else
+		ls_costdiv = as_div
+   end if
+elseif as_xplant = 'J' then
+	if as_div = 'M' then
+		ls_costdiv = 'M'
+	elseif as_div = 'S' then
+		ls_costdiv = 'S'
+	elseif as_div = 'H' then
+		ls_costdiv = 'H'
+	else
+		ls_costdiv = as_div
+	end if
+elseif as_xplant = 'K' then
+	if as_div = 'M' then
+		ls_costdiv = 'M'
+	elseif as_div = 'S' then
+		ls_costdiv = 'S'
+	elseif as_div = 'H' then
+		ls_costdiv = 'H'
+	else
+		ls_costdiv = as_div
+	end if
+elseif as_xplant = 'Y' then
+	if as_div = 'Y' or as_div = '' then
+      ls_costdiv = 'D'	
+	else
+		ls_costdiv = as_div	
+	end if
+else
+	ls_costdiv = as_div
+end if
+if isnull(ls_costdiv) then
+	ls_costdiv = ''
+end if
+
+select count(*) into :ll_rcnt
+from pbcommon.dac002
+where comltd = '01'
+and  cogubun = 'ACC001'
+and  cocode = :as_xplant || :ls_costdiv ;
+if ll_rcnt = 0 then //등록된원가사업장이 아님
+  Choose case as_xplant
+	 case 'B','J','K'
+		ls_costdiv = 'H'
+	 case 'Y'
+		ls_costdiv = 'D'
+	 case else
+		as_xplant = 'D'
+		ls_costdiv = 'E'
+	end choose
+end if
+
+Return ls_costdiv
+*/
+
+
+end function
+

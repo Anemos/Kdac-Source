@@ -1,0 +1,29 @@
+$PBExportHeader$f_inv101_item_chk.srf
+$PBExportComments$품목재고 중복품번 Check   Global Function
+global type f_inv101_item_chk from function_object
+end type
+
+forward prototypes
+global function integer f_inv101_item_chk (string as_itno)
+end prototypes
+
+global function integer f_inv101_item_chk (string as_itno);////////////////////////////////////////////////
+// * 품목재고 DB에 이미 등록된 Item인지 Check *
+//
+// Return: -1(중복)    1(미등록)
+////////////////////////////////////////////////
+
+Int	li_cnt
+
+SELECT count(*) INTO :li_cnt
+	FROM "PBINV"."INV101"
+WHERE "COMLTD" = '01' AND "ITNO" = :as_itno  Using SQLCA ;
+
+If li_cnt <= 0 Then
+	Return 1
+Else
+	Return -1
+End If
+
+end function
+

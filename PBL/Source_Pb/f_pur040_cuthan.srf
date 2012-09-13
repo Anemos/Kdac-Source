@@ -1,0 +1,30 @@
+$PBExportHeader$f_pur040_cuthan.srf
+$PBExportComments$한글자르기(깨지지않게)
+global type f_pur040_cuthan from function_object
+end type
+
+forward prototypes
+global function string f_pur040_cuthan (string ls_string, long ll_len)
+end prototypes
+
+global function string f_pur040_cuthan (string ls_string, long ll_len);////원하는 자리에서 한글자르기
+long ll_row
+
+ls_string = trim(ls_string)
+if asc(mid(ls_string,ll_len,1)) < 161 or len(ls_string) <= ll_len then  //두바이트문자가 아니다/자릿수가 작다
+   return ls_string
+end if
+
+for ll_row = len(ls_string) to ll_len step -1
+	if asc(mid(ls_string,ll_row,1)) >= 161 then  //두바이트문자다 2byte shift 이동
+		ll_row = ll_row - 1
+	end if
+	if ll_row <= ll_len then
+		ls_string = mid(ls_string,1,ll_row -1) + space(1) + mid(ls_string,ll_row, len(ls_string) - ll_row +1)
+		exit
+	end if
+next
+
+return ls_string
+end function
+

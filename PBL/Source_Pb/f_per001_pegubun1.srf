@@ -1,0 +1,23 @@
+$PBExportHeader$f_per001_pegubun1.srf
+$PBExportComments$사무생산구분1
+global type f_per001_pegubun1 from function_object
+end type
+
+forward prototypes
+global function string f_per001_pegubun1 (string a_s_empno)
+end prototypes
+
+global function string f_per001_pegubun1 (string a_s_empno);string ls_pegubun
+
+if isNull(a_s_empno) or a_s_empno = '' then
+	return ''
+else
+	select pegubun1 into :ls_pegubun
+	from pbper.per001
+	where pbper.per001.peempno = :a_s_empno
+	using sqlcc;
+	
+	return ls_pegubun
+end if
+end function
+

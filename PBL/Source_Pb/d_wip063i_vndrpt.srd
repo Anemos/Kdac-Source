@@ -1,0 +1,266 @@
+$PBExportHeader$d_wip063i_vndrpt.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 1 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 9 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=456 color="536870912" )
+summary(height=56 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=112 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=wip002d_a_wbcmcd dbname="WIP002D.WBCMCD" )
+ column=(type=char(1) updatewhereclause=yes name=wip002d_a_wbplant dbname="WIP002D.WBPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=wip002d_a_wbdvsn dbname="WIP002D.WBDVSN" )
+ column=(type=char(50) updatewhereclause=yes name=plantnm dbname="PLANTNM" )
+ column=(type=char(50) updatewhereclause=yes name=dvsnnm dbname="DVSNNM" )
+ column=(type=char(5) updatewhereclause=yes name=wip002d_a_wborct dbname="WIP002D.WBORCT" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(10) updatewhereclause=yes name=pur101_vndr dbname="PUR101.VNDR" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="INV101.PDCD" )
+ column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="DAC007.PRNAME" )
+ column=(type=char(15) updatewhereclause=yes name=wip002d_a_wbitno dbname="WIP002D.WBITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_spec dbname="INV002.SPEC" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="INV101.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="INV101.SRCE" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_xunit dbname="INV101.XUNIT" )
+ column=(type=decimal(2) updatewhereclause=yes name=scrp dbname="WIP002D.SCRP" )
+ column=(type=decimal(2) updatewhereclause=yes name=retn dbname="WIP002D.RETN" )
+ column=(type=decimal(5) updatewhereclause=yes name=avrg dbname="AVRG" )
+ column=(type=decimal(4) updatewhereclause=yes name=bgqt dbname="BGQT" )
+ column=(type=decimal(0) updatewhereclause=yes name=bgat dbname="BGAT" )
+ column=(type=decimal(4) updatewhereclause=yes name=inqt dbname="INQT" )
+ column=(type=decimal(0) updatewhereclause=yes name=inat dbname="INAT" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt1 dbname="USQT1" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat1 dbname="USAT1" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt2 dbname="USQT2" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat2 dbname="USAT2" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt3 dbname="USQT3" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat3 dbname="USAT3" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt4 dbname="USQT4" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat4 dbname="USAT4" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt5 dbname="USQT5" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat5 dbname="USAT5" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt6 dbname="USQT6" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat6 dbname="USAT6" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt7 dbname="USQT7" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat7 dbname="USAT7" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqt8 dbname="USQT8" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat8 dbname="USAT8" )
+ column=(type=decimal(0) updatewhereclause=yes name=usat9 dbname="USAT9" )
+ column=(type=decimal(4) updatewhereclause=yes name=usqta dbname="USQTA" )
+ column=(type=decimal(0) updatewhereclause=yes name=usata dbname="USATA" )
+ column=(type=decimal(4) updatewhereclause=yes name=ohqt dbname="OHQT" )
+ column=(type=decimal(0) updatewhereclause=yes name=ohat dbname="OHAT" )
+ column=(type=decimal(0) updatewhereclause=yes name=yohat dbname="YOHAT" )
+ retrieve="  SELECT aaa.~"WBCMCD~",  
+         aaa.~"WBPLANT~",  
+         aaa.~"WBDVSN~",
+			~"PBCOMMON~".F_CODENM(aaa.~"WBCMCD~",'SLE220',aaa.~"WBPLANT~",'1') as plantnm,
+			~"PBCOMMON~".F_CODENM(aaa.~"WBCMCD~",'DAC030',aaa.~"WBDVSN~",'1') as dvsnnm,
+         aaa.~"WBORCT~",
+         ~"PBPUR~".~"PUR101~".~"VNDNM~",
+         ~"PBPUR~".~"PUR101~".~"VNDR~",  
+         ~"PBINV~".~"INV101~".~"PDCD~" as pdcd,
+         ~"PBCOMMON~".~"DAC007~".~"PRNAME~",    
+         aaa.~"WBITNO~",   
+         ~"PBINV~".~"INV002~".~"ITNM~",   
+         ~"PBINV~".~"INV002~".~"SPEC~",   
+         ~"PBINV~".~"INV101~".~"CLS~",   
+			~"PBINV~".~"INV101~".~"SRCE~",
+			~"PBINV~".~"INV101~".~"XUNIT~", 
+			aaa.~"WBSCRP~" as scrp,  
+			aaa.~"WBRETN~" as retn,  
+			DECIMAL(aaa.~"WBAVRG1~" * ~"PBINV~".~"INV101~".~"CONVQTY~",15,5)  as avrg,  
+			DECIMAL( aaa.~"WBBGQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as bgqt, 
+			DECIMAL(aaa.~"WBBGAT1~" - (aaa.~"WBBGQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0)),15,0) as bgat,    
+			DECIMAL(aaa.~"WBINQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as inqt,  
+			DECIMAL((aaa.~"WBINAT1~" + aaa.~"WBINAT2~" + aaa.~"WBINAT3~") - aaa.~"WBINQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as inat,   
+			DECIMAL(aaa.~"WBUSQT1~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt1,   
+			DECIMAL(aaa.~"WBUSAT1~" - aaa.~"WBUSQT1~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat1,   
+			DECIMAL(aaa.~"WBUSQT2~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt2,   
+			DECIMAL(aaa.~"WBUSAT2~" - aaa.~"WBUSQT2~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat2,   
+			DECIMAL(aaa.~"WBUSQT3~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt3,   
+			DECIMAL(aaa.~"WBUSAT3~" - aaa.~"WBUSQT3~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat3,   
+			DECIMAL(aaa.~"WBUSQT4~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt4,   
+			DECIMAL(aaa.~"WBUSAT4~" - aaa.~"WBUSQT4~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat4,   
+			DECIMAL(aaa.~"WBUSQT5~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt5,   
+			DECIMAL(aaa.~"WBUSAT5~" - aaa.~"WBUSQT5~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat5,   
+			DECIMAL(aaa.~"WBUSQT6~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt6,   
+			DECIMAL(aaa.~"WBUSAT6~" - aaa.~"WBUSQT6~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat6,   
+			DECIMAL(aaa.~"WBUSQT7~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt7,   
+			DECIMAL(aaa.~"WBUSAT7~" - aaa.~"WBUSQT7~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat7,   
+			DECIMAL(aaa.~"WBUSQT8~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqt8,   
+			DECIMAL(aaa.~"WBUSAT8~" - aaa.~"WBUSQT8~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usat8,   
+			DECIMAL(aaa.~"WBUSAT9~",15,0)  as usat9,
+			DECIMAL(aaa.~"WBUSQTA~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as usqta,
+			DECIMAL(aaa.~"WBUSATA~" - aaa.~"WBUSQTA~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0),15,0)  as usata,
+			DECIMAL( aaa.~"WBOHQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as ohqt, 
+			DECIMAL(aaa.~"WBOHAT1~" - (aaa.~"WBOHQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~" * IFNULL(TMP_COST.~"COSTAV~",0)),15,0) as ohat,
+			pbwip.sf_wip_010(aaa.~"WBCMCD~",:ag_yesterday,aaa.~"WBPLANT~",aaa.~"WBDVSN~",aaa.~"WBORCT~",aaa.~"WBITNO~",aaa.~"WBIOCD~",'C') as yohat 
+
+FROM ~"PBWIP~".~"WIP002D~" aaa INNER JOIN ~"PBINV~".~"INV002~" 
+	ON ( aaa.~"WBCMCD~" = ~"PBINV~".~"INV002~".~"COMLTD~" ) and  
+      ( aaa.~"WBITNO~" = ~"PBINV~".~"INV002~".~"ITNO~" )
+	LEFT OUTER JOIN ~"PBPUR~".~"PUR101~"
+	ON ( aaa.~"WBCMCD~" = ~"PBPUR~".~"PUR101~".~"COMLTD~" ) and  
+      ( aaa.~"WBORCT~" = ~"PBPUR~".~"PUR101~".~"VSRNO~" ) and
+		( ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S' )
+	INNER JOIN ~"PBINV~".~"INV101~"
+	ON ( aaa.~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+      ( aaa.~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and  
+      ( aaa.~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+      ( aaa.~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" )
+	INNER JOIN ~"PBCOMMON~".~"DAC007~"
+	ON ( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) and  
+      ( ~"PBINV~".~"INV101~".~"PDCD~" = ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" ) 
+	LEFT OUTER JOIN
+	( SELECT   ~"PBPDM~".~"BOM016~".~"FCMCD~" AS COMLTD,
+		~"PBPDM~".~"BOM016~".~"FPLANT~" AS XPLANT,
+		~"PBPDM~".~"BOM016~".~"FDVSN~" AS DIV,
+		~"PBPDM~".~"BOM016~".~"FMDNO~" AS ITNO,
+   	CASE 	WHEN ~"PBPDM~".~"BOM016~".~"FCOCST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCOCST~"
+        	WHEN ~"PBPDM~".~"BOM016~".~"FCMCST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCMCST~"
+         WHEN ~"PBPDM~".~"BOM016~".~"FCICST~" > 0 THEN ~"PBPDM~".~"BOM016~".~"FCICST~"
+         ELSE  ~"PBPDM~".~"BOM016~".~"FXCOST~" END AS COSTAV
+  		FROM ~"PBPDM~".~"BOM016~"
+		WHERE ( ~"PBPDM~".~"BOM016~".~"FGUBUN~" = 'B' ) and
+		 	( ~"PBPDM~".~"BOM016~".~"FCMCD~" = :ag_cmcd ) AND
+		 	( ~"PBPDM~".~"BOM016~".~"FPLANT~" = :ag_plant ) AND
+		 	( ~"PBPDM~".~"BOM016~".~"FDVSN~" = :ag_dvsn ) AND
+		 	( ~"PBPDM~".~"BOM016~".~"FDATE~" = :ag_adddt ) ) TMP_COST
+	ON  ( aaa.~"WBCMCD~" = TMP_COST.~"COMLTD~" ) and  
+       ( aaa.~"WBPLANT~" = TMP_COST.~"XPLANT~" ) and  
+       ( aaa.~"WBDVSN~" = TMP_COST.~"DIV~" ) and  
+       ( aaa.~"WBITNO~" = TMP_COST.~"ITNO~" )
+ WHERE ( aaa.~"WBCMCD~" = :ag_cmcd ) and  
+         ( aaa.~"WBPLANT~" = :ag_plant ) and  
+         ( aaa.~"WBDVSN~" = :ag_dvsn ) and  
+         ( ( aaa.~"WBYYMMDD~" = :ag_yymmdd ) AND 
+         ( aaa.~"WBIOCD~" = :ag_iocd ) AND  
+         NOT ( aaa.~"WBBGQT~"= 0 AND aaa.~"WBBGAT1~" = 0 AND aaa.~"WBINQT~" = 0 AND aaa.~"WBINAT1~" = 0 AND
+           aaa.~"WBINAT2~" = 0 AND aaa.~"WBINAT3~" = 0 AND aaa.~"WBUSQT1~" = 0 AND aaa.~"WBUSAT1~" = 0 AND
+           aaa.~"WBUSQT2~" = 0 AND aaa.~"WBUSAT2~" = 0 AND aaa.~"WBUSQT3~" = 0 AND aaa.~"WBUSAT3~" = 0 AND
+           aaa.~"WBUSQT4~" = 0 AND aaa.~"WBUSAT4~" = 0 AND aaa.~"WBUSQT5~" = 0 AND aaa.~"WBUSAT5~" = 0 AND
+           aaa.~"WBUSQT6~" = 0 AND aaa.~"WBUSAT6~" = 0 AND aaa.~"WBUSQT7~" = 0 AND aaa.~"WBUSAT7~" = 0 AND
+           aaa.~"WBUSQT8~" = 0 AND aaa.~"WBUSAT8~" = 0 AND aaa.~"WBUSAT9~" = 0 AND aaa.~"WBUSQTA~" = 0 AND
+           aaa.~"WBUSATA~" = 0 ))
+ORDER BY aaa.~"WBCMCD~",  
+         aaa.~"WBPLANT~",  
+         aaa.~"WBDVSN~",
+         aaa.~"WBORCT~" ASC, 
+         ~"PBINV~".~"INV101~".~"PDCD~" ASC,            
+         aaa.~"WBITNO~" ASC   
+" arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string),("ag_iocd", string),("ag_yymmdd", string),("ag_adddt", string),("ag_yesterday", string)) )
+group(level=1 header.height=0 trailer.height=56 by=("pur101_vndnm" , "WIP002D_a_wborct" ) newpage=yes header.color="536870912" trailer.color="536870912" )
+group(level=2 header.height=0 trailer.height=60 by=("pur101_vndnm" , "WIP002D_a_wborct" , "inv101_pdcd" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="»ç¿ë(¼ö·®/±Ý¾×)" border="2" color="0" x="2039" y="344" height="52" width="2450" html.valueishtml="0"  name=wip002d_a_wbusqt1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1527" y="280" height="52" width="210" format="[general]" html.valueishtml="0"  name=wip002d_a_wborct visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header id=8 alignment="0" tabsequence=32766 border="0" color="0" x="1056" y="280" height="52" width="453" format="[general]" html.valueishtml="0"  name=pur101_vndr visible="1" editmask.mask="XXX-XX-XXXXX" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø" border="2" color="0" x="14" y="400" height="52" width="343" html.valueishtml="0"  name=wip002d_a_wbitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Ç°¸í" border="2" color="0" x="361" y="400" height="52" width="558" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="1" expression="'page : '+ page() + ' of '  + pageCount()"border="0" color="0" x="4059" y="272" height="60" width="827" format="[general]" html.valueishtml="0"  name=page_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+compute(band=header alignment="1" expression="'Ãâ·ÂÀÏÀÚ : ' + string(today(),~"yyyy.mm.dd~")"border="0" color="0" x="3081" y="272" height="60" width="955" format="[General]" html.valueishtml="0"  name=compute_28 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="¾÷Ã¼º°  Àç°ø ¼öºÒ ÇöÈ²" border="2" color="0" x="1490" y="28" height="112" width="1408" html.valueishtml="0"  name=t_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-18" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="" border="0" color="0" x="1765" y="172" height="52" width="864" html.valueishtml="0"  name=t_kijun visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="¾÷Ã¼ :" border="0" color="0" x="14" y="280" height="52" width="192" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="´Ü°¡" border="2" color="0" x="923" y="344" height="52" width="361" html.valueishtml="0"  name=wip002d_a_wbavrg1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="±âÃÊ" border="2" color="0" x="1289" y="344" height="108" width="384" html.valueishtml="0"  name=wip002d_a_wbbgqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="ÅõÀÔ" border="2" color="0" x="1678" y="344" height="108" width="357" html.valueishtml="0"  name=wip002d_a_wbinqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="»ç±ÞÀÔ°í" border="2" color="0" x="2039" y="400" height="52" width="375" html.valueishtml="0"  name=us2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Å¸°èÁ¤" border="2" color="0" x="2418" y="400" height="52" width="251" html.valueishtml="0"  name=us5_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="°øÁ¤ºÒ·®" border="2" color="0" x="2674" y="400" height="52" width="302" html.valueishtml="0"  name=us7_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="Á¶Á¤(±âÅ¸)" border="2" color="0" x="2981" y="400" height="52" width="329" html.valueishtml="0"  name=ust8_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="½Ç»çÂ÷ÀÌ" border="2" color="0" x="3657" y="400" height="52" width="411" html.valueishtml="0"  name=t_12 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="±Ý¾×Á¶Á¤" border="2" color="0" x="3314" y="400" height="52" width="338" html.valueishtml="0"  name=us9_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="»ç¿ëÇÕ°è" border="2" color="0" x="4073" y="400" height="52" width="416" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="ÀçÇ°±º" border="2" color="0" x="14" y="344" height="52" width="521" html.valueishtml="0"  name=inv101_pdcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="ºÒ·®À²" border="2" color="0" x="923" y="400" height="52" width="178" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="¹Ý³³À²" border="2" color="0" x="1106" y="400" height="52" width="178" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=7 alignment="0" tabsequence=32766 border="0" color="0" x="224" y="280" height="52" width="818" format="[general]" html.valueishtml="0"  name=pur101_vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Áö¿ª :" border="0" color="0" x="14" y="136" height="52" width="192" html.valueishtml="0"  name=t_10 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="°øÀå :" border="0" color="0" x="14" y="208" height="52" width="192" html.valueishtml="0"  name=t_11 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=header id=4 alignment="0" tabsequence=32766 border="0" color="0" x="224" y="136" height="52" width="567" format="[general]" html.valueishtml="0"  name=plantnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=header id=5 alignment="0" tabsequence=32766 border="0" color="0" x="224" y="208" height="52" width="567" format="[general]" html.valueishtml="0"  name=dvsnnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÇöÀç°ø" border="2" color="0" x="4494" y="344" height="108" width="393" html.valueishtml="0"  name=wip002d_b_wbbgqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="[°øÁ¦ÈÄ]" border="0" color="0" x="306" y="16" height="72" width="603" html.valueishtml="0"  name=t_13 visible="1"  font.face="±¼¸²Ã¼" font.height="-12" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="±¸ºÐ :" border="0" color="0" x="0" y="16" height="72" width="297" html.valueishtml="0"  name=t_14 visible="1"  font.face="±¼¸²Ã¼" font.height="-12" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="´ÜÀ§" border="2" color="0" x="809" y="344" height="52" width="110" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="2" color="0" x="654" y="344" height="52" width="151" html.valueishtml="0"  name=inv101_srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=header alignment="2" text="°èÁ¤" border="2" color="0" x="539" y="344" height="52" width="110" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="14" y="56" height="52" width="306" format="[general]" html.valueishtml="0"  name=wip002d_a_wbitno visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="325" y="56" height="52" width="594" format="[general]" html.valueishtml="0"  name=inv002_itnm  tag="Ç°¸í                                                                                                                                                                                                                                                        " visible="1" edit.limit=50 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="0" x="1678" y="0" height="52" width="357" format="###,###,###,##0.00" html.valueishtml="0"  name=inqt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="1673" y1="4" x2="1673" y2="112"  name=l_3 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2034" y1="4" x2="2034" y2="112"  name=l_4 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2414" y1="4" x2="2414" y2="112"  name=l_5 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2670" y1="4" x2="2670" y2="112"  name=l_6 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="2976" y1="4" x2="2976" y2="112"  name=l_7 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3310" y1="4" x2="3310" y2="112"  name=l_8 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="3653" y1="4" x2="3653" y2="112"  name=l_9 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="4069" y1="4" x2="4069" y2="112"  name=l_10 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="4489" y1="4" x2="4489" y2="112"  name=l_11 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="4887" y1="4" x2="4887" y2="112"  name=l_12 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+line(band=detail x1="1285" y1="4" x2="1285" y2="112"  name=l_2 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=20 alignment="1" tabsequence=32766 border="0" color="0" x="1289" y="0" height="52" width="384" format="###,###,###,##0.00" html.valueishtml="0"  name=bgqt visible="1" editmask.useformat=yes editmask.mask="###,##0.0" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="0" x="2039" y="0" height="52" width="375" format="###,###,###,##0.00" html.valueishtml="0"  name=usqt2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=32 alignment="1" tabsequence=32766 border="0" color="0" x="2418" y="0" height="52" width="251" format="###,###,###,##0.00" html.valueishtml="0"  name=usqt5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=36 alignment="1" tabsequence=32766 border="0" color="0" x="2674" y="0" height="52" width="302" format="###,###,###,##0.00" html.valueishtml="0"  name=usqt7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=38 alignment="1" tabsequence=32766 border="0" color="0" x="2981" y="0" height="52" width="329" format="###,###,###,##0.00" html.valueishtml="0"  name=usqt8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="0" color="0" x="1678" y="56" height="52" width="357" format="###,###,###,###,##0" html.valueishtml="0"  name=inat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="1" tabsequence=32766 border="0" color="0" x="2039" y="56" height="52" width="375" format="#,##0" html.valueishtml="0"  name=usat2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=33 alignment="1" tabsequence=32766 border="0" color="0" x="2418" y="56" height="52" width="251" format="#,##0" html.valueishtml="0"  name=usat5 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=37 alignment="1" tabsequence=32766 border="0" color="0" x="2674" y="56" height="52" width="302" format="#,##0" html.valueishtml="0"  name=usat7 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=39 alignment="1" tabsequence=32766 border="0" color="0" x="2981" y="56" height="52" width="329" format="#,##0" html.valueishtml="0"  name=usat8 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=40 alignment="1" tabsequence=32766 border="0" color="0" x="3314" y="56" height="52" width="338" format="#,##0" html.valueishtml="0"  name=usat9 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=41 alignment="1" tabsequence=32766 border="0" color="0" x="3657" y="0" height="52" width="411" format="#,##0.00" html.valueishtml="0"  name=usqta visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" usqt1  +   usqt2  +  usqt3  +  usqt4  +  usqt5  +  usqt6  +  usqt7  +  usqt8  +  usqta "border="0" color="0" x="4073" y="0" height="52" width="416" format="###,##0.00" html.valueishtml="0"  name=totqt visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=42 alignment="1" tabsequence=32766 border="0" color="0" x="3657" y="56" height="52" width="411" format="#,##0" html.valueishtml="0"  name=usata visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" usat1  +  usat2  +  usat3  +  usat4  +  usat5  +  usat6  +  usat7  +  usat8  +  usat9  +  usata "border="0" color="0" x="4073" y="56" height="52" width="416" format="###,##0" html.valueishtml="0"  name=totat visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="14" y="0" height="52" width="512" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="1" tabsequence=32766 border="0" color="0" x="1289" y="56" height="52" width="384" format="#,##0" html.valueishtml="0"  name=bgat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="1" tabsequence=32766 border="0" color="0" x="1106" y="56" height="52" width="178" format="###,###,###,##0.00" html.valueishtml="0"  name=retn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="0" x="923" y="56" height="52" width="178" format="###,###,###,##0.00" html.valueishtml="0"  name=scrp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+line(band=detail x1="9" y1="108" x2="4891" y2="108"  name=l_1 visible="1" pen.style="0" pen.width="5" pen.color="0"  background.mode="2" background.color="16777215" )
+column(band=detail id=43 alignment="1" tabsequence=32766 border="0" color="0" x="4494" y="0" height="52" width="393" format="###,###,###,##0.00" html.valueishtml="0"  name=ohqt visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=44 alignment="1" tabsequence=32766 border="0" color="0" x="4494" y="56" height="52" width="393" format="#,##0" html.valueishtml="0"  name=ohat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=32766 border="0" color="0" x="923" y="0" height="52" width="361" format="[general]" html.valueishtml="0"  name=avrg visible="1" editmask.mask="###,##0.00" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="0" color="0" x="809" y="0" height="52" width="110" format="[general]" html.valueishtml="0"  name=inv101_xunit visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="0" x="654" y="0" height="52" width="151" format="[general]" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="0" x="539" y="0" height="52" width="110" format="[general]" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.2 alignment="2" text="Á¦Ç°±º ÇÕ°è" border="0" color="0" x="14" y="4" height="52" width="1271" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum( totat for group 2 )"border="0" color="0" x="4073" y="4" height="52" width="416" format="#,##0" html.valueishtml="0"  name=compute_8 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(bgat for group 2)"border="0" color="0" x="1289" y="4" height="52" width="384" format="#,##0" html.valueishtml="0"  name=compute_21 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(inat for group 2)"border="0" color="0" x="1678" y="4" height="52" width="357" format="###,###,###,###,##0" html.valueishtml="0"  name=compute_22 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usat2 for group 2)"border="0" color="0" x="2039" y="4" height="52" width="375" format="#,##0" html.valueishtml="0"  name=compute_23 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usat5 for group 2)"border="0" color="0" x="2418" y="4" height="52" width="251" format="#,##0" html.valueishtml="0"  name=compute_24 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usat7 for group 2)"border="0" color="0" x="2674" y="4" height="52" width="302" format="#,##0" html.valueishtml="0"  name=compute_25 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usat8 for group 2)"border="0" color="0" x="2981" y="4" height="52" width="329" format="#,##0" html.valueishtml="0"  name=compute_29 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usat9 for group 2)"border="0" color="0" x="3314" y="4" height="52" width="338" format="#,##0" html.valueishtml="0"  name=compute_30 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression="sum(usata for group 2)"border="0" color="0" x="3657" y="4" height="52" width="411" format="#,##0" html.valueishtml="0"  name=compute_31 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.2 alignment="1" expression=" sum(  ohat  for group 2 )"border="0" color="0" x="4494" y="4" height="52" width="393" format="#,##0" html.valueishtml="0"  name=compute_9 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+compute(band=trailer.1 alignment="1" expression="sum(totat for group 1 ) "border="0" color="0" x="4073" y="0" height="52" width="416" format="#,##0" html.valueishtml="0"  name=compute_17 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=trailer.1 alignment="2" text="¾÷Ã¼ ÇÕ°è" border="0" color="0" x="14" y="0" height="52" width="1271" html.valueishtml="0"  name=t_8 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(bgat for group 1)"border="0" color="0" x="1289" y="0" height="52" width="384" format="#,##0" html.valueishtml="0"  name=compute_11 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(inat for group 1)"border="0" color="0" x="1678" y="0" height="52" width="357" format="###,###,###,###,##0" html.valueishtml="0"  name=compute_12 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usat2 for group 1)"border="0" color="0" x="2039" y="0" height="52" width="375" format="#,##0" html.valueishtml="0"  name=compute_13 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usat5 for group 1)"border="0" color="0" x="2418" y="0" height="52" width="251" format="#,##0" html.valueishtml="0"  name=compute_14 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usat7 for group 1)"border="0" color="0" x="2674" y="0" height="52" width="302" format="#,##0" html.valueishtml="0"  name=compute_15 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usat8 for group 1)"border="0" color="0" x="2981" y="0" height="52" width="329" format="#,##0" html.valueishtml="0"  name=compute_16 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usat9 for group 1)"border="0" color="0" x="3314" y="0" height="52" width="338" format="#,##0" html.valueishtml="0"  name=compute_19 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum(usata for group 1)"border="0" color="0" x="3657" y="0" height="52" width="411" format="#,##0" html.valueishtml="0"  name=compute_20 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=trailer.1 alignment="1" expression="sum( ohat  for group 1 )"border="0" color="0" x="4494" y="0" height="52" width="393" format="#,##0" html.valueishtml="0"  name=compute_18 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=summary alignment="1" expression="sum(   totat   for all )"border="0" color="0" x="4073" y="0" height="52" width="416" format="#,##0" html.valueishtml="0"  name=compute_26 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=summary alignment="2" text="°øÀå ÇÕ°è" border="0" color="0" x="14" y="0" height="52" width="1271" html.valueishtml="0"  name=t_9 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usat5 for all)"border="0" color="0" x="2418" y="0" height="52" width="251" format="#,##0" html.valueishtml="0"  name=compute_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(bgat for all)"border="0" color="0" x="1289" y="0" height="52" width="384" format="#,##0" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(inat for all)"border="0" color="0" x="1678" y="0" height="52" width="357" format="###,###,###,###,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usat2 for all)"border="0" color="0" x="2039" y="0" height="52" width="375" format="#,##0" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usat7 for all)"border="0" color="0" x="2674" y="0" height="52" width="302" format="#,##0" html.valueishtml="0"  name=compute_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usat8 for all)"border="0" color="0" x="2981" y="0" height="52" width="329" format="#,##0" html.valueishtml="0"  name=compute_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usat9 for all)"border="0" color="0" x="3314" y="0" height="52" width="338" format="#,##0" html.valueishtml="0"  name=compute_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(usata for all)"border="0" color="0" x="3657" y="0" height="52" width="411" format="#,##0" html.valueishtml="0"  name=compute_10 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=summary alignment="1" expression="sum(  ohat   for all )"border="0" color="0" x="4494" y="0" height="52" width="393" format="#,##0" html.valueishtml="0"  name=compute_27 visible="1"  font.face="±¼¸²Ã¼" font.height="-8" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

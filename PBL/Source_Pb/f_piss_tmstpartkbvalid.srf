@@ -1,0 +1,38 @@
+$PBExportHeader$f_piss_tmstpartkbvalid.srf
+$PBExportComments$단품품번이 간판 대상품목인지 여부를 확인한다.
+global type f_piss_tmstpartkbvalid from function_object
+end type
+
+forward prototypes
+global function boolean f_piss_tmstpartkbvalid (string as_areacode, string as_divcode, string as_itemcode)
+end prototypes
+
+global function boolean f_piss_tmstpartkbvalid (string as_areacode, string as_divcode, string as_itemcode);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	해당 공장의 외주간판 취급품목 대상여부 확인 
+//	Function		: f_piss_tmstpartkbvalid
+//	Arguments	: string		as_areacode					지역코드
+//					  string		as_divcode					공장코드
+//					  string		as_itemcode				   품번코드
+//	Returns		: boolean	
+//	Description	: 간판 대상품번 : True, 간판 비대상품번 : False
+// Company		: DAEWOO Information System Co., Ltd. IAS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Long ll_Cnt
+
+  SELECT Count(*)   
+    INTO :ll_Cnt   
+    FROM TMSTPARTKB 
+   WHERE AreaCode 		= :as_areacode AND  
+         DivisionCode 	= :as_divcode  AND  
+         ItemCode 		= :as_itemcode AND
+			Useflag        <> 'Y'
+	USING sqlpis	;
+
+IF ll_Cnt < 1 THEN
+	Return False			//간판 비대상품목
+ELSE
+	Return True				//간판 대상품목
+END IF
+end function
+

@@ -1,0 +1,79 @@
+$PBExportHeader$f_bpm_create_wipitem_bpm509.srf
+$PBExportComments$10/03 유상사급 재료비계산
+global type f_bpm_create_wipitem_bpm509 from function_object
+end type
+
+forward prototypes
+global function integer f_bpm_create_wipitem_bpm509 (string ag_cmcd, string ag_year, string ag_revno, string ag_divcode, ref string ag_message)
+end prototypes
+
+global function integer f_bpm_create_wipitem_bpm509 (string ag_cmcd, string ag_year, string ag_revno, string ag_divcode, ref string ag_message);//*** 10/03 유상사급 재료비 계산
+//* 1. 10/03 유상사급 리스트 조회
+//* 2. 하위품목 재료비합 계산 - 조건:지역,공장,상위품번
+//* 3. do while true 10/03이 존재하면 하위품목 재료비 합
+//* 3.1 하위에 10/03 품목이 없을때까지 Looping.
+
+datastore lds_01, lds_02
+string ls_plant, ls_dvsn, ls_pitno, ls_check
+dec{3} lc_pqty
+dec{0} lc_damt, lc_eamt
+integer li_cnt, li_rowcnt, li_chkcnt
+
+lds_01 = create datastore
+lds_01.dataobject = "d_bpm_create_wipitem_bpm509"
+lds_01.settransobject(sqlca)
+
+li_rowcnt = lds_01.retrieve(ag_cmcd,ag_year,ag_revno,ag_divcode)
+if li_rowcnt < 1 then
+	return 0
+end if
+
+for li_cnt = 1 to li_rowcnt
+	ls_plant = lds_01.getitemstring(li_cnt,"bplant")
+	ls_dvsn = lds_01.getitemstring(li_cnt,"bdiv")
+	ls_pitno = lds_01.getitemstring(li_cnt,"bchno")
+	
+	SELECT pbbpm.sf_bpm_exp(:ag_cmcd,:ag_year,:ag_revno,:ls_plant,:ls_dvsn,
+            :ls_pitno,:g_s_date,'G')
+	INTO :ls_check
+	FROM PBCOMMON.COMM000
+	using sqlca;
+	
+	if ls_check <> 'Y' then
+		continue
+	end if
+	
+	SELECT SUM(CASE WHEN DD.CLS = '10' OR DD.CLS = '20' OR DD.CLS = '40' OR DD.CLS = '50' OR DD.CLS = '35' THEN
+		CASE WHEN ( DD.SRCE = '03' OR DD.SRCE = '05' OR DD.SRCE = '06' ) OR DD.CLS = '30' THEN 0
+		ELSE TRUNCATE(IFNULL(CC.YCSTD * BB.BPRQT / IFNULL(CC.CONVQTY,1),0),3) END
+	ELSE 0 END),
+	SUM(CASE WHEN DD.CLS = '10' OR DD.CLS = '20' OR DD.CLS = '40' OR DD.CLS = '50' OR DD.CLS = '35' THEN
+		CASE WHEN ( DD.SRCE = '03' OR DD.SRCE = '05' OR DD.SRCE = '06' ) OR DD.CLS = '30' THEN 0
+		ELSE TRUNCATE(IFNULL(CC.YCSTE * BB.BPRQT / IFNULL(CC.CONVQTY,1),0),3) END
+	ELSE 0 END)
+	INTO :lc_damt, :lc_eamt
+	FROM ( select :ag_year as xyear,:ag_revno as brev,a.tplnt as bplant,a.tdvsn as bdiv,
+			 a.tcitn as bchno,a.twkct as bwoct,a.tqty1 as bprqt
+			from qtemp.tmp_bpm a
+			where a.tcalculate = 'Y' ) BB
+	INNER JOIN PBBPM.BPM503 DD
+	ON BB.XYEAR = DD.XYEAR AND BB.BREV = DD.REVNO AND BB.BPLANT = DD.XPLANT AND BB.BDIV = DD.DIV AND BB.BCHNO = DD.ITNO
+	INNER JOIN PBBPM.BPM502 EE
+	ON DD.XYEAR = EE.XYEAR AND DD.REVNO = EE.REVNO AND DD.ITNO = EE.ITNO
+	LEFT OUTER JOIN PBBPM.BPM509 CC
+	ON BB.BCHNO = CC.YITNO AND BB.XYEAR = CC.YCCYY AND BB.BREV = CC.REVNO AND
+	  CC.YGUBUN = '10' AND CC.YGRAD = '1'
+	using sqlca;
+	
+	UPDATE PBBPM.BPM509
+	SET YCSTD = :lc_damt, YCSTE = :lc_eamt, UPDTID = :g_s_empno, UPDTDT = :g_s_datetime
+	WHERE YCCYY = :ag_year AND REVNO = :ag_revno AND
+			YITNO = :ls_pitno AND YPLANT = :ls_plant AND
+			YDIV = :ls_dvsn AND YGUBUN = '10' AND
+			YGRAD = '1'
+	using sqlca;
+next
+
+return 0
+end function
+

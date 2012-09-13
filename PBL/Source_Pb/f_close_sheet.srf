@@ -1,0 +1,55 @@
+$PBExportHeader$f_close_sheet.srf
+$PBExportComments$열려있는 화면 닫기
+global type f_close_sheet from function_object
+end type
+
+forward prototypes
+global subroutine f_close_sheet ()
+end prototypes
+
+global subroutine f_close_sheet ();////////////////////////////////////////////////////////////////////////
+//	기능 : KDAC 종료할 때 이미 열려져 있는 Window를 닫기
+// 사용 : m_frame-> KDAC 종료
+////////////////////////////////////////////////////////////////////////
+string	ls_winid
+window  	ls_wsheet
+boolean 	lb_valid
+
+//닫고자하는 처음화면이 "w_frame" or "w_menu" 아니면 닫는다.
+ls_wsheet	=	w_frame.GetFirstSheet()
+IF	IsValid(ls_wsheet)	then
+	ls_winid		=	ls_wsheet.ClassName()
+	if 	ls_winid	<>	"w_frame"	and	ls_winid	<>	"w_menu"	then
+		if 	close(ls_wsheet)	=	-1	then
+			ls_wsheet.Setposition(Totop!)
+			ls_wsheet.WindowState = Normal!
+			return
+		end if
+	end if
+end if
+
+//닫고자하는 화면이 뒤에 있을때 "w_frame" or "w_menu" 아니면
+//모든 Sheet 화면을 닫은 다음에 "w_frame" 와 "w_menu" 닫는다.
+Do
+	if 	isValid(ls_wsheet) then
+		ls_wsheet 	= 	w_frame.GetNextSheet(ls_wsheet)
+	else
+		ls_wsheet 	= 	w_frame.GetFirstSheet()
+	end if
+	lb_valid  =	isValid(ls_wsheet)
+	
+	if 	lb_valid then
+		ls_winid 		= 	ls_wsheet.ClassName()
+		if 	ls_winid	<> 	"w_frame" and 	ls_winid 	<> 	"w_menu" 	then
+			if 	close(ls_wsheet) 	= 	-1 	then
+				ls_wsheet.Setposition(Totop!)
+				ls_wsheet.WindowState 	= 	Normal!
+				return
+			end if
+		end if
+	end if
+Loop While 	lb_valid
+
+close(w_frame)
+end subroutine
+

@@ -1,0 +1,25 @@
+$PBExportHeader$f_euse_gubun.srf
+$PBExportComments$이체간판 사용처구분(지역,공장,불출지역,공장, 품번)
+global type f_euse_gubun from function_object
+end type
+
+forward prototypes
+global function string f_euse_gubun (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno)
+end prototypes
+
+global function string f_euse_gubun (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno);String ls_gubun		
+
+SELECT "EXTD"  INTO :ls_gubun
+ FROM "PBINV"."INV604"
+WHERE "PBINV"."INV604"."COMLTD" = '01'    AND "PBINV"."INV604"."XPLANT"  = :as_xplant AND
+      "PBINV"."INV604"."DIV"    = :as_div AND "PBINV"."INV604"."XPLANT1" = :as_xplant1 AND
+      "PBINV"."INV604"."DIV1"   = :as_div1 AND "PBINV"."INV604"."ITNO"   = :as_itno  AND
+		"PBINV"."INV604"."STOP" <> 'S' Using sqlca;
+
+If sqlca.sqlcode <> 0 Then
+	Return 'F'
+Else  
+	Return ls_gubun
+End if
+end function
+

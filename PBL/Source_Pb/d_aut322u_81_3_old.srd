@@ -1,0 +1,43 @@
+$PBExportHeader$d_aut322u_81_3_old.srd
+$PBExportComments$¿ëµµº° PC º¸À¯ÇöÈ² Report ¾ç½Ä
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=4 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no  crosstab.dynamic = yes grid.lines=0 grid.columnmove=no selected.mouse=no )
+header[1](height=0 color="536870912" )
+header[2](height=84 color="536870912" )
+summary(height=84 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(20) updatewhereclause=yes name=dept dbname="dept" )
+ column=(type=number updatewhereclause=yes name=compute_0001 dbname="compute_0001" )
+ retrieve="SELECT COUNT(A.CHID),
+		 A.DEPT,
+		 C.COITNAME AS EMPGUBUN
+FROM PBCOMMON.COMM810 AS A
+LEFT OUTER JOIN
+(SELECT B.COMLTD,B.COGUBUN,B.COCODE,B.COITNAME
+FROM PBCOMMON.DAC002 AS B
+WHERE B.COMLTD  = '01' AND
+		B.COGUBUN = 'COMMAI') AS C
+ON A.EMPGUBUN = C.COCODE
+WHERE A.COMLTD = '01'  AND
+		A.STCD   LIKE   :as_stcd AND
+		A.DEVICEGUBUN LIKE :as_devicegubun
+GROUP BY A.DEPT,
+			C.COITNAME
+ORDER BY A.DEPT
+" arguments=(("as_stcd", string),("as_devicegubun", string))  sort="dept A " )
+text(band=header[1] alignment="0" text="Sum Of Compute 0001" border="0" color="0" x="9" y="12" height="72" width="553" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header[1] alignment="0" text="Empgubun" border="0" color="0" x="571" y="12" height="72" width="411" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header[2] alignment="2" text="ºÎ¼­¸íÄª" border="0" color="16777215" x="9" y="12" height="72" width="553" html.valueishtml="0"  name=dept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header[2] alignment="2" text="@empgubun" border="0" color="16777215" x="571" y="12" height="72" width="411" html.valueishtml="0"  name=compute_0001_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header[2] alignment="2" text="ÀüÃ¼ÇÕ°è" border="0" color="16777215" x="992" y="12" height="72" width="485" html.valueishtml="0"  name=grand_sum_compute_0001_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="12" height="72" width="553" format="[general]" html.valueishtml="0"  name=dept visible="1" dddw.name=dddw_com000_dept dddw.displaycolumn=coitname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any dddw.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="0" color="0" x="571" y="12" height="72" width="411" format="[general]" html.valueishtml="0"  name=compute_0001 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.autohscroll=yes edit.imemode=0 crosstab.repeat=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=detail alignment="1" expression="crosstabsum(1)"border="0" color="0" x="992" y="12" height="72" width="485" format="[general]" html.valueishtml="0"  name=grand_sum_compute_0001 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=summary alignment="2" expression="~"ÀüÃ¼ÇÕ°è~""border="0" color="255" x="9" y="12" height="72" width="553" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=summary alignment="1" expression="sum(compute_0001 for all )"border="0" color="255" x="571" y="12" height="72" width="411" format="[general]" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=summary alignment="1" expression="sum(grand_sum_compute_0001 for all )"border="0" color="255" x="992" y="12" height="72" width="485" format="[general]" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12639424" )
+ crosstab(band = foreground  crosstabonly = yes 
+ columns = "empgubun" rows = "dept" values = "sum(compute_0001 for crosstab)" sourcenames = "compute_0001, dept, empgubun")htmltable(border="0" cellpadding="1" cellspacing="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,21 @@
+$PBExportHeader$f_deptnmrtn.srf
+$PBExportComments$부서명칭(parm : 사번,구분)
+global type f_deptnmrtn from function_object
+end type
+
+forward prototypes
+global function string f_deptnmrtn (string a_s_empno, string a_s_gubun)
+end prototypes
+
+global function string f_deptnmrtn (string a_s_empno, string a_s_gubun);string l_s_dept, l_s_deptnm
+
+select pedept into :l_s_dept
+from  pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+l_s_deptnm = mid(f_get_deptname(l_s_dept,a_s_gubun),1,30)
+
+return l_s_deptnm
+end function
+

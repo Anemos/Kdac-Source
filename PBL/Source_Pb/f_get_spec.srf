@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_spec.srf
+$PBExportComments$±Ô°Ý
+global type f_get_spec from function_object
+end type
+
+forward prototypes
+global function string f_get_spec (string a_itno)
+end prototypes
+
+global function string f_get_spec (string a_itno);string l_s_spec, l_s_rvno, l_s_type
+
+SELECT "PBINV"."INV002"."SPEC"
+ INTO :l_s_spec
+ FROM "PBINV"."INV002" 
+WHERE "PBINV"."INV002"."COMLTD" = '01' AND
+      "PBINV"."INV002"."ITNO" = :a_itno  using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	return ' '
+end if
+return l_s_spec
+end function
+

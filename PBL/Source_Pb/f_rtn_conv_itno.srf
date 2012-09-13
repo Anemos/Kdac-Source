@@ -1,0 +1,22 @@
+$PBExportHeader$f_rtn_conv_itno.srf
+global type f_rtn_conv_itno from function_object
+end type
+
+forward prototypes
+global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno, string a_applydate)
+end prototypes
+
+global function string f_rtn_conv_itno (string a_plant, string a_dvsn, string a_itno, string a_applydate);string ls_itno
+
+select distinct rhitno into :ls_itno from pbrtn.rtn018
+	where rhcmcd = '01' and rhplant = :a_plant and rhdvsn = :a_dvsn and rhitno1 = :a_itno and
+		rhedfm <= :a_applydate and rhedto >= :a_applydate
+using sqlca ;
+
+if sqlca.sqlcode <> 0 then 
+	ls_itno = a_itno
+end if
+
+return ls_itno
+end function
+

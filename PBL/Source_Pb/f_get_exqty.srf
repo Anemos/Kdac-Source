@@ -1,0 +1,34 @@
+$PBExportHeader$f_get_exqty.srf
+$PBExportComments$부외재고  Return  Global Function
+global type f_get_exqty from function_object
+end type
+
+forward prototypes
+global function decimal f_get_exqty (string as_itno)
+end prototypes
+
+global function decimal f_get_exqty (string as_itno);//////////////////////////////////////////////////////////
+// 품번을 받아 품목 재고Table의 부외재고를 Return
+//
+// Return: 성공(부외재고량), 실패(-1)
+//////////////////////////////////////////////////////////
+
+
+Dec{1} ld_Exqty
+
+
+SELECT EXQTY INTO :ld_Exqty
+	FROM PBINV.INV101
+WHERE COMLTD = '01' AND
+		XPLANT = 'D' AND
+		DIV	 = 'F' AND
+		ITNO	 = :as_itno	 Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then
+	Return -1
+End If
+
+
+Return ld_Exqty
+end function
+

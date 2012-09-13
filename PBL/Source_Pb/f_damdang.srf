@@ -1,0 +1,19 @@
+$PBExportHeader$f_damdang.srf
+$PBExportComments$´ã´ç return
+global type f_damdang from function_object
+end type
+
+forward prototypes
+global function string f_damdang (string a_s_empno)
+end prototypes
+
+global function string f_damdang (string a_s_empno);string l_s_sexgb
+
+select pebonbu into :l_s_sexgb
+from pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+return l_s_sexgb
+end function
+

@@ -1,0 +1,250 @@
+$PBExportHeader$f_bpm002_versioncopy.srf
+$PBExportComments$사업계획 버전복사용
+global type f_bpm002_versioncopy from function_object
+end type
+
+forward prototypes
+global function integer f_bpm002_versioncopy (string ls_xyear, string ls_revno_from, string ls_xyear_to, string ls_revno_to, ref string ls_msg)
+end prototypes
+
+global function integer f_bpm002_versioncopy (string ls_xyear, string ls_revno_from, string ls_xyear_to, string ls_revno_to, ref string ls_msg);string ls_stcd, ls_stcd1
+long ll_rcnt
+
+Setpointer(hourglass!)	
+	
+IF ls_xyear = ''  THEN
+	ls_msg = '사업계획년도를 확인하세요!'
+	Return -1
+END IF
+IF ls_xyear_to = ''  THEN
+	ls_msg = '사업계획년도를 확인하세요!'
+	Return -1
+END IF
+IF ls_revno_from = '' or ls_revno_to = '' THEN
+	ls_msg = '사업계획년도/버전을 확인하세요!'
+	Return -1
+END IF
+
+IF ls_xyear = ls_xyear_to and ls_revno_from = ls_revno_to THEN
+	ls_msg = '복사할 버전이 동일합니다. 확인하세요!'
+	Return -1
+END IF
+
+select coalesce(max(ingflag),''),coalesce(max(taskstatus),'') 
+	into :ls_stcd, :ls_stcd1
+from pbbpm.bpm519
+where comltd = '01'
+and   xyear = :ls_xyear
+and   revno = :ls_revno_from;
+//and   seqno = :ls_gubun;  //전체상태는 아무자료나 가져와도 됨.
+IF ls_stcd <> 'C'  THEN
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 작업이 진행중..종료후 작업하세요!'
+	Return -1
+END IF
+
+//**************************************************복사할 자료 존재확인
+select count(*) into :ll_rcnt
+from pbbpm.bpm506
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if ll_rcnt = 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 복사할 환율정보(BPM506)가 없습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm507
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if ll_rcnt = 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 복사할 부대비율정보(BPM507)가 없습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm502
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if ll_rcnt = 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 복사할 품목기본정보(BPM502)가 없습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm503
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if ll_rcnt = 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 복사할 품목상세정보(BPM503)가 없습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm509
+where yccyy = :ls_xyear
+and   revno = :ls_revno_from;
+if ll_rcnt = 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 복사할 사업계획단가정보(BPM509)가 없습니다!'
+	Return -1
+end if
+//**************************************************복사대상 존재확인
+select count(*) into :ll_rcnt
+from pbbpm.bpm506
+where xyear = :ls_xyear_to
+and   revno = :ls_revno_to;
+if ll_rcnt > 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_to + '번 환율정보(BPM506)가 이미 있습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm507
+where xyear = :ls_xyear_to
+and   revno = :ls_revno_to;
+if ll_rcnt > 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_to + '번 부대비율정보(BPM507)가 이미 있습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm502
+where xyear = :ls_xyear_to
+and   revno = :ls_revno_to;
+if ll_rcnt > 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_to + '번 품목기본정보(BPM502)가 이미 있습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm503
+where xyear = :ls_xyear_to
+and   revno = :ls_revno_to;
+if ll_rcnt > 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_to + '번 품목상세정보(BPM503)가 이미 있습니다!'
+	Return -1
+end if
+
+select count(*) into :ll_rcnt
+from pbbpm.bpm509
+where yccyy = :ls_xyear_to
+and   revno = :ls_revno_to;
+if ll_rcnt > 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_to + '번 사업계획단가정보(BPM509)가 이미 있습니다!'
+	Return -1
+end if
+
+////********************************************************************************************복사 시작
+sqlca.autocommit = false
+
+insert into pbbpm.bpm506
+( XYEAR,            REVNO,            CURR,            EXCH,            EXCH1,   
+  EXTD,            INPTID,            INPTDT,            UPDTID,            UPDTDT,   
+  IPADDR,            MACADDR  )
+SELECT :ls_xyear_to,            :ls_revno_to,            CURR,            EXCH,            EXCH1,   
+         EXTD,            INPTID,                INPTDT,            UPDTID,            UPDTDT,   
+         IPADDR,          MACADDR  
+FROM PBBPM.BPM506  
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if sqlca.sqlcode <> 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 환율정보(BPM506) 복사중 오류발생! 급히 연락바랍니다.'
+	//messagebox('시스템 담당확인','sqlerrtext:' + string(sqlca.sqlcode) + ':' + string(sqlca.sqlerrtext))
+	goto Rollback_
+end if			
+
+insert into pbbpm.bpm507
+       (XYEAR,           REVNO,            GUBUN,            XPLANT,            DIV,   
+       DPER,            EPER,            EXTD,            INPTID,            INPTDT,   
+       UPDTID,            UPDTDT,            IPADDR,            MACADDR  )
+SELECT :ls_xyear_to,           :ls_revno_to,            GUBUN,            XPLANT,            DIV,   
+       DPER,            EPER,            EXTD,            INPTID,            INPTDT,   
+       UPDTID,            UPDTDT,            IPADDR,            MACADDR  
+FROM PBBPM.BPM507  
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if sqlca.sqlcode <> 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 부대비율정보(BPM507) 복사중 오류발생! 급히 연락바랍니다.'
+	goto Rollback_
+end if			
+
+insert into pbbpm.bpm502
+      (XYEAR,            REVNO,            ITNO,            ITNM,            SPEC,   
+       XUNIT,            XTYPE,            EXTD,            INPTID,            INPTDT,   
+       UPDTID,            UPDTDT,            IPADDR,            MACADDR,            CRTDT,   
+       GUBUN ) 
+SELECT :ls_xyear_to,            :ls_revno_to,            ITNO,            ITNM,            SPEC,   
+       XUNIT,            XTYPE,            EXTD,            INPTID,            INPTDT,   
+       UPDTID,            UPDTDT,            IPADDR,            MACADDR,            CRTDT,   
+       GUBUN  
+FROM PBBPM.BPM502  
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if sqlca.sqlcode <> 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 품목기본정보(BPM502) 복사중 오류발생! 급히 연락바랍니다.'
+	goto Rollback_
+end if			
+
+insert into pbbpm.bpm503
+      (XYEAR,            REVNO,            XPLANT,            DIV,            ITNO,   
+       CLS,            SRCE,            PDCD,            XUNIT,            COSTDIV,   
+       XPLAN,            MLAN,            CONVQTY,            COMCD,            EXTD,   
+       INPTID,            INPTDT,            UPDTID,            UPDTDT,            IPADDR,   
+       MACADDR,            CRTDT  )
+SELECT :ls_xyear_to,            :ls_revno_to,            XPLANT,            DIV,            ITNO,   
+       CLS,              SRCE,            PDCD,            XUNIT,            COSTDIV,   
+       XPLAN,            MLAN,            CONVQTY,            COMCD,            EXTD,   
+       INPTID,            INPTDT,            UPDTID,            UPDTDT,            IPADDR,   
+       MACADDR,            CRTDT  
+FROM PBBPM.BPM503  
+where xyear = :ls_xyear
+and   revno = :ls_revno_from;
+if sqlca.sqlcode <> 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 품목상세정보(BPM503) 복사중 오류발생! 급히 연락바랍니다.'
+	goto Rollback_
+end if	
+
+insert into pbbpm.bpm509
+      (YCCYY,            REVNO,            YITNO,            YVNDSR,            YPLANT,   
+       YDIV,            YGUBUN,            YGRAD,            YSRCE,            YPLAN,   
+       YCLSB,            YPDCD,            BOMUNIT,            XUNIT,            XUNIT1,   
+       CONVINV,            CONVPUR,            CONVQTY,            YCHGE,            YCURR,   
+       YCSTC,            YADJDT,            YCSTR,            YCSTD,            YCSTE,   
+       YCSTD1,            YCSTE1,            YGCST,            YCODE,            YALT,   
+       YEXPT,            YCODE1,            YCMCD,            YDATE,            YREDT,   
+       UPDTID,            UPDTDT,            CRTDT,            YSAKUB,            YYSUNG,   
+       YCSTC1,            YSCOST  )
+SELECT :ls_xyear_to,           :ls_revno_to,            YITNO,            YVNDSR,            YPLANT,   
+       YDIV,            YGUBUN,            YGRAD,            YSRCE,            YPLAN,   
+       YCLSB,            YPDCD,            BOMUNIT,            XUNIT,            XUNIT1,   
+       CONVINV,          CONVPUR,            CONVQTY,            YCHGE,            YCURR,   
+       YCSTC,            YADJDT,            YCSTR,            YCSTD,            YCSTE,   
+       YCSTD1,            YCSTE1,            YGCST,            YCODE,            YALT,   
+       YEXPT,            YCODE1,            YCMCD,            YDATE,            YREDT,   
+       UPDTID,            UPDTDT,            CRTDT,            YSAKUB,            YYSUNG,   
+       YCSTC1,            YSCOST  
+FROM PBBPM.BPM509  
+where yccyy = :ls_xyear
+and   revno = :ls_revno_from;
+if sqlca.sqlcode <> 0 then
+	ls_msg = ls_xyear + '년 REV:' + ls_revno_from + '번 사업계획 단가정보(BPM509) 복사중 오류발생! 급히 연락바랍니다.'
+	goto Rollback_
+end if	
+
+
+COMMIT USING SQLCA;       
+sqlca.autocommit = true	
+Setpointer(arrow!)
+Return 1
+
+//Fail
+Rollback_:
+ROLLBACK USING SQLCA;
+sqlca.autocommit = true
+MessageBox("확인", ls_msg)
+Setpointer(arrow!)
+Return -1
+
+
+
+end function
+

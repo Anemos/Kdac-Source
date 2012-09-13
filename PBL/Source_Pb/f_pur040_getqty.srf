@@ -1,0 +1,48 @@
+$PBExportHeader$f_pur040_getqty.srf
+$PBExportComments$외자구매요구량(지역,공장,품번) (요구량-취소량-발주량)
+global type f_pur040_getqty from function_object
+end type
+
+forward prototypes
+global function decimal f_pur040_getqty (string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_pur040_getqty (string as_xplant, string as_div, string as_itno);DEC {2}  ld_unqty
+
+
+//SELECT  coalesce(SUM("PBPUR"."PUR302"."RQTY" - "PBPUR"."PUR302"."RCNL"),0)		//2008.07.22
+SELECT  coalesce(sum("PBPUR"."PUR302"."RQTY" - "PBPUR"."PUR302"."RCNL" - "PBPUR"."PUR302"."IQTY"),0)
+  into 	:ld_unqty  
+FROM  "PBPUR"."PUR302", "PBPUR"."PUR301"
+WHERE "PBPUR"."PUR302"."COMLTD" = "PBPUR"."PUR302"."COMLTD" and
+		 "PBPUR"."PUR302"."RQNO" = "PBPUR"."PUR301"."RQNO" and
+		 "PBPUR"."PUR302"."COMLTD" = '01'   AND
+		 "PBPUR"."PUR302"."STCD" = ' '   AND
+		 "PBPUR"."PUR302"."SRCE" = '01'  AND
+		 "PBPUR"."PUR302"."GUBUN" <> 'B'   AND		//BLANK ORDER  2008.07.18 :과거 심재범 과장이 사용.		
+		 "PBPUR"."PUR301"."XPLANT" = :as_xplant and
+		 "PBPUR"."PUR301"."DIV" = :as_div  and
+		 "PBPUR"."PUR302"."ITNO" = :as_itno and
+		 "PBPUR"."PUR301"."RPRT" = 'C' AND
+		 "PBPUR"."PUR302"."RASPRT" <> 'C'  	//반려:2009.02.25
+		 ; 
+
+//2008.07.22
+//  WHERE "PBPUR"."PUR302"."COMLTD" = "PBPUR"."PUR302"."COMLTD" and
+//		  "PBPUR"."PUR302"."RQNO" = "PBPUR"."PUR301"."RQNO" and
+//		  trim("PBPUR"."PUR302"."STCD") = ''   AND
+//  		  "PBPUR"."PUR302"."GUBUN" <> 'B'   AND	//BLANK ORDER : 2008.07.18
+//		  "PBPUR"."PUR302"."SRCE" = '01'  AND
+////		  "PBPUR"."PUR302"."XPLAN" = :as_xplan   and
+//		// "PBPUR"."PUR301"."RPRT" <> ' ' and
+//		  "PBPUR"."PUR301"."XPLANT" = :as_xplant and
+//		  "PBPUR"."PUR301"."DIV"  = :as_div  and
+//		  "PBPUR"."PUR302"."ITNO" = :as_itno and
+//		  "PBPUR"."PUR301"."RPRT" = 'C' 		//2008.07.22
+//		  ;
+
+   return ld_unqty		
+
+
+end function
+

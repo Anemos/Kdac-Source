@@ -1,0 +1,100 @@
+$PBExportHeader$f_insert.srf
+$PBExportComments$개인별입력시 insert
+global type f_insert from function_object
+end type
+
+forward prototypes
+global subroutine f_insert (string a_s_empno, string a_s_date)
+end prototypes
+
+global subroutine f_insert (string a_s_empno, string a_s_date);string l_s_bonbu, l_s_bonbu1, l_s_depte, l_s_depti, l_s_empgb, l_s_day, l_s_class, l_s_kubho, &
+       l_s_date1, l_s_date2, l_s_date3, l_s_gb, l_s_dgextd, l_s_extd
+int l_count, l_n_max, l_n_labcnt
+string ls_dgcd, ls_dgcd1, ls_dgcd2, ls_dgcd3
+
+select pebonbu, pefornr3, pedept, peintdept,peclass,pekubho into :l_s_bonbu, :l_s_bonbu1, :l_s_depte, :l_s_depti, :l_s_class, :l_s_kubho
+from  pbper.per001 //pebonbu(담당) / pefornr3(실담당) 
+where peempno = :a_s_empno 
+using sqlcc;
+
+// serno 최대값
+select max(dgserno),count(*) into :l_n_max, :l_n_labcnt
+from delabo.labtaclm
+where dgyy || dgmm || dgdd = :a_s_date and dgdepte = :l_s_depte
+using sqlcc;
+
+if l_n_labcnt = 0 then
+	l_n_max = 0
+end if
+
+l_s_empgb = ' '
+if l_s_class = '96' then
+ l_s_empgb = '4'
+end if	
+
+
+//조별 입력시 DISPLAY 순서-직위/급호/성명
+l_count = l_n_max + 1
+l_s_date1 = mid(a_s_date,1,4)
+l_s_date2 = mid(a_s_date,5,2)
+l_s_date3 = mid(a_s_date,7,2)
+//요일
+l_s_gb = mid(string(daynumber(Date(string(a_s_date,"@@@@-@@-@@")))),1,1)
+choose case l_s_gb
+case '1'
+	l_s_day = '7'
+case '2'
+	l_s_day = '1'
+case '3'
+	l_s_day = '2'	
+ case '4'
+	l_s_day = '3'
+case '5'
+	l_s_day = '4'
+case '6'
+	l_s_day = '5'
+case '7'
+	l_s_day = '6'	
+end choose
+l_s_dgextd = l_s_date2 + l_s_date3 + a_s_empno
+l_s_extd   = l_s_dgextd
+
+//휴업계획 반영
+ls_dgcd  = f_get_hyup_per(a_s_empno, a_s_date)
+ls_dgcd1 = mid(ls_dgcd,1,1) 
+ls_dgcd2 = mid(ls_dgcd,2,1)
+ls_dgcd3 = mid(ls_dgcd,3,1)
+
+insert into delabo.labtac(dgempno,dgyy,dgmm,dgdd,dgdiv,dgbumun,dgdepte,dgdepti,dgempgb,dgdaygb,dgtimep,dgcd1p,dgcd2p &
+				,dgcd3p,dgdngbp,dgotp,dgjop,dgsangp,dgjuhup,dghumup,dgspcp,dgegb,dgtimer &
+				,dgcd1r,dgcd2r,dgcd3r,dgdngbr,dgotr,dgntr,dgjor,dgsangr,dgjuhur,dghumur,dgspcr,dgjir,dgoor &
+				,dgpor,dgjtr,dggunbor,dgmur,dgclass,dgkubho,dgserno,dgindt,dgintime,dginusr,dgupdt,dguptime,dgupusr &
+				,dgindtp,dgintimep,dginusrp,dgupdtp,dguptimep,dgupusrp,dgextd,dgntp, dggunbop) 
+				values
+				(:a_s_empno,:l_s_date1,:l_s_date2,:l_s_date3,:l_s_bonbu,:l_s_bonbu1,:l_s_depte,:l_s_depti,:l_s_empgb,:l_s_day,0,:ls_dgcd1,:ls_dgcd2 &
+				,:ls_dgcd3,' ',0,0,0,0,0,0,' ',0 &
+				,:ls_dgcd1,:ls_dgcd2,:ls_dgcd3,' ',0,0,0,0,0,0,0,0,0 &
+				,0,0,0,0,:l_s_class,:l_s_kubho,:l_count,' ',' ',' ',' ',' ',' ' &
+				,' ',' ',' ',' ',' ',' ',:l_s_dgextd, 0 ,0) 
+using sqlcc;
+
+if sqlcc.sqlcode <> 0  then
+   messagebox('LABTAC Creation ERROR' , string(sqlcc.sqlerrtext) )
+else
+	insert into delabo.labt02
+	values
+	(:a_s_empno,:l_s_date1,:l_s_date2,:l_s_date3,:l_s_depte,:l_s_depti, '',&
+	 'N','', '','N','',:l_s_extd , :g_s_empno, :g_s_datetime, '','',:g_s_ipaddr,:g_s_macaddr,'','')
+	 using sqlcc;
+	 if sqlcc.sqlcode <> 0 then
+		 messagebox("SQLERROR",SQLCC.SQLERRTEXT)
+		 rollback using sqlcc;
+	 end if
+	commit using sqlcc;
+end if
+l_s_dgextd = ''  ; l_s_extd = '' ;
+
+
+
+end subroutine
+

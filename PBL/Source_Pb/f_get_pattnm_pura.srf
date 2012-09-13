@@ -1,0 +1,42 @@
+$PBExportHeader$f_get_pattnm_pura.srf
+$PBExportComments$금형(공정명칭) - pattno, pattser, wrkno
+global type f_get_pattnm_pura from function_object
+end type
+
+forward prototypes
+global function string f_get_pattnm_pura (string ag_pattno, string ag_pattser, string ag_wrkno)
+end prototypes
+
+global function string f_get_pattnm_pura (string ag_pattno, string ag_pattser, string ag_wrkno);/*
+	금형/공정명칭 가져오기
+		Argument    String      ag_pattno
+					   String		ag_pattser
+						String 		ag_wrkno
+*/
+String ls_return
+
+ag_pattno = Trim(ag_pattno)
+If IsNull(ag_wrkno) OR ag_wrkno = "" Then
+	//금형 명칭
+	SELECT Coalesce(PATTNM, ' ')
+		INTO :ls_return
+	FROM PBPUR.PUR701
+	WHERE COMLTD = '01'
+	 AND PATTNO = :ag_pattno
+	 AND PATTSER = :ag_pattser Using sqlca;
+	 	
+Else
+	//공정 명칭
+	SELECT Coalesce(WRKNM, ' ')
+		INTO :ls_return
+	FROM PBPUR.PUR704
+	WHERE COMLTD = '01'
+	 AND PATTNO = :ag_pattno
+	 AND PATTSER = :ag_pattser 
+	 AND WRKNO = :ag_wrkno Using sqlca;
+	
+End IF
+
+Return ls_return
+end function
+

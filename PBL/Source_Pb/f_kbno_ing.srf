@@ -1,0 +1,31 @@
+$PBExportHeader$f_kbno_ing.srf
+$PBExportComments$이체간판 현재진행 간판수
+global type f_kbno_ing from function_object
+end type
+
+forward prototypes
+global function integer f_kbno_ing (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno)
+end prototypes
+
+global function integer f_kbno_ing (string as_xplant, string as_div, string as_xplant1, string as_div1, string as_itno);/////////////////////////////////////////////////////////
+//                                                    //
+// arg    : 지역/공장/불출지역/불출공장/품번          //
+// Return : 진행상태 간판수                           //
+//                                                    //
+/////////////////////////////////////////////////////////
+
+Int li_cnt
+
+
+SELECT Count(*) INTO :li_cnt
+  FROM "PBINV"."INV606" A
+WHERE A."COMLTD" = '01'         AND A."XPLANT" = :as_xplant AND A."DIV" = :as_div AND A."ITNO" = :as_itno AND
+      A."XPLANT1" = :as_xplant1 AND A."DIV1"   = :as_div1   AND STCD IN ('A','B','C','D') Using SQLCA ;
+		
+If Sqlca.SqlCode <> 0 Then 
+	Return 0
+end if
+	
+Return li_cnt
+end function
+

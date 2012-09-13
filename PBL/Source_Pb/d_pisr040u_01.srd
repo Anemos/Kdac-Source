@@ -1,0 +1,81 @@
+$PBExportHeader$d_pisr040u_01.srd
+$PBExportComments$¾÷Ã¼ÀÌ¿øÈ­ºñÀ²Á¶Á¤
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=132 color="8421376" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=areacode dbname="AreaCode" )
+ column=(type=char(1) updatewhereclause=yes name=divisioncode dbname="DivisionCode" )
+ column=(type=char(12) updatewhereclause=yes name=itemcode dbname="ItemCode" )
+ column=(type=char(5) updatewhereclause=yes name=suppliercode dbname="SupplierCode" )
+ column=(type=long updatewhereclause=yes name=orderrate dbname="OrderRate" )
+ column=(type=char(1) updatewhereclause=yes name=parttype dbname="PartType" )
+ column=(type=char(100) updatewhereclause=yes name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=yes name=modelid dbname="ModelID" )
+ column=(type=char(30) updatewhereclause=yes name=suppliername dbname="SupplierName" )
+ column=(type=long updatewhereclause=yes name=ipgoy dbname="IpgoY" )
+ column=(type=long updatewhereclause=yes name=ipgon dbname="IpgoN" )
+ column=(type=long updatewhereclause=yes name=ipgoy2 dbname="IpgoY2" )
+ column=(type=long updatewhereclause=yes name=ipgon2 dbname="IpgoN2" )
+ column=(type=long updatewhereclause=yes name=rerate dbname="ReRate" )
+ procedure="1 execute dbo.sp_pisr040u_01;1 @ps_areaCode = :ps_areaCode, @ps_divCode = :ps_divCode, @ps_itemCode = :ps_itemCode, @ps_applyDate = :ps_applyDate" arguments=(("ps_areaCode", string),("ps_divCode", string),("ps_itemCode", string),("ps_applyDate", string))  sort="itemcode A suppliercode A " )
+group(level=1 header.height=0 trailer.height=96 by=("itemcode" ) header.color="536870912" trailer.color="10789024" )
+text(band=header alignment="2" text="Á¶Á¤
+ºñÀ²" border="0" color="16777215" x="4261" y="8" height="120" width="242"  name=rerate_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ºÎÇ°
+±¸ºÐ" border="0" color="16777215" x="9" y="8" height="120" width="219"  name=parttype_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¹ø
+" border="0" color="16777215" x="238" y="8" height="120" width="402"  name=itemcode_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="¾÷Ã¼
+ÄÚµå" border="0" color="16777215" x="1513" y="8" height="120" width="197"  name=suppliercode_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="±âÁØÀ²
+" border="0" color="16777215" x="4009" y="8" height="120" width="242"  name=orderrate_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ç°¸í
+" border="0" color="16777215" x="649" y="8" height="120" width="608"  name=itemname_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="¹è¹øÈ£
+" border="0" color="16777215" x="1266" y="8" height="120" width="238"  name=modelid_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="¾÷Ã¼¸í
+" border="0" color="16777215" x="1719" y="8" height="120" width="640"  name=suppliername_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÃÖ±Ù3°³¿ù
+ÀÔ°í·®" border="0" color="8388608" x="2368" y="8" height="120" width="325"  name=t_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="³³ÀÔ
+ÁØ¼öÀ²" border="0" color="8388608" x="2702" y="8" height="120" width="247"  name=t_2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="ºñÀ²
+" border="0" color="8388608" x="2958" y="8" height="120" width="251"  name=t_3  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=header alignment="2" text="´ç¿ù
+ÀÔ°í·®" border="0" color="8388608" x="3218" y="8" height="120" width="256"  name=t_4  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="³³ÀÔ
+ÁØ¼öÀ²" border="0" color="8388608" x="3483" y="8" height="120" width="251"  name=t_5  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=header alignment="2" text="ºñÀ²
+" border="0" color="8388608" x="3744" y="8" height="120" width="256"  name=t_6  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="2958" y="0" height="100" width="251"  name=t_10  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="2702" y="0" height="100" width="247"  name=t_9  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="2368" y="0" height="100" width="325"  name=t_8  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="0" x="649" y="8" height="76" width="608" format="[general]"  name=itemname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="3218" y="0" height="100" width="256"  name=t_11  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="3483" y="0" height="100" width="251"  name=t_12  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=detail alignment="0" text="" border="0" color="8388608" x="3744" y="0" height="100" width="256"  name=t_13  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="1719" y="8" height="76" width="640" format="[general]"  name=suppliername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if(isNull( ipgoy2 ),0, ipgoy2 ) + if( isNull( ipgon2 ),0, ipgon2  )"border="0" color="0" x="3218" y="8" height="76" width="256" format="[GENERAL]"  name=c_ipgosu2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="round( if(isNull( ipgoy2 ),0,  ipgoy2 ) /    if( c_ipgosu2 = 0, 1, c_ipgosu2 ) * 100, 1 )"border="0" color="0" x="3483" y="8" height="76" width="251" format="[GENERAL]"  name=c_okrate2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="round( c_ipgosu2  / sum(  c_ipgosu2  for group 1 )* 100, 1 )"border="0" color="0" x="3744" y="8" height="76" width="256" format="[GENERAL]"  name=c_rate2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="0" x="4009" y="8" height="76" width="242" format="[general]"  name=orderrate edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=10 border="5" color="0" x="4261" y="8" height="76" width="242" format="[general]"  name=rerate edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.nilisnull=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="219" format="[general]"  name=parttype dddw.name=dddw_rparttypel_01 dddw.displaycolumn=parttype_name dddw.datacolumn=parttype_code dddw.percentwidth=0 dddw.lines=0 dddw.limit=0 dddw.allowedit=no dddw.useasborder=no dddw.case=any  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="0" x="238" y="8" height="76" width="402" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="128" x="1266" y="8" height="76" width="238" format="[general]"  name=modelid edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="1513" y="8" height="76" width="197" format="[general]"  name=suppliercode edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="if( isNull( ipgoy ),0, ipgoy ) + if(isNull( ipgon ),0, ipgon )"border="0" color="0" x="2368" y="8" height="76" width="325" format="[GENERAL]"  name=c_ipgosu  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="round(  if(isNull( ipgoy ),0, ipgoy )/ if(  c_ipgosu  = 0, 1,  c_ipgosu ) * 100, 1 )"border="0" color="0" x="2702" y="8" height="76" width="247" format="[GENERAL]"  name=c_okrate  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression="round( c_ipgosu / sum(  c_ipgosu  for group 1 ) * 100, 1 )"border="0" color="0" x="2958" y="8" height="76" width="251" format="[GENERAL]"  name=c_rate  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="ÇÕ°è" border="0" color="0" x="1719" y="8" height="76" width="640"  name=t_7  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="553648127" )
+compute(band=trailer.1 alignment="1" expression="sum(  c_ipgosu  for group 1 )"border="0" color="0" x="2368" y="8" height="76" width="325" format="[GENERAL]"  name=c_ipgosum  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(  c_ipgosu2  for group 1 )"border="0" color="0" x="3218" y="8" height="76" width="256" format="[GENERAL]"  name=c_ipgosum2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(  orderrate  for group 1 )"border="0" color="0" x="4009" y="8" height="76" width="242" format="[GENERAL]"  name=compute_1  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=trailer.1 alignment="1" expression="sum(  rerate  for group 1 )"border="0" color="0" x="4261" y="8" height="76" width="242" format="[GENERAL]"  name=compute_2  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+
+sparse(names="parttype	itemcode	itemname	modelid")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

@@ -1,0 +1,236 @@
+$PBExportHeader$f_get_accslipprt1.srf
+$PBExportComments$ºÐ°³ÀüÇ¥ ¹ßÇà return
+global type f_get_accslipprt1 from function_object
+end type
+
+forward prototypes
+global subroutine f_get_accslipprt1 (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, string a_s_gyul, datawindow a_dw_1, datawindow a_dw_2, datawindow a_dw_3)
+end prototypes
+
+global subroutine f_get_accslipprt1 (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, string a_s_gyul, datawindow a_dw_1, datawindow a_dw_2, datawindow a_dw_3);int    l_n_drcnt, l_n_drrow, l_n_crcnt, l_n_crrow, l_n_endrow, l_n_totrow, l_n_totpage, l_n_crtpage, l_n_i, l_n_ti, &
+       l_n_ni
+dec    l_n_pamt, l_n_tamt, l_n_dramt, l_n_cramt, l_n_xamt
+string dr_exit, cr_exit, l_s_xgb, l_s_xaccode, l_s_colnm, l_s_deci
+
+select max("PBACC"."ACC100"."SLDECISION")  into :l_s_deci
+from   "PBACC"."ACC100"
+where  "PBACC"."ACC100"."COMLTD"   = :a_s_compy  and
+       "PBACC"."ACC100"."SLAREA"   = :a_s_area   and
+		 "PBACC"."ACC100"."SLACDATE" = :a_s_acdate and
+		 "PBACC"."ACC100"."SLSLIPNO" = :a_n_slipno using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_deci = ' '
+end if
+
+a_dw_1.dataobject = 'd_acc204p_01'
+if l_s_deci <> '*' then
+	a_dw_2.dataobject = 'd_acc204p_02'
+	a_dw_3.dataobject = 'd_acc204p_03'
+else
+	a_dw_2.dataobject = 'd_acc204p_021'
+	a_dw_3.dataobject = 'd_acc204p_031'
+end if
+	
+
+a_dw_1.setTransobject(sqlca)
+a_dw_2.setTransobject(sqlca)
+a_dw_3.setTransobject(sqlca)
+
+l_n_drcnt = a_dw_2.retrieve(a_s_compy, a_s_area, a_s_acdate, a_n_slipno)
+l_n_crcnt = a_dw_3.retrieve(a_s_compy, a_s_area, a_s_acdate, a_n_slipno)
+
+if l_n_drcnt >= l_n_crcnt then
+	l_n_endrow = l_n_drcnt
+	l_s_xgb    = 'dr'
+else
+	l_n_endrow = l_n_crcnt
+	l_s_xgb    = 'cr'
+end if
+
+l_n_totrow = l_n_endrow + f_get_accsliprow(l_n_endrow)
+l_n_totpage = l_n_totrow / 3
+if mod(l_n_totrow, 3) > 0 then
+	l_n_totpage ++
+end if
+
+if (l_n_drcnt > 0 and l_n_crcnt = 0 ) or (l_n_crcnt > 0 and l_n_drcnt = 0) then
+	l_n_totpage++
+end if 
+
+l_n_tamt    = 0
+l_n_crtpage = 1
+a_dw_1.retrieve(a_s_compy, a_s_area, a_s_acdate, a_n_slipno, a_s_gyul)
+a_dw_1.setitem(1, "tot_page", l_n_totpage)
+a_dw_1.setitem(1, "crt_page", l_n_crtpage)
+
+do while true
+	for l_n_i = 1 to 3
+		l_n_ti ++
+		if l_n_drcnt > 0 then
+			if l_n_drrow <= l_n_drcnt and dr_exit <> 'y' then
+				if l_s_xgb = 'dr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 3 then
+					a_dw_1.setitem(1, 'dr_accode3', l_s_xaccode)
+					a_dw_1.setitem(1, 'dr_amt3'   , l_n_xamt)
+					l_n_pamt  = l_n_pamt  + l_n_xamt
+				elseif l_s_xgb = 'cr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 1 then
+					a_dw_1.setitem(1, 'dr_accode1', l_s_xaccode)
+					a_dw_1.setitem(1, 'dr_amt1'   , l_n_xamt)
+					l_s_xaccode = ''
+					l_n_dramt = l_n_dramt + l_n_xamt
+					l_n_pamt  = l_n_pamt  + l_n_xamt
+				else
+					l_n_drrow ++
+					l_s_colnm = 'dr_cdno' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.cdno[l_n_drrow])
+					l_s_colnm = 'dr_accode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.accode[l_n_drrow])
+					l_s_colnm = 'dr_cucodegb' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.cucodegb[l_n_drrow])
+					l_s_colnm = 'dr_cucode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.cucode[l_n_drrow])
+					l_s_colnm = 'dr_div' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.div[l_n_drrow])
+					l_s_colnm = 'dr_amt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.amt[l_n_drrow])
+					l_s_colnm = 'dr_summary' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.summary[l_n_drrow])
+					l_s_colnm = 'dr_dept' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.dept[l_n_drrow])
+					l_s_colnm = 'dr_manage1' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.manage1[l_n_drrow])
+					l_s_colnm = 'dr_befdt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.defdt[l_n_drrow])
+					l_s_colnm = 'dr_manage2' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.manage2[l_n_drrow])
+					l_s_colnm = 'dr_befamt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.befamt[l_n_drrow])
+					l_s_colnm = 'dr_origamt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.origamt[l_n_drrow])
+					l_s_colnm = 'dr_bankcode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.bankcode[l_n_drrow])
+					l_s_colnm = 'dr_frdt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.fromdt[l_n_drrow])
+					l_n_dramt = l_n_dramt + a_dw_2.object.amt[l_n_drrow]
+					l_n_pamt  = l_n_pamt  + a_dw_2.object.amt[l_n_drrow]
+					l_n_tamt  = l_n_tamt  + a_dw_2.object.amt[l_n_drrow]
+					if l_n_drrow = l_n_drcnt then
+						dr_exit = 'y'
+					end if
+				end if
+			else
+				if l_s_xgb = 'cr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 1 then
+					a_dw_1.setitem(1, 'dr_accode1', l_s_xaccode)
+					a_dw_1.setitem(1, 'dr_amt1'   , l_n_xamt)
+					l_s_xaccode = ''
+					l_n_dramt = l_n_dramt + l_n_xamt
+					l_n_pamt  = l_n_pamt  + l_n_xamt
+				end if
+			end if
+		else
+			dr_exit = 'y'
+		end if
+		
+		if l_n_crcnt > 0 then
+			if l_n_crrow <= l_n_crcnt and cr_exit <> 'y' then
+				if l_s_xgb = 'cr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 3 then
+					a_dw_1.setitem(1, 'cr_accode3', l_s_xaccode)
+					a_dw_1.setitem(1, 'cr_amt3'   , l_n_xamt)
+				elseif l_s_xgb = 'dr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 1 then
+					a_dw_1.setitem(1, 'cr_accode1', l_s_xaccode)
+					a_dw_1.setitem(1, 'cr_amt1'   , l_n_xamt)
+					l_s_xaccode = ''
+					l_n_cramt = l_n_cramt + l_n_xamt
+				else
+					l_n_crrow ++
+					l_s_colnm = 'cr_cdno' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.cdno[l_n_crrow])
+					l_s_colnm = 'cr_accode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.accode[l_n_crrow])
+					l_s_colnm = 'cr_cucodegb' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.cucodegb[l_n_crrow])
+					l_s_colnm = 'cr_cucode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.cucode[l_n_crrow])
+					l_s_colnm = 'cr_div' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.div[l_n_crrow])
+					l_s_colnm = 'cr_amt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.amt[l_n_crrow])
+					l_s_colnm = 'cr_summary' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.summary[l_n_crrow])
+					l_s_colnm = 'cr_dept' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.dept[l_n_crrow])
+					l_s_colnm = 'cr_manage1' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.manage1[l_n_crrow])
+					l_s_colnm = 'cr_befdt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.defdt[l_n_crrow])
+					l_s_colnm = 'cr_manage2' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.manage2[l_n_crrow])
+					l_s_colnm = 'cr_befamt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.befamt[l_n_crrow])
+					l_s_colnm = 'cr_origamt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.origamt[l_n_crrow])
+					l_s_colnm = 'cr_bankcode' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.bankcode[l_n_crrow])
+					l_s_colnm = 'cr_frdt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.fromdt[l_n_crrow])
+					l_s_colnm = 'cr_todt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_3.object.todt[l_n_crrow])
+					l_n_cramt = l_n_cramt + a_dw_3.object.amt[l_n_crrow]
+					if l_n_crrow = l_n_crcnt then
+						cr_exit = 'y'
+					end if
+				end if
+			else
+				if l_s_xgb = 'dr' and f_spacechk(l_s_xaccode) <> -1 and l_n_i = 1 then
+					a_dw_1.setitem(1, 'cr_accode1', l_s_xaccode)
+					a_dw_1.setitem(1, 'cr_amt1'   , l_n_xamt)
+					l_s_xaccode = ''
+					l_n_cramt = l_n_cramt + l_n_xamt
+				end if
+			end if
+		else
+			cr_exit = 'y'
+		end if
+		
+		if dr_exit = 'y' and cr_exit = 'y' then
+			exit
+		end if
+		if l_n_i = 2 then
+			l_n_ni = l_n_totrow - l_n_ti
+			if l_n_ni > 1 then
+				if l_s_xgb = 'dr' then
+					if cr_exit <> 'y' then
+						l_n_cramt = l_n_cramt + a_dw_3.object.amt[l_n_crrow + 1]
+					end if
+					l_n_xamt  = l_n_cramt - l_n_dramt
+				else
+					if dr_exit <> 'y' then
+						l_n_dramt = l_n_dramt + a_dw_2.object.amt[l_n_drrow + 1]
+					end if
+					l_n_xamt  = l_n_dramt - l_n_cramt
+				end if
+				l_s_xaccode = 'X1010000'
+			end if
+		end if
+	next
+	
+	if dr_exit = 'y' and cr_exit = 'y' then
+		a_dw_1.setitem(1, "amt",       l_n_pamt)
+		a_dw_1.setitem(1, "amtcvthan", f_get_accamtcvthan(l_n_pamt) + '¿øïÚ')
+		a_dw_1.setitem(1, "slipamt",   l_n_tamt)
+		a_dw_1.print(false)
+		exit
+	else
+		a_dw_1.setitem(1, "amt",       l_n_pamt)
+		a_dw_1.setitem(1, "amtcvthan", f_get_accamtcvthan(l_n_pamt) + '¿øïÚ')
+		a_dw_1.print(false)
+		l_n_pamt  = 0
+		l_n_dramt = 0
+		l_n_cramt = 0
+		l_n_crtpage ++
+		a_dw_1.retrieve(a_s_compy, a_s_area, a_s_acdate, a_n_slipno, a_s_gyul)
+		a_dw_1.setitem(1, "tot_page", l_n_totpage)
+		a_dw_1.setitem(1, "crt_page", l_n_crtpage)
+	end if
+loop
+end subroutine
+

@@ -1,0 +1,94 @@
+$PBExportHeader$d_pisq395u_02_back.srd
+$PBExportComments$WARRANTY ¸ñÇ¥À² µî·Ï(¼öÁ¤¿ë)
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=84 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes key=yes name=tqlargegrouptogoalreject_areacode dbname="TQLARGEGROUPTOGOALREJECT.AREACODE" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=tqlargegrouptogoalreject_divisioncode dbname="TQLARGEGROUPTOGOALREJECT.DIVISIONCODE" )
+ column=(type=char(4) updatewhereclause=yes key=yes name=tqlargegrouptogoalreject_standardyear dbname="TQLARGEGROUPTOGOALREJECT.STANDARDYEAR" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=tqlargegrouptogoalreject_fsflag dbname="TQLARGEGROUPTOGOALREJECT.FSFLAG" values="FTTQ	F/SCRAP	S/" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=tqlargegrouptogoalreject_largegroupcode dbname="TQLARGEGROUPTOGOALREJECT.LARGEGROUPCODE" )
+ column=(type=char(30) updatewhereclause=yes name=tqlargegroup_largegroupname dbname="TQLARGEGROUP.LARGEGROUPNAME" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month1 dbname="TQLARGEGROUPTOGOALREJECT.MONTH1" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month2 dbname="TQLARGEGROUPTOGOALREJECT.MONTH2" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month3 dbname="TQLARGEGROUPTOGOALREJECT.MONTH3" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month4 dbname="TQLARGEGROUPTOGOALREJECT.MONTH4" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month5 dbname="TQLARGEGROUPTOGOALREJECT.MONTH5" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month6 dbname="TQLARGEGROUPTOGOALREJECT.MONTH6" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month7 dbname="TQLARGEGROUPTOGOALREJECT.MONTH7" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month8 dbname="TQLARGEGROUPTOGOALREJECT.MONTH8" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month9 dbname="TQLARGEGROUPTOGOALREJECT.MONTH9" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month10 dbname="TQLARGEGROUPTOGOALREJECT.MONTH10" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month11 dbname="TQLARGEGROUPTOGOALREJECT.MONTH11" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_month12 dbname="TQLARGEGROUPTOGOALREJECT.MONTH12" )
+ column=(type=real update=yes updatewhereclause=yes name=tqlargegrouptogoalreject_yeargoal dbname="TQLARGEGROUPTOGOALREJECT.YEARGOAL" )
+ retrieve="  SELECT A.AREACODE			,
+     	   A.DIVISIONCODE 	,
+		   A.STANDARDYEAR		,
+		   A.FSFLAG				,
+         A.LARGEGROUPCODE	,
+         B.LARGEGROUPNAME	,
+         A.MONTH1				,
+         A.MONTH2				,
+         A.MONTH3				,
+         A.MONTH4				,
+         A.MONTH5				,
+         A.MONTH6				, 	 
+         A.MONTH7				,  
+         A.MONTH8				,  
+         A.MONTH9				,  
+         A.MONTH10			,   
+         A.MONTH11			,   
+         A.MONTH12			,   
+         A.YEARGOAL			  
+    FROM TQLARGEGROUPTOGOALREJECT A,
+         TQLARGEGROUP			    B
+   WHERE A.AREACODE			= B.AREACODE
+     AND A.DIVISIONCODE 	= B.DIVISIONCODE
+     AND A.LARGEGROUPCODE	= B.LARGEGROUPCODE
+     AND A.AREACODE			= :as_areacode
+     AND A.DIVISIONCODE 	= :as_divisioncode
+     AND A.STANDARDYEAR		= :as_standardyear
+   ORDER BY A.AREACODE			,
+     	    A.DIVISIONCODE 		,
+		    A.STANDARDYEAR		,
+          A.LARGEGROUPCODE		,
+		    A.FSFLAG			
+" update="TQLARGEGROUPTOGOALREJECT" updatewhere=1 updatekeyinplace=yes arguments=(("as_areacode", string),("as_divisioncode", string),("as_standardyear", string)) )
+text(band=header alignment="2" text="Á¦Ç°´ëºÐ·ù" border="0" color="16777215" x="9" y="8" height="76" width="658"  name=tqlargegroup_largegroupname_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="677" y="8" height="76" width="206"  name=tqlargegrouptogoalreject_fsflag_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="1¿ù" border="0" color="16777215" x="891" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month1_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="2¿ù" border="0" color="16777215" x="1166" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month2_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="3¿ù" border="0" color="16777215" x="1440" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month3_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="4¿ù" border="0" color="16777215" x="1714" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month4_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="5¿ù" border="0" color="16777215" x="1989" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month5_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="6¿ù" border="0" color="16777215" x="2263" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month6_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="7¿ù" border="0" color="16777215" x="2537" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month7_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="8¿ù" border="0" color="16777215" x="2811" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month8_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="9¿ù" border="0" color="16777215" x="3086" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month9_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="10¿ù" border="0" color="16777215" x="3360" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month10_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="11¿ù" border="0" color="16777215" x="3634" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month11_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="12¿ù" border="0" color="16777215" x="3909" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_month12_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="³â¸ñÇ¥" border="0" color="16777215" x="4183" y="8" height="76" width="265"  name=tqlargegrouptogoalreject_yeargoal_t  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="8" height="76" width="658" format="[general]"  name=tqlargegroup_largegroupname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="677" y="8" height="76" width="206" format="[general]"  name=tqlargegrouptogoalreject_fsflag ddlb.limit=0 ddlb.allowedit=no ddlb.case=any  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=10 border="5" color="0" x="891" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month1 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="1" tabsequence=20 border="5" color="0" x="1166" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month2 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="1" tabsequence=30 border="5" color="0" x="1440" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month3 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=10 alignment="1" tabsequence=40 border="5" color="0" x="1714" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month4 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=11 alignment="1" tabsequence=50 border="5" color="0" x="1989" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month5 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=12 alignment="1" tabsequence=60 border="5" color="0" x="2263" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month6 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=13 alignment="1" tabsequence=70 border="5" color="0" x="2537" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month7 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=14 alignment="1" tabsequence=80 border="5" color="0" x="2811" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month8 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=15 alignment="1" tabsequence=90 border="5" color="0" x="3086" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month9 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=16 alignment="1" tabsequence=100 border="5" color="0" x="3360" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month10 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=17 alignment="1" tabsequence=110 border="5" color="0" x="3634" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month11 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=18 alignment="1" tabsequence=120 border="5" color="0" x="3909" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_month12 edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=19 alignment="1" tabsequence=130 border="5" color="0" x="4183" y="8" height="76" width="265" format="[general]"  name=tqlargegrouptogoalreject_yeargoal edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+
+sparse(names="tqlargegroup_largegroupname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

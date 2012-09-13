@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_deptgubun.srf
+$PBExportComments$기업구매부서 구분 가져오기
+global type f_get_deptgubun from function_object
+end type
+
+forward prototypes
+global function string f_get_deptgubun (string ag_vsrno)
+end prototypes
+
+global function string f_get_deptgubun (string ag_vsrno);string l_s_gubun
+
+SELECT "PBPUR"."PUR102A"."DEPT" INTO :l_s_gubun  
+ FROM  "PBPUR"."PUR102A"  
+WHERE  "PBPUR"."PUR102A"."COMLTD"  = :g_s_company and
+       "PBPUR"."PUR102A"."VSRNO" = :ag_vsrno and 
+		 "PBPUR"."PUR102A"."VNDNO" <> 0  
+	    
+         using sqlca;
+if sqlca.sqlcode <> 0 then
+	l_s_gubun=''
+end if
+
+return l_s_gubun
+end function
+

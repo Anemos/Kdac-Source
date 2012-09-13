@@ -1,0 +1,139 @@
+$PBExportHeader$f_creation_bom_dw_mor.srf
+$PBExportComments$bom 전개 ( DW ) -- 하위전개
+global type f_creation_bom_dw_mor from function_object
+end type
+
+forward prototypes
+global function integer f_creation_bom_dw_mor ()
+end prototypes
+
+global function integer f_creation_bom_dw_mor ();string 		ls_plant,ls_calc,ls_div,ls_pitno,ls_citno,ls_itno[50,500],ls_chkit,ls_serial[50,500],ls_serial1,ls_Srce,ls_model
+string 		ls_edtm,ls_edte,ls_chdt,ls_wkct,ls_dvsn[50,500],ls_xplant[50,500],ls_oscd,ls_level,ls_calculate[50,500],mysql
+integer 		i,j,k,p,ln_cnt,ln_serial,ln_count,II,ln_retrieve_count,ln_model_count,model_cnt
+decimal{3} 	ln_qty,ln_qtym[50,500],ln_qty1
+datastore 	ld_dw,ld_model
+
+ld_model 				= create datastore
+ld_model.dataobject 	= 'd_bom_model_mor'
+ld_model.settransobject(sqlca)
+
+ld_dw 					= create datastore
+ld_Dw.dataobject 		= 'd_bom_export_mor'
+ld_Dw.settransobject(sqlca)
+
+select 	count(*) into :ln_count from qtemp.bomtemp 
+using sqlca ; 
+if sqlca.sqlcode <> 0 then
+	Mysql =  " CREATE TABLE QTEMP.BOMTEMP ( TCMCD CHAR(2) NOT NULL, TPLNT CHAR(1) NOT NULL,TDVSN CHAR(1) NOT NULL," + & 
+				" TMODL CHAR(15) NOT NULL, TSERL CHAR(60) NOT NULL, TLEVEL CHAR(2) NOT NULL, TPITN CHAR(15) NOT NULL, " + & 
+				" TCITN CHAR(15) NOT NULL,TCHDT CHAR(8) NOT NULL, TQTYM NUMERIC(8,3) NOT NULL, TQTY1 NUMERIC(8,3) NOT NULL," + & 
+				" TWKCT CHAR(4) NOT NULL, TEDTM CHAR(8) NOT NULL, TEDTE CHAR(8) NOT NULL, TOPCD CHAR(1) NOT NULL," + & 
+				" TEXPLANT CHAR(1) NOT NULL, TEXDV CHAR(1) NOT NULL, TOSCD CHAR(1) NOT NULL, TOLDPLANT CHAR(1) NOT NULL," + &
+				" TOLDDIV CHAR(1) NOT NULL, TOPTION CHAR(15) NOT NULL ,	TCALCULATE CHAR(1)	NOT NULL ) " 
+	Execute Immediate :mysql ;
+else
+	delete from qtemp.bomtemp 
+	using sqlca ;
+end if
+
+ln_model_count	=	ld_model.retrieve()
+
+for model_cnt	=	1	to	ln_model_count
+	k 	= 	0 
+	p 	=	0
+	ln_serial	=	0
+	ln_count		=	0
+	ln_retrieve_count	=	0	
+	ls_serial1	=	''
+	ls_level		=	''
+	ls_model    = 	trim(ld_model.object.zmdno[model_cnt])
+	ls_plant 	= 	ld_model.object.zplant[model_cnt] 
+	ls_div   	= 	ld_model.object.zdiv[model_cnt]	
+						 
+	ln_retrieve_count = 	ld_dw.retrieve(ls_plant,ls_div,ls_model)
+	
+	for II = 1 to ln_retrieve_count
+		ls_plant   	= 	ld_Dw.getitemstring(II,"plant")
+		ls_div     	= 	ld_Dw.getitemstring(II,"pdvsn")
+		ls_citno   	= 	ld_Dw.getitemstring(II,"pcitn")
+		ls_wkct    	= 	ld_Dw.getitemstring(II,"pwkct")
+		ls_edtm    	= 	ld_Dw.getitemstring(II,"pedtm")
+		ls_edte    	= 	ld_Dw.getitemstring(II,"pedte")
+		ln_qty     	= 	ld_Dw.getitemnumber(II,"pqtym")
+		ls_chdt		=	ld_Dw.getitemstring(II,"pchdt")
+		
+		if	ls_wkct	=	'8888'	then
+			ls_calc	=	'N'
+		else
+			ls_calc	=	'Y'
+		end if
+		i = 1
+		k++
+		ln_serial++
+		ls_xplant[1,k] 	= trim(ls_plant)
+		ls_dvsn[1,k]   	= trim(ls_div)
+		ls_itno[1,k]   	= trim(ls_citno)
+		ln_qtym[1,k]   	= ln_qty
+		ls_calculate[1,k]	= ls_calc
+		ls_serial[1,k] 	= string(ln_Serial,"000")
+		ls_serial1     	= string(ln_Serial,"000")
+		ln_count++
+		INSERT INTO QTEMP.BOMTEMP 
+		VALUES (	:G_S_COMPANY,:ls_plant,:ls_div,:ls_model,
+					:ls_serial1,'1',:ls_model,:ls_citno,:ls_chdt,:ln_qty,:ln_qty,
+					:ls_wkct,:ls_edtm,:ls_edte,'','','','','','','',:ls_calc ) 
+		using sqlca ;
+	next
+	  
+	for i = 1 to 50
+	  for j = 1 to k
+			ls_pitno 	= 	ls_itno[i,j]
+			ls_plant 	= 	ls_xplant[i,j]
+			ls_div   	= 	ls_dvsn[i,j]
+			ln_serial	=	0
+			ln_retrieve_count = ld_dw.retrieve(ls_plant,ls_div,ls_pitno)
+			for II = 1 to ln_retrieve_count
+				ls_plant   	= 	ld_Dw.getitemstring(II,"plant")
+				ls_div     	= 	ld_Dw.getitemstring(II,"pdvsn")
+				ls_citno   	= 	ld_Dw.getitemstring(II,"pcitn")
+				ls_wkct    	= 	ld_Dw.getitemstring(II,"pwkct")
+				ls_edtm    	= 	ld_Dw.getitemstring(II,"pedtm")
+				ls_edte    	= 	ld_Dw.getitemstring(II,"pedte")
+				ln_qty     	= 	ld_Dw.getitemnumber(II,"pqtym")
+				ls_chdt		=	ld_Dw.getitemstring(II,"pchdt")
+				if ls_wkct	=	'8888'	or	ls_calculate[i,j] = 	'N' then
+					ls_calc	=	'N'
+				else
+					ls_calc	=	'Y'
+				end if
+				
+				p++ 
+				ln_serial++
+				ls_xplant[i+1,p] 		= trim(ls_plant)
+				ls_dvsn[i+1,p]   		= trim(ls_div)
+				ls_calculate[i+1,p]	= ls_calc
+				ls_itno[i+1,p]   		= trim(ls_citno)
+				ln_qtym[i+1,p]   		= ln_qty * ln_qtym[i,j]
+				ln_qty1          		= ln_qty * ln_qtym[i,j]
+				ls_serial[i+1,p] 		= ls_serial[i,j] + string(ln_Serial,"000")
+				ls_serial1       		= ls_serial[i,j] + string(ln_Serial,"000")
+				ls_level         		= string(i+1)
+				ln_count++
+				INSERT INTO QTEMP.BOMTEMP 
+				VALUES (:G_S_COMPANY,:ls_plant,:ls_div,:ls_model,:ls_serial1,:ls_level, 
+						  :ls_pitno,:ls_citno,:ls_chdt,:ln_qty,:ln_qty1,:ls_wkct,:ls_edtm,:ls_edte,'','','','',
+						  '','','',:ls_calc ) 
+				using sqlca;
+			next
+	  next 
+	  if p = 0 then
+		  exit	
+	  end if
+	  k = p
+	  p = 0
+	next
+next
+return	ln_count
+ 
+end function
+

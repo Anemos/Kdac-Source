@@ -1,0 +1,35 @@
+$PBExportHeader$f_pur040_mselectup.srf
+$PBExportComments$다중 row 선택(uptype datawindow)
+global type f_pur040_mselectup from function_object
+end type
+
+forward prototypes
+global function long f_pur040_mselectup (datawindow adw_1)
+end prototypes
+
+global function long f_pur040_mselectup (datawindow adw_1);
+
+////////////다중 Row 선택 Row up ///////////////
+long ll_row 
+
+IF adw_1.rowcount() <= 0 Then	Return 0
+
+ll_row = adw_1.getitemNumber(1,'row_up')
+if isnull(ll_row) then
+	return -1
+end if
+
+adw_1.setredraw(false)
+for ll_row =1 to adw_1.rowcount()
+	if adw_1.isselected(ll_row) then
+		adw_1.object.row_up[ll_row] = 1
+	else
+		adw_1.object.row_up[ll_row] = 0
+   end if
+next
+adw_1.setredraw(true)
+Return 1
+
+
+end function
+

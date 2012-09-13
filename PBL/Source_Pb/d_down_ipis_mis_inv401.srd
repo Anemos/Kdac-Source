@@ -1,0 +1,75 @@
+$PBExportHeader$d_down_ipis_mis_inv401.srd
+$PBExportComments$공무자재TRANS(INTERFACE.INVTRANS)
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(30) updatewhereclause=yes name=chgdate dbname="INVTRANS.CHGDATE" )
+ column=(type=char(1) updatewhereclause=yes name=chgcd dbname="INVTRANS.CHGCD" )
+ column=(type=char(2) updatewhereclause=yes name=sliptype dbname="INVTRANS.SLIPTYPE" )
+ column=(type=char(8) updatewhereclause=yes name=srno dbname="INVTRANS.SRNO" )
+ column=(type=char(2) updatewhereclause=yes name=srno1 dbname="INVTRANS.SRNO1" )
+ column=(type=char(2) updatewhereclause=yes name=srno2 dbname="INVTRANS.SRNO2" )
+ column=(type=char(1) updatewhereclause=yes name=xplant dbname="INVTRANS.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INVTRANS.DIV" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="INVTRANS.ITNO" )
+ column=(type=char(1) updatewhereclause=yes name=invstcd dbname="INVTRANS.INVSTCD" )
+ column=(type=decimal(1) updatewhereclause=yes name=tqty4 dbname="INVTRANS.TQTY4" )
+ column=(type=char(1) updatewhereclause=yes name=invstcd1 dbname="INVTRANS.INVSTCD1" )
+ column=(type=char(1) updatewhereclause=yes name=slipgubun dbname="INVTRANS.SLIPGUBUN" )
+ column=(type=char(1) updatewhereclause=yes name=stscd dbname="INVTRANS.STSCD" )
+ column=(type=char(30) updatewhereclause=yes name=downdate dbname="INVTRANS.DOWNDATE" )
+ retrieve="SELECT  INVTRANS.CHGDATE ,
+           INVTRANS.CHGCD ,
+           INVTRANS.SLIPTYPE ,
+           INVTRANS.SRNO ,
+           INVTRANS.SRNO1 ,
+           INVTRANS.SRNO2 ,
+           INVTRANS.XPLANT ,
+           INVTRANS.DIV ,
+           INVTRANS.ITNO ,
+           INVTRANS.INVSTCD ,
+           INVTRANS.TQTY4 ,
+           INVTRANS.INVSTCD1 ,
+           INVTRANS.SLIPGUBUN ,
+           INVTRANS.STSCD ,
+           INVTRANS.DOWNDATE     
+        FROM INVTRANS    " )
+text(band=header alignment="2" text="Xplant" border="0" color="33554432" x="9" y="8" height="76" width="251" html.valueishtml="0"  name=xplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Div" border="0" color="33554432" x="270" y="8" height="76" width="201" html.valueishtml="0"  name=div_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Itno" border="0" color="33554432" x="480" y="8" height="76" width="416" html.valueishtml="0"  name=itno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Chgcd" border="0" color="33554432" x="905" y="8" height="76" width="215" html.valueishtml="0"  name=chgcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Sliptype" border="0" color="33554432" x="1129" y="8" height="76" width="265" html.valueishtml="0"  name=sliptype_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Slipgubun" border="0" color="33554432" x="1403" y="8" height="76" width="347" html.valueishtml="0"  name=slipgubun_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Invstcd" border="0" color="33554432" x="1760" y="8" height="76" width="233" html.valueishtml="0"  name=invstcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Invstcd1" border="0" color="33554432" x="2002" y="8" height="76" width="256" html.valueishtml="0"  name=invstcd1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Tqty4" border="0" color="33554432" x="2267" y="8" height="76" width="384" html.valueishtml="0"  name=tqty4_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Chgdate" border="0" color="0" x="2665" y="4" height="76" width="951" html.valueishtml="0"  name=chgdate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Srno" border="0" color="0" x="3625" y="4" height="76" width="247" html.valueishtml="0"  name=srno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Srno1" border="0" color="0" x="3881" y="4" height="76" width="55" html.valueishtml="0"  name=srno1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Srno2" border="0" color="0" x="3945" y="4" height="76" width="55" html.valueishtml="0"  name=srno2_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Stscd" border="0" color="0" x="4009" y="4" height="76" width="23" html.valueishtml="0"  name=stscd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Downdate" border="0" color="0" x="4041" y="4" height="76" width="951" html.valueishtml="0"  name=downdate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="88" width="251" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="270" y="8" height="88" width="201" format="[general]" html.valueishtml="0"  name=div visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="480" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="905" y="8" height="88" width="215" format="[general]" html.valueishtml="0"  name=chgcd visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="1129" y="8" height="88" width="265" format="[general]" html.valueishtml="0"  name=sliptype visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="1403" y="8" height="88" width="347" format="[general]" html.valueishtml="0"  name=slipgubun visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="1760" y="8" height="88" width="233" format="[general]" html.valueishtml="0"  name=invstcd visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="33554432" x="2002" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=invstcd1 visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="2267" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=tqty4 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="2665" y="0" height="76" width="951" format="[general]" html.valueishtml="0"  name=chgdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="3625" y="0" height="76" width="247" format="[general]" html.valueishtml="0"  name=srno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="3881" y="0" height="76" width="55" format="[general]" html.valueishtml="0"  name=srno1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="3945" y="0" height="76" width="55" format="[general]" html.valueishtml="0"  name=srno2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=32766 border="0" color="33554432" x="4009" y="0" height="76" width="23" format="[general]" html.valueishtml="0"  name=stscd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=32766 border="0" color="33554432" x="4041" y="0" height="76" width="951" format="[general]" html.valueishtml="0"  name=downdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

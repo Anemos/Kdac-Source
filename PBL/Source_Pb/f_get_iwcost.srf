@@ -1,0 +1,30 @@
+$PBExportHeader$f_get_iwcost.srf
+$PBExportComments$이체단가 Return  Global  Function
+global type f_get_iwcost from function_object
+end type
+
+forward prototypes
+global function decimal f_get_iwcost (string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_get_iwcost (string as_plant, string as_div, string as_itno);/////////////////////////////////////////////////////////
+//                                                    //
+// arg    : 지역/공장/품번                            //
+// Return : 이체단가                                  //
+//                                                    //
+/////////////////////////////////////////////////////////
+
+Dec{2} ld_Cost
+
+
+SELECT COALESCE(A."XCOST",0) INTO :ld_Cost
+  FROM "PBINV"."INV602" A
+WHERE A."COMLTD" = '01' AND A."XPLANT" = :as_plant AND A."DIV" = :as_div AND A."ITNO" = :as_itno	Using SQLCA ;
+		
+If Sqlca.SqlCode <> 0 Then 
+	Return 0
+end if
+	
+Return ld_Cost
+end function
+

@@ -1,0 +1,31 @@
+$PBExportHeader$f_pur040_getdayweek.srf
+$PBExportComments$해당일자가 속한요일의weekday가져오기
+global type f_pur040_getdayweek from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getdayweek (string as_date, integer ai_day)
+end prototypes
+
+global function string f_pur040_getdayweek (string as_date, integer ai_day);////해당일자가 속한주차의 해당요일 일자반환
+////1-Sun, 2-Mon,3-Tues,4-Wendes,5-Thurs,6-Fri,7-Satur
+date ldate_1
+string ls_date
+int li_daynumber
+
+
+if ai_day < 1 or ai_day > 7 then
+	return ''
+end if
+ldate_1 = date(string(as_date, "@@@@-@@-@@"))
+li_daynumber = daynumber(ldate_1)
+////같은요일요청
+if ai_day = li_daynumber then
+	return as_date
+end if
+ls_date = f_pur040_relativedate(as_date,ai_day - li_daynumber)
+return ls_date
+
+
+end function
+

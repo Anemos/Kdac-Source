@@ -1,0 +1,110 @@
+$PBExportHeader$f_save_to_excel_number.srf
+$PBExportComments$DataWindow전체를 Excel File로 저장.
+global type f_save_to_excel_number from function_object
+end type
+
+forward prototypes
+global function integer f_save_to_excel_number (datawindow dw_excel)
+end prototypes
+
+global function integer f_save_to_excel_number (datawindow dw_excel);Integer 		i, j, k=1, kk, li_rc, li_colDataType[], ll_ColCnt, ln_Columnorder[],ln_length,ln_pos
+String 		ls_filepath, ls_filename, ls_process, ls_mode, ls_coltype[], ls_data, ls_order
+OleObject 	MyExcel
+
+li_rc = GetFileSaveName(	"Select File", ls_filepath, ls_filename, "xls", &
+									"Excel Files (*.xls),*.xls,"	)
+IF 	li_rc <> 1 	THEN 	Return 	li_rc
+IF FileExists(ls_filepath) 	THEN
+	li_rc	=	MessageBox(	"저장확인", ls_filepath + " 파일이 이미 존재합니다.~r~n" + &
+									"기존 파일을 바꾸시겠습니까?",Question!, YesNo!,2)
+	IF 	li_rc = 2 THEN 	Return 	0 
+END IF 
+
+SetPointer(HourGlass!)
+MyExcel		=	Create OleObject
+li_rc 			= 	MyExcel.ConnectToNewObject("excel.application")
+IF 	li_rc 	<> 	0 	THEN
+	MessageBox("오류", "Excel 구동중 에러")
+	Destroy 	MyExcel
+	Return 	-1
+END IF 
+//-----------------------------------------------------
+// DataWindow Style에 따른 처리
+//-----------------------------------------------------
+ls_process	=	dw_excel.Describe("DataWindow.processing")
+IF 	ls_process	=	'4'	THEN
+	//CrossTab일 경우 StaticMode를 설정해야 필드 접근가능
+	ls_mode	=	dw_Excel.Modify("DataWindow.crosstab.StaticMode = 'yes'")
+	IF 	ls_mode <> '' THEN
+		MessageBox("CrossTab StaticMode Error", ls_mode)
+		Return 	-1
+	END IF 
+END IF
+
+CHOOSE CASE ls_process
+	CASE '1', '4' //Grid, CrossTab
+		dw_Excel.SaveAsAscii(ls_filepath, "~t",'"')
+	//Column Type를 확인한다.
+		MyExcel.WorkBooks.Add()
+		ll_ColCnt = Long(dw_Excel.Describe("DataWindow.Column.Count"))
+		FOR j = 1 TO ll_ColCnt
+			ls_coltype[j] = Upper( dw_Excel.Describe("#" + String(j) + ".ColType") )
+		NEXT 
+		ls_data		=	string(dw_excel.describe("datawindow.table.gridcolumns"))
+		ln_length	=	len(ls_data)
+		do while	k <= ln_length
+			ln_pos	=	pos(ls_data,"~t",k)
+			if ln_pos = 0 then
+				ln_pos = ln_length + 1
+			end if
+			ls_order	=	mid(ls_data,k,ln_pos - k)
+			kk	+=	1
+			ln_Columnorder[kk]	=	integer(ls_order)
+			k = ln_pos + 1
+		loop
+		FOR i = 1 TO UpperBound(ln_Columnorder)
+			if ln_Columnorder[i] >= 1000 then
+				li_colDataType[i] = 1
+				continue
+			end if
+			IF Left(Upper(ls_coltype[ln_Columnorder[i]]),4) = 'CHAR' THEN
+				li_colDataType[i] = 2 //text형식
+			ELSE
+				li_colDataType[i] = 1 //General형식
+			END IF
+		NEXT 
+		
+		OleObject MyQuery
+		
+		MyQuery = Create OleObject
+		MyExcel.ActiveWorkbook.Sheets.Add.Name =  ls_filename  //f_replace 함수가 없을시 ls_filename 만 적어주어도 가능
+		MyQuery = MyExcel.ActiveWorkbook.Sheets(1).QueryTables.Add('TEXT;' + ls_filepath, MyExcel.ActiveWorkbook.Sheets(1).Cells(1,1))
+		MyQuery.TextFileColumnDataTypes = li_colDataType
+		MyQuery.Refresh
+		MyExcel.ActiveWorkBook.Sheets(1).Columns.AutoFit
+		MyExcel.ActiveWorkBook.Sheets(1).Cells(1,1).Select
+		MyExcel.Application.Visible = False
+		MyExcel.Application.DisplayAlerts = False 
+		MyExcel.Application.WorkBooks(1).SaveAs(ls_filepath, -4143)
+		MyQuery.Application.Quit
+		MyQuery.DisConnectObject()
+		Destroy MyQuery
+	CASE ELSE 
+		String ls_Chg_DocName
+		ls_Chg_DocName = f_Replace_With( ls_filepath, ".xls", ".txt" )
+		li_rc 			= dw_Excel.SaveAsAscii(ls_Chg_DocName)
+		MyExcel.WorkBooks.Open( ls_Chg_DocName )
+		MyExcel.WorkBooks(1).SaveAs( ls_filepath, -4143 )
+		FileDelete( ls_Chg_DocName )
+END CHOOSE 
+MyExcel.Application.Quit
+MyExcel.DisConnectObject()
+Destroy MyExcel
+MessageBox("확인", "엑셀파일 생성이 완료되었습니다!")
+Return 	1
+
+ 
+
+
+end function
+

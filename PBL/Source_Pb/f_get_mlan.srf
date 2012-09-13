@@ -1,0 +1,27 @@
+$PBExportHeader$f_get_mlan.srf
+$PBExportComments$자재담당자 Return  Global  Function
+global type f_get_mlan from function_object
+end type
+
+forward prototypes
+global function string f_get_mlan (string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function string f_get_mlan (string as_plant, string as_div, string as_itno);/////////////////////////////////////////////////////////
+//                                                    //
+// arg    : 지역/공장/품번                            //
+// Return : 자재담당                                  //
+//                                                    //
+/////////////////////////////////////////////////////////
+
+String ls_mlan
+
+SELECT "MLAN" INTO :ls_mlan
+FROM "PBINV"."INV101"
+WHERE COMLTD = '01' AND	XPLANT = :as_plant AND DIV = :as_div AND ITNO = :as_itno	Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then Return ""
+	
+Return ls_mlan
+end function
+

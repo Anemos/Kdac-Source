@@ -1,0 +1,35 @@
+$PBExportHeader$f_pur040_setrgy1.srf
+$PBExportComments$PRR(RED,GREEN,YELLOW등급결정)
+global type f_pur040_setrgy1 from function_object
+end type
+
+forward prototypes
+global function string f_pur040_setrgy1 (string as_btype, long al_rate)
+end prototypes
+
+global function string f_pur040_setrgy1 (string as_btype, long al_rate);////////////////////////////////////////////////
+// :PRR 등급체크
+////////////////////////////////////////////////
+  long ll_g, ll_r
+  string ls_grade  
+  SELECT "PBPUR"."PUR124"."GSTD",   
+         "PBPUR"."PUR124"."RSTD"   
+    INTO :ll_g,   
+         :ll_r   
+   FROM "PBPUR"."PUR124"  
+   WHERE ( "PBPUR"."PUR124"."COMLTD" = '01' ) AND  
+         ( "PBPUR"."PUR124"."PKIND" = :as_btype )   ;
+if sqlca.sqlcode <> 0 then
+	return ' '
+end if
+if al_rate <= ll_g then
+   ls_grade = 'G'
+elseif al_rate >= ll_r then
+	ls_grade = 'R'
+else
+	ls_grade = 'Y'	
+end if
+
+Return ls_grade
+end function
+

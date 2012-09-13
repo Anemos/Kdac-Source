@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_pername_pur.srf
+$PBExportComments$사원이름(사내전화번호) return
+global type f_get_pername_pur from function_object
+end type
+
+forward prototypes
+global function string f_get_pername_pur (string ag_emp_no)
+end prototypes
+
+global function string f_get_pername_pur (string ag_emp_no);string l_s_name  
+
+SELECT Trim("PBCOMMON"."DAC003"."PENAMEK")||'('||Trim("PBCOMMON"."DAC003"."PETEL")||')'
+  INTO :l_s_name  
+  FROM "PBCOMMON"."DAC003"  
+ WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	l_s_name = ' '
+end if
+
+return l_s_name
+
+end function
+

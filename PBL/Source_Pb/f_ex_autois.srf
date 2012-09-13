@@ -1,0 +1,149 @@
+$PBExportHeader$f_ex_autois.srf
+$PBExportComments$서열공급관련 이체품 자동불출(라인) (ag: xplant, div, itno, qty, date ) return int
+global type f_ex_autois from function_object
+end type
+
+forward prototypes
+global function integer f_ex_autois (string as_xplant, string as_div, string as_itno, decimal ad_qty, string as_date)
+end prototypes
+
+global function integer f_ex_autois (string as_xplant, string as_div, string as_itno, decimal ad_qty, string as_date);//////////////////////////////////////////////////////////////////
+//    서열생산 자동라인불출~
+//   Input : 지역, 공장, 품번, 수량, 불출일
+//
+//   check! : 마감일, 현재고수량
+//   이체입고된 품목을 자동으로 라인정상 불출로 떤다..
+//                                            by invmaster.
+//////////////////////////////////////////////////////////////////
+
+String ls_xplan, ls_mlan, ls_pdcd, ls_xunit, ls_spec, ls_xtype, ls_itnm, ls_srce, ls_cls, &
+       ls_key, ls_key2, ls_srno, ls_srno1, ls_srno2, ls_costdiv, ls_kbcd, ls_slno, ls_rvno
+Long   ll_ohamt, ll_outamt, ll_amt, ll_cnt, ll_rtn
+Dec{1} ld_outqty, ld_uqty, ld_rqty, ld_sqty
+Dec{2} ld_cost
+  
+if f_get_ctlchk(as_date,"") = -1 then 
+	return 1         // 마감일이후에는 작업을 할수 없습니다.
+end if
+
+//************************************* itno, now_qty check Routine ***********************************************//
+
+SELECT A."XPLAN", A."MLAN",   A."COSTAV", A."PDCD",  A."XUNIT",  B."SPEC",   B."XTYPE", B."ITNM", B."RVNO", 
+		  A."OHAMT", A."OUTQTY", A."OUTAMT",A."OHUQTY", A."OHRQTY", A."OHSQTY", A."SRCE",A."CLS", A."COSTDIV", A."KBCD"
+	INTO :ls_xplan,  :ls_mlan,   :ld_cost,  :ls_pdcd, :ls_xunit, :ls_spec, :ls_xtype, :ls_itnm, :ls_rvno,
+		  :ll_ohamt,  :ld_outqty, :ll_outamt,:ld_uqty, :ld_rqty, :ld_sqty, :ls_srce, :ls_cls, :ls_costdiv, :ls_kbcd
+ FROM "PBINV"."INV101" A, "PBINV"."INV002" B
+ WHERE A."COMLTD" = '01'     AND A."XPLANT" = :as_xplant AND A."DIV"  = :as_div AND 
+		 A."ITNO" = :as_itno   AND A."ITNO"   = B."ITNO"   using sqlca;
+		 
+If sqlca.sqlcode <> 0 then
+	Return 2        //지역공장 품번 확인!!
+End if
+
+If ld_uqty < ad_qty then
+	Return 3        //현재고량 check
+End if 
+
+SELECT COUNT(*)
+ INTO  :ll_cnt
+ FROM  "PBINV"."INV108"
+WHERE "PBINV"."INV108"."COMLTD" = '01'    AND "PBINV"."INV108"."XPLANT" = :as_xplant AND
+      "PBINV"."INV108"."DIV"    = :as_div AND "PBINV"."INV108"."ITNO"   = :as_itno  AND
+		"PBINV"."INV108"."STRDT" <= :as_date AND
+		"PBINV"."INV108"."STOP" <> 'S' using sqlca;
+
+IF ll_cnt >= 1 then
+	Return -1        //업체 유.무상반출 대상품번 자동 라인불출 못하게...        
+End if
+ 
+ // 전산번호 부여
+ls_key  = 'IS' + as_xplant + as_div + ls_cls + mid(g_s_date,4,3)
+ls_srno = f_get_ctlno(ls_key)
+
+ls_srno1 = as_xplant + as_div
+ls_srno2 = ls_cls
+
+// 전표번호 부여
+//ls_key2 = f_get_invdept(as_xplant, as_div) + mid(g_s_date,4,3)
+ls_key2 = g_s_deptcd + mid(g_s_date,4,3)
+ls_slno = f_get_slno(ls_key2)
+
+If (ls_cls = '10' and ls_srce <> '05') or ls_cls = '20' or ls_cls = '24'  then
+	If ld_uqty + ld_rqty + ld_sqty = ad_qty Then                             
+    ll_amt = ll_ohamt                                                      
+	Else                                                                           
+	 ll_amt = Truncate(ld_cost * ad_qty, 0)                                
+	End if
+Else
+   ll_amt = 0
+End if
+// 현재고(사용가수량) 계산
+ld_uqty = ld_uqty - ad_qty 
+
+// 현재고금액 계산 
+ll_ohamt = ll_ohamt  - ll_amt
+
+// 불출수량 계산
+ld_outqty = ld_outqty + ad_qty
+
+// 불출금액 계산
+ll_outamt = ll_outamt + ll_amt
+ 
+// 입고 trans 생성
+insert into "PBINV"."INV401"    
+		 ( "COMLTD",      "SLIPTYPE",    "SRNO",        "SRNO1",       "SRNO2",      "XPLANT",  
+			"DIV",         "COSTDIV",     "SLNO",        "ITNO",        "RVNO",       "ITNM",   
+			"SPEC",        "XTYPE",       "XUNIT",       "CLS",         "SRCE",       "PDCD",
+			"XPLAN",       "MLAN",        "RQNO",        "NQC",         "KBCD",       "DUDT",       "PURNO",   
+			"VSRNO",       "VNDR",        "VNDNM",       "XPAY",        "OTXCD",      "LCNO",
+			"LCDT",        "DEPT",        "RTNGUB",      "XUSE",        "RSVSRNO",    "ORNO",   
+			"MCHNO",       "EXFR",        "EXTO",        "RQDIV",       "BLNO",       "EXCH",
+			"CURR",        "FOBAMT",      "TDTE1",       "TDTE2",       "TDTE3",      "TDTE4",
+			"TDTE5",       "TDTE6",       "TQTY1",       "TQTY2",       "TQTY3",      "TQTY4",
+			"XCOST",       "TRAMT",       "TSHSL",       "RTCOM",       "RTQTY",      "SSSRNO",
+			"SSCOM",       "RFCD",        "CHKCD",       "TSAMT",       "TFILL",      "TCTTL",      "DSAG",
+			"MAKER",       "PJTNO",       "INVSTCD",     "INVEST",      "EXTD",       "INPTID",     "INPTDT",
+			"UPDTID",      "UPDTDT",      "IPADDR",      "MACADDR" )  
+VALUES ( :g_s_company,   'IS',         :ls_srno,      :ls_srno1,     :ls_srno2,    :as_xplant, 
+			:as_div,       :ls_costdiv,   :ls_slno,      :as_itno,      :ls_rvno,     :ls_itnm,
+			:ls_spec,      :ls_xtype,     :ls_xunit,     :ls_cls,       :ls_srce,     :ls_pdcd, 
+			:ls_xplan,     :ls_mlan,      ' ',           ' ',           :ls_kbcd,     ' ',            ' ',   
+			' ',           ' ',           ' ',           ' ',           ' ',          ' ',
+			' ',           ' ',           ' ',           '01',          ' ',          ' ',   
+			' ',           ' ',           ' ',           ' ',           ' ',          0,
+			' ',           0,             ' ',           ' ',           ' ',          :as_date,
+			' ',           ' ',           0,             0,             0,            :ad_qty,
+			:ld_cost,      :ll_amt,       ' ',           ' ',           0,            ' ',
+			' ',           ' ',           ' ',           0,             ' ',          0,            ' ',
+			' ',           ' ',           'U',           ' ',           ' ',          :g_s_empno,  :g_s_date,
+			:g_s_empno,    :g_s_datetime, :g_s_ipaddr,   :g_s_macaddr  )  using sqlca;
+
+IF Sqlca.SqlCode = 0 THEN
+	
+		// 품목재고 DB Update
+		 UPDATE "PBINV"."INV101" 
+			 SET "OHUQTY" = :ld_uqty ,    "OHAMT"   = :ll_ohamt, 
+				  "OUTQTY" = :ld_outqty,   "OUTAMT"  = :ll_outamt, 
+				  "ILUDT"  = :g_s_date,
+				  "UPDTID" = :g_s_empno,   "UPDTDT"  = :g_s_datetime,
+				  "IPADDR" = :g_s_ipaddr,  "MACADDR" = :g_s_macaddr
+		 WHERE "PBINV"."INV101"."COMLTD" = '01'    AND "PBINV"."INV101"."XPLANT" = :as_xplant AND
+				 "PBINV"."INV101"."DIV"    = :as_div AND "PBINV"."INV101"."ITNO"   = :as_itno   Using sqlca;
+				 
+		IF Sqlca.SqlCode <> 0 THEN
+			Return 4      // Balance update error
+		End if
+		// 재공 수불반영.
+		ll_rtn = f_wip_main_update('01','IS',ls_srno,ls_srno1,ls_srno2)
+		
+else
+	RETURN 5           // Trans Insert error
+end if
+
+// Final Success
+Return 0	
+
+		
+	
+end function
+

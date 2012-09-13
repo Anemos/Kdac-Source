@@ -1,0 +1,49 @@
+$PBExportHeader$f_multi_select_row.srf
+$PBExportComments$다중 Row 선택   Global Function
+global type f_multi_select_row from function_object
+end type
+
+forward prototypes
+global subroutine f_multi_select_row (datawindow ag_dw, long ag_row, long ag_prerow)
+end prototypes
+
+global subroutine f_multi_select_row (datawindow ag_dw, long ag_row, long ag_prerow);/////////////////////////////////////////////////////
+// * 다중 Row 선택... *
+//
+// ag1: DataWindow
+// ag2: Clicked Row
+// ag3: Previously Clicked Row
+/////////////////////////////////////////////////////
+
+
+If ag_Row <= 0 Then Return
+
+
+Long ll_i
+
+If KeyDown(KeyShift!) Then
+	
+	If ag_preRow > 0 Then
+		ag_dw.SelectRow(0, False)
+		
+		For ll_i = Min(ag_Row, ag_preRow) To Max(ag_Row, ag_preRow)
+			ag_dw.SelectRow(ll_i, True)
+		Next
+	Else
+		ag_dw.SelectRow(ag_Row, True)
+	End If
+	
+ElseIf KeyDown(KeyControl!) Then
+	
+	If ag_dw.IsSelected(ag_Row) Then
+		ag_dw.SelectRow(ag_Row, False)
+	Else
+		ag_dw.SelectRow(ag_Row, True)
+	End If
+	
+Else
+	ag_dw.SelectRow(0, False)
+	ag_dw.SelectRow(ag_Row, True)
+End If
+end subroutine
+

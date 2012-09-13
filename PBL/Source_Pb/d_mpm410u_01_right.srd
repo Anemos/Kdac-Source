@@ -1,0 +1,53 @@
+$PBExportHeader$d_mpm410u_01_right.srd
+$PBExportComments$납기정보생성 옵션정보
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=572 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=versionno dbname="TLOADOPTION.VersionNo" )
+ column=(type=long update=yes updatewhereclause=yes name=applyratio dbname="TLOADOPTION.ApplyRatio" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=overwork dbname="TLOADOPTION.OverWork" values="2시간	S/3시간	T/없음	N/" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=specialwork dbname="TLOADOPTION.Specialwork" values="	Y/	N" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=nightwork dbname="TLOADOPTION.NightWork" values="	Y/	N" )
+ column=(type=datetime update=yes updatewhereclause=yes name=startdate dbname="TLOADOPTION.StartDate" )
+ column=(type=datetime update=yes updatewhereclause=yes name=enddate dbname="TLOADOPTION.EndDate" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TLOADOPTION.LastEmp" )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TLOADOPTION.LastDate" )
+ retrieve="  SELECT a.VersionNo,   
+         a.ApplyRatio,   
+         a.OverWork,   
+         a.Specialwork,   
+         a.NightWork,  
+			 a.StartDate,   
+         a.EndDate,   
+         a.LastEmp,   
+         a.LastDate  
+    FROM TLOADOPTION a 
+ WHERE a.VersionNo = :ag_versionno
+" update="TLOADOPTION" updatewhere=1 updatekeyinplace=no arguments=(("ag_versionno", string)) )
+text(band=detail alignment="1" text="가용시간 적용비율:" border="0" color="33554432" x="64" y="52" height="72" width="622" html.valueishtml="0"  name=applyratio_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="O/T(주중):" border="0" color="33554432" x="311" y="176" height="72" width="375" html.valueishtml="0"  name=overwork_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="최종작업일" border="0" color="33554432" x="270" y="424" height="72" width="416" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=20 border="5" color="33554432" x="709" y="176" height="72" width="896" format="[general]" html.valueishtml="0"  name=overwork visible="1" radiobuttons.columns=3 radiobuttons.scale=yes radiobuttons.threed=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="특근(토):" border="0" color="33554432" x="1705" y="176" height="72" width="375" html.valueishtml="0"  name=specialwork_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=30 border="0" color="33554432" x="2098" y="176" height="72" width="96" format="[general]" html.valueishtml="0"  name=specialwork visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=yes checkbox.threed=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="야간(주중):" border="0" color="33554432" x="2254" y="176" height="72" width="375" html.valueishtml="0"  name=nightwork_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=40 border="0" color="33554432" x="2647" y="176" height="72" width="105" format="[general]" html.valueishtml="0"  name=nightwork visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=yes checkbox.threed=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="2" tabsequence=10 border="5" color="33554432" x="709" y="52" height="72" width="384" format="[general]" html.valueishtml="0"  name=applyratio visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="(%)" border="0" color="0" x="1129" y="52" height="60" width="110" html.valueishtml="0"  name=t_3 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+button(band=detail text="" filename="C:\kdac\bmp\arrow_ddlb.bmp" enabled=yes action="0" border="0" color="0" x="1248" y="292" height="80" width="91" vtextalign="0" htextalign="0"  name=b_startdate visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+text(band=detail alignment="1" text="적용시작일:" border="0" color="33554432" x="265" y="300" height="72" width="421" html.valueishtml="0"  name=startdate_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="5" color="0" x="709" y="424" height="72" width="791" format="[shortdate] [time]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="2" tabsequence=50 border="5" color="0" x="709" y="300" height="72" width="517" format="[shortdate] [time]" html.valueishtml="0"  name=startdate visible="1" editmask.mask="yyyy.mm.dd" editmask.imemode=0 editmask.focusrectangle=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="1" text="적용완료일:" border="0" color="33554432" x="1541" y="300" height="72" width="448" html.valueishtml="0"  name=enddate_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="최종작업자" border="0" color="33554432" x="1541" y="424" height="72" width="448" html.valueishtml="0"  name=t_2 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+button(band=detail text="" filename="C:\kdac\bmp\arrow_ddlb.bmp" enabled=yes action="0" border="0" color="0" x="2546" y="292" height="80" width="91" vtextalign="0" htextalign="0"  name=b_enddate visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="67108864" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="5" color="0" x="2007" y="424" height="72" width="517" format="[general]" html.valueishtml="0"  name=lastemp visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=60 border="5" color="0" x="2007" y="300" height="72" width="517" format="[shortdate] [time]" html.valueishtml="0"  name=enddate visible="1" editmask.mask="yyyy.mm.dd" editmask.imemode=0 editmask.focusrectangle=no  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

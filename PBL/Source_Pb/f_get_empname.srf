@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_empname.srf
+$PBExportComments$사원 이름 가져오기
+global type f_get_empname from function_object
+end type
+
+forward prototypes
+global function string f_get_empname (string ag_emp_no)
+end prototypes
+
+global function string f_get_empname (string ag_emp_no);string l_s_name
+  
+SELECT "CNDACO"."DACMAQ"."PENAMEK"  
+   INTO :l_s_name  
+FROM "CNDACO"."DACMAQ"  
+WHERE "CNDACO"."DACMAQ"."PEEMPNO" = :ag_emp_no  using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	l_s_name = ' '
+end if
+
+return l_s_name
+
+end function
+

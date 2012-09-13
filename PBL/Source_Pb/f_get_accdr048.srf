@@ -1,0 +1,47 @@
+$PBExportHeader$f_get_accdr048.srf
+$PBExportComments$필수입력(관리NO 1-H101-NO) editing 여부 return
+global type f_get_accdr048 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr048 (string a_manage1)
+end prototypes
+
+global function string f_get_accdr048 (string a_manage1);int    l_n_rcnt
+string l_s_err, l_s_code
+
+//if mid(a_manage1,1,1) = '1' or mid(a_manage1,1,1) = '2' or mid(a_manage1,1,1) = '3' or mid(a_manage1,1,1) = '4' &
+//   or mid(a_manage1,1,1) = '5'  then
+//	l_s_err = ''
+//else
+//	return 'e'
+//end if
+//
+//if mid(a_manage1,1,1) = '3' or mid(a_manage1,1,1) = '4' or mid(a_manage1,1,1) = '5'   then
+//	if mid(a_manage1,2,1) = 'C' then
+//		l_s_err = ''
+//	else
+//		return 'e'
+//	end if
+//end if
+//
+//l_s_code = mid(a_manage1,2,21)
+//
+l_s_code = a_manage1 
+select count(*)
+into   :l_n_rcnt
+from   "PBCOMMON"."DAC002"
+where  "PBCOMMON"."DAC002"."COMLTD"  = :g_s_company and
+       "PBCOMMON"."DAC002"."COGUBUN" = 'DAC020'     and
+		 "PBCOMMON"."DAC002"."COCODE"  = :l_s_code    using sqlca;
+if isnull(l_n_rcnt) then
+	l_n_rcnt = 0
+end if
+
+if l_n_rcnt = 0 then
+	return 'e'
+else
+	return ''
+end if
+end function
+

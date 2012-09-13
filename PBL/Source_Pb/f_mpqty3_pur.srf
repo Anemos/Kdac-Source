@@ -1,0 +1,94 @@
+$PBExportHeader$f_mpqty3_pur.srf
+$PBExportComments$확정된 발주량(직접재)
+global type f_mpqty3_pur from function_object
+end type
+
+forward prototypes
+global function decimal f_mpqty3_pur (string ag_s_srno, string ag_s_xplan)
+end prototypes
+
+global function decimal f_mpqty3_pur (string ag_s_srno, string ag_s_xplan);/////////////////////////////////////////////////////////////////////////////////
+// 발주량구하기
+//	 	 			  (발주량 - 취소량)
+//    	        arguement : 구매전산번호 , 0 ,0
+//
+//					  사용: 취소구매요관리(w_pur304u)
+//                     미입고량의 의미 : 발주확정된 것중 미입고 된것을 말한다.
+// 미입고량 =  (발주확정된 발주량 - 발주취소량 - 미처리누적량) - 입고량
+/////////////////////////////////////////////////////////////////////////////////
+ 
+Dec{2} ln_qty , ln_qtyc
+STRING ls_rdept
+
+ag_s_xplan = Left(ag_s_xplan,1)
+
+Choose Case ag_s_xplan
+	//Case '1A' TO '7Z'			//직접재
+	Case '1' TO '7'			//직접재
+		//발주 DB
+		SELECT Coalesce(sum("PBPUR"."PUR402"."PQTY" -  "PBPUR"."PUR402"."PCNLT" ),0)
+		 INTO  :ln_qty  
+		FROM "PBPUR"."PUR402"  
+		WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+				( "PBPUR"."PUR402"."PPRT"  >= '1' ) AND  	
+				( "PBPUR"."PUR402"."SRNO" = :ag_s_srno ) AND  
+				( "PBPUR"."PUR402"."PGUBU" = ' ' )   AND 
+				( "PBPUR"."PUR402"."RDEPT" <> 'K' )  Using sqlca;				
+	
+	//Case '0A' TO '0Z'			//직접재(여주)  2006.01.12 추가
+	Case '0'			//직접재(여주)  2006.01.12 추가
+		//구매...2006.02.21 보완.
+		SELECT TRIM(RDEPT)   INTO :ls_rdept
+		FROM "PBPUR"."PUR302"  
+		WHERE ( "PBPUR"."PUR302"."COMLTD" = '01' ) AND  
+				( "PBPUR"."PUR302"."SRNO" = :ag_s_srno )
+		USING SQLCA;
+		
+		IF TRIM(ls_rdept) = "A" OR ISNULL(ls_rdept) OR TRIM(ls_rdept)="" THEN
+				
+			//발주 DB
+			SELECT Coalesce(sum("PBPUR"."PUR402"."PQTY" -  "PBPUR"."PUR402"."PCNLT" ),0)
+			 INTO  :ln_qty  
+			FROM "PBPUR"."PUR402"  
+			WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+					( "PBPUR"."PUR402"."PPRT"  >= '1' ) AND  	
+					( "PBPUR"."PUR402"."SRNO" = :ag_s_srno ) AND  
+					( "PBPUR"."PUR402"."PGUBU" = ' ' )  
+					Using sqlca;	
+		ELSE
+				
+							//발주 DB
+			SELECT Coalesce(sum("PBPUR"."PUR402"."PQTY" -  "PBPUR"."PUR402"."PCNLT" ),0)
+			 INTO  :ln_qty  
+			FROM "PBPUR"."PUR402"  
+			WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+					( "PBPUR"."PUR402"."PPRT"  >= '3' ) AND  	
+					( "PBPUR"."PUR402"."SRNO" = :ag_s_srno ) AND  
+					( "PBPUR"."PUR402"."PGUBU" = ' ' )  
+					Using sqlca;	
+		END IF
+				//AND 
+				//( "PBPUR"."PUR402"."RDEPT" = 'A' )  Using sqlca;	
+				
+	//Case '8A' TO '9Z'
+	Case '8' TO '9'
+		//발주 DB
+		SELECT Coalesce(sum("PBPUR"."PUR402"."PQTY" -  "PBPUR"."PUR402"."PCNLT" ),0)
+		 INTO  :ln_qty  
+		FROM "PBPUR"."PUR402"  
+		WHERE ( "PBPUR"."PUR402"."COMLTD" = '01' ) AND  
+				( "PBPUR"."PUR402"."PPRT" IN ('3','4') ) AND  	
+				( "PBPUR"."PUR402"."SRNO" = :ag_s_srno ) AND  
+				( "PBPUR"."PUR402"."PGUBU" = ' ' ) AND
+				( "PBPUR"."PUR402"."RDEPT" <> 'K' )  Using sqlca;		
+
+	Case Else			
+		ln_qty = 0	
+End Choose
+
+IF isnull(ln_qty) Then
+	ln_qty = 0
+End IF
+Return ln_qty
+end function
+

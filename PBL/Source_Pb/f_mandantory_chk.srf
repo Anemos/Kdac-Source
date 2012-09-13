@@ -1,0 +1,66 @@
+$PBExportHeader$f_mandantory_chk.srf
+$PBExportComments$필수항목 Check
+global type f_mandantory_chk from function_object
+end type
+
+forward prototypes
+global function integer f_mandantory_chk (datawindow arg_dw)
+end prototypes
+
+global function integer f_mandantory_chk (datawindow arg_dw);//필수항목 Check
+String     ls_colcount, ls_colname, ls_colvalue, ls_coltext, ls_data_type
+Long       ii, ll_row = 0, ll_rowcount
+Any        la_colvalue
+
+ls_colcount = arg_dw.Object.DataWindow.Column.Count
+ll_rowcount = arg_dw.RowCount()
+DO WHILE  ll_row <= ll_rowcount
+	ll_row = arg_dw.GetNextModified(ll_row, Primary!)
+   IF ll_row = 0 THEN EXIT
+	FOR  ii = 1  TO Dec(ls_colcount)
+   	  ls_data_type = Upper(arg_dw.Describe("#" + String(ii) + ".ColType") ) 
+		  ls_colname   = arg_dw.Describe("#" + String(ii) + ".Name")
+		  CHOOSE CASE Left(ls_data_type, 3)
+			 CASE "CHA" 	
+  		          la_colvalue  = Trim(arg_dw.GetItemString(ll_row, ii))
+				    IF IsNull(la_colvalue) OR la_colvalue = "" OR la_colvalue = " " THEN
+						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15780518 THEN
+							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+							 arg_dw.Setrow(ll_row)
+							 arg_dw.Setcolumn(ii)
+							 RETURN -1
+						 END IF
+					 END IF
+			 CASE "INT", "DEC", "LON", "NUM", "REA"	
+  		          la_colvalue  = arg_dw.GetItemNumber(ll_row, ii)
+				    IF IsNull(la_colvalue) OR la_colvalue = 0 THEN
+						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15780518 THEN
+							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+							 arg_dw.Setrow(ll_row)
+							 arg_dw.Setcolumn(ii)
+							 RETURN -1
+						 END IF
+					 END IF
+			 CASE "DAT" 	
+  		          la_colvalue  = arg_dw.GetItemDatetime(ll_row, ii)
+				    IF IsNull(la_colvalue) THEN
+						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15780518 THEN
+							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
+							 messagebox("확인",ls_coltext + "는(은) 필수 입력입니다.")
+							 arg_dw.Setrow(ll_row)
+							 arg_dw.Setcolumn(ii)
+							 RETURN -1
+						 END IF
+					 END IF
+		  END CHOOSE
+	NEXT
+LOOP
+
+RETURN 1
+
+
+
+end function
+

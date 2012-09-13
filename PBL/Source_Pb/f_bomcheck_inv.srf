@@ -1,0 +1,79 @@
+$PBExportHeader$f_bomcheck_inv.srf
+$PBExportComments$유.무상 등록시 에러체크
+global type f_bomcheck_inv from function_object
+end type
+
+forward prototypes
+global function integer f_bomcheck_inv (string as_xplant, string as_div, string as_itno, string as_date, string as_gubun, string as_vsrno)
+end prototypes
+
+global function integer f_bomcheck_inv (string as_xplant, string as_div, string as_itno, string as_date, string as_gubun, string as_vsrno);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_bomcheck_inv
+//	Access		:	public
+//	Arguments	:	string		as_xplant		지역
+//						string		as_div			공장
+//						string		as_itno			자품번
+//						string		as_date			일자
+//						string		as_gubun			유무상 구분('04','07')
+//                string      as_vsrno       사급업체  
+//	Returns		:	Integer		0    - error
+//										1 - bom 만족하는 업체품목 존재 . 
+//
+//	Description	:	품목별로 업체 반출시 유.무상 구분에 대한 Bom check.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Int li_rtn, li_cnt
+String ls_pwkct, ls_pitno, ls_ppitn
+
+If as_gubun ='04' then
+	ls_pwkct = '9999' 
+else
+	ls_pwkct = '8888'
+End if
+
+//cursor delare
+DECLARE 	bom_cur CURSOR FOR
+
+SELECT "PBPDM"."BOM001"."PPITN"
+FROM "PBPDM"."BOM001"
+WHERE ( "PBPDM"."BOM001"."PCMCD" = '01' ) AND
+	( "PBPDM"."BOM001"."PLANT" = :as_xplant ) AND
+	( "PBPDM"."BOM001"."PDVSN" = :as_div ) AND  
+	( "PBPDM"."BOM001"."PCITN" = :as_itno ) AND  
+	( ("PBPDM"."BOM001"."PEDTM" <= "PBPDM"."BOM001"."PEDTE" AND 
+	  "PBPDM"."BOM001"."PEDTE" <> ' ' AND "PBPDM"."BOM001"."PEDTE" >= :as_date )
+	 OR ( "PBPDM"."BOM001"."PEDTE" = ' ' )) AND
+	( "PBPDM"."BOM001"."PWKCT" = :ls_pwkct ) using sqlca ;
+
+OPEN bom_cur;    // data open
+	
+	FETCH bom_cur INTO :ls_pitno; 
+	
+	if sqlca.sqlcode <> 0 then 
+		CLOSE bom_cur;
+   	Return 0
+	End if
+	
+	DO WHILE Sqlca.SqlCode = 0
+      
+		SELECT Count(*)
+		 into :li_cnt
+		FROM PBPUR.PUR103
+		WHERE COMLTD ='01'       AND VSRC = 'D'       AND DEPT ='D' AND 
+		      VSRNO  = :as_vsrno AND ITNO = :ls_pitno AND XSTOP <> 'X' 
+		Using sqlca;
+		
+		If li_cnt > 0 then
+			CLOSE bom_cur;
+			Return 1
+		End if
+		
+		FETCH bom_cur INTO :ls_pitno; 
+	
+	LOOP
+	
+CLOSE bom_cur;   // data close
+
+Return 2
+end function
+

@@ -1,0 +1,44 @@
+$PBExportHeader$d_bom308i_02.srd
+$PBExportComments$¿ùº°¹Ì´Ü°¡Ç°¸ñ
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=zplant dbname="BOM113.ZPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=zdiv dbname="BOM113.ZDIV" )
+ column=(type=char(12) updatewhereclause=yes name=zitno dbname="BOM113.ZITNO" )
+ column=(type=char(50) updatewhereclause=yes name=zdesc dbname="BOM113.ZDESC" )
+ column=(type=char(50) updatewhereclause=yes name=zspec dbname="BOM113.ZSPEC" )
+ column=(type=char(2) updatewhereclause=yes name=zsrce dbname="BOM113.ZSRCE" )
+ retrieve="SELECT DISTINCT A.ZPLANT, A.ZDIV, A.ZITNO, A.ZDESC, A.ZSPEC, A.ZSRCE
+FROM PBPDM.BOM113 A INNER JOIN ( SELECT DISTINCT COMLTD, XPLANT, DIV, ITNO FROM PBINV.INV401
+	WHERE COMLTD = '01' AND SLIPTYPE IN ('RM','SM','SA','SR','IW') AND
+		TDTE4 >= :ag_fromdt AND TDTE4 <= :ag_todt ) B
+	ON A.ZCMCD = B.COMLTD AND A.ZPLANT = B.XPLANT AND
+		A.ZDIV = B.DIV AND A.ZMDNO = B.ITNO
+WHERE A.ZCMCD = :ag_cmcd AND A.ZDATE = :ag_date AND A.ZCOSTCHK = 'Y' AND
+	( ( A.ZYGCHK = 'Y' AND A.ZMOVCOST = 0 AND A.ZRCPCOST = 0 AND A.ZOUTCOST = 0 ) OR
+	  ( A.ZYGCHK <> 'Y' AND A.ZSCMOVCOST = 0 AND A.ZSCRCPCOST = 0 AND A.ZSCOUTCOST = 0 ) ) AND
+	A.ZPLANT LIKE :ag_plant AND A.ZDIV LIKE :ag_dvsn AND
+	A.ZMDCD LIKE :ag_pdcd 
+" arguments=(("ag_cmcd", string),("ag_fromdt", string),("ag_todt", string),("ag_date", string),("ag_plant", string),("ag_dvsn", string),("ag_pdcd", string))  sort="zplant A zdiv A zitno A " )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="68" width="233" html.valueishtml="0"  name=zplant_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="251" y="8" height="68" width="251" html.valueishtml="0"  name=zdiv_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="512" y="8" height="68" width="526" html.valueishtml="0"  name=zitno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1047" y="8" height="68" width="1125" html.valueishtml="0"  name=zdesc_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô°Ý" border="0" color="16777215" x="2181" y="8" height="68" width="1047" html.valueishtml="0"  name=zspec_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="3237" y="8" height="68" width="224" html.valueishtml="0"  name=zsrce_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="512" y="4" height="84" width="526" format="[general]" html.valueishtml="0"  name=zitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="1047" y="4" height="84" width="1125" format="[general]" html.valueishtml="0"  name=zdesc visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2181" y="4" height="84" width="1047" format="[general]" html.valueishtml="0"  name=zspec visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="3237" y="4" height="84" width="224" format="[general]" html.valueishtml="0"  name=zsrce visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="84" width="233" format="[general]" html.valueishtml="0"  name=zplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="251" y="4" height="84" width="251" format="[general]" html.valueishtml="0"  name=zdiv visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

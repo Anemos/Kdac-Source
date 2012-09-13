@@ -1,0 +1,63 @@
+$PBExportHeader$f_get_accsliprow.srf
+$PBExportComments$분개전표 조정계정 row count return
+global type f_get_accsliprow from function_object
+end type
+
+forward prototypes
+global function integer f_get_accsliprow (decimal a_n_row)
+end prototypes
+
+global function integer f_get_accsliprow (decimal a_n_row);
+if a_n_row = 0 or a_n_row = 1 or a_n_row = 2 or a_n_row = 3 then
+	return 0
+elseif a_n_row = 4 or a_n_row = 5 then
+	return 1
+elseif a_n_row = 6 or a_n_row = 7 then
+	return 2
+elseif a_n_row = 8 or a_n_row = 9 then
+	return 3
+elseif a_n_row = 10 or a_n_row = 11 then
+	return 4
+elseif a_n_row = 12 or a_n_row = 13 then
+	return 5
+elseif a_n_row = 14 or a_n_row = 15 then
+	return 6
+elseif a_n_row = 16 or a_n_row = 17 then
+	return 7
+elseif a_n_row = 18 or a_n_row = 19 then
+	return 8
+elseif a_n_row = 20 or a_n_row = 21 then
+	return 9
+elseif a_n_row = 22 or a_n_row = 23 then
+	return 10
+elseif a_n_row = 24 or a_n_row = 25 then
+	return 11
+elseif a_n_row = 26 or a_n_row = 27 then
+	return 12
+elseif a_n_row = 28 or a_n_row = 29 then
+	return 13
+elseif a_n_row = 30 or a_n_row = 31 then
+	return 14
+elseif a_n_row = 32 or a_n_row = 33 then
+	return 15
+elseif a_n_row = 34 or a_n_row = 35 then
+	return 16
+elseif a_n_row = 36 or a_n_row = 37 then
+	return 17
+elseif a_n_row = 38 or a_n_row = 39 then
+	return 18
+elseif a_n_row = 40 or a_n_row = 41 then
+	return 19
+elseif a_n_row = 42 or a_n_row = 43 then
+	return 20
+elseif a_n_row = 44 or a_n_row = 45 then
+	return 21
+elseif a_n_row = 46 or a_n_row = 47 then
+	return 22
+elseif a_n_row = 48 or a_n_row = 49 then
+	return 23
+else
+	return 24
+end if
+end function
+

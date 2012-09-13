@@ -1,0 +1,29 @@
+$PBExportHeader$f_pur010_pindt.srf
+$PBExportComments$발주일 구하기 (발주번호)
+global type f_pur010_pindt from function_object
+end type
+
+forward prototypes
+global function string f_pur010_pindt (string ag_purno)
+end prototypes
+
+global function string f_pur010_pindt (string ag_purno);/////////////////////////////////////////////////////
+//발주일자 구하기
+//            argument : 발주번호
+//////////////////////////////////////////////////////
+
+String ls_pindt
+ag_purno = Upper(trim(ag_purno))
+
+SELECT A.PINDT
+ INTO :ls_pindt
+FROM PBPUR.PUR401 A
+WHERE A.COMLTD = '01'
+ AND A.PURNO = :ag_purno 	Using sqlca;
+ 
+IF sqlca.sqlcode <> 0 Or isnull(ls_pindt) Then
+	ls_pindt = space(8)
+End IF
+Return ls_pindt
+end function
+

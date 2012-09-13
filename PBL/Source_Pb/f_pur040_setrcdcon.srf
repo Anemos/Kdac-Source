@@ -1,0 +1,28 @@
+$PBExportHeader$f_pur040_setrcdcon.srf
+$PBExportComments$콘트롤db update( INV403,환급상태)
+global type f_pur040_setrcdcon from function_object
+end type
+
+forward prototypes
+global function long f_pur040_setrcdcon (string as_stcd, string as_dorl)
+end prototypes
+
+global function long f_pur040_setrcdcon (string as_stcd, string as_dorl); 
+UPDATE "PBINV"."INV403"  
+  SET "JSCD"    = :as_stcd,
+      "RPFL"    = :as_dorl,
+		"UPDTID"  = :g_s_empno,   
+		"UPDTDT"  = :g_s_datetime,   
+		"IPADDR"  = :g_s_ipaddr,   
+		"MACADDR" = :g_s_macaddr  
+WHERE ( "PBINV"."INV403"."COMLTD" = '01' ) AND  
+		( "PBINV"."INV403"."CKEY" = 'RCDDORL' )   
+		  ;
+
+if sqlca.sqlcode <> 0 then
+	return -1
+end if
+return 0
+ 
+end function
+

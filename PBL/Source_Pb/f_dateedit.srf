@@ -1,0 +1,37 @@
+$PBExportHeader$f_dateedit.srf
+$PBExportComments$일자 오류 Check 및 "yyyymmdd" Return
+global type f_dateedit from function_object
+end type
+
+forward prototypes
+global function string f_dateedit (string ag_dateyymd)
+end prototypes
+
+global function string f_dateedit (string ag_dateyymd);//////  일자 오류 Check 함수  //////////////////////////////
+// (1) Argument로 "yyyy/mm/dd"를 받아                     //
+// (2) Error면  "        " Return,                        //
+//     정상이면 "yyyymmdd" Return                         //
+//////////////////////////////  1998.05.   김 용 대   //////
+String	ls_dateyymd
+Date   	ld_dateyymd
+
+if	len(f_spacedel(ag_dateyymd))	<>  8  and &      
+   	len(f_spacedel(ag_dateyymd))	<> 10  then   // 형태가 '19970101' and '1997/01/01'이 아니면
+	Return	space(8)
+end if	
+
+if 	len(ag_dateyymd)	=	8	then
+	ls_dateyymd	=	string(ag_dateyymd,"@@@@/@@/@@")
+else
+	ls_dateyymd = ag_dateyymd
+end if
+
+ld_dateyymd	=	date(ls_dateyymd) 
+if 	isnull(ld_dateyymd)	=	True	or	&
+   	String(ld_dateyymd,"yyyy/mm/dd") = "1900/01/01"  then   
+	Return 	space(8)
+else
+	Return 	String(ld_dateyymd,"yyyymmdd")
+end if	
+end function
+

@@ -1,0 +1,70 @@
+$PBExportHeader$d_rtn01_dw_budaejakup_ff.srd
+$PBExportComments$À¯Çüº° ºÎ´ëÀÛ¾÷  ÀÔ·Â DW (Free Form)
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=452 color="536870912" )
+table(column=(type=long updatewhereclause=yes key=yes name=rdlogid dbname="RTN014.RDLOGID" )
+ column=(type=char(2) updatewhereclause=yes name=rdcmcd dbname="RTN014.RDCMCD" )
+ column=(type=char(1) updatewhereclause=yes name=rddvsn dbname="RTN014.RDDVSN" )
+ column=(type=char(12) updatewhereclause=yes name=rditno dbname="RTN014.RDITNO" )
+ column=(type=char(7) updatewhereclause=yes name=rdline1 dbname="RTN014.RDLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rdline2 dbname="RTN014.RDLINE2" )
+ column=(type=char(7) updatewhereclause=yes name=rdopno dbname="RTN014.RDOPNO" )
+ column=(type=char(2) updatewhereclause=yes name=rdnvmo dbname="RTN014.RDNVMO" )
+ column=(type=char(1) updatewhereclause=yes name=rdmcno dbname="RTN014.RDMCNO" )
+ column=(type=char(1) updatewhereclause=yes name=rdterm dbname="RTN014.RDTERM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rdmctm dbname="RTN014.RDMCTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rdlbtm dbname="RTN014.RDLBTM" )
+ column=(type=char(240) updatewhereclause=yes name=rdremk dbname="RTN014.RDREMK" )
+ column=(type=char(1) updatewhereclause=yes name=rdflag dbname="RTN014.RDFLAG" )
+ column=(type=char(6) updatewhereclause=yes name=rdepno dbname="RTN014.RDEPNO" )
+ column=(type=char(8) updatewhereclause=yes name=rdedfm dbname="RTN014.RDEDFM" )
+ column=(type=char(15) updatewhereclause=yes name=rdipad dbname="RTN014.RDIPAD" )
+ column=(type=char(8) updatewhereclause=yes name=rdupdt dbname="RTN014.RDUPDT" )
+ column=(type=char(8) updatewhereclause=yes name=rdsydt dbname="RTN014.RDSYDT" )
+ column=(type=char(1) updatewhereclause=yes name=rdplant dbname="RTN014.RDPLANT" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN014~".~"RDLOGID~",
+			~"PBRTN~".~"RTN014~".~"RDCMCD~",   
+         ~"PBRTN~".~"RTN014~".~"RDDVSN~",   
+         ~"PBRTN~".~"RTN014~".~"RDITNO~",   
+         ~"PBRTN~".~"RTN014~".~"RDLINE1~",   
+         ~"PBRTN~".~"RTN014~".~"RDLINE2~",   
+         ~"PBRTN~".~"RTN014~".~"RDOPNO~",   
+         ~"PBRTN~".~"RTN014~".~"RDNVMO~",   
+         ~"PBRTN~".~"RTN014~".~"RDMCNO~",   
+         ~"PBRTN~".~"RTN014~".~"RDTERM~",   
+         ~"PBRTN~".~"RTN014~".~"RDMCTM~",   
+         ~"PBRTN~".~"RTN014~".~"RDLBTM~",   
+         ~"PBRTN~".~"RTN014~".~"RDREMK~",   
+         ~"PBRTN~".~"RTN014~".~"RDFLAG~",   
+         ~"PBRTN~".~"RTN014~".~"RDEPNO~",   
+         ~"PBRTN~".~"RTN014~".~"RDEDFM~",   
+         ~"PBRTN~".~"RTN014~".~"RDIPAD~",   
+         ~"PBRTN~".~"RTN014~".~"RDUPDT~",   
+         ~"PBRTN~".~"RTN014~".~"RDSYDT~",   
+         ~"PBRTN~".~"RTN014~".~"RDPLANT~"  
+    FROM ~"PBRTN~".~"RTN014~"  
+   WHERE ( ~"PBRTN~".~"RTN014~".~"RDLOGID~" = :a_logid )
+" update="PBRTN.RTN014" updatewhere=0 updatekeyinplace=no arguments=(("a_logid", number)) )
+text(band=detail alignment="1" text="À¯Çü :" border="0" color="0" x="23" y="44" height="60" width="261" html.valueishtml="0"  name=rdnvmo_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="ºóµµ:" border="0" color="0" x="1783" y="44" height="60" width="192" html.valueishtml="0"  name=rdterm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Àû¿ëÀÏ:" border="0" color="0" x="23" y="188" height="60" width="261" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="Remark:" border="0" color="0" x="23" y="328" height="60" width="261" html.valueishtml="0"  name=rdremk_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=60 border="5" color="0" x="306" y="328" height="60" width="1970" format="[general]" html.valueishtml="0"  name=rdremk visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="±â°èÀÛ¾÷(ÃÊ):" border="0" color="0" x="805" y="188" height="60" width="416" html.valueishtml="0"  name=rdmctm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="1" text="¼öÀÛ¾÷(ÃÊ):" border="0" color="0" x="1573" y="188" height="60" width="393" html.valueishtml="0"  name=rdlbtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=10 border="5" color="0" x="306" y="44" height="60" width="626" format="[general]" html.valueishtml="0"  name=rdnvmo visible="1" dddw.name=dddw_codename dddw.displaycolumn=coflname dddw.datacolumn=cocode dddw.percentwidth=0 dddw.lines=10 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=16 alignment="0" tabsequence=32766 border="5" color="0" x="306" y="188" height="60" width="448" format="[general]" html.valueishtml="0"  name=rdedfm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="0" tabsequence=30 border="5" color="0" x="1993" y="44" height="60" width="279" format="[general]" html.valueishtml="0"  name=rdterm visible="1" dddw.name=dddw_codename dddw.displaycolumn=coflname dddw.datacolumn=cocode1 dddw.percentwidth=0 dddw.lines=10 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=11 alignment="0" tabsequence=40 border="5" color="0" x="1243" y="188" height="60" width="293" format="[general]" html.valueishtml="0"  name=rdmctm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+column(band=detail id=12 alignment="0" tabsequence=50 border="5" color="0" x="1979" y="188" height="60" width="293" format="[general]" html.valueishtml="0"  name=rdlbtm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+text(band=detail alignment="1" text="±¸ºÐ:" border="0" color="0" x="1010" y="44" height="60" width="201" html.valueishtml="0"  name=rdmcno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=20 border="5" color="0" x="1239" y="44" height="60" width="457" format="[general]" html.valueishtml="0"  name=rdmcno visible="1" dddw.name=dddw_codename dddw.displaycolumn=coflname dddw.datacolumn=cocode1 dddw.percentwidth=0 dddw.lines=2 dddw.limit=0 dddw.allowedit=no dddw.useasborder=yes dddw.case=any dddw.imemode=0 dddw.vscrollbar=yes  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

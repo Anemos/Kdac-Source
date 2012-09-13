@@ -1,0 +1,95 @@
+$PBExportHeader$f_pur040_getcostdiv2.srf
+$PBExportComments$원가사업장(지역,공장,품번-2자리반환)  : old
+global type f_pur040_getcostdiv2 from function_object
+end type
+
+forward prototypes
+global function string f_pur040_getcostdiv2 (string as_xplant, string as_div, string as_itno)
+end prototypes
+
+global function string f_pur040_getcostdiv2 (string as_xplant, string as_div, string as_itno);////////////////////////////////////////////////
+// : 원가사업장결정 : old 원가사업장
+////////////////////////////////////////////////
+string ls_costdiv, ls_pdcd
+
+SELECT coalesce(max("PBINV"."INV101"."COSTDIV"),''), coalesce(max("PBINV"."INV101"."PDCD"),'')  
+INTO :ls_costdiv, :ls_pdcd  
+FROM "PBINV"."INV101"  
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+         ( "PBINV"."INV101"."XPLANT" = :as_xplant ) AND  
+         ( "PBINV"."INV101"."DIV" = :as_div ) AND  
+         ( "PBINV"."INV101"."ITNO" = :as_itno )   ;
+			
+if trim(ls_costdiv) = '' then
+	SELECT coalesce(max("PBINV"."INV101"."XPLANT"),''),coalesce(max("PBINV"."INV101"."DIV"),''),
+	       coalesce(max("PBINV"."INV101"."COSTDIV"),''), coalesce(max("PBINV"."INV101"."PDCD"),'')  
+	INTO :as_xplant,:as_div, :ls_costdiv, :ls_pdcd  
+	FROM "PBINV"."INV101"  
+	WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+			( "PBINV"."INV101"."ITNO" = :as_itno )   ;
+end if
+
+if ls_costdiv <> '' then
+	return as_xplant + ls_costdiv
+end if
+
+if as_xplant = '' then
+	as_xplant = 'D'
+end if
+if as_div = '' then
+	as_div = 'A'
+end if
+
+
+choose case as_xplant
+case 'D'
+	if as_div = 'A' then //전장
+	   if mid(ls_pdcd,1,2) = '35' then
+			ls_costdiv = 'Y'
+		elseif mid(ls_pdcd,1,2) = '38' then
+			ls_costdiv = 'W'
+		elseif mid(ls_pdcd,1,2) = '70' then
+			ls_costdiv = 'C'
+		else
+			ls_costdiv = 'E'
+		end if
+	elseif as_div = 'M' or as_div = 'S' or as_div = 'H' or as_div = 'V' then
+		ls_costdiv = as_div
+   else
+		ls_costdiv = 'A'
+   end if
+case 'J'
+	if as_div = 'M' then
+		ls_costdiv = 'B'
+	elseif as_div = 'S' then
+		ls_costdiv = 'L'
+	elseif as_div = 'H' then
+		ls_costdiv = 'T'
+	else
+		ls_costdiv = as_div
+	end if
+case 'K'
+	if as_div = 'M' then
+		ls_costdiv = 'P'
+	elseif as_div = 'S' then
+		ls_costdiv = 'N'
+	elseif as_div = 'H' then
+		ls_costdiv = 'O'
+	else
+		ls_costdiv = as_div
+	end if
+case 'Y'
+	if as_div = 'Y' then
+      ls_costdiv = 'D'	
+	else
+		ls_costdiv = as_div	
+	end if
+case else
+	ls_costdiv = as_div
+End choose
+
+Return as_xplant + ls_costdiv
+
+
+end function
+

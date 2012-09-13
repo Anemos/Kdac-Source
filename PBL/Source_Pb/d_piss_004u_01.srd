@@ -1,0 +1,50 @@
+$PBExportHeader$d_piss_004u_01.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=76 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=76 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=areacode dbname="TMSTINOUTITEM.Areacode" initial=" " )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=divisioncode dbname="TMSTINOUTITEM.Divisioncode" initial=" " )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=itemcode dbname="TMSTINOUTITEM.Itemcode" initial=" " )
+ column=(type=char(5) update=yes updatewhereclause=yes name=deptcode dbname="TMSTINOUTITEM.DeptCode" initial=" " )
+ column=(type=datetime update=yes updatewhereclause=yes name=lastdate dbname="TMSTINOUTITEM.LastDate" initial=" " )
+ column=(type=char(6) update=yes updatewhereclause=yes name=lastemp dbname="TMSTINOUTITEM.LastEmp" initial=" " )
+ column=(type=char(15) updatewhereclause=yes name=tmstdivision_divisionname dbname="TMSTDIVISION.DivisionName" )
+ column=(type=char(10) updatewhereclause=yes name=tmstemp_empname dbname="TMSTEMP.EmpName" )
+ column=(type=char(100) updatewhereclause=yes name=tmstitem_itemname dbname="TMSTITEM.ItemName" )
+ retrieve="  SELECT TMSTINOUTITEM.Areacode,   
+         TMSTINOUTITEM.Divisioncode,   
+         TMSTINOUTITEM.Itemcode,   
+         TMSTINOUTITEM.DeptCode,   
+         TMSTINOUTITEM.LastDate,   
+         TMSTINOUTITEM.LastEmp,   
+         TMSTDIVISION.DivisionName,   
+         TMSTEMP.EmpName,   
+         TMSTITEM.ItemName  
+    FROM TMSTINOUTITEM,   
+         TMSTDIVISION,   
+         TMSTEMP,   
+         TMSTITEM  
+   WHERE ( TMSTINOUTITEM.Areacode = TMSTDIVISION.AreaCode ) and  
+         ( TMSTINOUTITEM.Divisioncode = TMSTDIVISION.DivisionCode ) and  
+         ( TMSTEMP.EmpNo =* TMSTINOUTITEM.LastEmp ) and  
+         ( TMSTITEM.ItemCode =* TMSTINOUTITEM.Itemcode )    and
+			( TMSTINOUTITEM.Areacode = :ps_areacode )    and
+			( TMSTINOUTITEM.Divisioncode like :ps_divisioncode )    " update="TMSTINOUTITEM" updatewhere=0 updatekeyinplace=no arguments=(("ps_areacode", string),("ps_divisioncode", string)) )
+text(band=header alignment="2" text="¼öÁ¤ÀÏ½Ã" border="0" color="16777215" x="2496" y="8" height="72" width="704" html.valueishtml="0"  name=lastdate_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç° ¹ø" border="0" color="16777215" x="462" y="8" height="72" width="471" html.valueishtml="0"  name=itemcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°ø Àå" border="0" color="16777215" x="9" y="8" height="72" width="443" html.valueishtml="0"  name=tmstdivision_divisionname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÁ¤ÀÚ" border="0" color="16777215" x="2176" y="8" height="72" width="311" html.valueishtml="0"  name=tmstemp_empname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°  ¸í" border="0" color="16777215" x="942" y="8" height="72" width="837" html.valueishtml="0"  name=tmstitem_itemname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÔ°íºÎ¼­" border="0" color="16777215" x="1787" y="8" height="72" width="379" html.valueishtml="0"  name=deptcode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="2496" y="0" height="72" width="704" format="[shortdate] [time]" html.valueishtml="0"  name=lastdate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=10 border="0" color="33554432" x="462" y="0" height="72" width="471" format="[general]" html.valueishtml="0"  name=itemcode visible="1" edit.limit=12 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="72" width="443" format="[general]" html.valueishtml="0"  name=tmstdivision_divisionname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="942" y="0" height="72" width="837" format="[general]" html.valueishtml="0"  name=tmstitem_itemname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="2" tabsequence=20 border="0" color="33554432" x="1787" y="0" height="72" width="379" format="[general]" html.valueishtml="0"  name=deptcode visible="1" edit.limit=5 edit.case=upper edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="2176" y="0" height="72" width="311" format="[general]" html.valueishtml="0"  name=tmstemp_empname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

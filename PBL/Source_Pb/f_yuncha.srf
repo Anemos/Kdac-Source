@@ -1,0 +1,108 @@
+$PBExportHeader$f_yuncha.srf
+$PBExportComments$연차발생갯수산정
+global type f_yuncha from function_object
+end type
+
+forward prototypes
+global function integer f_yuncha (string a_s_empno, string a_s_date)
+end prototypes
+
+global function integer f_yuncha (string a_s_empno, string a_s_date);string l_s_date, l_s_empno, l_s_fdate, l_s_fyy, l_s_fmm, l_s_fdd, l_s_yy, l_s_mm, l_s_dd, l_s_dept, l_s_div
+string l_s_yunyy, l_s_yunmm, l_s_yundd, l_s_gubun, l_s_entdt
+int l_s_cnt, l_s_cnt1, l_s_holcnt, l_s_holcnt1, l_s_guncnt, l_s_guncnt1
+dec{2} l_s_persent
+
+// 개인의 연차산정일과 직종구분
+select peyuncha, pegubun,pedept into :l_s_entdt, :l_s_gubun, :l_s_dept
+from pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+l_s_fyy = string(integer(mid(a_s_date, 1, 4)) - 1,"0000")
+l_s_fmm = mid(l_s_entdt, 5, 2)
+l_s_fdd = mid(l_s_entdt, 7, 2)
+l_s_fdate = l_s_fyy + l_s_fmm + l_s_fdd
+
+l_s_yy = mid(a_s_date, 1, 4)
+l_s_mm = mid(l_s_entdt, 5, 2)
+l_s_dd = string(integer(mid(l_s_entdt, 7, 2)) - 1,"00")
+l_s_date = l_s_yy + l_s_mm + l_s_dd
+
+l_s_yunyy = mid(l_s_entdt, 1, 4)
+l_s_yunmm = mid(l_s_entdt, 5, 2)
+l_s_yundd = mid(l_s_entdt, 7, 2)
+
+l_s_div = f_get_deptname(l_s_dept, 'E')
+
+// ****실제 근무일수 산정 ****
+
+// 해당 일수
+select count(*) into :l_s_holcnt
+from delabo.labmaa
+where ghdt between :l_s_fdate and :l_s_date
+  and gdiv = :l_s_div
+using sqlcc;
+// 일자DB에서 휴일을 제외한 나머지 일수
+select count(*) into :l_s_holcnt1
+from delabo.labmaa
+where ghdt between :l_s_fdate and :l_s_date
+  and gdiv = :l_s_div and ghgb in ('T','H','S','Y') 
+using sqlcc;
+
+select count(*) into :l_s_guncnt
+from delabo.labtac
+where dgyy || dgmm || dgdd between :l_s_fdate and :l_s_date
+  and dgcd2r || dgcd3r in('L1', 'L2', 'N1', 'P1', 'R6')
+  and dgempno = :a_s_empno 
+using sqlcc;
+
+select count(*) into :l_s_guncnt1
+from delabo.labtac
+where dgyy || dgmm || dgdd between :l_s_fdate and :l_s_date
+  and dgcd2r || dgcd3r in('K1', 'K2', 'K3', 'M1', 'M2', 'Q1')
+  and dgempno = :a_s_empno 
+using sqlcc;
+
+// 연차에 발생하지 않는 근태사항을 이용해 비율 산정
+// 생산직일경우는 근태사용, 사무직일 경우는 100
+if l_s_gubun = '2' then
+	if l_s_holcnt = (l_s_holcnt1 + l_s_guncnt)  then
+		l_s_persent = 100
+	else
+		l_s_persent = (l_s_holcnt - (l_s_holcnt1 + l_s_guncnt + l_s_guncnt1)) &
+						/ (l_s_holcnt - (l_s_holcnt1 + l_s_guncnt)) * 100
+	end if
+else
+	l_s_persent = 100
+end if
+// 근태가 발생하지 않을 경우 10개 기본 발생
+// 95일 경우 9개
+// 90일 경우 8개
+choose case l_s_persent
+	case 100
+		l_s_cnt = 10
+	case is >= 95 
+		l_s_cnt = 9
+	case is >= 90 
+		l_s_cnt = 8
+	case else
+      l_s_cnt = 0
+end choose
+
+// 근속년수에 따라 가산갯수 발생
+//if l_s_yunmm = '12' and l_s_yundd > '15' then
+//   l_s_cnt1 = integer(l_s_yy) - integer(l_s_yunyy) - 2
+//else
+	l_s_cnt1 = integer(l_s_yy) - integer(l_s_yunyy) - 1
+//end if
+
+if l_s_cnt < 1 then
+   l_s_cnt = 0
+else
+   l_s_cnt += l_s_cnt1
+end if
+
+return l_s_cnt
+
+end function
+

@@ -1,0 +1,48 @@
+$PBExportHeader$f_get_telphone_pur.srf
+$PBExportComments$사내전화번호(사번, 구분) return
+global type f_get_telphone_pur from function_object
+end type
+
+forward prototypes
+global function string f_get_telphone_pur (string ag_emp_no, string ag_gubun)
+end prototypes
+
+global function string f_get_telphone_pur (string ag_emp_no, string ag_gubun);string l_s_name  
+
+ag_emp_no = Trim(ag_emp_no)
+ag_gubun = Trim(ag_gubun)
+
+Choose Case ag_gubun 
+	Case "1"		//사내전화번호
+		SELECT Trim("PBCOMMON"."DAC003"."PETEL")
+		  INTO :l_s_name  
+		FROM "PBCOMMON"."DAC003"  
+		WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+	
+	Case "2"		//이름
+		SELECT Trim("PBCOMMON"."DAC003"."PENAMEK")
+		  INTO :l_s_name  
+		FROM "PBCOMMON"."DAC003"  
+		WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+	Case "3"		//이름 + 사내전화번호
+		SELECT Trim("PBCOMMON"."DAC003"."PENAMEK")||'('||Trim("PBCOMMON"."DAC003"."PETEL")||')'
+		  INTO :l_s_name  
+		FROM "PBCOMMON"."DAC003"  
+		WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+ 
+	Case "4"		//사내전화번호 + 개인 휴대폰 번호
+		SELECT Trim("PBCOMMON"."DAC003"."PETEL") ||'/'||Trim("PBCOMMON"."DAC003"."PECPHONE")
+		  INTO :l_s_name  
+		FROM "PBCOMMON"."DAC003"  
+		WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlca;
+		
+End Choose
+
+if sqlca.sqlcode <> 0 then
+	l_s_name = ' '
+end if
+
+return l_s_name
+
+end function
+

@@ -1,0 +1,32 @@
+$PBExportHeader$f_vndnm_pur.srf
+$PBExportComments$업체명(업체전산번호)
+global type f_vndnm_pur from function_object
+end type
+
+forward prototypes
+global function string f_vndnm_pur (string ag_vsrno)
+end prototypes
+
+global function string f_vndnm_pur (string ag_vsrno);///////////////////////////////////////////////////////////////
+// 업체명 가져오기
+//                  argument : 업체전산번호
+//////////////////////////////////////////////////////////////
+
+string ls_vndnm
+
+
+SELECT "PBPUR"."PUR101"."VNDNM"  
+ INTO :ls_vndnm  
+FROM "PBPUR"."PUR101"  
+WHERE ( "PBPUR"."PUR101"."COMLTD" = '01' ) AND  
+		( "PBPUR"."PUR101"."VSRNO" = :ag_vsrno ) Using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	ls_vndnm = " "
+end if
+ 
+//2005.07.13 업체명 길이줄이기 (30)
+ls_vndnm = f_truncate_pura(ls_vndnm,23) 
+return ls_vndnm
+end function
+

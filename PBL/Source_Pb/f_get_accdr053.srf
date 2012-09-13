@@ -1,0 +1,45 @@
+$PBExportHeader$f_get_accdr053.srf
+$PBExportComments$필수입력(관리NO 2-품번) editing 여부 return
+global type f_get_accdr053 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr053 (string a_manage2, string a_div)
+end prototypes
+
+global function string f_get_accdr053 (string a_manage2, string a_div);int l_n_rcnt
+
+SELECT count(*)  
+ INTO  :l_n_rcnt  
+ FROM  "PBINV"."INV002"  
+WHERE  "PBINV"."INV002"."COMLTD" = :g_s_company and
+       "PBINV"."INV002"."ITNO"   = :a_manage2   using sqlca;
+if isnull(l_n_rcnt) then
+	l_n_rcnt = 0
+end if
+if l_n_rcnt = 0 then
+	return 'e'
+end if
+
+//if a_div = 'E' or a_div = 'C' or a_div = 'Y' or a_div = 'W' then
+//	a_div = 'A'
+//elseif a_div = 'D' then
+//	a_div = 'Y'
+//end if
+
+SELECT count(*)  
+ INTO  :l_n_rcnt  
+ FROM  "PBINV"."INV101"  
+WHERE  "PBINV"."INV101"."COMLTD"  = :g_s_company and
+       "PBINV"."INV101"."XPLANT"||"PBINV"."INV101"."COSTDIV" = :a_div       and
+       "PBINV"."INV101"."ITNO"    = :a_manage2   using sqlca;
+if isnull(l_n_rcnt) then
+	l_n_rcnt = 0
+end if
+if l_n_rcnt = 0 then
+	return 'e'
+else
+	return ''
+end if
+end function
+

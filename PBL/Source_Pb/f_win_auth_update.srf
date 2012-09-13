@@ -1,0 +1,77 @@
+$PBExportHeader$f_win_auth_update.srf
+global type f_win_auth_update from function_object
+end type
+
+forward prototypes
+global function boolean f_win_auth_update (string ag_empno, string ag_winid, string ag_wingrd)
+end prototypes
+
+global function boolean f_win_auth_update (string ag_empno, string ag_winid, string ag_wingrd);integer		i,	ln_count,	ln_number
+String			ls_area
+DataStore		ds_comm001
+
+ds_comm001					=	Create		DataStore
+ds_comm001.dataobject	=	'd_comm001_retrieve'
+ds_comm001.settransobject(sqlca)	;
+ln_count						=	ds_comm001.retrieve()
+
+sqlxx 		= 	CREATE transaction
+ln_count 	=	ds_comm001.retrieve()
+for i = 1 to ln_count
+	ls_area 				= trim(ds_comm001.object.serverid[i])
+	sqlxx.ServerName 	= trim(ds_comm001.object.servername[i])
+	sqlxx.DBMS       		= trim(ds_comm001.object.serverdbms[i])
+	sqlxx.Database   	= trim(ds_comm001.object.serverdatabase[i])
+	sqlxx.LogId      		= trim(ds_comm001.object.serverlogid[i])
+	sqlxx.LogPass    	= trim(ds_comm001.object.serverpassword[i])
+	sqlxx.autocommit 	= true
+	sqlxx.DBParm     	= trim(ds_comm001.object.serverdbparm[i])
+	connect using sqlxx;
+	if sqlxx.sqlcode <> 0 then
+		disconnect using sqlxx ;
+		destroy 	sqlxx
+		destroy	ds_comm001 
+		return	false
+	end if
+	if sqlxx.dbms	=	"ODBC"	then
+		select count(*) into :ln_number from pbcommon.comm140
+			where emp_no = :ag_empno and use_win = :ag_winid 
+		using sqlxx ;
+		if ln_number > 0 then
+			update pbcommon.comm140
+				set use_grd  = :ag_wingrd,		updt_id 		= 'ADMIN',	updt_dt = :g_s_datetime,
+					 ip_addr 	= :g_s_ipaddr,	mac_addr 	= :g_s_macaddr
+			where emp_no 	= :ag_empno and use_win 	= :ag_winid using sqlxx ;
+		elseif ln_number = 0 then
+			insert into pbcommon.comm140 	values 
+			(:ag_empno,:ag_winid,:ag_wingrd,'ADMIN',:g_s_datetime,'ADMIN',:g_s_datetime,:g_s_ipaddr,:g_s_macaddr )
+			using sqlxx ;
+		end if
+	else
+		select count(*) into :ln_number from comm140
+			where emp_no = :ag_empno and use_win = :ag_winid 
+		using sqlxx ;
+		if ln_number > 0 then
+			update comm140
+				set use_grd  = :ag_wingrd,updt_id = 'ADMIN',updt_dt = :g_s_datetime,
+					 ip_addr = :g_s_ipaddr,mac_addr = :g_s_macaddr
+			where emp_no = :ag_empno and use_win = :ag_winid using sqlxx ;
+		elseif ln_number = 0 then
+			insert into comm140 	values 
+			(:ag_empno,:ag_winid,:ag_wingrd,'ADMIN',:g_s_datetime,'ADMIN',:g_s_datetime,:g_s_ipaddr,:g_s_macaddr )
+			using sqlxx ;
+		end if
+	end if
+	if sqlxx.sqlcode	<>	0 then
+		disconnect using sqlxx ;
+		destroy 	sqlxx
+		destroy	ds_comm001 
+		return		false
+	end if
+	disconnect using sqlxx;
+next
+destroy 	sqlxx
+destroy	ds_comm001 
+return		true
+end function
+

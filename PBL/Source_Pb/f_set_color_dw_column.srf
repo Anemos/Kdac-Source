@@ -1,0 +1,47 @@
+$PBExportHeader$f_set_color_dw_column.srf
+$PBExportComments$dw_column_color º¯°æ
+global type f_set_color_dw_column from function_object
+end type
+
+forward prototypes
+global subroutine f_set_color_dw_column (datawindow ag_dw, string ag_column, string ag_color)
+end prototypes
+
+global subroutine f_set_color_dw_column (datawindow ag_dw, string ag_column, string ag_color);/*
+	Argument :  DataWindow    ag_dw
+				   String		  ag_column
+					String        ag_color
+*/
+
+
+String l_s_command
+long 	 l_l_color1 = 15780518 ,l_l_color2 = 16777215 ,l_l_color3 = 12632256  ,l_l_color4 = 65535
+//	                 sky                     white                  gray                   yellow
+
+ag_dw.SetRedraw(False)
+
+IF ag_color = "S" Then
+	//l_s_command	=	ag_column + ".Background.Color = '" + String(l_l_color1) + "'"
+	l_s_command	=	ag_column + ".Background.Color = " + String(l_l_color1)
+	
+ElseIF ag_color = "W" Then		
+	l_s_command	=	ag_column + ".Background.Color = " + String(l_l_color2)
+	
+ElseIF ag_color = "G" Then
+	//l_s_command	=	ag_column + ".Background.Color = '" + String(l_l_color3) + "'"
+	l_s_command	=	ag_column + ".Background.Color = " + String(l_l_color3)
+	
+ElseIF ag_color = "Y" Then
+	//l_s_command	=	ag_column + ".Background.Color = '" + String(l_l_color4) + "'"	
+	l_s_command	=	ag_column + ".Background.Color = " + String(l_l_color4)
+	
+End If
+
+ag_dw.Modify(l_s_command)
+ag_dw.SetRedraw(True)
+
+//ls_modstring	= ls_modstring + fs_parent_column + ".dddw.PercentWidth =" + ls_percent_width + &
+//                  + fs_parent_column + ".dddw.line =" + String(fi_line)
+//fdw_parent.Modify(ls_modstring)
+end subroutine
+

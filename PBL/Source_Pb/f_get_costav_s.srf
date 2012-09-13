@@ -1,0 +1,29 @@
+$PBExportHeader$f_get_costav_s.srf
+$PBExportComments$이동평균단가 Return  Global  Function
+global type f_get_costav_s from function_object
+end type
+
+forward prototypes
+global function decimal f_get_costav_s (string ag_itno)
+end prototypes
+
+global function decimal f_get_costav_s (string ag_itno);/////////////////////////////////////////////////////////
+// 품번을 받아 품목재고 Table의 이동평균단가를 Return
+//
+/////////////////////////////////////////////////////////
+
+Dec{2} ld_CostAv
+
+
+SELECT COSTAV INTO :ld_CostAv
+FROM PBINV.INV101
+WHERE COMLTD = '01' AND
+		XPLANT = 'D' AND
+		DIV	 = 'F' AND
+		ITNO	 = :ag_itno	Using SQLCA ;
+		
+If SQLCA.SQLCode <> 0 Then Return -1
+	
+Return ld_CostAv
+end function
+

@@ -1,0 +1,52 @@
+$PBExportHeader$f_get_kbqty.srf
+$PBExportComments$불출간판 History Table의 최근수용수 Return
+global type f_get_kbqty from function_object
+end type
+
+forward prototypes
+global function decimal f_get_kbqty (string as_comltd, string as_plant, string as_div, string as_itno)
+end prototypes
+
+global function decimal f_get_kbqty (string as_comltd, string as_plant, string as_div, string as_itno);String ls_todt
+Dec{1} ld_kbqty, ld_tqty3, ld_wqty
+
+
+DECLARE inv104_cur CURSOR FOR
+ SELECT "PBINV"."INV104"."TODT"
+	FROM "PBINV"."INV104"
+ WHERE ( "PBINV"."INV104"."COMLTD"    = :as_comltd ) AND ( "PBINV"."INV104"."XPLANT" = :as_plant)    AND
+	    ( "PBINV"."INV104"."DIV"       = :as_div )    AND ( "PBINV"."INV104"."ITNO"   = :as_itno)  
+ ORDER BY 1 DESC using sqlca ;
+          	 
+ OPEN inv104_cur;  // 조건에 맞는 data open
+	
+ FETCH inv104_cur INTO :ls_todt ; // cursor에 존재하는 적용시작일 Select
+ 
+ IF Sqlca.SqlCode = 100 THEN
+		CLOSE inv104_cur;
+		RETURN -1
+ ELSEIF Sqlca.SqlCode <> 0 THEN
+   	  CLOSE inv104_cur;
+		  RETURN -1
+ END IF
+	
+ DO WHILE Sqlca.SqlCode = 0
+	 SELECT  "PBINV"."INV104"."KBQTY"  INTO :ld_kbqty
+		 FROM "PBINV"."INV104"
+	 WHERE ( "PBINV"."INV104"."COMLTD" = '01' )     AND ( "PBINV"."INV104"."XPLANT" = :as_plant) AND 
+			 ( "PBINV"."INV104"."DIV"    = :as_div)   AND ( "PBINV"."INV104"."ITNO"   = :as_itno)  AND 
+			 ( "PBINV"."INV104"."TODT"   = :ls_todt)  using sqlca ;
+	 If Sqlca.SqlCode = 0 then
+		 Return ld_kbqty
+	 Else
+		 Return 0
+	 End if
+	
+	 FETCH inv104_cur INTO :ls_todt ;
+
+LOOP
+
+CLOSE inv104_cur;
+
+end function
+

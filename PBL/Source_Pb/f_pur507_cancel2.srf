@@ -1,0 +1,48 @@
+$PBExportHeader$f_pur507_cancel2.srf
+$PBExportComments$발주취소시 거래명세표 완결처리( 취소구매요구)
+global type f_pur507_cancel2 from function_object
+end type
+
+forward prototypes
+global subroutine f_pur507_cancel2 (string as_srno1, string as_srno2)
+end prototypes
+
+global subroutine f_pur507_cancel2 (string as_srno1, string as_srno2);/* f_pur507_cancel(ls_rsrno1, ls_rsrno2)	
+ * 발주취소 확정시 - 미입고된 거래명세표 상태 변경
+ * STCD = 'C'   , EXTD = 'C'   발주취소로 인한 거래 명세표 사용불가하게 처리
+ * 2005.01.12
+ * 취소구매요구에 의한 발주취소는 취소구매요구량과 거래명세표량, 입고량을 모두 체크해야 되는 관계로
+ * 해당 경우는 예외로 보자 ( skip 하자) ==> 함수 수행 안한다.(발주 pgubu1 = ' ' and pgubu = 'C') 인   ==> f_pur507_cancle
+ 
+ * 해당 경우는 취소구매요구에 의한 발주취소에 해당된다.
+ * 정상 발주전산번호를 찾아서 정상발주에 대한 발주량(정상발주량 - 취소발주량)을 확인해서 0 이면 거래명세표를 종결시킨다.  ==> f_pur507_cancle2
+ * 당연히, 발주량 = 0 이면 stcd= 'C' 인것이 당연하겠지만. 혹시나 싶어서....    
+ * 
+*/
+DEC{2} ld_qty
+STRING ls_stcd
+
+SELECT PQTY - PCNLT , STCD INTO :ld_qty, :ls_stcd
+FROM PBPUR.PUR402
+WHERE COMLTD = '01'
+  AND STCD = ' '
+  AND SRNO = :as_srno1
+  AND SRNO1 = :as_srno2  
+USING SQLCA;
+
+IF ld_qty = 0 OR trim(ls_stcd)= "C" Then
+	UPDATE PBPUR.PUR507
+	  SET STCD = 'C'  , EXTD = '발주취소',
+			UPDTID = :g_s_empno,
+			UPDTDT = :g_s_datetime
+	WHERE COMLTD = '01'
+	  AND STCD = ' '
+	  AND SRNO = :as_srno1
+	  AND SRNO1 = :as_srno2  
+	USING SQLCA;
+End IF	
+
+   
+
+end subroutine
+

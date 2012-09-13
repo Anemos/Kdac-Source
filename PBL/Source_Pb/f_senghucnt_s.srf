@@ -1,0 +1,33 @@
+$PBExportHeader$f_senghucnt_s.srf
+$PBExportComments$»ıÈŞ»ç¿ë°¹¼ö»êÁ¤(»ç¹«Á÷)
+global type f_senghucnt_s from function_object
+end type
+
+forward prototypes
+global function string f_senghucnt_s (string a_s_empno, string a_s_date)
+end prototypes
+
+global function string f_senghucnt_s (string a_s_empno, string a_s_date);string l_s_date, l_s_rtn , l_s_date_1
+int l_n_guncnt
+
+l_s_date = mid(a_s_date,1,6) + '00'
+l_s_date_1 = f_relativedate(a_s_date, -1 )
+
+select count(*) into :l_n_guncnt
+from delabo.labtaf
+where dsyy || dsmm || dsdd between :l_s_date and :l_s_date_1
+  and dscd2r || dscd3r in('R3')
+  and dsempno = :a_s_empno 
+using sqlcc;
+
+// MESSAGEBOX('COUNT',l_n_guncnt)
+if l_n_guncnt > 0 then
+	l_s_rtn = 'N'
+else
+	l_s_rtn = 'Y'
+end if
+
+return l_s_rtn
+
+end function
+

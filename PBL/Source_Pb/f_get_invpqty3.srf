@@ -1,0 +1,21 @@
+$PBExportHeader$f_get_invpqty3.srf
+$PBExportComments$이체의뢰전산번호(의뢰DB)를 이용한 의뢰량 산출
+global type f_get_invpqty3 from function_object
+end type
+
+forward prototypes
+global function decimal f_get_invpqty3 (string as_fsrno)
+end prototypes
+
+global function decimal f_get_invpqty3 (string as_fsrno);Dec{1} ld_pqty
+
+SELECT "PBINV"."INV620"."REQTY" INTO :ld_pqty
+  FROM  "PBINV"."INV620"		
+WHERE "PBINV"."INV620"."COMLTD" = '01' AND "PBINV"."INV620"."SRNO" = :as_fsrno using sqlca ;
+if isnull(ld_pqty) or sqlca.sqlcode <> 0 then
+	ld_pqty = 0
+end if
+
+return ld_pqty
+end function
+

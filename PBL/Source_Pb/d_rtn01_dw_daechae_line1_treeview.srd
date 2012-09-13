@@ -1,0 +1,27 @@
+$PBExportHeader$d_rtn01_dw_daechae_line1_treeview.srd
+$PBExportComments$특정 대체 Line 1 하위에 있는 대체 Line2 Treeview
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=64 color="536870912" )
+table(column=(type=char(7) updatewhereclause=yes name=rbline1 dbname="RTN012.RBLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rbline2 dbname="RTN012.RBLINE2" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN012~".~"RBLINE1~",   
+         ~"PBRTN~".~"RTN012~".~"RBLINE2~"  
+    FROM ~"PBRTN~".~"RTN012~"  
+   WHERE ( ~"PBRTN~".~"RTN012~".~"RBCMCD~" = '01' ) AND  
+         ( ~"PBRTN~".~"RTN012~".~"RBDVSN~" = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN012~".~"RBLINE1~" = :a_line1 ) AND  
+         ( ~"PBRTN~".~"RTN012~".~"RBPLANT~" = :a_plant )    
+" arguments=(("a_plant", string),("a_div", string),("a_line1", string)) )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="9" y="0" height="76" width="215" html.valueishtml="0"  name=rbline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="0" text="Rbline1" border="0" color="0" x="5" y="4" height="76" width="219" html.valueishtml="0"  name=rbline1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="0" tabsequence=0 border="0" color="0" x="238" y="0" height="76" width="23" html.valueishtml="0"  name=rbline2 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+text(band=header alignment="0" text="Rbline2" border="0" color="0" x="233" y="4" height="76" width="27" html.valueishtml="0"  name=rbline2_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

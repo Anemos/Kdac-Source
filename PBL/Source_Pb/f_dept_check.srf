@@ -1,0 +1,32 @@
+$PBExportHeader$f_dept_check.srf
+$PBExportComments$¹Ý³³ºÎ¼­ Check
+global type f_dept_check from function_object
+end type
+
+forward prototypes
+global function integer f_dept_check (string a_dept)
+end prototypes
+
+global function integer f_dept_check (string a_dept);string ls_sys5
+int    li_date
+SELECT "PBCOMMON"."DAC001"."DSYS1", "PBCOMMON"."DAC001"."DACTTODT"  
+  INTO :ls_sys5, :li_date  
+  FROM "PBCOMMON"."DAC001" 
+WHERE "PBCOMMON"."DAC001"."DUSE"  = ' '  AND "PBCOMMON"."DAC001"."DTODT" = 0       AND 
+      "PBCOMMON"."DAC001"."DCODE" = :a_dept using sqlca ;
+if sqlca.sqlcode <> 0 then
+	return -1
+end if
+if ls_sys5 <> 'X' then
+	return -1
+end if
+if li_date <> 0 then
+	if string(li_date) < g_s_date then
+		return -1
+	end if
+end if
+
+return 1
+
+end function
+

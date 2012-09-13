@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_unit1.srf
+$PBExportComments$간접재 단위 return
+global type f_get_unit1 from function_object
+end type
+
+forward prototypes
+global function string f_get_unit1 (string a_itno)
+end prototypes
+
+global function string f_get_unit1 (string a_itno);string ls_unit
+
+SELECT "PBINV"."INV002"."XUNIT" 
+ INTO :ls_unit 
+ FROM "PBINV"."INV002"  
+WHERE "PBINV"."INV002"."COMLTD" = '01' AND 
+      "PBINV"."INV002"."ITNO" = :a_itno  using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	ls_unit = ' '
+end if
+
+return ls_unit
+end function
+

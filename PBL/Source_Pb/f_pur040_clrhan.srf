@@ -1,0 +1,51 @@
+$PBExportHeader$f_pur040_clrhan.srf
+$PBExportComments$한글지우기
+global type f_pur040_clrhan from function_object
+end type
+
+forward prototypes
+global function string f_pur040_clrhan (string ls_itnm)
+end prototypes
+
+global function string f_pur040_clrhan (string ls_itnm);long ll_row, ll_rcnt
+//string ls_itnm1
+//Carriage Return(CR, ascii code:13)  => \r
+//Line Feed(LF, ascii code:10)   => \n
+//asc(mid(ls_itnm,ll_row,1)) = 15 then //si
+ls_itnm = trim(ls_itnm)
+
+
+////한글없으면 그냥사용
+for ll_row = len(ls_itnm)  to 1 step -1 
+	if asc(mid(ls_itnm,ll_row,1)) >= 161 then   //한글
+   	ll_rcnt = ll_rcnt + 1
+	end if
+next
+if ll_rcnt = 0 then
+	return trim(ls_itnm)
+end if
+
+ll_rcnt = len(ls_itnm)
+for ll_row = len(ls_itnm)  to 1 step -1 
+	if asc(mid(ls_itnm,ll_row,1)) >= 161 then   //한글스페이스로 대체
+   	ls_itnm = Replace(ls_itnm, ll_row, 1, " ")
+	end if
+next
+
+////공백이 사라지는 현상 발생=> 원인??
+//ll_rcnt = len(ls_itnm)
+//for ll_row = len(ls_itnm)  to 1 step -1 
+//	if mid(ls_itnm,ll_row,1) = ' ' or asc(mid(ls_itnm,ll_row,1)) = 32 then  //스페이스 그냥통과
+//		continue
+//	end if
+//	if asc(mid(ls_itnm,ll_row,1)) >= 161 then   //한글스페이스로 대체
+//   	ls_itnm = mid(ls_itnm,1,ll_row - 1) + ' ' + mid(ls_itnm,ll_row + 1, ll_rcnt - ll_row) 
+//	end if
+//next
+
+return trim(ls_itnm)
+
+			
+
+end function
+

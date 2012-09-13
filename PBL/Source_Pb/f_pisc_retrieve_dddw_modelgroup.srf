@@ -1,0 +1,68 @@
+$PBExportHeader$f_pisc_retrieve_dddw_modelgroup.srf
+$PBExportComments$dddw 을 조회하는 함수 - 모델군
+global type f_pisc_retrieve_dddw_modelgroup from function_object
+end type
+
+forward prototypes
+global subroutine f_pisc_retrieve_dddw_modelgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, string fs_modelgroup, boolean fb_allflag, ref string rs_modelgroup, ref string rs_modelgroupname)
+end prototypes
+
+global subroutine f_pisc_retrieve_dddw_modelgroup (datawindow fdw_1, string fs_areacode, string fs_divisioncode, string fs_productgroup, string fs_modelgroup, boolean fb_allflag, ref string rs_modelgroup, ref string rs_modelgroupname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_pisc_retrieve_dddw_modelgroup
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_areacode				조회하고자 하는 지역
+//						string			fs_divisioncode		조회하고자 하는 공장 코드
+//						string			fs_productgroup		조회하고자 하는 제품군 코드
+//						string			fs_modelgroup			조회하고자 하는 모델군 코드 (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 모델군 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (모델군코드는 '%', 모델군명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_mdoelgroup			선택된 모델군 코드 (reference)
+//						string			rs_modelgroupname		선택된 모델군 명 (reference)
+//	Returns		: none
+//	Description	: 모델군을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Kim Jin-Su
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlpis)
+	ldwc_1.Retrieve(fs_areacode, fs_divisioncode, fs_productgroup, fs_modelgroup)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_modelgroup = ''
+		rs_modelgroupname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_modelgroup		= Trim(ldwc_1.GetItemString(1, 'modelgroup'))
+		rs_modelgroupname	= Trim(ldwc_1.GetItemString(1, 'modelgroupname'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_modelgroup)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'modelgroupname', 30)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			rs_modelgroup		= Trim(ldwc_1.GetItemString(1, 'modelgroup'))
+			rs_modelgroupname	= Trim(ldwc_1.GetItemString(1, 'modelgroupname'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_modelgroup)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'modelgroupname', 30)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'modelgroup', 'ALL')
+			ldwc_1.Setitem(1, 'modelgroupname', '전체')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_modelgroup = '%'
+			rs_modelgroupname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'modelgroupname', 30)
+		End If
+	End If
+End If
+end subroutine
+

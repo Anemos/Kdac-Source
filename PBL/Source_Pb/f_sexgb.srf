@@ -1,0 +1,19 @@
+$PBExportHeader$f_sexgb.srf
+$PBExportComments$¼ºº° return
+global type f_sexgb from function_object
+end type
+
+forward prototypes
+global function string f_sexgb (string a_s_empno)
+end prototypes
+
+global function string f_sexgb (string a_s_empno);string l_s_sexgb
+
+select persex into :l_s_sexgb
+from pbper.per001
+where peempno = :a_s_empno
+using sqlcc;
+
+return l_s_sexgb
+end function
+

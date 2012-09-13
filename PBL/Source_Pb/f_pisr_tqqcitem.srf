@@ -1,0 +1,42 @@
+$PBExportHeader$f_pisr_tqqcitem.srf
+$PBExportComments$품질검사제외품목확인 f_pisr_tqqcitem( transaction, str_pisr_partkb) return True(무검사)
+global type f_pisr_tqqcitem from function_object
+end type
+
+forward prototypes
+global function boolean f_pisr_tqqcitem (transaction ftr_tran, str_pisr_partkb fstr_partkb)
+end prototypes
+
+global function boolean f_pisr_tqqcitem (transaction ftr_tran, str_pisr_partkb fstr_partkb);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_tqqcitem
+//	Access		: reorder
+//	Arguments	: transaction		ftr_tran
+//					: str_pisr_partkb	fstr_partkb(지역,공장,업체,품번,기준일자)
+//	Returns		: boolean 			True:무검사품목, False:유검사품목
+//	Description	: 해당업체 품번의 품질검사대상품목확인
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh Sang
+// Coded Date	: 2002.09.26
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long	ll_qcCnt
+
+	  SELECT count(TQQCITEM.ITEMCODE)  
+		 INTO :ll_qcCnt  
+		 FROM TQQCITEM  
+		WHERE TQQCITEM.AREACODE 		= :fstr_partkb.areacode AND  
+				TQQCITEM.DIVISIONCODE 	= :fstr_partkb.divcode 	AND  
+				TQQCITEM.ITEMCODE 		= :fstr_partkb.itemCode AND  
+				TQQCITEM.SUPPLIERCODE 	= :fstr_partkb.suppCode AND  
+				TQQCITEM.QCGUBUN 			= 'C'							AND  
+				TQQCITEM.APPLYDATEFROM 	<= :fstr_partkb.applydate 	
+		USING	ftr_tran       ;
+		
+///**** 무검사품목 조건 수정시 가입고처리윈도우의 wf_validchk() 에서도 수정이필요 *****////		
+
+If ll_qcCnt > 0 Then 
+	Return True
+Else
+	Return False
+End If
+end function
+

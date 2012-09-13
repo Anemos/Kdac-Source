@@ -1,0 +1,402 @@
+$PBExportHeader$d_bpm421i_02_down.srd
+$PBExportComments$°¡°øºñÀû¿ë BOM³»¿ª
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=128 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=bpm514_zplant dbname="BPM514.ZPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zdiv dbname="BPM514.ZDIV" )
+ column=(type=char(4) updatewhereclause=yes name=bpm514_zmdcd dbname="BPM514.ZMDCD" )
+ column=(type=char(12) updatewhereclause=yes name=bpm514_zmdno dbname="BPM514.ZMDNO" )
+ column=(type=decimal(0) updatewhereclause=yes name=bpm514_zserial dbname="BPM514.ZSERIAL" )
+ column=(type=decimal(0) updatewhereclause=yes name=bpm514_zlevel dbname="BPM514.ZLEVEL" )
+ column=(type=char(12) updatewhereclause=yes name=bpm514_zitno dbname="BPM514.ZITNO" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zrev dbname="BPM514.ZREV" )
+ column=(type=char(50) updatewhereclause=yes name=bpm514_zdesc dbname="BPM514.ZDESC" )
+ column=(type=char(50) updatewhereclause=yes name=bpm514_zspec dbname="BPM514.ZSPEC" )
+ column=(type=decimal(3) updatewhereclause=yes name=bpm514_zunitqty dbname="BPM514.ZUNITQTY" )
+ column=(type=char(2) updatewhereclause=yes name=bpm514_zunit1 dbname="BPM514.ZUNIT1" )
+ column=(type=decimal(5) updatewhereclause=yes name=bpm514_zconfact dbname="BPM514.ZCONFACT" )
+ column=(type=char(2) updatewhereclause=yes name=bpm514_zunit2 dbname="BPM514.ZUNIT2" )
+ column=(type=char(2) updatewhereclause=yes name=bpm514_zsrce dbname="BPM514.ZSRCE" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_ztype dbname="BPM514.ZTYPE" )
+ column=(type=char(3) updatewhereclause=yes name=bpm514_zcurd dbname="BPM514.ZCURD" )
+ column=(type=char(3) updatewhereclause=yes name=bpm514_zcure dbname="BPM514.ZCURE" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zfob1 dbname="BPM514.ZFOB1" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zfob2 dbname="BPM514.ZFOB2" )
+ column=(type=char(2) updatewhereclause=yes name=bpm514_zchk dbname="BPM514.ZCHK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zcurdcst dbname="BPM514.ZCURDCST" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zcurecst dbname="BPM514.ZCURECST" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zygcst dbname="BPM514.ZYGCST" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zwondcst dbname="BPM514.ZWONDCST" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zwonecst dbname="BPM514.ZWONECST" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zwoneamt dbname="BPM514.ZWONEAMT" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm514_zwondamt dbname="BPM514.ZWONDAMT" )
+ column=(type=char(4) updatewhereclause=yes name=bpm514_zwkct dbname="BPM514.ZWKCT" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zgrad dbname="BPM514.ZGRAD" )
+ column=(type=char(12) updatewhereclause=yes name=bpm514_zaltno dbname="BPM514.ZALTNO" )
+ column=(type=char(1) updatewhereclause=yes name=bpm514_zcalc dbname="BPM514.ZCALC" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdwon dbname="BPM515.MDWON" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdusd dbname="BPM515.MDUSD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdjpy dbname="BPM515.MDJPY" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mddem dbname="BPM515.MDDEM" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdfrf dbname="BPM515.MDFRF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdgbp dbname="BPM515.MDGBP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdaud dbname="BPM515.MDAUD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdesp dbname="BPM515.MDESP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdemu dbname="BPM515.MDEMU" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mditl dbname="BPM515.MDITL" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdchf dbname="BPM515.MDCHF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdbfr dbname="BPM515.MDBFR" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mddkk dbname="BPM515.MDDKK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdats dbname="BPM515.MDATS" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdcad dbname="BPM515.MDCAD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdsek dbname="BPM515.MDSEK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdrmb dbname="BPM515.MDRMB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdthb dbname="BPM515.MDTHB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mdetc dbname="BPM515.MDETC" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miusd dbname="BPM515.MIUSD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mijpy dbname="BPM515.MIJPY" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_midem dbname="BPM515.MIDEM" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mifrf dbname="BPM515.MIFRF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_migbp dbname="BPM515.MIGBP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miaud dbname="BPM515.MIAUD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miesp dbname="BPM515.MIESP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miemu dbname="BPM515.MIEMU" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miitl dbname="BPM515.MIITL" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_michf dbname="BPM515.MICHF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mibfr dbname="BPM515.MIBFR" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_midkk dbname="BPM515.MIDKK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_miats dbname="BPM515.MIATS" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_micad dbname="BPM515.MICAD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_misek dbname="BPM515.MISEK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mirmb dbname="BPM515.MIRMB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mithb dbname="BPM515.MITHB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mietc dbname="BPM515.MIETC" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtwon dbname="BPM515.MTWON" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtusd dbname="BPM515.MTUSD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtjpy dbname="BPM515.MTJPY" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtdem dbname="BPM515.MTDEM" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtfrf dbname="BPM515.MTFRF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtgbp dbname="BPM515.MTGBP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtaud dbname="BPM515.MTAUD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtesp dbname="BPM515.MTESP" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtemu dbname="BPM515.MTEMU" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtitl dbname="BPM515.MTITL" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtchf dbname="BPM515.MTCHF" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtbfr dbname="BPM515.MTBFR" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtdkk dbname="BPM515.MTDKK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtats dbname="BPM515.MTATS" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtcad dbname="BPM515.MTCAD" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtsek dbname="BPM515.MTSEK" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtrmb dbname="BPM515.MTRMB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtthb dbname="BPM515.MTTHB" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_mtetc dbname="BPM515.MTETC" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_momat dbname="BPM515.MOMAT" )
+ column=(type=decimal(6) updatewhereclause=yes name=bpm515_molat dbname="BPM515.MOLAT" )
+ column=(type=char(1) updatewhereclause=yes name=bpm509_ycmcd dbname="BPM509.YCMCD" )
+ column=(type=decimal(2) updatewhereclause=yes name=bpm514_zorate dbname="BPM514.ZORATE" )
+ column=(type=decimal(4) updatewhereclause=yes name=bpm514_zcumorate dbname="BPM514.ZCUMORATE" )
+ retrieve="  SELECT ~"PBBPM~".~"BPM514~".~"ZPLANT~",   
+         ~"PBBPM~".~"BPM514~".~"ZDIV~",   
+         ~"PBBPM~".~"BPM514~".~"ZMDCD~",   
+         ~"PBBPM~".~"BPM514~".~"ZMDNO~",   
+         ~"PBBPM~".~"BPM514~".~"ZSERIAL~",   
+         ~"PBBPM~".~"BPM514~".~"ZLEVEL~",   
+         ~"PBBPM~".~"BPM514~".~"ZITNO~",   
+         ~"PBBPM~".~"BPM514~".~"ZREV~",   
+         ~"PBBPM~".~"BPM514~".~"ZDESC~",   
+         ~"PBBPM~".~"BPM514~".~"ZSPEC~",   
+         ~"PBBPM~".~"BPM514~".~"ZUNITQTY~",   
+         ~"PBBPM~".~"BPM514~".~"ZUNIT1~",   
+         ~"PBBPM~".~"BPM514~".~"ZCONFACT~",   
+         ~"PBBPM~".~"BPM514~".~"ZUNIT2~",   
+         ~"PBBPM~".~"BPM514~".~"ZSRCE~",   
+         ~"PBBPM~".~"BPM514~".~"ZTYPE~",   
+         ~"PBBPM~".~"BPM514~".~"ZCURD~",   
+         ~"PBBPM~".~"BPM514~".~"ZCURE~",   
+         ~"PBBPM~".~"BPM514~".~"ZFOB1~",   
+         ~"PBBPM~".~"BPM514~".~"ZFOB2~",   
+         ~"PBBPM~".~"BPM514~".~"ZCHK~",   
+         ~"PBBPM~".~"BPM514~".~"ZCURDCST~",   
+         ~"PBBPM~".~"BPM514~".~"ZCURECST~",
+			~"PBBPM~".~"BPM514~".~"ZYGCST~",   
+         ~"PBBPM~".~"BPM514~".~"ZWONDCST~",   
+         ~"PBBPM~".~"BPM514~".~"ZWONECST~",   
+         ~"PBBPM~".~"BPM514~".~"ZWONEAMT~",   
+         ~"PBBPM~".~"BPM514~".~"ZWONDAMT~",   
+         ~"PBBPM~".~"BPM514~".~"ZWKCT~",   
+         ~"PBBPM~".~"BPM514~".~"ZGRAD~",   
+         ~"PBBPM~".~"BPM514~".~"ZALTNO~",   
+			~"PBBPM~".~"BPM514~".~"ZCALC~",
+         ~"PBBPM~".~"BPM515~".~"MDWON~",   
+         ~"PBBPM~".~"BPM515~".~"MDUSD~",   
+         ~"PBBPM~".~"BPM515~".~"MDJPY~",   
+         ~"PBBPM~".~"BPM515~".~"MDDEM~",   
+         ~"PBBPM~".~"BPM515~".~"MDFRF~",   
+         ~"PBBPM~".~"BPM515~".~"MDGBP~",   
+         ~"PBBPM~".~"BPM515~".~"MDAUD~",   
+         ~"PBBPM~".~"BPM515~".~"MDESP~",   
+         ~"PBBPM~".~"BPM515~".~"MDEMU~",   
+         ~"PBBPM~".~"BPM515~".~"MDITL~",   
+         ~"PBBPM~".~"BPM515~".~"MDCHF~",   
+         ~"PBBPM~".~"BPM515~".~"MDBFR~",   
+         ~"PBBPM~".~"BPM515~".~"MDDKK~",   
+         ~"PBBPM~".~"BPM515~".~"MDATS~",   
+         ~"PBBPM~".~"BPM515~".~"MDCAD~",   
+         ~"PBBPM~".~"BPM515~".~"MDSEK~",   
+         ~"PBBPM~".~"BPM515~".~"MDRMB~", 
+			~"PBBPM~".~"BPM515~".~"MDTHB~",  
+         ~"PBBPM~".~"BPM515~".~"MDETC~",   
+         ~"PBBPM~".~"BPM515~".~"MIUSD~",   
+         ~"PBBPM~".~"BPM515~".~"MIJPY~",   
+         ~"PBBPM~".~"BPM515~".~"MIDEM~",   
+         ~"PBBPM~".~"BPM515~".~"MIFRF~",   
+         ~"PBBPM~".~"BPM515~".~"MIGBP~",   
+         ~"PBBPM~".~"BPM515~".~"MIAUD~",   
+         ~"PBBPM~".~"BPM515~".~"MIESP~",   
+         ~"PBBPM~".~"BPM515~".~"MIEMU~",   
+         ~"PBBPM~".~"BPM515~".~"MIITL~",   
+         ~"PBBPM~".~"BPM515~".~"MICHF~",   
+         ~"PBBPM~".~"BPM515~".~"MIBFR~",   
+         ~"PBBPM~".~"BPM515~".~"MIDKK~",   
+         ~"PBBPM~".~"BPM515~".~"MIATS~",   
+         ~"PBBPM~".~"BPM515~".~"MICAD~",   
+         ~"PBBPM~".~"BPM515~".~"MISEK~",   
+         ~"PBBPM~".~"BPM515~".~"MIRMB~",
+			~"PBBPM~".~"BPM515~".~"MITHB~",   
+         ~"PBBPM~".~"BPM515~".~"MIETC~",   
+         ~"PBBPM~".~"BPM515~".~"MTWON~",   
+         ~"PBBPM~".~"BPM515~".~"MTUSD~",   
+         ~"PBBPM~".~"BPM515~".~"MTJPY~",   
+         ~"PBBPM~".~"BPM515~".~"MTDEM~",   
+         ~"PBBPM~".~"BPM515~".~"MTFRF~",   
+         ~"PBBPM~".~"BPM515~".~"MTGBP~",   
+         ~"PBBPM~".~"BPM515~".~"MTAUD~",   
+         ~"PBBPM~".~"BPM515~".~"MTESP~",   
+         ~"PBBPM~".~"BPM515~".~"MTEMU~",   
+         ~"PBBPM~".~"BPM515~".~"MTITL~",   
+         ~"PBBPM~".~"BPM515~".~"MTCHF~",   
+         ~"PBBPM~".~"BPM515~".~"MTBFR~",   
+         ~"PBBPM~".~"BPM515~".~"MTDKK~",   
+         ~"PBBPM~".~"BPM515~".~"MTATS~",   
+         ~"PBBPM~".~"BPM515~".~"MTCAD~",   
+         ~"PBBPM~".~"BPM515~".~"MTSEK~",   
+         ~"PBBPM~".~"BPM515~".~"MTRMB~",
+			~"PBBPM~".~"BPM515~".~"MTTHB~",   
+         ~"PBBPM~".~"BPM515~".~"MTETC~",   
+         ~"PBBPM~".~"BPM515~".~"MOMAT~",   
+         ~"PBBPM~".~"BPM515~".~"MOLAT~",
+			~"PBBPM~".~"BPM509~".~"YCMCD~",
+			~"PBBPM~".~"BPM514~".~"ZORATE~",   
+         ~"PBBPM~".~"BPM514~".~"ZCUMORATE~"
+    FROM ~"PBBPM~".~"BPM514~" INNER JOIN ~"PBBPM~".~"BPM515~"
+		ON ( ~"PBBPM~".~"BPM514~".~"ZCMCD~" = ~"PBBPM~".~"BPM515~".~"COMLTD~" ) and  
+         ( ~"PBBPM~".~"BPM514~".~"ZDATE~" = ~"PBBPM~".~"BPM515~".~"MYEAR~" ) and 
+			( ~"PBBPM~".~"BPM514~".~"ZBREV~" = ~"PBBPM~".~"BPM515~".~"MBREV~" ) and
+			( ~"PBBPM~".~"BPM514~".~"ZGUBUN~" = ~"PBBPM~".~"BPM515~".~"MGUBUN~" ) and 
+         ( ~"PBBPM~".~"BPM514~".~"ZPLANT~" = ~"PBBPM~".~"BPM515~".~"MPLANT~" ) and  
+         ( ~"PBBPM~".~"BPM514~".~"ZDIV~" = ~"PBBPM~".~"BPM515~".~"MDIV~" ) and  
+         ( ~"PBBPM~".~"BPM514~".~"ZMDNO~" = ~"PBBPM~".~"BPM515~".~"MMDNO~" )
+		LEFT OUTER JOIN ~"PBBPM~".~"BPM509~"
+		ON ~"PBBPM~".~"BPM514~".~"ZITNO~" = ~"PBBPM~".~"BPM509~".~"YITNO~" AND 
+			~"PBBPM~".~"BPM514~".~"ZDATE~" = ~"PBBPM~".~"BPM509~".~"YCCYY~" AND 
+			~"PBBPM~".~"BPM514~".~"ZBREV~" = ~"PBBPM~".~"BPM509~".~"REVNO~" AND
+			~"PBBPM~".~"BPM509~".~"YGUBUN~" = '10' AND ~"PBBPM~".~"BPM509~".~"YGRAD~" = '1'
+   WHERE ( ~"PBBPM~".~"BPM515~".~"MSEQGB~" <> 'S' ) and
+			( ~"PBBPM~".~"BPM514~".~"ZSERIAL~" <> 2 ) and
+         ( ( ~"PBBPM~".~"BPM515~".~"MUSGE~" = :ag_gubun ) AND  
+         ( ~"PBBPM~".~"BPM514~".~"ZDATE~" = :ag_date ) AND  
+			( ~"PBBPM~".~"BPM514~".~"ZBREV~" = :ag_rev ) AND
+			( ~"PBBPM~".~"BPM514~".~"ZGUBUN~" = :ag_mgubun ) AND
+         ( ~"PBBPM~".~"BPM514~".~"ZPLANT~" like :ag_xplant ) AND  
+         ( ~"PBBPM~".~"BPM514~".~"ZDIV~" like :ag_div ) AND  
+         ( ~"PBBPM~".~"BPM514~".~"ZMDCD~" like :ag_mdcd ) AND  
+         ( ~"PBBPM~".~"BPM514~".~"ZMDNO~" like :ag_mdno ) )
+" arguments=(("ag_gubun", string),("ag_date", string),("ag_rev", string),("ag_mgubun", string),("ag_xplant", string),("ag_div", string),("ag_mdcd", string),("ag_mdno", string))  sort="bpm514_zplant A bpm514_zdiv A bpm514_zmdcd A bpm514_zmdno A bpm514_zserial A " )
+group(level=1 header.height=0 trailer.height=1072 by=("BPM514_zplant" , "BPM514_zdiv" , "BPM514_zmdcd" , "BPM514_zmdno" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Á¦Ç°
+" border="2" color="16777215" x="517" y="4" height="120" width="530" html.valueishtml="0"  name=bpm514_zmdno_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø
+" border="2" color="16777215" x="1449" y="4" height="120" width="471" html.valueishtml="0"  name=bpm514_zitno_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°  ¸í
+" border="2" color="16777215" x="1925" y="4" height="120" width="750" html.valueishtml="0"  name=bpm514_zdesc_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶ÄÚµå
+" border="2" color="16777215" x="8379" y="4" height="120" width="279" html.valueishtml="0"  name=bpm514_zwkct_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ý¾×(¿øÈ­)
+" border="2" color="16777215" x="7899" y="4" height="120" width="475" html.valueishtml="0"  name=t_36 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ý¾×
+" border="2" color="16777215" x="7419" y="4" height="120" width="475" html.valueishtml="0"  name=bpm514_zwoneamt_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BOM´Ü°¡" border="2" color="16777215" x="6441" y="4" height="120" width="485" html.valueishtml="0"  name=bpm514_zwondcst_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BOM´Ü°¡
+(¿øÈ­)" border="2" color="16777215" x="6930" y="4" height="120" width="485" html.valueishtml="0"  name=t_37 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°ÀÇ±âÁØ´Ü°¡
+(³»¼ö)" border="2" color="16777215" x="5518" y="4" height="120" width="457" html.valueishtml="0"  name=bpm514_zcurdcst_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°ÀÇ±âÁØ´Ü°¡
+(¼öÃâ)" border="2" color="16777215" x="5979" y="4" height="120" width="457" html.valueishtml="0"  name=t_38 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="FOB
+1" border="2" color="16777215" x="5152" y="4" height="120" width="178" html.valueishtml="0"  name=bpm514_zfob1_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="FOB
+2" border="2" color="16777215" x="5335" y="4" height="120" width="178" html.valueishtml="0"  name=t_39 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="BOM
+´ÜÀ§" border="2" color="16777215" x="3685" y="4" height="120" width="201" html.valueishtml="0"  name=bpm514_zunit1_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸¸Å
+´ÜÀ§" border="2" color="16777215" x="4265" y="4" height="120" width="206" html.valueishtml="0"  name=bpm514_zunit2_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±
+" border="2" color="16777215" x="4475" y="4" height="120" width="233" html.valueishtml="0"  name=bpm514_zsrce_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="º¯È¯
+°è¼ö" border="2" color="16777215" x="3890" y="4" height="120" width="370" html.valueishtml="0"  name=bpm514_zconfact_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÅëÈ­
+" border="2" color="16777215" x="4713" y="4" height="120" width="215" html.valueishtml="0"  name=bpm514_zcurd_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ÜÀ§" border="2" color="16777215" x="4933" y="4" height="120" width="215" html.valueishtml="0"  name=t_40 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ø´ÜÀ§
+" border="2" color="16777215" x="3378" y="4" height="120" width="302" html.valueishtml="0"  name=bpm514_zunitqty_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô  °Ý" border="2" color="16777215" x="2679" y="4" height="120" width="695" html.valueishtml="0"  name=t_41 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º
+
+" border="2" color="16777215" x="279" y="4" height="120" width="233" html.valueishtml="0"  name=bpm514_zmdcd_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°ø
+Àå" border="2" color="16777215" x="133" y="4" height="120" width="142" html.valueishtml="0"  name=bpm514_zdiv_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö
+¿ª" border="2" color="16777215" x="0" y="4" height="120" width="128" html.valueishtml="0"  name=bpm514_zplant_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Lev.
+" border="2" color="16777215" x="1051" y="4" height="120" width="393" html.valueishtml="0"  name=bpm514_zlevel_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="µî±Þ" border="2" color="16777215" x="8946" y="4" height="120" width="169" html.valueishtml="0"  name=t_42 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="CHECK" border="2" color="16777215" x="8663" y="4" height="120" width="279" html.valueishtml="0"  name=t_35 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È£È¯Ç°¹ø
+" border="2" color="16777215" x="9120" y="4" height="120" width="389" html.valueishtml="0"  name=bpm514_zaltno_t visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°¡°ø°ü¸®ºñ
+" border="2" color="16777215" x="9513" y="4" height="120" width="517" html.valueishtml="0"  name=t_23 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´©ÀûÈ£È¯À²" border="2" color="16777215" x="10784" y="4" height="120" width="407" html.valueishtml="0"  name=t_29 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È£È¯À²" border="2" color="16777215" x="10405" y="4" height="120" width="375" html.valueishtml="0"  name=t_28 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°í°´»çÀ¯»ó" border="2" color="16777215" x="10034" y="4" height="120" width="366" html.valueishtml="0"  name=t_27 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=29 alignment="2" tabsequence=32766 border="0" color="33554432" x="8379" y="0" height="64" width="279" format="[general]" html.valueishtml="0"  name=bpm514_zwkct visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=28 alignment="1" tabsequence=32766 border="0" color="33554432" x="7419" y="0" height="64" width="475" format="[general]" html.valueishtml="0"  name=bpm514_zwondamt visible="1" edit.limit=13 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="1" tabsequence=32766 border="0" color="33554432" x="6441" y="0" height="64" width="485" format="[general]" html.valueishtml="0"  name=bpm514_zwondcst visible="1" edit.limit=14 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="1" tabsequence=32766 border="0" color="33554432" x="6930" y="0" height="64" width="485" format="[general]" html.valueishtml="0"  name=bpm514_zwonecst visible="1" edit.limit=14 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="1" tabsequence=32766 border="0" color="33554432" x="5518" y="0" height="64" width="457" format="[general]" html.valueishtml="0"  name=bpm514_zcurdcst visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="1" tabsequence=32766 border="0" color="33554432" x="5979" y="0" height="64" width="457" format="[general]" html.valueishtml="0"  name=bpm514_zcurecst visible="1" edit.limit=15 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="2" tabsequence=32766 border="0" color="33554432" x="5152" y="0" height="64" width="178" format="[general]" html.valueishtml="0"  name=bpm514_zfob1 visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="2" tabsequence=32766 border="0" color="33554432" x="5335" y="0" height="64" width="178" format="[general]" html.valueishtml="0"  name=bpm514_zfob2 visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3378" y="0" height="64" width="302" format="[general]" html.valueishtml="0"  name=bpm514_zunitqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="33554432" x="3685" y="0" height="64" width="201" format="[general]" html.valueishtml="0"  name=bpm514_zunit1 visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="4265" y="0" height="64" width="206" format="[general]" html.valueishtml="0"  name=bpm514_zunit2 visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="2" tabsequence=32766 border="0" color="33554432" x="4475" y="0" height="64" width="233" format="[general]" html.valueishtml="0"  name=bpm514_zsrce visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="3890" y="0" height="64" width="370" format="[general]" html.valueishtml="0"  name=bpm514_zconfact visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="2" tabsequence=32766 border="0" color="33554432" x="4713" y="0" height="64" width="215" format="[general]" html.valueishtml="0"  name=bpm514_zcurd visible="1" edit.limit=3 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="2" tabsequence=32766 border="0" color="33554432" x="4933" y="0" height="64" width="215" format="[general]" html.valueishtml="0"  name=bpm514_zcure visible="1" edit.limit=3 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="1925" y="0" height="64" width="750" format="[general]" html.valueishtml="0"  name=bpm514_zdesc visible="1" edit.limit=50 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="2679" y="0" height="64" width="695" format="[general]" html.valueishtml="0"  name=bpm514_zspec visible="1" edit.limit=50 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="498" y="0" height="64" width="530" format="[general]" html.valueishtml="0"  name=bpm514_zmdno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="279" y="0" height="64" width="233" format="[general]" html.valueishtml="0"  name=bpm514_zmdcd visible="1" edit.limit=4 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="133" y="0" height="64" width="142" format="[general]" html.valueishtml="0"  name=bpm514_zdiv visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="0" y="0" height="64" width="128" format="[general]" html.valueishtml="0"  name=bpm514_zplant visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=27 alignment="1" tabsequence=32766 border="0" color="33554432" x="7899" y="4" height="64" width="475" format="[general]" html.valueishtml="0"  name=bpm514_zwoneamt visible="1" edit.limit=13 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1449" y="0" height="64" width="471" format="[general]" html.valueishtml="0"  name=bpm514_zitno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="33554432" x="1051" y="0" height="64" width="393" format="[general]" html.valueishtml="0"  name=bpm514_zlevel visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="2" tabsequence=32766 border="0" color="33554432" x="8663" y="0" height="64" width="279" format="[general]" html.valueishtml="0"  name=bpm514_zchk visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=30 alignment="2" tabsequence=32766 border="0" color="33554432" x="8946" y="0" height="64" width="169" format="[general]" html.valueishtml="0"  name=bpm514_zgrad visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=31 alignment="0" tabsequence=32766 border="0" color="33554432" x="9120" y="0" height="64" width="389" format="[general]" html.valueishtml="0"  name=bpm514_zaltno visible="1" edit.limit=12 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=32766 border="0" color="33554432" x="9513" y="0" height="64" width="517" format="#,##0.00" html.valueishtml="0"  name=bpm514_zygcst visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=93 alignment="1" tabsequence=32766 border="0" color="33554432" x="10784" y="0" height="60" width="407" format="0.0000" html.valueishtml="0"  name=bpm514_zcumorate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=92 alignment="1" tabsequence=32766 border="0" color="33554432" x="10405" y="0" height="60" width="375" format="0.00" html.valueishtml="0"  name=bpm514_zorate visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=91 alignment="2" tabsequence=32766 border="0" color="33554432" x="10034" y="0" height="60" width="366" format="[general]" html.valueishtml="0"  name=bpm509_ycmcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=35 alignment="1" tabsequence=32766 border="0" color="8388608" x="1239" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdjpy visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=36 alignment="1" tabsequence=32766 border="0" color="8388608" x="1573" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mddem visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=37 alignment="1" tabsequence=32766 border="0" color="8388608" x="1906" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdfrf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=38 alignment="1" tabsequence=32766 border="0" color="8388608" x="2240" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdgbp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=39 alignment="1" tabsequence=32766 border="0" color="8388608" x="2578" y="120" height="64" width="325" format="#,##0" html.valueishtml="0"  name=bpm515_mdaud visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=40 alignment="1" tabsequence=32766 border="0" color="8388608" x="2912" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdesp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=41 alignment="1" tabsequence=32766 border="0" color="8388608" x="3246" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdemu visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=42 alignment="1" tabsequence=32766 border="0" color="8388608" x="3579" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mditl visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=43 alignment="1" tabsequence=32766 border="0" color="8388608" x="3913" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdchf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=44 alignment="1" tabsequence=32766 border="0" color="8388608" x="4247" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdbfr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=45 alignment="1" tabsequence=32766 border="0" color="8388608" x="4581" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mddkk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=46 alignment="1" tabsequence=32766 border="0" color="8388608" x="4914" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdats visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=47 alignment="1" tabsequence=32766 border="0" color="8388608" x="5248" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdcad visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=53 alignment="1" tabsequence=32766 border="0" color="8388736" x="1239" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mijpy visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=54 alignment="1" tabsequence=32766 border="0" color="8388736" x="1573" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_midem visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=55 alignment="1" tabsequence=32766 border="0" color="8388736" x="1906" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mifrf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=56 alignment="1" tabsequence=32766 border="0" color="8388736" x="2240" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_migbp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=57 alignment="1" tabsequence=32766 border="0" color="8388736" x="2578" y="236" height="64" width="325" format="#,##0" html.valueishtml="0"  name=bpm515_miaud visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=58 alignment="1" tabsequence=32766 border="0" color="8388736" x="2912" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_miesp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=59 alignment="1" tabsequence=32766 border="0" color="8388736" x="3246" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_miemu visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=60 alignment="1" tabsequence=32766 border="0" color="8388736" x="3579" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_miitl visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=61 alignment="1" tabsequence=32766 border="0" color="8388736" x="3913" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_michf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=62 alignment="1" tabsequence=32766 border="0" color="8388736" x="4247" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mibfr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=63 alignment="1" tabsequence=32766 border="0" color="8388736" x="4581" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_midkk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=64 alignment="1" tabsequence=32766 border="0" color="8388736" x="4914" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_miats visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=65 alignment="1" tabsequence=32766 border="0" color="8388736" x="5248" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_micad visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=72 alignment="1" tabsequence=32766 border="0" color="0" x="1239" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtjpy visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=73 alignment="1" tabsequence=32766 border="0" color="0" x="1573" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtdem visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=74 alignment="1" tabsequence=32766 border="0" color="0" x="1906" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtfrf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=75 alignment="1" tabsequence=32766 border="0" color="0" x="2240" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtgbp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=76 alignment="1" tabsequence=32766 border="0" color="0" x="2578" y="352" height="64" width="325" format="#,##0" html.valueishtml="0"  name=bpm515_mtaud visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=77 alignment="1" tabsequence=32766 border="0" color="0" x="2912" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtesp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=78 alignment="1" tabsequence=32766 border="0" color="0" x="3246" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtemu visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=79 alignment="1" tabsequence=32766 border="0" color="0" x="3579" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtitl visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=80 alignment="1" tabsequence=32766 border="0" color="0" x="3913" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtchf visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=81 alignment="1" tabsequence=32766 border="0" color="0" x="4247" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtbfr visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=82 alignment="1" tabsequence=32766 border="0" color="0" x="4581" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtdkk visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=83 alignment="1" tabsequence=32766 border="0" color="0" x="4914" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtats visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=84 alignment="1" tabsequence=32766 border="0" color="0" x="5248" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtcad visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="DEM" border="0" color="255" x="1769" y="32" height="56" width="133" html.valueishtml="0"  name=t_7 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="FRF" border="0" color="255" x="2094" y="32" height="56" width="142" html.valueishtml="0"  name=t_9 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="GBP" border="0" color="255" x="2437" y="32" height="56" width="133" html.valueishtml="0"  name=t_8 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="AUD" border="0" color="255" x="2770" y="32" height="56" width="133" html.valueishtml="0"  name=t_10 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="ESP" border="0" color="255" x="3109" y="32" height="56" width="133" html.valueishtml="0"  name=t_11 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="ITL" border="0" color="255" x="3776" y="32" height="56" width="133" html.valueishtml="0"  name=t_12 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="CHF" border="0" color="255" x="4110" y="32" height="56" width="133" html.valueishtml="0"  name=t_14 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="BFR" border="0" color="255" x="4443" y="32" height="56" width="133" html.valueishtml="0"  name=t_15 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="DKK" border="0" color="255" x="4768" y="32" height="56" width="142" html.valueishtml="0"  name=t_19 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="ATS" border="0" color="255" x="5111" y="32" height="56" width="133" html.valueishtml="0"  name=t_18 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="CAD" border="0" color="255" x="5440" y="32" height="56" width="133" html.valueishtml="0"  name=t_17 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="SEK" border="0" color="255" x="5778" y="32" height="56" width="133" html.valueishtml="0"  name=t_16 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="USD" border="0" color="255" x="1102" y="32" height="56" width="133" html.valueishtml="0"  name=t_5 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="JPY" border="0" color="255" x="1435" y="32" height="56" width="133" html.valueishtml="0"  name=t_6 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="EUR" border="0" color="255" x="3433" y="32" height="56" width="142" html.valueishtml="0"  name=t_13 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=trailer.1 id=70 alignment="1" tabsequence=32766 border="0" color="0" x="402" y="352" height="64" width="411" format="#,##0" html.valueishtml="0"  name=bpm515_mtwon visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=34 alignment="1" tabsequence=32766 border="0" color="8388608" x="827" y="120" height="64" width="407" format="#,##0" html.valueishtml="0"  name=bpm515_mdusd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=52 alignment="1" tabsequence=32766 border="0" color="8388736" x="827" y="236" height="64" width="407" format="#,##0" html.valueishtml="0"  name=bpm515_miusd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=71 alignment="1" tabsequence=32766 border="0" color="0" x="827" y="352" height="64" width="407" format="#,##0" html.valueishtml="0"  name=bpm515_mtusd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=33 alignment="1" tabsequence=32766 border="0" color="8388608" x="402" y="120" height="64" width="411" format="#,##0" html.valueishtml="0"  name=bpm515_mdwon visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=48 alignment="1" tabsequence=32766 border="0" color="8388608" x="5582" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdsek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=49 alignment="1" tabsequence=32766 border="0" color="8388608" x="5915" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdrmb visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=66 alignment="1" tabsequence=32766 border="0" color="8388736" x="5582" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_misek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=67 alignment="1" tabsequence=32766 border="0" color="8388736" x="5915" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mirmb visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=68 alignment="0" tabsequence=32766 border="0" color="128" x="6249" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mithb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=69 alignment="1" tabsequence=32766 border="0" color="8388736" x="6583" y="236" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mietc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=85 alignment="1" tabsequence=32766 border="0" color="0" x="5582" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtsek visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=86 alignment="1" tabsequence=32766 border="0" color="0" x="5915" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtrmb visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=87 alignment="0" tabsequence=32766 border="0" color="33554432" x="6249" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtthb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=88 alignment="1" tabsequence=32766 border="0" color="0" x="6583" y="352" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mtetc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=51 alignment="1" tabsequence=32766 border="0" color="8388608" x="6583" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdetc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=trailer.1 id=50 alignment="0" tabsequence=32766 border="0" color="8388608" x="6249" y="120" height="64" width="329" format="#,##0" html.valueishtml="0"  name=bpm515_mdthb visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="RMB" border="0" color="255" x="6112" y="32" height="56" width="133" html.valueishtml="0"  name=t_20 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="THB" border="0" color="255" x="6469" y="32" height="56" width="110" html.valueishtml="0"  name=t_25 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="FIM" border="0" color="255" x="6779" y="32" height="56" width="133" html.valueishtml="0"  name=t_21 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="¿ÜÁÖ°¡°ø" border="0" color="32768" x="9" y="468" height="60" width="352" html.valueishtml="0"  name=t_22 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="¿ÜÀÚ" border="0" color="8388736" x="14" y="236" height="60" width="352" html.valueishtml="0"  name=t_3 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="ÇÕ°è" border="0" color="0" x="14" y="352" height="60" width="352" html.valueishtml="0"  name=t_4 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="402" y="232" height="60" width="411" html.valueishtml="0"  name=t_24 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=trailer.1 id=90 alignment="1" tabsequence=32766 border="0" color="32768" x="402" y="468" height="64" width="411" format="#,##0" html.valueishtml="0"  name=bpm515_molat visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="Àç·áºñÇÕ" border="0" color="0" x="850" y="468" height="60" width="297" html.valueishtml="0"  name=t_26 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression="bpm515_mtwon + bpm515_mtusd + bpm515_mtjpy + bpm515_mtdem + bpm515_mtfrf + bpm515_mtgbp 
++ bpm515_mtaud + bpm515_mtesp + bpm515_mtemu + bpm515_mtitl + 
+bpm515_mtchf + bpm515_mtbfr + bpm515_mtdkk + bpm515_mtats + bpm515_mtcad + bpm515_mtsek 
++ bpm515_mtrmb + bpm515_mtthb + bpm515_mtetc"border="0" color="0" x="1179" y="468" height="56" width="567" format="#,##0.00" html.valueishtml="0"  name=compute_1 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="2" text="³»ÀÚ" border="0" color="8388608" x="14" y="120" height="60" width="352" html.valueishtml="0"  name=t_2 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="WON" border="0" color="255" x="672" y="32" height="56" width="142" html.valueishtml="0"  name=t_1 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="0" text="" border="0" color="0" x="14" y="32" height="60" width="352" html.valueishtml="0"  name=t_30 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="³»ÀÚÇÕ" border="0" color="8388608" x="1806" y="468" height="60" width="238" html.valueishtml="0"  name=t_32 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="1" expression=" bpm515_mdwon + bpm515_mdusd + bpm515_mdjpy + bpm515_mddem + bpm515_mdfrf + bpm515_mdgbp + bpm515_mdaud + bpm515_mdesp + bpm515_mdemu + bpm515_mditl + bpm515_mdchf + bpm515_mdbfr + bpm515_mddkk + bpm515_mdats + bpm515_mdcad + bpm515_mdsek + bpm515_mdrmb + bpm515_mdthb + bpm515_mdetc "border="0" color="0" x="2062" y="468" height="56" width="411" format="#,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+text(band=trailer.1 alignment="2" text="¿ÜÀÚÇÕ" border="0" color="8388736" x="2533" y="468" height="60" width="265" html.valueishtml="0"  name=t_33 visible="1"  font.face="»õ±¼¸²" font.height="-10" font.weight="700"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+compute(band=trailer.1 alignment="0" expression=" bpm515_miusd + bpm515_mijpy + bpm515_midem + bpm515_mifrf + bpm515_migbp + bpm515_miaud + bpm515_miesp + bpm515_miemu + bpm515_miitl + bpm515_michf + bpm515_mibfr + bpm515_midkk + bpm515_miats + bpm515_micad + bpm515_misek + bpm515_mirmb + bpm515_mithb + bpm515_mietc "border="0" color="0" x="2816" y="468" height="56" width="411" format="#,##0" html.valueishtml="0"  name=compute_3 visible="1"  font.face="»õ±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

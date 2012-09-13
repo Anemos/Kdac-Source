@@ -1,0 +1,26 @@
+$PBExportHeader$f_get_accdr024.srf
+$PBExportComments$필수입력(거래처-은행코드) editing 여부 return
+global type f_get_accdr024 from function_object
+end type
+
+forward prototypes
+global function string f_get_accdr024 (string a_cust)
+end prototypes
+
+global function string f_get_accdr024 (string a_cust);int    l_n_rcnt
+
+SELECT count(*)  into :l_n_rcnt  
+ FROM  "PBCOMMON"."DAC002"
+WHERE  "PBCOMMON"."DAC002"."COMLTD"  = :g_s_company and
+		 "PBCOMMON"."DAC002"."COGUBUN" = 'ACC260'  and
+		 "PBCOMMON"."DAC002"."COCODE"  = :a_cust using sqlca;
+if isnull(l_n_rcnt) then
+	return 'e'
+end if
+if l_n_rcnt < 1 then
+	return 'e'
+else
+	return ''
+end if
+end function
+

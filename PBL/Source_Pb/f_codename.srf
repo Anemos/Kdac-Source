@@ -1,0 +1,21 @@
+$PBExportHeader$f_codename.srf
+$PBExportComments$근태코드-코드db
+global type f_codename from function_object
+end type
+
+forward prototypes
+global function string f_codename (string a_s_guntae)
+end prototypes
+
+global function string f_codename (string a_s_guntae);string l_s_coname, l_s_coname1
+
+select coflname into :l_s_coname 
+from pbcommon.dac002
+where comltd = '01'  and cogubun = 'PAY100' and cocode = :a_s_guntae 
+using sqlcc;
+			
+l_s_coname1 = mid(l_s_coname,24,1)
+
+return l_s_coname1
+end function
+

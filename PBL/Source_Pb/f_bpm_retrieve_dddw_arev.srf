@@ -1,0 +1,70 @@
+$PBExportHeader$f_bpm_retrieve_dddw_arev.srf
+global type f_bpm_retrieve_dddw_arev from function_object
+end type
+
+forward prototypes
+global subroutine f_bpm_retrieve_dddw_arev (datawindow fdw_1, string fs_year, string fs_rev, boolean fb_allflag, ref string rs_rev, ref string rs_revname)
+end prototypes
+
+global subroutine f_bpm_retrieve_dddw_arev (datawindow fdw_1, string fs_year, string fs_rev, boolean fb_allflag, ref string rs_rev, ref string rs_revname);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		:	f_bpm_retrieve_dddw_arev
+//	Access		:	public
+//	Arguments	:	DataWindow		fdw_1						조회하고자 하는 DDDW Object
+//						string			fs_orderno				조회하고자 하는 기준년도
+//						string			fs_partno  		      조회하고자 하는 Rev (일반적으로 '%' 을 사용하도록)
+//						boolean			fb_allflag				조회된 공장 정보가 2개 이상의 Record 일 경우
+//																		True : '전체' 항목 삽입 (공장코드는 '%', 공장명은 '전체')
+//																		False : '전체' 항목 미 삽입
+//						string			rs_partno 		      선택된 Rev (reference)
+//						string			rs_partname		      선택된 Rev 명 (reference)
+//	Returns		: none
+//	Description	: Rev을 선택하기 위한 DDDW 을 조회하기 위하여
+// Company		: 
+// Author		: 
+// Coded Date	: 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+Long ll_rowcount,ll_find
+Datawindowchild ldwc_1
+
+//fdw_1.InsertRow(0)
+
+If fdw_1.GetChild('DDDWCode', ldwc_1) = 1 Then
+	ldwc_1.SetTransObject(sqlca)
+	ldwc_1.Retrieve(fs_year)
+	ll_rowcount = ldwc_1.RowCount()
+	If ll_rowcount < 1 Then
+		fdw_1.ReSet()
+		fdw_1.InsertRow(0)
+		rs_rev = ''
+		rs_revname = ''
+	ElseIf ll_rowcount	= 1 Then
+		rs_rev	= Trim(ldwc_1.GetItemString(1, 'revno'))
+		rs_revname	= Trim(ldwc_1.GetItemString(1, 'ref_year'))
+		fdw_1.Setitem(1, 'DDDWCode', rs_rev)
+		f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DisplayName', 20)
+	ElseIf ll_rowcount > 1 Then
+		If fb_allflag = False Then
+			if fs_rev <> '%' then
+				ll_find = ldwc_1.find("revno = '" + fs_rev + "'",1,ll_rowcount)
+			else
+				ll_find = 1
+			end if
+			rs_rev	= Trim(ldwc_1.GetItemString(ll_find, 'revno'))
+			rs_revname	= Trim(ldwc_1.GetItemString(ll_find, 'ref_year'))
+			fdw_1.Setitem(1, 'DDDWCode', rs_rev)
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DisplayName', 20)
+		Else
+			fdw_1.GetChild('DDDWCode', ldwc_1)
+			ldwc_1.InsertRow(1)
+			ldwc_1.Setitem(1, 'revno', 'ALL')
+			ldwc_1.Setitem(1, 'ref_year', '전체')
+			ldwc_1.Setitem(1, 'DisplayName', '전체')
+			rs_rev = '%'
+//			rs_partname = '전체'
+			fdw_1.Setitem(1, 'DDDWCode', 'ALL')
+			f_pisc_set_dddw_width(fdw_1, 'DDDWCode', ldwc_1, 'DisplayName', 20)
+		End If
+	End If
+End If
+end subroutine
+

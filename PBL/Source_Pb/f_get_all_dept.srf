@@ -1,0 +1,37 @@
+$PBExportHeader$f_get_all_dept.srf
+$PBExportComments$old 부서명까지 get.
+global type f_get_all_dept from function_object
+end type
+
+forward prototypes
+global function string f_get_all_dept (string ag_dept)
+end prototypes
+
+global function string f_get_all_dept (string ag_dept);
+
+string ls_deptname = ''
+
+select dname
+into   :ls_deptname
+from  pbcommon.dac001 
+where pbcommon.dac001.dcode = :ag_dept   and  
+      PBCOMMON.DAC001.DUSE = ' '  AND  
+      PBCOMMON.DAC001.DTODT = 0  AND  
+      PBCOMMON.DAC001.DSYS1 = 'X'     
+using sqlcc ;
+
+if sqlcc.sqlcode <> 0 then
+	select dname
+	into   :ls_deptname
+	from  pbcommon.dac001 
+	where pbcommon.dac001.dcode = :ag_dept   and  
+			PBCOMMON.DAC001.DUSE = 'X'  AND  
+			PBCOMMON.DAC001.DTODT <> 0  AND  
+			PBCOMMON.DAC001.DSYS1 = 'X'     
+	using sqlcc ;
+	
+end if
+
+return ls_deptname
+end function
+

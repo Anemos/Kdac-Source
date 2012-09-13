@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_codename_per.srf
+$PBExportComments$°øÅëÄÚµå DB ÄÚµå¸í(ÃÑÄª) return
+global type f_get_codename_per from function_object
+end type
+
+forward prototypes
+global function string f_get_codename_per (string a_gubun, string a_code)
+end prototypes
+
+global function string f_get_codename_per (string a_gubun, string a_code);  string l_s_cdnm
+  
+  SELECT PBCOMMON.DAC002.COFLNAME 
+    INTO :l_s_cdnm  
+    FROM PBCOMMON.DAC002  
+   WHERE PBCOMMON.DAC002.COGUBUN = :a_gubun
+	and   PBCOMMON.DAC002.COCODE = :a_code
+ using sqlcc;
+if sqlca.sqlcode <> 0 then
+	l_s_cdnm = " "
+end if
+return l_s_cdnm
+//return '0'
+end function
+

@@ -1,0 +1,51 @@
+$PBExportHeader$f_pur041_wipchk.srf
+$PBExportComments$재공부서또는라인결정(원재료)
+global type f_pur041_wipchk from function_object
+end type
+
+forward prototypes
+global subroutine f_pur041_wipchk (string as_xplant, string as_div, string as_itno, ref string as_dept)
+end prototypes
+
+global subroutine f_pur041_wipchk (string as_xplant, string as_div, string as_itno, ref string as_dept);string ls_worct, ls_dsys5
+dec ld_wabgqt, ld_wainqt, ld_waohqt
+
+as_dept = ' '
+DECLARE WIP001_CUR CURSOR FOR
+ SELECT "PBWIP"."WIP001"."WAORCT", "PBWIP"."WIP001"."WABGQT", "PBWIP"."WIP001"."WAINQT", "PBWIP"."WIP001"."WAOHQT"
+ FROM 	"PBWIP"."WIP001" 	  
+ WHERE "PBWIP"."WIP001"."WACMCD" = '01'AND
+        "PBWIP"."WIP001"."WAPLANT" = :as_xplant AND
+		  "PBWIP"."WIP001"."WADVSN" = :as_div AND
+		  "PBWIP"."WIP001"."WAITNO" = :as_itno
+	 order by 1	    
+	 USING SQLCA;
+ OPEN WIP001_CUR;
+ DO WHILE TRUE
+	FETCH WIP001_CUR INTO :ls_worct, :ld_wabgqt, :ld_wainqt, :ld_waohqt;
+	if sqlca.sqlcode <> 0 then
+		exit
+	end if
+	if mid(ls_worct,1,1) = 'D' then  //업체
+		if ld_wabgqt > 0 or ld_wainqt > 0 or ld_waohqt > 0 then
+			as_dept = ls_worct
+		   exit
+		end if
+	else  //라인
+      SELECT "PBCOMMON"."DAC001"."DSYS5" INTO :ls_dsys5
+      FROM 	"PBCOMMON"."DAC001" 	  
+      WHERE "PBCOMMON"."DAC001"."DUSE" = ' 'AND
+        "PBCOMMON"."DAC001"."DTODT" = 0     AND
+		  "PBCOMMON"."DAC001"."DCODE" = :ls_worct 
+	   USING SQLCA;
+		if ls_dsys5 = 'X' then
+			as_dept = ls_worct
+			exit
+		end if
+	end if
+ LOOP
+ CLOSE WIP001_CUR;
+
+
+end subroutine
+

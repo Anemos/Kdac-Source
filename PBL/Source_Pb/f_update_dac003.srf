@@ -1,0 +1,114 @@
+$PBExportHeader$f_update_dac003.srf
+$PBExportComments$dac003  insert 및 update
+global type f_update_dac003 from function_object
+end type
+
+forward prototypes
+global subroutine f_update_dac003 (string ag_gubun, string ag_empno)
+end prototypes
+
+global subroutine f_update_dac003 (string ag_gubun, string ag_empno);string  ls_peempno, ls_penamek , ls_pegubun, ls_peclass, ls_pebirthdt, ls_pesex, ls_peresno,&
+        ls_pebonbu, ls_pedept, ls_peintdept, ls_pejikchek, ls_peentdt, ls_peout, ls_peoutdt,&
+		  ls_pebirthr,ls_peno, ls_pesc, ls_peclassdt ,ls_pepadept, ls_pebank, ls_pearea, ls_peorder, &
+		  ls_peordfdt, ls_pemail, ls_extd, ls_inptid, ls_inptdt, ls_updtid, ls_updtdt, ls_ipaddr,ls_macaddr ,&
+		  ls_pekubho , ls_petel  , ls_pecphone
+LONG    l_n_pebirthdt , l_n_pesex, l_n_peresno 
+INT     l_n_cnt = 0
+
+ select "PEEMPNO",   "PENAMEK",   "PEGUBUN",   "PECLASS",  "PEBIRTHDT",   "PESEX",   "PERESNO",   
+   "PEBONBU",   "PEDEPT",   "PEINTDEPT",   "PEJIKCHEK",   "PEENTDT",   "PEOUT",   "PEOUTDT",   
+   "PEBIRTHR",   "PENO",   "PESC", "PECLASSDT",   "PEPADEPT",  "PEBANK",  "PEAREA" ,   "PEORDER",   
+   "PEORDFDT",   "PEEMAIL","EXTD",   "INPTID",  "INPTDT",   "UPDTID",   "UPDTDT",   "IPADDR",   "MACADDR",
+	"PEINTEL","PECPHONE"
+	INTO :ls_peempno, :ls_penamek , :ls_pegubun, :ls_peclass, :ls_pebirthdt, :ls_pesex, :ls_peresno,&
+        :ls_pebonbu, :ls_pedept, :ls_peintdept, :ls_pejikchek, :ls_peentdt, :ls_peout, :ls_peoutdt,&
+		  :ls_pebirthr,:ls_peno, :ls_pesc, :ls_peclassdt ,:ls_pepadept, :ls_pebank, :ls_pearea, :ls_peorder, &
+		  :ls_peordfdt, :ls_pemail,:ls_extd, :ls_inptid, :ls_inptdt, :ls_updtid, :ls_updtdt, :ls_ipaddr,:ls_macaddr ,&
+		  :ls_petel  , :ls_pecphone
+	from pbper.per001
+	where peempno = :ag_empno
+	using sqlcc ;	
+	
+	l_n_pebirthdt = long(ls_pebirthdt)
+	l_n_pesex     = long(ls_pesex)
+	l_n_peresno   = long(ls_peresno)
+
+	IF ls_peout <> '*'  THEN 
+		ls_peout = ' '
+	END IF
+choose case ag_gubun
+	case '1'	
+////////////////////dac003 insert시////////////////////////////////////////////////	
+   SELECT COUNT(*)
+	INTO :l_n_cnt
+	FROM PBCOMMON.DAC003
+	WHERE PEEMPNO = :ag_empno
+	USING SQLCC ;
+	IF l_n_cnt < 1 then
+		insert into pbcommon.dac003
+		( "PEEMPNO",   "PENAMEK",   "PEGUBUN",   "PECLASS",   "PEBIRTHDT",   "PESEX",   "PERESNO",   
+		"PEBONBU",   "PEDEPT",   "PEINTDEPT",   "PEJIKCHEK",   "PEENTDT",   "PEOUT",   "PEOUTDT",   
+		"PEBIRTHR",   "PENO",   "PESC", "PECLASSDT",   "PEPADEPT",   "PEBANK",  "PEAREA",   "PEORDER",   
+		"PEORDFDT",   "PEMAIL",  "EXTD",   "INPTID",  "INPTDT",   "UPDTID",   "UPDTDT",   "IPADDR",   "MACADDR",
+		"PETEL","PECPHONE")  
+		 VALUES (:ls_peempno, :ls_penamek , :ls_pegubun, :ls_peclass, :l_n_pebirthdt, :l_n_pesex, :l_n_peresno,&
+			  :ls_pebonbu, :ls_pedept, :ls_peintdept, :ls_pejikchek, :ls_peentdt, :ls_peout, :ls_peoutdt,&
+			  :ls_pebirthr,:ls_peno, :ls_pesc, :ls_peclassdt ,:ls_pepadept, :ls_pebank, :ls_pearea, :ls_peorder, &
+			  :ls_peordfdt, :ls_pemail ,:ls_extd, :ls_inptid, :ls_inptdt, :ls_updtid, :ls_updtdt, :ls_ipaddr,:ls_macaddr ,&
+			  :ls_petel  , :ls_pecphone)
+		using sqlcc ;
+	 end if	
+	l_n_cnt = 0
+
+	
+case '2'
+////////////////////dac003 update시////////////////////////////////////////////////	
+    update pbcommon.dac003
+	  set  "PENAMEK" = :ls_penamek,        "PEGUBUN" = :ls_pegubun,   "PECLASS" = :ls_peclass,
+	       "PEBIRTHDT" = :l_n_pebirthdt,   "PESEX" = :l_n_pesex,     "PERESNO" = :l_n_peresno,   
+          "PEBONBU"   = :ls_pebonbu,      "PEDEPT" = :ls_pedept,    "PEINTDEPT" = :ls_peintdept,
+			 "PEJIKCHEK" = :ls_pejikchek,    "PEENTDT"= :ls_peentdt,   "PEOUT"    = :ls_peout,
+			 "PEOUTDT"   = :ls_peoutdt,      "PEBIRTHR" = :ls_pebirthr, "PENO"    = :ls_peno,
+			 "PESC"      = :ls_pesc  ,       "PECLASSDT"= :ls_peclassdt, "PEPADEPT" = :ls_pepadept,
+			 "PEBANK"    = :ls_pebank,       "PEAREA"   = :ls_pearea,    "PEORDER"  = :ls_peorder,   
+          "PEORDFDT"  = :ls_peordfdt,     "PEMAIL"   = :ls_pemail  ,  "EXTD"     = :ls_extd,
+			 "INPTID"    = :ls_inptid ,      "INPTDT"   = :ls_inptdt  ,  "UPDTID"   = :ls_updtid,
+			 "UPDTDT"    = :ls_updtdt ,      "IPADDR"   = :ls_ipaddr  ,   "MACADDR" = :ls_macaddr,
+			 "PETEL"     = :ls_petel  ,      "PECPHONE" = :ls_pecphone
+	 where peempno = :ag_empno		 
+	 using sqlcc ;
+	 
+
+case '3'
+	 update pbcommon.dac003
+	  set  "PETEL"     = :ls_petel  ,
+	       "PECPHONE"  = :ls_pecphone ,
+	       "PEMAIL"    = :ls_pemail  ,
+	       "UPDTID"    = :ls_updtid,
+			 "UPDTDT"    = :ls_updtdt 
+	 where peempno = :ag_empno		 
+	 using sqlcc ;
+	 
+//case '4'
+//	select "PETEL", "PECPHONE",  "PEMAIL"
+//	into  :ls_petel, :ls_pecphone, :ls_pemail
+//	from  pbcommon.dac003
+//	 where peempno = :ag_empno		 
+//	using sqlcc ;
+//	
+//	update pbper.per001
+//	  set  "PEEMAIL"  = :ls_pemail,   
+//	       "PEINTEL"  = :ls_petel, 
+//			 "PECPHONE" = :ls_pecphone
+//	where peempno = :ag_empno
+//	using sqlcc ;	
+	
+end choose
+
+if sqlcc.sqlcode <> 0 then
+	messagebox('dac003 update error', 'Dac003 Update Error, 정보시스템으로 연락주세요')
+	return
+end if
+
+end subroutine
+

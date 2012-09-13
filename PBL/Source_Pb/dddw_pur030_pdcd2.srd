@@ -1,0 +1,41 @@
+$PBExportHeader$dddw_pur030_pdcd2.srd
+$PBExportComments$제품군(dac004,dac007 아규먼트:지역,공장)
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=92 color="536870912" )
+table(column=(type=long updatewhereclause=yes name=compute_0001 dbname="compute_0001" )
+ column=(type=char(1) updatewhereclause=yes name=dac004_xplant dbname="DAC004.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=dac004_div dbname="DAC004.DIV" )
+ column=(type=char(4) updatewhereclause=yes name=dac004_pdcd dbname="DAC004.PDCD" )
+ column=(type=char(1) updatewhereclause=yes name=dac004_pruse dbname="DAC004.PRUSE" )
+ column=(type=char(2) updatewhereclause=yes name=dac004_costdiv dbname="DAC004.COSTDIV" )
+ column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="DAC004.PRNAME" )
+ column=(type=char(66) updatewhereclause=yes name=com_pdcd dbname="COM_PDCD" )
+ retrieve="SELECT 2, A.PRAREA AS XPLANT , A.PRPLANT AS DIV,  A.PRPRCD AS PDCD, A.PRUSE , A.PRDIV AS COSTDIV,
+       B.PRNAME, TRIM(B.PRNAME)||'['||TRIM(A.PRPRCD)||']' AS COM_PDCD
+FROM PBCOMMON.DAC004 A , PBCOMMON.DAC007 B
+WHERE A.COMLTD = B.COMLTD
+  AND A.PRPRCD = B.PRPRCD
+  AND A.COMLTD = '01'
+  AND A.PRUSE <> 'X'
+  AND A.PRAREA = :as_xplant
+  AND A.PRPLANT = :as_div
+  AND SUBSTR(A.PRPRCD,3,2) = '  '
+UNION
+SELECT 1, ' ' , ' ', ' ', ' ', ' ', ' ', ' '
+FROM PBPUR.PURDUM
+
+ORDER BY 1 ASC, 8 ASC
+" arguments=(("as_xplant", string),("as_div", string)) )
+text(band=header alignment="2" text="제품군" border="0" color="33554432" x="9" y="8" height="60" width="1198" html.valueishtml="0"  name=com_pdcd_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="사업부" border="0" color="0" x="1216" y="4" height="60" width="155" html.valueishtml="0"  name=dac004_costdiv_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="80" width="1198" format="[general]" html.valueishtml="0"  name=com_pdcd visible="1" edit.limit=66 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="1216" y="4" height="80" width="155" format="[general]" html.valueishtml="0"  name=dac004_costdiv visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0  template=(comment="" encoding="euc-kr" name="dddw_pur030_pdcd2" xml="<?xml version=~"1.0~" encoding=~"euc-kr~" standalone=~"no~"?><untitled><untitled_row __pbband=~"detail~"><dac004_xplant/><dac004_div/><dac004_pdcd/><dac004_pruse/><dac004_costdiv/><dac007_prname/><com_pdcd>com_pdcd</com_pdcd></untitled_row></untitled>"))
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,60 @@
+$PBExportHeader$d_wip053c_left.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) update=yes updatewhereclause=yes key=yes name=wjyear dbname="WIP011.WJYEAR" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=wjmonth dbname="WIP011.WJMONTH" )
+ column=(type=char(2) update=yes updatewhereclause=yes key=yes name=wjcmcd dbname="WIP011.WJCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=wjplant dbname="WIP011.WJPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=wjdvsn dbname="WIP011.WJDVSN" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=wjdept dbname="WIP011.WJDEPT" )
+ column=(type=char(15) update=yes updatewhereclause=yes key=yes name=wjitno dbname="WIP011.WJITNO" )
+ column=(type=char(4) updatewhereclause=yes name=pdcd dbname="PDCD" )
+ column=(type=char(50) updatewhereclause=yes name=itnm dbname="ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=cls dbname="CLS" )
+ column=(type=char(2) updatewhereclause=yes name=srce dbname="SRCE" )
+ column=(type=char(1) updatewhereclause=yes name=del_chk dbname="DEL_CHK" )
+ retrieve="  SELECT AA.WJYEAR AS WJYEAR,   
+         AA.WJMONTH AS WJMONTH,   
+         AA.WJCMCD AS WJCMCD,   
+         AA.WJPLANT AS WJPLANT,   
+         AA.WJDVSN AS WJDVSN,   
+         AA.WJDEPT AS WJDEPT,   
+         AA.WJITNO AS WJITNO,   
+         SUBSTRING(BB.PDCD,1,2) AS PDCD,   
+         char('',50) AS ITNM,   
+         char('',2) AS CLS,   
+         char('',2) AS SRCE,   
+         ' ' AS DEL_CHK  
+    FROM ~"PBWIP~".~"WIP011~" AA INNER JOIN ~"PBINV~".~"INV101~" BB
+		ON AA.WJCMCD = BB.COMLTD AND AA.WJPLANT = BB.XPLANT AND
+			AA.WJDVSN = BB.DIV AND AA.WJITNO = BB.ITNO
+WHERE AA.WJYEAR = :ag_year AND AA.WJMONTH = :ag_month AND
+	AA.WJCMCD = '01' AND AA.WJPLANT = :ag_plant AND
+	AA.WJDVSN = :ag_dvsn AND BB.PDCD LIKE :ag_pdcd
+" update="PBWIP.WIP011" updatewhere=1 updatekeyinplace=no arguments=(("ag_year", string),("ag_month", string),("ag_plant", string),("ag_dvsn", string),("ag_pdcd", string))  sort="pdcd A wjitno A " )
+text(band=header alignment="2" text="³âµµ" border="0" color="16777215" x="9" y="8" height="60" width="206" html.valueishtml="0"  name=wjyear_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¿ù" border="0" color="16777215" x="224" y="8" height="60" width="155" html.valueishtml="0"  name=wjmonth_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="681" y="8" height="60" width="142" html.valueishtml="0"  name=wjdvsn_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="983" y="8" height="60" width="238" html.valueishtml="0"  name=wjdept_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="1230" y="8" height="60" width="512" html.valueishtml="0"  name=wjitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°" border="0" color="16777215" x="832" y="8" height="60" width="142" html.valueishtml="0"  name=pdcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="521" y="8" height="60" width="151" html.valueishtml="0"  name=wjplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="È¸»ç" border="0" color="16777215" x="389" y="8" height="60" width="123" html.valueishtml="0"  name=wjcmcd_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="4" height="68" width="206" format="[general]" html.valueishtml="0"  name=wjyear visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="224" y="4" height="68" width="155" format="[general]" html.valueishtml="0"  name=wjmonth visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="681" y="4" height="68" width="142" format="[general]" html.valueishtml="0"  name=wjdvsn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1230" y="4" height="68" width="512" format="[general]" html.valueishtml="0"  name=wjitno visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="1" tabsequence=20 border="0" color="33554432" x="983" y="4" height="68" width="238" format="[general]" html.valueishtml="0"  name=wjdept visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="33554432" x="832" y="4" height="68" width="142" format="[general]" html.valueishtml="0"  name=pdcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="33554432" x="521" y="4" height="68" width="151" format="[general]" html.valueishtml="0"  name=wjplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="2" tabsequence=10 border="0" color="33554432" x="389" y="4" height="68" width="123" format="[general]" html.valueishtml="0"  name=wjcmcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

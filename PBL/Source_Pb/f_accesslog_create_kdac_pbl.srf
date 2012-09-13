@@ -1,0 +1,18 @@
+$PBExportHeader$f_accesslog_create_kdac_pbl.srf
+global type f_accesslog_create_kdac_pbl from function_object
+end type
+
+forward prototypes
+global function boolean f_accesslog_create_kdac_pbl (string a_empno, string a_accessgubun, string a_errorcode)
+end prototypes
+
+global function boolean f_accesslog_create_kdac_pbl (string a_empno, string a_accessgubun, string a_errorcode);insert into	pbcommon.comm123
+	values	(current_timestamp,:a_accessgubun,:a_empno,:a_errorcode,:g_s_ipaddr,:g_s_macaddr)
+using	sqlca ;
+
+If sqlca.sqlcode <>	0 then
+	return	false
+end if
+return 	true
+end function
+

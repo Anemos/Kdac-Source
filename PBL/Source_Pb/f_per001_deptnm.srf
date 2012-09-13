@@ -1,0 +1,19 @@
+$PBExportHeader$f_per001_deptnm.srf
+$PBExportComments$사번의 부서명
+global type f_per001_deptnm from function_object
+end type
+
+forward prototypes
+global function string f_per001_deptnm (string a_s_empno)
+end prototypes
+
+global function string f_per001_deptnm (string a_s_empno);string ls_deptnm
+
+select pbcommon.f_codenm('01', 'DAC150', pedept, '2') into :ls_deptnm
+from pbper.per001
+where pbper.per001.peempno = :a_s_empno
+using sqlcc;
+
+return ls_deptnm
+end function
+

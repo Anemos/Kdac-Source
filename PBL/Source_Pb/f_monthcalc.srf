@@ -1,0 +1,29 @@
+$PBExportHeader$f_monthcalc.srf
+$PBExportComments$지정된 숫자만큼의 월을 빼준다
+global type f_monthcalc from function_object
+end type
+
+forward prototypes
+global function string f_monthcalc (string as_date, integer as_value)
+end prototypes
+
+global function string f_monthcalc (string as_date, integer as_value);
+//------------------------------------------------------------------------------
+// 함수명		:	f_monthcalc
+// 처리개요		:	월계산을 한다
+// 사용인수		:	as_yyyymm
+// 				   as_value				value값만큼 월을 빼준다
+// 반환값		:	계산된 월
+//------------------------------------------------------------------------------
+
+String ls_yyyymm
+
+SELECT top 1 
+		 CONVERT(CHAR(7), DATEADD(month, - :as_value, :as_date), 102)
+  INTO :ls_yyyymm
+  FROM sysusers USING SQLPIS;
+
+RETURN ls_yyyymm
+
+end function
+

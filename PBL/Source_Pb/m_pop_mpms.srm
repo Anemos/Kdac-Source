@@ -1,0 +1,374 @@
+$PBExportHeader$m_pop_mpms.srm
+forward
+global type m_pop_mpms from menu
+end type
+type m_action from menu within m_pop_mpms
+end type
+type m_copy from menu within m_action
+end type
+type m_modify from menu within m_action
+end type
+type m_outcal from menu within m_action
+end type
+type m_bar1 from menu within m_action
+end type
+type m_matadd from menu within m_action
+end type
+type m_subadd from menu within m_action
+end type
+type m_bar2 from menu within m_action
+end type
+type m_wccode from menu within m_action
+end type
+type m_workstatus from menu within m_action
+end type
+type m_action from menu within m_pop_mpms
+m_copy m_copy
+m_modify m_modify
+m_outcal m_outcal
+m_bar1 m_bar1
+m_matadd m_matadd
+m_subadd m_subadd
+m_bar2 m_bar2
+m_wccode m_wccode
+m_workstatus m_workstatus
+end type
+global type m_pop_mpms from menu
+m_action m_action
+end type
+end forward
+
+global type m_pop_mpms from menu
+m_action m_action
+end type
+global m_pop_mpms m_pop_mpms
+
+on m_pop_mpms.create
+m_pop_mpms=this
+call super::create
+this.text = "m_pop_mpms"
+this.m_action=create m_action
+this.Item[UpperBound(this.Item)+1]=this.m_action
+end on
+
+on m_pop_mpms.destroy
+call super::destroy
+destroy(this.m_action)
+end on
+
+type m_action from menu within m_pop_mpms
+m_copy m_copy
+m_modify m_modify
+m_outcal m_outcal
+m_bar1 m_bar1
+m_matadd m_matadd
+m_subadd m_subadd
+m_bar2 m_bar2
+m_wccode m_wccode
+m_workstatus m_workstatus
+end type
+
+on m_action.create
+call super::create
+this.text = "기능"
+this.m_copy=create m_copy
+this.m_modify=create m_modify
+this.m_outcal=create m_outcal
+this.m_bar1=create m_bar1
+this.m_matadd=create m_matadd
+this.m_subadd=create m_subadd
+this.m_bar2=create m_bar2
+this.m_wccode=create m_wccode
+this.m_workstatus=create m_workstatus
+this.Item[UpperBound(this.Item)+1]=this.m_copy
+this.Item[UpperBound(this.Item)+1]=this.m_modify
+this.Item[UpperBound(this.Item)+1]=this.m_outcal
+this.Item[UpperBound(this.Item)+1]=this.m_bar1
+this.Item[UpperBound(this.Item)+1]=this.m_matadd
+this.Item[UpperBound(this.Item)+1]=this.m_subadd
+this.Item[UpperBound(this.Item)+1]=this.m_bar2
+this.Item[UpperBound(this.Item)+1]=this.m_wccode
+this.Item[UpperBound(this.Item)+1]=this.m_workstatus
+end on
+
+on m_action.destroy
+call super::destroy
+destroy(this.m_copy)
+destroy(this.m_modify)
+destroy(this.m_outcal)
+destroy(this.m_bar1)
+destroy(this.m_matadd)
+destroy(this.m_subadd)
+destroy(this.m_bar2)
+destroy(this.m_wccode)
+destroy(this.m_workstatus)
+end on
+
+type m_copy from menu within m_action
+end type
+
+on m_copy.create
+call super::create
+this.text = "공정복사"
+end on
+
+on m_copy.destroy
+call super::destroy
+end on
+
+event clicked;openwithparm(w_mpm220u_01,' ')
+end event
+
+type m_modify from menu within m_action
+event clicked ( )
+end type
+
+event clicked;string ls_revno
+str_mpms_parm lstr
+datawindow ldw
+
+lstr = Message.PowerObjectParm
+ldw = lstr.dw_parm[1]
+
+ls_revno = ldw.getitemstring(1,"revno")
+ldw.Setitem( 1, 'revno', string(integer(ls_revno) + 1, "00"))
+
+ldw.object.sheetno.protect = 1
+ldw.object.detailno.protect = 1
+ldw.setcolumn("partname")
+ldw.setfocus()
+
+
+end event
+
+on m_modify.create
+call super::create
+this.text = "설계변경"
+end on
+
+on m_modify.destroy
+call super::destroy
+end on
+
+type m_outcal from menu within m_action
+end type
+
+on m_outcal.create
+call super::create
+this.text = "외주가공재계산"
+end on
+
+on m_outcal.destroy
+call super::destroy
+end on
+
+event clicked;string ls_orderno, ls_partno
+int li_cnt, li_rowcnt, li_error_code, li_chkcnt
+str_mpms_parm lstr
+datawindow ldw
+
+lstr = Message.PowerObjectParm
+ldw = lstr.dw_parm[1]
+
+li_rowcnt = ldw.rowcount()
+if li_rowcnt < 1 then
+	return
+end if
+
+sqlmpms.Autocommit = False
+for li_cnt = 1 to li_rowcnt
+	//*외주가공공순 처리절차
+	// Start
+	ls_orderno = ldw.getitemstring(li_cnt,"orderno")
+	ls_partno = ldw.getitemstring(li_cnt,"partno")
+	
+	SELECT COUNT(*) INTO :li_chkcnt
+	FROM TROUTING
+	WHERE OrderNo = :ls_orderno AND PartNo = :ls_partno AND
+		OutFlag = 'P'
+	using sqlmpms;
+	
+	if li_chkcnt < 1 then
+		continue
+	end if
+	
+	DECLARE actual_recording procedure for sp_mpm220u_05
+		@ps_orderno  	= :ls_orderno,
+		@ps_partno 		= :ls_partno,
+		@ps_empno 		= :g_s_empno,
+		@pi_err_code		= :li_error_code	output
+	USING	SQLMPMS ;
+
+	EXECUTE actual_recording ;
+
+	FETCH actual_recording
+		INTO :li_error_code ;
+	CLOSE	actual_recording ;
+
+   if li_error_code <> 0 then
+		goto RollBack_
+	end if
+next
+
+Commit using sqlmpms;
+sqlmpms.Autocommit = True
+
+messagebox("알림","정상적으로 재계산이 완료되었습니다.")
+
+return 
+
+RollBack_:
+Rollback using sqlmpms;
+sqlmpms.AutoCommit = True
+
+messagebox("알림","재계산시에 에러가 발생하였습니다.")
+
+return
+
+
+end event
+
+type m_bar1 from menu within m_action
+end type
+
+on m_bar1.create
+call super::create
+this.text = "-"
+end on
+
+on m_bar1.destroy
+call super::destroy
+end on
+
+type m_matadd from menu within m_action
+end type
+
+on m_matadd.create
+call super::create
+this.text = "재료비수정"
+end on
+
+on m_matadd.destroy
+call super::destroy
+end on
+
+event clicked;window lw_win
+str_mpms_parm lstr_1
+
+lstr_1 = Message.PowerObjectParm
+
+OpenSheetwithparm(lw_win,lstr_1,'w_mpm130b',lstr_1.w_parm,0,Layered!)
+
+end event
+
+type m_subadd from menu within m_action
+end type
+
+on m_subadd.create
+call super::create
+this.text = "소모성수정"
+end on
+
+on m_subadd.destroy
+call super::destroy
+end on
+
+event clicked;window lw_win
+str_mpms_parm lstr_1
+
+lstr_1 = Message.PowerObjectParm
+
+OpenSheetwithparm(lw_win,lstr_1,'w_mpm130c',lstr_1.w_parm,0,Layered!)
+end event
+
+type m_bar2 from menu within m_action
+end type
+
+on m_bar2.create
+call super::create
+this.text = "-"
+end on
+
+on m_bar2.destroy
+call super::destroy
+end on
+
+type m_wccode from menu within m_action
+end type
+
+on m_wccode.create
+call super::create
+this.text = "공정명변경및삭제"
+end on
+
+on m_wccode.destroy
+call super::destroy
+end on
+
+event clicked;integer 		li_findrow, li_rtn, li_count
+str_mpms_parm lstr
+string 		ls_orderno, ls_partno
+window		lw_this
+datawindow 	ldw_this
+
+lstr 		= Message.PowerObjectParm
+lw_this 	= lstr.w_parm
+ldw_this = lstr.dw_parm[1]
+ls_orderno = lstr.s_parm[1]
+ls_partno = lstr.s_parm[2]
+
+openwithparm(w_mpm310u_01,ls_orderno+ls_partno)
+
+lw_this.triggerevent('ue_retrieve')
+
+return
+
+end event
+
+type m_workstatus from menu within m_action
+end type
+
+on m_workstatus.create
+call super::create
+this.text = "작업완료변경"
+end on
+
+on m_workstatus.destroy
+call super::destroy
+end on
+
+event clicked;integer 		li_findrow, li_rtn, li_count
+str_mpms_parm lstr
+string 		ls_orderno, ls_partno, ls_operno
+window		lw_this
+datawindow 	ldw_this
+
+lstr 		= Message.PowerObjectParm
+lw_this 	= lstr.w_parm
+ldw_this = lstr.dw_parm[1]
+ls_orderno = lstr.s_parm[1]
+ls_partno = lstr.s_parm[2]
+ls_operno = lstr.s_parm[3]
+
+li_rtn = MessageBox("알림", ls_operno + " 공순의 작업상태를 변경하시겠습니까?", Exclamation!, OKCancel!, 2)
+if li_rtn = 2 then
+	return 
+end if
+
+UPDATE TROUTING  
+   SET WorkStatus = 'P'  
+   WHERE ( TROUTING.OperNo = :ls_operno ) AND  
+         ( TROUTING.OrderNo = :ls_orderno ) AND  
+         ( TROUTING.PartNo = :ls_partno )   
+   using sqlmpms;
+	
+if sqlmpms.sqlcode <> 0 then
+	Messagebox("에러","작업중에 에러가 발생하였습니다.")
+	return 
+end if
+
+lw_this.triggerevent('ue_retrieve')
+
+return
+end event
+

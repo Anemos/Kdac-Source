@@ -121,7 +121,8 @@ declare continue handler for sqlstate '42704'
  tscoutcost numeric(15,6) not null,tscmovecost numeric(15,6) not null,
  tscinputcost numeric(15,6) not null,tsubpaycd char(1) not null,
  topchk char(1) not null, toplant char(1) not null,
- todvsn char(1) not null, tcalculate2 char(1) not null);
+ todvsn char(1) not null, tcalculate2 char(1) not null,
+ tcostchk char(1) not null);
 
 delete from qtemp.tmp_bom;
 
@@ -198,7 +199,7 @@ if sqlcode <> 0 or p_chkcnt < 1 then
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
     values(a_comltd,a_plant,a_dvsn,p_pitno,
        p_option,0,p_pitno,p_pitno,1,1,'9999',
        '','',p_opcd,'','','','Y',
@@ -211,7 +212,7 @@ if sqlcode <> 0 or p_chkcnt < 1 then
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,'',
-       a_plant,a_dvsn,'N');
+       a_plant,a_dvsn,'N','N');
     return 'N';
   else
     if trim(p_exdvsn) <> '' then
@@ -242,7 +243,7 @@ set p_odvsn = p_beforedvsn;
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
   values(a_comltd,a_plant,a_dvsn,p_pitno,
        p_option,0,p_pitno,p_pitno,1,1,'9999',
        '','',p_opcd,p_explant,p_exdvsn,'','Y',
@@ -255,7 +256,7 @@ set p_odvsn = p_beforedvsn;
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,'',
-       p_oplant,p_odvsn,'N');
+       p_oplant,p_odvsn,'N','N');
 
 if a_chk = 'C' or a_chk = 'D' or a_chk = 'G' or
      a_chk = 'H' or a_chk = 'J' then
@@ -393,7 +394,7 @@ insert into qtemp.tmp_bom(tcmcd,tplnt,tdvsn,tmodl,
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
 values(a_comltd,p_plant,p_dvsn,p_pitno,
        p_option,p_level,p_pitno,p_citno,p_qty,p_qty1,p_wkct,
        p_edtm,p_edte,p_opcd,p_explant,p_exdvsn,p_oscd,p_calculate,
@@ -406,7 +407,7 @@ values(a_comltd,p_plant,p_dvsn,p_pitno,
        decimal(truncate(p_qty1 * p_scmovecost,3),10,3),
        decimal(truncate(p_qty1 * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,p_opchk,
-       p_oplant,p_odvsn,p_calculate2);
+       p_oplant,p_odvsn,p_calculate2,'N');
 end loop;
 close bomchk_cur01;
 
@@ -584,7 +585,7 @@ end if;
        toutcost,tmovecost,tinputcost,
        tscoutamt,tscmoveamt,tscinputamt,
        tscoutcost,tscmovecost,tscinputcost,tsubpaycd,topchk,
-       toplant,todvsn,tcalculate2)
+       toplant,todvsn,tcalculate2,tcostchk)
  values(a_comltd,p_plant,p_dvsn,a_itno,
        p_option,p_lev01,p_pitno,p_citno,p_qty1,p_qty,p_wkct,
        p_edtm,p_edte,p_opcd,p_explant,p_exdvsn,p_oscd,p_calculate,
@@ -597,7 +598,7 @@ end if;
        decimal(truncate(p_qty * p_scmovecost,3),10,3),
        decimal(truncate(p_qty * p_scinputcost,3),10,3),
        p_scoutcost,p_scmovecost,p_scinputcost,p_ygchk,p_opchk,
-       p_oplant,p_odvsn,p_calculate2);
+       p_oplant,p_odvsn,p_calculate2,'N');
  end loop;
  close bomchk_cur01;
  set at_end = 0;

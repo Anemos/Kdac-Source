@@ -1,0 +1,45 @@
+$PBExportHeader$f_get_slipchangedel.srf
+$PBExportComments$update 전표수정(삭제) history 유지
+global type f_get_slipchangedel from function_object
+end type
+
+forward prototypes
+global function string f_get_slipchangedel (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_gubun)
+end prototypes
+
+global function string f_get_slipchangedel (string a_s_compy, string a_s_area, string a_s_acdate, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_gubun);
+insert into "PBACC"."ACC150"  
+			( "COMLTD",       "SLAREA",    "CHDATE",       "CHTIME",     "SLACDATE",
+			  "SLSLIPNO",     "SLCDNO",    "SLPAGENO",     "SLSERNO",    "CHORIG",
+			  "EXTD",         "INPTID",    "INPTDT",       "UPDTID",     "UPDTDT",
+			  "IPADDR",       "MACADDR" )
+  values ( :a_s_compy,     :a_s_area,   :g_s_date,      :g_s_time,    :a_s_acdate,
+           :a_n_slipno,    :a_n_cdno,   :a_n_pageno,    :a_n_serno,   'D',
+			  ' ',            :g_s_empno,  :g_s_datetime,  ' ',          ' ',
+			  :g_s_ipaddr,    :g_s_macaddr  )  using sqlca;
+if sqlca.sqlcode <> 0 then
+	rollback using sqlca;
+	return 'e'
+else
+	commit using sqlca;	
+end if
+
+insert into "PBACC"."ACC151"
+	select * from "PBACC"."ACC100"
+	where "PBACC"."ACC100"."COMLTD"   = :a_s_compy  and
+	      "PBACC"."ACC100"."SLAREA"   = :a_s_area   and
+			"PBACC"."ACC100"."SLACDATE" = :a_s_acdate and
+			"PBACC"."ACC100"."SLSLIPNO" = :a_n_slipno and
+			"PBACC"."ACC100"."SLCDNO"   = :a_n_cdno   and
+			"PBACC"."ACC100"."SLPAGENO" = :a_n_pageno and
+			"PBACC"."ACC100"."SLSERNO"  = :a_n_serno  using sqlca ;
+if sqlca.sqlcode <> 0 then
+	rollback using sqlca;
+	return 'e'
+else
+	commit using sqlca;	
+end if
+      
+return ' '
+end function
+

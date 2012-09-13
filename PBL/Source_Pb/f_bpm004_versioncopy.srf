@@ -1,0 +1,338 @@
+$PBExportHeader$f_bpm004_versioncopy.srf
+$PBExportComments$버전 관리 함수
+global type f_bpm004_versioncopy from function_object
+end type
+
+forward prototypes
+global function integer f_bpm004_versioncopy (string ag_year, string ag_ref_revno, string ag_revno, ref string ag_message)
+end prototypes
+
+global function integer f_bpm004_versioncopy (string ag_year, string ag_ref_revno, string ag_revno, ref string ag_message);//*******************************************
+//* 사업계획 데이타 복사
+//*  인자 : 사업계획년도(ag_year), 이전버전(ag_ref_revno), 신규버전(ag_revno), 에러메시지(ag_message)
+//*  반환값 성공(0), 실패(-1)
+//* BPM504, BPM505, BPM508, BPM513, BPM514, BPM514A, BPM515, BPM515A, BPM516, BPM516A, BPM517, BPM518
+integer li_cnt
+
+if MessageBox("확인", ag_year + " 년도의 사업계획 데이타를 ~r" &
+		+ ag_ref_revno + " 버전에서 " + ag_revno + " 버전으로 복사하시겠습니까?", Exclamation!, OKCancel!, 2) = 2 then
+	return -1
+end if
+
+setpointer(hourglass!)
+
+delete from pbbpm.bpm501
+where comltd = '01' and ayear = :ag_year and arev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm501
+( comltd,ayear,arev,acode,aplant,adiv,apdcd,acust,amdno,adecd,aascd,aprccd,
+aarea,asrce,amdnm,acar,atype,apdnm,acunm,acuno,acurr,
+asqty1,auprc1,asamt1,asqty2,auprc2,asamt2,asqty3,auprc3,asamt3,asqty4,auprc4,asamt4,
+asqty5,auprc5,asamt5,asqty6,auprc6,asamt6,asqty7,auprc7,asamt7,asqty8,auprc8,asamt8,
+asqty9,auprc9,asamt9,asqty10,auprc10,asamt10,asqty11,auprc11,asamt11,asqty12,auprc12,asamt12,
+atqty,atamt,abom,aqtycd,extd,inptid,inptdt,updtid,updtdt,ipaddr,macaddr,seqgb,amdnopre )
+select comltd,ayear,:ag_revno,acode,aplant,adiv,apdcd,acust,amdno,adecd,aascd,aprccd,
+aarea,asrce,amdnm,acar,atype,apdnm,acunm,acuno,acurr,
+asqty1,auprc1,asamt1,asqty2,auprc2,asamt2,asqty3,auprc3,asamt3,asqty4,auprc4,asamt4,
+asqty5,auprc5,asamt5,asqty6,auprc6,asamt6,asqty7,auprc7,asamt7,asqty8,auprc8,asamt8,
+asqty9,auprc9,asamt9,asqty10,auprc10,asamt10,asqty11,auprc11,asamt11,asqty12,auprc12,asamt12,
+atqty,atamt,abom,aqtycd,extd,inptid,inptdt,updtid,updtdt,ipaddr,macaddr,seqgb,amdnopre
+from pbbpm.bpm501
+where comltd = '01' and ayear = :ag_year and arev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM501 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm504
+where pcmcd = '01' and xyear = :ag_year and revno = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm504
+( pcmcd,xyear,revno,plant,pdvsn,ppitn,prout,pcitn,pchdt,pqtym,pqtye,
+pwkct,pedtm,pedte,popcd,pexplant,pexdv,pchcd,poscd,pebst,
+pmacaddr,pipaddr,pindt,pemno,premk )
+select pcmcd,xyear,:ag_revno,plant,pdvsn,ppitn,prout,pcitn,pchdt,pqtym,pqtye,
+pwkct,pedtm,pedte,popcd,pexplant,pexdv,pchcd,poscd,pebst,
+pmacaddr,pipaddr,pindt,pemno,premk
+from pbbpm.bpm504
+where pcmcd = '01' and xyear = :ag_year and revno = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM504 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm505
+where ocmcd = '01' and xyear = :ag_year and revno = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm505
+( ocmcd,xyear,revno,oplant,odvsn,opitn,ofitn,ochdt,
+oedtm,oedte,orate,ochcd,ofocd,omacaddr,oipaddr,oemno,oindt )
+select ocmcd,xyear,:ag_revno,oplant,odvsn,opitn,ofitn,ochdt,
+oedtm,oedte,orate,ochcd,ofocd,omacaddr,oipaddr,oemno,oindt
+from pbbpm.bpm505
+where ocmcd = '01' and xyear = :ag_year and revno = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM505 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm508
+where comltd = '01' and xyear = :ag_year and brev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm508
+( comltd,xyear,brev,bgubun,bplant,bdiv,bmdcd,bmdno,bserno,bprno,bchno,
+blev,blole,bum,bwoct,bprqt,bprqt1,bfmdt,btodt,balcd,baldiv,byou,
+bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt )
+select comltd,xyear,:ag_revno,bgubun,bplant,bdiv,bmdcd,bmdno,bserno,bprno,bchno,
+blev,blole,bum,bwoct,bprqt,bprqt1,bfmdt,btodt,balcd,baldiv,byou,
+bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt
+from pbbpm.bpm508
+where comltd = '01' and xyear = :ag_year and brev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM508 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm514
+where zcmcd = '01' and zdate = :ag_year and zbrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm514
+( zcmcd,zdate,zbrev,zgubun,zplant,zdiv,zmdcd,zmdno,zserial,zlevel,
+zpitno,zitno,zrev,zdesc,zspec,zunitqty,zunit1,zconfact,zunit2,zsrce,
+ztype,zcurd,zcure,zfob1,zfob2,zchk,zcurdcst,zcurecst,zygcst,zwondcst,
+zwonecst,zwoneamt,zwondamt,zwkct,zgrad,zaltno,zfmdt,ztodt,zcalc,
+zorate,zcumorate)
+select zcmcd,zdate,:ag_revno,zgubun,zplant,zdiv,zmdcd,zmdno,zserial,zlevel,
+zpitno,zitno,zrev,zdesc,zspec,zunitqty,zunit1,zconfact,zunit2,zsrce,
+ztype,zcurd,zcure,zfob1,zfob2,zchk,zcurdcst,zcurecst,zygcst,zwondcst,
+zwonecst,zwoneamt,zwondamt,zwkct,zgrad,zaltno,zfmdt,ztodt,zcalc,
+zorate,zcumorate
+from pbbpm.bpm514
+where zcmcd = '01' and zdate = :ag_year and zbrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM514 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm514a
+where zcmcd = '01' and zdate = :ag_year and zbrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm514a
+( zcmcd,zdate,zbrev,zgubun,zplant,zdiv,zmdcd,zmdno,zserial,zlevel,zpitno,zitno,
+zrev,zdesc,zspec,zunitqty,zunit1,zconfact,zunit2,zsrce,ztype,zcurd,
+zcure,zfob1,zfob2,zchk,zcurdcst,zcurecst,zwondcst,zwonecst,zwoneamt,zwondamt,
+zwkct,zgrad,zaltno,zfmdt,ztodt,zcalc,zcurscst,zwonscst,zwonsamt,zcumdamt,zcumeamt,
+zorate,zcumorate)
+select zcmcd,zdate,:ag_revno,zgubun,zplant,zdiv,zmdcd,zmdno,zserial,zlevel,zpitno,zitno,
+zrev,zdesc,zspec,zunitqty,zunit1,zconfact,zunit2,zsrce,ztype,zcurd,
+zcure,zfob1,zfob2,zchk,zcurdcst,zcurecst,zwondcst,zwonecst,zwoneamt,zwondamt,
+zwkct,zgrad,zaltno,zfmdt,ztodt,zcalc,zcurscst,zwonscst,zwonsamt,zcumdamt,zcumeamt,
+zorate,zcumorate
+from pbbpm.bpm514a
+where zcmcd = '01' and zdate = :ag_year and zbrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM514 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm515
+where comltd = '01' and myear = :ag_year and mbrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm515
+( comltd,myear,mbrev,mgubun,mplant,mdiv,mmdcd,mmdno,mseqgb,musge,mloss,mdwon,mdusd,
+mdjpy,mddem,mdfrf,mdgbp,mdaud,mdesp,mdemu,mditl,mdchf,mdbfr,mddkk,mdats,mdcad,mdsek,
+mdrmb,mdthb,mdetc,miusd,mijpy,midem,mifrf,migbp,miaud,miesp,miemu,miitl,michf,mibfr,
+midkk,miats,micad,misek,mirmb,mithb,mietc,mtwon,mtusd,mtjpy,mtdem,mtfrf,mtgbp,mtaud,
+mtesp,mtemu,mtitl,mtchf,mtbfr,mtdkk,mtats,mtcad,mtsek,mtrmb,mtthb,mtetc,momat,molat,
+mdcst1,mdsrc1,mddom1,mdpet1,mdosc1,mdldw1,mdmch1,mdlet1,mucst1,musrc1,mudom1,mupet1,muosc1,muldw1,mumch1,mulet1,maamt1,
+mdcst2,mdsrc2,mddom2,mdpet2,mdosc2,mdldw2,mdmch2,mdlet2,mucst2,musrc2,mudom2,mupet2,muosc2,muldw2,mumch2,mulet2,maamt2,
+mdcst3,mdsrc3,mddom3,mdpet3,mdosc3,mdldw3,mdmch3,mdlet3,mucst3,musrc3,mudom3,mupet3,muosc3,muldw3,mumch3,mulet3,maamt3,
+mdcst4,mdsrc4,mddom4,mdpet4,mdosc4,mdldw4,mdmch4,mdlet4,mucst4,musrc4,mudom4,mupet4,muosc4,muldw4,mumch4,mulet4,maamt4,
+mdcst5,mdsrc5,mddom5,mdpet5,mdosc5,mdldw5,mdmch5,mdlet5,mucst5,musrc5,mudom5,mupet5,muosc5,muldw5,mumch5,mulet5,maamt5,
+mdcst6,mdsrc6,mddom6,mdpet6,mdosc6,mdldw6,mdmch6,mdlet6,mucst6,musrc6,mudom6,mupet6,muosc6,muldw6,mumch6,mulet6,maamt6,
+mdcst7,mdsrc7,mddom7,mdpet7,mdosc7,mdldw7,mdmch7,mdlet7,mucst7,musrc7,mudom7,mupet7,muosc7,muldw7,mumch7,mulet7,maamt7,
+mdcst8,mdsrc8,mddom8,mdpet8,mdosc8,mdldw8,mdmch8,mdlet8,mucst8,musrc8,mudom8,mupet8,muosc8,muldw8,mumch8,mulet8,maamt8,
+mdcst9,mdsrc9,mddom9,mdpet9,mdosc9,mdldw9,mdmch9,mdlet9,mucst9,musrc9,mudom9,mupet9,muosc9,muldw9,mumch9,mulet9,maamt9,
+mdcsta,mdsrca,mddoma,mdpeta,mdosca,mdldwa,mdmcha,mdleta,mucsta,musrca,mudoma,mupeta,muosca,muldwa,mumcha,muleta,maamta,
+mdcstb,mdsrcb,mddomb,mdpetb,mdoscb,mdldwb,mdmchb,mdletb,mucstb,musrcb,mudomb,mupetb,muoscb,muldwb,mumchb,muletb,maamtb,
+mdcstc,mdsrcc,mddomc,mdpetc,mdoscc,mdldwc,mdmchc,mdletc,mucstc,musrcc,mudomc,mupetc,muoscc,muldwc,mumchc,muletc,maamtc,mstscd,mcmcd )
+select comltd,myear,:ag_revno,mgubun,mplant,mdiv,mmdcd,mmdno,mseqgb,musge,mloss,mdwon,mdusd,
+mdjpy,mddem,mdfrf,mdgbp,mdaud,mdesp,mdemu,mditl,mdchf,mdbfr,mddkk,mdats,mdcad,mdsek,
+mdrmb,mdthb,mdetc,miusd,mijpy,midem,mifrf,migbp,miaud,miesp,miemu,miitl,michf,mibfr,
+midkk,miats,micad,misek,mirmb,mithb,mietc,mtwon,mtusd,mtjpy,mtdem,mtfrf,mtgbp,mtaud,
+mtesp,mtemu,mtitl,mtchf,mtbfr,mtdkk,mtats,mtcad,mtsek,mtrmb,mtthb,mtetc,momat,molat,
+mdcst1,mdsrc1,mddom1,mdpet1,mdosc1,mdldw1,mdmch1,mdlet1,mucst1,musrc1,mudom1,mupet1,muosc1,muldw1,mumch1,mulet1,maamt1,
+mdcst2,mdsrc2,mddom2,mdpet2,mdosc2,mdldw2,mdmch2,mdlet2,mucst2,musrc2,mudom2,mupet2,muosc2,muldw2,mumch2,mulet2,maamt2,
+mdcst3,mdsrc3,mddom3,mdpet3,mdosc3,mdldw3,mdmch3,mdlet3,mucst3,musrc3,mudom3,mupet3,muosc3,muldw3,mumch3,mulet3,maamt3,
+mdcst4,mdsrc4,mddom4,mdpet4,mdosc4,mdldw4,mdmch4,mdlet4,mucst4,musrc4,mudom4,mupet4,muosc4,muldw4,mumch4,mulet4,maamt4,
+mdcst5,mdsrc5,mddom5,mdpet5,mdosc5,mdldw5,mdmch5,mdlet5,mucst5,musrc5,mudom5,mupet5,muosc5,muldw5,mumch5,mulet5,maamt5,
+mdcst6,mdsrc6,mddom6,mdpet6,mdosc6,mdldw6,mdmch6,mdlet6,mucst6,musrc6,mudom6,mupet6,muosc6,muldw6,mumch6,mulet6,maamt6,
+mdcst7,mdsrc7,mddom7,mdpet7,mdosc7,mdldw7,mdmch7,mdlet7,mucst7,musrc7,mudom7,mupet7,muosc7,muldw7,mumch7,mulet7,maamt7,
+mdcst8,mdsrc8,mddom8,mdpet8,mdosc8,mdldw8,mdmch8,mdlet8,mucst8,musrc8,mudom8,mupet8,muosc8,muldw8,mumch8,mulet8,maamt8,
+mdcst9,mdsrc9,mddom9,mdpet9,mdosc9,mdldw9,mdmch9,mdlet9,mucst9,musrc9,mudom9,mupet9,muosc9,muldw9,mumch9,mulet9,maamt9,
+mdcsta,mdsrca,mddoma,mdpeta,mdosca,mdldwa,mdmcha,mdleta,mucsta,musrca,mudoma,mupeta,muosca,muldwa,mumcha,muleta,maamta,
+mdcstb,mdsrcb,mddomb,mdpetb,mdoscb,mdldwb,mdmchb,mdletb,mucstb,musrcb,mudomb,mupetb,muoscb,muldwb,mumchb,muletb,maamtb,
+mdcstc,mdsrcc,mddomc,mdpetc,mdoscc,mdldwc,mdmchc,mdletc,mucstc,musrcc,mudomc,mupetc,muoscc,muldwc,mumchc,muletc,maamtc,mstscd,mcmcd
+from pbbpm.bpm515
+where comltd = '01' and myear = :ag_year and mbrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM515 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm515a
+where comltd = '01' and myear = :ag_year and mbrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm515a
+( comltd,myear,mbrev,mgubun,mplant,mdiv,mmdcd,mmdno,mseqgb,musge,mloss,mdwon,mdusd,
+mdjpy,mddem,mdfrf,mdgbp,mdaud,mdesp,mdemu,mditl,mdchf,mdbfr,mddkk,mdats,mdcad,mdsek,
+mdrmb,mdthb,mdetc,miusd,mijpy,midem,mifrf,migbp,miaud,miesp,miemu,miitl,michf,mibfr,
+midkk,miats,micad,misek,mirmb,mithb,mietc,mtwon,mtusd,mtjpy,mtdem,mtfrf,mtgbp,mtaud,
+mtesp,mtemu,mtitl,mtchf,mtbfr,mtdkk,mtats,mtcad,mtsek,mtrmb,mtthb,mtetc,momat,molat,
+mdcst1,mdsrc1,mddom1,mdpet1,mdosc1,mdldw1,mdmch1,mdlet1,mucst1,musrc1,mudom1,mupet1,muosc1,muldw1,mumch1,mulet1,maamt1,
+mdcst2,mdsrc2,mddom2,mdpet2,mdosc2,mdldw2,mdmch2,mdlet2,mucst2,musrc2,mudom2,mupet2,muosc2,muldw2,mumch2,mulet2,maamt2,
+mdcst3,mdsrc3,mddom3,mdpet3,mdosc3,mdldw3,mdmch3,mdlet3,mucst3,musrc3,mudom3,mupet3,muosc3,muldw3,mumch3,mulet3,maamt3,
+mdcst4,mdsrc4,mddom4,mdpet4,mdosc4,mdldw4,mdmch4,mdlet4,mucst4,musrc4,mudom4,mupet4,muosc4,muldw4,mumch4,mulet4,maamt4,
+mdcst5,mdsrc5,mddom5,mdpet5,mdosc5,mdldw5,mdmch5,mdlet5,mucst5,musrc5,mudom5,mupet5,muosc5,muldw5,mumch5,mulet5,maamt5,
+mdcst6,mdsrc6,mddom6,mdpet6,mdosc6,mdldw6,mdmch6,mdlet6,mucst6,musrc6,mudom6,mupet6,muosc6,muldw6,mumch6,mulet6,maamt6,
+mdcst7,mdsrc7,mddom7,mdpet7,mdosc7,mdldw7,mdmch7,mdlet7,mucst7,musrc7,mudom7,mupet7,muosc7,muldw7,mumch7,mulet7,maamt7,
+mdcst8,mdsrc8,mddom8,mdpet8,mdosc8,mdldw8,mdmch8,mdlet8,mucst8,musrc8,mudom8,mupet8,muosc8,muldw8,mumch8,mulet8,maamt8,
+mdcst9,mdsrc9,mddom9,mdpet9,mdosc9,mdldw9,mdmch9,mdlet9,mucst9,musrc9,mudom9,mupet9,muosc9,muldw9,mumch9,mulet9,maamt9,
+mdcsta,mdsrca,mddoma,mdpeta,mdosca,mdldwa,mdmcha,mdleta,mucsta,musrca,mudoma,mupeta,muosca,muldwa,mumcha,muleta,maamta,
+mdcstb,mdsrcb,mddomb,mdpetb,mdoscb,mdldwb,mdmchb,mdletb,mucstb,musrcb,mudomb,mupetb,muoscb,muldwb,mumchb,muletb,maamtb,
+mdcstc,mdsrcc,mddomc,mdpetc,mdoscc,mdldwc,mdmchc,mdletc,mucstc,musrcc,mudomc,mupetc,muoscc,muldwc,mumchc,muletc,maamtc,mstscd,mcmcd,
+mdcumsum,mtwonsum)
+select comltd,myear,:ag_revno,mgubun,mplant,mdiv,mmdcd,mmdno,mseqgb,musge,mloss,mdwon,mdusd,
+mdjpy,mddem,mdfrf,mdgbp,mdaud,mdesp,mdemu,mditl,mdchf,mdbfr,mddkk,mdats,mdcad,mdsek,
+mdrmb,mdthb,mdetc,miusd,mijpy,midem,mifrf,migbp,miaud,miesp,miemu,miitl,michf,mibfr,
+midkk,miats,micad,misek,mirmb,mithb,mietc,mtwon,mtusd,mtjpy,mtdem,mtfrf,mtgbp,mtaud,
+mtesp,mtemu,mtitl,mtchf,mtbfr,mtdkk,mtats,mtcad,mtsek,mtrmb,mtthb,mtetc,momat,molat,
+mdcst1,mdsrc1,mddom1,mdpet1,mdosc1,mdldw1,mdmch1,mdlet1,mucst1,musrc1,mudom1,mupet1,muosc1,muldw1,mumch1,mulet1,maamt1,
+mdcst2,mdsrc2,mddom2,mdpet2,mdosc2,mdldw2,mdmch2,mdlet2,mucst2,musrc2,mudom2,mupet2,muosc2,muldw2,mumch2,mulet2,maamt2,
+mdcst3,mdsrc3,mddom3,mdpet3,mdosc3,mdldw3,mdmch3,mdlet3,mucst3,musrc3,mudom3,mupet3,muosc3,muldw3,mumch3,mulet3,maamt3,
+mdcst4,mdsrc4,mddom4,mdpet4,mdosc4,mdldw4,mdmch4,mdlet4,mucst4,musrc4,mudom4,mupet4,muosc4,muldw4,mumch4,mulet4,maamt4,
+mdcst5,mdsrc5,mddom5,mdpet5,mdosc5,mdldw5,mdmch5,mdlet5,mucst5,musrc5,mudom5,mupet5,muosc5,muldw5,mumch5,mulet5,maamt5,
+mdcst6,mdsrc6,mddom6,mdpet6,mdosc6,mdldw6,mdmch6,mdlet6,mucst6,musrc6,mudom6,mupet6,muosc6,muldw6,mumch6,mulet6,maamt6,
+mdcst7,mdsrc7,mddom7,mdpet7,mdosc7,mdldw7,mdmch7,mdlet7,mucst7,musrc7,mudom7,mupet7,muosc7,muldw7,mumch7,mulet7,maamt7,
+mdcst8,mdsrc8,mddom8,mdpet8,mdosc8,mdldw8,mdmch8,mdlet8,mucst8,musrc8,mudom8,mupet8,muosc8,muldw8,mumch8,mulet8,maamt8,
+mdcst9,mdsrc9,mddom9,mdpet9,mdosc9,mdldw9,mdmch9,mdlet9,mucst9,musrc9,mudom9,mupet9,muosc9,muldw9,mumch9,mulet9,maamt9,
+mdcsta,mdsrca,mddoma,mdpeta,mdosca,mdldwa,mdmcha,mdleta,mucsta,musrca,mudoma,mupeta,muosca,muldwa,mumcha,muleta,maamta,
+mdcstb,mdsrcb,mddomb,mdpetb,mdoscb,mdldwb,mdmchb,mdletb,mucstb,musrcb,mudomb,mupetb,muoscb,muldwb,mumchb,muletb,maamtb,
+mdcstc,mdsrcc,mddomc,mdpetc,mdoscc,mdldwc,mdmchc,mdletc,mucstc,musrcc,mudomc,mupetc,muoscc,muldwc,mumchc,muletc,maamtc,mstscd,mcmcd,
+mdcumsum,mtwonsum
+from pbbpm.bpm515a
+where comltd = '01' and myear = :ag_year and mbrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM515a 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm516
+where comltd ='01' and xyear = :ag_year and wrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm516
+( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wclss,wsrce,wpdcd,
+wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
+wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
+wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wclss,wsrce,wpdcd,
+wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
+wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
+wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+from pbbpm.bpm516
+where comltd ='01' and xyear = :ag_year and wrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM516 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm517
+where comltd = '01' and xyear = :ag_year and wrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm517
+( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
+wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
+wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
+wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
+wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+from pbbpm.bpm517
+where comltd = '01' and xyear = :ag_year and wrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM517 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm518
+where comltd = '01' and xyear = :ag_year and wrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm518
+( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
+wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
+wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
+wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
+wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+from pbbpm.bpm518
+where comltd = '01' and xyear = :ag_year and wrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM518 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+insert into pbbpm.bpm519
+( comltd,xyear,revno,windowid,seqno,taskname,taskstatus,jobstart,jobend,
+taskmanager,ingflag,deptcode,jobempno,jobempno2,ipaddr,macaddr,lastemp,lastdate )
+select comltd,xyear,:ag_revno,windowid,seqno,taskname,taskstatus,jobstart,jobend,
+taskmanager,ingflag,deptcode,jobempno,jobempno2,ipaddr,macaddr,lastemp,lastdate
+from pbbpm.bpm519
+where comltd = '01' and xyear = :ag_year and revno = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM519 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+return 0
+end function
+

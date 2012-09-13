@@ -1,0 +1,62 @@
+$PBExportHeader$f_pisr_orderseq.srf
+$PBExportComments$간판발주전산화번호 생성
+global type f_pisr_orderseq from function_object
+end type
+
+forward prototypes
+global function string f_pisr_orderseq (ref datawindow fdw, string fs_orderdate, datetime fdt_nowtime)
+end prototypes
+
+global function string f_pisr_orderseq (ref datawindow fdw, string fs_orderdate, datetime fdt_nowtime);///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Function		: f_pisr_orderseq
+//	Access		: reorder
+//	Arguments	: datawindow	fdw					reference 	발주전산번호 최대값
+//					: string			fs_orderdate		value			발주일자
+//					: datetime		fdt_nowtime			value			현재시간
+//	Returns		: string			ls_orderSeq							발주전산화번호
+//	Description	: 간판발주전산화번호생성 : 년(1)+월(2)+36진수S/N(5)+지역(1)+공장(1)
+// Company		: DAEWOO Information System Co., Ltd. IAS
+// Author		: Gwon Oh_Sang
+// Coded Date	: 2002.09.04
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+String	ls_orderSeq, ls_seq, ls_textMonth, ls_applyMonth
+Integer	li_Year
+String	ls_areaCode, ls_divCode
+
+ls_applyMonth  = left(fs_orderdate, 7)					//발주년월
+li_Year			= Integer(mid(ls_applyMonth, 3,2))	//발주년도값
+
+//향후 5년 이내 현재 데이타 백업 후 삭제하므로 년도 코드 1자리로도 문제없을듯......
+//CHOOSE CASE li_Year
+//	CASE IS < 12	// Test시작년도 2002년 향후 10년 2012
+		ls_textMonth = mid(ls_applyMonth, 4,1)
+//	CASE 12 to 38	// 'A' ~ 'Z' 26자 가능
+//		ls_textMonth = char(65 + li_Year - 12)			//2012년부터 ~ ('A','B'....~)
+//	CASE ELSE
+//		MessageBox("발주오류", "발주년도표기값의 범위를 초과하였습니다.", StopSign! )
+//		Return ''
+//END CHOOSE
+ls_textMonth = ls_textMonth + mid(ls_applyMonth,6,2)
+
+ls_areaCode		= fdw.GetItemString(1, 'areacode' )
+ls_divCode		= fdw.GetItemString(1, 'divisioncode' )
+ls_Seq 			= fdw.GetItemString(1, 'seqno' )
+ls_orderSeq 	= fdw.GetItemString(1, 'orderseq' )
+
+If ls_orderSeq = '' Then	//해당월의 첫 발주이면
+	ls_seq		= '00001'
+Else
+	ls_seq		= f_pisr_string1add(ls_seq)	//36진수값 1증가
+	If Trim(ls_seq) = '' Or len(ls_seq) <> 5 Then Return ''
+End If	
+ls_orderSeq = ls_textMonth + ls_seq + ls_areaCode + ls_divCode
+
+//fdw.SetItem(1, 'applymonth', ls_applyMonth )
+fdw.SetItem(1, 'seqno'		, ls_seq )
+fdw.SetItem(1, 'orderseq'	, ls_orderSeq )
+fdw.SetItem(1, 'lastemp'	, 'Y' )		//Interface Flag 활용
+fdw.SetItem(1, 'lastdate'	, fdt_nowtime )
+
+Return ls_orderSeq
+end function
+

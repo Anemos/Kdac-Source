@@ -1,0 +1,48 @@
+$PBExportHeader$f_ifst_inv101.srf
+$PBExportComments$계정,구입선,단위,담당자(지역,공장,품번,구분)
+global type f_ifst_inv101 from function_object
+end type
+
+forward prototypes
+global function string f_ifst_inv101 (string ag_xplant, string ag_div, string ag_itno, string ag_gubun)
+end prototypes
+
+global function string f_ifst_inv101 (string ag_xplant, string ag_div, string ag_itno, string ag_gubun);////////////////////////////////////////////////////////////
+//품번에 대한 계정,구입선,단위,구매담당 구하기.
+//			argument : 지역,공장,품번
+//                  구분 : "1" - 계정
+//                         "2" - 구입선
+//									"3" - 단위
+//									"4" - 구매담당
+//			적용: w_pur105u(자동발주 소재품 등록)
+///////////////////////////////////////////////////////////
+
+String ls_cls, ls_srce, ls_xunit, ls_xplan
+//item balance db	
+SELECT "PBINV"."INV101"."CLS", "PBINV"."INV101"."SRCE",
+       "PBINV"."INV101"."XUNIT", "PBINV"."INV101"."XPLAN"    
+   INTO :ls_cls, :ls_srce, :ls_xunit , :ls_xplan
+FROM "PBINV"."INV101"  
+WHERE ( "PBINV"."INV101"."COMLTD" = '01' ) AND  
+	   ( "PBINV"."INV101"."XPLANT" = :ag_xplant ) AND  
+      ( "PBINV"."INV101"."DIV" = :ag_div) AND  
+		( "PBINV"."INV101"."ITNO" = :ag_itno )   Using sqlca;	
+		
+IF sqlca.sqlcode <> 0 or isnull(ls_cls) Then
+	ls_cls = ' '
+	ls_srce = ' '
+	ls_xunit = ' '
+	ls_xplan = ' '
+End IF
+//Return
+IF ag_gubun = "1" Then		//계정
+	Return ls_cls
+ElseIF ag_gubun = "2" Then	//구입선
+	Return ls_srce
+ElseIF ag_gubun = "3" Then //단위
+	Return ls_xunit
+ElseIF ag_gubun = "4" Then //담당자
+	Return ls_xplan
+End IF
+end function
+

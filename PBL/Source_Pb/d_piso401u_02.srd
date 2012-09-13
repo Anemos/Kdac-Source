@@ -1,0 +1,20 @@
+$PBExportHeader$d_piso401u_02.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=80 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=xplant dbname="INV101.XPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=div dbname="INV101.DIV" )
+ column=(type=char(12) updatewhereclause=yes name=itno dbname="INV101.ITNO" )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"PBINV.INV101~" ) COLUMN(NAME=~"PBINV.INV101.XPLANT~") COLUMN(NAME=~"PBINV.INV101.DIV~") COLUMN(NAME=~"PBINV.INV101.ITNO~")WHERE(    EXP1 =~"~~~"PBINV~~~".~~~"INV101~~~".~~~"COMLTD~~~"~"   OP =~"=~"    EXP2 =~"'01'~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"~~~"PBINV~~~".~~~"INV101~~~".~~~"XPLANT~~~"~"   OP =~"=~"    EXP2 =~":a_plant~"    LOGIC =~"And~" ) WHERE(    EXP1 =~"~~~"PBINV~~~".~~~"INV101~~~".~~~"DIV~~~"~"   OP =~"=~"    EXP2 =~":a_dvsn~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"~~~"PBINV~~~".~~~"INV101~~~".~~~"KBCD~~~"~"   OP =~"=~"    EXP2 =~"'K'~" ) ) ARG(NAME = ~"a_plant~" TYPE = string)  ARG(NAME = ~"a_dvsn~" TYPE = string) " arguments=(("a_plant", string),("a_dvsn", string))  sort="itno A " )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="68" width="201" format="[general]" html.valueishtml="0"  name=xplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="219" y="8" height="68" width="210" format="[general]" html.valueishtml="0"  name=div visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="439" y="8" height="68" width="617" format="[general]" html.valueishtml="0"  name=itno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="68" width="201" html.valueishtml="0"  name=xplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="219" y="8" height="68" width="210" html.valueishtml="0"  name=div_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="439" y="8" height="68" width="617" html.valueishtml="0"  name=itno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

@@ -1,0 +1,87 @@
+$PBExportHeader$d_rtn031i_rtn016_template.srd
+$PBExportComments$ºÎ´ëÁ¤º¸ ¾÷·Îµå¿ë ÅÛÇÃ¸´
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=rfplant dbname="RTN016.RFPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=rfdvsn dbname="RTN016.RFDVSN" )
+ column=(type=char(12) updatewhereclause=yes name=rfitno dbname="RTN016.RFITNO" )
+ column=(type=char(7) updatewhereclause=yes name=rfline1 dbname="RTN016.RFLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rfline2 dbname="RTN016.RFLINE2" )
+ column=(type=char(7) updatewhereclause=yes name=rfopno dbname="RTN016.RFOPNO" )
+ column=(type=char(240) updatewhereclause=yes name=rfremk dbname="RTN016.RFREMK" )
+ column=(type=char(2) updatewhereclause=yes name=rfnvmo dbname="RTN016.RFNVMO" )
+ column=(type=char(1) updatewhereclause=yes name=rfmcno dbname="RTN016.RFMCNO" )
+ column=(type=char(1) updatewhereclause=yes name=rfterm dbname="RTN016.RFTERM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rfmctm dbname="RTN016.RFMCTM" )
+ column=(type=decimal(4) updatewhereclause=yes name=rflbtm dbname="RTN016.RFLBTM" )
+ column=(type=long updatewhereclause=yes name=rflogid dbname="RTN016.RFLOGID" )
+ column=(type=decimal(0) updatewhereclause=yes name=rtn015_reopsq dbname="RTN015.REOPSQ" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN016~".~"RFPLANT~",   
+         ~"PBRTN~".~"RTN016~".~"RFDVSN~",   
+         ~"PBRTN~".~"RTN016~".~"RFITNO~",   
+         ~"PBRTN~".~"RTN016~".~"RFLINE1~",   
+         ~"PBRTN~".~"RTN016~".~"RFLINE2~",   
+         ~"PBRTN~".~"RTN016~".~"RFOPNO~",   
+         ~"PBRTN~".~"RTN016~".~"RFREMK~",   
+         ~"PBRTN~".~"RTN016~".~"RFNVMO~",   
+         ~"PBRTN~".~"RTN016~".~"RFMCNO~",   
+         ~"PBRTN~".~"RTN016~".~"RFTERM~",   
+         ~"PBRTN~".~"RTN016~".~"RFMCTM~",   
+         ~"PBRTN~".~"RTN016~".~"RFLBTM~",
+			~"PBRTN~".~"RTN016~".~"RFLOGID~",
+			~"PBRTN~".~"RTN015~".~"REOPSQ~"  
+ FROM ~"PBRTN~".~"RTN016~" , ~"PBRTN~".~"RTN015~"    
+    WHERE ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = ~"PBRTN~".~"RTN015~".~"RECMCD~" ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = ~"PBRTN~".~"RTN015~".~"REPLANT~" ) AND   
+         ( ~"PBRTN~".~"RTN016~".~"RFDVSN~"   = ~"PBRTN~".~"RTN015~".~"REDVSN~" ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFITNO~"   = ~"PBRTN~".~"RTN015~".~"REITNO~" ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFOPNO~"   = ~"PBRTN~".~"RTN015~".~"REOPNO~" ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFLINE1~"  = ~"PBRTN~".~"RTN015~".~"RELINE1~" ) AND (~"PBRTN~".~"RTN016~".~"RFLINE2~" = ~"PBRTN~".~"RTN015~".~"RELINE2~" ) AND 
+			(~"PBRTN~".~"RTN015~".~"REEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN015~".~"REEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN015~".~"REEDFM~" <= ~"PBRTN~".~"RTN015~".~"REEDTO~" ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = :a_cmcd ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = :a_plant ) AND   
+         ( ~"PBRTN~".~"RTN016~".~"RFDVSN~"   = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN016~".~"RFITNO~"   = :a_itno ) AND 
+         ( ~"PBRTN~".~"RTN016~".~"RFLINE1~" = :a_line1 AND ~"PBRTN~".~"RTN016~".~"RFLINE2~"  = :a_line2 ) AND
+         (~"PBRTN~".~"RTN016~".~"RFEDFM~" <= :a_ajdate AND ~"PBRTN~".~"RTN016~".~"RFEDTO~" >= :a_ajdate AND
+          ~"PBRTN~".~"RTN016~".~"RFEDFM~" <= ~"PBRTN~".~"RTN016~".~"RFEDTO~" )   
+" arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_itno", string),("a_line1", string),("a_line2", string),("a_ajdate", string))  sort="rfplant A rfdvsn A rfitno A rfline1 A rfline2 A rtn015_reopsq A rfopno A " )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="238" y="8" height="60" width="215" html.valueishtml="0"  name=rfdvsn_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="462" y="8" height="60" width="416" html.valueishtml="0"  name=rfitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ëÃ¼¶óÀÎ" border="0" color="16777215" x="887" y="8" height="60" width="256" html.valueishtml="0"  name=rfline1_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¹øÈ£" border="0" color="16777215" x="1673" y="8" height="60" width="256" html.valueishtml="0"  name=rfopno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºÎ´ëÀÛ¾÷¸íÄª" border="0" color="16777215" x="1938" y="8" height="60" width="718" html.valueishtml="0"  name=rfremk_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="À¯Çü" border="0" color="16777215" x="2665" y="8" height="60" width="238" html.valueishtml="0"  name=rfnvmo_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ºÐ" border="0" color="16777215" x="2912" y="8" height="60" width="242" html.valueishtml="0"  name=rfmcno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ºóµµ" border="0" color="16777215" x="3163" y="8" height="60" width="210" html.valueishtml="0"  name=rfterm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±â°èÀÛ¾÷½Ã°£" border="0" color="16777215" x="3383" y="8" height="60" width="384" html.valueishtml="0"  name=rfmctm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="60" width="219" html.valueishtml="0"  name=rfplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼öÀÛ¾÷½Ã°£" border="0" color="16777215" x="3776" y="8" height="60" width="384" html.valueishtml="0"  name=rflbtm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="0" text="½Ã½ºÅÛID" border="0" color="16777215" x="4169" y="8" height="60" width="489" html.valueishtml="0"  name=rtn016_rflogid_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÄÚµå" border="0" color="16777215" x="1152" y="8" height="60" width="219" html.valueishtml="0"  name=rfline2_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÁ¤¼ø¼­" border="0" color="16777215" x="1381" y="8" height="60" width="283" html.valueishtml="0"  name=rtn015_reopsq_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="33554432" x="238" y="8" height="88" width="215" format="[general]" html.valueishtml="0"  name=rfdvsn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="0" color="33554432" x="462" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=rfitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="887" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=rfline1 visible="1" edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="0" color="33554432" x="1673" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=rfopno visible="1" edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="0" color="33554432" x="1938" y="8" height="88" width="718" format="[general]" html.valueishtml="0"  name=rfremk visible="1" edit.limit=240 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="2665" y="8" height="88" width="238" format="[general]" html.valueishtml="0"  name=rfnvmo visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="2912" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=rfmcno visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="33554432" x="3163" y="8" height="88" width="210" format="[general]" html.valueishtml="0"  name=rfterm visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3383" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rfmctm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="88" width="219" format="[general]" html.valueishtml="0"  name=rfplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="33554432" x="3776" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rflbtm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=32766 border="0" color="33554432" x="4169" y="8" height="88" width="489" format="[general]" html.valueishtml="0"  name=rflogid visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="33554432" x="1152" y="8" height="88" width="219" format="[general]" html.valueishtml="0"  name=rfline2 visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="33554432" x="1381" y="8" height="88" width="283" format="[general]" html.valueishtml="0"  name=rtn015_reopsq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

@@ -1,0 +1,85 @@
+$PBExportHeader$d_pisp094u_01.srd
+$PBExportComments$Á¶¸³ Áö½Ã - ÀÓ½Ã°£ÆÇ¹ßÇà
+release 7;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 selected.mouse=no )
+header(height=128 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=68 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(1) updatewhereclause=no name=areacode dbname="AreaCode" )
+ column=(type=char(15) updatewhereclause=no name=areaname dbname="AreaName" )
+ column=(type=char(1) updatewhereclause=no name=divisioncode dbname="DivisionCode" )
+ column=(type=char(15) updatewhereclause=no name=divisionname dbname="DivisionName" )
+ column=(type=char(5) updatewhereclause=no name=workcenter dbname="WorkCenter" )
+ column=(type=char(30) updatewhereclause=no name=workcentername dbname="WorkCenterName" )
+ column=(type=char(1) updatewhereclause=no name=linecode dbname="LineCode" )
+ column=(type=char(10) updatewhereclause=no name=lineshortname dbname="LineShortName" )
+ column=(type=char(30) updatewhereclause=no name=linefullname dbname="LineFullName" )
+ column=(type=char(12) updatewhereclause=no name=itemcode dbname="ItemCode" )
+ column=(type=char(100) updatewhereclause=no name=itemname dbname="ItemName" )
+ column=(type=char(4) updatewhereclause=no name=modelid dbname="ModelID" )
+ column=(type=char(1) updatewhereclause=no name=productgubun dbname="ProductGubun" )
+ column=(type=char(10) updatewhereclause=no name=productgubunname dbname="ProductGubunName" )
+ column=(type=long updatewhereclause=no name=rackqty dbname="RackQty" )
+ column=(type=char(11) updatewhereclause=no name=tempkbsn dbname="TempKBSN" )
+ procedure="1 execute dbo.sp_pisp094u_01;1 " )
+group(level=1 header.height=0 trailer.height=68 by=("areacode" , "divisioncode" , "workcenter" , "linecode" ) header.color="536870912" trailer.color="536870912" )
+text(band=header alignment="2" text="Á¶
+ÄÚµå" border="0" color="16777215" x="9" y="12" height="112" width="133"  name=workcenter_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Á¶¸í" border="0" color="16777215" x="151" y="12" height="112" width="283"  name=workcentername_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¶óÀÎ
+ÄÚµå" border="0" color="16777215" x="443" y="12" height="112" width="114"  name=linecode_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¶óÀÎ
+´ÜÃà¸í" border="0" color="16777215" x="567" y="12" height="112" width="224"  name=lineshortname_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+¶óÀÎ¸í" border="0" color="16777215" x="800" y="12" height="112" width="370"  name=linefullname_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Ç°¹ø" border="0" color="16777215" x="1179" y="12" height="112" width="270"  name=itemcode_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Ç°¸í" border="0" color="16777215" x="1458" y="12" height="112" width="645"  name=itemname_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+½Äº°ID" border="0" color="16777215" x="2112" y="12" height="112" width="206"  name=modelid_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="
+Á¦Ç°±¸ºÐ" border="0" color="16777215" x="2327" y="12" height="112" width="325"  name=productgubunname_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ö
+¿ë¼ö" border="0" color="16777215" x="2661" y="12" height="112" width="137"  name=rackqty_t  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¹ßÇàÇÒ
+°£ÆÇ¹øÈ£" border="0" color="16777215" x="2807" y="12" height="112" width="398"  name=t_1  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="4" height="60" width="133" format="[general]"  name=workcenter edit.limit=5 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="151" y="4" height="60" width="283" format="[general]"  name=workcentername edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="443" y="4" height="60" width="114" format="[general]"  name=linecode edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="567" y="4" height="60" width="224" format="[general]"  name=lineshortname edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="800" y="4" height="60" width="370" format="[general]"  name=linefullname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="8388608" x="1458" y="4" height="60" width="645" format="[general]"  name=itemname edit.limit=30 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="2327" y="4" height="60" width="325" format="[general]"  name=productgubunname edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="0" color="0" x="2661" y="4" height="60" width="137" format="#,##0"  name=rackqty edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="16711680" x="1179" y="4" height="60" width="270" format="[general]"  name=itemcode edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="2" tabsequence=32766 border="0" color="8388736" x="2112" y="4" height="60" width="206" format="[general]"  name=modelid edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="128" x="2807" y="4" height="60" width="398" format="[general]"  name=tempkbsn edit.limit=0 edit.case=any edit.autoselect=yes  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="9" y="4" height="60" width="133"  name=t_7  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="151" y="4" height="60" width="283"  name=t_8  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="443" y="4" height="60" width="114"  name=t_9  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="567" y="4" height="60" width="224"  name=t_10  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="800" y="4" height="60" width="370"  name=t_11  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="2112" y="4" height="60" width="206"  name=t_13  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=trailer.1 alignment="0" expression="linefullname + ' ¶óÀÎ:'"border="0" color="8388608" x="1458" y="4" height="60" width="645" format="[GENERAL]"  name=compute_7  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="2661" y="4" height="60" width="137"  name=t_15  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="1179" y="4" height="60" width="270"  name=t_12  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=trailer.1 alignment="1" text="" border="0" color="8388608" x="2807" y="4" height="60" width="398"  name=t_2  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+compute(band=trailer.1 alignment="1" expression="RowCount() + ' ¸Å'"border="0" color="8388608" x="2327" y="4" height="60" width="325" format="[GENERAL]"  name=compute_2  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15780518" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="9" y="4" height="60" width="133"  name=t_19  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="151" y="4" height="60" width="283"  name=t_18  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="2112" y="4" height="60" width="206"  name=t_17  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="800" y="4" height="60" width="370"  name=t_23  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="567" y="4" height="60" width="224"  name=t_24  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="443" y="4" height="60" width="114"  name=t_25  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="2661" y="4" height="60" width="137"  name=t_29  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="ÀüÃ¼ :" border="0" color="8388608" x="1458" y="4" height="60" width="645"  name=t_21  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="1" text="" border="0" color="8388608" x="1179" y="4" height="60" width="270"  name=t_22  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+text(band=footer alignment="0" text="" border="0" color="8388608" x="2807" y="4" height="60" width="398"  name=t_3  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+compute(band=footer alignment="1" expression="RowCount() + ' ¸Å'"border="0" color="8388608" x="2327" y="4" height="60" width="325" format="[General]"  name=compute_1  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12639424" )
+
+sparse(names="workcenter	workcentername	linecode	lineshortname	linefullname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" )
+  

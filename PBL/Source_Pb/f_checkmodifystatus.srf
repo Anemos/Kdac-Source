@@ -1,0 +1,53 @@
+$PBExportHeader$f_checkmodifystatus.srf
+$PBExportComments$데이타윈도우의 작업상태를 검사하는 함수
+global type f_checkmodifystatus from function_object
+end type
+
+forward prototypes
+global function boolean f_checkmodifystatus (datawindow adw_datawindow, integer ai_flag)
+end prototypes
+
+global function boolean f_checkmodifystatus (datawindow adw_datawindow, integer ai_flag);
+//------------------------------------------------------------------------------
+// 함수명		:	f_CheckDWStatus
+// 처리개요		:	데이타윈도우의 작업상태를 검사한다.
+// 사용인수		:	Datawindow	:	adw_datawindow	:	i	:	사용중인 데이타윈도우
+// 					Integer		:	as_flag			:	1,2,3
+// 반환값		:	TRUE:not modified, FALSE:modified
+// 개발언어		:	Power Builder Enterprise Ver 7.0
+//------------------------------------------------------------------------------
+
+Boolean	lb_rtn
+
+// 데이타윈도우의 작업여부를 체크한다
+//
+IF adw_datawindow.ModifiedCount() > 0 THEN
+	lb_rtn = FALSE
+ELSE
+	lb_rtn = TRUE
+END IF
+
+IF lb_rtn = FALSE THEN
+	CHOOSE CASE ai_flag
+		CASE 1
+			MessageBox('확 인', '대분류 코드 작업중입니다 저장후 다른 작업을 하세요', StopSign!)
+			adw_datawindow.SetColumn('largegroupcode')
+		CASE 2
+			MessageBox('확 인', '중분류 코드 작업중입니다 저장후 다른 작업을 하세요', StopSign!)
+			adw_datawindow.SetColumn('middlegroupcode')
+		CASE 3
+			MessageBox('확 인', '소분류 코드 작업중입니다 저장후 다른 작업을 하세요', StopSign!)
+			adw_datawindow.SetColumn('smallgroupcode')
+	END CHOOSE
+END IF
+
+adw_datawindow.SetFocus()
+
+RETURN lb_rtn
+
+//------------------------------------------------------------------------------
+// End of Script
+//------------------------------------------------------------------------------
+
+end function
+

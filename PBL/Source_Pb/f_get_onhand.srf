@@ -1,0 +1,46 @@
+$PBExportHeader$f_get_onhand.srf
+$PBExportComments$기말재공정보 가져오기
+global type f_get_onhand from function_object
+end type
+
+forward prototypes
+global function decimal f_get_onhand (string a_gubun, string a_date, string a_comltd, string a_plant, string a_dvsn, string a_orct, string a_itno)
+end prototypes
+
+global function decimal f_get_onhand (string a_gubun, string a_date, string a_comltd, string a_plant, string a_dvsn, string a_orct, string a_itno);dec{4} lc_ohqty
+dec{0} lc_ohamt, lc_ohamt1
+string ls_ohdate
+
+ls_ohdate = uf_wip_addmonth(a_date,1)
+
+  SELECT "PBWIP"."WIP002"."WBBGQT",   
+         "PBWIP"."WIP002"."WBBGAT1",   
+         "PBWIP"."WIP002"."WBBGAT2"  
+    INTO :lc_ohqty,   
+         :lc_ohamt,   
+         :lc_ohamt1  
+    FROM "PBWIP"."WIP002"  
+   WHERE ( "PBWIP"."WIP002"."WBCMCD" = :a_comltd ) AND  
+         ( "PBWIP"."WIP002"."WBPLANT" = :a_plant ) AND  
+         ( "PBWIP"."WIP002"."WBDVSN" = :a_dvsn ) AND  
+         ( "PBWIP"."WIP002"."WBORCT" = :a_orct ) AND  
+         ( "PBWIP"."WIP002"."WBITNO" = :a_itno ) AND
+			( "PBWIP"."WIP002"."WBYEAR"||"PBWIP"."WIP002"."WBMONTH"  = :ls_ohdate ) using sqlca;
+			
+if sqlca.sqlcode = 0 then
+	if a_gubun = 'qty' then
+		return  lc_ohqty
+	elseif a_gubun = 'amt' then
+		return lc_ohamt
+	elseif a_gubun = 'amt1' then
+		return lc_ohamt1
+	end if
+else
+	messagebox("에러", "확인바람")
+	return 0
+end if
+
+
+
+end function
+

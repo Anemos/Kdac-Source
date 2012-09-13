@@ -1,0 +1,31 @@
+$PBExportHeader$f_checkimage.srf
+$PBExportComments$도면유무 체크
+global type f_checkimage from function_object
+end type
+
+forward prototypes
+global function boolean f_checkimage (string as_areacode, string as_divisioncode, string as_suppliercode, string as_itemcode, string as_standardrevno)
+end prototypes
+
+global function boolean f_checkimage (string as_areacode, string as_divisioncode, string as_suppliercode, string as_itemcode, string as_standardrevno);
+blob lb_pic
+
+selectblob drawingname 
+		into :lb_pic 
+   	from TQQcStandard
+	  where areacode 		= :as_areacode
+		 and divisioncode	= :as_divisioncode
+		 and suppliercode	= :as_suppliercode
+		 and itemcode		= :as_itemcode
+		 and standardrevno= :as_standardrevno
+	 using sqlpis;
+
+
+IF Len(lb_pic) > 0 THEN
+	RETURN TRUE
+else
+	RETURN FALSE
+END IF
+
+end function
+

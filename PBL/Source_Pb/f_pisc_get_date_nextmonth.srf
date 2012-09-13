@@ -23,7 +23,7 @@ String	ls_nextmonth
 Select Top 1 Convert(Char(10), DateAdd(MM, 1, Convert(DateTime, :fs_month + '.01')), 102)
   Into :ls_nextmonth
   From sysusers
-;
+Using SQLPIS;
 
 ls_nextmonth	= Left(ls_nextmonth, 7)
 

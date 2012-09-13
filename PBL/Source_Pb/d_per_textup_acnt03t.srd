@@ -1,0 +1,66 @@
+$PBExportHeader$d_per_textup_acnt03t.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=100 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=112 color="536870912" )
+table(column=(type=char(6) updatewhereclause=yes name=empno dbname="PAY256.EMPNO" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln01 dbname="PAY256.PLN01" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln02 dbname="PAY256.PLN02" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln03 dbname="PAY256.PLN03" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln04 dbname="PAY256.PLN04" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln05 dbname="PAY256.PLN05" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln06 dbname="PAY256.PLN06" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln07 dbname="PAY256.PLN07" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln08 dbname="PAY256.PLN08" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln09 dbname="PAY256.PLN09" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln10 dbname="PAY256.PLN10" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln11 dbname="PAY256.PLN11" )
+ column=(type=decimal(1) updatewhereclause=yes name=pln12 dbname="PAY256.PLN12" )
+ retrieve="SELECT   ~"PBPAY~".~"PAY256~".~"EMPNO~",
+         ~"PBPAY~".~"PAY256~".~"PLN01~",   
+         ~"PBPAY~".~"PAY256~".~"PLN02~",   
+         ~"PBPAY~".~"PAY256~".~"PLN03~",   
+         ~"PBPAY~".~"PAY256~".~"PLN04~",   
+         ~"PBPAY~".~"PAY256~".~"PLN05~",   
+         ~"PBPAY~".~"PAY256~".~"PLN06~",   
+         ~"PBPAY~".~"PAY256~".~"PLN07~",   
+         ~"PBPAY~".~"PAY256~".~"PLN08~",   
+         ~"PBPAY~".~"PAY256~".~"PLN09~",   
+         ~"PBPAY~".~"PAY256~".~"PLN10~",   
+         ~"PBPAY~".~"PAY256~".~"PLN11~",   
+         ~"PBPAY~".~"PAY256~".~"PLN12~"   
+    FROM ~"PBPAY~".~"PAY256~"" )
+text(band=header alignment="2" text="Empno" border="0" color="33554432" x="9" y="8" height="84" width="233" html.valueishtml="0"  name=empno_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln01" border="0" color="33554432" x="251" y="8" height="84" width="384" html.valueishtml="0"  name=pln01_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln02" border="0" color="33554432" x="645" y="8" height="84" width="384" html.valueishtml="0"  name=pln02_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln03" border="0" color="33554432" x="1038" y="8" height="84" width="384" html.valueishtml="0"  name=pln03_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln04" border="0" color="33554432" x="1431" y="8" height="84" width="384" html.valueishtml="0"  name=pln04_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln05" border="0" color="33554432" x="1824" y="8" height="84" width="384" html.valueishtml="0"  name=pln05_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln06" border="0" color="33554432" x="2217" y="8" height="84" width="384" html.valueishtml="0"  name=pln06_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln07" border="0" color="33554432" x="2610" y="8" height="84" width="384" html.valueishtml="0"  name=pln07_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln08" border="0" color="33554432" x="3003" y="8" height="84" width="384" html.valueishtml="0"  name=pln08_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln09" border="0" color="33554432" x="3397" y="8" height="84" width="384" html.valueishtml="0"  name=pln09_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln10" border="0" color="33554432" x="3790" y="8" height="84" width="384" html.valueishtml="0"  name=pln10_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln11" border="0" color="33554432" x="4183" y="8" height="84" width="384" html.valueishtml="0"  name=pln11_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Pln12" border="0" color="33554432" x="4576" y="8" height="84" width="384" html.valueishtml="0"  name=pln12_t visible="1"  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="0" color="33554432" x="9" y="8" height="96" width="233" format="[general]" html.valueishtml="0"  name=empno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="1" tabsequence=32766 border="0" color="33554432" x="251" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln01 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="1" tabsequence=32766 border="0" color="33554432" x="645" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln02 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=32766 border="0" color="33554432" x="1038" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln03 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="1" tabsequence=32766 border="0" color="33554432" x="1431" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln04 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="1" tabsequence=32766 border="0" color="33554432" x="1824" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln05 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="0" color="33554432" x="2217" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln06 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="1" tabsequence=32766 border="0" color="33554432" x="2610" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln07 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="0" color="33554432" x="3003" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln08 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="1" tabsequence=32766 border="0" color="33554432" x="3397" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln09 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="1" tabsequence=32766 border="0" color="33554432" x="3790" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln10 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="1" tabsequence=32766 border="0" color="33554432" x="4183" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln11 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="1" tabsequence=32766 border="0" color="33554432" x="4576" y="8" height="96" width="384" format="[general]" html.valueishtml="0"  name=pln12 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="¸¼Àº °íµñ" font.height="-12" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

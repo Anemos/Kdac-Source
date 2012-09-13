@@ -1,0 +1,24 @@
+$PBExportHeader$f_get_issueetcdept.srf
+global type f_get_issueetcdept from function_object
+end type
+
+forward prototypes
+global function decimal f_get_issueetcdept (string ag_cmcd, string ag_plant, string ag_dvsn, string ag_itno, string ag_date)
+end prototypes
+
+global function decimal f_get_issueetcdept (string ag_cmcd, string ag_plant, string ag_dvsn, string ag_itno, string ag_date);dec{2} l_n_issueqt, l_n_returnqt, l_n_totqt
+
+select sum(tqty4) 
+  into :l_n_issueqt
+  from pbinv.inv401
+ where comltd = :ag_cmcd and xplant = :ag_plant and div = :ag_dvsn and itno = :ag_itno and {fn substring(tdte4,1,6)} = :ag_date and sliptype in ('IS', 'IP') and (xuse = '06' or (xuse in ('01', '02', '03', '05') and {fn substring(dept,4,1)} = '0')) using sqlca; 
+
+select sum(tqty4)
+  into :l_n_returnqt
+  from pbinv.inv401
+where comltd = :ag_cmcd and xplant = :ag_plant and div = :ag_dvsn and itno = :ag_itno and {fn substring(tdte4,1,6)} = :ag_date and sliptype = 'RS' and ((xuse = '06' and rtngub in ('  ', '01'))  or (xuse in ('01', '02', '03', '05') and {fn substring(dept,4,1)} = '0' and rtngub in ('  ', '01'))) using sqlca ;
+l_n_totqt = l_n_issueqt + l_n_returnqt
+return l_n_totqt
+
+end function
+

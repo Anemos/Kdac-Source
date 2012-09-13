@@ -1,0 +1,39 @@
+$PBExportHeader$f_increase_pdnr.srf
+$PBExportComments$이체분할납품회수 증가
+global type f_increase_pdnr from function_object
+end type
+
+forward prototypes
+global function integer f_increase_pdnr (string as_srno, ref string as_pdnr)
+end prototypes
+
+global function integer f_increase_pdnr (string as_srno, ref string as_pdnr);String  ls_pdnr
+Integer li_pdnr
+
+SELECT "PBINV"."INV620"."PDNR" INTO :ls_pdnr
+  FROM "PBINV"."INV620"  
+WHERE "PBINV"."INV620"."COMLTD" = '01' AND
+      "PBINV"."INV620"."SRNO"   = :as_srno using sqlca;
+
+ls_pdnr = f_seri_srno2( ls_pdnr )
+
+If ls_pdnr = '00' then
+	messagebox("확인", "이체분할납품횟수 초과 정보시스템으로 연락요망")
+	return -1
+End if
+
+UPDATE "PBINV"."INV620"  
+	SET "PDNR" = :ls_pdnr, "UPDTID"  = :g_s_empno, "UPDTDT"  = :g_s_datetime, 
+		 "IPADDR"  = :g_s_ipaddr, "MACADDR" = :g_s_macaddr
+WHERE ( "PBINV"."INV620"."COMLTD" = '01' ) AND 
+      ( "PBINV"."INV620"."SRNO" = :as_srno) using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	return -1
+end if
+
+as_pdnr = ls_pdnr
+
+return 1
+end function
+

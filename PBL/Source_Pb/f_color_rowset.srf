@@ -1,0 +1,68 @@
+$PBExportHeader$f_color_rowset.srf
+$PBExportComments$row color set
+global type f_color_rowset from function_object
+end type
+
+forward prototypes
+global subroutine f_color_rowset (datawindow adw_target)
+end prototypes
+
+global subroutine f_color_rowset (datawindow adw_target);Long   ll_Col, ll_BGcolor, ll_Rowcnt, ll_Row
+String ls_ModString, ls_Color_Syntax, ls_Color, err
+Long default_color, color1, color2
+Dec{0}	ld_ColCnt
+
+default_color = 536870912
+color1        = 15790320
+
+//default_color = 255 //red
+//color1        = 16711680 //blue
+//
+adw_target.Modify ( "DataWindow.Color='16777215'" )
+
+ld_ColCnt = Dec(adw_target.Object.DataWindow.Column.Count)
+
+For ll_Col = 1 To ld_ColCnt
+	ls_Color = adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color') 
+	
+//	If adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color') = '?' then Continue
+  
+	If adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color') <> '16777215' and &
+		adw_target.Describe('#' + String(ll_Col) + '.BackGround.Color') <> '12632256' then Continue
+
+	ls_ModString = "#" + String(ll_Col) + ".BackGround.Color = '" &
+	             + String(ls_Color) & 
+					  + " ~t If (mod( getrow(), 2 ) = 0," &
+					  + String(color1) &
+					  + ", " &
+					  + String(default_color) & 
+					  + ")'"			
+	err = adw_target.Modify(ls_ModString)	
+Next
+
+//color1 = 255 //red
+//color2 = 16711680 //blue
+//color3 = 65280 //green
+//default_color = 16777215//white
+//mod_string = &
+//        "salary.Background.Color = '" &
+//            + String(default_color) &
+//            + "~tIf(salary < 10000," &
+//            + String(color1) &
+//            + ",If(salary < 20000," &
+//            + String(color2) &
+//            + ",If(salary < 30000," &
+//            + String(color3) &
+//            + "," &
+//            + String(default_color) &
+//            + ")))'"
+//err = dw_emp.Modify(mod_string)
+//
+//IF err <> "" THEN
+//        MessageBox("Status", &
+//            "Change to Background Color Failed " + err)
+//        RETURN
+//
+//END IF
+end subroutine
+

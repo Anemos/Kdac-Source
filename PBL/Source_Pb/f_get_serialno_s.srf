@@ -1,0 +1,72 @@
+$PBExportHeader$f_get_serialno_s.srf
+$PBExportComments$간접재 각종 수불시(입고제외) 시리얼넘버 Return
+global type f_get_serialno_s from function_object
+end type
+
+forward prototypes
+global function string f_get_serialno_s (string as_ckey)
+end prototypes
+
+global function string f_get_serialno_s (string as_ckey);///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * 간접재 각종 수불시(입고제외) Control Table의 Serial NO 가져오기 *
+//
+//
+// Return:   Error: "", 
+//           성공 : XX(전표구분)-X(년도끝자리)-XX(월2자리)-XXXXX(시리얼00000 ~ 99999)-X(지역)-X(공장)-XX(계정)   
+//
+// Control Key: XX(전표구분)-X(지역)-X(공장)-XX(계정)-X(년도끝자리)-XX(월2자리)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+String ls_Xyear1
+Long	ll_Serial
+
+// 해당 작업가능 년월과 일련번호 Get. 
+SELECT "XYEAR1", "SRNO" INTO :ls_Xyear1, :ll_Serial
+	FROM "PBINV"."INV403"
+WHERE "COMLTD" = '01' AND  
+		"CKEY"   = :as_Ckey  Using SQLCA ;
+		
+If SQLCA.SQLCode = -1 Then      // SQL Error.
+	Return ""
+	
+ElseIf SQLCA.SQLCode = 100 Then // 해당 Row가 없음.
+	If Right( as_Ckey, 3 ) = Mid( g_s_date, 4, 3 ) Then   // 작업가능년월일 경우. 
+			ll_Serial = 1
+			ls_Xyear1 = Left( g_s_date, 6 )
+			
+			INSERT INTO "PBINV"."INV403"  
+			 ( "COMLTD",   "CKEY",   "SRNO",    "JSCD",   "FROMDT",   "TODT",   "XYEAR",      "XYEAR1",   
+			   "RPFL",     "ISFL",   "RMRT",    "EXDTC",  "VANCD",    "PGMID",  "XCOMMENT",   "EXTD",   
+			   "INPTID",   "INPTDT", "UPDTID",  "UPDTDT", "IPADDR",   "MACADDR" )  
+			VALUES
+			 ( '01',       :as_Ckey, :ll_Serial, ' ',      ' ',        ' ',      ' ',          :ls_Xyear1,   
+				' ',        ' ',      ' ',       ' ',      ' ',        ' ',      ' ',           ' ',   
+			   :g_s_empno, :g_s_datetime, :g_s_empno, :g_s_datetime, :g_s_ipaddr, :g_s_macaddr )  Using SQLCA ;
+			
+			If SQLCA.SQLCode <> 0 Then Return ""  // SQL(INSERT) Error.
+	Else
+		Return ""
+	End If
+	
+ElseIf SQLCA.SQLCode = 0 Then // Success.
+	If ll_Serial = 99999 Then 
+		ll_Serial = 1
+	Else
+		ll_Serial ++
+	End If
+	
+	UPDATE PBINV.INV403
+		SET SRNO    = :ll_Serial,
+	
+			 UPDTID  = :g_s_empno,
+			 UPDTDT  = :g_s_datetime,
+			 IPADDR  = :g_s_ipaddr,
+			 MACADDR = :g_s_macaddr
+	WHERE	COMLTD = '01' AND CKEY = :as_Ckey	Using	SQLCA ;
+	
+	If SQLCA.SQLCode <> 0 Then Return ""  // SQL(UPDATE) Error.
+End If
+
+Return	Mid( g_s_date, 4, 3 ) + String( ll_Serial, '00000' )
+end function
+

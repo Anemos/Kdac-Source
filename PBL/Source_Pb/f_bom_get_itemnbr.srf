@@ -1,0 +1,25 @@
+$PBExportHeader$f_bom_get_itemnbr.srf
+$PBExportComments$invdaa db 에서 품번을 가져오는 함수
+global type f_bom_get_itemnbr from function_object
+end type
+
+forward prototypes
+global function string f_bom_get_itemnbr (string ag_plant, string ag_div, string ag_item)
+end prototypes
+
+global function string f_bom_get_itemnbr (string ag_plant, string ag_div, string ag_item);string ls_itemnbr
+
+SELECT 	"PBINV"."INV101"."ITNO" 
+	INTO 	:ls_itemnbr
+   FROM 	"PBINV"."INV101"    
+   WHERE "PBINV"."INV101"."COMLTD" 	= '01' 		AND
+			"PBINV"."INV101"."XPLANT" 	= :ag_plant AND 
+			"PBINV"."INV101"."DIV" 		= :ag_div  	AND  
+			"PBINV"."INV101"."ITNO" 	= :ag_item  
+using sqlca ; 
+if sqlca.sqlcode <> 0 then
+	ls_itemnbr = " "
+end if
+return	trim(ls_itemnbr)
+end function
+

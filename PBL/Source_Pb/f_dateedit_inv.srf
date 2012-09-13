@@ -1,0 +1,22 @@
+$PBExportHeader$f_dateedit_inv.srf
+$PBExportComments$날짜변환  yy.mm.dd => yymmdd
+global type f_dateedit_inv from function_object
+end type
+
+forward prototypes
+global function string f_dateedit_inv (string ag_date)
+end prototypes
+
+global function string f_dateedit_inv (string ag_date);//////  일자 오류 Check 함수  //////////////////////////////
+// (1) Argument로 "yyyy.mm.dd"를 받아                     //
+// (2) Error면  "        " Return,                        //
+//     정상이면 "yyyymmdd" Return                         //
+//////////////////////////////  2007.05.              //////
+
+if len(f_spacedel(ag_date)) <> 10  then   // 형태가 '1997.01.01'이 아니면
+	Return space(8)
+end if	
+
+Return Mid(ag_date,1,4) + Mid(ag_date,6,2) + Mid(ag_date,9,2)
+end function
+

@@ -1,0 +1,62 @@
+$PBExportHeader$d_mpsu01_03.srd
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=12 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="INV101.PDCD" )
+ column=(type=char(2) updatewhereclause=yes name=ittype dbname="ITTYPE" initial=" " )
+ column=(type=char(12) updatewhereclause=yes name=inv101_itno dbname="INV101.ITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_spec dbname="INV002.SPEC" )
+ column=(type=char(4) updatewhereclause=yes name=linecode dbname="LINECODE" initial=" " )
+ column=(type=decimal(1) updatewhereclause=yes name=safeday dbname="INV002.SAFEDAY" initial="0" )
+ column=(type=decimal(1) updatewhereclause=yes name=safeqty dbname="INV002.SAFEQTY" initial="0" )
+ column=(type=decimal(1) updatewhereclause=yes name=lotsize dbname="INV002.LOTSIZE" initial="0" )
+ column=(type=decimal(1) updatewhereclause=yes name=ohqty dbname="INV002.OHQTY" initial="0" )
+ column=(type=char(1) updatewhereclause=yes name=check dbname="CHECK" values="	Y/	N" )
+ retrieve="  SELECT ~"PBINV~".~"INV101~".~"PDCD~",   
+         '  ' AS ITTYPE,   
+         ~"PBINV~".~"INV101~".~"ITNO~",   
+         ~"PBINV~".~"INV002~".~"SPEC~",   
+         '    ' AS LINECODE,0.0 AS SAFEDAY,0.0 AS SAFEQTY,0.0 AS LOTSIZE,0.0 AS OHQTY , ' ' AS CHECK
+    FROM ~"PBINV~".~"INV002~",   
+         ~"PBINV~".~"INV101~" exception join  ~"PBMPS~".~"MPS001~" on 
+         ~"PBMPS~".~"MPS001~".~"APLANT~" =  ~"PBINV~".~"INV101~".~"XPLANT~" AND ~"PBMPS~".~"MPS001~".~"ADVSN~" = ~"PBINV~".~"INV101~".~"DIV~" AND
+         ~"PBMPS~".~"MPS001~".~"AITNO~"  =  ~"PBINV~".~"INV101~".~"ITNO~"
+   WHERE ( ~"PBINV~".~"INV002~".~"COMLTD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( ~"PBINV~".~"INV002~".~"ITNO~"   = ~"PBINV~".~"INV101~".~"ITNO~" ) and 
+         ( ~"PBINV~".~"INV101~".~"COMLTD~" = :a_cmcd )                 and
+         ( ~"PBINV~".~"INV101~".~"XPLANT~" = :a_xplant )               and
+         ( ~"PBINV~".~"INV101~".~"DIV~"    = :a_dvsn )                 and
+         ( ~"PBINV~".~"INV101~".~"PDCD~" like :a_pdcd )                AND
+         ( ~"PBINV~".~"INV101~".~"CLS~"    = '30'   )            
+ORDER BY ~"PBINV~".~"INV101~".~"PDCD~" ASC,   
+         ~"PBINV~".~"INV101~".~"ITNO~"
+" arguments=(("a_cmcd", string),("a_xplant", string),("a_dvsn", string),("a_pdcd", string)) )
+text(band=header alignment="2" text="품   번" border="2" color="16777215" x="466" y="4" height="68" width="475" html.valueishtml="0"  name=t_4 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="구분" border="2" color="16777215" x="320" y="4" height="68" width="137" html.valueishtml="0"  name=t_2 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="재고수량" border="2" color="16777215" x="3314" y="4" height="68" width="393" html.valueishtml="0"  name=t_9 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="규   격" border="2" color="16777215" x="951" y="4" height="68" width="955" html.valueishtml="0"  name=inv002_spec_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Line Code" border="2" color="16777215" x="1915" y="4" height="60" width="283" html.valueishtml="0"  name=t_5 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="제품" border="2" color="16777215" x="133" y="4" height="68" width="178" html.valueishtml="0"  name=inv101_pdcd_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="선택" border="2" color="16777215" x="9" y="4" height="68" width="114" html.valueishtml="0"  name=t_11 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Lot Size" border="2" color="16777215" x="2958" y="4" height="68" width="347" html.valueishtml="0"  name=t_8 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="운영재고수량" border="2" color="16777215" x="2583" y="4" height="68" width="366" html.valueishtml="0"  name=t_7 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="운영재고일" border="2" color="16777215" x="2208" y="4" height="68" width="366" html.valueishtml="0"  name=t_6 visible="1"  font.face="Arial" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="2" color="0" x="951" y="0" height="76" width="955" format="[general]" html.valueishtml="0"  name=inv002_spec  tag="규격" visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="2" color="0" x="320" y="0" height="76" width="137" format="[general]" html.valueishtml="0"  name=ittype visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=3 alignment="0" tabsequence=32766 border="2" color="0" x="466" y="0" height="76" width="475" format="[general]" html.valueishtml="0"  name=inv101_itno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=1 alignment="0" tabsequence=32766 border="2" color="0" x="133" y="0" height="76" width="178" format="[general]" html.valueishtml="0"  name=inv101_pdcd  tag="제품" visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="2" tabsequence=10 border="2" color="0" x="9" y="0" height="76" width="114" format="[general]" html.valueishtml="0"  name=check visible="1" checkbox.text="" checkbox.on="Y" checkbox.off="N" checkbox.scale=no checkbox.threed=yes  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=32766 border="2" color="0" x="2583" y="0" height="76" width="366" format="#,###,###" html.valueishtml="0"  name=safeqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="1" tabsequence=40 border="2" color="0" x="2958" y="0" height="76" width="347" format="#,###,###" html.valueishtml="0"  name=lotsize visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=9 alignment="1" tabsequence=32766 border="2" color="0" x="3314" y="0" height="76" width="393" format="#,###,###" html.valueishtml="0"  name=ohqty visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="2" tabsequence=20 border="2" color="0" x="1915" y="0" height="76" width="283" format="[general]" html.valueishtml="0"  name=linecode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="1" tabsequence=30 border="2" color="0" x="2208" y="0" height="76" width="366" format="#,###,###.0" html.valueishtml="0"  name=safeday visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

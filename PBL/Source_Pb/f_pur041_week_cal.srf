@@ -1,0 +1,62 @@
+$PBExportHeader$f_pur041_week_cal.srf
+$PBExportComments$해당년도의 몇번째 주차산출(일요일부터시작)
+global type f_pur041_week_cal from function_object
+end type
+
+forward prototypes
+global function integer f_pur041_week_cal (date as_date)
+end prototypes
+
+global function integer f_pur041_week_cal (date as_date);///////////////////////////////////////////////
+//////// * 특정일을 기준으로 주차산출 * ///////
+//////// * Argument : as_date(Date)   * ///////
+//////// * Return   : li_ret(Integer) * ///////
+///////////////////////////////////////////////
+/*
+  2010.01.01  52주차
+  2010.01.03  [일요일]부터 1주차 시작.
+  -
+  - uf_week_output 은 1/1일부터 1주차임.
+  -
+*/
+
+String  ls_dayname, ls_String
+integer li_ret
+Date    ld_first, ld_sun, ld_bef_day
+
+// 해당년의 1월 1일 : ld_first = '2003-01-01'
+ld_first = Date(String(Year(as_date)) + '-01-01') 
+
+// 해당년의 1월 1일의 요일명
+ls_dayname = Dayname(ld_first) 
+
+// 해당년의 1월 1일을 ld_sun = '2003-01-01'
+ld_sun = ld_first
+
+// 최초의 일요일 찾기
+If Upper(ls_dayname) <> 'SUNDAY' Then
+	
+	DO UNTIL Upper(ls_dayname) = 'SUNDAY'
+		ld_sun     = RelativeDate(ld_sun, 1)  // 하루씩 증가
+		ls_dayname = Dayname(ld_sun)
+	LOOP	
+	// 최초의 일요일부터 해당일까지 일수를 구해서 7로 나눈다.
+	// 단, Daysafter('2000-01-01', '2000-01-01')을 0으로 계산하므로 1을 더한다.
+	If ld_sun > as_date Then
+		//li_ret = 1
+	 	ld_bef_day = Date(String(f_pur040_relativemonend(String(Integer(Year(as_date)) - 1)+"1201") ,"@@@@-@@-@@"))	
+		 
+		li_ret = f_pur041_week_cal(ld_bef_day)
+	else 
+		//li_ret = Integer( (Daysafter(ld_sun, as_date) / 7 )) + 2
+		li_ret = Integer( (Daysafter(ld_sun, as_date) / 7 )) + 1		
+	end if
+ELSE 
+	li_ret = Integer( (Daysafter(ld_sun, as_date) / 7 )) + 1	
+END IF	
+
+Return li_ret
+
+
+end function
+

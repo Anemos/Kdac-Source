@@ -1,0 +1,41 @@
+$PBExportHeader$f_pisc_get_date_shift.srf
+$PBExportComments$林/具 阑 备茄促.(return string 'A' 林埃, 'B'具埃)
+global type f_pisc_get_date_shift from function_object
+end type
+
+forward prototypes
+global function string f_pisc_get_date_shift (string fs_areacode, string fs_divisioncode, datetime fdt_datetime)
+end prototypes
+
+global function string f_pisc_get_date_shift (string fs_areacode, string fs_divisioncode, datetime fdt_datetime);//****************************************************************************************************************
+//	Function			:	f_pisc_get_date_shift
+//	Description		:	林/具 备盒阑备茄促.
+//	Arguments		:	fs_areacode
+//							fs_divisioncode
+//							fdt_datetime	=>	Time to get applydate
+//	Returns			:	None
+//	Notes				:	
+//	Initial			:	2002. 09. 17
+//	Author	BY		:	Kim Jin-Su
+// Company			:	Daewoo Information System Co., Ltd. IAS
+//****************************************************************************************************************
+String	ls_shift
+
+//Declare syntax in script.
+DECLARE get_shift PROCEDURE for sp_pisc_get_shift
+@ps_areacode = :fs_areacode,
+@ps_divisioncode = :fs_divisioncode,
+@pdt_sourcedate = :fdt_datetime,
+@rs_shift = '1' output
+Using SQLPIS;
+
+//exactly the parameters in the sp.
+EXECUTE get_shift;
+
+//then fetch output parameters.
+FETCH get_shift into :ls_shift;
+CLOSE get_shift;
+
+Return	ls_shift
+end function
+

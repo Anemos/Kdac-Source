@@ -1,0 +1,19 @@
+$PBExportHeader$dw_basis.srd
+release 8;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=84 color="536870912" )
+table(column=(type=char(1) update=yes updatewhereclause=yes key=yes name=area_code dbname="cmms_basis.area_code" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=factory_code dbname="cmms_basis.factory_code" )
+ column=(type=datetime update=yes updatewhereclause=yes key=yes name=wo_date dbname="cmms_basis.wo_date" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=work_day dbname="cmms_basis.work_day" )
+ retrieve="PBSELECT( VERSION(400) TABLE(NAME=~"cmms_basis~" ) COLUMN(NAME=~"cmms_basis.area_code~") COLUMN(NAME=~"cmms_basis.factory_code~") COLUMN(NAME=~"cmms_basis.wo_date~") COLUMN(NAME=~"cmms_basis.work_day~")WHERE(    EXP1 =~"cmms_basis.area_code~"   OP =~"=~"    EXP2 =~":aaa~"    LOGIC =~"and~" ) WHERE(    EXP1 =~"cmms_basis.factory_code~"   OP =~"=~"    EXP2 =~":bbb~" ) ) ARG(NAME = ~"aaa~" TYPE = string)  ARG(NAME = ~"bbb~" TYPE = string) " update="cmms_basis" updatewhere=0 updatekeyinplace=no arguments=(("aaa", string),("bbb", string)) )
+text(band=header alignment="2" text="¿ù" border="6" color="33554432" x="9" y="8" height="56" width="603" html.valueishtml="0"  name=wo_date_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+text(band=header alignment="2" text="±Ù¹«ÀÏ¼ö" border="6" color="33554432" x="622" y="8" height="56" width="329" html.valueishtml="0"  name=work_day_t visible="1"  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="2" background.color="134217750" )
+column(band=detail id=3 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="8" height="68" width="603" format="[shortdate] [time]" html.valueishtml="0"  name=wo_date visible="1" editmask.mask="yyyy-mm" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="1" tabsequence=20 border="0" color="33554432" x="622" y="8" height="68" width="329" format="[general]" html.valueishtml="0"  name=work_day visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²" font.height="-9" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+ 

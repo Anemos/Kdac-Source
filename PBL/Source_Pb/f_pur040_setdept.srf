@@ -1,0 +1,83 @@
+$PBExportHeader$f_pur040_setdept.srf
+$PBExportComments$지역,공장,계정 가져와서 부서코드(xxxx)결정
+global type f_pur040_setdept from function_object
+end type
+
+forward prototypes
+global function string f_pur040_setdept (string as_xplant, string as_div, string as_cls)
+end prototypes
+
+global function string f_pur040_setdept (string as_xplant, string as_div, string as_cls);//////////////////////////////////////////
+//지역,공장,계정 가져와서 부서코드(xxxx)결정
+///////////////////////////////////////////
+string ls_dept
+choose case as_cls
+	case "10", "20", "24", "40", "50" 
+	if as_xplant = 'D' then
+		choose case as_div
+			case 'A'
+				ls_dept = '4100'
+			case 'H'
+				ls_dept = '5600'
+			case 'M'
+				ls_dept = '7A00'
+			case 'S'
+				ls_dept = '7100'
+			case 'V'
+				ls_dept = '5100'
+			case else
+				ls_dept = ''
+		end choose
+	
+   elseif as_xplant = 'J' then
+	    ls_dept = 'J200'
+   elseif as_xplant = 'K' then
+		 ls_dept = 'K100'
+	elseif as_xplant = 'Y' or as_xplant = 'S' then
+		ls_dept = 'Y400'	 
+	elseif as_xplant = 'B' then
+		ls_dept = 'K310'	 
+	end if
+	return ls_dept
+end choose
+//이외품목 내자구매
+if as_xplant = 'D' then
+		choose case as_div
+			case 'A'
+				ls_dept = '4250'
+			case 'H'
+				ls_dept = '5250'
+			case 'M'
+				ls_dept = '7250'
+			case 'S'
+				ls_dept = '7350'
+			case 'V'
+				ls_dept = '5350'
+			case 'F'
+				ls_dept = '8100'
+			case 'W'
+				ls_dept = '1700'   //업무지원
+			case else
+				ls_dept = 'DX00'  //대구공통
+		end choose
+	
+elseif as_xplant = 'J' then
+	    ls_dept = 'J200'
+		 if as_cls = '23' then
+			 ls_dept = 'J31A'  //진천조향생산 공무1조(J31A)
+		end if
+elseif as_xplant = 'K' then
+		 ls_dept = 'K100'
+elseif as_xplant = 'Y' or as_xplant = 'S' then
+		ls_dept = 'Y400'	 	
+elseif as_xplant = 'K' then
+		ls_dept = 'K310'	 	
+end if
+if isnull(ls_dept) then
+	ls_dept = ''
+end if
+return ls_dept
+
+
+end function
+

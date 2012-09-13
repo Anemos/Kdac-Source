@@ -1,0 +1,64 @@
+$PBExportHeader$f_retire_empno.srf
+$PBExportComments$퇴사시 사번별 패스워드 및 사용가능 프로그램 정보 삭제 Function
+global type f_retire_empno from function_object
+end type
+
+forward prototypes
+global function boolean f_retire_empno (string a_empno)
+end prototypes
+
+global function boolean f_retire_empno (string a_empno);integer 		i,ln_count
+string  		ls_area
+datastore 	ds_1
+
+sqlxx 		= 	Create transaction
+ds_1			=	Create datastore
+ds_1.dataobject = 'd_comm001_retrieve'
+ds_1.settransobject(Sqlpis)
+
+ln_count = ds_1.retrieve()
+
+for i = 1 to ln_count
+	// remote autodown 관련
+	ls_area 				= 	trim(ds_1.object.serverid[i])
+	sqlxx.ServerName 	= 	trim(ds_1.object.servername[i])
+	sqlxx.DBMS       	= 	trim(ds_1.object.serverdbms[i])
+	sqlxx.Database   	= 	trim(ds_1.object.serverdatabase[i])
+	sqlxx.LogId      	= 	trim(ds_1.object.serverlogid[i])
+	sqlxx.LogPass    	= 	trim(ds_1.object.serverpassword[i])
+	sqlxx.autocommit 	= 	true
+	sqlxx.DBParm     	= 	trim(ds_1.object.serverdbparm[i])
+
+	connect using sqlxx;
+	if sqlxx.sqlcode <> 0 then
+		messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다. Delete 불가.')
+		disconnect using sqlxx;
+		destroy sqlxx 
+		return false
+	end if
+	if sqlxx.dbms	=	"ODBC"	then
+		delete from pbcommon.comm121
+		where emp_no = :a_empno	using sqlxx ;
+		delete from pbcommon.comm140
+		where emp_no = :a_empno 	using sqlxx ;
+	else
+		delete from comm121
+		where emp_no = :a_empno	using sqlxx ;
+		delete from comm140
+		where emp_no = :a_empno 	using sqlxx ;
+	end if
+
+	if sqlxx.sqlcode <> 0 then
+		messagebox("확인",sqlxx.sqlerrtext)
+		disconnect using sqlxx;
+		destroy sqlxx 
+		destroy ds_1
+		return false
+	end if
+	disconnect using sqlxx;
+next
+destroy	sqlxx 
+destroy 	ds_1
+return true
+end function
+

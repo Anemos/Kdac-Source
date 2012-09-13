@@ -1,0 +1,147 @@
+$PBExportHeader$f_teamleader_comm140.srf
+$PBExportComments$팀장 사용권한 등록 window 권한부여 함수
+global type f_teamleader_comm140 from function_object
+end type
+
+forward prototypes
+global function boolean f_teamleader_comm140 (string ag_empno, string ag_gubun)
+end prototypes
+
+global function boolean f_teamleader_comm140 (string ag_empno, string ag_gubun);////////////////////////////////////////////////////////////////////
+//////////팀장사번등록시 자동적으로 Window권한부여//////////////
+////////////////////////////////////////////////////////////////////
+Long 		i,ln_server_count,ln_win_count,j, li_cnt
+String  	ls_area, ls_window,ls_win_st
+
+datastore ds_1,ds_winid
+
+sqlxx	=	Create transaction
+
+ds_1	=	Create Datastore
+ds_1.dataobject	=	'd_comm001_retrieve'
+ds_1.settransobject(Sqlpis)
+
+ds_winid	=	Create Datastore
+ds_winid.dataobject = 'd_comm111u_winid'
+ds_winid.settransobject(Sqlca)
+
+ln_server_count 	=	ds_1.retrieve()
+ln_win_count 		= 	ds_winid.retrieve(ag_empno)
+
+//해당 사번이 팀장이 아니거나 해당부세에 해당하는 권한 없을때 바로 빠지게 수정-2011.12.22
+if	ln_win_count	<	1	then
+	destroy sqlxx 
+	destroy ds_1
+	destroy ds_winid
+	return true
+end if
+//
+
+for i = 1 to ln_server_count
+	// remote autodown 관련
+	ls_area 				= trim(ds_1.object.serverid[i])
+	sqlxx.ServerName 	= trim(ds_1.object.servername[i])
+	sqlxx.DBMS       	= trim(ds_1.object.serverdbms[i])
+	sqlxx.Database   	= trim(ds_1.object.serverdatabase[i])
+	sqlxx.LogId      	= trim(ds_1.object.serverlogid[i])
+	sqlxx.LogPass    	= trim(ds_1.object.serverpassword[i])
+	sqlxx.autocommit = true
+	sqlxx.DBParm     = trim(ds_1.object.serverdbparm[i])
+
+	connect using sqlxx;
+	if sqlxx.sqlcode <> 0 then
+		messagebox('경고',  ls_area + ' 서버가 연결되지 않습니다.')
+		disconnect using sqlxx;
+		destroy sqlxx 
+		destroy ds_1
+		destroy ds_winid
+		return false
+	end if
+	
+   for j = 1 to ln_win_count
+		ls_window 	= 	trim(ds_winid.object.win_id[j])
+		ls_win_st 	= 	trim(ds_winid.object.win_st[j])
+		li_cnt			=	0
+		if 	sqlxx.dbms	=	"ODBC"	then		
+			select count(*)	into  :li_cnt
+			from  pbcommon.comm140
+			where emp_no  = :ag_empno  and
+					use_win = :ls_window
+			using sqlxx ;
+		else
+			select count(*)	into  :li_cnt
+			from  comm140
+			where emp_no  = :ag_empno  and
+					use_win = :ls_window
+			using sqlxx ;
+		end if
+				
+		IF 	li_cnt = 0	and	ag_gubun	=	'A'  then
+			if 	sqlxx.dbms	=	"ODBC"	then
+				insert into pbcommon.comm140
+				values ( :ag_empno , :ls_window , :ls_win_st, 'ADMIN' , :g_s_datetime, '' ,'' ,:g_s_ipaddr ,:g_s_macaddr )
+				using sqlxx ;
+			else
+				insert into comm140 
+				values ( :ag_empno , :ls_window , :ls_win_st, 'ADMIN' , :g_s_datetime, '' ,'' ,:g_s_ipaddr ,:g_s_macaddr )
+				using sqlxx ;
+			End if
+			if sqlxx.sqlcode <> 0  then
+				messagebox("확인",sqlxx.sqlerrtext)
+				disconnect using sqlxx;
+				destroy sqlxx 
+				destroy ds_1
+				destroy ds_winid
+				return false
+			End if
+		elseif	li_cnt > 0	and	ag_gubun	=	'A'  then
+			if 	sqlxx.dbms	=	"ODBC"	then
+				update pbcommon.comm140
+					set		use_grd	=	:ls_win_st
+				where	 emp_no = :ag_empno and use_win = :ls_window and use_grd <> :ls_win_st
+				using  sqlxx ;
+			else
+				update comm140
+					set		use_grd	=	:ls_win_st
+				where	 emp_no = :ag_empno and use_win = :ls_window and use_grd <> :ls_win_st
+				using sqlxx ;
+			End if
+			if 	sqlxx.sqlcode <> 0  then
+				messagebox("확인",sqlxx.sqlerrtext)
+				disconnect using sqlxx;
+				destroy sqlxx 
+				destroy ds_1
+				destroy ds_winid
+				return false
+			End if	
+		elseif	li_cnt > 0	and	ag_gubun	=	'D'  then
+			if 	sqlxx.dbms	=	"ODBC"	then
+				delete from pbcommon.comm140
+					where	 emp_no = :ag_empno and use_win = :ls_window 
+				using sqlxx ;
+			else
+				delete from comm140
+					where	 emp_no = :ag_empno and use_win = :ls_window 
+				using sqlxx ;
+			End if
+			if 	sqlxx.sqlcode <> 0  then
+				messagebox("확인",sqlxx.sqlerrtext)
+				disconnect using sqlxx;
+				destroy sqlxx 
+				destroy ds_1
+				destroy ds_winid
+				return false
+			End if
+		End if
+	next
+	disconnect using sqlxx;
+next
+
+destroy sqlxx 
+destroy ds_1
+destroy ds_winid
+return true
+
+
+end function
+

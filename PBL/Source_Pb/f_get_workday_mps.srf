@@ -1,0 +1,36 @@
+$PBExportHeader$f_get_workday_mps.srf
+global type f_get_workday_mps from function_object
+end type
+
+forward prototypes
+global function string f_get_workday_mps (string a_date, string a_dvsn)
+end prototypes
+
+global function string f_get_workday_mps (string a_date, string a_dvsn);integer l_n_count,l_n_count1
+string  l_s_date
+
+if a_dvsn = 'A' then 
+	a_dvsn = 'E' 
+end if
+l_s_date = mid(a_date,1,6) + '32'
+select count(*) into :l_n_count from delabo.labmaa
+	where ghdt > :a_date and ghdt < :l_s_date and gdiv = :a_dvsn and ghgb = '' 
+using sqlca ;
+if sqlca.sqlcode <> 0 then
+	return '00' + mid(a_date,7,2)
+end if 
+
+l_s_date = mid(a_date,1,6) + '01'
+select count(*) into :l_n_count1 from delabo.labmaa
+	where ghdt >= :l_s_date and ghdt <= :a_date and gdiv = :a_dvsn and ghgb = '' 
+using sqlca ;
+
+if sqlca.sqlcode <> 0 then
+	return string(string(l_n_count),'@@') + '00' 
+end if 
+
+return string(string(l_n_count),'@@') + string(string(l_n_count1),'@@')
+
+
+end function
+
