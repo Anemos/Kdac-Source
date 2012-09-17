@@ -22,13 +22,19 @@ global function string f_replace_with (string as_source, string as_target, strin
 //
 //		°á°ú) ls_return = 'select emp_no from emp05'
 //////////////////////////////////////////////////////////
+
+
 Int	li_Start_Pos = 1
 
 li_Start_Pos = Pos(as_Source, as_Target, li_Start_Pos)
 
+
 Do While li_Start_Pos > 0
-	as_Source 		= 	Replace(as_Source, li_Start_Pos, Len(as_Target), as_Replace)
-	li_Start_Pos 	= 	Pos(as_Source, as_Target, li_Start_Pos + Len(as_Replace))
+	
+	as_Source = Replace(as_Source, li_Start_Pos, Len(as_Target), as_Replace)
+	
+	li_Start_Pos = Pos(as_Source, as_Target, li_Start_Pos + Len(as_Replace))
+
 Loop
 
 Return	as_Source

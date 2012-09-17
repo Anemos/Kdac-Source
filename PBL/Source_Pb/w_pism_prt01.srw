@@ -463,7 +463,7 @@ w_frame.SetToolbarPos(2, 2, 150, false)
 DataWindowChild ldwc_prt 
 
 If dw_preview.GetChild('dw_prt', ldwc_prt) = -1 Then 
-	gb_4.Visible = False; pb_excel.Visible = False 
+//	gb_4.Visible = False; pb_excel.Visible = False 
 End If 
 
 end event
@@ -574,6 +574,7 @@ Long l_n_value
 Integer li_Chk 
 
 If dw_download.DataObject <> dw_preview.DataObject + "_download" Then dw_download.DataObject = dw_preview.DataObject + "_download" 
+dw_download.SettransObject(i_str_prt.transaction)
 i_str_prt.parent_win.Dynamic wf_prDataWindowRetrieve(dw_download) 
 
 If dw_download.RowCount() = 0 Then Return 

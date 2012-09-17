@@ -22,7 +22,7 @@ if a_code = '040' and f_spacechk(a_plant) = -1 then
 	//Running Date가져오기
 	SELECT distinct "PBWIP"."WIP090"."WZDATE" INTO :ls_offdate
 		FROM "PBWIP"."WIP090"  
-   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company )
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )
            	using sqlca;
 	if sqlca.sqlcode <> 0 then
 		return -1
@@ -30,7 +30,7 @@ if a_code = '040' and f_spacechk(a_plant) = -1 then
 	//이월 Update
 	UPDATE "PBWIP"."WIP090"  
      SET "WZSTSCD" = 'C'
-   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company )
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )
            	using sqlca;
 	if sqlca.sqlcode <> 0 then
 		return -1
@@ -41,9 +41,7 @@ if a_code = '040' and f_spacechk(a_plant) = -1 then
 	UPDATE "PBWIP"."WIP090"  
      SET "WZDATE" = :ls_rundate,   
          "WZEDDT" = :ls_offdate  
-   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
-         	( (substr("PBWIP"."WIP090"."WZCTTP",5,3) >= '') AND 
-				  (substr("PBWIP"."WIP090"."WZCTTP",5,3) <= '090') )   
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' )   
            	using sqlca;
 	if sqlca.sqlcode <> 0 then
 		return -1
@@ -51,7 +49,7 @@ if a_code = '040' and f_spacechk(a_plant) = -1 then
 	//이월후의 작업을 진행상태로 셋팅
 	UPDATE "PBWIP"."WIP090"  
      SET "WZSTSCD" = '2'
-   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
+   	WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
          	( (substr("PBWIP"."WIP090"."WZCTTP",5,3) > '040') AND
 				  (substr("PBWIP"."WIP090"."WZCTTP",5,3) <= '090') )   
            	using sqlca;
@@ -67,7 +65,7 @@ if a_code = '090' then
 		//이월후의 작업을 진행상태로 셋팅
 		UPDATE "PBWIP"."WIP090"  
 		  SET "WZSTSCD" = '2'
-			WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
 					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
 					( ("PBWIP"."WIP090"."WZCTTP" >= :ls_code) AND
 					  ("PBWIP"."WIP090"."WZCTTP" <= :ls_postcode) )   
@@ -77,7 +75,7 @@ if a_code = '090' then
 		end if
 		UPDATE "PBWIP"."WIP090"  
 		  SET "WZSTSCD" = '2'
-			WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
 					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
 					("PBWIP"."WIP090"."WZCTTP" = :ls_cttp) 
 					using sqlca;
@@ -91,7 +89,7 @@ if a_code = '090' then
 		//이월후의 작업을 진행상태로 셋팅
 		UPDATE "PBWIP"."WIP090"  
 		  SET "WZSTSCD" = '2'
-			WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
 					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
 					( ("PBWIP"."WIP090"."WZCTTP" >= :ls_code) AND
 					  ("PBWIP"."WIP090"."WZCTTP" <= :ls_postcode) )   
@@ -101,7 +99,7 @@ if a_code = '090' then
 		end if
 		UPDATE "PBWIP"."WIP090"  
 		  SET "WZSTSCD" = 'C'
-			WHERE ( "PBWIP"."WIP090"."WZCMCD" = :g_s_company ) AND  
+			WHERE ( "PBWIP"."WIP090"."WZCMCD" = '01' ) AND  
 					( "PBWIP"."WIP090"."WZPLANT" = :a_plant ) AND  
 					("PBWIP"."WIP090"."WZCTTP" = :ls_cttp) 
 					using sqlca;

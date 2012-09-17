@@ -4,69 +4,103 @@ global type f_dw_dup_check from function_object
 end type
 
 forward prototypes
-global function boolean f_dw_dup_check (datawindow adw)
+global function long f_dw_dup_check (datawindow adw, integer ai_row, string as_key[])
 end prototypes
 
-global function boolean f_dw_dup_check (datawindow adw);/*****************************************************************************/
-/* Description :  Check a datawindow. find any blank colums.                 */                  
-/* Arg     :  adw      - 검사대사 DataWindow                                 */
-/*            as_key[] - 검사대사 DataWindow의 Key Column                    */
-/* Return  :  TRUE     - 성공                                                */
-/*            FALSE    - 중복되는 KEY가 존재                                 */
-/*****************************************************************************/
-Int    li_col_num, li_com_cnt, li_wk_end, i, ii, li_next_cnt, li_key
-String ls_ori_key = "", ls_com_key, ls_colcount, ls_key_yn, ls_colname
-String wk_column_name[] 
+global function long f_dw_dup_check (datawindow adw, integer ai_row, string as_key[]);///////////////////////////////////////////////////////////////////////////////
+//                                                                           
+// Description :  Check a datawindow. find any blank colums.                 
+//                                                                           
+// return  :  long    중복된 열의 갯수를 return
+//                                                                           
+// Usage   :  
+//                                                                           
+// Example :  
+//                                                                           
+///////////////////////////////////////////////////////////////////////////////
 
-//Find rowcount
-li_wk_end = adw.RowCount()
+int    li_col_num,li_com_cnt, li_wk_end,i,ii,li_first,li_dup_row,li_dup_count=0 
+string ls_ori_key="",ls_com_key="",ls_col_type,ls_plus_key
 
-IF li_wk_end = 1 THEN RETURN TRUE  //row가 1일때 의미가 없음
+string wk_column_name[] 
 
 //Moving key name
-ls_colcount = adw.Object.DataWindow.Column.Count
-FOR  ii = 1  TO Dec(ls_colcount)
-	  ls_key_yn = Upper(adw.Describe("#" + String(ii) + ".Key") ) 
-	  ls_colname   = adw.Describe("#" + String(ii) + ".Name")
-     IF ls_key_yn = "YES" THEN
-        li_key ++
-        wk_column_name[li_key] = ls_colname
-	  END IF
-NEXT
+wk_column_name[] = as_key[]
+
+//Find rowcount
+li_wk_end = adw.rowcount()
 
 //Find key Number
 li_col_num = UpperBound(wk_column_name[]) 
+If li_col_num < 1 Then return 0  //체크할 Key가 없을때 
+
+if li_wk_end <= 1 then return 0  //row가 1일때 의미가 없음
+
+//Find Key Value 
+
+//컬럼수만큼 검사할 대상을 읽는다.
+For i = 1 to li_col_num
+	if wk_column_name[i] <> "" then
+		ls_col_type = adw.Describe(wk_column_name[i]+".ColType")
+
+		If ls_col_type = "number" or ls_col_type = "long" or left(ls_col_type,7) = "decimal" then
+			ls_plus_key = trim(string(adw.getitemnumber(ai_row, wk_column_name[i])))
+		else
+			ls_plus_key = trim(adw.getitemstring(ai_row, wk_column_name[i]))
+		end if
+
+		ls_ori_key = ls_ori_key + ls_plus_key
+	end if
+Next
+
+ls_plus_key  = ""
+li_first 	 = 0
+li_dup_count = 0
 
 //전체 row에 대해서 비교			 
-FOR li_com_cnt = 1 TO li_wk_end
-	//컬럼수만큼 검사할 대상을 읽는다.
-	FOR i = 1 TO li_col_num
-		IF wk_column_name[i] <> "" THEN
-         //Find Key Value 
-			ls_ori_key = ls_ori_key + Trim(adw.GetItemString(li_com_cnt, wk_column_name[i]))
-		END IF
-	NEXT
+for li_com_cnt = 1 to li_wk_end
+	//컬럼수만클 비교할 대상을 읽는다.
+	for i = 1 to li_col_num
+		if wk_column_name[i] <> "" then
+			ls_col_type = adw.Describe(wk_column_name[i]+".ColType")
 
-	//컬럼수만큼 비교할 대상을 읽는다.
-	FOR li_next_cnt = li_com_cnt + 1 TO li_wk_end
-		FOR i = 1 TO li_col_num
-			IF wk_column_name[i] <> "" THEN
-				ls_com_key = ls_com_key + Trim(adw.GetItemString(li_next_cnt, wk_column_name[i]))
-			END IF
-		NEXT
-		IF ls_ori_key = ls_com_key THEN
-			messagebox("중복 정보", string(li_com_cnt) + ' 째줄과  '+ &
-											string(li_next_cnt) + ' 째줄이 중복되었습니다.') 
-			adw.SelectRow(0, False)
-			adw.SelectRow(li_com_cnt, True)
-			adw.SelectRow(li_next_cnt, True)
-			RETURN FALSE
-		END IF
-  	   ls_com_key = ''
-	NEXT
-	ls_ori_key = ''
-NEXT
-RETURN TRUE
+			If ls_col_type = "number" or ls_col_type = "long" or left(ls_col_type,7) = "decimal" then
+				ls_plus_key = trim(string(adw.getitemnumber(li_com_cnt, wk_column_name[i])))
+			else
+				ls_plus_key = trim(adw.getitemstring(li_com_cnt, wk_column_name[i]))
+			end if
+	
+			ls_com_key = ls_com_key + ls_plus_key
+		end if
+	next
+	
+	//자기 자신을 제외하고 비교
+	If li_com_cnt <> ai_row Then
+		if ls_ori_key = ls_com_key then
+			//첫 번째 중복열 찾기
+			if li_first = 0 then
+				li_dup_row = li_com_cnt
+				li_first = 1
+			end if
+			//총 중복 열수 구하기
+			li_dup_count++
+		end if
+	End if
+	
+	ls_com_key = ""
+Next
+
+if li_dup_row = 0 then return 0
+
+//첫 번째 중복row에 focus주기
+if li_dup_row > 0 then
+	messagebox("중복 정보", string(ai_row) + ' 째줄과  '+ string(li_dup_row) + ' 째줄이 중복되었습니다.') 
+	adw.setfocus()
+	adw.ScrollToRow(li_dup_row)
+	adw.setrow(li_dup_row)
+end if
+
+return li_dup_count
 
 end function
 

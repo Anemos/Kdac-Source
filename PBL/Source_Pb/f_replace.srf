@@ -15,7 +15,7 @@ global function string f_replace (string as_source, string as_target, string as_
 //		string ls_str,ls_return
 //	
 //		ls_str = 'select emp_no from emp01'
-// 	ls_return = gf_replace(ls_str,'emp01','emp05')
+// 	ls_return = f_replace(ls_str,'emp01','emp05')
 //
 //		°á°ú) ls_return = 'select emp_no from emp05'
 ///////////////////////////////////////////////////////////////////////////

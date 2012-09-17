@@ -1,26 +1,20 @@
 $PBExportHeader$f_win_center_move.srf
-$PBExportComments$Move Window to Center(arg fw_win, Return boolean)
+$PBExportComments$Move Window to Center(arg fw_win, Return none)
 global type f_win_center_move from function_object
 end type
 
 forward prototypes
-global function boolean f_win_center_move (window fw_win)
+global subroutine f_win_center_move (window fw_win)
 end prototypes
 
-global function boolean f_win_center_move (window fw_win);Environment 	env
-Long				ll_x, ll_y
-
-If	Not 	IsValid(fw_win)	Then
-	Return	False
-End If
+global subroutine f_win_center_move (window fw_win);environment env
+long ll_x, ll_y
 
 GetEnvironment(env)
-
-ll_x	=	(PixelsToUnits(env.ScreenWidth, XPixelsToUnits!) - fw_win.Width) / 2
-ll_y 	=	(PixelsToUnits(env.ScreenHeight, YPixelsToUnits!) - fw_win.Height) / 2
+ll_x = (PixelsToUnits(env.ScreenWidth, XPixelsToUnits!) - fw_win.Width) / 2
+ll_y = (PixelsToUnits(env.ScreenHeight, YPixelsToUnits!) - fw_win.Height) / 2
 
 fw_win.Move(ll_x, ll_y)
 
-Return True
-end function
+end subroutine
 

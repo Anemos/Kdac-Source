@@ -7,7 +7,8 @@ forward prototypes
 global function string f_relativedate (string ag_s_date, integer ag_n_day)
 end prototypes
 
-global function string f_relativedate (string ag_s_date, integer ag_n_day);/////////////////////////////////////////////////////////////////////
+global function string f_relativedate (string ag_s_date, integer ag_n_day);
+/////////////////////////////////////////////////////////////////////
 // 
 //  String 날짜를 받아 원하는 날수를 더하여 String 날짜로 Return
 //
@@ -15,10 +16,11 @@ global function string f_relativedate (string ag_s_date, integer ag_n_day);/////
 //           output: yyyymmdd
 //
 /////////////////////////////////////////////////////////////////////
-String 	ls_date
 
-ls_date 	= 	String(RelativeDate(Date(String(ag_s_date,"@@@@-@@-@@")),ag_n_day),"yyyymmdd")
+string l_s_date
 
-RETURN ls_date
+l_s_date = String(RelativeDate(Date(String(ag_s_date,"@@@@-@@-@@")),ag_n_day),"yyyymmdd")
+
+RETURN(l_s_date)
 end function
 

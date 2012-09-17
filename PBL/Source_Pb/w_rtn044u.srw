@@ -501,8 +501,8 @@ for ll_cnt = 1 to dw_rtn044u_01.rowcount()
 			ls_opno = dw_rtn044u_02.getitemstring(ll_cnty,"reopno")
 			//*
 			//* 최종승인일자에 해당하는  완료일자, 적용일자 가져오기
-			SELECT MIN(REEDFM), MIN(REEDTO),MAX(REEDFM), MAX(REEDTO)
-			INTO :ls_min_edfm, :ls_min_edto, :ls_max_edfm, :ls_max_edto
+			SELECT MAX(REEDFM), MAX(REEDTO)
+			INTO :ls_max_edfm, :ls_max_edto
 			FROM PBRTN.RTN015
 			WHERE RECMCD = :g_s_company AND REPLANT = :ls_plant AND
 				REDVSN = :ls_dvsn AND REITNO = :ls_itno AND
@@ -510,6 +510,16 @@ for ll_cnt = 1 to dw_rtn044u_01.rowcount()
 				REINEMP = :ls_inemp AND REINTIME = :ls_intime AND 
 				REPLEMP = :ls_plemp AND REPLTIME = :ls_pltime AND
 				REDLEMP = :ls_dlemp AND REDLTIME = :ls_dltime
+			using sqlca;
+			
+			//* 해당변경공순의 가장 최근 적용일자 및 완료일자
+			SELECT MAX(REEDFM), MAX(REEDTO)
+			INTO :ls_min_edfm, :ls_min_edto
+			FROM PBRTN.RTN015
+			WHERE RECMCD = :g_s_company AND REPLANT = :ls_plant AND
+				REDVSN = :ls_dvsn AND REITNO = :ls_itno AND
+				RELINE1 = :ls_line1 AND RELINE2 = :ls_line2 AND REOPNO = :ls_opno AND
+				REEDTO <> '99991231'
 			using sqlca;
 			
 			SELECT COUNT(*) INTO :ll_chkcnt
@@ -521,8 +531,24 @@ for ll_cnt = 1 to dw_rtn044u_01.rowcount()
 			using sqlca;
 			
 			if ll_chkcnt > 0 then
-				ls_message = "RTN015 변경일자와 최종적용일자 사이에 변경이력이 존재합니다. :" + ls_itno
-				goto Rollback_
+				// 시스템에서 해당레코드 삭제 및 적용
+				DELETE FROM PBRTN.RTN015
+				WHERE RECMCD = :g_s_company AND REPLANT = :ls_plant AND
+					REDVSN = :ls_dvsn AND REITNO = :ls_itno AND
+					RELINE1 = :ls_line1 AND RELINE2 = :ls_line2 AND REOPNO = :ls_opno AND
+					REEDFM >= :ls_applydate AND REEDFM < :ls_max_edfm
+				using sqlca;
+				
+				SELECT MAX(REEDFM), MAX(REEDTO)
+				INTO :ls_min_edfm, :ls_min_edto
+				FROM PBRTN.RTN015
+				WHERE RECMCD = :g_s_company AND REPLANT = :ls_plant AND
+					REDVSN = :ls_dvsn AND REITNO = :ls_itno AND
+					RELINE1 = :ls_line1 AND RELINE2 = :ls_line2 AND REOPNO = :ls_opno  AND
+				   REEDTO <> '99991231'
+					
+				using sqlca;
+				
 			end if
 			
 			SELECT COUNT(*) INTO :ll_chkcnt
@@ -544,10 +570,8 @@ for ll_cnt = 1 to dw_rtn044u_01.rowcount()
 				SET REEDTO = :ls_apply_edto, REEPNO = :g_s_empno, REUPDT = :g_s_date
 				WHERE RECMCD = :g_s_company AND REPLANT = :ls_plant AND
 					REDVSN = :ls_dvsn AND REITNO = :ls_itno AND REOPNO = :ls_opno AND
-					RELINE1 = :ls_line1 AND RELINE2 = :ls_line2 AND REEDTO = :ls_min_edto AND
-					REINEMP = :ls_inemp AND REINTIME = :ls_intime AND 
-					REPLEMP = :ls_plemp AND REPLTIME = :ls_pltime AND
-					REDLEMP = :ls_dlemp AND REDLTIME = :ls_dltime
+					RELINE1 = :ls_line1 AND RELINE2 = :ls_line2 AND REEDFM = :ls_min_edfm AND
+					REEDTO = :ls_min_edto
 				using sqlca;
 				
 				if sqlca.sqlnrows < 1 then
@@ -599,12 +623,41 @@ for ll_cnt = 1 to dw_rtn044u_01.rowcount()
 			end if
 			//*** 부대작업 적용일자 변경
 			// 변경전 데이타 완료일자 변경
+			SELECT COUNT(*) INTO :ll_chkcnt
+			FROM PBRTN.RTN016
+			WHERE RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND
+				RFDVSN = :ls_dvsn AND RFITNO = :ls_itno AND RFOPNO = :ls_opno AND
+				RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
+				RFEDFM >= :ls_applydate AND RFEDFM < :ls_max_edfm
+			using sqlca;
+			
+			if ll_chkcnt > 0 then
+				// 시스템에서 해당레코드 삭제 및 적용
+				DELETE FROM PBRTN.RTN016
+				WHERE RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND
+					RFDVSN = :ls_dvsn AND RFITNO = :ls_itno AND RFOPNO = :ls_opno AND
+					RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
+					RFEDFM >= :ls_applydate AND RFEDFM < :ls_max_edfm
+				using sqlca;
+				
+				SELECT MAX(RFEDFM), MAX(RFEDTO)
+				INTO :ls_min_edfm, :ls_min_edto
+				FROM PBRTN.RTN016
+				WHERE RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND
+					RFDVSN = :ls_dvsn AND RFITNO = :ls_itno AND RFOPNO = :ls_opno AND
+					RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND
+					RFEDTO <> '99991231'		
+				using sqlca;
+				
+			end if
+			
 			if ls_min_edto <> '99991231' then
 				UPDATE PBRTN.RTN016
 				SET RFEDTO = :ls_apply_edto, RFEPNO = :g_s_empno, RFUPDT = :g_s_date
 				WHERE RFCMCD = :g_s_company AND RFPLANT = :ls_plant AND
 					RFDVSN = :ls_dvsn AND RFITNO = :ls_itno AND RFOPNO = :ls_opno AND
-					RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND RFEDTO = :ls_min_edto
+					RFLINE1 = :ls_line1 AND RFLINE2 = :ls_line2 AND RFEDFM = :ls_min_edfm AND
+					RFEDTO = :ls_min_edto
 				using sqlca;
 			end if
 			// 변경후 데이타 적용일자 변경
