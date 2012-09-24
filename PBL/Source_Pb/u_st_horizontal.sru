@@ -6,17 +6,19 @@ end type
 end forward
 
 global type u_st_horizontal from statictext
-int Width=106
-int Height=93
-boolean FocusRectangle=false
-long BackColor=0
-string Pointer="Ho_split.cur"
-int TextSize=-10
-int Weight=400
-string FaceName="±¼¸²"
-FontCharSet FontCharSet=Hangeul!
-FontFamily FontFamily=Modern!
-FontPitch FontPitch=Variable!
+integer width = 105
+integer height = 92
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "±¼¸²"
+string pointer = "Ho_split.cur"
+long backcolor = 0
+boolean border = true
+borderstyle borderstyle = styleraised!
+boolean focusrectangle = false
 event ue_mousedown pbm_lbuttondown
 event ue_mouseup pbm_lbuttonup
 event ue_mousemove pbm_mousemove
@@ -25,5 +27,16 @@ global u_st_horizontal u_st_horizontal
 
 event ue_mousedown;//When mouse clicked, show Bar in Black
 BackColor = 0
+
+setposition(ToTop!)
 end event
+
+event ue_mouseup;setposition(ToBottom!)
+end event
+
+on u_st_horizontal.create
+end on
+
+on u_st_horizontal.destroy
+end on
 

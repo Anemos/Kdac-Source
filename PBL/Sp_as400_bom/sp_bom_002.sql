@@ -48,7 +48,6 @@ loop
      leave inc_loop;
   end if;
   
-  if p_plant <> 'D' then
   -- call sp_bom_101
   call pbpdm.sp_bom_001(a_comltd,p_plant,p_dvsn,
        a_applydate,a_createdate,a_chk);
@@ -57,7 +56,6 @@ loop
     -- update purchase information
     call pbpdm.sp_bom_105(a_comltd,p_plant,p_dvsn,
       a_applydate,a_createdate);
-  end if;
   end if;
   
   set at_end = 0;

@@ -5,6 +5,7 @@
 --author                : kim ki sub
 --desc          : wip001 -> wip002
 
+drop procedure pbwip.sp_wip_01;
 create procedure pbwip.sp_wip_01
 (in a_yy01 varchar(4),
  in a_mm01   varchar(2),

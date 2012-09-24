@@ -2,6 +2,7 @@
 -- procedure name : pbwip.sf_wip_004
 -- desc : return exchange cost
 
+drop function pbwip.sf_wip_004;
 create function pbwip.sf_wip_004 (
 a_cmcd varchar(2),
 a_year varchar(4),

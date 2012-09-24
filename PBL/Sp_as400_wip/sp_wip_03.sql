@@ -4,6 +4,7 @@
 --desc    :  wip line detail report
 --author       : kim ki sub
 
+drop procedure pbwip.sp_wip_03;
 create procedure pbwip.sp_wip_03
 (in @cmcd  char(2),
 in @plant char(1),

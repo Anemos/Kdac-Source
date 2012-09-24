@@ -2,6 +2,7 @@
 -- procedure name : pbwip.sf_wip_009
 -- desc : return customer wip cost-item material cost
 
+drop function pbwip.sf_wip_009;
 create function pbwip.sf_wip_009 (
 a_cmcd varchar(2),
 a_date varchar(6),

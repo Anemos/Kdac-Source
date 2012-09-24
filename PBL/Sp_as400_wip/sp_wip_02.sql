@@ -5,6 +5,7 @@
 --author        : kim ki sub
 --desc          : Vendorsheet creation(Before Final)
 
+drop procedure pbwip.sp_wip_02;
 create procedure pbwip.sp_wip_02
 (in a_cmcd char(2),
  in a_yyyy char(4),

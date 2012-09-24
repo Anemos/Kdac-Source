@@ -1,5 +1,5 @@
 $PBExportHeader$w_wip060i.srw
-$PBExportComments$재공 Data Migration Window
+$PBExportComments$재공 시스템 수작업화면
 forward
 global type w_wip060i from w_origin_sheet01
 end type
@@ -65,6 +65,10 @@ type sle_todt from singlelineedit within w_wip060i
 end type
 type cb_6 from commandbutton within w_wip060i
 end type
+type cb_7 from commandbutton within w_wip060i
+end type
+type cb_8 from commandbutton within w_wip060i
+end type
 type gb_2 from groupbox within w_wip060i
 end type
 type gb_1 from groupbox within w_wip060i
@@ -108,6 +112,8 @@ st_6 st_6
 sle_fromdt sle_fromdt
 sle_todt sle_todt
 cb_6 cb_6
+cb_7 cb_7
+cb_8 cb_8
 gb_2 gb_2
 gb_1 gb_1
 gb_3 gb_3
@@ -978,6 +984,8 @@ this.st_6=create st_6
 this.sle_fromdt=create sle_fromdt
 this.sle_todt=create sle_todt
 this.cb_6=create cb_6
+this.cb_7=create cb_7
+this.cb_8=create cb_8
 this.gb_2=create gb_2
 this.gb_1=create gb_1
 this.gb_3=create gb_3
@@ -1014,10 +1022,12 @@ this.Control[iCurrent+28]=this.st_6
 this.Control[iCurrent+29]=this.sle_fromdt
 this.Control[iCurrent+30]=this.sle_todt
 this.Control[iCurrent+31]=this.cb_6
-this.Control[iCurrent+32]=this.gb_2
-this.Control[iCurrent+33]=this.gb_1
-this.Control[iCurrent+34]=this.gb_3
-this.Control[iCurrent+35]=this.gb_4
+this.Control[iCurrent+32]=this.cb_7
+this.Control[iCurrent+33]=this.cb_8
+this.Control[iCurrent+34]=this.gb_2
+this.Control[iCurrent+35]=this.gb_1
+this.Control[iCurrent+36]=this.gb_3
+this.Control[iCurrent+37]=this.gb_4
 end on
 
 on w_wip060i.destroy
@@ -1053,6 +1063,8 @@ destroy(this.st_6)
 destroy(this.sle_fromdt)
 destroy(this.sle_todt)
 destroy(this.cb_6)
+destroy(this.cb_7)
+destroy(this.cb_8)
 destroy(this.gb_2)
 destroy(this.gb_1)
 destroy(this.gb_3)
@@ -1389,9 +1401,9 @@ end on
 
 type cb_17 from commandbutton within w_wip060i
 integer x = 1879
-integer y = 1100
+integer y = 980
 integer width = 1458
-integer height = 128
+integer height = 104
 integer taborder = 90
 boolean bringtotop = true
 integer textsize = -9
@@ -1976,19 +1988,19 @@ end type
 
 type cb_3 from commandbutton within w_wip060i
 integer x = 1911
-integer y = 1336
+integer y = 1104
 integer width = 1385
-integer height = 112
+integer height = 104
 integer taborder = 120
 boolean bringtotop = true
-integer textsize = -12
+integer textsize = -10
 integer weight = 700
 fontcharset fontcharset = hangeul!
 fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 boolean enabled = false
-string text = "업체재공 이관작업"
+string text = "업체전품목 재공 이관작업"
 end type
 
 event clicked;//string l_s_unit, l_s_cls, l_s_srce, l_s_pdcd, l_s_itnm, l_s_spec, l_s_rvno
@@ -2467,6 +2479,426 @@ sle_todt.text = ls_curtime
 
 end event
 
+type cb_7 from commandbutton within w_wip060i
+integer x = 1911
+integer y = 1232
+integer width = 1385
+integer height = 104
+integer taborder = 130
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+boolean enabled = false
+string text = "업체품목(dw_3) 재공이관작업_wip002"
+end type
+
+event clicked;string l_s_unit, l_s_cls, l_s_srce, l_s_pdcd, l_s_itnm, l_s_spec, l_s_rvno, ls_applydate
+string ls_plant, ls_dvsn, ls_orct, ls_new_orct, ls_itno, ls_remk, ls_srno, ls_year, ls_month
+dec{4} ld_qty, ld_amt
+long ll_cnt, ll_rowcnt
+
+setpointer(hourglass!)
+
+ls_itno = ''
+ls_remk = "업체변경건(D0502에서D4243)"
+
+setpointer(hourglass!)
+
+ll_rowcnt = dw_3.rowcount()
+
+ls_applydate = '20120131'
+ls_new_orct = 'D4243'
+for ll_cnt = 1 to ll_rowcnt
+	ls_year = dw_3.getitemstring(ll_cnt,"wbyear")
+	ls_month = dw_3.getitemstring(ll_cnt,"wbmonth")
+	ls_plant = dw_3.getitemstring(ll_cnt,"wbplant")
+	ls_dvsn = dw_3.getitemstring(ll_cnt,"wbdvsn")
+	ls_itno = dw_3.getitemstring(ll_cnt,"wbitno")
+	ls_orct = trim(dw_3.getitemstring(ll_cnt,"wbspec"))
+	
+	ld_qty = 0
+	ld_amt = 0
+	
+	select a.wbplant,a.wbdvsn,a.wborct,a.wbitno,a.wbbgqt,a.wbbgat1
+	into :ls_plant, :ls_dvsn, :ls_orct, :ls_itno, :ld_qty, :ld_amt
+	 from pbwip.wip002 a
+	 where a.wbcmcd = '01' and a.wbplant = :ls_plant and a.wbdvsn = :ls_dvsn and
+	 	a.wborct = :ls_orct and a.wbiocd = '2' and wbyear = :ls_year and wbmonth = :ls_month and
+		a.wbbgqt <> 0 and a.wbitno = :ls_itno
+	using sqlca;
+	
+	
+	select a.itnm, a.spec, a.rvno, b.cls, b.srce, substring(b.pdcd,1,2), b.xunit
+	into :l_s_itnm, :l_s_spec, :l_s_rvno, :l_s_cls,:l_s_srce,:l_s_pdcd,:l_s_unit
+	from pbinv.inv002 a inner join pbinv.inv101 b
+		on a.comltd = b.comltd and a.itno = b.itno
+	where b.comltd = '01' and b.xplant = :ls_plant and
+			b.div = :ls_dvsn and b.itno = :ls_itno
+	using sqlca;
+	
+	ls_srno = f_wip_get_serialno(g_s_company)
+	
+	if ls_srno = '0' then
+		uo_status.st_message.text = "전산번호가져오기 실패!"
+		return -1
+	end if
+	
+	// 변경전업체 생관수량조정
+	//조정(기타)수량 Update
+	update pbwip.wip002 
+		set wbusqt8 = wbusqt8 + :ld_qty
+	where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+	using sqlca;
+	 
+	//기말 재공 Update
+	update pbwip.wip002 
+		set wbbgqt  = wbbgqt - :ld_qty
+	where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+	using sqlca;	 
+
+	insert into pbwip.wip004 (wdcmcd, wdslty, wdsrno, wdplant, wddvsn, wdiocd, wditno, wdrvno, wddesc, wdspec,   
+	wdunit,    wditcl,   wdsrce,    wdusge, wdpdcd,    wdslno, wdprsrty, wdprsrno, wdprsrno1, wdprsrno2, 
+	wdprno, wdprdpt, wdchdpt,   wddate,    wdprqt, wdchqt,   
+	wdipaddr,    wdmacaddr,     wdinptid,  wdupdtid, wdinptdt,  wdinpttm,  wdupdtdt)
+	values ('01', 'WX', :ls_srno, :ls_plant, :ls_dvsn, '2', :ls_itno, :l_s_rvno, :l_s_itnm, :l_s_spec, 
+	:l_s_unit, :l_s_cls, :l_s_srce, '08',   :l_s_pdcd, ' ',    ' ',      ' ',      ' ',       ' ',       ' ',    
+	' ', :ls_orct, :ls_applydate, 0,      :ld_qty, 
+	:g_s_ipaddr, :g_s_macaddr, :g_s_empno, ' ',      :g_s_date, :g_s_datetime, ' ') 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	insert into pbwip.wip005 (wecmcd, weslty, wesrno,    weremk)
+	values (:g_s_company, 'WX',   :ls_srno, :ls_remk) 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	// 이동후 업체 생관수량조정
+	ls_srno = f_wip_get_serialno(g_s_company)
+	
+	if ls_srno = '0' then
+		uo_status.st_message.text = "전산번호가져오기 실패!"
+		return -1
+	end if
+	
+	ld_qty = -1 * ld_qty
+	//조정(기타)수량 Update
+	update pbwip.wip002 
+		set wbusqt8 = wbusqt8 + :ld_qty
+	where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_new_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+	using sqlca;
+	
+	if sqlca.sqlnrows < 1 then
+		insert into pbwip.wip002(wbcmcd,wbplant,wbdvsn,wborct,wbitno,
+       wbyear,wbmonth,wbrev,wbiocd,wbitcl,wbsrce,wbpdcd,
+       wbunit,wbtype,wbdesc,wbspec,wbscrp,wbretn,wbavrg1,
+       wbavrg2,wbbgqt,wbbgat1,wbbgat2,wbinqt,wbinat1,
+       wbinat2,wbinat3,wbinat4,wbusqt1,wbusat1,wbusqt2,
+       wbusat2,wbusqt3,wbusat3,wbusqt4,wbusat4,wbusqt5,
+       wbusat5,wbusqt6,wbusat6,wbusqt7,wbusat7,wbusqt8,
+       wbusat8,wbusat9,wbusqta,wbusata,wbplan,wbipaddr,
+       wbmacaddr,wbinptdt,wbupdtdt)
+		select wbcmcd,wbplant,wbdvsn,:ls_new_orct,wbitno,
+       wbyear,wbmonth,wbrev,wbiocd,wbitcl,wbsrce,wbpdcd,
+       wbunit,wbtype,wbdesc,wbspec,wbscrp,wbretn,wbavrg1,
+       wbavrg2,wbbgqt,wbbgat1,wbbgat2,wbinqt,wbinat1,
+       wbinat2,wbinat3,wbinat4,wbusqt1,wbusat1,wbusqt2,
+       wbusat2,wbusqt3,wbusat3,wbusqt4,wbusat4,wbusqt5,
+       wbusat5,wbusqt6,wbusat6,wbusqt7,wbusat7,wbusqt8,
+       wbusat8,wbusat9,wbusqta,wbusata,wbplan,wbipaddr,
+       wbmacaddr,wbinptdt,wbupdtdt
+		from pbwip.wip002
+		where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+		using sqlca;
+		
+		update pbwip.wip002 
+		set wbusqt8 = wbusqt8 + :ld_qty
+		where wbcmcd = '01' and wbplant = :ls_plant and 
+			wbdvsn = :ls_dvsn and wborct = :ls_new_orct and wbiocd = '2' and
+			wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+		using sqlca;
+	end if
+	 
+	//기말 재공 Update
+	update pbwip.wip002 
+		set wbbgqt  = wbbgqt - :ld_qty
+	where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_new_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+	using sqlca;	 
+	
+	if sqlca.sqlnrows < 1 then
+		insert into pbwip.wip002(wbcmcd,wbplant,wbdvsn,wborct,wbitno,
+       wbyear,wbmonth,wbrev,wbiocd,wbitcl,wbsrce,wbpdcd,
+       wbunit,wbtype,wbdesc,wbspec,wbscrp,wbretn,wbavrg1,
+       wbavrg2,wbbgqt,wbbgat1,wbbgat2,wbinqt,wbinat1,
+       wbinat2,wbinat3,wbinat4,wbusqt1,wbusat1,wbusqt2,
+       wbusat2,wbusqt3,wbusat3,wbusqt4,wbusat4,wbusqt5,
+       wbusat5,wbusqt6,wbusat6,wbusqt7,wbusat7,wbusqt8,
+       wbusat8,wbusat9,wbusqta,wbusata,wbplan,wbipaddr,
+       wbmacaddr,wbinptdt,wbupdtdt)
+		select wbcmcd,wbplant,wbdvsn,:ls_new_orct,wbitno,
+       wbyear,wbmonth,wbrev,wbiocd,wbitcl,wbsrce,wbpdcd,
+       wbunit,wbtype,wbdesc,wbspec,wbscrp,wbretn,wbavrg1,
+       wbavrg2,wbbgqt,wbbgat1,wbbgat2,wbinqt,wbinat1,
+       wbinat2,wbinat3,wbinat4,wbusqt1,wbusat1,wbusqt2,
+       wbusat2,wbusqt3,wbusat3,wbusqt4,wbusat4,wbusqt5,
+       wbusat5,wbusqt6,wbusat6,wbusqt7,wbusat7,wbusqt8,
+       wbusat8,wbusat9,wbusqta,wbusata,wbplan,wbipaddr,
+       wbmacaddr,wbinptdt,wbupdtdt
+		from pbwip.wip002
+		where wbcmcd = '01' and wbplant = :ls_plant and 
+		wbdvsn = :ls_dvsn and wborct = :ls_orct and wbiocd = '2' and
+		wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+		using sqlca;
+		
+		update pbwip.wip002 
+			set wbbgqt  = wbbgqt - :ld_qty
+		where wbcmcd = '01' and wbplant = :ls_plant and 
+			wbdvsn = :ls_dvsn and wborct = :ls_new_orct and wbiocd = '2' and
+			wbitno = :ls_itno and wbyear = :ls_year and wbmonth = :ls_month
+		using sqlca;	 
+	end if
+	
+	insert into pbwip.wip004 (wdcmcd, wdslty, wdsrno, wdplant, wddvsn, wdiocd, wditno, wdrvno, wddesc, wdspec,   
+	wdunit,    wditcl,   wdsrce,    wdusge, wdpdcd,    wdslno, wdprsrty, wdprsrno, wdprsrno1, wdprsrno2, 
+	wdprno, wdprdpt, wdchdpt,   wddate,    wdprqt, wdchqt,   
+	wdipaddr,    wdmacaddr,     wdinptid,  wdupdtid, wdinptdt,  wdinpttm,  wdupdtdt)
+	values ('01', 'WX', :ls_srno, :ls_plant, :ls_dvsn, '2', :ls_itno, :l_s_rvno, :l_s_itnm, :l_s_spec, 
+	:l_s_unit, :l_s_cls, :l_s_srce, '08',   :l_s_pdcd, ' ',    ' ',      ' ',      ' ',       ' ',       ' ',    
+	' ', :ls_new_orct, :ls_applydate, 0,      :ld_qty, 
+	:g_s_ipaddr, :g_s_macaddr, :g_s_empno, ' ',      :g_s_date, :g_s_datetime, ' ') 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	insert into pbwip.wip005 (wecmcd, weslty, wesrno,    weremk)
+	values (:g_s_company, 'WX',   :ls_srno, :ls_remk) 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+next
+
+uo_status.st_message.text = "처리되었습니다."
+return 0
+end event
+
+type cb_8 from commandbutton within w_wip060i
+integer x = 1911
+integer y = 1376
+integer width = 1385
+integer height = 104
+integer taborder = 140
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+string text = "업체품목(dw_3) 재공이관작업_wip001"
+end type
+
+event clicked;string l_s_unit, l_s_cls, l_s_srce, l_s_pdcd, l_s_itnm, l_s_spec, l_s_rvno, ls_applydate
+string ls_plant, ls_dvsn, ls_orct, ls_new_orct, ls_itno, ls_remk, ls_srno, ls_year, ls_month
+dec{4} ld_qty, ld_amt
+long ll_cnt, ll_rowcnt
+
+setpointer(hourglass!)
+
+ls_itno = ''
+ls_remk = "업체변경건(대현정기 D0494에서 다인DS D4314)"
+
+setpointer(hourglass!)
+
+ll_rowcnt = dw_3.rowcount()
+
+ls_applydate = '20120920'
+ls_new_orct = 'D4314'
+for ll_cnt = 1 to ll_rowcnt
+	ls_year = dw_3.getitemstring(ll_cnt,"wbyear")
+	ls_month = dw_3.getitemstring(ll_cnt,"wbmonth")
+	ls_plant = dw_3.getitemstring(ll_cnt,"wbplant")
+	ls_dvsn = dw_3.getitemstring(ll_cnt,"wbdvsn")
+	ls_itno = dw_3.getitemstring(ll_cnt,"wbitno")
+	ls_orct = trim(dw_3.getitemstring(ll_cnt,"wbspec"))
+	ld_qty = 0
+	ld_amt = 0
+
+	select a.waplant,a.wadvsn,a.waorct,a.waitno,a.waohqt,a.waohat1
+	into :ls_plant, :ls_dvsn, :ls_orct, :ls_itno, :ld_qty, :ld_amt
+	 from pbwip.wip001 a
+	 where a.wacmcd = '01' and a.waplant = :ls_plant and a.wadvsn = :ls_dvsn and
+	 	a.waorct = :ls_orct and a.waiocd = '2' and
+		a.waitno = :ls_itno
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		continue
+	end if;
+	
+	select a.itnm, a.spec, a.rvno, b.cls, b.srce, substring(b.pdcd,1,2), b.xunit
+	into :l_s_itnm, :l_s_spec, :l_s_rvno, :l_s_cls,:l_s_srce,:l_s_pdcd,:l_s_unit
+	from pbinv.inv002 a inner join pbinv.inv101 b
+		on a.comltd = b.comltd and a.itno = b.itno
+	where b.comltd = '01' and b.xplant = :ls_plant and
+			b.div = :ls_dvsn and b.itno = :ls_itno
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		messagebox("품번에러", "미등록 품번 : " + ls_itno)
+		continue
+	end if
+	
+	ls_srno = f_wip_get_serialno(g_s_company)
+	
+	if ls_srno = '0' then
+		uo_status.st_message.text = "전산번호가져오기 실패!"
+		return -1
+	end if
+	
+	// 변경전업체 생관수량조정
+	//조정(기타)수량 Update
+	update pbwip.wip001 
+		set wausqt8 = wausqt8 + :ld_qty
+	where wacmcd = '01' and waplant = :ls_plant and 
+		wadvsn = :ls_dvsn and waorct = :ls_orct and waiocd = '2' and
+		waitno = :ls_itno
+	using sqlca;
+	
+	//기말 재공 Update
+	update pbwip.wip001 
+		set waohqt  = waohqt - :ld_qty
+	where wacmcd = '01' and waplant = :ls_plant and 
+		wadvsn = :ls_dvsn and waorct = :ls_orct and waiocd = '2' and
+		waitno = :ls_itno
+	using sqlca;	 
+
+	insert into pbwip.wip004 (wdcmcd, wdslty, wdsrno, wdplant, wddvsn, wdiocd, wditno, wdrvno, wddesc, wdspec,   
+	wdunit,    wditcl,   wdsrce,    wdusge, wdpdcd,    wdslno, wdprsrty, wdprsrno, wdprsrno1, wdprsrno2, 
+	wdprno, wdprdpt, wdchdpt,   wddate,    wdprqt, wdchqt,   
+	wdipaddr,    wdmacaddr,     wdinptid,  wdupdtid, wdinptdt,  wdinpttm,  wdupdtdt)
+	values ('01', 'WX', :ls_srno, :ls_plant, :ls_dvsn, '2', :ls_itno, :l_s_rvno, :l_s_itnm, :l_s_spec, 
+	:l_s_unit, :l_s_cls, :l_s_srce, '08',   :l_s_pdcd, ' ',    ' ',      ' ',      ' ',       ' ',       ' ',    
+	' ', :ls_orct, :ls_applydate, 0,      :ld_qty, 
+	:g_s_ipaddr, :g_s_macaddr, :g_s_empno, ' ',      :g_s_date, :g_s_datetime, ' ') 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	insert into pbwip.wip005 (wecmcd, weslty, wesrno,    weremk)
+	values (:g_s_company, 'WX',   :ls_srno, :ls_remk) 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	// 이동후 업체 생관수량조정
+	ls_srno = f_wip_get_serialno(g_s_company)
+	
+	if ls_srno = '0' then
+		uo_status.st_message.text = "전산번호가져오기 실패!"
+		return -1
+	end if
+	
+	ld_qty = -1 * ld_qty
+	//조정(기타)수량 Update
+	update pbwip.wip001 
+		set wausqt8 = wausqt8 + :ld_qty
+	where wacmcd = '01' and waplant = :ls_plant and 
+		wadvsn = :ls_dvsn and waorct = :ls_new_orct and waiocd = '2' and
+		waitno = :ls_itno
+	using sqlca;
+	
+	if sqlca.sqlnrows < 1 then
+		insert into pbwip.wip001(wacmcd,waplant,wadvsn,waorct,
+		  waitno,waiocd,waavrg1,waavrg2,wabgqt,wabgat1,wabgat2,
+		  wainqt,wainat1,wainat2,wainat3,wainat4,wausqt1,wausat1,
+		  wausqt2,wausat2,wausqt3,wausat3,wausqt4,wausat4,
+		  wausqt5,wausat5,wausqt6,wausat6,wausqt7,wausat7,
+		  wausqt8,wausat8,wausat9,waohqt,waohat1,waohat2,wascrp,
+		  waretn,waplan,waipaddr,wamacaddr,wainptdt,waupdtdt)
+		select wacmcd,waplant,wadvsn,:ls_new_orct,
+		  waitno,waiocd,waavrg1,waavrg2,wabgqt,wabgat1,wabgat2,
+		  wainqt,wainat1,wainat2,wainat3,wainat4,wausqt1,wausat1,
+		  wausqt2,wausat2,wausqt3,wausat3,wausqt4,wausat4,
+		  wausqt5,wausat5,wausqt6,wausat6,wausqt7,wausat7,
+		  :ld_qty,wausat8,wausat9,0,0,0,wascrp,
+        waretn,waplan,waipaddr,wamacaddr,wainptdt,waupdtdt
+		from pbwip.wip001
+		where wacmcd = '01' and waplant = :ls_plant and 
+		wadvsn = :ls_dvsn and waorct = :ls_orct and waiocd = '2' and
+		waitno = :ls_itno
+		using sqlca;
+	end if
+	 
+	//기말 재공 Update
+	update pbwip.wip001 
+		set waohqt  = waohqt - :ld_qty
+	where wacmcd = '01' and waplant = :ls_plant and 
+		wadvsn = :ls_dvsn and waorct = :ls_new_orct and waiocd = '2' and
+		waitno = :ls_itno
+	using sqlca;	 
+	
+	insert into pbwip.wip004 (wdcmcd, wdslty, wdsrno, wdplant, wddvsn, wdiocd, wditno, wdrvno, wddesc, wdspec,   
+	wdunit,    wditcl,   wdsrce,    wdusge, wdpdcd,    wdslno, wdprsrty, wdprsrno, wdprsrno1, wdprsrno2, 
+	wdprno, wdprdpt, wdchdpt,   wddate,    wdprqt, wdchqt,   
+	wdipaddr,    wdmacaddr,     wdinptid,  wdupdtid, wdinptdt,  wdinpttm,  wdupdtdt)
+	values ('01', 'WX', :ls_srno, :ls_plant, :ls_dvsn, '2', :ls_itno, :l_s_rvno, :l_s_itnm, :l_s_spec, 
+	:l_s_unit, :l_s_cls, :l_s_srce, '08',   :l_s_pdcd, ' ',    ' ',      ' ',      ' ',       ' ',       ' ',    
+	' ', :ls_new_orct, :ls_applydate, 0,      :ld_qty, 
+	:g_s_ipaddr, :g_s_macaddr, :g_s_empno, ' ',      :g_s_date, :g_s_datetime, ' ') 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+	
+	insert into pbwip.wip005 (wecmcd, weslty, wesrno,    weremk)
+	values (:g_s_company, 'WX',   :ls_srno, :ls_remk) 
+	using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		uo_status.st_message.text = "입력시에 에러가 발생하였습니다."
+		return -1
+	end if
+next
+
+uo_status.st_message.text = "처리되었습니다."
+return 0
+end event
+
 type gb_2 from groupbox within w_wip060i
 integer x = 41
 integer y = 388
@@ -2516,9 +2948,9 @@ end type
 
 type gb_4 from groupbox within w_wip060i
 integer x = 1856
-integer y = 988
+integer y = 888
 integer width = 1518
-integer height = 536
+integer height = 636
 integer textsize = -12
 integer weight = 700
 fontcharset fontcharset = hangeul!
@@ -2527,6 +2959,6 @@ fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
 long backcolor = 12632256
-string text = "재공수불 에러처리"
+string text = "재공수불 BATCH 처리"
 end type
 

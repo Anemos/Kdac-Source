@@ -2,6 +2,7 @@
 -- procedure name : pbwip.sf_wip_000
 -- desc : get serial no
 
+drop function pbwip.sf_wip_000;
 create function pbwip.sf_wip_000 (
 a_comltd varchar(2))
 returns char(10)
