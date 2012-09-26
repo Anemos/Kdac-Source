@@ -1,16 +1,16 @@
-$PBExportHeader$f_wip_inout_wip001.srf
-$PBExportComments$이월전 재공수불체크 Main Function
-global type f_wip_inout_wip001 from function_object
+$PBExportHeader$f_wip_inout_wip002d.srf
+$PBExportComments$일일마감 재공수불체크 Main Function
+global type f_wip_inout_wip002d from function_object
 end type
 
 forward prototypes
-global function boolean f_wip_inout_wip001 (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, datawindow a_dw)
+global function boolean f_wip_inout_wip002d (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, datawindow a_dw)
 end prototypes
 
-global function boolean f_wip_inout_wip001 (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, datawindow a_dw);//***********************************************************************************
+global function boolean f_wip_inout_wip002d (string a_cmcd, string a_plant, string a_dvsn, string a_adjdt, datawindow a_dw);//***********************************************************************************
 //
 // 이월전 수불확인
-// WIP001 과 WIP004 을 상호비교하여 재공밸런스(WIP001)와 불일치하는 데이타를 찾는다.
+// WIP002D 과 WIP004 을 상호비교하여 재공밸런스(WIP002D)와 불일치하는 데이타를 찾는다.
 // 인수 : 회사, 지역, 공장, 적용년월, 에러데이타윈도우
 // 반환값 : TRUE, FALSE
 //
@@ -20,12 +20,12 @@ string ls_check, ls_cttp, ls_slty, ls_xuse, ls_rtngub, ls_cls, ls_srce
 string ls_itno, ls_orct, ls_orct2, ls_nuse, ls_iocd
 long ll_totcnt, ll_totsum, ll_totcur
 dec{4} lc_qty[1 to 12], lc_chkqty, lc_convqty
-dec{5} lc_costav, lc_waavrg, lc_avgcost
-dec{0} lc_amt[1 to 12], lc_chkamt
+dec{5} lc_costav, lc_wbavrg, lc_avgcost
+dec{0} lc_amt[1 to 13], lc_chkamt
 datastore ds_inout_line, ds_inout_vndr, ds_inout_vndr07, ds_inout_wip001
 
 //***********************************************************************************
-// 라인 수불확인 : d_wip_inout_line
+// 라인 수불확인 : d_wip_inout_lined
 // 조회데이타 : 지역, 공장, 품번, 계정, 구입선, 부서, 전표타입, 불출용도, 반납구분, 수량합, 금액합
 // INV401 => 계정(10,40,50), 전표타입(IS,RS,SA,SR),VSRNO가 업체가 아닌것
 //        => SA,SR이면서 10/03이 아닌것
@@ -34,10 +34,10 @@ datastore ds_inout_line, ds_inout_vndr, ds_inout_vndr07, ds_inout_wip001
 // 정열 : 품번 ASC, 전표타입 ASC
 //***********************************************************************************
 ds_inout_line = create datastore									
-ds_inout_line.dataobject = "d_wip_inout_line"
+ds_inout_line.dataobject = "d_wip_inout_lined"
 ds_inout_line.settransobject(sqlca)
 //***********************************************************************************
-// 무상업체 수불확인 : d_wip_inout_vndr
+// 무상업체 수불확인 : d_wip_inout_vndrd
 // 조회데이타 : 지역, 공장,품번,계정,구입선,부서,전표타입,불출용도,반납구분,수량합,금액합
 // INV401 => 계정(10,40,50), 전표타입(IS,RS,SA,SR),VSRNO가 업체인것
 //        => SA,SR이면서 10/03이 아닌것
@@ -46,7 +46,7 @@ ds_inout_line.settransobject(sqlca)
 // 정열 : 품번 ASC, 전표타입 ASC
 //***********************************************************************************
 ds_inout_vndr = create datastore
-ds_inout_vndr.dataobject = "d_wip_inout_vndr"
+ds_inout_vndr.dataobject = "d_wip_inout_vndrd"
 ds_inout_vndr.settransobject(sqlca)
 //***********************************************************************************
 // 유상업체 수불확인 : d_wip_inout_vndr07
@@ -58,28 +58,28 @@ ds_inout_vndr.settransobject(sqlca)
 // 정열 : 품번 ASC, 전표타입 ASC
 //***********************************************************************************
 ds_inout_vndr07 = create datastore
-ds_inout_vndr07.dataobject = "d_wip_inout_vndr07"
+ds_inout_vndr07.dataobject = "d_wip_inout_vndr07d"
 ds_inout_vndr07.settransobject(sqlca)
 
 ds_inout_wip001 = create datastore
-ds_inout_wip001.dataobject = "d_wip_inout_wip001"											//정열 : 제품군 Asc, 품번 Asc
+ds_inout_wip001.dataobject = "d_wip_inout_wip002d"											//정열 : 제품군 Asc, 품번 Asc
 ds_inout_wip001.settransobject(sqlca)
 
-ds_inout_line.retrieve(a_cmcd,a_plant,a_dvsn,a_adjdt)
+ds_inout_line.retrieve(a_cmcd,a_plant,a_dvsn,mid(a_adjdt,1,6))
 ll_rowcnt = ds_inout_line.rowcount()
-ds_inout_vndr.retrieve(a_cmcd,a_plant,a_dvsn,a_adjdt)
+ds_inout_vndr.retrieve(a_cmcd,a_plant,a_dvsn,mid(a_adjdt,1,6))
 ll_rowcnt2 = ds_inout_vndr.rowcount()
-ds_inout_vndr07.retrieve(a_cmcd,a_plant,a_dvsn,a_adjdt)
+ds_inout_vndr07.retrieve(a_cmcd,a_plant,a_dvsn,mid(a_adjdt,1,6))
 ll_rowcnt3 = ds_inout_vndr07.rowcount()
 
-ds_inout_wip001.retrieve(a_cmcd,a_plant,a_dvsn,'1')										
+ds_inout_wip001.retrieve(a_cmcd,a_adjdt,a_plant,a_dvsn,'1')										
 ll_rowcnt1 = ds_inout_wip001.rowcount()
 
 ls_orct = '9999'
-//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
+//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),생관조정(10),현재공(11)
 lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 ll_findrow = 1
 ll_totcnt = 0
 ll_totsum = ll_rowcnt + ll_rowcnt2
@@ -109,14 +109,14 @@ for ll_cnt = 1 to ll_rowcnt
 	//최종루틴 처리
 	if ll_cnt = ll_rowcnt then
 		if ls_check <> ls_itno then
-			ll_findrow = ds_inout_wip001.find("wip001_waorct = '9999' and wip001_waitno = '" + ls_check + "'",1,ll_rowcnt1)
+			ll_findrow = ds_inout_wip001.find("wip002d_wborct = '9999' and wip002d_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
 			if ll_findrow > 0 then
-				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-				lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+				lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 				//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-				lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-				ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+				lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+				ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 			else
 				lc_avgcost = lc_costav
 			end if
@@ -125,14 +125,14 @@ for ll_cnt = 1 to ll_rowcnt
 			for ll_cnty = 3 to 11
 				lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 			next					
-			lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+			lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 								+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12])
-			f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+			f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 											,lc_qty,lc_amt,ls_iocd)
-			//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
+			//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),생관조정(10),현재공(11)
 			lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 			ls_check = ls_itno
 		 
 			SELECT "PBINV"."INV101"."CONVQTY","PBINV"."INV101"."COSTAV","PBINV"."INV101"."NUSE"  
@@ -214,7 +214,11 @@ for ll_cnt = 1 to ll_rowcnt
 					if ls_rtngub <> '02' then
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_line.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						end if
 						
 						if (ls_xuse = '03' or ls_xuse = '05') then
 							lc_qty[7] = lc_qty[7] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -267,15 +271,15 @@ for ll_cnt = 1 to ll_rowcnt
 				end choose
 		end choose
 		
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '9999' and wip001_waitno = '" + ls_check + "'",1,ll_rowcnt1)
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '9999' and wip002d_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
 		
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-			lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-			ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
 			lc_avgcost = lc_costav
 		end if
@@ -284,22 +288,22 @@ for ll_cnt = 1 to ll_rowcnt
 		for ll_cnty = 3 to 11
 			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 		next	
-		lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 										,lc_qty,lc_amt,ls_iocd)
 		exit
 	end if
 	
 	if ls_check <> ls_itno then			//투입수량,투입금액,사용수량을 비교
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '9999' and wip001_waitno = '" + ls_check + "'",1,ll_rowcnt1)
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '9999' and wip002d_wbitno = '" + ls_check + "'",1,ll_rowcnt1)
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-			lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-			ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
 			lc_avgcost = lc_costav
 		end if
@@ -308,14 +312,14 @@ for ll_cnt = 1 to ll_rowcnt
 		for ll_cnty = 3 to 11
 			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 		next	
-		lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 										,lc_qty,lc_amt,ls_iocd)
 		//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 		lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		ls_check = ls_itno
 	 
 		SELECT "PBINV"."INV101"."CONVQTY","PBINV"."INV101"."COSTAV","PBINV"."INV101"."NUSE"  
@@ -397,7 +401,11 @@ for ll_cnt = 1 to ll_rowcnt
 				if ls_rtngub <> '02' then
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_line.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					end if
 					
 					if (ls_xuse = '03' or ls_xuse = '05') then
 						lc_qty[7] = lc_qty[7] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -453,13 +461,13 @@ next
 
 //무상사급업체 재공수불 체크
 ls_iocd = '2'
-ds_inout_wip001.retrieve(a_cmcd,a_plant,a_dvsn,'2')	
+ds_inout_wip001.retrieve(a_cmcd,a_adjdt,a_plant,a_dvsn,'2')	
 ll_rowcnt1 = ds_inout_wip001.rowcount()
 
 //기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 ll_findrow = 1
 ll_totcnt = ll_totcnt + 1
 
@@ -490,15 +498,15 @@ for ll_cnt = 1 to ll_rowcnt2
 	//최종루틴 처리
 	if ll_cnt = ll_rowcnt2 then
 		if (ls_check <> ls_itno) or (ls_orct <> ls_orct2) then
-			ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+			ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 														+ ls_check + "'",1,ll_rowcnt1)
 			if ll_findrow > 0 then
-				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-				lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+				lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 				//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-				lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-				ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+				lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+				ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 			else
 				lc_avgcost = lc_costav
 			end if
@@ -507,14 +515,14 @@ for ll_cnt = 1 to ll_rowcnt2
 			for ll_cnty = 3 to 11
 				lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 			next	
-			lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+			lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 								+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
-			f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+			f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 											,lc_qty,lc_amt,ls_iocd)
 			//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 			lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 			ls_check = trim(ls_itno)
 			ls_orct = ls_orct2
 		
@@ -565,7 +573,11 @@ for ll_cnt = 1 to ll_rowcnt2
 					else
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						end if
 					end if
 				else
 //					lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -598,15 +610,15 @@ for ll_cnt = 1 to ll_rowcnt2
 				end choose
 		end choose
 		
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 													+ ls_check + "'",1,ll_rowcnt1)
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-			lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-			ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
 			lc_avgcost = lc_costav
 		end if
@@ -615,23 +627,23 @@ for ll_cnt = 1 to ll_rowcnt2
 		for ll_cnty = 3 to 11
 			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 		next	
-		lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 									,lc_qty,lc_amt,ls_iocd)
 		exit
 	end if
 	
 	if (ls_check <> ls_itno) or (ls_orct <> ls_orct2) then	//투입수량,투입금액,사용수량을 비교
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 														+ ls_check + "'",1,ll_rowcnt1)
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_waavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
 			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
-			lc_avgcost = f_wip_inout_wip001_costav(lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_waavrg,ls_srce,lc_convqty)
-			ds_inout_wip001.setitem(ll_findrow,"wip001_waavrg1",lc_avgcost)
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
 			lc_avgcost = lc_costav
 		end if
@@ -640,14 +652,14 @@ for ll_cnt = 1 to ll_rowcnt2
 		for ll_cnty = 3 to 11
 			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
 		next	
-		lc_amt[11] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
 							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 										,lc_qty,lc_amt,ls_iocd)
 		//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 		lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		ls_check = trim(ls_itno)
 		ls_orct = ls_orct2
 	
@@ -698,7 +710,11 @@ for ll_cnt = 1 to ll_rowcnt2
 				else
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					end if
 				end if
 			else
 //				lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -734,13 +750,13 @@ next
 
 //유상사급업체 재공수불 체크
 ls_iocd = '3'
-ds_inout_wip001.retrieve(a_cmcd,a_plant,a_dvsn,'3')	
+ds_inout_wip001.retrieve(a_cmcd,a_adjdt,a_plant,a_dvsn,'3')	
 ll_rowcnt1 = ds_inout_wip001.rowcount()
 
 //기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 ll_findrow = 1
 ll_totcnt = ll_totcnt + 1
 
@@ -772,31 +788,34 @@ for ll_cnt = 1 to ll_rowcnt3
 	//최종루틴 처리
 	if ll_cnt = ll_rowcnt3 then
 		if (ls_check <> ls_itno) or (ls_orct <> ls_orct2) then
-			ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+			ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 														+ ls_check + "'",1,ll_rowcnt1)
-														
+													
 			if ll_findrow > 0 then
-				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-				lc_costav = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+				lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+				lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+				lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
+				//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
+				lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+				ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 			else
-				lc_qty[1] = 0
-				lc_amt[1] = 0
-				lc_costav = 0
+				lc_avgcost = lc_costav
 			end if
-			for ll_cnty = 3 to 11
-				lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_costav  / lc_convqty
-			next
+			
 			lc_qty[11] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
-								+ lc_qty[8] + lc_qty[9] + lc_qty[10])						
-			lc_amt[12] = lc_qty[11] * lc_costav
+							+ lc_qty[8] + lc_qty[9] + lc_qty[10])
+			for ll_cnty = 3 to 11
+				lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
+			next	
+			lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+								+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
 														
-			f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+			f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 											,lc_qty,lc_amt,ls_iocd)
 			//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 			lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+			lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 			ls_check = trim(ls_itno)
 			ls_orct = ls_orct2
 		
@@ -845,7 +864,11 @@ for ll_cnt = 1 to ll_rowcnt3
 					else
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						end if
 					end if
 				else
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -876,56 +899,62 @@ for ll_cnt = 1 to ll_rowcnt3
 				end choose
 		end choose
 		
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 													+ ls_check + "'",1,ll_rowcnt1)
 													
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_costav = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
+			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
-			lc_qty[1] = 0
-			lc_amt[1] = 0
-			lc_costav = 0
+			lc_avgcost = lc_costav
 		end if
-		for ll_cnty = 3 to 11
-			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_costav / lc_convqty
-		next
-		lc_qty[11] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
-							+ lc_qty[8] + lc_qty[9] + lc_qty[10])						
-		lc_amt[12] = lc_qty[11] * lc_costav											
 		
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		lc_qty[11] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
+						+ lc_qty[8] + lc_qty[9] + lc_qty[10])
+		for ll_cnty = 3 to 11
+			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
+		next	
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )							
+		
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 									,lc_qty,lc_amt,ls_iocd)
 		exit
 	end if
 	
 	if (ls_check <> ls_itno) or (ls_orct <> ls_orct2) then	//투입수량,투입금액,사용수량을 비교
-		ll_findrow = ds_inout_wip001.find("wip001_waorct = '" + ls_orct + "' and wip001_waitno = '" &
+		ll_findrow = ds_inout_wip001.find("wip002d_wborct = '" + ls_orct + "' and wip002d_wbitno = '" &
 						+ ls_check + "'",1,ll_rowcnt1)
 						
 		if ll_findrow > 0 then
-			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgqt")
-			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_wabgat1")
-			lc_costav = ds_inout_wip001.getitemdecimal(ll_findrow,"wip001_waavrg1")
+			lc_qty[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgqt")
+			lc_amt[1] = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbbgat1")
+			lc_wbavrg = ds_inout_wip001.getitemdecimal(ll_findrow,"wip002d_wbavrg1")
+			//재공단가 처리추가 (2009.12) 원재료(01,02)단가계산
+			lc_avgcost = f_wip_inout_wip002d_costav(a_plant,a_dvsn,ls_check,lc_qty[1],lc_amt[1],lc_qty[2],lc_amt[2],lc_costav,lc_wbavrg,ls_srce,lc_convqty)
+			ds_inout_wip001.setitem(ll_findrow,"wip002d_wbavrg1",lc_avgcost)
 		else
-			lc_qty[1] = 0
-			lc_amt[1] = 0
-			lc_costav = 0
+			lc_avgcost = lc_costav
 		end if
-		for ll_cnty = 3 to 11
-			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_costav / lc_convqty
-		next
-		lc_qty[11] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
-							+ lc_qty[8] + lc_qty[9] + lc_qty[10])						
-		lc_amt[12] = lc_qty[11] * lc_costav
 		
-		f_wip_inout_seterr001(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
+		lc_qty[11] = lc_qty[1] + lc_qty[2] - ( lc_qty[3] + lc_qty[4] + lc_qty[5] + lc_qty[6] + lc_qty[7] &
+						+ lc_qty[8] + lc_qty[9] + lc_qty[10])
+		for ll_cnty = 3 to 11
+			lc_amt[ll_cnty + 1] = lc_qty[ll_cnty] * lc_avgcost
+		next	
+		lc_amt[13] = lc_amt[1] + lc_amt[2] + lc_amt[3] - ( lc_amt[4] + lc_amt[5] + lc_amt[6] + lc_amt[7] &
+							+ lc_amt[8] + lc_amt[9] + lc_amt[10] + lc_amt[12] )
+		
+		f_wip_inout_seterr002d(a_adjdt,a_cmcd,a_plant,a_dvsn,ls_orct,ls_check,ds_inout_wip001,a_dw,ll_findrow &
 										,lc_qty,lc_amt,ls_iocd)
 		//기초(1),투입(2),정상(3),반출(4),유상(5),출하(6),타계정(7),타부서(8),불량(9),조정(10),현재공(11)
 		lc_qty[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),조정(11),현재공(12)
-		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		//기초(1),투입1(2),투입2(3),정상(4),반출(5),유상(6),출하(7),타계정(8),타부서(9),불량(10),생관조정(11),현재공(12),금액조정(13)
+		lc_amt[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		ls_check = trim(ls_itno)
 		ls_orct = ls_orct2
 	
@@ -974,7 +1003,11 @@ for ll_cnt = 1 to ll_rowcnt3
 				else
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					end if
 				end if
 			else
 				lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)

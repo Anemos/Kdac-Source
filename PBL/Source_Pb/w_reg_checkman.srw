@@ -17,7 +17,7 @@ end forward
 
 global type w_reg_checkman from window
 integer width = 3790
-integer height = 1612
+integer height = 1576
 boolean titlebar = true
 string title = "제품군별 실사인원 등록"
 boolean controlmenu = true
@@ -135,7 +135,7 @@ end type
 
 event clicked;long ll_rowcnt, ll_curcnt
 string ls_empt, ls_empm, ls_empb, ls_orct, ls_charge, ls_dept, ls_branch
-string ls_emptnm,ls_empmnm,ls_empbnm
+string ls_emptnm, ls_empmnm, ls_empbnm, ls_parm
 dwItemStatus l_status
 
 setpointer(hourglass!)
@@ -175,12 +175,24 @@ for ll_curcnt = 1 to ll_rowcnt
 		ls_empt = ' '
 		ls_emptnm = ' '
 	else
-		SELECT PENAMEK INTO :ls_emptnm
-		FROM PBCOMMON.DAC003
-		WHERE PEEMPNO = :ls_empt using sqlca;
-		if sqlca.sqlcode <> 0 then
-			ls_empt = ' '
-			ls_emptnm = ' '
+		if len(ls_empt) = 6 then
+			SELECT PENAMEK INTO :ls_emptnm
+			FROM PBCOMMON.DAC003
+			WHERE PEEMPNO = :ls_empt using sqlca;
+			
+			if sqlca.sqlcode <> 0 then
+				if sqlca.sqlcode <> 0 then
+					ls_empt = ' '
+					ls_emptnm = ' '
+				end if
+			end if
+		else
+			openwithparm(w_reg_checkman , ls_empt)
+			ls_empt = message.stringparm
+			if f_spacechk(ls_empt) = -1 then
+				ls_empt = ' '
+				ls_emptnm = ' '
+			end if
 		end if
 	end if
 	ls_empm = dw_1.getitemstring(ll_curcnt,"wip010_whempm")
@@ -188,12 +200,21 @@ for ll_curcnt = 1 to ll_rowcnt
 		ls_empm = ' '
 		ls_empmnm = ' '
 	else
-		SELECT PENAMEK INTO :ls_empmnm
-		FROM PBCOMMON.DAC003
-		WHERE PEEMPNO = :ls_empm using sqlca;
-		if sqlca.sqlcode <> 0 then
-			ls_empm = ' '
-			ls_empmnm = ' '
+		if len(ls_empm) = 6 then
+			SELECT PENAMEK INTO :ls_empmnm
+			FROM PBCOMMON.DAC003
+			WHERE PEEMPNO = :ls_empm using sqlca;
+			if sqlca.sqlcode <> 0 then
+				ls_empm = ' '
+				ls_empmnm = ' '
+			end if
+		else
+			openwithparm(w_reg_checkman , ls_empm)
+			ls_empm = message.stringparm
+			if f_spacechk(ls_empm) = -1 then
+				ls_empt = ' '
+				ls_emptnm = ' '
+			end if
 		end if
 	end if
 	ls_empb = dw_1.getitemstring(ll_curcnt,"wip010_whempb")
@@ -201,12 +222,21 @@ for ll_curcnt = 1 to ll_rowcnt
 		ls_empb = ' '
 		ls_empbnm = ' '
 	else
-		SELECT PENAMEK INTO :ls_empbnm
-		FROM PBCOMMON.DAC003
-		WHERE PEEMPNO = :ls_empb using sqlca;
-		if sqlca.sqlcode <> 0 then
-			ls_empb = ' '
-			ls_empbnm = ' '
+		if len(ls_empb) = 6 then
+			SELECT PENAMEK INTO :ls_empbnm
+			FROM PBCOMMON.DAC003
+			WHERE PEEMPNO = :ls_empb using sqlca;
+			if sqlca.sqlcode <> 0 then
+				ls_empb = ' '
+				ls_empbnm = ' '
+			end if
+		else
+			openwithparm(w_reg_checkman , ls_empb)
+			ls_empb = message.stringparm
+			if f_spacechk(ls_empb) = -1 then
+				ls_empt = ' '
+				ls_emptnm = ' '
+			end if
 		end if
 	end if
 	

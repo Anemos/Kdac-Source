@@ -1,5 +1,5 @@
 $PBExportHeader$w_wip045i.srw
-$PBExportComments$불용재공품목조회
+$PBExportComments$장기체화 재공품목조회
 forward
 global type w_wip045i from w_ipis_sheet01
 end type
@@ -50,7 +50,7 @@ destroy(this.st_1)
 destroy(this.gb_1)
 end on
 
-event ue_retrieve;call super::ue_retrieve;string ls_plant, ls_dvsn, ls_pdcd, ls_iocd, ls_fromdt, ls_todt, ls_dategap
+event ue_retrieve;call super::ue_retrieve;string ls_plant, ls_dvsn, ls_pdcd, ls_iocd, ls_fromdt, ls_todt, ls_dategap, ls_adddt
 
 if f_wip_mandantory_chk( dw_wip045i_01 ) = -1 then 
 	uo_status.st_message.text = f_message("E010")
@@ -69,7 +69,7 @@ else
 end if
 ls_dategap = trim(dw_wip045i_01.getitemstring(1,"inv101_xunit"))
 
-ls_todt = dw_wip045i_01.getitemstring(1,"wip001_wainptdt")
+ls_todt = mid(dw_wip045i_01.getitemstring(1,"wip001_wainptdt"),1,6)
 if f_dateedit(ls_todt + '01') = space(8) or ls_todt = mid(g_s_date,1,6) then
 	uo_status.st_message.text = "마감기준년월을 확인해 주시기 바랍니다."
 	return 0
@@ -77,22 +77,24 @@ end if
 
 Choose case ls_dategap
 	case '1'
-		ls_fromdt = f_relative_month(ls_todt,-1)
+		ls_fromdt = ls_todt
 	case '3'
-		ls_fromdt = f_relative_month(ls_todt,-3)
+		ls_fromdt = f_relative_month(ls_todt,-2)
 	case '6'
-		ls_fromdt = f_relative_month(ls_todt,-6)
+		ls_fromdt = f_relative_month(ls_todt,-5)
 	case '9'
-		ls_fromdt = f_relative_month(ls_todt,-9)
+		ls_fromdt = f_relative_month(ls_todt,-8)
 	case '12'
-		ls_fromdt = f_relative_month(ls_todt,-12)
+		ls_fromdt = f_relative_month(ls_todt,-11)
 	case else
 		return 0
 end choose
 
+ls_adddt = f_relative_month(ls_todt,1)
+
 dw_wip045i_02.reset()
 dw_wip045i_02.retrieve(ls_plant,ls_dvsn,ls_pdcd,mid(ls_fromdt,1,6), &
-	mid(ls_todt,1,4), mid(ls_todt,5,2), ls_todt)
+	mid(ls_adddt,1,4), mid(ls_adddt,5,2), mid(ls_adddt,1,6))
 end event
 
 event ue_postopen;call super::ue_postopen;datawindowchild dwc_01, dwc_02, dwc_03
@@ -111,7 +113,7 @@ dwc_03.retrieve('A')
 
 dw_wip045i_01.insertrow(0)
 dw_wip045i_01.setitem(1,"wip001_waiocd",'1')
-dw_wip045i_01.setitem(1,"wip001_wainptdt",mid(g_s_date,1,6))
+dw_wip045i_01.setitem(1,"wip001_wainptdt",f_relative_month(mid(g_s_date,1,6),-1))
 end event
 
 event resize;call super::resize;Integer ls_split = 20 	// splitbar 의 Height 또는 Width 는 20 

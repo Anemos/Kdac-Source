@@ -1,5 +1,5 @@
 $PBExportHeader$w_wip045b.srw
-$PBExportComments$불용재공품목조회(전사)
+$PBExportComments$장기체화 재공품목조회(전사)
 forward
 global type w_wip045b from w_ipis_sheet01
 end type
@@ -50,7 +50,7 @@ destroy(this.st_1)
 destroy(this.gb_1)
 end on
 
-event ue_retrieve;call super::ue_retrieve;string ls_iocd, ls_fromdt, ls_todt, ls_dategap
+event ue_retrieve;call super::ue_retrieve;string ls_iocd, ls_fromdt, ls_todt, ls_dategap, ls_adddt
 
 if f_wip_mandantory_chk( dw_wip045b_01 ) = -1 then 
 	uo_status.st_message.text = f_message("E010")
@@ -61,7 +61,7 @@ ls_iocd   = dw_wip045b_01.getitemstring(1,"wip001_waiocd")
 
 ls_dategap = trim(dw_wip045b_01.getitemstring(1,"inv101_xunit"))
 
-ls_todt = dw_wip045b_01.getitemstring(1,"wip001_wainptdt")
+ls_todt = mid(dw_wip045b_01.getitemstring(1,"wip001_wainptdt"),1,6)
 if f_dateedit(ls_todt + '01') = space(8) then
 	uo_status.st_message.text = "기준날짜가 올바르지 않습니다."
 	return 0
@@ -69,24 +69,26 @@ end if
 
 Choose case ls_dategap
 	case '1'
-		ls_fromdt = f_relative_month(ls_todt,-1)
+		ls_fromdt = ls_todt
 	case '3'
-		ls_fromdt = f_relative_month(ls_todt,-3)
+		ls_fromdt = f_relative_month(ls_todt,-2)
 	case '6'
-		ls_fromdt = f_relative_month(ls_todt,-6)
+		ls_fromdt = f_relative_month(ls_todt,-5)
 	case '9'
-		ls_fromdt = f_relative_month(ls_todt,-9)
+		ls_fromdt = f_relative_month(ls_todt,-8)
 	case '12'
-		ls_fromdt = f_relative_month(ls_todt,-12)
+		ls_fromdt = f_relative_month(ls_todt,-11)
 	case else
 		return 0
 end choose
 
+ls_adddt = f_relative_month(ls_todt,1)
+
 dw_wip045b_02.reset()
-dw_wip045b_02.retrieve(mid(ls_fromdt,1,6),mid(ls_todt,1,4), mid(ls_todt,5,2),ls_todt)
+dw_wip045b_02.retrieve(mid(ls_fromdt,1,6),mid(ls_adddt,1,4), mid(ls_adddt,5,2),mid(ls_adddt,1,6))
 
 uo_status.st_message.text = string(mid(ls_fromdt,1,6),"@@@@.@@") + " - " &
-		+ string(mid(f_relative_month(ls_todt,-1),1,6),"@@@@.@@") + " 기간의 불용재공 품목정보입니다."
+		+ string(mid(ls_todt,1,6),"@@@@.@@") + " 기간의 불용재공 품목정보입니다."
 end event
 
 event ue_postopen;call super::ue_postopen;
@@ -95,7 +97,7 @@ dw_wip045b_02.settransobject(sqlca)
 
 dw_wip045b_01.insertrow(0)
 dw_wip045b_01.setitem(1,"wip001_waiocd",'1')
-dw_wip045b_01.setitem(1,"wip001_wainptdt",mid(g_s_date,1,6))
+dw_wip045b_01.setitem(1,"wip001_wainptdt",f_relative_month(mid(g_s_date,1,6),-1))
 end event
 
 event resize;call super::resize;Integer ls_split = 20 	// splitbar 의 Height 또는 Width 는 20 
@@ -181,7 +183,7 @@ end event
 type st_1 from statictext within w_wip045b
 integer x = 27
 integer y = 272
-integer width = 2647
+integer width = 2720
 integer height = 64
 boolean bringtotop = true
 integer textsize = -10
@@ -192,7 +194,7 @@ fontfamily fontfamily = swiss!
 string facename = "Arial"
 long textcolor = 128
 long backcolor = 12632256
-string text = "불용재공품목 : 기간동안에 재공투입 또는 제품입고에 따른 정상사용 내역이 없는 품목"
+string text = "장기체화 재공품목 : 기간동안에 재공투입 그리고 입고/반출에 따른 사용 내역이 없는 품목"
 borderstyle borderstyle = stylelowered!
 boolean focusrectangle = false
 end type
