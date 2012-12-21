@@ -92,10 +92,10 @@ using sqlca;
 insert into pbbpm.bpm508
 ( comltd,xyear,brev,bgubun,bplant,bdiv,bmdcd,bmdno,bserno,bprno,bchno,
 blev,blole,bum,bwoct,bprqt,bprqt1,bfmdt,btodt,balcd,baldiv,byou,
-bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt )
+bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt,bopcd,boption,bopchk )
 select comltd,xyear,:ag_revno,bgubun,bplant,bdiv,bmdcd,bmdno,bserno,bprno,bchno,
 blev,blole,bum,bwoct,bprqt,bprqt1,bfmdt,btodt,balcd,baldiv,byou,
-bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt
+bgrad,baltno,bcalc,bcomcd,bygchk,borate,bcumorate,extd,updtid,updtdt,bopcd,boption,bopchk
 from pbbpm.bpm508
 where comltd = '01' and xyear = :ag_year and brev = :ag_ref_revno
 using sqlca;
@@ -260,18 +260,42 @@ insert into pbbpm.bpm516
 wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
 wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
 wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
-wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate )
 select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wclss,wsrce,wpdcd,
 wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
 wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
 wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
-wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate
 from pbbpm.bpm516
 where comltd ='01' and xyear = :ag_year and wrev = :ag_ref_revno
 using sqlca;
 
 if sqlca.sqlcode <> 0 then
 	ag_message = "BOM516 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
+	return -1
+end if
+
+delete from pbbpm.bpm516c
+where comltd ='01' and xyear = :ag_year and wrev = :ag_revno
+using sqlca;
+
+insert into pbbpm.bpm516c
+( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wclss,wsrce,wpdcd,
+wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
+wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
+wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate )
+select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wclss,wsrce,wpdcd,
+wbomum,wpurum,wconv,wcode,wpay,wvdnm,wvdno,wvdkind,wcurr,wvhdkdtc,wvhdno5,wcost,
+wcostw,wrcpcst,wcostyr,wcostbom,wrcpcstbom,wcostyrbom,wuse,wqty1,wqty2,wqty3,wqty4,
+wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,
+wyou,wkanban,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate
+from pbbpm.bpm516c
+where comltd ='01' and xyear = :ag_year and wrev = :ag_ref_revno
+using sqlca;
+
+if sqlca.sqlcode <> 0 then
+	ag_message = "BOM516C 생성시에 오류가 발생했습니다. " + sqlca.sqlerrtext
 	return -1
 end if
 
@@ -283,11 +307,11 @@ insert into pbbpm.bpm517
 ( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
 wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
 wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
-wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate )
 select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
 wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
 wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
-wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate
 from pbbpm.bpm517
 where comltd = '01' and xyear = :ag_year and wrev = :ag_ref_revno
 using sqlca;
@@ -305,11 +329,11 @@ insert into pbbpm.bpm518
 ( comltd,xyear,wrev,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
 wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
 wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
-wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk )
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate )
 select comltd,xyear,:ag_revno,wgubun,wplant,wdvsn,witno,witem,wspec,wplan,wprum,wclss,wsrce,
 wpdcd,wcode,wpay,wvdnm,wvdno,wcurr,wcost,wcostw,wcostcur,wuse,wqty1,wqty2,wqty3,
 wqty4,wqty5,wqty6,wqty7,wqty8,wqty9,wqty10,wqty11,wqty12,wyou,wkanban,wvdcstd,
-wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk
+wvdcste,wslpnod,wslpnoe,wcostcd,wdsheet,wxcause,wadjdt,wcostold,wcostd0a,wygcst,wycstorg,wygcst1,wygchk,wmrate
 from pbbpm.bpm518
 where comltd = '01' and xyear = :ag_year and wrev = :ag_ref_revno
 using sqlca;

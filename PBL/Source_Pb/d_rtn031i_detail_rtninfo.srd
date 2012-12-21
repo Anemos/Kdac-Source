@@ -29,6 +29,7 @@ table(column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.R
  column=(type=decimal(4) updatewhereclause=yes name=capa_time dbname="CAPA_TIME" values="  	0/" )
  column=(type=decimal(4) updatewhereclause=yes name=hyoul_time dbname="HYOUL_TIME" values="  	0/" )
  column=(type=char(8) updatewhereclause=yes name=reedto dbname="RTN015.REEDTO" )
+ column=(type=decimal(5) updatewhereclause=yes name=repower dbname="RTN015.REPOWER" )
  retrieve="SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",   
          ~"PBRTN~".~"RTN015~".~"REOPNO~",   
          ~"PBRTN~".~"RTN015~".~"REEDFM~",   
@@ -48,7 +49,8 @@ table(column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.R
          ~"PBRTN~".~"RTN015~".~"REPLANT~",
          ~"PBRTN~".~"RTN015~".~"REBSTM~" + ~"PBRTN~".~"RTN015~".~"RENVMC~" as capa_time,
          ~"PBRTN~".~"RTN015~".~"REBLTM~" + ~"PBRTN~".~"RTN015~".~"RENVLB~" as hyoul_time,
-			~"PBRTN~".~"RTN015~".~"REEDTO~"
+			~"PBRTN~".~"RTN015~".~"REEDTO~",
+			~"PBRTN~".~"RTN015~".~"REPOWER~"
     FROM ~"PBRTN~".~"RTN015~"  
     WHERE ( ~"PBRTN~".~"RTN015~".~"RECMCD~"  = :a_cmcd ) AND  
           ( ~"PBRTN~".~"RTN015~".~"REPLANT~" = :a_plant ) AND   
@@ -70,7 +72,7 @@ SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",~"PBRTN~".~"RTN016~".~"RFOPNO~",' ',
          ~"PBRTN~".~"RTN016~".~"RFLINE1~",   
          ~"PBRTN~".~"RTN016~".~"RFLINE2~",
          ~"PBRTN~".~"RTN016~".~"RFPLANT~",
-         0,0,' '
+         0,0,' ',0
     FROM ~"PBRTN~".~"RTN016~" , ~"PBRTN~".~"RTN015~"    
     WHERE ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = ~"PBRTN~".~"RTN015~".~"RECMCD~" ) AND  
          ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = ~"PBRTN~".~"RTN015~".~"REPLANT~" ) AND   
@@ -93,7 +95,6 @@ SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",~"PBRTN~".~"RTN016~".~"RFOPNO~",' ',
 text(band=header alignment="2" text="적용일" border="0" color="16777215" x="1705" y="4" height="120" width="306" html.valueishtml="0"  name=reedfm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="공정명" border="0" color="16777215" x="2341" y="4" height="120" width="603" html.valueishtml="0"  name=reopnm_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="조코드" border="0" color="16777215" x="2953" y="4" height="120" width="288" html.valueishtml="0"  name=reline3_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
-text(band=header alignment="2" text="인원" border="0" color="16777215" x="6208" y="4" height="120" width="338" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="공정순서" border="0" color="16777215" x="1093" y="4" height="120" width="302" html.valueishtml="0"  name=reopsq_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="공정번호" border="0" color="16777215" x="1403" y="4" height="120" width="293" html.valueishtml="0"  name=reopno_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="지역" border="0" color="16777215" x="9" y="4" height="120" width="146" html.valueishtml="0"  name=replant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -141,6 +142,10 @@ column(band=detail id=16 alignment="2" tabsequence=32766 border="0" color="0" x=
 text(band=summary alignment="2" text="표준시간합" border="0" color="0" x="4887" y="4" height="64" width="402" html.valueishtml="0"  name=t_10 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 compute(band=summary alignment="1" expression="sum(capa_time for all)"border="0" color="0" x="5298" y="4" height="64" width="434" format="#,##0.0000" html.valueishtml="0"  name=compute_2 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 compute(band=summary alignment="1" expression="sum(hyoul_time for all)"border="0" color="0" x="5742" y="4" height="64" width="457" format="#,##0.0000" html.valueishtml="0"  name=compute_3 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=0 border="0" color="0" x="6560" y="0" height="60" width="507" format="#,##0.0000" html.valueishtml="0"  name=repower visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="인원" border="0" color="16777215" x="6208" y="4" height="120" width="338" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="소비전력(KW/EA)" border="0" color="16777215" x="6555" y="4" height="120" width="512" html.valueishtml="0"  name=repower_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+compute(band=summary alignment="1" expression="sum(repower for all)"border="0" color="0" x="6555" y="4" height="60" width="512" format="#,##0.0000" html.valueishtml="0"  name=compute_4 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 
 sparse(names="replant	redvsn	reitno	reline1	reline2	reopsq	reopno")htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )

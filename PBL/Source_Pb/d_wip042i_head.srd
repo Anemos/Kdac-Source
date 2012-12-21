@@ -19,6 +19,7 @@ table(column=(type=char(1) updatewhereclause=yes name=chk dbname="CHK" values="¼
  column=(type=char(1) updatewhereclause=yes name=wip004_wddvsn dbname="WIP004.WDDVSN" )
  column=(type=char(1) updatewhereclause=yes name=wip004_wdiocd dbname="WIP004.WDIOCD" )
  column=(type=char(5) updatewhereclause=yes name=wip004_wdchdpt dbname="WIP004.WDCHDPT" )
+ column=(type=decimal(4) updatewhereclause=yes name=inv101_convqty dbname="INV101.CONVQTY" initial="0" )
  column=(type=decimal(1) updatewhereclause=yes name=prqt1 dbname="PRQT1" )
  column=(type=decimal(16) updatewhereclause=yes name=chqt1 dbname="CHQT1" )
  retrieve="SELECT '0' AS CHK, ~"PBWIP~".~"WIP004~".~"WDITNO~",
@@ -33,6 +34,7 @@ table(column=(type=char(1) updatewhereclause=yes name=chk dbname="CHK" values="¼
          ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
          ~"PBWIP~".~"WIP004~".~"WDIOCD~" ,
 			~"PBWIP~".~"WIP004~".~"WDCHDPT~",
+			~"PBINV~".~"INV101~".~"CONVQTY~",
          sum(~"PBWIP~".~"WIP004~".~"WDPRQT~") as prqt1,   
          sum(~"PBWIP~".~"WIP004~".~"WDCHQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~") as chqt1
     FROM ~"PBWIP~".~"WIP004~",   
@@ -40,15 +42,15 @@ table(column=(type=char(1) updatewhereclause=yes name=chk dbname="CHK" values="¼
          ~"PBINV~".~"INV101~",
          ~"PBCOMMON~".~"DAC007~"
    WHERE ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = ~"PBWIP~".~"WIP002~".~"WBCMCD~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = ~"PBWIP~".~"WIP002~".~"WBPLANT~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = ~"PBWIP~".~"WIP002~".~"WBDVSN~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDITNO~" = ~"PBWIP~".~"WIP002~".~"WBITNO~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDCHDPT~" = ~"PBWIP~".~"WIP002~".~"WBORCT~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDIOCD~" = ~"PBWIP~".~"WIP002~".~"WBIOCD~" ) AND
          ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
 			( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = ~"PBWIP~".~"WIP002~".~"WBPLANT~" ) AND
          ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = ~"PBWIP~".~"WIP002~".~"WBDVSN~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDCHDPT~" = ~"PBWIP~".~"WIP002~".~"WBORCT~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDITNO~" = ~"PBWIP~".~"WIP002~".~"WBITNO~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDIOCD~" = ~"PBWIP~".~"WIP002~".~"WBIOCD~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBPDCD~" = ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBYEAR~"||~"PBWIP~".~"WIP002~".~"WBMONTH~" = :a_yyyymm ) AND
@@ -72,9 +74,10 @@ GROUP BY ~"PBWIP~".~"WIP004~".~"WDITNO~",
          ~"PBWIP~".~"WIP004~".~"WDPLANT~",   
          ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
          ~"PBWIP~".~"WIP004~".~"WDIOCD~",
-			~"PBWIP~".~"WIP004~".~"WDCHDPT~" 
+			~"PBWIP~".~"WIP004~".~"WDCHDPT~",
+			~"PBINV~".~"INV101~".~"CONVQTY~" 
 
-UNION ALL
+UNION
 
 SELECT '1' AS CHK, ~"PBWIP~".~"WIP004~".~"WDITNO~",
 		  ~"PBCOMMON~".~"DAC007~".~"PRNAME~",
@@ -88,6 +91,7 @@ SELECT '1' AS CHK, ~"PBWIP~".~"WIP004~".~"WDITNO~",
          ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
          ~"PBWIP~".~"WIP004~".~"WDIOCD~" ,
 			~"PBWIP~".~"WIP004~".~"WDCHDPT~",
+			~"PBINV~".~"INV101~".~"CONVQTY~",
          sum(~"PBWIP~".~"WIP004~".~"WDPRQT~") as prqt1,   
          sum(~"PBWIP~".~"WIP004~".~"WDCHQT~" / ~"PBINV~".~"INV101~".~"CONVQTY~") as chqt1
     FROM ~"PBWIP~".~"WIP004~",   
@@ -95,16 +99,17 @@ SELECT '1' AS CHK, ~"PBWIP~".~"WIP004~".~"WDITNO~",
          ~"PBINV~".~"INV101~",
          ~"PBCOMMON~".~"DAC007~"
    WHERE ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = ~"PBWIP~".~"WIP002~".~"WBCMCD~" ) AND
-         ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
-			( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) AND
 			( ~"PBWIP~".~"WIP004~".~"WDPLANT~" = ~"PBWIP~".~"WIP002~".~"WBPLANT~" ) AND
-         ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
 			( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = ~"PBWIP~".~"WIP002~".~"WBDVSN~" ) AND
-			( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND
-			( ~"PBWIP~".~"WIP004~".~"WDCHDPT~" = ~"PBWIP~".~"WIP002~".~"WBORCT~" ) AND
 			( ~"PBWIP~".~"WIP004~".~"WDITNO~" = ~"PBWIP~".~"WIP002~".~"WBITNO~" ) AND
-			( ~"PBWIP~".~"WIP002~".~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDCHDPT~" = ~"PBWIP~".~"WIP002~".~"WBORCT~" ) AND
+			( ~"PBWIP~".~"WIP004~".~"WDIOCD~" = ~"PBWIP~".~"WIP002~".~"WBIOCD~" ) AND
+			( ~"PBINV~".~"INV101~".~"COMLTD~" = ~"PBCOMMON~".~"DAC007~".~"COMLTD~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBPDCD~" = ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+         ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) AND
+			( ~"PBWIP~".~"WIP002~".~"WBDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) AND	
+			( ~"PBWIP~".~"WIP002~".~"WBITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) AND
 			( ~"PBWIP~".~"WIP002~".~"WBYEAR~"||~"PBWIP~".~"WIP002~".~"WBMONTH~" = :a_yyyymm ) AND
          ( ( ~"PBWIP~".~"WIP004~".~"WDCMCD~" = :a_cmcd ) AND  
          ( ~"PBWIP~".~"WIP004~".~"WDDVSN~" = :a_dvsn ) AND  
@@ -126,7 +131,8 @@ GROUP BY ~"PBWIP~".~"WIP004~".~"WDITNO~",
          ~"PBWIP~".~"WIP004~".~"WDPLANT~",   
          ~"PBWIP~".~"WIP004~".~"WDDVSN~",   
          ~"PBWIP~".~"WIP004~".~"WDIOCD~",
-			~"PBWIP~".~"WIP004~".~"WDCHDPT~" 
+			~"PBWIP~".~"WIP004~".~"WDCHDPT~",
+			~"PBINV~".~"INV101~".~"CONVQTY~"
 
 " arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_gubun", string),("a_dept", string),("a_from", string),("a_to", string),("a_yyyymm", string))  sort="chk A wip004_wditno A " )
 text(band=header alignment="2" text="»ç¿ëÇ°¹ø" border="2" color="16777215" x="206" y="0" height="60" width="375" html.valueishtml="0"  name=t_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -137,22 +143,22 @@ text(band=header alignment="2" text="¿Ï¼ºÇ°ÀÔ°í·®" border="2" color="16777215" x
 text(band=header alignment="2" text="¼Ò¿äÇ°»ç¿ë·®" border="2" color="16777215" x="3918" y="0" height="60" width="462" html.valueishtml="0"  name=wip004_wdchqt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="°èÁ¤" border="2" color="16777215" x="2085" y="0" height="60" width="137" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="±¸ÀÔ¼±" border="2" color="16777215" x="2226" y="0" height="60" width="206" html.valueishtml="0"  name=t_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
-text(band=header alignment="2" text="Àç°ø´Ü°¡" border="2" color="16777215" x="4384" y="0" height="60" width="434" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="¼Ò¿ä»ç¿ë±Ý¾×" border="2" color="16777215" x="4823" y="0" height="60" width="617" html.valueishtml="0"  name=t_6 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="Á¦Ç°±º¸í" border="2" color="16777215" x="1303" y="0" height="60" width="777" html.valueishtml="0"  name=t_7 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="±¸ºÐ" border="2" color="16777215" x="5" y="0" height="60" width="197" html.valueishtml="0"  name=t_8 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Àç°ø´Ü°¡" border="2" color="16777215" x="4384" y="0" height="60" width="434" html.valueishtml="0"  name=t_5 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 column(band=detail id=8 alignment="2" tabsequence=32766 border="2" color="0" x="2437" y="0" height="64" width="434" format="[general]" html.valueishtml="0"  name=wip004_wdusge  tag="»ç¿ëÀ¯ÇüÄÚµå" visible="1" edit.limit=2 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 compute(band=detail alignment="0" expression="if( trim(wip004_wdprdpt) = '9999', '¶óÀÎ',mid(f_get_vendor02( '01',wip004_wdchdpt ),11,30) )"border="2" color="0" x="2875" y="0" height="64" width="571" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
-column(band=detail id=14 alignment="1" tabsequence=32766 border="2" color="0" x="3451" y="0" height="64" width="462" format="[general]" html.valueishtml="0"  name=prqt1 visible="1" editmask.mask="###,###.0" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=32766 border="2" color="0" x="3451" y="0" height="64" width="462" format="[general]" html.valueishtml="0"  name=prqt1 visible="1" editmask.mask="###,###.0" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=4 alignment="2" tabsequence=32766 border="2" color="0" x="2085" y="0" height="64" width="137" format="[general]" html.valueishtml="0"  name=wip002_wbitcl visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=5 alignment="2" tabsequence=32766 border="2" color="0" x="2226" y="0" height="64" width="206" format="[general]" html.valueishtml="0"  name=wip002_wbsrce visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
-column(band=detail id=15 alignment="1" tabsequence=32766 border="2" color="0" x="3918" y="0" height="64" width="462" format="[general]" html.valueishtml="0"  name=chqt1 visible="1" editmask.mask="###,###.00" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
-column(band=detail id=7 alignment="1" tabsequence=32766 border="2" color="0" x="4384" y="0" height="64" width="434" format="#,##0.00" html.valueishtml="0"  name=wip002_wbavrg1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
-compute(band=detail alignment="1" expression=" chqt1  *  wip002_wbavrg1 "border="2" color="0" x="4823" y="0" height="64" width="617" format="#,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=32766 border="2" color="0" x="3918" y="0" height="64" width="462" format="[general]" html.valueishtml="0"  name=chqt1 visible="1" editmask.mask="###,###.00" editmask.imemode=0 editmask.focusrectangle=no  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=6 alignment="0" tabsequence=32766 border="2" color="0" x="585" y="0" height="64" width="713" format="[general]" html.valueishtml="0"  name=wip002_wbdesc visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=3 alignment="0" tabsequence=32766 border="2" color="0" x="1303" y="0" height="64" width="777" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=2 alignment="0" tabsequence=32766 border="2" color="0" x="206" y="0" height="64" width="375" format="[general]" html.valueishtml="0"  name=wip004_wditno visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=1 alignment="2" tabsequence=32766 border="2" color="0" x="5" y="0" height="64" width="197" format="[general]" html.valueishtml="0"  name=chk visible="1" ddlb.limit=0 ddlb.allowedit=no ddlb.case=any ddlb.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" chqt1  *  wip002_wbavrg1 * inv101_convqty"border="2" color="0" x="4823" y="0" height="64" width="617" format="#,##0" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=detail alignment="1" expression=" wip002_wbavrg1  *  inv101_convqty "border="2" color="0" x="4384" y="0" height="64" width="434" format="#,##0.00" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )

@@ -1,0 +1,54 @@
+$PBExportHeader$d_wip071u_01.srd
+$PBExportComments$유상사급 진형현황
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(4) updatewhereclause=yes key=yes name=wip009_wfyear dbname="WIP009.WFYEAR" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=wip009_wfmonth dbname="WIP009.WFMONTH" )
+ column=(type=char(2) updatewhereclause=yes key=yes name=wip009_wfcmcd dbname="WIP009.WFCMCD" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=wip009_wfplant dbname="WIP009.WFPLANT" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=wip009_wfdvsn dbname="WIP009.WFDVSN" )
+ column=(type=char(5) updatewhereclause=yes key=yes name=wip009_wfvendor dbname="WIP009.WFVENDOR" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=wip009_wfstscd dbname="WIP009.WFSTSCD" values="업체입력	/입력확정	1/경리확정	5/	/	/	/" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=wip009_wfiocd dbname="WIP009.WFIOCD" )
+ retrieve="SELECT DISTINCT ~"PBWIP~".~"WIP009~".~"WFYEAR~",
+			~"PBWIP~".~"WIP009~".~"WFMONTH~",
+			~"PBWIP~".~"WIP009~".~"WFCMCD~",
+			~"PBWIP~".~"WIP009~".~"WFPLANT~",  
+         ~"PBWIP~".~"WIP009~".~"WFDVSN~",   
+         ~"PBWIP~".~"WIP009~".~"WFVENDOR~",
+			~"PBPUR~".~"PUR101~".~"VNDNM~",   
+         ~"PBWIP~".~"WIP009~".~"WFSTSCD~",
+			~"PBWIP~".~"WIP009~".~"WFIOCD~"  
+FROM ~"PBWIP~".~"WIP009~", ~"PBPUR~".~"PUR101~"
+WHERE	( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = ~"PBPUR~".~"PUR101~".~"COMLTD~" ) AND
+		( ~"PBWIP~".~"WIP009~".~"WFVENDOR~" = ~"PBPUR~".~"PUR101~".~"VSRNO~" ) AND
+		( ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S' ) AND
+		( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = :a_cmcd ) AND
+		( ~"PBWIP~".~"WIP009~".~"WFYEAR~" = :a_year ) AND
+		( ~"PBWIP~".~"WIP009~".~"WFMONTH~" = :a_month) AND
+		( ~"PBWIP~".~"WIP009~".~"WFIOCD~" = :a_iocd) AND
+		( ~"PBWIP~".~"WIP009~".~"WFPLANT~" LIKE :a_plant ) AND
+		( ~"PBWIP~".~"WIP009~".~"WFDVSN~"  LIKE :a_dvsn ) 
+		
+" update="PBWIP.WIP009" updatewhere=0 updatekeyinplace=yes arguments=(("a_year", string),("a_month", string),("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_iocd", string)) )
+text(band=header alignment="2" text="지역" border="2" color="16777215" x="0" y="4" height="60" width="137" html.valueishtml="0"  name=wfplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="공장" border="2" color="16777215" x="142" y="4" height="60" width="133" html.valueishtml="0"  name=wfdvsn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체" border="2" color="16777215" x="279" y="4" height="60" width="224" html.valueishtml="0"  name=wfvendor_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="업체명" border="2" color="16777215" x="507" y="4" height="60" width="631" html.valueishtml="0"  name=pur101_vndnm_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="진행상태" border="2" color="16777215" x="1143" y="4" height="60" width="448" html.valueishtml="0"  name=wfstscd_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=8 alignment="0" tabsequence=10 border="2" color="33554432" x="1143" y="0" height="76" width="448" format="[general]" html.valueishtml="0"  name=wip009_wfstscd visible="1" ddlb.limit=6 ddlb.allowedit=no ddlb.case=any ddlb.useasborder=yes ddlb.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="536870912~tcase(  wip009_wfstscd  when ' ' then rgb(255,239,213) when '1' then rgb(255,248,220) when '2' then rgb(255,248,220) when '3' then rgb(238,232,205) when '5' then rgb(205,200,177) else rgb(205,186,150))" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="2" color="33554432" x="0" y="0" height="76" width="137" format="[general]" html.valueishtml="0"  name=wip009_wfplant visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="2" color="33554432" x="142" y="0" height="76" width="133" format="[general]" html.valueishtml="0"  name=wip009_wfdvsn visible="1" edit.limit=1 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="2" tabsequence=32766 border="2" color="33554432" x="279" y="0" height="76" width="224" format="[general]" html.valueishtml="0"  name=wip009_wfvendor visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=32766 border="2" color="33554432" x="507" y="0" height="76" width="631" format="[general]" html.valueishtml="0"  name=pur101_vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

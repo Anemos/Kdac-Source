@@ -4,20 +4,25 @@ global type f_get_accdr051 from function_object
 end type
 
 forward prototypes
-global function string f_get_accdr051 (string a_manage2, string a_accode, string a_acdate, string a_div, string a_drcr, string a_dept)
+global function string f_get_accdr051 (string a_manage2, string a_accode, string a_acdate, string a_div, string a_drcr, string a_dept, string a_pdcd)
 end prototypes
 
-global function string f_get_accdr051 (string a_manage2, string a_accode, string a_acdate, string a_div, string a_drcr, string a_dept);string l_s_err,l_s_vsrno
+global function string f_get_accdr051 (string a_manage2, string a_accode, string a_acdate, string a_div, string a_drcr, string a_dept, string a_pdcd);string l_s_err,l_s_vsrno
 long   l_n_rcnt
 
 if a_accode = 'H1050400' OR a_accode ='A3030107' then
 	l_s_err = f_get_accdr052(a_manage2, a_acdate)
 elseif a_accode > 'S1010000' and a_accode < 'S1019999' then
-	if a_div <> 'YD' then
-		l_s_err = f_get_accdr053(a_manage2, a_div)
+	if a_pdcd = '3' then
+     l_s_err =f_get_accdr058(a_manage2, a_div)
 	else
-		l_s_err = ''
-	end if
+	
+		if a_div <> 'YD' then
+			l_s_err = f_get_accdr053(a_manage2, a_div)
+		else
+			l_s_err = ''
+		end if
+	end if 
 elseif ( ( a_accode > 'D1051000' and a_accode < 'D1051100' ) or &
 	      ( a_accode > 'M1031000' and a_accode < 'M1031100' ) or &
 		   ( a_accode > 'S1031000' and a_accode < 'S1031100' ) ) and a_drcr = '1' then
@@ -63,10 +68,10 @@ elseif a_accode = 'S1040800' or a_accode = 'S1051600' then
 elseif a_accode ='H1080105'  and a_drcr ='2' then
 	l_s_err = f_get_accdr056(g_s_company,a_acdate,a_manage2)
 elseif a_accode = 'H1050100' and a_drcr = '2' then
-	l_s_err = ''
-elseif a_accode = 'A1030100' and a_drcr = '2' then
-	l_s_err = ''	
-elseif a_accode ='A1020000' and a_drcr ='2' then
+	l_s_err = ' '
+elseif a_accode = 'A1030100' and a_div ='DU' then  
+	l_s_err = ' '	
+elseif a_accode ='A1030100' and a_div <> 'DU' then
 	select count(*)
 	into   :l_n_rcnt
 	from   "PBCOMMON"."DAC002"
@@ -80,13 +85,13 @@ elseif a_accode ='A1020000' and a_drcr ='2' then
 	if l_n_rcnt = 0 then
 		l_s_err = 'e'
 	else
-		l_s_err = ''
+		l_s_err = ' '
 	end if
 else
 	if mid(a_manage2,1,1) = '' then
 		l_s_err = 'e'
 	else
-		l_s_err = ''
+		l_s_err = ' '
 	end if
 end if
 

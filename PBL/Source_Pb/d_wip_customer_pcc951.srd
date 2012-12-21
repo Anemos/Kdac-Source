@@ -56,7 +56,8 @@ FROM ( SELECT ~"PBWIP~".~"WIP002~".~"WBCMCD~" as cmcd,
        	( ~"PBWIP~".~"WIP002~".~"WBITNO~" = TMP_COST.~"ITNO~" )
  WHERE ( ~"PBWIP~".~"WIP002~".~"WBCMCD~" = :ag_cmcd ) and  
        ( ~"PBWIP~".~"WIP002~".~"WBPLANT~" <> 'Y' ) and    
-       ( ~"PBWIP~".~"WIP002~".~"WBYEAR~"||~"PBWIP~".~"WIP002~".~"WBMONTH~" = :ag_date  ) and
+       ( ~"PBWIP~".~"WIP002~".~"WBYEAR~" = SUBSTRING(:ag_date,1,4)) and
+		 ( ~"PBWIP~".~"WIP002~".~"WBMONTH~" = SUBSTRING(:ag_date,5,2)) and
 		 ( ~"PBWIP~".~"WIP002~".~"WBIOCD~" IN ('1','2') ) and
 		 NOT ( ~"PBWIP~".~"WIP002~".~"WBBGQT~"= 0 AND ~"PBWIP~".~"WIP002~".~"WBBGAT1~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINQT~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINAT1~" = 0 AND
         ~"PBWIP~".~"WIP002~".~"WBINAT2~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBINAT3~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSQT1~" = 0 AND ~"PBWIP~".~"WIP002~".~"WBUSAT1~" = 0 AND
@@ -107,7 +108,8 @@ UNION ALL
          ( ~"PBWIP~".~"WIP003~".~"WCPLANT~" = TMP_COST.~"XPLANT~" ) and  
          ( ~"PBWIP~".~"WIP003~".~"WCDVSN~" = TMP_COST.~"DIV~" ) and  
          ( ~"PBWIP~".~"WIP003~".~"WCITNO~" = TMP_COST.~"ITNO~" ) and 
-         ( ~"PBWIP~".~"WIP003~".~"WCYEAR~"||~"PBWIP~".~"WIP003~".~"WCMONTH~" = :ag_date )  and
+         ( ~"PBWIP~".~"WIP003~".~"WCYEAR~" = SUBSTRING(:ag_date,1,4)) and
+         ( ~"PBWIP~".~"WIP003~".~"WCMONTH~" = SUBSTRING(:ag_date,5,2)) and
          (~"PBWIP~".~"WIP003~".~"WCBGAT1~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCINAT1~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT1~" <> 0 or
           ~"PBWIP~".~"WIP003~".~"WCUSAT2~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT3~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT4~" <> 0 or
           ~"PBWIP~".~"WIP003~".~"WCUSAT5~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT6~" <> 0 or ~"PBWIP~".~"WIP003~".~"WCUSAT7~" <> 0 or

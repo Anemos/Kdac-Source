@@ -9,9 +9,16 @@ table(column=(type=char(2) updatewhereclause=yes name=rccmcd dbname="RTN013.RCCM
  column=(type=char(1) updatewhereclause=yes name=rcplant dbname="RTN013.RCPLANT" )
  column=(type=char(1) updatewhereclause=yes name=rcdvsn dbname="RTN013.RCDVSN" )
  column=(type=char(12) updatewhereclause=yes name=rcitno dbname="RTN013.RCITNO" )
- column=(type=char(7) updatewhereclause=yes name=rcline1 dbname="RTN013.RCLINE1" )
+ column=(type=char(9) updatewhereclause=yes name=rcline1 dbname="RCLINE1" )
  column=(type=char(1) updatewhereclause=yes name=rcline2 dbname="RTN013.RCLINE2" )
- retrieve="PBSELECT(TABLE(NAME=~"PBRTN.RTN013~") COLUMN(NAME=~"PBRTN.RTN013.RCCMCD~")COLUMN(NAME=~"PBRTN.RTN013.RCPLANT~")COLUMN(NAME=~"PBRTN.RTN013.RCDVSN~")COLUMN(NAME=~"PBRTN.RTN013.RCITNO~")COLUMN(NAME=~"PBRTN.RTN013.RCLINE1~")COLUMN(NAME=~"PBRTN.RTN013.RCLINE2~"))" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN013~".~"RCCMCD~",   
+         ~"PBRTN~".~"RTN013~".~"RCPLANT~",   
+         ~"PBRTN~".~"RTN013~".~"RCDVSN~",   
+         ~"PBRTN~".~"RTN013~".~"RCITNO~",   
+         CAST( ~"PBRTN~".~"RTN013~".~"RCLINE1~" AS VARCHAR(9) ) AS RCLINE1,   
+         ~"PBRTN~".~"RTN013~".~"RCLINE2~"  
+    FROM ~"PBRTN~".~"RTN013~"   
+" )
 text(band=detail alignment="1" text="«∞π¯:" border="0" color="33554432" x="50" y="28" height="60" width="329" html.valueishtml="0"  name=rcitno_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="1" text="¥Î√º∂Û¿Œ:" border="0" color="33554432" x="50" y="176" height="60" width="329" html.valueishtml="0"  name=rcline1_t visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=4 alignment="0" tabsequence=10 border="5" color="33554432" x="398" y="28" height="76" width="763" format="[general]" html.valueishtml="0"  name=rcitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="15780518" )

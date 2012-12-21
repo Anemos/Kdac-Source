@@ -115,20 +115,114 @@ end on
 
 event ue_bretrieve;call super::ue_bretrieve;setpointer(HourGlass!)
 dw_1.reset()
-if f_pdm_GetfromExcel(dw_1) <> 0 then
-	i_b_bcreate	  	= False
-	i_b_bretrieve	= True
-	i_b_dretrieve	= False
-	i_b_dprint		= False
-	i_b_dchar		= False
-	
-	return
-end if
-i_b_bcreate	  	= True
-i_b_bretrieve	= False
-i_b_dretrieve	= False
-i_b_dprint		= False
-i_b_dchar		= False
+
+//if f_pdm_GetfromExcel(dw_1) <> 0 then
+//	i_b_bcreate	  	= False
+//	i_b_bretrieve	= True
+//	i_b_dretrieve	= False
+//	i_b_dprint		= False
+//	i_b_dchar		= False
+//	
+//	return
+//end if
+//i_b_bcreate	  	= True
+//i_b_bretrieve	= False
+//i_b_dretrieve	= False
+//i_b_dprint		= False
+//i_b_dchar		= False
+
+//** Problem Occured : 2012.11.01
+//* 업로드용 엑셀파일을 텍스트파일로 변환한 상태에서 업로드 하므로 정상 업로드 됨
+//* 
+string	ls_docname, ls_named, ls_name
+Long		ll_rtn
+OLEObject lole_UploadObject
+
+// UPLOAD할 엑셀파일을 선택한다
+//
+GetFileOpenName("Select File", + ls_docname, ls_named, "xls", &
+				  + "Excle Files (*.xls),*.xls," + "All Files (*.*),*.*")
+
+setpointer(hourglass!)
+// 선택한 엑셀파일을 텍스트 파일로 명을 바꾼다.(test.xls => test.txt)
+//
+ls_name = Mid(ls_docname, 1, Len(Trim(ls_docname)) -3) + 'txt'
+
+// 선택한 엑셀파일명과 동일한 텍스트 파일명의 존재여부를 체크한다
+//
+IF FileExists(ls_name) = TRUE THEN
+	MessageBox('확 인', '해당변환 파일' + ls_name + '이 존재합니다')
+	RETURN
+END IF
+
+// 데이타위도우 초기화
+//
+dw_1.ReSet()
+
+// 신규 오브젝트 생성
+//
+lole_UploadObject = CREATE OLEObject
+
+// 엑셀 오브젝트를 연결한다
+//
+ll_rtn = lole_UploadObject.ConnectToNewObject("excel.application") 
+
+IF ll_rtn = 0 THEN
+	// 엑셀에서 선택된 엑셀파일을 오픈한다
+	//
+	lole_UploadObject.workbooks.Open(ls_docname)
+	// 오픈된 엑셀파일을 텍스트 파일로 저장한다(3:text 형태의 저장)
+	//
+	lole_UploadObject.application.workbooks(1).saveas(ls_name, 3)
+	// 오픈된 엑셀파일을 닫는다(저장유무를 확인하지 않는다Close(0))
+	//
+	lole_UploadObject.application.workbooks(1).close(0)
+	// 엑셀 오브젝트의 연결을 해제한다
+	//
+	lole_UploadObject.DisConnectObject()   
+ELSE
+	// 엑셀 오브젝트의 연결을 해제한다
+	//
+	lole_UploadObject.DisConnectObject()   
+	//Excel에 연결 실패!
+	//
+	MessageBox("ConnectToNewObject Error!",string(ll_rtn))
+END IF
+
+// 신규 오브젝트를 메모리에서 해제
+//
+DESTROY lole_UploadObject
+
+// 텍스트 파일로 저장된 대상을 데이타윈도우에 임포트시킨다(타이틀을 제외한 2라인부터)
+// 임포트가 완료되면 텍스트 파일을 삭제한다
+//
+ll_rtn = dw_1.ImportFile(ls_name, 2) 
+IF ll_rtn > 0 THEN
+	filedelete(ls_name)
+ELSE
+	// 임포트 ERROR
+	//
+	CHOOSE CASE ll_rtn
+		CASE 0
+			MessageBox("확 인", 'End of file; too many rows')
+		CASE -1
+			MessageBox("확 인", 'No rows')
+		CASE -2
+			MessageBox("확 인", 'Empty file')
+		CASE -3
+			MessageBox("확 인", 'Invalid argument')
+		CASE -4
+			MessageBox("확 인", 'Invalid input')
+		CASE -5
+			MessageBox("확 인", 'Could not open the file')
+		CASE -6
+			MessageBox("확 인", 'Could not close the file')
+		CASE -7
+			MessageBox("확 인", 'Error reading the text')
+		CASE -8
+			MessageBox("확 인", 'Not a TXT file')
+	END CHOOSE
+END IF
 
 st_daesang.text = string(dw_1.rowcount(),"###,### ")
 uo_status.st_message.text = st_daesang.text + " 개의 정보가 Upload 대기 중입니다"
@@ -148,7 +242,6 @@ string     l_s_plant,l_s_dvsn,l_s_itno,l_s_line1,l_s_line2,l_s_opno,l_s_nvmo, ls
 string 	  l_s_mcno, l_s_term, ls_message, ls_chtime, ls_nextdate, ls_chkdate, l_s_remk, ls_chkitno
 integer    Net,l_n_chkcount
 dec{4}     l_d_rdmctm,l_d_rdlbtm
-long 		  ll_logid
 
 Net = messagebox("확 인", "특정품번에 대한 특정대체라인을 수정해야 할때 사용하시기 바랍니다. ~r~n" &
 	+ " 자료생성 작업을 수행 하겠습니까?",Question!, OkCancel!, 1)
@@ -183,7 +276,6 @@ do while true
 	l_s_line1  = trim(dw_1.object.rdline1[l_n_loopcnt])
 	l_s_line2  = trim(dw_1.object.rdline2[l_n_loopcnt])
 	l_s_opno   = upper(trim(dw_1.object.rdopno[l_n_loopcnt]))	
-	ll_logid	  = dw_1.getitemnumber(l_n_loopcnt,"rdlogid")
 	
 	if ls_chkitno <> (l_s_plant + l_s_dvsn + l_s_itno + l_s_line1 + l_s_line2) then
 		ls_message = "대표품번이 다르거나 대체라인이 다른 행이 존재합니다."
@@ -270,7 +362,6 @@ if l_n_chkcount > 0 then
 end if
 
 for l_n_loopcnt = 1 to l_n_totalcnt
-	ll_logid	  = dw_1.getitemnumber(l_n_loopcnt,"rdlogid")
 	l_s_plant  = trim(dw_1.object.rdplant[l_n_loopcnt])
 	l_s_dvsn   = trim(dw_1.object.rddvsn[l_n_loopcnt])
 	l_s_itno   = trim(dw_1.object.rditno[l_n_loopcnt])

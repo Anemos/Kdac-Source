@@ -1,0 +1,266 @@
+$PBExportHeader$f_creat_acc593e.srf
+$PBExportComments$일용직노무비추정및 결산DB 생성
+global type f_creat_acc593e from function_object
+end type
+
+forward prototypes
+global function integer f_creat_acc593e (datawindow dw_crt, string a_s_job, string a_s_yymm, string a_s_schk)
+end prototypes
+
+global function integer f_creat_acc593e (datawindow dw_crt, string a_s_job, string a_s_yymm, string a_s_schk); 
+long l_n_rowcount,l_n_row,l_n_rcnt
+string l_s_gubun, l_s_accode,l_s_dept,l_s_city,l_s_bank
+dec  l_n_inwon,l_n_tpay,l_n_siljikub,l_n_gonghap, l_n_paychung,l_n_soduk,&
+     l_n_jumin,l_n_medic,l_n_bojang, l_n_yungum, l_n_nojo, l_n_gisuk, l_n_daebu,&
+	  l_n_sikgong, l_n_bulgong, l_n_cargong, l_n_wash,l_n_jeangong,l_n_kigong1,&
+	  l_n_kigong2, l_n_wolgong, l_n_gongtxt1, l_n_gongtxt2,l_n_yungja,l_n_yearcha,l_n_wolcha
+  
+if a_s_schk <>'C' then  
+	select count(*)
+	into :l_n_rcnt 
+	from "PBACC"."ACC593"
+	where "PBACC"."ACC593"."COMLTD" = :g_s_company and 
+			"PBACC"."ACC593"."TYYMM" =:a_s_yymm      using sqlca;
+	if sqlca.sqlcode <> 0 then
+		l_n_rcnt = 0
+	end if 
+	
+	if l_n_rcnt  > 0 then 
+		 update "PBACC"."ACC593"
+		 set "TINWON" = 0,     "TPAY" = 0 ,        "TSILJIKUB" =0, 
+			  "TGONGHAP" = 0 ,  "TPAYCHUNG" =0 ,   "TSODUK" = 0, 
+			  "TJUMIN" = 0 ,    "TMEDIC" = 0,	    "TBOJANG" =0 ,
+			  "TYUNGUM" = 0  ,  "TNOJO" = 0 ,       "TGISUK" = 0 , 
+			  "TDAEBU" = 0 ,    "TSIKGONG"  = 0 ,   "TYUNGJA" = 0,   "TBULGONG"  =0,
+			  "TCARGONG" =0 ,   "TWASH"  = 0,       "TJEANGONG" = 0  ,
+			  "TKIGONG1" = 0,   "TKIGONG2" = 0,     "TWOLGONG" =0,
+			  "TGONGTXT1" = 0 , "TGONGTXT2" = 0 , 
+			  "UPDTID"    = :g_s_empno,  "UPDTDT"     = :g_s_datetime, 
+			  "IPADDR"    = :g_s_ipaddr, "MACADDR"    = :g_s_macaddr
+			 where "PBACC"."ACC593"."COMLTD" = :g_s_company and 
+				 "PBACC"."ACC593"."TYYMM" =:a_s_yymm    using sqlca;
+					 
+		 if sqlca.sqlcode <> 0 then
+			rollback using sqlca;
+ 			return 1
+		 end if 
+	end if 
+end if 
+
+
+select count(*)
+	into :l_n_rcnt 
+	from "PBACC"."ACC593E"
+	where "PBACC"."ACC593E"."COMLTD" = :g_s_company and
+	      "PBACC"."ACC593E"."TJOB" =:a_s_job and 
+			"PBACC"."ACC593E"."TYYMM" =:a_s_yymm      using sqlca;
+	if sqlca.sqlcode <> 0 then
+		l_n_rcnt = 0
+	end if 
+
+if l_n_rcnt  > 0 then 
+	 
+	 update "PBACC"."ACC593E"
+		 set "TINWON" = 0,     "TPAY" = 0 ,        "TSILJIKUB" =0, 
+			  "TGONGHAP" = 0 ,  "TPAYCHUNG" =0 ,   "TSODUK" = 0, 
+			  "TJUMIN" = 0 ,    "TMEDIC" = 0,	    "TBOJANG" =0 ,
+			  "TYUNGUM" = 0  ,  "TNOJO" = 0 ,       "TGISUK" = 0 , 
+			  "TDAEBU" = 0 ,    "TSIKGONG"  = 0 ,   "TYUNGJA" = 0,   "TBULGONG"  =0,
+			  "TCARGONG" =0 ,   "TWASH"  = 0,       "TJEANGONG" = 0  ,
+			  "TKIGONG1" = 0,   "TKIGONG2" = 0,     "TWOLGONG" =0,
+			  "TGONGTXT1" = 0 , "TGONGTXT2" = 0 , 
+			  "UPDTID"    = :g_s_empno,  "UPDTDT"     = :g_s_datetime, 
+			  "IPADDR"    = :g_s_ipaddr, "MACADDR"    = :g_s_macaddr
+			 where "PBACC"."ACC593E"."COMLTD" = :g_s_company and 
+			      "PBACC"."ACC593E"."TJOB" =:a_s_job and 
+				 "PBACC"."ACC593E"."TYYMM" =:a_s_yymm    using sqlca;
+			 
+	 if sqlca.sqlcode <> 0 then
+		rollback using sqlca;
+		 return 1
+	 end if 
+end if 
+
+
+
+dw_crt.accepttext()
+
+l_n_rowcount = dw_crt.rowcount()
+
+ 
+for l_n_row	= 1 to l_n_rowcount
+	
+	l_s_gubun = dw_crt.object.gubun[l_n_row]
+	l_s_accode = dw_crt.object.dac001_accode[l_n_row]
+	l_s_dept = dw_crt.object.dept[l_n_row] 
+	l_s_city = dw_crt.object.area[l_n_row]
+	l_s_bank = dw_crt.object.psm110_bank[l_n_row]
+	
+	
+	
+	
+	l_n_inwon = dw_crt.object.cnt[l_n_row]
+	l_n_tpay = dw_crt.object.payt[l_n_row]
+	l_n_siljikub =dw_crt.object.siljikub[l_n_row]
+	l_n_gonghap =dw_crt.object.gonghap[l_n_row]
+	l_n_paychung = dw_crt.object.paychung[l_n_row]
+	l_n_soduk = dw_crt.object.soduk[l_n_row]
+	l_n_jumin = dw_crt.object.jumin[l_n_row]
+	l_n_medic = dw_crt.object.medic[l_n_row]
+	l_n_bojang =dw_crt.object.bojang[l_n_row]
+	l_n_yungum = dw_crt.object.yungum[l_n_row]
+	l_n_nojo =dw_crt.object.nojo[l_n_row]
+	l_n_gisuk =dw_crt.object.gisuk[l_n_row]
+	l_n_daebu = dw_crt.object.daebu[l_n_row]
+	l_n_sikgong =dw_crt.object.sikgong[l_n_row]
+	l_n_yungja =dw_crt.object.yungja[l_n_row]
+	l_n_bulgong = dw_crt.object.bulgong[l_n_row]
+	l_n_cargong =dw_crt.object.cargong[l_n_row]
+	l_n_wash =dw_crt.object.wash[l_n_row]
+	l_n_jeangong = dw_crt.object.jeangong[l_n_row]
+	l_n_kigong1 =dw_crt.object.kigong1[l_n_row]
+	l_n_kigong2 =dw_crt.object.kigong2[l_n_row]
+	l_n_wolgong= dw_crt.object.wolgong[l_n_row]
+	l_n_gongtxt1 =dw_crt.object.gongtxt1[l_n_row]
+	l_n_gongtxt2 = dw_crt.object.gongtxt2[l_n_row]
+//	l_n_yearcha= dw_crt.object.yearcha[l_n_row]
+//	l_n_wolcha= dw_crt.object.wolcha[l_n_row]
+//	
+	
+	if a_s_schk <> 'C' then 
+	 	select count(*)
+		into :l_n_rcnt 
+		from "PBACC"."ACC593"
+		where "PBACC"."ACC593"."COMLTD" = :g_s_company and 
+				 "PBACC"."ACC593"."TYYMM" =:a_s_yymm and 
+				"PBACC"."ACC593"."TACCODE" = :l_s_accode and
+				 "PBACC"."ACC593"."TDEPT" = :l_s_dept and 
+				 "PBACC"."ACC593"."TCITY" = :l_s_city and 
+				 "PBACC"."ACC593"."TBANK" = :l_s_bank  using sqlca;
+		if sqlca.sqlcode <> 0 then
+			l_n_rcnt = 0
+		end if 
+		if l_n_rcnt < 1 then
+			 
+			
+			insert into "PBACC"."ACC593"  
+				( "COMLTD" ,    "TYYMM" ,        "TACCODE" ,    "TDEPT" ,     "TCITY" ,      "TBANK" , 
+				  "TINWON" ,   "TPAY" ,     "TSILJIKUB",    "TGONGHAP" ,  "TRATE" ,    "TPAYCHUNG" , "TBONUS" ,   "TRTM" , 
+				  "TSODUK" ,   "TBANGWI" ,  "TJUMIN" ,  "TJAEHUNG" ,  "TJAEKI" ,   "TJANGJAE" ,  "TJANGJUN" , "TMEDIC",
+				  "TBOJANG" ,  "TYUNGUM" ,  "TJUNGYUN" ,"TSAWOO" ,    "TNOJO" ,    "TGISUK" ,    "TDAEBU" ,   "TCHULJA"   ,
+				  "TSIKGONG" , "TMAEJUM",   "TTEL" ,    "TYUNGJA"   , "TBULGONG" , "TCARGONG" ,  "TWASH" ,    "TJEANGONG"   ,
+				  "TKIGONG1",  "TKIGONG2",  "TWOLGONG", "TGONGTXT1",  "TGONGTXT2",   "EXTD",
+				  "INPTID",     "INPTDT",     "UPDTID",    "UPDTDT",      "IPADDR",		"MACADDR")  
+	  values ( :g_s_company,  :a_s_yymm,      :l_s_accode,    :l_s_dept,  :l_s_city,     :l_s_bank,
+              :l_n_inwon,    :l_n_tpay,    :l_n_siljikub, :l_n_gonghap,    0,         :l_n_paychung, 0,           0,
+				  :l_n_soduk,    0,            :l_n_jumin,     0,              0,          0,            0,           :l_n_medic,
+				  :l_n_bojang,   :l_n_yungum,   0,             0,             :l_n_nojo,   :l_n_gisuk,    :l_n_daebu, 0,
+				  :l_n_sikgong,  0,             0,            :l_n_yungja,    :l_n_bulgong,:l_n_cargong, :l_n_wash,   :l_n_jeangong,
+				  :l_n_kigong1, :l_n_kigong2, :l_n_wolgong, :l_n_gongtxt1, :l_n_gongtxt2,  '',
+				  :g_s_empno,    :g_s_datetime, ' ',              ' ',                :g_s_ipaddr,	  :g_s_macaddr )  using sqlca;
+				  
+					  
+			if sqlca.sqlcode <> 0 then
+				rollback using sqlca;
+				return 1
+			end if 		  
+		else
+		
+		 
+		  update "PBACC"."ACC593"
+		 set "TINWON" = :l_n_inwon, "TPAY" = :l_n_tpay , "TSILJIKUB" = :l_n_siljikub, 
+			  "TGONGHAP" = :l_n_gonghap ,  "TPAYCHUNG" =:l_n_paychung ,   "TSODUK" = :l_n_soduk, 
+			  "TJUMIN" = :l_n_jumin ,   "TMEDIC" = :l_n_medic,	  "TBOJANG" = :l_n_bojang ,
+			  "TYUNGUM" = :l_n_yungum  ,   "TNOJO" = :l_n_nojo , "TGISUK" = :l_n_gisuk , 
+			  "TDAEBU" = :l_n_daebu ,   "TSIKGONG"  = :l_n_sikgong , "TYUNGJA" = :l_n_yungja,  "TBULGONG"  = :l_n_bulgong,
+			  "TCARGONG" =:l_n_cargong ,  "TWASH"  = :l_n_wash, "TJEANGONG" = :l_n_jeangong  ,
+			  "TKIGONG1" = :l_n_kigong1,  "TKIGONG2" = :l_n_kigong2, "TWOLGONG" = :l_n_wolgong,
+			  "TGONGTXT1" = :l_n_gongtxt1 , "TGONGTXT2" = :l_n_gongtxt2 ,
+			  "UPDTID"    = :g_s_empno,  "UPDTDT"     = :g_s_datetime, 
+			  "IPADDR"    = :g_s_ipaddr, "MACADDR"    = :g_s_macaddr
+			 where "PBACC"."ACC593"."COMLTD" = :g_s_company and 
+				 "PBACC"."ACC593"."TYYMM" =:a_s_yymm and 
+				 "PBACC"."ACC593"."TACCODE" = :l_s_accode and
+				 "PBACC"."ACC593"."TDEPT" = :l_s_dept and 
+				 "PBACC"."ACC593"."TCITY" = :l_s_city and 
+				 "PBACC"."ACC593"."TBANK" = :l_s_bank using sqlca;
+					 
+			 if sqlca.sqlcode <> 0 then
+				rollback using sqlca;
+				return 1
+			 end if 
+		  end if		
+	  end if 
+	  
+	 select count(*)
+	 into :l_n_rcnt 
+	 from "PBACC"."ACC593E"
+	 where "PBACC"."ACC593E"."COMLTD" = :g_s_company and 
+		    "PBACC"."ACC593E"."TJOB" =:a_s_job and 
+			 "PBACC"."ACC593E"."TYYMM" =:a_s_yymm and 
+			 "PBACC"."ACC593E"."TACCODE" = :l_s_accode and
+			 "PBACC"."ACC593E"."TDEPT" = :l_s_dept and 
+			 "PBACC"."ACC593E"."TCITY" = :l_s_city and 
+			 "PBACC"."ACC593E"."TBANK" = :l_s_bank  using sqlca;
+		if sqlca.sqlcode <> 0 then
+			l_n_rcnt = 0
+		end if 
+	if l_n_rcnt < 1 then
+		 
+		
+		insert into "PBACC"."ACC593E"  
+				( "COMLTD" ,   "TJOB",  "TYYMM" ,        "TACCODE" ,    "TDEPT" ,     "TCITY" ,      "TBANK" , 
+				  "TINWON" ,   "TPAY" ,     "TSILJIKUB",    "TGONGHAP" ,  "TRATE" ,    "TPAYCHUNG" , "TBONUS" ,   "TRTM" , 
+				  "TSODUK" ,   "TBANGWI" ,  "TJUMIN" ,  "TJAEHUNG" ,  "TJAEKI" ,   "TJANGJAE" ,  "TJANGJUN" , "TMEDIC",
+				  "TBOJANG" ,  "TYUNGUM" ,  "TJUNGYUN" ,"TSAWOO" ,    "TNOJO" ,    "TGISUK" ,    "TDAEBU" ,   "TCHULJA"   ,
+				  "TSIKGONG" , "TMAEJUM",   "TTEL" ,    "TYUNGJA"   , "TBULGONG" , "TCARGONG" ,  "TWASH" ,    "TJEANGONG"   ,
+				  "TKIGONG1",  "TKIGONG2",  "TWOLGONG", "TGONGTXT1",  "TGONGTXT2",   "EXTD",
+				  "INPTID",     "INPTDT",     "UPDTID",    "UPDTDT",      "IPADDR",		"MACADDR")  
+	  values ( :g_s_company,  :a_s_job , :a_s_yymm,      :l_s_accode,    :l_s_dept,  :l_s_city,     :l_s_bank,
+              :l_n_inwon,    :l_n_tpay,    :l_n_siljikub, :l_n_gonghap,    0,         :l_n_paychung, 0,           0,
+				  :l_n_soduk,    0,            :l_n_jumin,     0,              0,          0,            0,           :l_n_medic,
+				  :l_n_bojang,   :l_n_yungum,   0,             0,             :l_n_nojo,   :l_n_gisuk,    :l_n_daebu, 0,
+				  :l_n_sikgong,  0,             0,            :l_n_yungja,    :l_n_bulgong,:l_n_cargong, :l_n_wash,   :l_n_jeangong,
+				  :l_n_kigong1, :l_n_kigong2, :l_n_wolgong, :l_n_gongtxt1, :l_n_gongtxt2,  '',
+				  :g_s_empno,    :g_s_datetime, ' ',              ' ',                :g_s_ipaddr,	  :g_s_macaddr )  using sqlca;
+				  
+				  
+		if sqlca.sqlcode <> 0 then
+			rollback using sqlca;
+			return 1
+		end if 		  
+   else
+	
+	 
+	   update "PBACC"."ACC593E"
+		 set "TINWON" = :l_n_inwon, "TPAY" = :l_n_tpay , "TSILJIKUB" = :l_n_siljikub, 
+			  "TGONGHAP" = :l_n_gonghap ,  "TPAYCHUNG" =:l_n_paychung ,   "TSODUK" = :l_n_soduk, 
+			  "TJUMIN" = :l_n_jumin ,   "TMEDIC" = :l_n_medic,	  "TBOJANG" = :l_n_bojang ,
+			  "TYUNGUM" = :l_n_yungum  ,   "TNOJO" = :l_n_nojo , "TGISUK" = :l_n_gisuk , 
+			  "TDAEBU" = :l_n_daebu ,   "TSIKGONG"  = :l_n_sikgong , "TYUNGJA" = :l_n_yungja,  "TBULGONG"  = :l_n_bulgong,
+			  "TCARGONG" =:l_n_cargong ,  "TWASH"  = :l_n_wash, "TJEANGONG" = :l_n_jeangong  ,
+			  "TKIGONG1" = :l_n_kigong1,  "TKIGONG2" = :l_n_kigong2, "TWOLGONG" = :l_n_wolgong,
+			  "TGONGTXT1" = :l_n_gongtxt1 , "TGONGTXT2" = :l_n_gongtxt2 ,
+			  "UPDTID"    = :g_s_empno,  "UPDTDT"     = :g_s_datetime, 
+			  "IPADDR"    = :g_s_ipaddr, "MACADDR"    = :g_s_macaddr
+			 where "PBACC"."ACC593E"."COMLTD" = :g_s_company and 
+			    "PBACC"."ACC593E"."TJOB" =:a_s_job and 
+				 "PBACC"."ACC593E"."TYYMM" =:a_s_yymm and 
+				 "PBACC"."ACC593E"."TACCODE" = :l_s_accode and
+				 "PBACC"."ACC593E"."TDEPT" = :l_s_dept and 
+				 "PBACC"."ACC593E"."TCITY" = :l_s_city and 
+				 "PBACC"."ACC593E"."TBANK" = :l_s_bank using sqlca;
+				 
+		 if sqlca.sqlcode <> 0 then
+			rollback using sqlca;
+		   return 1
+		 end if 
+     end if		
+next   
+	  
+		
+ 
+
+Return 0
+end function
+

@@ -7,7 +7,7 @@ forward prototypes
 global function string f_get_accdr01 (string a_acccode, string a_dept, string a_acdate)
 end prototypes
 
-global function string f_get_accdr01 (string a_acccode, string a_dept, string a_acdate);dec    l_n_dfromdt, l_n_dacttodt
+global function string f_get_accdr01 (string a_acccode, string a_dept, string a_acdate);dec    l_n_dfromdt, l_n_dacttodt,l_n_todt
 string l_s_daccode
 
 if a_acccode = 'A1040000' or a_acccode = 'D1070000' then
@@ -24,7 +24,29 @@ else
 	       "PBCOMMON"."DAC001"."DTODT" = 0      and
 			 "PBCOMMON"."DAC001"."DCODE" = :a_dept using sqlca;
 	if sqlca.sqlcode <> 0 then
-		return 'e'
+		
+		//企扁老磊 check//
+		select max("PBCOMMON"."DAC001"."DTODT")
+		into :l_n_todt 
+		from   "PBCOMMON"."DAC001"
+	   where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+	       "PBCOMMON"."DAC001"."DTODT" <>   0      and
+			 "PBCOMMON"."DAC001"."DCODE" = :a_dept using sqlca;
+	   if sqlca.sqlcode <> 0 or isnull(l_n_todt)  then
+		   return 'e' 
+		end if 
+		
+		if mid(string(l_n_todt),1,6) < mid(a_acdate,1,6) then 
+			return 'e'
+		end if 
+		
+		select "PBCOMMON"."DAC001"."DFROMDT", "PBCOMMON"."DAC001"."DACTTODT", "PBCOMMON"."DAC001"."DACCODE"
+		into   :l_n_dfromdt, :l_n_dacttodt, :l_s_daccode
+		from   "PBCOMMON"."DAC001"
+		where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+				 "PBCOMMON"."DAC001"."DTODT" = :l_n_todt      and
+				 "PBCOMMON"."DAC001"."DCODE" = :a_dept using sqlca;
+		//企扁老磊 check		 
 	end if
 	if mid(a_acccode,1,1) <> l_s_daccode and &
 	   ( mid(a_acccode,1,4) = 'M103' or mid(a_acccode,1,4) = 'D105' or mid(a_acccode,1,4) = 'S103' ) and &

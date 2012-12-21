@@ -1,0 +1,30 @@
+$PBExportHeader$f_get_accdeldeptnm.srf
+$PBExportComments$폐지된 부서명 return
+global type f_get_accdeldeptnm from function_object
+end type
+
+forward prototypes
+global function string f_get_accdeldeptnm (string a_s_deptcd)
+end prototypes
+
+global function string f_get_accdeldeptnm (string a_s_deptcd);string l_s_deptnm, l_s_deptcd
+
+ 
+
+SELECT "PBCOMMON"."DAC001A"."DNAME"
+INTO   :l_s_deptnm
+FROM   "PBCOMMON"."DAC001A"
+WHERE  "PBCOMMON"."DAC001A"."DCODE" = :a_s_deptcd AND
+       "PBCOMMON"."DAC001A"."DUSE" ='X' AND 
+       "PBCOMMON"."DAC001A"."DTODT"  = (SELECT MAX("PBCOMMON"."DAC001A"."DTODT" ) 
+		                                  FROM  "PBCOMMON"."DAC001A"
+														WHERE  "PBCOMMON"."DAC001A"."DCODE" = :a_s_deptcd AND
+																 "PBCOMMON"."DAC001A"."DUSE" ='X' )    using sqlca;
+
+IF sqlca.sqlcode <> 0 Then
+	l_s_deptnm = 'ERROR'
+End IF
+
+Return l_s_deptnm
+end function
+

@@ -1,6 +1,6 @@
 $PBExportHeader$d_wip05cu_01.srd
-release 8;
-datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 header(height=68 color="536870912" )
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
@@ -11,8 +11,9 @@ table(column=(type=char(4) updatewhereclause=yes name=wip009_wfyear dbname="WIP0
  column=(type=char(1) updatewhereclause=yes name=wip009_wfplant dbname="WIP009.WFPLANT" )
  column=(type=char(1) updatewhereclause=yes name=wip009_wfdvsn dbname="WIP009.WFDVSN" )
  column=(type=char(5) updatewhereclause=yes name=wip009_wfvendor dbname="WIP009.WFVENDOR" )
- column=(type=char(30) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
  column=(type=char(1) update=yes updatewhereclause=yes name=wip009_wfstscd dbname="WIP009.WFSTSCD" values="업체입력	/입력확정	1/1차확정	2/클레임계산	3/최종확정	4/경리확정	5/" )
+ column=(type=char(1) updatewhereclause=yes name=wip009_wfiocd dbname="WIP009.WFIOCD" )
  column=(type=char(1) updatewhereclause=yes name=del_chk dbname="DEL_CHK" )
  retrieve="SELECT DISTINCT ~"PBWIP~".~"WIP009~".~"WFYEAR~",
 			~"PBWIP~".~"WIP009~".~"WFMONTH~",
@@ -22,6 +23,7 @@ table(column=(type=char(4) updatewhereclause=yes name=wip009_wfyear dbname="WIP0
          ~"PBWIP~".~"WIP009~".~"WFVENDOR~",
 			~"PBPUR~".~"PUR101~".~"VNDNM~",   
          ~"PBWIP~".~"WIP009~".~"WFSTSCD~",
+			~"PBWIP~".~"WIP009~".~"WFIOCD~",
 			' ' AS DEL_CHK  
 FROM ~"PBWIP~".~"WIP009~", ~"PBPUR~".~"PUR101~"
 WHERE	( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = ~"PBPUR~".~"PUR101~".~"COMLTD~" ) AND
@@ -32,9 +34,9 @@ WHERE	( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = ~"PBPUR~".~"PUR101~".~"COMLTD~" ) AND
 		( ~"PBWIP~".~"WIP009~".~"WFMONTH~" = :a_month) AND
 		( ~"PBWIP~".~"WIP009~".~"WFPLANT~" LIKE :a_plant ) AND
 		( ~"PBWIP~".~"WIP009~".~"WFDVSN~"  LIKE :a_dvsn ) AND
-		( ~"PBWIP~".~"WIP009~".~"WFSTSCD~"  = '2' )
+		( ~"PBWIP~".~"WIP009~".~"WFSTSCD~"  = :a_iocd )
 		
-" arguments=(("a_year", string),("a_month", string),("a_cmcd", string),("a_plant", string),("a_dvsn", string)) )
+" arguments=(("a_year", string),("a_month", string),("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_iocd", string)) )
 text(band=header alignment="2" text="지역" border="2" color="16777215" x="0" y="4" height="60" width="165" html.valueishtml="0"  name=wfplant_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="공장" border="2" color="16777215" x="169" y="4" height="60" width="165" html.valueishtml="0"  name=wfdvsn_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="진행상태" border="2" color="16777215" x="1335" y="4" height="60" width="448" html.valueishtml="0"  name=wfstscd_s_f visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -46,5 +48,8 @@ column(band=detail id=8 alignment="2" tabsequence=32766 border="2" color="335544
 column(band=detail id=6 alignment="2" tabsequence=32766 border="2" color="33554432" x="338" y="0" height="76" width="270" format="[general]" html.valueishtml="0"  name=wip009_wfvendor visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=7 alignment="0" tabsequence=32766 border="2" color="33554432" x="613" y="0" height="76" width="718" format="[general]" html.valueishtml="0"  name=pur101_vndnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

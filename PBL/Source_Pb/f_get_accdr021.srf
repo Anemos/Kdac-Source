@@ -4,10 +4,11 @@ global type f_get_accdr021 from function_object
 end type
 
 forward prototypes
-global function string f_get_accdr021 (string a_cust)
+global function string f_get_accdr021 (string a_cust, string a_date)
 end prototypes
 
-global function string f_get_accdr021 (string a_cust);int l_n_rcnt
+global function string f_get_accdr021 (string a_cust, string a_date);int l_n_rcnt
+long l_n_todt
 
 select count(*)
 into   :l_n_rcnt
@@ -21,7 +22,39 @@ if isnull(l_n_rcnt) then
 end if
 
 if l_n_rcnt < 1 then
-	return 'e'
+	
+	//企扁老磊 check//
+		select max("PBCOMMON"."DAC001"."DTODT")
+		into :l_n_todt 
+		from   "PBCOMMON"."DAC001"
+	   where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+	       "PBCOMMON"."DAC001"."DTODT" <>   0      and
+			 "PBCOMMON"."DAC001"."DCODE" = :a_cust using sqlca;
+	   if sqlca.sqlcode <> 0 or isnull(l_n_todt)  then
+		   return 'e' 
+		end if 
+		
+		if mid(string(l_n_todt),1,6) < mid(a_date,1,6) then 
+			return 'e'
+		end if 
+		
+		select  count(*)
+      into   :l_n_rcnt
+		from   "PBCOMMON"."DAC001"
+		where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+				 "PBCOMMON"."DAC001"."DTODT" = :l_n_todt      and
+				 "PBCOMMON"."DAC001"."DCODE" = :a_cust using sqlca;
+		//企扁老磊 check	
+	   if isnull(l_n_rcnt) then
+			l_n_rcnt = 0
+		end if
+	   
+		if l_n_rcnt < 1 then
+	      return 'e'
+		else 
+			return ''
+		end if
+		
 else
 	return ''
 end if

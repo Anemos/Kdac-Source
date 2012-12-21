@@ -7,7 +7,22 @@ forward prototypes
 global function integer f_bpm_create_bpm515 (string ag_cmcd, string ag_year, string ag_revno, string ag_divcode, ref string ag_message)
 end prototypes
 
-global function integer f_bpm_create_bpm515 (string ag_cmcd, string ag_year, string ag_revno, string ag_divcode, ref string ag_message);// 제품별재료비 데이타생성
+global function integer f_bpm_create_bpm515 (string ag_cmcd, string ag_year, string ag_revno, string ag_divcode, ref string ag_message);// 단가배정 방식 BPM509
+//* 내자
+// YCSTD1 = YCSTR * 기준비율 * 이원화
+// YCSTE1 = YCSTR * 연동비율 * 이원화
+// YCSTD = sum(YCSTD1)
+// YCSTE = sum(YCSTE1)
+//
+//* 외자
+// YCSTD1 = YCSTR *(1+ 내수 부대비율 (+관세) )
+// YCSTE1 = YCSTR * (1+ 수출 부대비율) 
+// YCSTD = YCSTD1 * 환율 * 이원화율
+// YCSTE = YCSTE1 * 환율 * 이원화율
+// YCSTD = sum(YCSTD1)
+// YCSTE = sum(YCSTE1)
+
+// 제품별재료비 데이타생성
 // 연동품은 품목에 업체별로 YCURR2 통화로 YCSTE1, SUM은 YCSTE 에서 관리, YCURR 은 KRW로 고정하고 YCSTD1, SUM은 YCSTD 에서 관리. (2011.10.17)
 DELETE FROM PBBPM.BPM515
 WHERE COMLTD = :ag_cmcd AND MYEAR = :ag_year AND

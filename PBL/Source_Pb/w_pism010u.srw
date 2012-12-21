@@ -2077,6 +2077,7 @@ Return f_pism_dwupdate(This, False)
 end event
 
 event clicked;call super::clicked;//If row <= 0 Then Return 1 
+
 end event
 
 event losefocus;call super::losefocus;This.AcceptText() 

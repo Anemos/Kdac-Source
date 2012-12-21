@@ -1,0 +1,623 @@
+$PBExportHeader$f_creation_manhour_bpm.srf
+$PBExportComments$표준재료비 원가업로드 함수(사업계획용)
+global type f_creation_manhour_bpm from function_object
+end type
+
+forward prototypes
+global function boolean f_creation_manhour_bpm (string ag_year, string ag_gubun, string ag_date, ref string ag_message)
+end prototypes
+
+global function boolean f_creation_manhour_bpm (string ag_year, string ag_gubun, string ag_date, ref string ag_message);//** 사업계획용 표준MH작성 함수
+//* tmhbaseworkcenterbpm : CostCenter별 품목별 표준 MH
+//* tmhbasesummarybpm : 완제품별 표준 MH
+//* ag_gubun : '0A' 사업계획
+//* ag_year : 사업계획년도, ag_date : 표준MH기준날짜
+//* 작업순서 : mh 정보를 공장별로 가져와서 업데이트 한다. pbacc.pcc320 : cc별, pbacc.pcc300 : 완제품별
+
+integer li_rtn, li_rowcnt, li_index, li_index_mm
+string ls_node, ls_plant, ls_div, ls_areadivision[]
+string ls_itno, ls_workcenter, ls_prcd, ls_applyyear, ls_itemclass, ls_month, ls_cls, ls_srce
+dec{6} ld_stdin, ld_stdout, ld_actin, ld_actout, ld_basepower, ld_basemactime
+dec{5} ld_outamt, ld_inamt
+dec{0} ld_qty[13]
+datastore lds_source_pcc300, lds_source_pcc320, lds_source_bpm516
+str_ipis_server lstr_ipis[]
+
+// 제품별 MH정보
+lds_source_pcc300 = create datastore
+lds_source_pcc300.dataobject = "d_tmhbasesummarybpm_pcc300_source"
+
+//CostCenter별 MH정보
+lds_source_pcc320 = create datastore
+lds_source_pcc320.dataobject = "d_tmhbaseworkcenterbpm_pcc320_source"
+
+//원소재 사업계획수량 입력
+lds_source_bpm516 = create datastore
+lds_source_bpm516.dataobject = "d_tbpm516_pcc320_source"
+
+ls_node = ''
+
+if ag_gubun = '0A' then
+	ls_applyyear = mid(f_relativedate(ag_year + '0101',-1),1,4)
+else
+	messagebox("확인", "사업계획에 해당하는 버전정보가 아닙니다.")
+	return false
+end if
+
+//// 제품군이 다른 품번이 존제하는지 체크
+////SELECT A.BPLANT, A.BDIV, A.BMDNO, A.BMDCD, E.BCHNO, E.PDCD
+//SELECT COUNT(*) INTO :li_rtn
+//FROM 
+//( 
+//SELECT DISTINCT BPLANT,BDIV,BMDNO,BMDCD FROM PBBPM.BPM508
+//  WHERE COMLTD = '01' AND XYEAR = :ag_year AND BREV = :ag_gubun AND BGUBUN = 'A'
+//) A,
+//( 
+//SELECT DISTINCT C.BPLANT,C.BDIV,C.BMDNO,C.BMDCD,C.BCHNO,SUBSTRING(B.PDCD,1,2) AS PDCD
+//FROM PBBPM.BPM508 C INNER JOIN PBBPM.BPM503 B
+//ON B.XYEAR = C.XYEAR AND B.REVNO = C.BREV AND
+//		B.XPLANT = C.BPLANT AND B.DIV = C.BDIV AND B.ITNO = C.BCHNO AND C.XYEAR = :ag_year AND
+//		C.BREV = :ag_gubun AND C.BGUBUN = 'A'
+//  WHERE C.COMLTD = '01' AND C.XYEAR = :ag_year AND
+//		C.BREV = :ag_gubun AND C.BGUBUN = 'A' AND (B.CLS = '30' OR B.CLS = '50' OR B.SRCE = '03')
+//) E
+//WHERE A.BPLANT = E.BPLANT AND A.BDIV = E.BDIV AND A.BMDNO = E.BMDNO AND A.BMDCD <> E.PDCD
+//using sqlca;
+//
+//if li_rtn > 0 then
+//	messagebox("확인", "출하제품군과 다른 품번이 존제합니다.")
+//	return false
+//end if
+
+do while true
+	select ifnull(concat(a.xplant,a.div),'') into :ls_node
+	 from pbinv.inv902 a inner join pbcommon.dac002 b
+	  on a.div = b.cocode and b.cogubun = 'DAC030' and
+	  a.inptid = 'A'
+	 where concat(a.xplant,a.div) > :ls_node
+	 order by a.xplant,a.div
+	 fetch first 1 row only
+	 using sqlca;
+	
+	if f_spacechk(ls_node) = -1 or sqlca.sqlcode <> 0 then
+		exit
+	end if
+	ls_plant = mid(ls_node,1,1)
+	ls_div = mid(ls_node,2,1)
+
+	ls_areadivision[1] = ls_node
+	lstr_ipis = f_ipis_server_set_transaction("EACH",ls_areadivision)
+	li_index = f_ipis_server_get_transaction(lstr_ipis,ls_plant,ls_div)
+	lds_source_pcc300.settransobject(lstr_ipis[li_index].t_sqlpis)
+	lds_source_pcc320.settransobject(lstr_ipis[li_index].t_sqlpis)
+	
+	// 제품별 MH이동
+	// 사업계획 매출품번에 대한 판매수량, 외주가공비
+	li_rowcnt = lds_source_pcc300.retrieve(ls_plant,ls_div,ag_date,ag_year,ag_gubun)
+	if li_rowcnt < 1 then
+		f_ipis_server_commit_transaction(lstr_ipis)
+		continue
+	end if
+	
+	if ls_plant = 'B' or ls_plant = 'K' then
+		update pbacc.pcc300
+		set BPQTY = 0,
+			BPELEAMT = 0,
+			BPMECAMT = 0,
+			BPOUTAMT = 0
+		where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+			bparea = :ls_plant and bpplant = :ls_div
+		using sqlca;
+	else
+		update pbacc.pcc300
+		set BPMHAMTI = 0, BPMHAMTO = 0,
+			BPUMHAMTI = 0,BPUMHAMTO = 0,
+			BPQTY = 0,
+			BPELEAMT = 0,
+			BPMECAMT = 0,
+			BPOUTAMT = 0
+		where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+			bparea = :ls_plant and bpplant = :ls_div
+		using sqlca;
+	end if
+	
+	for li_index = 1 to li_rowcnt
+		ls_plant = lds_source_pcc300.getitemstring(li_index, "zplant")
+		ls_div = lds_source_pcc300.getitemstring(li_index, "zdiv")
+		ls_itno = lds_source_pcc300.getitemstring(li_index, "zmdno")
+		ls_prcd = lds_source_pcc300.getitemstring(li_index, "productgroup")
+		ld_stdin = lds_source_pcc300.getitemnumber(li_index, "stdin")
+		ld_stdout = lds_source_pcc300.getitemnumber(li_index, "stdout")
+		ld_actin = lds_source_pcc300.getitemnumber(li_index, "actin")
+		ld_actout = lds_source_pcc300.getitemnumber(li_index, "actout")
+		ld_basepower = lds_source_pcc300.getitemnumber(li_index, "basepower")
+		ld_basemactime = lds_source_pcc300.getitemnumber(li_index, "basemactime")
+		
+		SELECT CLS, SRCE, SUBSTRING(PDCD,1,2) INTO :ls_cls, :ls_srce, :ls_prcd
+		FROM PBBPM.BPM503
+		WHERE XYEAR = :ag_year AND REVNO = :ag_gubun AND XPLANT = :ls_plant AND
+			DIV = :ls_div AND ITNO = :ls_itno
+		using sqlca;
+		
+		if isnull(ls_prcd) then 
+			// 품목상세 미등록품은 제외
+			continue
+		end if
+		
+		if ls_plant = 'Y' or ls_plant = 'B' or ls_plant = 'K' then
+			// 여주, 부평, 군산 품목은 사내외주가공으로 일괄처리 2012.11.26
+			ld_stdout = ld_stdin
+			ld_stdin = 0
+		end if
+		
+		// 완제품별 배부기준을 위한 하위 완전사급완성품에 대한 기초데이타 입력
+		if ld_stdin = 0 and ld_stdout = 0 and ld_basemactime = 0 then
+			if ls_cls = '30' then
+				ld_stdout = 0.00001
+				ld_basemactime = 0.00001
+				ld_basepower = 0.00001
+			else
+				ld_stdout = 0.000001
+				ld_basemactime = 0.000001
+				ld_basepower = 0.000001
+			end if
+		end if
+		
+		// 예산 실투입 0 처리
+		ld_actin = 0
+		ld_actout = 0
+		
+		// 수량초기화
+		ld_qty[1] = 0
+		ld_qty[2] = 0
+		ld_qty[3] = 0
+		ld_qty[4] = 0
+		ld_qty[5] = 0
+		ld_qty[6] = 0
+		ld_qty[7] = 0
+		ld_qty[8] = 0
+		ld_qty[9] = 0
+		ld_qty[10] = 0
+		ld_qty[11] = 0
+		ld_qty[12] = 0
+		
+		SELECT TMP.YCSTD, SUM(TMP.QTY1), SUM(TMP.QTY2), SUM(TMP.QTY3), SUM(TMP.QTY4),
+			SUM(TMP.QTY5), SUM(TMP.QTY6), SUM(TMP.QTY7), SUM(TMP.QTY8),
+			SUM(TMP.QTY9), SUM(TMP.QTY10), SUM(TMP.QTY11), SUM(TMP.QTY12)
+		INTO :ld_outamt,:ld_qty[1], :ld_qty[2], :ld_qty[3], :ld_qty[4], 
+			:ld_qty[5], :ld_qty[6], :ld_qty[7], :ld_qty[8],
+			:ld_qty[9], :ld_qty[10], :ld_qty[11], :ld_qty[12]
+		FROM (	
+		SELECT A.COMLTD AS COMLTD,A.AYEAR AS AYEAR,A.AREV AS AREV,A.APLANT AS APLANT,
+				A.ADIV AS ADIV,A.APDCD AS APDCD,A.AMDNO AS AMDNO, B.MOLAT AS YCSTD,
+				A.ASQTY1 AS QTY1,
+				A.ASQTY2 AS QTY2, A.ASQTY3 AS QTY3, A.ASQTY4 AS QTY4, A.ASQTY5 AS QTY5,
+				A.ASQTY6 AS QTY6, A.ASQTY7 AS QTY7, A.ASQTY8 AS QTY8, A.ASQTY9 AS QTY9,
+				A.ASQTY10 AS QTY10, A.ASQTY11 AS QTY11, A.ASQTY12 AS QTY12 
+			FROM PBBPM.BPM501 A INNER JOIN PBBPM.BPM515 B
+			ON ( A.COMLTD = B.COMLTD ) and ( A.AYEAR = B.MYEAR ) and
+				( A.AREV = B.MBREV ) and ( A.ACODE = B.MGUBUN ) and  
+				( A.APLANT = B.MPLANT ) and ( A.ADIV = B.MDIV ) and  
+				( A.APDCD = B.MMDCD ) and ( A.AMDNO = B.MMDNO ) and  
+				( A.SEQGB = B.MSEQGB ) and ( B.MUSGE = 'D' )
+			WHERE A.COMLTD = '01' AND A.AYEAR = :ag_year AND A.AREV = :ag_gubun AND A.ACODE = 'A' AND A.SEQGB <> 'S' AND
+					A.APLANT = :ls_plant AND A.ADIV = :ls_div AND A.AMDNO = :ls_itno ) TMP
+		GROUP BY TMP.YCSTD
+		using sqlca;
+		
+		if sqlca.sqlcode <> 0 then
+			ld_qty[1] = 0
+			ld_qty[2] = 0
+			ld_qty[3] = 0
+			ld_qty[4] = 0
+			ld_qty[5] = 0
+			ld_qty[6] = 0
+			ld_qty[7] = 0
+			ld_qty[8] = 0
+			ld_qty[9] = 0
+			ld_qty[10] = 0
+			ld_qty[11] = 0
+			ld_qty[12] = 0
+		end if
+		
+		for li_index_mm = 1 to 12
+			ls_month = string(li_index_mm,"00")
+			
+			select count(*) into :li_rtn
+			from pbacc.pcc300
+			where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+				bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+				bpitno = :ls_itno
+			using sqlca;
+			
+			if li_rtn = 0 then
+				if ls_plant = 'B' or ls_plant = 'K' then
+					INSERT INTO PBACC.PCC300
+					( COMLTD,BPGUBUN,BPYY,BPMM,BPAREA,BPPLANT,BPPRCD,BPITNO,
+						BPMHAMTI,BPMHAMTO,BPUMHAMTI,BPUMHAMTO,BPQTY,BPELEAMT,BPMECAMT,
+						BPTRAAMT,BPPACAMT,BPOUTAMT,BPAMT1,BPAMT2,BPAMT3,BPAMT4,BPAMT5,
+						BPAMT6,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+					VALUES('01', :ag_gubun, :ag_year, :ls_month, :ls_plant, :ls_div, :ls_prcd, :ls_itno,
+						0, 0, 0, 0, :ld_qty[li_index_mm], :ld_basepower, :ld_basemactime,
+						0, 0, :ld_outamt, 0, 0, 0, 0, 0,
+						0, '', :g_s_empno, :g_s_date, '', '', :g_s_ipaddr, :g_s_macaddr)
+					using sqlca;
+				else
+					INSERT INTO PBACC.PCC300
+					( COMLTD,BPGUBUN,BPYY,BPMM,BPAREA,BPPLANT,BPPRCD,BPITNO,
+						BPMHAMTI,BPMHAMTO,BPUMHAMTI,BPUMHAMTO,BPQTY,BPELEAMT,BPMECAMT,
+						BPTRAAMT,BPPACAMT,BPOUTAMT,BPAMT1,BPAMT2,BPAMT3,BPAMT4,BPAMT5,
+						BPAMT6,EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+					VALUES('01', :ag_gubun, :ag_year, :ls_month, :ls_plant, :ls_div, :ls_prcd, :ls_itno,
+						:ld_actin, :ld_actout, :ld_stdin, :ld_stdout, :ld_qty[li_index_mm], :ld_basepower, :ld_basemactime,
+						0, 0, :ld_outamt, 0, 0, 0, 0, 0,
+						0, '', :g_s_empno, :g_s_date, '', '', :g_s_ipaddr, :g_s_macaddr)
+					using sqlca;
+				end if
+				if sqlca.sqlcode <> 0 then
+					ag_message = "PBACC.PCC300테이블 입력 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			else
+				if ls_plant = 'B' or ls_plant = 'K' then
+					update pbacc.pcc300
+					set BPPRCD = :ls_prcd,
+					   BPQTY = :ld_qty[li_index_mm],
+						BPELEAMT = :ld_basepower,
+						BPMECAMT = :ld_basemactime,
+						BPOUTAMT = :ld_outamt,
+						UPDTID = :g_s_empno,
+						UPDTDT = :g_s_date
+					where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+						bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+						bpitno = :ls_itno
+					using sqlca;
+				else
+					update pbacc.pcc300
+					set BPPRCD = :ls_prcd,
+					   BPMHAMTI = :ld_actin, BPMHAMTO = :ld_actout,
+						BPUMHAMTI = :ld_stdin,BPUMHAMTO = :ld_stdout,
+						BPQTY = :ld_qty[li_index_mm],
+						BPELEAMT = :ld_basepower,
+						BPMECAMT = :ld_basemactime,
+						BPOUTAMT = :ld_outamt,
+						UPDTID = :g_s_empno,
+						UPDTDT = :g_s_date
+					where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+						bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+						bpitno = :ls_itno
+					using sqlca;
+				end if
+				if sqlca.sqlnrows < 1 then
+					ag_message = "PBACC.PCC300테이블 수정 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			end if
+		next
+	next
+	
+	// CostCenter별 MH이동
+	li_rowcnt = lds_source_pcc320.retrieve(ls_plant,ls_div,ag_date,ag_year,ag_gubun)
+	if li_rowcnt < 1 then
+		f_ipis_server_commit_transaction(lstr_ipis)
+		continue
+	end if
+	
+	if ls_plant = 'B' or ls_plant = 'K' then
+		update pbacc.pcc320
+		set BPQTY = 0,
+			BPELEAMT = 0,
+			BPMECAMT = 0,
+			BPAMT1 = 0
+		where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+			bparea = :ls_plant and bpplant = :ls_div
+		using sqlca;
+	else
+		update pbacc.pcc320
+		set BPMHAMTI = 0, BPMHAMTO = 0,
+			BPUMHAMTI = 0,BPUMHAMTO = 0,
+			BPQTY = 0,
+			BPELEAMT = 0,
+			BPMECAMT = 0,
+			BPAMT1 = 0
+		where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+			bparea = :ls_plant and bpplant = :ls_div
+		using sqlca;
+	end if
+	
+	for li_index = 1 to li_rowcnt
+		ls_plant = lds_source_pcc320.getitemstring(li_index, "areacode")
+		ls_div = lds_source_pcc320.getitemstring(li_index, "divisioncode")
+		ls_itno = lds_source_pcc320.getitemstring(li_index, "itemcode")
+		ls_workcenter = mid(lds_source_pcc320.getitemstring(li_index, "workcenter"),1,4)
+		ls_prcd = lds_source_pcc320.getitemstring(li_index, "productgroup")
+		ls_itemclass = lds_source_pcc320.getitemstring(li_index, "itemclass")
+		ld_stdin = lds_source_pcc320.getitemnumber(li_index, "stdin")
+		ld_stdout = lds_source_pcc320.getitemnumber(li_index, "stdout")
+		ld_actin = lds_source_pcc320.getitemnumber(li_index, "actin")
+		ld_actout = lds_source_pcc320.getitemnumber(li_index, "actout")
+		ld_basepower = lds_source_pcc320.getitemnumber(li_index, "basepower")
+		ld_basemactime = lds_source_pcc320.getitemnumber(li_index, "basemactime")
+		
+		// 예산 실투입 0 처리
+		ld_actin = 0
+		ld_actout = 0
+		
+		SELECT SUBSTRING(PDCD,1,2) INTO :ls_prcd
+		FROM PBBPM.BPM503
+		WHERE XYEAR = :ag_year AND REVNO = :ag_gubun AND XPLANT = :ls_plant AND
+			DIV = :ls_div AND ITNO = :ls_itno
+		using sqlca;
+		
+		if isnull(ls_prcd) then 
+			// 품목상세 미등록품은 제외
+			continue
+		end if
+		
+		if ls_itemclass = '50' then
+			ld_stdin = 0
+		else
+			ld_stdout = 0
+		end if
+		
+		if ls_plant = 'Y' or ls_plant = 'B' or ls_plant = 'K' then
+			// 여주, 부평, 군산 품목은 사내외주가공으로 일괄처리 2012.11.26
+			SELECT CENTER INTO :ls_workcenter
+			FROM PBRTN.COSTCENTER
+			WHERE PLANT = :ls_plant AND DIV = :ls_div AND PDCD = :ls_prcd
+			using sqlca;
+			
+			if isnull(ls_workcenter) then ls_workcenter = ''
+			ld_stdout = ld_stdin
+			ld_stdin = 0
+		end if
+		
+		//수량초기화
+		ld_qty[1] = 0
+		ld_qty[2] = 0
+		ld_qty[3] = 0
+		ld_qty[4] = 0
+		ld_qty[5] = 0
+		ld_qty[6] = 0
+		ld_qty[7] = 0
+		ld_qty[8] = 0
+		ld_qty[9] = 0
+		ld_qty[10] = 0
+		ld_qty[11] = 0
+		ld_qty[12] = 0
+		
+		SELECT TMP.YCSTD, SUM(TMP.QTY1), SUM(TMP.QTY2), SUM(TMP.QTY3), SUM(TMP.QTY4),
+			SUM(TMP.QTY5), SUM(TMP.QTY6), SUM(TMP.QTY7), SUM(TMP.QTY8),
+			SUM(TMP.QTY9), SUM(TMP.QTY10), SUM(TMP.QTY11), SUM(TMP.QTY12)
+		INTO :ld_outamt, :ld_qty[1], :ld_qty[2], :ld_qty[3], :ld_qty[4], 
+			:ld_qty[5], :ld_qty[6], :ld_qty[7], :ld_qty[8],
+			:ld_qty[9], :ld_qty[10], :ld_qty[11], :ld_qty[12]
+		FROM (SELECT A.COMLTD AS COMLTD,A.AYEAR AS AYEAR,A.AREV AS AREV,A.APLANT AS APLANT,
+				A.ADIV AS ADIV,A.APDCD AS APDCD,A.AMDNO AS AMDNO, B.MOLAT AS YCSTD,
+				A.ASQTY1 AS QTY1,
+				A.ASQTY2 AS QTY2, A.ASQTY3 AS QTY3, A.ASQTY4 AS QTY4, A.ASQTY5 AS QTY5,
+				A.ASQTY6 AS QTY6, A.ASQTY7 AS QTY7, A.ASQTY8 AS QTY8, A.ASQTY9 AS QTY9,
+				A.ASQTY10 AS QTY10, A.ASQTY11 AS QTY11, A.ASQTY12 AS QTY12 
+			FROM PBBPM.BPM501 A INNER JOIN PBBPM.BPM515 B
+			ON ( A.COMLTD = B.COMLTD ) and ( A.AYEAR = B.MYEAR ) and
+				( A.AREV = B.MBREV ) and ( A.ACODE = B.MGUBUN ) and  
+				( A.APLANT = B.MPLANT ) and ( A.ADIV = B.MDIV ) and  
+				( A.APDCD = B.MMDCD ) and ( A.AMDNO = B.MMDNO ) and  
+				( A.SEQGB = B.MSEQGB ) and ( B.MUSGE = 'D' )
+			WHERE A.COMLTD = '01' AND A.AYEAR = :ag_year AND A.AREV = :ag_gubun AND A.ACODE = 'A' AND A.SEQGB <> 'S' AND
+					A.APLANT = :ls_plant AND A.ADIV = :ls_div AND A.AMDNO = :ls_itno AND
+					A.ASRCE NOT IN ('01','02','04')
+		UNION ALL
+		
+		SELECT COMLTD AS COMLTD,XYEAR AS AYEAR,WREV AS AREV,WPLANT AS APLANT,
+			WDVSN AS ADIV,WPDCD AS APDCD,WITNO AS AMDNO,WRCPCSTBOM AS YCSTD,
+			WQTY1 AS QTY1,WQTY2 AS QTY2,WQTY3 AS QTY3,WQTY4 AS QTY4,WQTY5 AS QTY5,
+			WQTY6 AS QTY6,WQTY7 AS QTY7,WQTY8 AS QTY8,WQTY9 AS QTY9,WQTY10 AS QTY10,
+			WQTY11 AS QTY11,WQTY12 AS QTY12
+		FROM PBBPM.BPM516C
+			WHERE COMLTD = '01' AND XYEAR = :ag_year AND WREV = :ag_gubun AND 
+				WGUBUN = 'A' AND WPLANT = :ls_plant AND WDVSN = :ls_div AND WITNO = :ls_itno ) TMP
+		GROUP BY TMP.YCSTD
+		using sqlca;
+		
+		if sqlca.sqlcode <> 0 then
+			ld_qty[1] = 0
+			ld_qty[2] = 0
+			ld_qty[3] = 0
+			ld_qty[4] = 0
+			ld_qty[5] = 0
+			ld_qty[6] = 0
+			ld_qty[7] = 0
+			ld_qty[8] = 0
+			ld_qty[9] = 0
+			ld_qty[10] = 0
+			ld_qty[11] = 0
+			ld_qty[12] = 0
+		end if
+	
+		for li_index_mm = 1 to 12
+			ls_month = string(li_index_mm,"00")
+			
+			select count(*) into :li_rtn
+			from pbacc.pcc320
+			where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+				bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+				bpcc = :ls_workcenter and bpitno = :ls_itno
+			using sqlca;
+			
+			if li_rtn = 0 then
+				if ls_plant = 'B' or ls_plant = 'K' then
+					INSERT INTO PBACC.PCC320
+					( COMLTD,BPGUBUN,BPYY,BPMM,BPAREA,BPPLANT,BPPRCD,BPCC,BPITNO,
+						BPMHAMTI,BPMHAMTO,BPUMHAMTI,BPUMHAMTO,BPQTY,BPELEAMT,BPMECAMT,
+						BPAMT1,BPAMT2,BPAMT3,BPAMT4,BPAMT5,BPAMT6,
+						EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+					VALUES('01', :ag_gubun, :ag_year, :ls_month, :ls_plant, :ls_div, :ls_prcd, :ls_workcenter, :ls_itno,
+						0, 0, 0, 0, :ld_qty[li_index_mm], :ld_basepower, :ld_basemactime,
+						:ld_outamt, 0, 0, 0, 0, 0,
+						'', :g_s_empno, :g_s_date, '', '', :g_s_ipaddr, :g_s_macaddr)
+					using sqlca;
+				else
+					INSERT INTO PBACC.PCC320
+					( COMLTD,BPGUBUN,BPYY,BPMM,BPAREA,BPPLANT,BPPRCD,BPCC,BPITNO,
+						BPMHAMTI,BPMHAMTO,BPUMHAMTI,BPUMHAMTO,BPQTY,BPELEAMT,BPMECAMT,
+						BPAMT1,BPAMT2,BPAMT3,BPAMT4,BPAMT5,BPAMT6,
+						EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+					VALUES('01', :ag_gubun, :ag_year, :ls_month, :ls_plant, :ls_div, :ls_prcd, :ls_workcenter, :ls_itno,
+						:ld_actin, :ld_actout, :ld_stdin, :ld_stdout, :ld_qty[li_index_mm], :ld_basepower, :ld_basemactime,
+						:ld_outamt, 0, 0, 0, 0, 0,
+						'', :g_s_empno, :g_s_date, '', '', :g_s_ipaddr, :g_s_macaddr)
+					using sqlca;
+				end if
+				if sqlca.sqlcode <> 0 then
+					ag_message = "PBACC.PCC320테이블 입력 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			else
+				if ls_plant = 'B' or ls_plant = 'K' then
+					update pbacc.pcc320
+					set BPPRCD = :ls_prcd,
+					   BPQTY = :ld_qty[li_index_mm],
+						BPELEAMT = :ld_basepower,
+						BPMECAMT = :ld_basemactime,
+						BPAMT1 = :ld_outamt,
+						UPDTID = :g_s_empno,
+						UPDTDT = :g_s_date
+					where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+						bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+						bpcc = :ls_workcenter and bpitno = :ls_itno
+					using sqlca;
+				else
+					update pbacc.pcc320
+					set BPPRCD = :ls_prcd,
+					   BPMHAMTI = :ld_actin, BPMHAMTO = :ld_actout,
+						BPUMHAMTI = :ld_stdin,BPUMHAMTO = :ld_stdout,
+						BPQTY = :ld_qty[li_index_mm],
+						BPELEAMT = :ld_basepower,
+						BPMECAMT = :ld_basemactime,
+						BPAMT1 = :ld_outamt,
+						UPDTID = :g_s_empno,
+						UPDTDT = :g_s_date
+					where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+						bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+						bpcc = :ls_workcenter and bpitno = :ls_itno
+					using sqlca;
+				end if
+				if sqlca.sqlnrows < 1 then
+					ag_message = "PBACC.PCC320테이블 수정 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			end if
+		next
+	next
+	
+	f_ipis_server_commit_transaction(lstr_ipis)
+
+	// 사업계획 원소재입고수량 및 단가 업데이트
+	lds_source_bpm516.settransobject(sqlca)
+	li_rowcnt = lds_source_bpm516.retrieve(ag_year,ag_gubun,ls_plant,ls_div)
+	
+	update pbacc.pcc320
+	set BPQTY = 0,
+		BPAMT5 = 0,
+		BPAMT6 = 0
+	where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+		bparea = :ls_plant and bpplant = :ls_div and bpcc = ''
+	using sqlca;
+	
+	for li_index = 1 to li_rowcnt
+		ls_plant = lds_source_bpm516.getitemstring(li_index, "aplant")
+		ls_div = lds_source_bpm516.getitemstring(li_index, "adiv")
+		ls_itno = lds_source_bpm516.getitemstring(li_index, "amdno")
+		ls_workcenter = ''
+		ls_prcd = lds_source_bpm516.getitemstring(li_index, "apdcd")
+		ls_cls = lds_source_bpm516.getitemstring(li_index, "cls")
+		ls_srce = lds_source_bpm516.getitemstring(li_index, "srce")
+		if ls_srce = '01' then
+			ld_outamt = lds_source_bpm516.getitemnumber(li_index, "ycstd")
+			ld_inamt = 0
+		else
+			ld_outamt = 0
+			ld_inamt = lds_source_bpm516.getitemnumber(li_index, "ycstd")
+		end if
+		ld_qty[1] = lds_source_bpm516.getitemnumber(li_index, "qty1")
+		ld_qty[2] = lds_source_bpm516.getitemnumber(li_index, "qty2")
+		ld_qty[3] = lds_source_bpm516.getitemnumber(li_index, "qty3")
+		ld_qty[4] = lds_source_bpm516.getitemnumber(li_index, "qty4")
+		ld_qty[5] = lds_source_bpm516.getitemnumber(li_index, "qty5")
+		ld_qty[6] = lds_source_bpm516.getitemnumber(li_index, "qty6")
+		ld_qty[7] = lds_source_bpm516.getitemnumber(li_index, "qty7")
+		ld_qty[8] = lds_source_bpm516.getitemnumber(li_index, "qty8")
+		ld_qty[9] = lds_source_bpm516.getitemnumber(li_index, "qty9")
+		ld_qty[10] = lds_source_bpm516.getitemnumber(li_index, "qty10")
+		ld_qty[11] = lds_source_bpm516.getitemnumber(li_index, "qty11")
+		ld_qty[12] = lds_source_bpm516.getitemnumber(li_index, "qty12")
+	
+		for li_index_mm = 1 to 12
+			ls_month = string(li_index_mm,"00")
+			
+			select count(*) into :li_rtn
+			from pbacc.pcc320
+			where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+				bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+				bpcc = :ls_workcenter and bpitno = :ls_itno
+			using sqlca;
+			
+			if li_rtn = 0 then
+				INSERT INTO PBACC.PCC320
+				( COMLTD,BPGUBUN,BPYY,BPMM,BPAREA,BPPLANT,BPPRCD,BPCC,BPITNO,
+					BPMHAMTI,BPMHAMTO,BPUMHAMTI,BPUMHAMTO,BPQTY,BPELEAMT,BPMECAMT,
+					BPAMT1,BPAMT2,BPAMT3,BPAMT4,BPAMT5,BPAMT6,
+					EXTD,INPTID,INPTDT,UPDTID,UPDTDT,IPADDR,MACADDR )
+				VALUES('01', :ag_gubun, :ag_year, :ls_month, :ls_plant, :ls_div, :ls_prcd, :ls_workcenter, :ls_itno,
+					0, 0, 0, 0, :ld_qty[li_index_mm], 0, 0,
+					0, 0, 0, 0, :ld_inamt, :ld_outamt,
+					'', :g_s_empno, :g_s_date, '', '', :g_s_ipaddr, :g_s_macaddr)
+				using sqlca;
+				if sqlca.sqlcode <> 0 then
+					ag_message = "bpm516-PBACC.PCC320테이블 입력 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			else
+				update pbacc.pcc320
+				set BPPRCD = :ls_prcd,
+				   BPQTY = :ld_qty[li_index_mm],
+					BPAMT5 = :ld_inamt,
+					BPAMT6 = :ld_outamt,
+					UPDTID = :g_s_empno,
+					UPDTDT = :g_s_date
+				where comltd = '01' and bpgubun = :ag_gubun and bpyy = :ag_year and
+					bpmm = :ls_month and bparea = :ls_plant and bpplant = :ls_div and
+					bpcc = :ls_workcenter and bpitno = :ls_itno
+				using sqlca;
+				if sqlca.sqlnrows < 1 then
+					ag_message = "bpm516-PBACC.PCC320테이블 수정 오류 : " + ls_plant + ls_div + ls_itno + sqlca.sqlerrtext
+					goto Rollback_
+				end if
+			end if
+			
+		next
+	next
+loop
+
+destroy lds_source_pcc300
+destroy lds_source_pcc320
+destroy lds_source_bpm516
+
+ag_message = "MH생성작업이 정상적으로 완료되었습니다."
+messagebox("chk",ag_message)
+return true
+
+Rollback_:
+
+destroy lds_source_pcc300
+destroy lds_source_pcc320
+destroy lds_source_bpm516
+f_ipis_server_rollback_transaction(lstr_ipis)
+
+messagebox("chk",ag_message)
+
+return false
+
+end function
+

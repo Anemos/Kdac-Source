@@ -208,9 +208,9 @@ do while true
 	if f_spacechk(ls_year) = -1 or mid(g_s_date,1,4) < ls_year then
 		ls_error = 'E02 : 해당년도 오류'  	// 해당년도 오류
 	end if
-	if ls_month <> '12'  then
-		ls_error = 'E03 : 해당월 오류'		// 해당월 오류
-	end if
+//	if ls_month <> '12'  then
+//		ls_error = 'E03 : 해당월 오류'		// 해당월 오류
+//	end if
 	if f_spacechk(ls_dept) = -1 or ls_dept <> '9999' then
 		ls_error = 'E04 : 조코드 오류'		// 조코드 오류
 	end if		
@@ -538,12 +538,7 @@ string facename = "굴림체"
 string text = "자료경로"
 end type
 
-event clicked;//string ls_pathname,ls_filename
-//GetFileOpenName("Select File", ls_pathname, ls_filename, "txt","Text Files (*.txt),*.txt,")
-//sle_1.text = ls_pathname
-
-
-string	ls_docname, ls_named, ls_name
+event clicked;string	ls_docname, ls_named, ls_name
 Long		ll_rtn
 OLEObject lole_UploadObject
 

@@ -44,7 +44,7 @@ table(column=(type=char(15) updatewhereclause=yes name=bom003_opitn dbname="BOM0
          ( ~"PBWIP~".~"WIP001~".~"WACMCD~" = :a_cmcd  ) AND  
          ( ~"PBWIP~".~"WIP001~".~"WAPLANT~" = :a_plant  ) AND  
          ( ~"PBWIP~".~"WIP001~".~"WADVSN~" = :a_dvsn  ) AND
-			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2')  ) AND  
+			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2','3')  ) AND  
          ((~"PBPDM~".~"BOM003~".~"OEDTE~" = ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate ) OR
 			(~"PBPDM~".~"BOM003~".~"OEDTE~" <> ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate 
                                           AND ~"PBPDM~".~"BOM003~".~"OEDTE~" >= :a_adjdate ))
@@ -63,7 +63,7 @@ column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="0" x="
 column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="0" x="3840" y="4" height="64" width="357" format="[general]" html.valueishtml="0"  name=com_usqt2 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x="4210" y="8" height="64" width="343" format="[general]" html.valueishtml="0"  name=com_usqt3 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="4553" y="0" height="64" width="1161" format="[general]" html.valueishtml="0"  name=com_usqtsum visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
-column(band=detail id=12 alignment="0" tabsequence=0 border="0" color="0" x="5714" y="0" height="60" width="1376" html.valueishtml="0"  name=inv101_convqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=32766 border="0" color="0" x="5714" y="0" height="60" width="1376" format="[general]" html.valueishtml="0"  name=inv101_convqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )

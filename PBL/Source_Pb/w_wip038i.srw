@@ -452,7 +452,7 @@ string picturename = "C:\kdac\bmp\Excel.bmp"
 alignment htextalign = left!
 end type
 
-event clicked;f_save_to_excel(dw_1)
+event clicked;f_save_to_excel_number(dw_1)
 
 end event
 

@@ -4,6 +4,7 @@
 --  Generated on:               08/07/15
 --  Relational Database:        I520
 --  Standards Option:           DB2 UDB iSeries
+--  Desc : 전력비추가 (2012.10.15)
 
 CREATE TABLE PBRTN.RTN015 (
   RECMCD      CHAR(2)       CCSID 833 NOT NULL , -- 회사
@@ -28,9 +29,22 @@ CREATE TABLE PBRTN.RTN015 (
   RENVLB      DECIMAL(7, 4)           NOT NULL , -- 부대 수작업
   RELBCNT     NUMERIC(3, 0)           NOT NULL , -- 인원
   REFLAG      CHAR(1)       CCSID 833 NOT NULL , -- 입력구분
-  REEPNO      CHAR(6)       CCSID 933 NOT NULL , -- 등록자
+  REEPNO      VARCHAR(6)    CCSID 933 NOT NULL , -- 등록자
   REIPAD      VARCHAR(15)   CCSID 933 NOT NULL , -- IP ADDRESS
-  REUPDT      CHAR(8)       CCSID 933 NOT NULL , -- 수정일
-  RESYDT      CHAR(8)       CCSID 933 NOT NULL , -- 등록일
+  REUPDT      CHAR(8)       CCSID 833 NOT NULL , -- 수정일
+  RESYDT      CHAR(8)       CCSID 833 NOT NULL , -- 등록일
+  REINEMP     VARCHAR(6)    CCSID 933 NOT NULL , -- 담당자
+  REINCHK     CHAR(1)       CCSID 833 NOT NULL , -- 담당자승인여부
+  REINTIME    VARCHAR(19)   CCSID 933 NOT NULL , -- 담당자승인시간
+  REPLEMP     VARCHAR(6)    CCSID 933 NOT NULL , -- P/L
+  REPLCHK     CHAR(1)       CCSID 833 NOT NULL , -- P/L 승인여부
+  REPLTIME    VARCHAR(19)   CCSID 933 NOT NULL , -- P/L 승인시간
+  REDLEMP     VARCHAR(6)    CCSID 933 NOT NULL , -- 팀장
+  REDLCHK     CHAR(1)       CCSID 833 NOT NULL , -- 팀장승인여부
+  REDLTIME    VARCHAR(19)   CCSID 933 NOT NULL , -- 팀장승인시간
+  REPOWER     NUMERIC(10,5) CCSID 833 NOT NULL DEFAULT 0, -- 전력비(KW/EA)
   PRIMARY KEY( RECMCD , REPLANT , REDVSN , REITNO , RELINE1 , RELINE2 , REOPNO , REEDFM )
   ) ;
+  
+ALTER TABLE PBRTN.RTN015
+ADD COLUMN REPOWER DECIMAL(10, 5) NOT NULL DEFAULT 0.00000;

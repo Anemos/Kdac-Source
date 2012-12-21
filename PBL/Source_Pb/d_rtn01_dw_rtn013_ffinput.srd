@@ -4,7 +4,7 @@ release 9;
 datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
-detail(height=556 color="536870912" )
+detail(height=656 color="536870912" )
 table(column=(type=char(2) updatewhereclause=yes key=yes name=rccmcd dbname="RTN013.RCCMCD" )
  column=(type=char(1) updatewhereclause=yes key=yes name=rcdvsn dbname="RTN013.RCDVSN" )
  column=(type=char(12) updatewhereclause=yes key=yes name=rcitno dbname="RTN013.RCITNO" )
@@ -33,6 +33,7 @@ table(column=(type=char(2) updatewhereclause=yes key=yes name=rccmcd dbname="RTN
  column=(type=char(1) updatewhereclause=yes key=yes name=rcplant dbname="RTN013.RCPLANT" )
  column=(type=char(1) updatewhereclause=yes name=rcinchk dbname="RTN013.RCINCHK" )
  column=(type=char(1) updatewhereclause=yes name=rcdlchk dbname="RTN013.RCDLCHK" )
+ column=(type=decimal(5) updatewhereclause=yes name=rcpower dbname="RTN013.RCPOWER" )
  retrieve="  SELECT ~"PBRTN~".~"RTN013~".~"RCCMCD~",   
          ~"PBRTN~".~"RTN013~".~"RCDVSN~",   
          ~"PBRTN~".~"RTN013~".~"RCITNO~",   
@@ -60,7 +61,8 @@ table(column=(type=char(2) updatewhereclause=yes key=yes name=rccmcd dbname="RTN
          '           ' as cp_chk,   
          ~"PBRTN~".~"RTN013~".~"RCPLANT~",
 			~"PBRTN~".~"RTN013~".~"RCINCHK~",
-			~"PBRTN~".~"RTN013~".~"RCDLCHK~"  
+			~"PBRTN~".~"RTN013~".~"RCDLCHK~",
+			~"PBRTN~".~"RTN013~".~"RCPOWER~" AS RCPOWER  
     FROM ~"PBRTN~".~"RTN013~"  
    WHERE ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = :a_cmcd ) AND  
          ( ~"PBRTN~".~"RTN013~".~"RCDVSN~" = :a_dvsn ) AND  
@@ -82,11 +84,9 @@ text(band=detail alignment="0" text="적  용  일:" border="0" color="0" x="1541" 
 text(band=detail alignment="0" text="공 정 명:" border="0" color="0" x="78" y="248" height="60" width="256" html.valueishtml="0"  name=rcopnm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 button(band=detail text="" filename="C:\kdac\bmp\search.gif" enabled=yes action="0" border="0" color="0" x="2158" y="236" height="92" width="233" vtextalign="0" htextalign="0"  name=find_button visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="67108864" )
 text(band=detail alignment="0" text="조  코  드:" border="0" color="0" x="1541" y="248" height="56" width="302" html.valueishtml="0"  name=rcline3_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
-text(band=detail alignment="0" text="장비유무:" border="0" color="0" x="78" y="352" height="60" width="256" html.valueishtml="0"  name=rcmcyn_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="기본작업(초):" border="0" color="0" x="2158" y="352" height="56" width="357" html.valueishtml="0"  name=rcbstm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="기계작업(초):" border="0" color="0" x="731" y="352" height="56" width="357" html.valueishtml="0"  name=rcbmtm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="수작업(초):" border="0" color="0" x="1541" y="352" height="56" width="302" html.valueishtml="0"  name=rcbltm_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
-text(band=detail alignment="0" text="부대작업:" border="0" color="0" x="78" y="456" height="60" width="256" html.valueishtml="0"  name=rcnvcd_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="인       원 :" border="0" color="0" x="2158" y="456" height="56" width="357" html.valueishtml="0"  name=rclbcnt_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="기계작업(초):" border="0" color="0" x="731" y="456" height="56" width="357" html.valueishtml="0"  name=rcnvmc_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 text(band=detail alignment="0" text="수작업(초):" border="0" color="0" x="1541" y="456" height="56" width="302" html.valueishtml="0"  name=rcnvlb_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
@@ -107,6 +107,10 @@ column(band=detail id=10 alignment="2" tabsequence=70 border="5" color="0" x="18
 column(band=detail id=14 alignment="2" tabsequence=90 border="5" color="0" x="1865" y="352" height="56" width="251" format="[general]" html.valueishtml="0"  name=rcbltm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
 column(band=detail id=15 alignment="2" tabsequence=100 border="5" color="0" x="2523" y="352" height="56" width="265" format="[general]" html.valueishtml="0"  name=rcbstm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
 column(band=detail id=19 alignment="2" tabsequence=110 border="5" color="0" x="2523" y="456" height="56" width="265" format="[general]" html.valueishtml="0"  name=rclbcnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
+text(band=detail alignment="0" text="장비유무:" border="0" color="0" x="78" y="352" height="60" width="256" html.valueishtml="0"  name=rcmcyn_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="부대작업:" border="0" color="0" x="78" y="456" height="60" width="256" html.valueishtml="0"  name=rcnvcd_t visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=detail alignment="0" text="소비전력(KW/EA):" border="0" color="0" x="78" y="560" height="56" width="448" html.valueishtml="0"  name=t_1 visible="1"  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=29 alignment="1" tabsequence=120 border="5" color="0" x="544" y="560" height="56" width="955" format="[general]" html.valueishtml="0"  name=rcpower visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="굴림체" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="15793151" )
 htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )

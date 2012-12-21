@@ -143,7 +143,11 @@ event ue_postopen;call super::ue_postopen;dw_mhlist.Modify("seq1.Width = 0")
 dw_mhlist.Modify("seq2.Width = 0") 
 dw_mhlist.Modify("displevel.Width = 0") 
 //dw_mhlist.Modify("dispname.Width = 0") -- 수행시 조명이 보이질 않음(??) 
-
+if g_s_autarea <> '' then
+	dw_all_down.enabled = false
+else
+	dw_all_down.enabled = true
+end if
 end event
 
 type uo_status from w_pism_sheet02`uo_status within w_pism130i

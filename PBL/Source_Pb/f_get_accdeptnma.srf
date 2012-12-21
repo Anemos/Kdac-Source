@@ -1,0 +1,55 @@
+$PBExportHeader$f_get_accdeptnma.srf
+$PBExportComments$ºÎ(ÆÀ)´ÜÀ§ ºÎ¼­¸íÄª return
+global type f_get_accdeptnma from function_object
+end type
+
+forward prototypes
+global function string f_get_accdeptnma (string a_s_deptcd)
+end prototypes
+
+global function string f_get_accdeptnma (string a_s_deptcd);string l_s_deptnm, l_s_deptcd
+long l_n_todt 
+
+if a_s_deptcd >= '9000' and a_s_deptcd <= '9999' then
+	l_s_deptcd = mid(a_s_deptcd,1,3) + '0'
+else
+	l_s_deptcd = mid(a_s_deptcd,1,2) + '00'
+end if
+
+SELECT "PBCOMMON"."DAC001"."DNAME"
+INTO   :l_s_deptnm
+FROM   "PBCOMMON"."DAC001"
+WHERE  "PBCOMMON"."DAC001"."DCODE" = :a_s_deptcd and  
+		 "PBCOMMON"."DAC001"."DUSE" = ' '   AND  
+		 "PBCOMMON"."DAC001"."DTODT" = 0    and
+		 "PBCOMMON"."DAC001"."DACTTODT" = 0 using sqlca;
+
+IF sqlca.sqlcode <> 0 Then
+	select max("PBCOMMON"."DAC001"."DTODT")
+	into :l_n_todt 
+	from   "PBCOMMON"."DAC001"
+	where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+		 "PBCOMMON"."DAC001"."DTODT" <>   0      and
+		 "PBCOMMON"."DAC001"."DCODE" = :a_s_deptcd using sqlca;
+	if sqlca.sqlcode <> 0 then
+		l_n_todt  = 0 
+	end if 
+	
+	if l_n_todt <> 0 then 
+	
+		SELECT "PBCOMMON"."DAC001"."DNAME"
+		INTO   :l_s_deptnm
+		from   "PBCOMMON"."DAC001"
+		where  "PBCOMMON"."DAC001"."DUSE"  = 'X'    and
+				 "PBCOMMON"."DAC001"."DTODT" = :l_n_todt      and
+				 "PBCOMMON"."DAC001"."DCODE" = :a_s_deptcd using sqlca;
+	else 
+				
+	   l_s_deptnm = ''
+	end if 
+	
+End IF
+
+Return l_s_deptnm
+end function
+

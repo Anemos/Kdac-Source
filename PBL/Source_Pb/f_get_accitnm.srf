@@ -14,8 +14,20 @@ SELECT "PBINV"."INV002"."ITNM" INTO :l_s_itnm
 WHERE  "PBINV"."INV002"."COMLTD"  = :g_s_company and
        "PBINV"."INV002"."ITNO"    = :a_s_itno    using sqlca;
 if sqlca.sqlcode <> 0 then
-	l_s_itnm = ' '
+	
+	SELECT MAX("PBSLE"."SLE112"."ITNM") INTO :l_s_itnm
+	 FROM  "PBSLE"."SLE112"  
+	WHERE  "PBSLE"."SLE112"."COMLTD"  = :g_s_company and
+			 "PBSLE"."SLE112"."ITNO"    = :a_s_itno   using sqlca;
+	
+	if sqlca.sqlcode <> 0 then
+		l_s_itnm = ' '
+	end if 
+	
 end if
+
+
+
 
 return l_s_itnm
 end function

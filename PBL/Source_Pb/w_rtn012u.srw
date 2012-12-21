@@ -7,6 +7,10 @@ type uo_1 from uo_plandiv_bom within w_rtn012u
 end type
 type dw_1 from u_vi_std_datawindow within w_rtn012u
 end type
+type st_1 from statictext within w_rtn012u
+end type
+type st_2 from statictext within w_rtn012u
+end type
 type gb_2 from groupbox within w_rtn012u
 end type
 end forward
@@ -16,6 +20,8 @@ integer height = 2712
 string title = "대체Line등록"
 uo_1 uo_1
 dw_1 dw_1
+st_1 st_1
+st_2 st_2
 gb_2 gb_2
 end type
 global w_rtn012u w_rtn012u
@@ -170,17 +176,23 @@ int iCurrent
 call super::create
 this.uo_1=create uo_1
 this.dw_1=create dw_1
+this.st_1=create st_1
+this.st_2=create st_2
 this.gb_2=create gb_2
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.uo_1
 this.Control[iCurrent+2]=this.dw_1
-this.Control[iCurrent+3]=this.gb_2
+this.Control[iCurrent+3]=this.st_1
+this.Control[iCurrent+4]=this.st_2
+this.Control[iCurrent+5]=this.gb_2
 end on
 
 on w_rtn012u.destroy
 call super::destroy
 destroy(this.uo_1)
 destroy(this.dw_1)
+destroy(this.st_1)
+destroy(this.st_2)
 destroy(this.gb_2)
 end on
 
@@ -210,7 +222,7 @@ l_s_parm     = uo_1.uf_Return()
 l_s_plant    = mid(l_s_parm,1,1)
 l_s_dvsn   = mid(l_s_parm,2,1)
 
-if dw_1.retrieve(l_s_plant, l_s_dvsn) > 0 then
+if dw_1.retrieve(l_s_plant, l_s_dvsn, g_s_date) > 0 then
 	dw_1.setfocus()
 	dw_1.setcolumn("rblnmn")
 	uo_status.st_message.text = f_message("I010")
@@ -221,16 +233,43 @@ end if
 return 0
 end event
 
-event ue_save;call super::ue_save;string  ls_message
+event ue_save;call super::ue_save;string  ls_message, ls_line1, ls_chkline
+integer li_cnt, li_rowcnt, li_option
 
 SetPointer(HourGlass!)
 //----------- 공장 선택 ----------
 uo_status.st_message.text = ''
 dw_1.accepttext()
+dw_1.SetSort("rbline1 A, rbline2 A")
+dw_1.Sort()
 
 if f_wip_mandantory_chk(dw_1) = -1 then
 	return -1
 end if
+
+//생산율(%) 체크
+li_rowcnt = dw_1.rowcount()
+
+for li_cnt = 1 to li_rowcnt
+	ls_line1 = dw_1.getitemstring(li_cnt,"rbline1")
+	if (ls_chkline <> ls_line1) and (li_cnt <> 1) then
+		if li_option <> 100 then
+			MessageBox("확인", "라인코드 : " + ls_chkline + "의 생산율 합계가 100% 가 되어야 합니다.")
+			return -1
+		end if
+		li_option = 0
+	else
+		if li_cnt = li_rowcnt then
+			li_option = li_option + dw_1.getitemnumber(li_cnt,"rboption")
+			if li_option <> 100 then
+				MessageBox("확인", "라인코드 : " + ls_chkline + "의 생산율 합계가 100% 가 되어야 합니다.")
+				return -1
+			end if
+		end if
+	end if
+	ls_chkline = ls_line1
+	li_option = li_option + dw_1.getitemnumber(li_cnt,"rboption")
+next
 
 SQLCA.AUTOCOMMIT = FALSE
 
@@ -309,7 +348,7 @@ else
 end if
 
 if dw_1.getitemnumber(l_n_row,"del_chk") > 0 then
-	messagebox("확인","Routing 상세 정보가 등록된 대체 라인이 있습니다. 상세정보를 먼저 삭제하세요")
+	messagebox("확인","Routing 상세 정보에  등록된 대체 라인이 있습니다. 상세정보를 먼저 삭제하세요")
 	return 0
 end if
 
@@ -325,7 +364,7 @@ type uo_status from w_origin_sheet01`uo_status within w_rtn012u
 end type
 
 type uo_1 from uo_plandiv_bom within w_rtn012u
-integer x = 759
+integer x = 87
 integer y = 44
 integer taborder = 20
 boolean bringtotop = true
@@ -336,10 +375,10 @@ call uo_plandiv_bom::destroy
 end on
 
 type dw_1 from u_vi_std_datawindow within w_rtn012u
-integer x = 699
-integer y = 196
-integer width = 3177
-integer height = 2276
+integer x = 23
+integer y = 388
+integer width = 4581
+integer height = 2080
 integer taborder = 11
 boolean bringtotop = true
 string dataobject = "d_rtn01_dw_daechae_line_input"
@@ -347,10 +386,62 @@ boolean hscrollbar = true
 boolean vscrollbar = true
 end type
 
-type gb_2 from groupbox within w_rtn012u
-integer x = 695
-integer y = 4
+event itemchanged;call super::itemchanged;string ls_column, ls_line1, ls_chkline
+integer li_cnt, li_rowcnt, li_option
+
+ls_column = dwo.name
+choose case ls_column
+	case 'rbline1'
+		if mid(data,1,1) = '@' then
+			this.setitem(row,"rbsubchk",'Y')
+		else
+			this.setitem(row,"rbsubchk",'N')
+		end if
+end choose
+	
+return 0
+end event
+
+type st_1 from statictext within w_rtn012u
+integer x = 41
+integer y = 220
 integer width = 3182
+integer height = 64
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+string text = "1. 동일품번이 라인코드가 같고 차수가 다른 경우에는 생산율을 적용한 가중평균값을 적용한다."
+boolean focusrectangle = false
+end type
+
+type st_2 from statictext within w_rtn012u
+integer x = 41
+integer y = 304
+integer width = 3182
+integer height = 64
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+string text = "2. 동일품번이 라인코드가 다른 경우에는 표준MH 은 합산하여 계산한다."
+boolean focusrectangle = false
+end type
+
+type gb_2 from groupbox within w_rtn012u
+integer x = 23
+integer y = 4
+integer width = 1445
 integer height = 172
 integer taborder = 30
 integer textsize = -10

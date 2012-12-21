@@ -50,13 +50,13 @@ table(column=(type=char(2) updatewhereclause=yes name=wip001_wacmcd dbname="WIP0
          ( ~"PBWIP~".~"WIP001~".~"WADVSN~" = :a_dvsn  ) AND
 			( ~"PBPDM~".~"BOM003~".~"OPITN~" = :a_pitno ) AND    
          ( ~"PBWIP~".~"WIP001~".~"WAORCT~" = :a_orct ) AND
-			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" IN ('1','2') ) AND 
+			( ~"PBWIP~".~"WIP001~".~"WAIOCD~" = :a_iocd ) AND 
 			( ~"PBINV~".~"INV101~".~"CONVQTY~" = :a_convqty ) AND 
          ((~"PBPDM~".~"BOM003~".~"OEDTE~" = ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate ) OR
 			(~"PBPDM~".~"BOM003~".~"OEDTE~" <> ' ' AND ~"PBPDM~".~"BOM003~".~"OEDTM~" <= :a_adjdate 
                                           AND ~"PBPDM~".~"BOM003~".~"OEDTE~" >= :a_adjdate )))
 ORDER BY ~"PBWIP~".~"WIP001~".~"WAITNO~"
-" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_pitno", string),("a_adjdate", string),("a_orct", string),("a_convqty", number)) )
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_pitno", string),("a_adjdate", string),("a_orct", string),("a_convqty", number),("a_iocd", string)) )
 text(band=header alignment="2" text="품번" border="0" color="0" x="5" y="4" height="64" width="439" html.valueishtml="0"  name=wip001_waitno_t visible="1"  font.face="굴림체          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 text(band=header alignment="2" text="작업장" border="0" color="0" x="448" y="4" height="64" width="238" html.valueishtml="0"  name=wip001_waorct_t visible="1"  font.face="굴림체          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="448" y="4" height="76" width="306" format="[general]" html.valueishtml="0"  name=wip001_waorct  tag="작업장" visible="1" edit.limit=5 edit.case=any edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="굴림체          " font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )

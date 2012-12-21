@@ -23,33 +23,39 @@ tabpage_2 tabpage_2
 end type
 type pb_down from picturebutton within w_pism071i
 end type
+type cbx_holiday from checkbox within w_pism071i
+end type
 end forward
 
 global type w_pism071i from w_pism_sheet02
+integer width = 3694
+integer height = 2204
 dw_buharate dw_buharate
 dw_all_down dw_all_down
 tab_work tab_work
 pb_down pb_down
+cbx_holiday cbx_holiday
 end type
 global w_pism071i w_pism071i
 
 forward prototypes
-public function long wf_prdatawindowretrieve (datawindow aprdw)
+public function long wf_prdatawindowretrieve (datawindow aprdw, string ag_check)
 end prototypes
 
-public function long wf_prdatawindowretrieve (datawindow aprdw);Long ll_rowCnt 
+public function long wf_prdatawindowretrieve (datawindow aprdw, string ag_check);Long ll_rowCnt 
+string ls_check
 
 aprdw.SetTransObject(sqleis)
-ll_rowCnt = aprdw.Retrieve(istr_mh.from_date, istr_mh.to_date)
+ll_rowCnt = aprdw.Retrieve(uo_fromdate.is_uo_date,uo_todate.is_uo_date, ag_check)
 if ll_rowCnt > 0 then
 	integer li_rowcnt, li_cnt, li_currow
 	datastore lds_01
-	
+		
 	lds_01 = create datastore
 	lds_01.dataobject = "d_pism071i_01_all_jin"
 	lds_01.settransobject(sqleis)
 	
-	li_rowcnt = lds_01.retrieve('J','S',istr_mh.from_date, istr_mh.to_date )
+	li_rowcnt = lds_01.retrieve('J','S',uo_fromdate.is_uo_date,uo_todate.is_uo_date, ag_check )
 	for li_cnt = 1 to li_rowcnt
 		li_currow = aprdw.insertrow(0)
 		aprdw.setitem(li_currow,"Areacode",'J')
@@ -68,7 +74,7 @@ if ll_rowCnt > 0 then
 	next
 	
 	lds_01.reset()
-	li_rowcnt = lds_01.retrieve('J','H',istr_mh.from_date, istr_mh.to_date )
+	li_rowcnt = lds_01.retrieve('J','H',uo_fromdate.is_uo_date,uo_todate.is_uo_date, ag_check )
 	for li_cnt = 1 to li_rowcnt
 		li_currow = aprdw.insertrow(0)
 		aprdw.setitem(li_currow,"Areacode",'J')
@@ -100,11 +106,13 @@ this.dw_buharate=create dw_buharate
 this.dw_all_down=create dw_all_down
 this.tab_work=create tab_work
 this.pb_down=create pb_down
+this.cbx_holiday=create cbx_holiday
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.dw_buharate
 this.Control[iCurrent+2]=this.dw_all_down
 this.Control[iCurrent+3]=this.tab_work
 this.Control[iCurrent+4]=this.pb_down
+this.Control[iCurrent+5]=this.cbx_holiday
 end on
 
 on w_pism071i.destroy
@@ -113,6 +121,7 @@ destroy(this.dw_buharate)
 destroy(this.dw_all_down)
 destroy(this.tab_work)
 destroy(this.pb_down)
+destroy(this.cbx_holiday)
 end on
 
 event resize;call super::resize;//il_resize_count ++
@@ -131,17 +140,23 @@ dw_all_down.Height= dw_buharate.Height
 end event
 
 event ue_retrieve;call super::ue_retrieve;Integer li_ret 
+string ls_check
 
 //** 사용자가 날짜를 키보드로 입력하고 다른키 조작없이 마우스로 조회아이콘을 클릭하는 경우
-//** 바뀐날짜가 조회되지 않는것을 방지하기 위해 이벤트 실행
-uo_fromdate.TriggerEvent("ue_loasefocus")
-uo_todate.TriggerEvent("ue_loasefocus")
+//** 바뀐날짜가 조회되지 않는것을 방지하기 위해 필요한 기능
+//** f_pism_working_msg 팝업윈도우를 사용해서 losefocus이벤트를 강제적으로 실행함.
+
+if cbx_holiday.checked then
+	ls_check = 'Y'
+else
+	ls_check = 'N'
+end if
 
 if tab_work.SelectedTab = 1 then
 	f_pism_working_msg(uo_div.is_uo_divisionname + "공장", dw_buharate.Tag + "를 조회중입니다. 잠시만 기다려 주십시오.") 
 	
 	dw_buharate.SetTransObject(SqlPIS)
-	li_ret = dw_buharate.Retrieve(istr_mh.area, istr_mh.div, uo_fromdate.is_uo_date,uo_todate.is_uo_date)  
+	li_ret = dw_buharate.Retrieve(istr_mh.area, istr_mh.div, uo_fromdate.is_uo_date,uo_todate.is_uo_date,ls_check)  
 	
 	If IsValid(w_pism_working) Then Close(w_pism_working) 
 	If li_ret = 0 Then f_pism_messagebox(Information!, -1, "조회실패", "해당 기준일자의 생산실적이 존재하지 않습니다.")
@@ -151,13 +166,16 @@ else
 	string l_s_docname, l_s_named
 	int l_n_value, li_chk
 	
+	f_pism_working_msg("전공장", dw_buharate.Tag + "를 조회중입니다. 잠시만 기다려 주십시오.")
+	dw_all_down.reset()
 	dw_all_down.settransobject(sqleis)
-	if wf_prdatawindowretrieve(dw_all_down) > 0 then
+	if wf_prdatawindowretrieve(dw_all_down,ls_check) > 0 then
 		uo_status.st_message.text = "조회 되었습니다."
 	else
 		uo_status.st_message.text = "조회할 정보가 없습니다."
 	end if
-		
+	If IsValid(w_pism_working) Then Close(w_pism_working)
+	
 	return 0
 end if
 end event
@@ -183,6 +201,13 @@ end if
 end event
 
 event close;call super::close;f_pisc_disconnect_eis_server(sqleis)
+end event
+
+event ue_postopen;call super::ue_postopen;if g_s_autarea <> '' then
+	tab_work.tabpage_2.enabled = false
+else
+	tab_work.tabpage_2.enabled = true
+end if
 end event
 
 type uo_status from w_pism_sheet02`uo_status within w_pism071i
@@ -333,7 +358,7 @@ long picturemaskcolor = 536870912
 end type
 
 type pb_down from picturebutton within w_pism071i
-integer x = 2619
+integer x = 2610
 integer y = 28
 integer width = 357
 integer height = 124
@@ -389,4 +414,24 @@ Destroy myoleobject //오브젝트 제거
 
 return 0
 end event
+
+type cbx_holiday from checkbox within w_pism071i
+boolean visible = false
+integer x = 2555
+integer y = 44
+integer width = 398
+integer height = 84
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "맑은 고딕"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "휴일제외"
+boolean automatic = false
+end type
 

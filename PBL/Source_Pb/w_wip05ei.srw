@@ -69,6 +69,10 @@ type dw_report from datawindow within w_wip05ei
 end type
 type st_4 from statictext within w_wip05ei
 end type
+type rb_free from radiobutton within w_wip05ei
+end type
+type rb_cost from radiobutton within w_wip05ei
+end type
 end forward
 
 global type w_wip05ei from w_origin_sheet04
@@ -78,6 +82,8 @@ event ue_filter pbm_custom31
 tab_1 tab_1
 dw_report dw_report
 st_4 st_4
+rb_free rb_free
+rb_cost rb_cost
 end type
 global w_wip05ei w_wip05ei
 
@@ -113,10 +119,14 @@ call super::create
 this.tab_1=create tab_1
 this.dw_report=create dw_report
 this.st_4=create st_4
+this.rb_free=create rb_free
+this.rb_cost=create rb_cost
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.tab_1
 this.Control[iCurrent+2]=this.dw_report
 this.Control[iCurrent+3]=this.st_4
+this.Control[iCurrent+4]=this.rb_free
+this.Control[iCurrent+5]=this.rb_cost
 end on
 
 on w_wip05ei.destroy
@@ -124,6 +134,8 @@ call super::destroy
 destroy(this.tab_1)
 destroy(this.dw_report)
 destroy(this.st_4)
+destroy(this.rb_free)
+destroy(this.rb_cost)
 end on
 
 event open;call super::open;this.uo_status.st_winid.text = this.classname()
@@ -137,11 +149,17 @@ wf_icon_onoff(i_b_retrieve, i_b_print,      i_b_first,   i_b_prev,   i_b_next,  
 				  i_b_last,     i_b_dretrieve,  i_b_dprint,  i_b_dchar)
 end event
 
-event ue_retrieve;call super::ue_retrieve;string l_s_vndr,l_s_vndm,l_s_vndr2, ls_fromdt, ls_todt
+event ue_retrieve;call super::ue_retrieve;string l_s_vndr,l_s_vndm,l_s_vndr2, ls_fromdt, ls_todt, ls_iocd
 integer l_n_count
 
 SetPointer(HourGlass!)
 dw_Report.sharedataoff()
+if rb_free.checked then
+	ls_iocd = '2'
+else
+	ls_iocd = '3'
+end if
+
 if i_n_newindex = 1 then
 	// user object 에서 필요한 값 가져오기 - start
 	i_d_yyyymm     = tab_1.tabpage_1.uo_from.uf_yyyymm()
@@ -168,7 +186,7 @@ if i_n_newindex = 1 then
 		l_s_vndr = '%'
 	end if
    
-	if tab_1.tabpage_1.dw_wip05ei_01.retrieve(g_s_company,l_s_vndr,i_s_year1,i_s_month1) < 1 then
+	if tab_1.tabpage_1.dw_wip05ei_01.retrieve(g_s_company,l_s_vndr,i_s_year1,i_s_month1,ls_iocd) < 1 then
 		uo_status.st_message.text = f_message("I020")
 	else
 		uo_status.st_message.text = f_message("I010")
@@ -210,7 +228,7 @@ elseif i_n_newindex = 2 then
 	else
 		l_s_vndr2 = trim(i_s_vndr2) + '%'
 	end if
-	if tab_1.tabpage_2.dw_wip05ei_02.retrieve(g_s_company,i_s_plant,i_s_dvsn,l_s_vndr2,i_s_year2,i_s_month2) < 1 then
+	if tab_1.tabpage_2.dw_wip05ei_02.retrieve(g_s_company,i_s_plant,i_s_dvsn,l_s_vndr2,i_s_year2,i_s_month2,ls_iocd) < 1 then
 		uo_status.st_message.text = f_message("I020")
 	else
 		uo_status.st_message.text = f_message("I010")
@@ -752,7 +770,7 @@ borderstyle borderstyle = stylelowered!
 end type
 
 type st_4 from statictext within w_wip05ei
-integer x = 1605
+integer x = 2651
 integer y = 28
 integer width = 1856
 integer height = 72
@@ -768,5 +786,44 @@ long backcolor = 12639424
 string text = "10만원이상 클레임금액 보기 : 필터 아이콘 이용"
 borderstyle borderstyle = styleraised!
 boolean focusrectangle = false
+end type
+
+type rb_free from radiobutton within w_wip05ei
+integer x = 1481
+integer y = 32
+integer width = 379
+integer height = 64
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "무상사급"
+boolean checked = true
+boolean automatic = false
+end type
+
+type rb_cost from radiobutton within w_wip05ei
+integer x = 1902
+integer y = 32
+integer width = 393
+integer height = 64
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "유상사급"
+boolean automatic = false
 end type
 

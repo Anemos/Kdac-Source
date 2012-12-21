@@ -1,0 +1,122 @@
+$PBExportHeader$d_bom113d_source.srd
+$PBExportComments$원단위BOM내역
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=zcmcd dbname="BOM113D.ZCMCD" )
+ column=(type=char(8) update=yes updatewhereclause=yes key=yes name=zdate dbname="BOM113D.ZDATE" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=zplant dbname="BOM113D.ZPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=zdiv dbname="BOM113D.ZDIV" )
+ column=(type=char(4) update=yes updatewhereclause=yes key=yes name=zmdcd dbname="BOM113D.ZMDCD" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=zmdno dbname="BOM113D.ZMDNO" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes key=yes name=zserial dbname="BOM113D.ZSERIAL" )
+ column=(type=char(10) update=yes updatewhereclause=yes name=zlevel dbname="BOM113D.ZLEVEL" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=zpitno dbname="BOM113D.ZPITNO" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=zitno dbname="BOM113D.ZITNO" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=zrev dbname="BOM113D.ZREV" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=zdesc dbname="BOM113D.ZDESC" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=zspec dbname="BOM113D.ZSPEC" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=zunit1 dbname="BOM113D.ZUNIT1" )
+ column=(type=decimal(3) update=yes updatewhereclause=yes name=zunitqty dbname="BOM113D.ZUNITQTY" )
+ column=(type=decimal(4) update=yes updatewhereclause=yes name=zcvtfact dbname="BOM113D.ZCVTFACT" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=zunit2 dbname="BOM113D.ZUNIT2" )
+ column=(type=char(2) update=yes updatewhereclause=yes name=zsrce dbname="BOM113D.ZSRCE" )
+ column=(type=decimal(0) update=yes updatewhereclause=yes name=zleadtime dbname="BOM113D.ZLEADTIME" )
+ column=(type=char(4) update=yes updatewhereclause=yes name=zwkct dbname="BOM113D.ZWKCT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=zgrad dbname="BOM113D.ZGRAD" )
+ column=(type=char(12) update=yes updatewhereclause=yes name=zaltno dbname="BOM113D.ZALTNO" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=zfmdt dbname="BOM113D.ZFMDT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=ztodt dbname="BOM113D.ZTODT" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=zcomcd dbname="BOM113D.ZCOMCD" )
+ column=(type=char(6) updatewhereclause=yes name=zwhlcode dbname="BOM113D.ZWHLCODE" )
+ retrieve="  SELECT A.~"ZCMCD~",   
+         A.~"ZDATE~",   
+         A.~"ZPLANT~",   
+         A.~"ZDIV~",   
+         A.~"ZMDCD~",   
+         A.~"ZMDNO~",   
+         A.~"ZSERIAL~",   
+         A.~"ZLEVEL~",   
+         A.~"ZPITNO~",   
+         A.~"ZITNO~",   
+         A.~"ZREV~",   
+         A.~"ZDESC~",   
+         A.~"ZSPEC~",   
+         A.~"ZUNIT1~",   
+         A.~"ZUNITQTY~",   
+         A.~"ZCVTFACT~",   
+         A.~"ZUNIT2~",   
+         A.~"ZSRCE~",   
+         A.~"ZLEADTIME~",   
+         A.~"ZWKCT~",   
+         A.~"ZGRAD~",   
+         A.~"ZALTNO~",   
+         A.~"ZFMDT~",   
+         A.~"ZTODT~",      
+         A.~"ZCOMCD~",
+			A.~"ZWHLCODE~" 
+    FROM ~"PBPDM~".~"BOM113D~" A
+WHERE A.ZCMCD = '01' AND A.ZDATE = :ag_date AND A.ZPLANT = :ag_plant AND A.ZDIV = :ag_div
+AND ((A.ZGRAD = '1') OR ((A.ZWHLCODE = '30' OR A.ZWHLCODE = '50') OR (A.ZWHLCODE = '10' AND A.ZSRCE = '03'))) 
+" update="PBPDM.BOM113D" updatewhere=0 updatekeyinplace=no arguments=(("ag_plant", string),("ag_div", string),("ag_date", string)) )
+text(band=header alignment="2" text="Zcmcd" border="0" color="33554432" x="9" y="8" height="76" width="215" html.valueishtml="0"  name=zcmcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zdate" border="0" color="33554432" x="233" y="8" height="76" width="288" html.valueishtml="0"  name=zdate_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zplant" border="0" color="33554432" x="530" y="8" height="76" width="192" html.valueishtml="0"  name=zplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zdiv" border="0" color="33554432" x="731" y="8" height="76" width="133" html.valueishtml="0"  name=zdiv_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zmdcd" border="0" color="33554432" x="873" y="8" height="76" width="219" html.valueishtml="0"  name=zmdcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zmdno" border="0" color="33554432" x="1102" y="8" height="76" width="416" html.valueishtml="0"  name=zmdno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zserial" border="0" color="33554432" x="1527" y="8" height="76" width="384" html.valueishtml="0"  name=zserial_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zlevel" border="0" color="33554432" x="1920" y="8" height="76" width="352" html.valueishtml="0"  name=zlevel_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zpitno" border="0" color="33554432" x="2281" y="8" height="76" width="416" html.valueishtml="0"  name=zpitno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zitno" border="0" color="33554432" x="2706" y="8" height="76" width="416" html.valueishtml="0"  name=zitno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zrev" border="0" color="33554432" x="3131" y="8" height="76" width="137" html.valueishtml="0"  name=zrev_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zdesc" border="0" color="33554432" x="3278" y="8" height="76" width="1632" html.valueishtml="0"  name=zdesc_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zspec" border="0" color="33554432" x="4919" y="8" height="76" width="1632" html.valueishtml="0"  name=zspec_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zunit1" border="0" color="33554432" x="6560" y="8" height="76" width="192" html.valueishtml="0"  name=zunit1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zunitqty" border="0" color="33554432" x="6761" y="8" height="76" width="384" html.valueishtml="0"  name=zunitqty_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zcvtfact" border="0" color="33554432" x="7154" y="8" height="76" width="384" html.valueishtml="0"  name=zcvtfact_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zunit2" border="0" color="33554432" x="7547" y="8" height="76" width="192" html.valueishtml="0"  name=zunit2_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zsrce" border="0" color="33554432" x="7749" y="8" height="76" width="178" html.valueishtml="0"  name=zsrce_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zleadtime" border="0" color="33554432" x="7936" y="8" height="76" width="384" html.valueishtml="0"  name=zleadtime_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zwkct" border="0" color="33554432" x="8329" y="8" height="76" width="183" html.valueishtml="0"  name=zwkct_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zgrad" border="0" color="33554432" x="8521" y="8" height="76" width="187" html.valueishtml="0"  name=zgrad_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zaltno" border="0" color="33554432" x="8718" y="8" height="76" width="416" html.valueishtml="0"  name=zaltno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zfmdt" border="0" color="33554432" x="9143" y="8" height="76" width="288" html.valueishtml="0"  name=zfmdt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Ztodt" border="0" color="33554432" x="9440" y="8" height="76" width="288" html.valueishtml="0"  name=ztodt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Zcomcd" border="0" color="33554432" x="9737" y="8" height="76" width="256" html.valueishtml="0"  name=zcomcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="0" text="Zwhlcode" border="0" color="33554432" x="10002" y="4" height="76" width="183" html.valueishtml="0"  name=zwhlcode_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="1073741824" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="8" height="88" width="215" format="[general]" html.valueishtml="0"  name=zcmcd visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="33554432" x="233" y="8" height="88" width="288" format="[general]" html.valueishtml="0"  name=zdate visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="33554432" x="530" y="8" height="88" width="192" format="[general]" html.valueishtml="0"  name=zplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="0" color="33554432" x="731" y="8" height="88" width="133" format="[general]" html.valueishtml="0"  name=zdiv visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="0" color="33554432" x="873" y="8" height="88" width="219" format="[general]" html.valueishtml="0"  name=zmdcd visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="0" color="33554432" x="1102" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=zmdno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="1" tabsequence=70 border="0" color="33554432" x="1527" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=zserial visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=80 border="0" color="33554432" x="1920" y="8" height="88" width="352" format="[general]" html.valueishtml="0"  name=zlevel visible="1" edit.limit=10 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=90 border="0" color="33554432" x="2281" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=zpitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=100 border="0" color="33554432" x="2706" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=zitno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=110 border="0" color="33554432" x="3131" y="8" height="88" width="137" format="[general]" html.valueishtml="0"  name=zrev visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=120 border="0" color="33554432" x="3278" y="8" height="88" width="1632" format="[general]" html.valueishtml="0"  name=zdesc visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=130 border="0" color="33554432" x="4919" y="8" height="88" width="1632" format="[general]" html.valueishtml="0"  name=zspec visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="0" tabsequence=140 border="0" color="33554432" x="6560" y="8" height="88" width="192" format="[general]" html.valueishtml="0"  name=zunit1 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="1" tabsequence=150 border="0" color="33554432" x="6761" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=zunitqty visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=16 alignment="1" tabsequence=160 border="0" color="33554432" x="7154" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=zcvtfact visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=17 alignment="0" tabsequence=170 border="0" color="33554432" x="7547" y="8" height="88" width="192" format="[general]" html.valueishtml="0"  name=zunit2 visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=18 alignment="0" tabsequence=180 border="0" color="33554432" x="7749" y="8" height="88" width="178" format="[general]" html.valueishtml="0"  name=zsrce visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=19 alignment="1" tabsequence=190 border="0" color="33554432" x="7936" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=zleadtime visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=20 alignment="0" tabsequence=200 border="0" color="33554432" x="8329" y="8" height="88" width="183" format="[general]" html.valueishtml="0"  name=zwkct visible="1" edit.limit=4 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=21 alignment="0" tabsequence=210 border="0" color="33554432" x="8521" y="8" height="88" width="187" format="[general]" html.valueishtml="0"  name=zgrad visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=22 alignment="0" tabsequence=220 border="0" color="33554432" x="8718" y="8" height="88" width="416" format="[general]" html.valueishtml="0"  name=zaltno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=23 alignment="0" tabsequence=230 border="0" color="33554432" x="9143" y="8" height="88" width="288" format="[general]" html.valueishtml="0"  name=zfmdt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="0" tabsequence=240 border="0" color="33554432" x="9440" y="8" height="88" width="288" format="[general]" html.valueishtml="0"  name=ztodt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=25 alignment="0" tabsequence=250 border="0" color="33554432" x="9737" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=zcomcd visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=26 alignment="0" tabsequence=260 border="0" color="33554432" x="10002" y="0" height="76" width="183" format="[general]" html.valueishtml="0"  name=zwhlcode visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

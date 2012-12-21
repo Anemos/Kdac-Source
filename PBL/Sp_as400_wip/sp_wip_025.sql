@@ -104,7 +104,8 @@ update pbwip.wip009
       wfohqt = 0, wfohat = 0
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
-        wfdvsn = a_dvsn and wfvendor = a_vendor;
+        wfdvsn = a_dvsn and wfvendor = a_vendor and
+        wfiocd = '2';
 
 -- First Step
 open wip_claim;
@@ -121,7 +122,7 @@ loop
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
         wfdvsn = a_dvsn and wfvendor = a_vendor and
-        wfitno = p_itno;
+        wfitno = p_itno and wfiocd = '2';
 
   if p_cnt <> 0 then
     -- update wip009
@@ -137,20 +138,20 @@ loop
     where wfyear = a_year and wfmonth = a_month and
           wfcmcd = a_cmcd and wfplant = a_plant and
           wfdvsn = a_dvsn and wfvendor = a_vendor and
-          wfitno = p_itno;
+          wfitno = p_itno and wfiocd = '2';
     if sqlcode <> 0 then
       leave inc_loop;
     end if;
   else
     -- insert wip009
     insert into pbwip.wip009
-    (wfyear,wfmonth,wfcmcd,wfplant,wfdvsn,wfvendor,wfitno,
+    (wfyear,wfmonth,wfcmcd,wfplant,wfdvsn,wfiocd,wfvendor,wfitno,
     wfunit,wfscrp,wfretn,wfavrg,wfbgqt,wfbgat,wfinqt,wfinat,
     wfusqt1,wfusat1,wfusqt2,wfusat2,wfusqt3,wfusat3,
     wfohqt,wfohat,wfphqt,wfphat,wfdefqt,wfdefat,wflautqt,
     wflautat,wfrautqt,wfrautat,wfclqt,wfclat,wfplan,wfstscd,
     wfipaddr,wfmacaddr,wfinptdt,wfupdtdt)
-    select a_year,a_month,a_cmcd,a_plant,a_dvsn,a_vendor,p_itno,
+    select a_year,a_month,a_cmcd,a_plant,a_dvsn,'2',a_vendor,p_itno,
     xunit, 0, 0, p_avrg, p_bgqt, p_bgat, p_inqt, p_inat,
     p_usqt2, p_usat2, p_usqt, p_usat, p_usqt7, p_usat7,
     p_ohqt, p_ohat, 0, 0, 0, 0, 0,

@@ -1,0 +1,40 @@
+$PBExportHeader$f_get_acgdeptnm.srf
+$PBExportComments$부(팀)단위 부서명칭[history유지] return
+global type f_get_acgdeptnm from function_object
+end type
+
+forward prototypes
+global function string f_get_acgdeptnm (string a_s_deptcd, string a_s_date)
+end prototypes
+
+global function string f_get_acgdeptnm (string a_s_deptcd, string a_s_date);string l_s_deptnm ,l_s_fym,l_s_tym
+long l_n_todt 
+
+ 
+
+SELECT "PBCOMMON"."DAC001"."DNAME", 
+       "PBCOMMON"."DAC001"."DAFYM", "PBCOMMON"."DAC001"."DATYM"
+INTO   :l_s_deptnm, :l_s_fym, :l_s_tym
+FROM   "PBCOMMON"."DAC001"
+WHERE  "PBCOMMON"."DAC001"."DCODE" = :a_s_deptcd and  
+		 "PBCOMMON"."DAC001"."DUSE" = ' '   AND  
+		 "PBCOMMON"."DAC001"."DTODT" = 0    and
+		 "PBCOMMON"."DAC001"."DACTTODT" = 0 using sqlca;
+
+IF sqlca.sqlcode <> 0 or a_s_date < l_s_fym Then
+	select "PBCOMMON"."DAC001"."DNAME"
+	into :l_s_deptnm
+	from   "PBCOMMON"."DAC001"
+	where  "PBCOMMON"."DAC001"."DUSE"  = 'X' and   
+		    "PBCOMMON"."DAC001"."DCODE" = :a_s_deptcd  and 
+			 "PBCOMMON"."DAC001"."DAFYM" <= :a_s_date and 
+			 "PBCOMMON"."DAC001"."DATYM" >= :a_s_date  using sqlca;
+	if sqlca.sqlcode <> 0 then
+		l_s_deptnm = ''
+	end if 
+	
+End IF
+
+Return l_s_deptnm
+end function
+

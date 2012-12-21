@@ -21,6 +21,10 @@ type dw_wip05cu_02 from u_vi_std_datawindow within w_wip05cu
 end type
 type dw_2 from datawindow within w_wip05cu
 end type
+type rb_free from radiobutton within w_wip05cu
+end type
+type rb_cost from radiobutton within w_wip05cu
+end type
 type gb_1 from groupbox within w_wip05cu
 end type
 end forward
@@ -35,6 +39,8 @@ st_3 st_3
 dw_wip05cu_01 dw_wip05cu_01
 dw_wip05cu_02 dw_wip05cu_02
 dw_2 dw_2
+rb_free rb_free
+rb_cost rb_cost
 gb_1 gb_1
 end type
 global w_wip05cu w_wip05cu
@@ -55,6 +61,8 @@ this.st_3=create st_3
 this.dw_wip05cu_01=create dw_wip05cu_01
 this.dw_wip05cu_02=create dw_wip05cu_02
 this.dw_2=create dw_2
+this.rb_free=create rb_free
+this.rb_cost=create rb_cost
 this.gb_1=create gb_1
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.uo_1
@@ -66,7 +74,9 @@ this.Control[iCurrent+6]=this.st_3
 this.Control[iCurrent+7]=this.dw_wip05cu_01
 this.Control[iCurrent+8]=this.dw_wip05cu_02
 this.Control[iCurrent+9]=this.dw_2
-this.Control[iCurrent+10]=this.gb_1
+this.Control[iCurrent+10]=this.rb_free
+this.Control[iCurrent+11]=this.rb_cost
+this.Control[iCurrent+12]=this.gb_1
 end on
 
 on w_wip05cu.destroy
@@ -80,11 +90,13 @@ destroy(this.st_3)
 destroy(this.dw_wip05cu_01)
 destroy(this.dw_wip05cu_02)
 destroy(this.dw_2)
+destroy(this.rb_free)
+destroy(this.rb_cost)
 destroy(this.gb_1)
 end on
 
 event ue_retrieve;call super::ue_retrieve;dec{0} ld_yyyymm
-string ls_fromdt,ls_todt, ls_plant, ls_dvsn, ls_part
+string ls_fromdt,ls_todt, ls_plant, ls_dvsn, ls_part, ls_iocd
 long ll_rowcnt
 
 dw_wip05cu_01.reset()
@@ -96,6 +108,12 @@ is_adjdt        = string(ld_yyyymm)
 ls_fromdt      = uf_wip_addmonth(is_adjdt,-2)
 ls_plant = trim(uo_1.dw_1.getitemstring(1,'xplant'))
 ls_dvsn  = trim(uo_1.dw_1.getitemstring(1,'div'))
+
+if rb_free.checked then
+	ls_iocd = '2'
+else
+	ls_iocd = '3'
+end if
 
 //정산년월 체크
 if f_wip_check_stdt( g_s_company, is_adjdt ) then
@@ -115,9 +133,9 @@ else
 	ls_dvsn = ls_dvsn + '%'
 end if
 
-dw_wip05cu_01.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2), '01', ls_plant, ls_dvsn)
-dw_wip05cu_02.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2), '01', ls_plant, ls_dvsn)
-dw_2.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2))
+dw_wip05cu_01.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2), '01', ls_plant, ls_dvsn, ls_iocd)
+dw_wip05cu_02.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2), '01', ls_plant, ls_dvsn, ls_iocd)
+dw_2.retrieve(mid(is_adjdt,1,4), mid(is_adjdt,5,2), ls_iocd)
 
 uo_status.st_message.text = '조회되었습니다.'
 
@@ -196,7 +214,7 @@ end type
 event clicked;
 long	ll_row, ll_LastRow, ll_index = 1, ll_select_row 
 long	ll_SaveRow[] 
-string ls_plant, ls_dvsn, ls_vendor, ls_rtncd, ls_cttp, ls_year, ls_month
+string ls_plant, ls_dvsn, ls_vendor, ls_rtncd, ls_cttp, ls_year, ls_month, ls_iocd
 dec{4} lc_ohqt002, lc_ohqt009
 dec{0} lc_ohat002, lc_ohat009
 
@@ -227,9 +245,10 @@ FOR ll_row = 1 TO ll_index - 1
 	ls_plant  = dw_wip05cu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfplant')
 	ls_dvsn   = dw_wip05cu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfdvsn')
 	ls_vendor = dw_wip05cu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfvendor')
+	ls_iocd = dw_wip05cu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfiocd')
 	// 해당지역, 공장에 대한 단가계산 완료여부를 체크한다.
 	if f_get_stscd_wip090('01',ls_plant,ls_dvsn,ls_year + ls_month,'080') <> 'C' then
-		messagebox("알림", ls_vendor + ' 업체는 단가계산이 완료되지 않았거나, ' &
+		messagebox("알림", ls_vendor + ' 업체는 아직 마감단가계산이 완료되지 않았거나, ' &
 			+ '이미 경리확정된 업체입니다.')
 		continue
 	end if
@@ -278,7 +297,7 @@ FOR ll_row = 1 TO ll_index - 1
   	from pbwip.wip002
   	where wbcmcd = '01' and wbyear = :ls_year and
         	wbplant = :ls_plant and wbdvsn = :ls_dvsn and
-        	wbiocd = '2' and wborct = :ls_vendor and
+        	wbiocd = :ls_iocd and wborct = :ls_vendor and
         	wbmonth = :ls_month and
         	not (wbbgqt = 0 and wbinqt = wbusqt3 and
           	wbusqt1 = 0 and wbusqt2 = 0 and wbusqt4 = 0 and
@@ -290,7 +309,7 @@ FOR ll_row = 1 TO ll_index - 1
 		INTO :lc_ohqt009, :lc_ohat009
 		FROM PBWIP.WIP009
 		WHERE WFYEAR = :ls_year AND WFMONTH = :ls_month AND WFPLANT = :ls_plant AND
-			WFDVSN = :ls_dvsn AND WFVENDOR = :ls_vendor
+			WFDVSN = :ls_dvsn AND WFVENDOR = :ls_vendor and WFIOCD = :ls_iocd
 		using sqlca;
 		
 	if ( lc_ohqt002 <> lc_ohqt009 ) or ( lc_ohat002 <> lc_ohat009 ) then
@@ -300,7 +319,7 @@ FOR ll_row = 1 TO ll_index - 1
   			set wfstscd = '2'
   		where wfyear = :ls_year and wfmonth = :ls_month and
         wfcmcd = '01' and wfplant = :ls_plant and
-        wfdvsn = :ls_dvsn and wfvendor = :ls_vendor
+        wfdvsn = :ls_dvsn and wfvendor = :ls_vendor and WFIOCD = :ls_iocd
 		using sqlca;
 		
 		Continue
@@ -312,6 +331,7 @@ FOR ll_row = 1 TO ll_index - 1
 	dw_wip05cu_02.setitem(ll_lastrow,'wip009_wfvendor', ls_vendor)
 	dw_wip05cu_02.setitem(ll_lastrow,'pur101_vndnm', mid(f_get_vendor02('01',ls_vendor),11))
 	dw_wip05cu_02.setitem(ll_lastrow,'wip009_wfstscd', '3')
+	dw_wip05cu_02.setitem(ll_lastrow,'wip009_wfiocd', ls_iocd)
 	dw_wip05cu_02.SelectRow(0, False)
 	dw_wip05cu_02.SelectRow(ll_lastrow, True)	
 	dw_wip05cu_02.ScrollToRow(ll_lastrow)
@@ -407,6 +427,43 @@ string title = "none"
 string dataobject = "d_wip05cu_03"
 boolean livescroll = true
 borderstyle borderstyle = stylelowered!
+end type
+
+type rb_free from radiobutton within w_wip05cu
+integer x = 1445
+integer y = 212
+integer width = 457
+integer height = 84
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long backcolor = 12632256
+boolean enabled = false
+string text = "무상사급"
+boolean checked = true
+boolean automatic = false
+end type
+
+type rb_cost from radiobutton within w_wip05cu
+integer x = 1902
+integer y = 212
+integer width = 416
+integer height = 84
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long backcolor = 12632256
+boolean enabled = false
+string text = "유상사급"
+boolean automatic = false
 end type
 
 type gb_1 from groupbox within w_wip05cu

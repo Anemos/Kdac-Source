@@ -4,3 +4,4 @@ global type str_ipis_server from structure
 	string		s_serverid
 	transaction		t_sqlpis
 end type
+

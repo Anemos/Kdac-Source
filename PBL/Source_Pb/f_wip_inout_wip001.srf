@@ -214,7 +214,11 @@ for ll_cnt = 1 to ll_rowcnt
 					if ls_rtngub <> '02' then
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_line.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+						end if
 						
 						if (ls_xuse = '03' or ls_xuse = '05') then
 							lc_qty[7] = lc_qty[7] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -397,7 +401,11 @@ for ll_cnt = 1 to ll_rowcnt
 				if ls_rtngub <> '02' then
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_line.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_line.getitemdecimal(ll_cnt,"com_amt")
+					end if
 					
 					if (ls_xuse = '03' or ls_xuse = '05') then
 						lc_qty[7] = lc_qty[7] - (ds_inout_line.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -565,7 +573,11 @@ for ll_cnt = 1 to ll_rowcnt2
 					else
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+						end if
 					end if
 				else
 //					lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -698,7 +710,11 @@ for ll_cnt = 1 to ll_rowcnt2
 				else
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_vndr.getitemdecimal(ll_cnt,"com_amt")
+					end if
 				end if
 			else
 //				lc_qty[2] = lc_qty[2] - (ds_inout_vndr.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -845,7 +861,11 @@ for ll_cnt = 1 to ll_rowcnt3
 					else
 						//소재불량 반납
 						lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-						lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						if ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") = 0 then
+							lc_amt[3] = lc_amt[3] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						else
+							lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+						end if
 					end if
 				else
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
@@ -974,7 +994,11 @@ for ll_cnt = 1 to ll_rowcnt3
 				else
 					//소재불량 반납
 					lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)
-					lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					if ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") = 0 then
+						lc_amt[3] = lc_amt[3] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					else
+						lc_amt[2] = lc_amt[2] - ds_inout_vndr07.getitemdecimal(ll_cnt,"com_amt")
+					end if
 				end if
 			else
 				lc_qty[2] = lc_qty[2] - (ds_inout_vndr07.getitemdecimal(ll_cnt,"com_qty") * lc_convqty)

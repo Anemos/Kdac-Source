@@ -9,13 +9,17 @@ end prototypes
 
 global function integer f_wip_option_wip004 (datawindow ds_target, datastore ds_source, string a_prno, string a_prdpt, string a_usge, string a_inpdt, long a_cnt, decimal a_usqt);Setpointer(hourglass!)
 integer li_sqlcode,li_currow
-string ls_cmcd, ls_plant, ls_dvsn, ls_itno, ls_iocd , ls_orct, ls_time
+string ls_cmcd, ls_plant, ls_dvsn, ls_itno, ls_iocd , ls_orct, ls_citno
 string ls_serno, ls_desc, ls_spec, ls_unit, ls_itcl, ls_srce, ls_pdcd
+dec{3} ld_qty1
 
 ls_cmcd = ds_source.getitemstring(a_cnt,"wacmcd")
 ls_plant = ds_source.getitemstring(a_cnt,"waplant")
 ls_dvsn = ds_source.getitemstring(a_cnt,"wadvsn")
 ls_itno = trim(ds_source.getitemstring(a_cnt,"waitno"))
+ls_iocd = trim(ds_source.getitemstring(a_cnt,"waiocd"))
+ls_orct = trim(ds_source.getitemstring(a_cnt,"waorct"))
+
 // 품번에 대한 기초데이타
 SELECT "PBINV"."INV002"."ITNM","PBINV"."INV002"."SPEC","PBINV"."INV002"."XUNIT","PBINV"."INV101"."CLS",   
          "PBINV"."INV101"."SRCE","PBINV"."INV101"."PDCD"  
@@ -31,6 +35,91 @@ SELECT "PBINV"."INV002"."ITNM","PBINV"."INV002"."SPEC","PBINV"."INV002"."XUNIT",
 if sqlca.sqlcode <> 0 then
 	return -1
 end if
+
+// 사내반제품 호환이 걸려있는 경우
+if ls_srce = '03' and ls_iocd = '1' then
+	//BOM 전개 
+	
+	SELECT pbwip.sf_wip_bom(:ls_cmcd,:ls_plant,:ls_dvsn,:ls_itno,:a_inpdt,'G') 
+	INTO :ls_citno
+	FROM PBCOMMON.COMM000
+	using sqlca;
+	
+	if ls_citno = 'Y' then
+		ls_citno = ''
+		do while true
+			SELECT TCITN, TQTY1 INTO :ls_citno, :ld_qty1
+			FROM QTEMP.BOMTEMP01
+			WHERE TCITN > :ls_citno
+			ORDER BY TCITN ASC
+			FETCH FIRST 1 ROWS ONLY
+			using sqlca;
+			
+			if sqlca.sqlcode <> 0 then
+				exit
+			end if
+			
+			//품번에 대한 기초데이타
+			SELECT "PBINV"."INV002"."ITNM","PBINV"."INV002"."SPEC","PBINV"."INV002"."XUNIT","PBINV"."INV101"."CLS",   
+						"PBINV"."INV101"."SRCE","PBINV"."INV101"."PDCD"  
+				INTO :ls_desc, :ls_spec, :ls_unit, :ls_itcl, :ls_srce, :ls_pdcd  
+				FROM "PBINV"."INV002", "PBINV"."INV101"  
+				WHERE ( "PBINV"."INV002"."COMLTD" = "PBINV"."INV101"."COMLTD" ) and  
+						( "PBINV"."INV002"."ITNO" = "PBINV"."INV101"."ITNO" ) and  
+						( ( "PBINV"."INV101"."COMLTD" = :ls_cmcd ) AND  
+						( "PBINV"."INV101"."XPLANT" = :ls_plant ) AND  
+						( "PBINV"."INV101"."DIV" = :ls_dvsn ) AND  
+						( "PBINV"."INV101"."ITNO" = :ls_citno ) )  using sqlca;
+			
+			//재공 전산번호(Serial No)
+			ls_serno = f_wip_get_serialno(ls_cmcd)
+			if len(ls_serno) = 1 then
+				return -1
+			end if
+			
+			ls_iocd = trim(ds_source.getitemstring(a_cnt,"waiocd"))
+			ls_orct = trim(ds_source.getitemstring(a_cnt,"waorct"))
+			
+			//재공 TRANS 생성
+			li_currow = ds_target.insertrow(0)
+			ds_target.setitem(li_currow,"wdcmcd",ls_cmcd)
+			ds_target.setitem(li_currow,"wdslty",'WR')
+			ds_target.setitem(li_currow,"wdsrno",ls_serno)
+			ds_target.setitem(li_currow,"wdplant",ls_plant)
+			ds_target.setitem(li_currow,"wddvsn",ls_dvsn)
+			ds_target.setitem(li_currow,"wdiocd",ls_iocd)
+			ds_target.setitem(li_currow,"wditno",ls_citno)
+			ds_target.setitem(li_currow,"wdrvno",' ')
+			ds_target.setitem(li_currow,"wddesc",trim(ls_desc))
+			ds_target.setitem(li_currow,"wdspec",trim(ls_spec))
+			ds_target.setitem(li_currow,"wdunit",trim(ls_unit))
+			ds_target.setitem(li_currow,"wditcl",ls_itcl)
+			ds_target.setitem(li_currow,"wdsrce",ls_srce)
+			ds_target.setitem(li_currow,"wdusge",a_usge)
+			ds_target.setitem(li_currow,"wdpdcd",mid(ls_pdcd,1,2))
+			ds_target.setitem(li_currow,"wdslno",' ')
+			ds_target.setitem(li_currow,"wdprsrty",'WR')
+			ds_target.setitem(li_currow,"wdprsrno",right(ls_serno,8))
+			ds_target.setitem(li_currow,"wdprsrno1",' ')
+			ds_target.setitem(li_currow,"wdprsrno2",' ')
+			ds_target.setitem(li_currow,"wdprno",trim(a_prno))
+			ds_target.setitem(li_currow,"wdprdpt",trim(a_prdpt))
+			ds_target.setitem(li_currow,"wdchdpt",ls_orct)
+			ds_target.setitem(li_currow,"wddate",a_inpdt)
+			ds_target.setitem(li_currow,"wdprqt",0)
+			ds_target.setitem(li_currow,"wdchqt",a_usqt * ld_qty1)
+			ds_target.setitem(li_currow,"wdipaddr",ls_itno)
+			ds_target.setitem(li_currow,"wdmacaddr",' ')
+			ds_target.setitem(li_currow,"wdinptid",'000030')
+			ds_target.setitem(li_currow,"wdupdtid", ' ')
+			ds_target.setitem(li_currow,"wdinptdt",g_s_date)
+			ds_target.setitem(li_currow,"wdinpttm",g_s_datetime)
+			ds_target.setitem(li_currow,"wdupdtdt",' ')
+		loop
+	end if
+	
+	return 0
+end if
 			
 //재공 전산번호(Serial No)
 ls_serno = f_wip_get_serialno(ls_cmcd)
@@ -38,9 +127,6 @@ if len(ls_serno) = 1 then
 	return -1
 end if
 
-ls_iocd = trim(ds_source.getitemstring(a_cnt,"waiocd"))
-ls_orct = trim(ds_source.getitemstring(a_cnt,"waorct"))
-ls_time = mid(g_s_time,1,2) + mid(g_s_time,4,2) + mid(g_s_time,7,2)
 //재공 TRANS 생성
 li_currow = ds_target.insertrow(0)
 ds_target.setitem(li_currow,"wdcmcd",ls_cmcd)
@@ -74,7 +160,7 @@ ds_target.setitem(li_currow,"wdmacaddr",' ')
 ds_target.setitem(li_currow,"wdinptid",'000030')
 ds_target.setitem(li_currow,"wdupdtid", ' ')
 ds_target.setitem(li_currow,"wdinptdt",g_s_date)
-ds_target.setitem(li_currow,"wdinpttm",ls_time)
+ds_target.setitem(li_currow,"wdinpttm",g_s_datetime)
 ds_target.setitem(li_currow,"wdupdtdt",' ')
 
 return 0

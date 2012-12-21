@@ -143,7 +143,7 @@ if tab_1.selectedtab = 1 then
 		pb_excel.enabled  = false
 		pb_excel.visible  = false
 	else
-		uo_status.st_message.text = f_message("I010")
+		uo_status.st_message.text = f_message("I010") + " Á¶È¸¼ö: " + string(tab_1.tabpage_1.dw_bom.rowcount())
 		pb_excel.enabled  = true
 		pb_excel.visible  = true
 	end if
@@ -247,7 +247,11 @@ alignment htextalign = right!
 end type
 
 event clicked;if tab_1.selectedtab = 1 then
-	f_Save_to_Excel_number(tab_1.tabpage_1.dw_bom)
+	if tab_1.tabpage_1.dw_bom.rowcount() < 65000 then
+		f_Save_to_Excel_number(tab_1.tabpage_1.dw_bom)
+	else
+		f_Save_to_Excel(tab_1.tabpage_1.dw_bom)
+	end if
 else
 	f_Save_to_Excel_number(tab_1.tabpage_2.dw_knockdown)
 end if

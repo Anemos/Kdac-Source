@@ -854,15 +854,15 @@ choose case arg_month
 		ls_part = '4'
 end choose
 
-// 업체정상 중간 DB(wip009) 와 사급보관증(wip008) 데이타 삭제
+// 무상사급업체정산 중간 DB(wip009) 와 사급보관증(wip008) 데이타 삭제
 delete from pbwip.wip009
 where wfcmcd = '01' and wfyear = :arg_year and
-		wfmonth = :arg_month
+		wfmonth = :arg_month and wfiocd = '2'
 		using sqlca;
 		
 delete from pbwip.wip008
 where wfcmcd = '01' and wfyear = :arg_year and
-		wfpart = :ls_part
+		wfpart = :ls_part and wfiocd = '2'
 		using sqlca;
 		
 DECLARE up_wip_023 PROCEDURE FOR PBWIP.SP_WIP_023  
@@ -887,6 +887,27 @@ execute up_wip_021;
 
 Close up_wip_021;
 Close up_wip_023;
+
+// 유상사급업체 중간 DB(wip009)
+if arg_month = '12' then
+	delete from pbwip.wip009
+	where wfcmcd = '01' and wfyear = :arg_year and
+			wfmonth = :arg_month and wfiocd = '3'
+			using sqlca;
+	
+	DECLARE up_wip_027 PROCEDURE FOR PBWIP.SP_WIP_027  
+				A_CMCD = '01',   
+				A_YEAR = :arg_year,   
+				A_MONTH = :arg_month,   
+				A_IPADDR = ' ',   
+				A_MACADDR = ' ',   
+				A_INPTDT = :is_currentdate,   
+				A_UPDTDT = ' '  ;
+				
+	execute up_wip_027;
+	
+	Close up_wip_027;
+end if
 
 update pbwip.wip090
 set wzvstscd = '2'
@@ -1091,15 +1112,16 @@ Long		ll_row, i
 Int		rowcount
 String   ls_plant, ls_gubun
 
+// server 연결이 안되었거나 야간엔 돌지 않는다...
+If Not wf_connect_check(SQLCA, it_destination) Then	
+	// 10분 간격으로 변경
+	Timer(600)
+	return true
+End If
+
 ll_row	= dw_interface.Rowcount()
 
 For i = 1 To ll_row
-	// server 연결이 안되었거나 야간엔 돌지 않는다...
-	If Not wf_connect_check(SQLCA, it_destination) Then	
-		// 10분 간격으로 변경
-		Timer(600)
-		Exit
-	End If
 
 	is_wip_plant = dw_interface.GetItemString( i, 'wip_plant')
 	is_wip_gubun = dw_interface.GetItemString( i, 'wip_gubun')
@@ -1449,7 +1471,7 @@ ul_handle1 = rt_source.DBHandle()
 
 If ul_handle1 > 0 Then
 	If cbx_check.checked and is_cycle = 'PRE' then
-		If String(Today(), 'hhmmss') >= '060000' and String(Today(), 'hhmmss') <= '070000' Then
+		If String(Today(), 'hhmmss') >= '060000' and String(Today(), 'hhmmss') <= '061500' Then
 			Return True
 		Else
 			Return False

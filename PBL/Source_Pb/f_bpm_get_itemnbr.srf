@@ -13,7 +13,7 @@ SELECT 	"PBBPM"."BPM503"."ITNO"
 	INTO 	:ls_itemnbr
    FROM 	"PBBPM"."BPM503"    
    WHERE "PBBPM"."BPM503"."XYEAR" 	= :ag_year 		AND
-	      "PBBPM"."BPM503"."XYEAR" 	= :ag_revno 		AND
+	      "PBBPM"."BPM503"."REVNO" 	= :ag_revno 		AND
 			"PBBPM"."BPM503"."XPLANT" 	= :ag_plant AND 
 			"PBBPM"."BPM503"."DIV" 		= :ag_div  	AND  
 			"PBBPM"."BPM503"."ITNO" 	= :ag_item  

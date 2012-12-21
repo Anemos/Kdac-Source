@@ -5,6 +5,8 @@
 --author        : kim ki sub
 --desc          : Vendor quator sheet creation
 
+drop procedure pbwip.sp_wip_021;
+
 create procedure pbwip.sp_wip_021
 (in a_cmcd char(2),
  in a_yyyy char(4),
@@ -25,6 +27,7 @@ declare p_itno char(15);
 declare p_orct char(5);
 declare p_chkorct char(5);
 declare p_part char(1);
+declare p_iocd char(1);
 declare p_itnm char(50);
 declare p_serl char(5);
 declare p_count integer;
@@ -43,11 +46,11 @@ declare at_end int default 0;
 declare not_found condition for '02000';
 
 declare wip008_cur cursor for
-  select wfcmcd,wfplant,wfdvsn,wfitno,wfvsrno,
+  select wfcmcd,wfplant,wfdvsn,wfiocd,wfitno,wfvsrno,
   wfbgqt,wfinqt,wfusqt2,wfusqt7,wfohqt
   from pbwip.wip008
   where wfcmcd = a_cmcd and wfyear = a_yyyy and
-        wfpart = p_part
+        wfpart = p_part and wfiocd = '2'
   order by wfvsrno,wfitno;
 
 declare continue handler for not_found
@@ -87,7 +90,7 @@ set p_count = 0;
 open wip008_cur;
 inc_loop:
 loop
-fetch wip008_cur into p_cmcd,p_plant,p_dvsn,p_itno,p_orct,p_bgqt,
+fetch wip008_cur into p_cmcd,p_plant,p_dvsn,p_iocd,p_itno,p_orct,p_bgqt,
       p_inqt,p_usqt2,p_usqt7,p_ohqt;
 if at_end = 1 or sqlcode <> 0 then
    leave inc_loop;
@@ -136,8 +139,8 @@ set wfserl = p_serl, wfvndr = p_vndr,
     wfusqt7 = p_usqt7, wfohqt = p_ohqt
 where wfcmcd = p_cmcd and wfyear = p_yy01 and
       wfpart = p_part and wfplant = p_plant and
-      wfdvsn = p_dvsn and wfvsrno = p_orct and
-      wfitno = p_itno;
+      wfdvsn = p_dvsn and wfiocd = p_iocd and
+      wfvsrno = p_orct and wfitno = p_itno;
 end loop;
 close wip008_cur;
 end

@@ -300,12 +300,12 @@ insert into pbrtn.rtn013
 	rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
 	rcnvcd,rcnvmc,rcnvlb,rclbcnt,rcflag,rcepno,rcipad,rcupdt,rcsydt,
 	rcinemp, rcinchk, rcintime, rcplemp, rcplchk, rcpltime,
-	rcdlemp, rcdlchk, rcdltime ) 
+	rcdlemp, rcdlchk, rcdltime, rcpower ) 
 select rccmcd,rcplant,rcdvsn,:l_s_pcitn,rcline1,rcline2,rcopno,:ls_chtime,'',
 	rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
 	rcnvcd,rcnvmc,rcnvlb,rclbcnt,'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date,
 	:g_s_empno, 'N', '', '', 'N','',
-		'', 'N',''
+		'', 'N','', rcpower
 from pbrtn.rtn013 
 where  rccmcd  = :l_s_cmcd  and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_pitno
 using sqlca ;

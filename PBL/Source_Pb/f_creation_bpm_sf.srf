@@ -1,0 +1,46 @@
+$PBExportHeader$f_creation_bpm_sf.srf
+$PBExportComments$BPM전개용 함수 STORED FUNCTION
+global type f_creation_bpm_sf from function_object
+end type
+
+forward prototypes
+global function string f_creation_bpm_sf (string ag_cmcd, string ag_xyear, string ag_revno, string ag_plant, string ag_dvsn, string ag_itno, string ag_date, string ag_chk)
+end prototypes
+
+global function string f_creation_bpm_sf (string ag_cmcd, string ag_xyear, string ag_revno, string ag_plant, string ag_dvsn, string ag_itno, string ag_date, string ag_chk);// stored function : sf_bpm_exp
+//	a_comltd varchar(2), 회사
+//	a_xyear varchar(4),	지역
+//	a_revno varchar(2),	공장
+//	a_plant varchar(1),	지역
+//	a_dvsn varchar(1),	공장
+//	a_itno   varchar(15),	품번
+//	a_date  varchar(8),	기준일자
+//	a_chk    varchar(1)	전개구분
+// a_chk = 'A' //> ALL(10/05,10/06 Deploy),Not Main, Not InvUnit
+//       = 'B' //> ALL(10/05,10/06 Deploy),Main Deploy, Not InvUnit
+//       = 'C' //> Plant(10/05,10/06 Not Deploy),Not Main, Not InvUnit
+//       = 'D' //> Plant(10/05,10/06 Not Deploy),Main Deploy, Not InvUnit
+//       = 'E' //> ALL(10/05,10/06 Deploy),Not Main, InvUnit
+//       = 'F' //> ALL(10/05,10/06 Deploy),Main Deploy, InvUnit
+//       = 'G' //> Plant(10/05,10/06 Not Deploy),Not Main, InvUnit
+//       = 'H' //> Plant(10/05,10/06 Not Deploy),Main Deploy, InvUnit
+//       = 'I' //> Plant(10/05,10/06 Not Deploy),Single Deploy,InvUnit
+//       = 'J' //> Plant(Planing)(10/05 NotDeploy, 원재료이체품 Deploy)
+
+// A_DLT = 'Y' 현재 BOM TEMP DB : QTEMP.TMP_BOM 의 내용을 CLEAR 후 새롭게 CREATION
+string ls_rtn
+
+// 당월 BOM전개 INV101
+SELECT PBPDM.SF_BPM_EXP(:ag_cmcd,:ag_xyear,:ag_revno,:ag_plant,:ag_dvsn,:ag_itno,:ag_date,:ag_chk)
+INTO :ls_rtn
+FROM PBCOMMON.COMM000
+FETCH FIRST 1 ROW ONLY
+using sqlca;
+
+return ls_rtn
+
+
+
+ 
+end function
+

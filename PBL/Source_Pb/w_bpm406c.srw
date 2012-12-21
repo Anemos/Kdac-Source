@@ -628,11 +628,11 @@ else
 end if
 f_bpm_job_start(ls_year,ls_revno,'w_bpm406c',g_s_empno,'C','재료비 생성 배분: ' + ls_revno + ls_divcode + ls_expcode)
 
-//// 10/03 반제품 유상사급에 대한 재료비계산 - 로직변경으로 주석처리 2011.02.25
-//if f_bpm_create_wipitem_bpm509(g_s_company,ls_year,ls_revno,ls_divcode,ls_message) = -1 then
-//	uo_status.st_message.text = ls_message
-//	return -1
-//end if
+// 10/03 반제품 유상사급에 대한 재료비계산 - 로직변경으로 주석처리 2011.02.25
+if f_bpm_create_wipitem_bpm509(g_s_company,ls_year,ls_revno,ls_divcode,ls_message) = -1 then
+	uo_status.st_message.text = ls_message
+	return -1
+end if
 
 if ls_year = '2012' and (ls_revno = '0W' or ls_revno = '0X' or ls_revno = '0V') then
 	// BOM조회 테이블에 데이타 생성( 가공비 적용 )
@@ -694,6 +694,12 @@ end if
 
 // 품목별 재료비(기획팀_연동통화) 생성
 if f_bpm_create_bpm516b(g_s_company,ls_year,ls_revno,ls_divcode,ls_message) = -1 then
+	uo_status.st_message.text = ls_message
+	return -1
+end if
+
+// 품목별 재료비(사업계획예산용) 생성
+if f_bpm_create_bpm516c(g_s_company,ls_year,ls_revno,ls_divcode,ls_message) = -1 then
 	uo_status.st_message.text = ls_message
 	return -1
 end if

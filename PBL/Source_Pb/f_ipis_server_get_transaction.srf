@@ -17,20 +17,20 @@ str_ipis_server lstr_ipis
 string ls_serverid
 integer li_cnt, li_index = -1
 
-CHOOSE CASE ag_area + ag_division		
-	CASE 'DA'		
-		ls_serverid = 'ELE'
-	CASE 'DM','DS'		
-		ls_serverid= 'MOR'
-	CASE 'DH','DV'		
-		ls_serverid= 'HVA'
-	CASE 'JH','JM','JS'		
+CHOOSE CASE Trim(ag_area + ag_division)
+	CASE 'DA','DM','DS','DH','DV','D'	
+		ls_serverid = 'DAEGU'
+//	CASE 'DM','DS'		
+//		ls_serverid= 'MOR'
+//	CASE 'DH','DV'		
+//		ls_serverid= 'HVA'
+	CASE 'JH','JM','JS','J'		
 		ls_serverid= 'JIN'
-	CASE 'YY'		
+	CASE 'YY','Y'		
 		ls_serverid= 'YEO'
-	CASE 'BA','BM','BS','BH','BV','BY'		
+	CASE 'BA','BM','BS','BH','BV','BY','B'		
 		ls_serverid= 'BUP'
-	CASE 'KH','KM','KS','KY'		
+	CASE 'KH','KM','KS','KY','KV','K'	
 		ls_serverid= 'KUN'
 	CASE 'XX'
 		ls_serverid = 'INT'

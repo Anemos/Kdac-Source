@@ -18,6 +18,27 @@ if mid(a_accode,1,4) = 'D105' and a_drcr = '2'  and mid(a_manage1,1,1) = ' ' the
    return ''
 end if 
 
+if (( a_accode >= 'C1060000' and a_accode <= 'C1149999' ) or    a_accode ='A3029900'   ) then 
+	if f_spacechk(a_manage1) =-1 then 
+		return ''
+	else 
+		select count(*)
+		into   :l_n_cnt
+		from   "PBPJT"."PJT101"
+		where  "PBPJT"."PJT101"."COMLTD" = :g_s_company and
+				 "PBPJT"."PJT101"."PJNO"   = :a_manage1   using sqlca;
+		if isnull(l_n_cnt) then
+			l_n_cnt = 0
+		end if
+		
+		if l_n_cnt = 0 then
+			return 'e'
+		else 
+			return ''
+		end if 
+	end if 
+end if 
+
 
 
 if mid(a_manage1,1,1) = ' ' and a_accode <> 'A1050200'  then

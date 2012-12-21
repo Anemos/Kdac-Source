@@ -17,7 +17,8 @@ global function string f_date_end (string as_date);//월 말일 - 해당월의 마지막 �
 
 string ls_rtn
 
-ls_rtn =  ef_dateproc( as_date , " ", 0, 0, 4)
+//ls_rtn =  ef_dateproc( as_date , " ", 0, 0, 4)
+ls_rtn = mid(f_relativedate( mid(f_relative_month(g_s_date,1),1,6) + '01', -1 ),7,2)
 
 return ls_rtn
 end function

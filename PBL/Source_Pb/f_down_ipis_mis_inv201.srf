@@ -11,7 +11,7 @@ global function integer f_down_ipis_mis_inv201 (ref string ag_message, datawindo
 string ls_itno, ls_qccd, ls_blno, ls_stscd, ls_downdate, ls_judgeflag
 dec{0} lc_dckqt, lc_dcamt
 dec{2} lc_fobamt
-integer	li_cnt, li_index, li_chkcnt
+integer	li_cnt, li_index, li_chkcnt,ln_count
 str_ipis_server lstr_ipis
 
 for li_cnt = 1 to ag_dwo.rowcount()
@@ -347,13 +347,13 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					end if
 				end if
 			else
-				SELECT ISNULL(JudgeFlag,'') INTO :ls_judgeflag
+				SELECT MAX(JudgeFlag),Count(JudgeFlag) INTO :ls_judgeflag,:li_chkcnt
 				FROM TQQCRESULT
 				WHERE AreaCode = :ls_xplant AND DivisionCode = :ls_div AND
 						Slno = :ls_slno
 				using lstr_ipis.t_sqlpis;
 				
-				if lstr_ipis.t_sqlpis.sqlcode = 0 and ls_judgeflag <> '9' then
+				if lstr_ipis.t_sqlpis.sqlcode = 0 and ls_judgeflag <> '9' and li_chkcnt <> 0  then
 					ag_message = "이미 판정완료된 검사품입니다."
 					return -1
 				else

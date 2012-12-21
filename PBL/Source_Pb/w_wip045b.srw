@@ -88,7 +88,7 @@ dw_wip045b_02.reset()
 dw_wip045b_02.retrieve(mid(ls_fromdt,1,6),mid(ls_adddt,1,4), mid(ls_adddt,5,2),mid(ls_adddt,1,6))
 
 uo_status.st_message.text = string(mid(ls_fromdt,1,6),"@@@@.@@") + " - " &
-		+ string(mid(ls_todt,1,6),"@@@@.@@") + " 기간의 불용재공 품목정보입니다."
+		+ string(mid(ls_todt,1,6),"@@@@.@@") + " 기간의 장기체화 재공품목정보입니다."
 end event
 
 event ue_postopen;call super::ue_postopen;

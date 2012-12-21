@@ -47,7 +47,8 @@ declare cal_claim cursor for
   from pbwip.wip009
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
-        wfdvsn = a_dvsn and wfvendor = a_vendor;
+        wfdvsn = a_dvsn and wfvendor = a_vendor and
+        wfiocd = '2';
 
 declare continue handler for sqlexception
   set retcode=sqlcode;
@@ -65,7 +66,8 @@ update pbwip.wip009
       wfclat = 0
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
-        wfdvsn = a_dvsn and wfvendor = a_vendor;
+        wfdvsn = a_dvsn and wfvendor = a_vendor and
+        wfiocd = '2';
 
 -- First Step
 open cal_claim;
@@ -142,7 +144,7 @@ loop
   where wfyear = a_year and wfmonth = a_month and
         wfcmcd = a_cmcd and wfplant = a_plant and
         wfdvsn = a_dvsn and wfvendor = a_vendor and
-        wfitno = p_itno ;
+        wfitno = p_itno and wfiocd = '2';
   if sqlcode <> 0 then
     leave inc_loop;
   end if;

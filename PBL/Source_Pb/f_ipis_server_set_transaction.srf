@@ -29,20 +29,20 @@ if ag_gubun = 'EACH' then
 	for li_cnt = 1 to UpperBound(ag_areadivision)
 		ls_area = mid(ag_areadivision[li_cnt],1,1)
 		ls_division = mid(ag_areadivision[li_cnt],2,1)
-		CHOOSE CASE ls_area + ls_division
-			CASE 'DA'		
-				lstr_ipis.s_serverid = 'ELE'
-			CASE 'DM','DS'		
-				lstr_ipis.s_serverid = 'MOR'
-			CASE 'DH','DV'		
-				lstr_ipis.s_serverid = 'HVA'
-			CASE 'JH','JM','JS'		
+		CHOOSE CASE Trim(ls_area + ls_division)
+			CASE 'DA','DM','DS','DH','DV','D'		
+				lstr_ipis.s_serverid = 'DAEGU'
+//			CASE 'DM','DS'		
+//				lstr_ipis.s_serverid = 'MOR'
+//			CASE 'DH','DV'		
+//				lstr_ipis.s_serverid = 'HVA'
+			CASE 'JH','JM','JS','J'		
 				lstr_ipis.s_serverid = 'JIN'
-			CASE 'YY'		
+			CASE 'YY','Y'		
 				lstr_ipis.s_serverid = 'YEO'
-			CASE 'BA','BM','BS','BH','BV','BY'		
+			CASE 'BA','BM','BS','BH','BV','BY','B'		
 				lstr_ipis.s_serverid = 'BUP'
-			CASE 'KH','KM','KS','KY'		
+			CASE 'KH','KM','KS','KY','KV','K'		
 				lstr_ipis.s_serverid = 'KUN'
 			CASE 'XZ'
 				lstr_ipis.s_serverid = 'AS400'
@@ -52,7 +52,7 @@ if ag_gubun = 'EACH' then
 		l_transaction = CREATE transaction
 		if lstr_ipis.s_serverid = 'AS400' then
 			// 먼저 시간대를 체크한다.
-			SELECT CURRENT TIMESTAMP Into :ldt_now FROM PBCOMMON.DAC001 FETCH FIRST 1 ROW ONLY;
+			SELECT CURRENT TIMESTAMP Into :ldt_now FROM PBCOMMON.COM000 ;
 			
 			//if string(ldt_now,"hh") >= "08" and string(ldt_now,"hh") < "20" then
 				// AS400 Connection
@@ -62,11 +62,11 @@ if ag_gubun = 'EACH' then
 			//end if
 		else
 			// MSSQL Connection
-			l_transaction.ServerName = ProfileString(gs_inifile,lstr_ipis.s_serverid,"ServerName",	" ")
-			l_transaction.DBMS       = ProfileString(gs_inifile,lstr_ipis.s_serverid,"DBMS",			" ")
-			l_transaction.Database   = trim(ProfileString(gs_inifile,lstr_ipis.s_serverid,"DataBase",			" "))
-			l_transaction.LogID      = ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogId",			" ")
-			l_transaction.LogPass    = trim(ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogPass",		" "))
+			l_transaction.ServerName = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"ServerName",	" ")
+			l_transaction.DBMS       = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"DBMS",			" ")
+			l_transaction.Database   = trim(ProfileString(gs_ini_file,lstr_ipis.s_serverid,"DataBase",			" "))
+			l_transaction.LogID      = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogId",			" ")
+			l_transaction.LogPass    = trim(ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogPass",		" "))
 			l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
 			l_transaction.AutoCommit = false
 		end if
@@ -87,14 +87,14 @@ if ag_gubun = 'EACH' then
 	// Interface DB Connection
 	l_transaction = CREATE transaction
 	
-	lstr_ipis.s_serverid = 'INT'
-	l_transaction.ServerName = ProfileString(gs_inifile,'ELE',"ServerName",	" ")
-	l_transaction.DBMS       = ProfileString(gs_inifile,'ELE',"DBMS",			" ")
-	l_transaction.Database   = "INTERFACE"
-	l_transaction.LogID      = ProfileString(gs_inifile,'ELE',"LogId",			" ")
-	l_transaction.LogPass    = trim(ProfileString(gs_inifile,'ELE',"LogPass",		" "))
-	l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
-	l_transaction.AutoCommit = false
+	lstr_ipis.s_serverid 		= 'INT'
+	l_transaction.ServerName 	= ProfileString(gs_ini_file,'DAEGU',"ServerName",	" ")
+	l_transaction.DBMS       	= ProfileString(gs_ini_file,'DAEGU',"DBMS",			" ")
+	l_transaction.Database   	= "INTERFACE"
+	l_transaction.LogID      	= ProfileString(gs_ini_file,'DAEGU',"LogId",			" ")
+	l_transaction.LogPass    	= trim(ProfileString(gs_ini_file,'DAEGU',"LogPass",		" "))
+	l_transaction.DbParm     	= "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
+	l_transaction.AutoCommit 	= false
 	
 	connect using l_transaction;
 
@@ -120,23 +120,23 @@ if ag_gubun = 'CMMS' then
 	for li_cnt = 1 to UpperBound(ag_areadivision)
 		ls_area = mid(ag_areadivision[li_cnt],1,1)
 		ls_division = mid(ag_areadivision[li_cnt],2,1)
-		CHOOSE CASE ls_area + ls_division
-			CASE 'DA'		
-				lstr_ipis.s_serverid = 'ELE'
-			CASE 'DM','DS'		
-				lstr_ipis.s_serverid = 'MOR'
-			CASE 'DH','DV'		
-				lstr_ipis.s_serverid = 'HVA'
-			CASE 'JH','JM','JS'		
+		CHOOSE CASE Trim(ls_area + ls_division)
+			CASE 'DA','DM','DS','DH','DV','D'		
+				lstr_ipis.s_serverid = 'DAEGU'
+//			CASE 'DM','DS'		
+//				lstr_ipis.s_serverid = 'MOR'
+//			CASE 'DH','DV'		
+//				lstr_ipis.s_serverid = 'HVA'
+			CASE 'JH','JM','JS','J'		
 				lstr_ipis.s_serverid = 'JIN'
-			CASE 'YY'		
+			CASE 'YY','Y'		
 				lstr_ipis.s_serverid = 'YEO'
-			CASE 'BA','BM','BS','BH','BV','BY'		
+			CASE 'BA','BM','BS','BH','BV','BY','B'		
 				lstr_ipis.s_serverid = 'BUP'
-			CASE 'KH','KM','KS','KY'		
+			CASE 'KH','KM','KS','KY','KV','K'		
 				lstr_ipis.s_serverid = 'KUN'
 			CASE 'XZ'
-				lstr_ipis.s_serverid = 'AS400'
+				lstr_ipis.s_serverid = 'AS400'		
 			CASE ELSE
 				return lstr_ipis_svr
 	  	END CHOOSE
@@ -153,11 +153,11 @@ if ag_gubun = 'CMMS' then
 			//end if
 		else
 			// MSSQL Connection
-			l_transaction.ServerName = ProfileString(gs_inifile,lstr_ipis.s_serverid,"ServerName",	" ")
-			l_transaction.DBMS       = ProfileString(gs_inifile,lstr_ipis.s_serverid,"DBMS",			" ")
+			l_transaction.ServerName = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"ServerName",	" ")
+			l_transaction.DBMS       = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"DBMS",			" ")
 			l_transaction.Database   = "CMMS"
-			l_transaction.LogID      = ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogId",			" ")
-			l_transaction.LogPass    = trim(ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogPass",		" "))
+			l_transaction.LogID      = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogId",			" ")
+			l_transaction.LogPass    = trim(ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogPass",		" "))
 			l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
 			l_transaction.AutoCommit = false
 		end if
@@ -177,12 +177,12 @@ if ag_gubun = 'CMMS' then
 	// Interface DB Connection
 	l_transaction = CREATE transaction
 	
-	lstr_ipis.s_serverid = 'INT'
-	l_transaction.ServerName = ProfileString(gs_inifile,'ELE',"ServerName",	" ")
-	l_transaction.DBMS       = ProfileString(gs_inifile,'ELE',"DBMS",			" ")
+	lstr_ipis.s_serverid 	 = 'INT'
+	l_transaction.ServerName = ProfileString(gs_ini_file,'DAEGU',"ServerName",	" ")
+	l_transaction.DBMS       = ProfileString(gs_ini_file,'DAEGU',"DBMS",			" ")
 	l_transaction.Database   = "INTERFACE"
-	l_transaction.LogID      = ProfileString(gs_inifile,'ELE',"LogId",			" ")
-	l_transaction.LogPass    = trim(ProfileString(gs_inifile,'ELE',"LogPass",		" "))
+	l_transaction.LogID      = ProfileString(gs_ini_file,'DAEGU',"LogId",			" ")
+	l_transaction.LogPass    = trim(ProfileString(gs_ini_file,'DAEGU',"LogPass",		" "))
 	l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
 	l_transaction.AutoCommit = false
 	
@@ -221,11 +221,11 @@ if ag_gubun = 'ALL' then
 	//			lstr_ipis.s_serverid = 'KUN'
 	//  	END CHOOSE
 	//  	l_transaction = CREATE transaction
-	//	l_transaction.ServerName = ProfileString(gs_inifile,lstr_ipis.s_serverid,"ServerName",	" ")
-	//	l_transaction.DBMS       = ProfileString(gs_inifile,lstr_ipis.s_serverid,"DBMS",			" ")
-	//	l_transaction.Database   = trim(ProfileString(gs_inifile,lstr_ipis.s_serverid,"DataBase",			" "))
-	//	l_transaction.LogID      = ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogId",			" ")
-	//	l_transaction.LogPass    = trim(ProfileString(gs_inifile,lstr_ipis.s_serverid,"LogPass",		" "))
+	//	l_transaction.ServerName = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"ServerName",	" ")
+	//	l_transaction.DBMS       = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"DBMS",			" ")
+	//	l_transaction.Database   = trim(ProfileString(gs_ini_file,lstr_ipis.s_serverid,"DataBase",			" "))
+	//	l_transaction.LogID      = ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogId",			" ")
+	//	l_transaction.LogPass    = trim(ProfileString(gs_ini_file,lstr_ipis.s_serverid,"LogPass",		" "))
 	//	l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server'"
 	//	l_transaction.AutoCommit = FALSE
 	//
@@ -244,11 +244,11 @@ if ag_gubun = 'ALL' then
 	//* 인터페이스 DB Connection 추가, 공통인 경우에는 인터페이스트랜잭션만 생성함.
 	//****
 	l_transaction = CREATE transaction
-	l_transaction.ServerName = ProfileString(gs_inifile,'ELE',"ServerName",	" ")
-	l_transaction.DBMS       = ProfileString(gs_inifile,'ELE',"DBMS",			" ")
+	l_transaction.ServerName = ProfileString(gs_ini_file,'DAEGU',"ServerName",	" ")
+	l_transaction.DBMS       = ProfileString(gs_ini_file,'DAEGU',"DBMS",			" ")
 	l_transaction.Database   = "INTERFACE"
-	l_transaction.LogID      = ProfileString(gs_inifile,'ELE',"LogId",			" ")
-	l_transaction.LogPass    = trim(ProfileString(gs_inifile,'ELE',"LogPass",		" "))
+	l_transaction.LogID      = ProfileString(gs_ini_file,'DAEGU',"LogId",			" ")
+	l_transaction.LogPass    = trim(ProfileString(gs_ini_file,'DAEGU',"LogPass",		" "))
 	l_transaction.DbParm     = "appname='INTERFACE for KDAC', host='str_ipis_server', CommitOnDisconnect='No'"
 	l_transaction.AutoCommit = false
 	

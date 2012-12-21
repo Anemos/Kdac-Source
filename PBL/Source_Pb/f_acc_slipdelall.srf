@@ -29,8 +29,8 @@ end if
 	  
 // 전표삭제 	  
 delete from "PBACC"."ACC100"
-where  "PBACC"."ACC100"."COMLTD"   = :g_s_company and
-       "PBACC"."ACC100"."SLAREA"   = :g_s_wkcd    and
+where  "PBACC"."ACC100"."COMLTD"   = :ag_company and
+       "PBACC"."ACC100"."SLAREA"   =  :ag_area    and
 		 "PBACC"."ACC100"."SLACDATE" between  :ag_fdt  and :ag_tdt     and
 		 "PBACC"."ACC100"."SLSLIPNO" between :ag_fslipno and :ag_tslipno   using sqlca;
 if sqlca.sqlcode = 0 then

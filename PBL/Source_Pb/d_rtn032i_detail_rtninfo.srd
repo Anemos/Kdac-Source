@@ -29,6 +29,7 @@ table(column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.R
  column=(type=decimal(4) updatewhereclause=yes name=capa_time dbname="CAPA_TIME" values="  	0/" )
  column=(type=decimal(4) updatewhereclause=yes name=hyoul_time dbname="HYOUL_TIME" values="  	0/" )
  column=(type=char(8) updatewhereclause=yes name=reedto dbname="RTN015.REEDTO" )
+ column=(type=decimal(5) updatewhereclause=yes name=repower dbname="RTN015.REPOWER" )
  retrieve="SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",   
          ~"PBRTN~".~"RTN015~".~"REOPNO~",   
          ~"PBRTN~".~"RTN015~".~"REEDFM~",   
@@ -48,7 +49,8 @@ table(column=(type=decimal(0) updatewhereclause=yes name=reopsq dbname="RTN015.R
          ~"PBRTN~".~"RTN015~".~"REPLANT~",
          ~"PBRTN~".~"RTN015~".~"REBSTM~" + ~"PBRTN~".~"RTN015~".~"RENVMC~" as capa_time,
          ~"PBRTN~".~"RTN015~".~"REBLTM~" + ~"PBRTN~".~"RTN015~".~"RENVLB~" as hyoul_time,
-			~"PBRTN~".~"RTN015~".~"REEDTO~"
+			~"PBRTN~".~"RTN015~".~"REEDTO~",
+			~"PBRTN~".~"RTN015~".~"REPOWER~"
     FROM ~"PBRTN~".~"RTN015~"  
     WHERE ( ~"PBRTN~".~"RTN015~".~"RECMCD~"  = :a_cmcd ) AND  
           ( ~"PBRTN~".~"RTN015~".~"REPLANT~" = :a_plant ) AND   
@@ -72,7 +74,7 @@ SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",~"PBRTN~".~"RTN016~".~"RFOPNO~",' ',
          ~"PBRTN~".~"RTN016~".~"RFLINE1~",   
          ~"PBRTN~".~"RTN016~".~"RFLINE2~",
          ~"PBRTN~".~"RTN016~".~"RFPLANT~",
-         0,0,''
+         0,0,'',0
     FROM ~"PBRTN~".~"RTN016~" , ~"PBRTN~".~"RTN015~"    
     WHERE ( ~"PBRTN~".~"RTN016~".~"RFCMCD~"  = ~"PBRTN~".~"RTN015~".~"RECMCD~" ) AND  
          ( ~"PBRTN~".~"RTN016~".~"RFPLANT~" = ~"PBRTN~".~"RTN015~".~"REPLANT~" ) AND   
@@ -96,7 +98,6 @@ SELECT   ~"PBRTN~".~"RTN015~".~"REOPSQ~",~"PBRTN~".~"RTN016~".~"RFOPNO~",' ',
 " arguments=(("a_cmcd", string),("a_plant", string),("a_div", string),("a_wkct", string),("a_itno", string),("a_line1", string),("a_line2", string),("a_ajdate", string))  sort="reopsq A reopno A reline3 D " )
 text(band=header alignment="2" text="°øÁ¤¸í" border="0" color="16777215" x="2491" y="4" height="120" width="603" html.valueishtml="0"  name=reopnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="Á¶ÄÚµå" border="0" color="16777215" x="3104" y="4" height="120" width="288" html.valueishtml="0"  name=reline3_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
-text(band=header alignment="2" text="ÀÎ¿ø" border="0" color="16777215" x="6359" y="4" height="120" width="338" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="°øÁ¤¼ø¼­" border="0" color="16777215" x="1093" y="4" height="120" width="347" html.valueishtml="0"  name=reopsq_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="°øÁ¤¹øÈ£" border="0" color="16777215" x="1449" y="4" height="120" width="343" html.valueishtml="0"  name=reopno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="4" height="120" width="146" html.valueishtml="0"  name=replant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -124,7 +125,6 @@ text(band=header alignment="2" text="Àû¿ëÀÏ" border="0" color="16777215" x="180
 text(band=header alignment="2" text="¿Ï·áÀÏ" border="0" color="16777215" x="2153" y="4" height="120" width="329" html.valueishtml="0"  name=reedto_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="0" x="2491" y="0" height="64" width="603" format="[general]" html.valueishtml="0"  name=reopnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="0" x="3104" y="0" height="64" width="288" format="[general]" html.valueishtml="0"  name=reline3 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
-column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="6359" y="0" height="64" width="338" format="[general]" html.valueishtml="0"  name=relbcnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=1 alignment="2" tabsequence=32766 border="0" color="0" x="1093" y="0" height="64" width="347" format="[general]" html.valueishtml="0"  name=reopsq visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 compute(band=detail alignment="0" expression=" compute_0009  +  compute_0010  +  compute_0011 "border="0" color="0" x="4320" y="0" height="64" width="379" format="[GENERAL]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 column(band=detail id=17 alignment="0" tabsequence=32766 border="0" color="0" x="338" y="0" height="64" width="375" format="[general]" html.valueishtml="0"  name=reitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
@@ -145,6 +145,11 @@ column(band=detail id=23 alignment="2" tabsequence=32766 border="0" color="0" x=
 text(band=summary alignment="2" text="Ç¥ÁØ½Ã°£ÇÕ" border="0" color="0" x="5038" y="4" height="64" width="402" html.valueishtml="0"  name=t_10 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 compute(band=summary alignment="1" expression="sum(capa_time for all)"border="0" color="0" x="5449" y="4" height="64" width="434" format="#,##0.0000" html.valueishtml="0"  name=compute_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 compute(band=summary alignment="1" expression="sum(hyoul_time for all)"border="0" color="0" x="5893" y="4" height="64" width="457" format="#,##0.0000" html.valueishtml="0"  name=compute_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="ÀÎ¿ø" border="0" color="16777215" x="6359" y="4" height="120" width="338" html.valueishtml="0"  name=relbcnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="¼ÒºñÀü·Â(KW/EA)" border="0" color="16777215" x="6706" y="4" height="120" width="530" html.valueishtml="0"  name=repower_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=14 alignment="2" tabsequence=32766 border="0" color="0" x="6359" y="0" height="64" width="338" format="[general]" html.valueishtml="0"  name=relbcnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=24 alignment="1" tabsequence=0 border="0" color="0" x="6711" y="0" height="64" width="526" format="#,##0.0000" html.valueishtml="0"  name=repower visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+compute(band=summary alignment="1" expression="sum(repower for all)"border="0" color="0" x="6706" y="4" height="60" width="530" format="#,##0.0000" html.valueishtml="0"  name=compute_4 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="1" background.color="536870912" )
 
 sparse(names="replant	redvsn	reitno	reline1	reline2	reopsq	reopno")htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )

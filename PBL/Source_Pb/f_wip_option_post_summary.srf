@@ -107,7 +107,7 @@ for ll_cntx = 1 to ll_rowcnt
 	ds_option_arrange.reset()
 	//ds_option_wip004.reset()
 	
-	ll_rowcnt2 = ds_option_sub.retrieve(a_cmcd,a_plant,a_dvsn,ls_itno,ls_adjdate,ls_orct,lc_convqty,ls_yymmdd)
+	ll_rowcnt2 = ds_option_sub.retrieve(a_cmcd,a_plant,a_dvsn,ls_itno,ls_adjdate,ls_orct,lc_convqty,ls_yymmdd,ls_iocd)
 	if ll_rowcnt2 < 1 then
 		continue
 	end if

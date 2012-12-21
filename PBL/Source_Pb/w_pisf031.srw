@@ -88,7 +88,7 @@ dw_2.height = newheight -1500
 
 dw_3.width = newwidth
 dw_3.y = dw_1.height+dw_2.height+130
-dw_3.height = newheight -dw_1.height -dw_2.height - 230
+dw_3.height = newheight -dw_1.height -dw_2.height - 240
 end event
 
 event ue_postopen;call super::ue_postopen;str_parm str_get_parm
@@ -758,13 +758,13 @@ if dw_1.getitemstring(dw_1.getrow(),'invy_state') ='' &
 		or isnull(dw_1.getitemstring(dw_1.getrow(),'part_code')) &
 		or dw_1.getitemstring(dw_1.getrow(),'dept_code') ='' &
 		or isnull(dw_1.getitemstring(dw_1.getrow(),'dept_code'))  then
-	messagebox("알림",'품번, 부서코드, 불출전표번호, 재고상태는 반드시 입력하십시오.')
+	uo_status.st_message.text = "부서코드, 불출전표번호, 재고상태는 반드시 입력하십시오."
 	return 0
 end if
 
 if dw_1.getitemstring(dw_1.getrow(),'part_used') = '' &
 		or isnull(dw_1.getitemstring(dw_1.getrow(),'part_used')) then
-	messagebox("알림",'용도를 선택해 주십시요')
+	uo_status.st_message.text = "용도를 선택해 주십시요"
 	return 0
 end if
 
@@ -772,19 +772,19 @@ dw_1.accepttext()
 ls_part_code= dw_1.getitemstring(dw_1.getrow(),'part_code')
 
 If isnull(ls_part_code) or ls_part_code = '' then 
-	messagebox("알림",'품번을 입력하십시요')
+	uo_status.st_message.text = "품번을 입력하십시요"
 	Return 0
 end if
 
 ll_check = f_dddw_getrow(dw_1, dw_1.getrow(), 'part_code', ls_part_code)
 if ll_check = 0 then
-	messagebox("알림",'해당공장의 품번이 아닙니다.')
+	uo_status.st_message.text = "해당공장의 품번이 아닙니다."
 	return 0
 end if
 
 if upper(ls_part_code) = ls_part_code then
 else
-	messagebox("알림",'품번은 대문자로 입력하십시오.')
+	uo_status.st_message.text = "품번은 대문자로 입력하십시오."
 	return 0
 end if
 //if dw_1.getitemstring(dw_1.getrow(),'invy_state') ='U'THEN messagebox('','1')
@@ -792,7 +792,7 @@ end if
 //연구소는 자재 재고관리를 하지 않는다
 if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then 
 	if isnull(dw_1.getitemnumber(dw_1.getrow(),'normal_qty')) then 
-		messagebox("알림",'재고량이 존재하지 않습니다.')
+		uo_status.st_message.text = "재고량이 존재하지 않습니다."
 		return 0
 	end if 
 	
@@ -800,7 +800,7 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 			and ( dw_1.getitemnumber(dw_1.getrow(),'out_qty') <=0 &
 			or dw_1.getitemnumber(dw_1.getrow(),'normal_qty') &
 			< dw_1.getitemnumber(dw_1.getrow(),'out_qty')) then
-		messagebox("알림",'불출수량이 0이하거나 사용가능한 개수보다 크기때문에 불출하실 수 없습니다.')
+		uo_status.st_message.text = "불출수량이 0이하거나 사용가능한 개수보다 크기때문에 불출하실 수 없습니다."
 		RETURN 0
 	end if
 	
@@ -808,7 +808,7 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 			and ( dw_1.getitemnumber(dw_1.getrow(),'out_qty') <=0 &
 			or dw_1.getitemnumber(dw_1.getrow(),'repair_qty') &
 			< dw_1.getitemnumber(dw_1.getrow(),'out_qty')) then
-		messagebox("알림",'불출수량이 0이하거나 요수리 개수보다 크기때문에 불출하실 수 없습니다.')	
+		uo_status.st_message.text = "불출수량이 0이하거나 요수리 개수보다 크기때문에 불출하실 수 없습니다."	
 		RETURN 0
 	end if
 	
@@ -816,7 +816,7 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 			and ( dw_1.getitemnumber(dw_1.getrow(),'out_qty') <=0 &
 			or dw_1.getitemnumber(dw_1.getrow(),'scram_qty') &
 			< dw_1.getitemnumber(dw_1.getrow(),'out_qty')) then
-		messagebox("알림",'불출수량이 0이하거나 폐품 개수보다 크기때문에 불출하실 수 없습니다.')			
+		uo_status.st_message.text = "불출수량이 0이하거나 폐품 개수보다 크기때문에 불출하실 수 없습니다."			
 		RETURN 0	
 	end if
 	
@@ -824,19 +824,19 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 			and ( dw_1.getitemnumber(dw_1.getrow(),'out_qty') <=0 &
 			or dw_1.getitemnumber(dw_1.getrow(),'etc_qty') &
 			< dw_1.getitemnumber(dw_1.getrow(),'out_qty')) then
-		messagebox("알림",'불출수량이 0이하거나 부외 개수보다 크기때문에 불출하실 수 없습니다.')
+		uo_status.st_message.text = "불출수량이 0이하거나 부외 개수보다 크기때문에 불출하실 수 없습니다."
 		RETURN 0
 	end if
 end if
 
 if string(dw_1.getitemdatetime(dw_1.getrow(),'out_date'),'yyyy-mm-dd') &
 		> string(g_s_date,"@@@@-@@-@@")  then
-	messagebox("알림",'불출일자가 오늘일자보다 큽니다. 다시입력하세요..')
+	uo_status.st_message.text = "불출일자가 오늘일자보다 큽니다. 다시입력하세요."
 	return 0
 end if
 if string(dw_1.getitemdatetime(dw_1.getrow(),'out_date'),'yyyy-mm') &
 		<> string(mid(g_s_date,1,6),"@@@@-@@")  then
-	messagebox("알림",'불출일자가 범위를 넘었습니다. 다시입력하세요..')
+	uo_status.st_message.text = "불출일자가 범위를 넘었습니다. 다시입력하세요."
 	return 0
 end if
 
@@ -859,7 +859,7 @@ SELECT equip_master.equip_code
 
 if (ls_equip <>'') and (Not IsNull(ls_equip)) &
 		and (ls_equip_code = '' or isnull(ls_equip_code)) then
-	messagebox("알림",'장비번호가 존재하지 않습니다.')
+	uo_status.st_message.text = "장비번호가 존재하지 않습니다."
 	return 0
 end if
 
@@ -882,7 +882,7 @@ end if
 if  dw_1.getitemstring(dw_1.getrow(),'part_used')='04' &
 		or dw_1.getitemstring(dw_1.getrow(),'part_used')='07' then
 	if mid(ls_cc,1,1) <> 'D' then
-		messagebox("알림","부서에 업체코드가 들어가야 합니다.")
+		uo_status.st_message.text = "부서에 업체코드가 들어가야 합니다."
 		return 0
 	end if
 	
@@ -892,7 +892,7 @@ if  dw_1.getitemstring(dw_1.getrow(),'part_used')='04' &
 		WHERE comp_master.comp_code = :ls_cc and comp_master.comp_div_code1 ='외주업체' 
 		using sqlcmms;
 	if (ls_cc_code ='' or isnull(ls_cc_code)) then 
-		messagebox("알림",'업체가 존재하지 않습니다.')
+		uo_status.st_message.text = "업체가 존재하지 않습니다."
 		return 0
 	end if
 //elseif  dw_1.getitemstring(dw_1.getrow(),'part_used')='06' then
@@ -907,7 +907,7 @@ if  dw_1.getitemstring(dw_1.getrow(),'part_used')='04' &
 //	end if
 else
 	if (ls_cc_code ='' or isnull(ls_cc_code)) then 
-		messagebox("알림",'부서가 존재하지 않습니다.')
+		uo_status.st_message.text = "부서가 존재하지 않습니다."
 		return 0
 	end if
 end if
@@ -924,7 +924,7 @@ if ll_check = 1 then
 	ls_data1 =dw_1.getitemstring(dw_1.getrow(),'dept_code')
 			
 	if isnull(ls_data1) or ls_data1='' then
-		messagebox("알림",'부서(업체)코드를 입력하십시오!!')
+		uo_status.st_message.text = "부서(업체)코드를 입력하십시오!!"
 		return 0
 	end if
 			
@@ -979,7 +979,7 @@ if ll_check = 1 then
 	dw_1.AcceptText()
 	
 	if dw_1.update() = -1 then
-		ls_message = '데이타윈도우 UPDATE중 오류가 발생했읍니다.' 
+		ls_message = "데이타윈도우 UPDATE중 오류가 발생했읍니다." 
 		Goto RollBack_	
 	end if
 
@@ -1234,8 +1234,7 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 end if
 
 SetPointer(Arrow!)
-uo_status.st_message.text = ls_message
-MessageBox("불출오류", ls_message, StopSign!)
+uo_status.st_message.text = "불출오류 : " + ls_message
 
 return 0
 end event

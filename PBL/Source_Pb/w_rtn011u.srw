@@ -245,7 +245,7 @@ event close;call super::close;destroy i_ds_data
 end event
 
 event ue_save;call super::ue_save;string l_s_plant,l_s_rhdvsn,l_s_pdcd,l_s_rhitno,l_s_rhitno1,l_s_rhedfm,l_s_chk,l_s_errcd,l_s_column,l_s_riedfm,l_s_array[]
-string ls_message, ls_chtime
+string ls_message, ls_chtime, ls_pcls
 integer i,l_s_count,l_s_rowcount,l_n_sqlcount,l_n_check
 s_inv101_info st_data
 
@@ -277,11 +277,12 @@ for i = 1 to l_s_rowcount
 	l_s_rhedfm  = trim(dw_1.object.rtn011_raedfm[i])
 	
 	l_s_rhitno1 = dw_1.object.rtn011_raitno1[i]
+	l_s_rhitno   = dw_1.object.rtn011_raitno[i] 
 	st_data = f_get_inv101_rtn(l_s_plant,l_s_rhdvsn,l_s_rhitno1)
 	if st_data.errcode <> 0 then
 		uo_status.st_message.text = '품목 상세정보 미등록 품번입니다'
 		l_s_errcd = '1'
-	elseif ( st_data.cls = '30' or st_data.srce = '03' or ( st_data.srce = '04' and st_Data.cls = '40')) then
+	elseif ( st_data.cls = '30' or st_data.srce = '03' or st_Data.cls = '50') then
 		select count(*) into : l_s_count from pbpdm.bom001
 			where pcmcd = :g_s_company and plant = :l_s_plant and pdvsn = :l_s_rhdvsn and ppitn = :l_s_rhitno1 and
 					pedtm <= :l_s_rhedfm using sqlca;
@@ -304,6 +305,17 @@ for i = 1 to l_s_rowcount
 					l_s_errcd = '1'
 				end if
 			end if
+		end if
+		
+		select cls into :ls_pcls
+		from pbinv.inv101
+		where comltd = '01' and xplant = :l_s_plant and div = :l_s_rhdvsn and
+			itno = :l_s_rhitno
+		using sqlca;
+		
+		if (st_Data.cls = '50' and ls_pcls <> '50') or (st_Data.cls <> '50' and ls_pcls = '50') then
+			uo_status.st_message.text = '사내공정외주품은 대표, 유사품번이 같아야 합니다.'
+			l_s_errcd = '1'
 		end if
 	else
 		uo_status.st_message.text = '계정과 구입선을 확인하세요'
@@ -469,19 +481,34 @@ do until l_n_row = 0
 		goto Rollback_
 	end if
 	
-	update pbrtn.rtn011
-	set rachtime = :ls_chtime, raepno = :g_s_empno, raipad = :g_s_ipaddr, 
-		rasydt = :g_s_date, raflag = 'D',
-		rainemp = :g_s_empno, rainchk = 'N', raintime = '',
-		raplemp = '', raplchk = 'N', rapltime = '', 
-		radlemp = '', radlchk = 'N', radltime = ''
- 	where racmcd = :g_s_company and raplant = :ls_raplant and 
-		radvsn = :ls_radvsn and raitno = :ls_raitno and 
-		raitno1 = :ls_raitno1
+	select count(*) into :l_n_sqlcount
+	from pbrtn.rtn018
+	where rhcmcd = :g_s_company and rhplant = :ls_raplant and 
+		rhdvsn = :ls_radvsn and rhitno = :ls_raitno and 
+		rhitno1 = :ls_raitno1
 	using sqlca;
-	if sqlca.sqlnrows < 1 then
-		ls_message = "유사품번 삭제시에 오류가 발생했습니다."
-		goto Rollback_
+	
+	if l_n_sqlcount < 1 then
+		delete from pbrtn.rtn011
+		where racmcd = :g_s_company and raplant = :ls_raplant and 
+			radvsn = :ls_radvsn and raitno = :ls_raitno and 
+			raitno1 = :ls_raitno1
+		using sqlca;
+	else	
+		update pbrtn.rtn011
+		set rachtime = :ls_chtime, raepno = :g_s_empno, raipad = :g_s_ipaddr, 
+			rasydt = :g_s_date, raflag = 'D',
+			rainemp = :g_s_empno, rainchk = 'N', raintime = '',
+			raplemp = '', raplchk = 'N', rapltime = '', 
+			radlemp = '', radlchk = 'N', radltime = ''
+		where racmcd = :g_s_company and raplant = :ls_raplant and 
+			radvsn = :ls_radvsn and raitno = :ls_raitno and 
+			raitno1 = :ls_raitno1
+		using sqlca;
+		if sqlca.sqlnrows < 1 then
+			ls_message = "유사품번 삭제시에 오류가 발생했습니다."
+			goto Rollback_
+		end if
 	end if
 	l_n_row = dw_1.getselectedrow(l_n_row)
 loop
@@ -535,8 +562,8 @@ if ( st_data.cls = '30' or st_data.srce = '03' or st_data.srce = '04' ) then
 		where rccmcd = '01' and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno 
 	using sqlca;
 	if l_s_count = 0 or isnull(l_s_count) then 
-		uo_status.st_message.text = 'Routing 세부정보가 등록되지 않은 품번입니다'
-		return
+		uo_status.st_message.text = 'Routing 공정정보가 등록되지 않은 대표품번입니다'
+		return -1
 	end if
    l_n_rows = dw_1.retrieve(l_s_plant,l_s_div,l_s_itno) 	
 	dw_1.insertrow(0)
@@ -552,7 +579,7 @@ if ( st_data.cls = '30' or st_data.srce = '03' or st_data.srce = '04' ) then
 	dw_1.setrow(l_n_rows + 1)
 	dw_1.setcolumn("rtn011_raitno1")
 else
-	uo_status.st_message.text = '계정과 구입선을 확인하세요'
+	uo_status.st_message.text = '공정정보등록을 위한 품번에 대한 계정과 구입선을 확인하세요'
 	return 0
 end if
 
@@ -651,6 +678,34 @@ end event
 event rbuttondown;drag(begin!)
 end event
 
+event itemchanged;string ls_plant, ls_dvsn, ls_pitno, ls_cls, ls_cls_child
+
+if dwo.name = 'rtn011_raitno1' then
+	ls_plant = this.getitemstring(row,"rtn011_raplant")
+	ls_dvsn = this.getitemstring(row,"rtn011_radvsn")
+	ls_pitno = this.getitemstring(row,"rtn011_raitno")
+	
+	select cls into :ls_cls
+	from pbinv.inv101
+	where comltd = '01' and xplant = :ls_plant and
+		div = :ls_dvsn and itno = :ls_pitno
+	using sqlca;
+	
+	select cls into :ls_cls_child
+	from pbinv.inv101
+	where comltd = '01' and xplant = :ls_plant and
+		div = :ls_dvsn and itno = :data
+	using sqlca;
+	
+	if ls_cls = '50' and ls_cls_child <> '50' then
+		uo_status.st_message.text = "대표품번이 외주가공품이므로 유사품번도 외주가공품이어야 합니다."
+		return 2
+	end if
+end if
+
+return 0
+end event
+
 type st_2 from statictext within w_rtn011u
 integer x = 2688
 integer y = 80
@@ -739,7 +794,7 @@ integer height = 2280
 integer taborder = 40
 boolean bringtotop = true
 string title = "none"
-string dataobject = "d_rtn01_dw_routing_item_treeview_rev2"
+string dataobject = "d_rtn01_dw_routing_item_treeview_rev3"
 boolean hscrollbar = true
 boolean vscrollbar = true
 boolean livescroll = true
@@ -782,161 +837,143 @@ if dw_1.getitemstring(l_n_row,"rtn011_radlchk") = 'N' then
 	messagebox("확인","해당건은 결재가 진행중이므로 수정할수 없습니다.")
 	return 0
 end if
-if messagebox("확인","대표품번 " + string(dw_1.object.rtn011_raitno[l_n_row]) + " 을 유사품번 " + &
+if messagebox("확인","결재없이 현재기준으로 변경됩니다. 대표품번 " + string(dw_1.object.rtn011_raitno[l_n_row]) + " 을 유사품번 " + &
               string(dw_1.object.rtn011_raitno1[l_n_row]) + "으로 바꾸시겠습니까 ?",question!,yesno!,2)  = 2 then
 	return 0
 end if
 
 string l_s_plant, l_s_div, l_s_itno, l_s_itno1, l_s_edfm, l_s_rhedfm, ls_message, ls_chtime
 
-l_s_plant = dw_1.object.rtn011_raplant[l_n_row] ; l_s_div   = dw_1.object.rtn011_radvsn[l_n_row] 
-l_s_itno  = dw_1.object.rtn011_raitno[l_n_row]  ; l_s_itno1 = dw_1.object.rtn011_raitno1[l_n_row] ; l_s_rhedfm = dw_1.object.rtn011_raedfm[l_n_row]
+l_s_plant = dw_1.object.rtn011_raplant[l_n_row]
+l_s_div   = dw_1.object.rtn011_radvsn[l_n_row] 
+l_s_itno  = dw_1.object.rtn011_raitno[l_n_row]
+l_s_itno1 = dw_1.object.rtn011_raitno1[l_n_row]
+l_s_rhedfm = dw_1.object.rtn011_raedfm[l_n_row]
 
-select count(*) into :l_n_row from pbrtn.rtn013
-	where rccmcd = :g_s_company and rcplant = :l_s_plant and rcdvsn = :l_s_div and
-	      rcitno = :l_s_itno and rcflag in ('A','R')
-using sqlca ;
-
-if l_n_row > 0 then
-	messagebox("확인","대표품번 " + l_s_itno + " 의 Routing 상세정보를 삭제후에 작업 가능합니다 ")
-	return 0
-end if
-
-select count(*) into :l_n_row from pbrtn.rtn013
-	where ( rccmcd = :g_s_company and rcplant = :l_s_plant and rcdvsn = :l_s_div and
-	        rcitno = :l_s_itno1 and rcflag in ('A','R') ) 
-using sqlca ;
-if l_n_row < 1 then
-	messagebox("확인","유사품번 " + l_s_itno1 + " 의 Routing 상세정보를 등록후에 작업 가능합니다 ")
-	return 0
-end if
 //************************************
-//* 1. 대표품번의 공정정보 삭제
-//* 2. 유사품번의 공정정보 생성
-//* 3. 대표/유사품번 교체
+//* 1. 현재기준으로 대표품번을 해당 유사품번으로 변경
+//*    RTN013, RTN014, RTN015, RTN016, RTN017
+//* 2. 대표품번을 현재기준의 유사품번으로 변경
+//*    RTN011, RTN018
 //************************************
 
 SQLCA.AUTOCOMMIT = FALSE
 ls_chtime = f_get_systemdate(sqlca)
 
-// 1. 유사품번의 공정정보 생성
-//select count(*) into :l_n_count
-//from pbrtn.rtn013 
-//where  rccmcd  = :g_s_company  and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno1
-//using sqlca ;
-//if l_n_count = 0 then
-//	insert into pbrtn.rtn013
-//		( rccmcd,rcplant,rcdvsn,rcitno,rcline1,rcline2,rcopno,rcchtime,rcedfm,
-//		rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
-//		rcnvcd,rcnvmc,rcnvlb,rclbcnt,rcflag,rcepno,rcipad,rcupdt,rcsydt,
-//		rcinemp, rcinchk, rcintime, rcplemp, rcplchk, rcpltime,
-//		rcdlemp, rcdlchk, rcdltime ) 
-//	select rccmcd,rcplant,rcdvsn,:l_s_itno1,rcline1,rcline2,rcopno,:ls_chtime,'',
-//		rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
-//		rcnvcd,rcnvmc,rcnvlb,rclbcnt,'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date,
-//		:g_s_empno, 'N', '', '', 'N','',
-//			'', 'N',''
-//	from pbrtn.rtn013 
-//	where  rccmcd  = :g_s_company  and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno
-//	using sqlca ;
-//	
-//	if sqlca.sqlcode <> 0 then
-//		ls_message = "RTN013 유사품번의 공정정보 생성 입력 에러. 정보시스템으로 연락바랍니다."
-//		goto Rollback_
-//	end if
-//else
-//	update pbrtn.rtn013
-//	set rcepno = :g_s_empno , rcipad = :g_s_ipaddr, rcupdt = :g_s_date, rcflag = 'R',
-//		 rcchtime = :ls_chtime, rcinemp = :g_s_empno, rcinchk = 'N', rcintime = '',
-//		 rcplemp = '', rcplchk = 'N', rcpltime = '',
-//		 rcdlemp = '', rcdlchk = 'N', rcdltime = ''
-//	where rccmcd = :g_s_company and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno1
-//	using sqlca;
-//	if sqlca.sqlnrows < 1 then
-//		ls_message = "RTN013 유사품번의 공정정보 생성 수정 에러. 정보시스템으로 연락바랍니다."
-//		goto Rollback_
-//	end if
-//end if
-//
-//select count(*) into :l_n_count
-//from pbrtn.rtn014 
-//where  rdcmcd  = :g_s_company  and rdplant = :l_s_plant and rddvsn = :l_s_div and rditno = :l_s_itno1
-//using sqlca ;
-//if l_n_count = 0 then 
-//	insert into pbrtn.rtn014 (rdcmcd,rdplant,rddvsn,rditno,rdline1,rdline2,rdopno,rdnvmo,rdmcno,rdterm,
-//		rdmctm,rdlbtm,rdremk,rdflag,rdepno,rdedfm,rdipad,rdupdt,rdsydt)
-//	select rdcmcd,rdplant,rddvsn,:l_s_itno1,rdline1,rdline2,rdopno,rdnvmo,rdmcno,rdterm,
-//		rdmctm,rdlbtm,rdremk,'A',:g_s_empno,'',:g_s_ipaddr,:g_s_date,:g_s_date 
-//	from pbrtn.rtn014 
-//	where  rdcmcd  = :g_s_company  and rdplant = :l_s_plant and rddvsn = :l_s_div and rditno = :l_s_itno
-//	using sqlca ;
-//	
-//	if sqlca.sqlcode <> 0 then
-//		ls_message = "RTN014 유사품번의 공정정보 생성 입력 에러. 정보시스템으로 연락바랍니다."
-//		goto Rollback_
-//	end if
-//end if
-//
-//select count(*) into :l_n_count
-//from pbrtn.rtn017 
-//where  rgcmcd  = :g_s_company  and rgplant = :l_s_plant and rgdvsn = :l_s_div and rgitno = :l_s_itno1
-//using sqlca ;
-//if l_n_count = 0 then 
-//	insert into pbrtn.rtn017 
-//	select rgcmcd,rgplant,rgdvsn,:l_s_itno1,rgline1,rgline2,rgopno,:g_s_date,rgmcno,
-//		'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date 
-//	from pbrtn.rtn017 
-//	where  rgcmcd  = :g_s_company  and rgplant = :l_s_plant and rgdvsn = :l_s_div and rgitno = :l_s_itno
-//	using sqlca ;
-//	if sqlca.sqlcode <> 0 then
-//		ls_message = "RTN017 유사품번의 공정정보 생성 입력 에러. 정보시스템으로 연락바랍니다."
-//		goto Rollback_
-//	end if
-//end if
-//// 2. 대표품번의 공정정보 삭제
-//update pbrtn.rtn013
-//set rcepno = :g_s_empno , rcipad = :g_s_ipaddr, rcupdt = :g_s_date, rcflag = 'D',
-//	 rcchtime = :ls_chtime, rcinemp = :g_s_empno, rcinchk = 'N', rcintime = '',
-//	 rcplemp = '', rcplchk = 'N', rcpltime = '',
-//	 rcdlemp = '', rcdlchk = 'N', rcdltime = ''
-//where rccmcd = :g_s_company and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno
-//using sqlca;
-//if sqlca.sqlnrows < 1 then
-//	ls_message = "대표품번의 공정정보 삭제에러"
-//	goto Rollback_
-//end if
-// 3. 대표/유사품번 교체
+// 1. 현재기준으로 대표품번을 해당 유사품번으로 변경
+
+update pbrtn.rtn013
+set rcitno = :l_s_itno1
+where rccmcd = :g_s_company and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_itno
+using sqlca;
+if sqlca.sqlnrows < 1 then
+	ls_message = "RTN013 공정정보 수정시에 에러가 발생했습니다. 정보시스템으로 연락바랍니다."
+	goto Rollback_
+end if
+
+select count(*) into :l_n_count
+from pbrtn.rtn014 
+where  rdcmcd  = :g_s_company  and rdplant = :l_s_plant and rddvsn = :l_s_div and rditno = :l_s_itno
+using sqlca ;
+
+if l_n_count > 0 then
+	update pbrtn.rtn014 
+	set rditno = :l_s_itno1
+	where  rdcmcd  = :g_s_company  and rdplant = :l_s_plant and rddvsn = :l_s_div and rditno = :l_s_itno
+	using sqlca ;
+	
+	if sqlca.sqlnrows < 1 then
+		ls_message = "RTN014 부대작업 수정시에 에러가 발생했습니다. 정보시스템으로 연락바랍니다."
+		goto Rollback_
+	end if
+end if
+
+select count(*) into :l_n_count
+from pbrtn.rtn017 
+where  rgcmcd  = :g_s_company  and rgplant = :l_s_plant and rgdvsn = :l_s_div and rgitno = :l_s_itno
+using sqlca ;
+if l_n_count = 0 then 
+	update pbrtn.rtn017 
+	set rgitno = :l_s_itno1
+	where  rgcmcd  = :g_s_company  and rgplant = :l_s_plant and rgdvsn = :l_s_div and rgitno = :l_s_itno
+	using sqlca ;
+	if sqlca.sqlcode <> 0 then
+		ls_message = "RTN017 유사품번의 공정정보 생성 입력 에러. 정보시스템으로 연락바랍니다."
+		goto Rollback_
+	end if
+end if
+
+update pbrtn.rtn015
+set reitno = :l_s_itno1
+where recmcd = :g_s_company and replant = :l_s_plant and redvsn = :l_s_div and reitno = :l_s_itno and
+	reedto = '99991231'
+using sqlca;
+if sqlca.sqlnrows < 1 then
+	ls_message = "RTN015 공정정보 수정시에 에러가 발생했습니다. 정보시스템으로 연락바랍니다."
+	goto Rollback_
+end if
+
+// 2. 대표품번을 현재기준의 유사품번으로 변경
 update pbrtn.rtn011
-set raitno = :l_s_itno1 , raitno1 = :l_s_itno , raedfm = '',
-	rachtime = :ls_chtime, raepno = :g_s_empno, raipad = :g_s_ipaddr, 
-	rasydt = :g_s_date, raflag = 'R',
-	rainemp = :g_s_empno, rainchk = 'N', raintime = '',
-	raplemp = '', raplchk = 'N', rapltime = '', 
-	radlemp = '', radlchk = 'N', radltime = ''
+set raitno = :l_s_itno1 , raitno1 = :l_s_itno
 where racmcd = :g_s_company and raplant = :l_s_plant and 
 	radvsn = :l_s_div and raitno = :l_s_itno and 
 	raitno1 = :l_s_itno1
 using sqlca;
 
 if sqlca.sqlnrows < 1 then
-	ls_message = "유사품번을 대체품번으로 대체품번을 유사품번으로 변경시에 오류가 발생했습니다."
+	ls_message = "RTN011 유사품번을 대체품번으로 변경시에 오류가 발생했습니다."
 	goto Rollback_
 end if
 
-update pbrtn.rtn011
-set raitno = :l_s_itno1 , raedfm = '',
-	rachtime = :ls_chtime, raepno = :g_s_empno, raipad = :g_s_ipaddr, 
-	rasydt = :g_s_date, raflag = 'R',
-	rainemp = :g_s_empno, rainchk = 'N', raintime = '',
-	raplemp = '', raplchk = 'N', rapltime = '', 
-	radlemp = '', radlchk = 'N', radltime = ''
+select count(*) into :l_n_count
+from pbrtn.rtn011
 where racmcd = :g_s_company and raplant = :l_s_plant and 
 	radvsn = :l_s_div and raitno = :l_s_itno 
 using sqlca;
 
+if l_n_count > 0 then
+	update pbrtn.rtn011
+	set raitno = :l_s_itno1
+	where racmcd = :g_s_company and raplant = :l_s_plant and 
+		radvsn = :l_s_div and raitno = :l_s_itno 
+	using sqlca;
+	
+	if sqlca.sqlnrows < 1 then
+		ls_message = "RTN011 유사품번을 대체품번으로 일괄변경시에 오류가 발행했습니다."
+		goto Rollback_
+	end if
+end if
+
+update pbrtn.rtn018
+set rhitno = :l_s_itno1 , rhitno1 = :l_s_itno
+where rhcmcd = :g_s_company and rhplant = :l_s_plant and 
+	rhdvsn = :l_s_div and rhitno = :l_s_itno and 
+	rhitno1 = :l_s_itno1 and rhedto = '99991231'
+using sqlca;
+
 if sqlca.sqlnrows < 1 then
-	ls_message = "유사품번을 대체품번으로 일괄변경시에 오류가 발행했습니다."
+	ls_message = "RTN018 유사품번을 대체품번으로 변경시에 오류가 발생했습니다."
 	goto Rollback_
+end if
+
+select count(*) into :l_n_count
+from pbrtn.rtn018
+where rhcmcd = :g_s_company and rhplant = :l_s_plant and 
+	rhdvsn = :l_s_div and rhitno = :l_s_itno and rhedto = '99991231'
+using sqlca;
+
+if l_n_count > 0 then
+	update pbrtn.rtn018
+	set rhitno = :l_s_itno1
+	where rhcmcd = :g_s_company and rhplant = :l_s_plant and 
+		rhdvsn = :l_s_div and rhitno = :l_s_itno and rhedto = '99991231'
+	using sqlca;
+	
+	if sqlca.sqlnrows < 1 then
+		ls_message = "RTN011 유사품번을 대체품번으로 일괄변경시에 오류가 발행했습니다."
+		goto Rollback_
+	end if
 end if
 
 COMMIT USING SQLCA;

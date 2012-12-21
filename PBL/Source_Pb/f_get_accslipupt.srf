@@ -1,0 +1,49 @@
+$PBExportHeader$f_get_accslipupt.srf
+$PBExportComments$전표명세별첨 record update return
+global type f_get_accslipupt from function_object
+end type
+
+forward prototypes
+global subroutine f_get_accslipupt (string a_s_company, string a_s_wkcd, string a_s_date, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_accode, string a_s_div, string a_s_empno, decimal a_n_amt, string a_s_opaccode, string a_s_summ)
+end prototypes
+
+global subroutine f_get_accslipupt (string a_s_company, string a_s_wkcd, string a_s_date, decimal a_n_slipno, decimal a_n_cdno, decimal a_n_pageno, decimal a_n_serno, string a_s_accode, string a_s_div, string a_s_empno, decimal a_n_amt, string a_s_opaccode, string a_s_summ);
+if a_n_pageno = 1 and a_n_serno = 1 then
+	update "PBACC"."ACC100"
+	set    "SLPAGENO" = 0,  "SLSERNO" = 0
+	where  "PBACC"."ACC100"."COMLTD"   = :a_s_company and
+			 "PBACC"."ACC100"."SLAREA"   = :a_s_wkcd     and 
+			 "PBACC"."ACC100"."SLACDATE" = :a_s_date      and
+			 "PBACC"."ACC100"."SLSLIPNO" = :a_n_slipno  and
+			 "PBACC"."ACC100"."SLCDNO"   = :a_n_cdno    and
+			 "PBACC"."ACC100"."SLPAGENO" = :a_n_pageno         and
+			 "PBACC"."ACC100"."SLSERNO"  = :a_n_serno     using sqlca;
+	if sqlca.sqlcode <> 0 then
+		rollback using sqlca;
+	end if
+else
+	
+	f_get_accslipini(a_s_company, a_s_wkcd, a_s_date, a_n_slipno, a_n_cdno, 0, 9)
+	
+	update "PBACC"."ACC100"
+	set    "SLACCODE" = :a_s_accode,    "SLDIV" = :a_s_div,
+			 "SLEMPNO" =  :a_s_empno,    "SLAMT" = :a_n_amt,
+			 "SLOPACCODE" = :a_s_opaccode,  
+			 "SLSUMMARY" = :a_s_summ,
+			 "INPTID"    = :g_s_empno,   "INPTDT"     = :g_s_datetime,
+			 "IPADDR"    = :g_s_ipaddr,  "MACADDR"    = :g_s_macaddr
+	where  "PBACC"."ACC100"."COMLTD"   = :a_s_company and
+			 "PBACC"."ACC100"."SLAREA"   = :a_s_wkcd    and 
+			 "PBACC"."ACC100"."SLACDATE" = :a_s_date      and
+			 "PBACC"."ACC100"."SLSLIPNO" = :a_n_slipno  and
+			 "PBACC"."ACC100"."SLCDNO"   = :a_n_cdno    and
+			 "PBACC"."ACC100"."SLPAGENO" = 0 and
+			 "PBACC"."ACC100"."SLSERNO"  = 9   using sqlca;
+			 
+	if sqlca.sqlcode <> 0 then
+		rollback using sqlca;
+	end if
+
+end if
+end subroutine
+

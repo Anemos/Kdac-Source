@@ -1,0 +1,23 @@
+$PBExportHeader$f_get_accslipsumm.srf
+$PBExportComments$잔액명세서  적요 return
+global type f_get_accslipsumm from function_object
+end type
+
+forward prototypes
+global function string f_get_accslipsumm (string a_s_parm)
+end prototypes
+
+global function string f_get_accslipsumm (string a_s_parm);string l_s_summary
+
+select "PBACC"."ACC100"."SLSUMMARY"  into :l_s_summary
+from   "PBACC"."ACC100"
+where  "PBACC"."ACC100"."COMLTD"||"PBACC"."ACC100"."SLAREA"|| "PBACC"."ACC100"."SLACDATE"||"PBACC"."ACC100"."SLSLIPNO"||"PBACC"."ACC100"."SLCDNO"||"PBACC"."ACC100"."SLPAGENO"||"PBACC"."ACC100"."SLSERNO"  =  :a_s_parm   using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_summary = ' '
+end if
+
+return l_s_summary
+
+ 
+end function
+

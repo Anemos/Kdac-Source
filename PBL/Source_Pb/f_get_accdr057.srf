@@ -16,7 +16,8 @@ if a_s_accode = 'S1032105' or a_s_accode = 'S1033500' or a_s_accode = 'S1033900'
 	l_s_err = f_get_accdr044(a_pdcd, a_dept)
  
 else
-	if f_spacechk(a_pdcd) <> -1  and a_s_accode <> 'A3030111' and a_s_accode <> 'A3030112' and a_s_accode <> 'A3030108' and a_s_accode <> 'A3030109' and a_s_accode <> 'H1080108' then
+	if f_spacechk(a_pdcd) <> -1  and a_s_accode <> 'A3030111' and a_s_accode <> 'A3030112' and a_s_accode <> 'A3030108' &
+	   and a_s_accode <> 'A3030109' and a_s_accode <> 'H1080108' and a_s_accode <> 'H1080106'  and a_s_accode <> 'H1080103' then
 		l_s_err = f_get_accdr044(a_pdcd, a_dept)
 	end if
 end if

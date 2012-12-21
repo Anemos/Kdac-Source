@@ -62,7 +62,7 @@ end function
 event open;call super::open;wf_setRetCondition(STFROMTODATE) 
 
 ib_wcallview = True 
-cb_dailycreate.Enabled = False 
+cb_dailycreate.Enabled = True 
 
 end event
 
@@ -140,6 +140,11 @@ OpenSheetWithParm(w_pism_prt, lstr_prt, w_frame, 0, Layered! )
 end event
 
 event ue_postopen;call super::ue_postopen;//This.TriggerEvent("ue_retrieve") 
+if g_s_autarea <> '' then
+	dw_all_down.enabled = false
+else
+	dw_all_down.enabled = true
+end if
 end event
 
 type uo_status from w_pism_sheet03`uo_status within w_pism018i
@@ -213,7 +218,7 @@ Else
 	Else
 		cb_dailycreate.Text += "¿€º∫"
 	End If 
-	cb_dailycreate.Enabled = m_frame.m_action.m_save.Enabled 
+//	cb_dailycreate.Enabled = m_frame.m_action.m_save.Enabled 
 End If 
 end event
 

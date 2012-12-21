@@ -22,7 +22,7 @@ DO WHILE  ll_row <= ll_rowcount
 		  ls_colname   = arg_dw.Describe("#" + String(ii) + ".Name")
 		  CHOOSE CASE Left(ls_data_type, 3)
 			 CASE "CHA" 	
-  		          la_colvalue  = Trim(arg_dw.GetItemString(ll_row, ii))
+  		          la_colvalue  = arg_dw.GetItemString(ll_row, ii)
 				    IF IsNull(la_colvalue) OR la_colvalue = "" OR la_colvalue = " " THEN
 						 IF Long(arg_dw.Describe(ls_colname + ".Background.Color")) = 15780518 THEN
 							 ls_coltext = arg_dw.Describe(ls_colname + "_t" + ".Text")
@@ -63,4 +63,3 @@ RETURN 1
 
 
 end function
-

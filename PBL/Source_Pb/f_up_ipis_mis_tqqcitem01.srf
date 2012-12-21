@@ -1,0 +1,39 @@
+$PBExportHeader$f_up_ipis_mis_tqqcitem01.srf
+$PBExportComments$QC 대상품목
+global type f_up_ipis_mis_tqqcitem01 from function_object
+end type
+
+forward prototypes
+global function string f_up_ipis_mis_tqqcitem01 (string fs_xplant, string fs_div, string fs_vsrno, string fs_itno, any fs_transaction[])
+end prototypes
+
+global function string f_up_ipis_mis_tqqcitem01 (string fs_xplant, string fs_div, string fs_vsrno, string fs_itno, any fs_transaction[]);long 					ln_count	=	0
+string 				ls_today
+datetime 			ld_nowtime
+integer				li_index
+str_ipis_server 	lstr_ipis  
+
+li_index = f_ipis_server_get_transaction(fs_transaction, fs_xplant, fs_div )	
+if li_index = -1 then
+	return 'F'
+else 
+	lstr_ipis = fs_transaction[li_index]
+end if
+
+Select Top 1 GetDate() Into :ld_nowtime From sysusers Using lstr_ipis.t_sqlpis;
+ls_today	=	mid(string(ld_nowtime,'YYYY.MM.DD HH:MM:SS'),1,10)
+
+select	count(*)	into	:ln_count	from	tqqcitem01 
+where		areacode	=	:fs_xplant			and	divisioncode	=	:fs_div		and	itemcode	=	:fs_itno	and	suppliercode	=	:fs_vsrno	and
+			applydatefrom	<=	:ls_today	and	applydateto		>=	:ls_today
+using		lstr_ipis.t_sqlpis ;
+
+if	isnull(ln_count)	=	false	and	ln_count	>=	1	then
+	return	'Y'
+else
+	return	'N'
+end if
+
+
+end function
+

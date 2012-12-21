@@ -1,0 +1,25 @@
+$PBExportHeader$f_get_accworkbefdt.srf
+$PBExportComments$인사 work day 기준 전일 return
+global type f_get_accworkbefdt from function_object
+end type
+
+forward prototypes
+global function string f_get_accworkbefdt (string a_s_accdt)
+end prototypes
+
+global function string f_get_accworkbefdt (string a_s_accdt);string l_s_enddt
+
+SELECT max("DELABO"."LABMAA"."GHDT")  
+  INTO :l_s_enddt
+FROM   "DELABO"."LABMAA" 
+WHERE  "DELABO"."LABMAA"."GHDT"  < :a_s_accdt and
+       "DELABO"."LABMAA"."GDIV"   = ''     and
+		 "DELABO"."LABMAA"."GHGB" = ''      using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_enddt = ' '
+end if
+ 
+return l_s_enddt
+ 
+end function
+

@@ -85,7 +85,7 @@ if (a_adjdate = '201101' and ls_plant = 'D' and ls_dvsn = 'M') then
 end if
 
 if lc_avgcost = 0 then
-	if ls_itcl = '10' and (ls_srce = '01' or ls_srce = '02' or ls_srce = '04' or ls_srce = '05' or ls_srce = '06') then
+	if ls_itcl = '10' and (ls_srce = '01' or ls_srce = '02' or ls_srce = '05' or ls_srce = '06') then
 		//원재료인 경우에 마감월의 자재이동평균단가 이용
 		SELECT "PBINV"."INV402"."COSTAV" , "PBINV"."INV101"."CONVQTY" 
 			INTO :lc_avgcost , :lc_convqty 

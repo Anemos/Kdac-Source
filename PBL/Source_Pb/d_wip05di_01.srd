@@ -1,6 +1,6 @@
 $PBExportHeader$d_wip05di_01.srd
-release 8;
-datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 header(height=136 color="536870912" )
 summary(height=380 color="536870912" )
 footer(height=0 color="536870912" )
@@ -16,7 +16,7 @@ table(column=(type=char(50) updatewhereclause=yes name=plantnm dbname="PLANTNM" 
  column=(type=char(1) updatewhereclause=yes name=wip009_wfdvsn dbname="WIP009.WFDVSN" )
  column=(type=char(15) updatewhereclause=yes name=wip009_wfitno dbname="WIP009.WFITNO" )
  column=(type=char(5) updatewhereclause=yes name=wip009_wfvendor dbname="WIP009.WFVENDOR" )
- column=(type=char(30) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
  column=(type=char(10) updatewhereclause=yes name=pur101_vndr dbname="PUR101.VNDR" )
  column=(type=char(2) updatewhereclause=yes name=wip009_wfunit dbname="WIP009.WFUNIT" )
  column=(type=decimal(2) updatewhereclause=yes name=wip009_wfscrp dbname="WIP009.WFSCRP" )
@@ -98,6 +98,7 @@ table(column=(type=char(50) updatewhereclause=yes name=plantnm dbname="PLANTNM" 
          ( ( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = :a_cmcd ) AND 
          ( ~"PBWIP~".~"WIP009~".~"WFYEAR~" = :a_year ) AND  
          ( ~"PBWIP~".~"WIP009~".~"WFMONTH~" = :a_month ) AND 
+			( ~"PBWIP~".~"WIP009~".~"WFIOCD~" = :a_iocd ) AND
          ( ~"PBWIP~".~"WIP009~".~"WFVENDOR~"  LIKE :a_vsrno ) AND
 			( ~"PBWIP~".~"WIP009~".~"WFSTSCD~"  >= '3' ) AND
 			( ~"PBPUR~".~"PUR101~".~"SCGUBUN~" = 'S' ) )
@@ -106,7 +107,7 @@ ORDER BY ~"PBWIP~".~"WIP009~".~"WFVENDOR~" ASC,
          ~"PBWIP~".~"WIP009~".~"WFDVSN~" ASC,   
           ~"PBINV~".~"INV101~".~"PDCD~" asc, 
          ~"PBWIP~".~"WIP009~".~"WFITNO~" ASC   
-" arguments=(("a_cmcd", string),("a_vsrno", string),("a_year", string),("a_month", string)) )
+" arguments=(("a_cmcd", string),("a_vsrno", string),("a_year", string),("a_month", string),("a_iocd", string)) )
 group(level=1 header.height=0 trailer.height=144 by=("wip009_wfvendor" ) header.color="536870912" trailer.color="536870912" )
 group(level=2 header.height=0 trailer.height=148 by=("wip009_wfplant" , "wip009_wfdvsn" ) header.color="536870912" trailer.color="536870912" )
 text(band=header alignment="2" text="Loss¿≤" border="2" color="16777215" x="2025" y="4" height="64" width="247" html.valueishtml="0"  name=t_8 visible="1"  font.face="±º∏≤√º" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -272,5 +273,8 @@ compute(band=summary alignment="1" expression="sum(usqt2 for all)"border="0" col
 compute(band=summary alignment="1" expression="sum(usqt1 for all)"border="0" color="0" x="3173" y="4" height="64" width="443" format="#,##0.00" html.valueishtml="0"  name=compute_33 visible="1"  font.face="±º∏≤√º" font.height="-9" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 
 sparse(names="pur101_vndnm	pdcdnm")htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

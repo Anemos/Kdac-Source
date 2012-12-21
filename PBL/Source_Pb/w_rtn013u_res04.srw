@@ -297,7 +297,7 @@ end if
 
 select count(*) into :l_n_sqlcount from pbrtn.rtn013
 	  where rccmcd  = :l_s_cmcd  and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_pcitn and
-	        rcline1 = :l_s_line1 and rcline2 = :l_s_line2
+	        rcline1 = :l_s_postline1 and rcline2 = :l_s_postline2
 using sqlca;
 if l_n_sqlcount > 0 then
 	messagebox("확인","품번 " + l_s_pcitn + " 의 Routing 정보가 이미 입력되어있습니다.")
@@ -321,19 +321,19 @@ insert into pbrtn.rtn013
 	rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
 	rcnvcd,rcnvmc,rcnvlb,rclbcnt,rcflag,rcepno,rcipad,rcupdt,rcsydt,
 	rcinemp, rcinchk, rcintime, rcplemp, rcplchk, rcpltime,
-	rcdlemp, rcdlchk, rcdltime ) 
+	rcdlemp, rcdlchk, rcdltime, rcpower ) 
 select rccmcd,rcplant,rcdvsn,:l_s_pcitn,:l_s_postline1,:l_s_postline2,rcopno,:ls_chtime,'',
 	rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
 	rcnvcd,rcnvmc,rcnvlb,rclbcnt,'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date,
 	:g_s_empno, 'N', '', '', 'N','',
-		'', 'N',''
+		'', 'N','',rcpower
 from pbrtn.rtn013 
 where  rccmcd  = :l_s_cmcd  and rcplant = :l_s_plant and rcdvsn = :l_s_div and rcitno = :l_s_pitno and
 	rcline1 = :l_s_line1 and rcline2 = :l_s_line2
 using sqlca ;
 
 if sqlca.sqlcode <> 0 then
-	ls_message = "RTN013 입력 에러. 정보시스템으로 연락바랍니다."
+	ls_message = "RTN013 입력 에러. 정보시스템으로 연락바랍니다." + sqlca.sqlerrtext
    goto Rollback_
 end if
 
@@ -347,19 +347,21 @@ where  rdcmcd  = :l_s_cmcd  and rdplant = :l_s_plant and rddvsn = :l_s_div and r
 using sqlca ;
 
 if sqlca.sqlcode <> 0 then
-	ls_message = "RTN014 입력 에러. 정보시스템으로 연락바랍니다."
+	ls_message = "RTN014 입력 에러. 정보시스템으로 연락바랍니다." + sqlca.sqlerrtext
    goto Rollback_
 end if
 
-insert into pbrtn.rtn017 
-select rgcmcd,rgplant,rgdvsn,:l_s_pcitn,:l_s_postline1,:l_s_postline2,rgopno,:l_s_date,rgmcno,
-	'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date 
+INSERT INTO PBRTN.RTN017
+( RGCMCD,RGPLANT,RGDVSN,RGITNO,RGLINE1,RGLINE2,
+RGOPNO,RGMCNO,RGEDFM,RGFLAG,RGEPNO,RGIPAD,RGUPDT,RGSYDT )
+select rgcmcd,rgplant,rgdvsn,:l_s_pcitn,:l_s_postline1,:l_s_postline2,
+rgopno,rgmcno,:l_s_date,'A',:g_s_empno,:g_s_ipaddr,:g_s_date,:g_s_date 
 from pbrtn.rtn017 
 where  rgcmcd  = :l_s_cmcd  and rgplant = :l_s_plant and rgdvsn = :l_s_div and rgitno = :l_s_pitno and
 	rgline1 = :l_s_line1 and rgline2 = :l_s_line2
 using sqlca ;
 if sqlca.sqlcode <> 0 then
-	ls_message = "RTN017 입력 에러. 정보시스템으로 연락바랍니다."
+	ls_message = "RTN017 입력 에러. 정보시스템으로 연락바랍니다." + sqlca.sqlerrtext
    goto Rollback_
 end if
 

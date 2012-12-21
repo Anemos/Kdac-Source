@@ -65,9 +65,8 @@ fontcharset fontcharset = hangeul!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
-long backcolor = 12632256
+long backcolor = 67108864
 string text = "ÀÚ µ¿"
-boolean checked = true
 end type
 
 event clicked;If Not ub_auto Then
@@ -91,7 +90,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 8388736
-long backcolor = 12632256
+long backcolor = 67108864
 boolean enabled = false
 string text = "WorkJob Option :"
 alignment alignment = right!
@@ -110,8 +109,9 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 255
-long backcolor = 12632256
+long backcolor = 67108864
 string text = "¼ö µ¿"
+boolean checked = true
 end type
 
 event clicked;If ub_auto Then
@@ -134,6 +134,6 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = modern!
 string facename = "±¼¸²"
 long textcolor = 33554432
-long backcolor = 12632256
+long backcolor = 67108864
 end type
 

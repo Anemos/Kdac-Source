@@ -1134,7 +1134,7 @@ event clicked;if dw_wip033u_02.rowcount() < 1 then
 	return 0
 end if
 
-f_save_to_excel(dw_wip033u_02)
+f_save_to_excel_number(dw_wip033u_02)
 end event
 
 type gb_1 from groupbox within w_wip033u

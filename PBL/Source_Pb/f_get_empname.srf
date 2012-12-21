@@ -9,10 +9,10 @@ end prototypes
 
 global function string f_get_empname (string ag_emp_no);string l_s_name
   
-SELECT "CNDACO"."DACMAQ"."PENAMEK"  
+SELECT "PBCOMMON"."DAC003"."PENAMEK"  
    INTO :l_s_name  
-FROM "CNDACO"."DACMAQ"  
-WHERE "CNDACO"."DACMAQ"."PEEMPNO" = :ag_emp_no  using sqlca;
+FROM "PBCOMMON"."DAC003"  
+WHERE "PBCOMMON"."DAC003"."PEEMPNO" = :ag_emp_no  using sqlcc ;
 
 if sqlca.sqlcode <> 0 then
 	l_s_name = ' '

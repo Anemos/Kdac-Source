@@ -497,12 +497,12 @@ for ll_cnt = 1 to ll_rowcnt
 			REEDFM, REOPNM, REOPSQ, RELINE3, REGRDE, REMCYN, REBMTM, REBLTM,
 			REBSTM, RENVCD, RENVMC, RENVLB, RELBCNT, REEDTO, REFLAG, 
 			REEPNO, REIPAD, REUPDT, RESYDT, REINEMP, REINCHK, REINTIME,
-			REPLEMP, REPLCHK, REPLTIME, REDLEMP, REDLCHK, REDLTIME )
+			REPLEMP, REPLCHK, REPLTIME, REDLEMP, REDLCHK, REDLTIME, REPOWER )
 		SELECT RCCMCD, RCPLANT, RCDVSN, RCITNO, RCLINE1, RCLINE2, RCOPNO,
 			:ls_nextdate, RCOPNM, RCOPSQ, RCLINE3, RCGRDE, RCMCYN, RCBMTM, RCBLTM,
 			RCBSTM, RCNVCD, RCNVMC, RCNVLB, RCLBCNT,'99991231',RCFLAG,
 			:g_s_empno, :g_s_ipaddr, :g_s_date, :g_s_date, :ag_inemp, :ag_inchk, :ag_intime,
-			:ag_plemp, :ag_plchk, :ag_pltime, :ag_dlemp, :ag_dlchk, :ag_dltime
+			:ag_plemp, :ag_plchk, :ag_pltime, :ag_dlemp, :ag_dlchk, :ag_dltime, RCPOWER
 		FROM PBRTN.RTN013
 		WHERE Rcchtime = :ls_chtime AND Rccmcd = '01' AND Rcplant = :ls_plant AND
 			Rcdvsn = :ls_dvsn AND Rcitno = :ls_itno AND Rcline1 = :ls_line1 AND

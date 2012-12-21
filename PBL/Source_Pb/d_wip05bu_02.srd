@@ -1,6 +1,6 @@
 $PBExportHeader$d_wip05bu_02.srd
-release 8;
-datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no grid.lines=0 )
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
 header(height=68 color="536870912" )
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
@@ -24,6 +24,7 @@ table(column=(type=char(4) updatewhereclause=yes key=yes name=wip009_wfyear dbna
  column=(type=decimal(4) updatewhereclause=yes name=phqt dbname="PHQT" )
  column=(type=decimal(4) updatewhereclause=yes name=ohqt dbname="OHQT" )
  column=(type=char(1) updatewhereclause=yes name=wip009_wfstscd dbname="WIP009.WFSTSCD" )
+ column=(type=char(1) updatewhereclause=yes key=yes name=wip009_wfiocd dbname="WIP009.WFIOCD" )
  retrieve=" SELECT  ~"PBWIP~".~"WIP009~".~"WFYEAR~",
 			~"PBWIP~".~"WIP009~".~"WFMONTH~",
 			~"PBWIP~".~"WIP009~".~"WFCMCD~",
@@ -44,7 +45,8 @@ table(column=(type=char(4) updatewhereclause=yes key=yes name=wip009_wfyear dbna
 			DECIMAL((~"PBWIP~".~"WIP002~".~"WBBGQT~" + ~"PBWIP~".~"WIP002~".~"WBINQT~" - (~"PBWIP~".~"WIP002~".~"WBUSQT1~" + ~"PBWIP~".~"WIP002~".~"WBUSQT2~" + ~"PBWIP~".~"WIP002~".~"WBUSQT3~" + 
          ~"PBWIP~".~"WIP002~".~"WBUSQT4~" + ~"PBWIP~".~"WIP002~".~"WBUSQT5~"+~"PBWIP~".~"WIP002~".~"WBUSQT6~" + ~"PBWIP~".~"WIP002~".~"WBUSQT7~"+
 			~"PBWIP~".~"WIP002~".~"WBUSQT8~" )) / ~"PBINV~".~"INV101~".~"CONVQTY~",15,4)  as ohqt,
-			~"PBWIP~".~"WIP009~".~"WFSTSCD~"  
+			~"PBWIP~".~"WIP009~".~"WFSTSCD~",
+			~"PBWIP~".~"WIP009~".~"WFIOCD~"
     FROM ~"PBWIP~".~"WIP002~",
          ~"PBWIP~".~"WIP009~",
          ~"PBINV~".~"INV002~",   
@@ -65,14 +67,14 @@ table(column=(type=char(4) updatewhereclause=yes key=yes name=wip009_wfyear dbna
          ( ( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = :ag_cmcd ) AND
 			( ~"PBWIP~".~"WIP009~".~"WFYEAR~" = :ag_year ) AND
 			( ~"PBWIP~".~"WIP009~".~"WFMONTH~" = :ag_month ) AND
-         ( ~"PBWIP~".~"WIP002~".~"WBIOCD~" = '2' ) AND  
+         ( ~"PBWIP~".~"WIP002~".~"WBIOCD~" = :ag_iocd ) AND  
          ( ~"PBWIP~".~"WIP009~".~"WFPLANT~" = :ag_plant ) AND  
          ( ~"PBWIP~".~"WIP009~".~"WFDVSN~" = :ag_dvsn ) AND  
          ( ~"PBWIP~".~"WIP009~".~"WFVENDOR~" = :ag_wccd ) )
 	ORDER BY ~"PBWIP~".~"WIP009~".~"WFPLANT~",  
          	~"PBWIP~".~"WIP009~".~"WFDVSN~",
          	~"PBINV~".~"INV101~".~"PDCD~",  
-         	~"PBWIP~".~"WIP009~".~"WFITNO~"" update="PBWIP.WIP009" updatewhere=0 updatekeyinplace=yes arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string),("ag_wccd", string),("ag_year", string),("ag_month", string)) )
+         	~"PBWIP~".~"WIP009~".~"WFITNO~"" update="PBWIP.WIP009" updatewhere=0 updatekeyinplace=yes arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string),("ag_wccd", string),("ag_year", string),("ag_month", string),("ag_iocd", string)) )
 text(band=header alignment="2" text="Ç°¹ø" border="2" color="16777215" x="9" y="0" height="64" width="480" html.valueishtml="0"  name=wfitno_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="Ç°¸í" border="2" color="16777215" x="498" y="0" height="64" width="631" html.valueishtml="0"  name=inv002_itnm_s_f visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="°èÁ¤" border="2" color="16777215" x="1138" y="0" height="64" width="146" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -90,5 +92,8 @@ column(band=detail id=17 alignment="1" tabsequence=32766 border="0" color="33554
 column(band=detail id=14 alignment="1" tabsequence=10 border="0" color="33554432" x="1687" y="0" height="72" width="238" format="[general]" html.valueishtml="0" protect="0~tif(  wip009_wfstscd  >= '3', 1, 0 )"  name=wip009_wfscrp visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="16777215~tif(  wip009_wfstscd >= '3', 12632256, 16777215 )" )
 column(band=detail id=15 alignment="1" tabsequence=20 border="0" color="33554432" x="1934" y="0" height="72" width="229" format="[general]" html.valueishtml="0" protect="0~tif(  wip009_wfstscd  >= '3', 1, 0 )"  name=wip009_wfretn visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="0" background.color="16777215~tif(  wip009_wfstscd >= '3', 12632256, 16777215 )" )
 htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

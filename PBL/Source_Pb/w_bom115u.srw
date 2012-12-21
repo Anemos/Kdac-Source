@@ -1011,7 +1011,7 @@ ls_to_dt = f_relativedate(f_relative_month(ag_yyyymm,1),-1)
 ld_cost = lds_ds.object.rfcost[ag_row]
 
 select sum(tmp.sum_qty) into :ld_total_qty
-from ( select f.itno,sum(f.tqty4) as sum_qty
+from ( select f.itno,f.tqty4 as sum_qty
 from pbinv.inv401 f inner join (
 select b.rfcmcd,b.rfplant,b.rfdvsn,b.rfcitn 
 from pbpdm.bom003 a inner join pbpdm.bom006 b
@@ -1028,9 +1028,8 @@ where b.rfcmcd = '01' and b.rfyymm = :ag_yyyymm and
 		f.div = d.rfdvsn and f.itno = d.rfcitn
 where f.sliptype in ('RF','RP') and
 		f.tdte4 >= :ls_from_dt and f.tdte4 <= :ls_to_dt
-group by f.itno
-union
-select f.itno,sum(f.tqty4)
+union all
+select f.itno,f.tqty4 as sum_qty
 from pbinv.inv401 f inner join pbpdm.bom006 d
 	on f.comltd = d.rfcmcd and f.xplant = d.rfplant and
 		f.div = d.rfdvsn and f.itno = d.rfcitn
@@ -1041,8 +1040,12 @@ where d.rfcmcd = '01' and d.rfyymm = :ag_yyyymm and
   d.rfcitn = :ag_opitn and
   f.sliptype in ('RF','RP') and
 	f.tdte4 >= :ls_from_dt and f.tdte4 <= :ls_to_dt
-group by f.itno ) tmp
+ ) tmp
 using sqlca;
+
+if sqlca.sqlcode < 0 then
+	uo_status.st_message.text = "[wf_get_cost_itemchange] 에러발생내역 : " + sqlca.sqlerrtext
+end if
 
 if isnull(ld_total_qty) then ld_total_qty = 0
 if ld_total_qty = 0 then 
@@ -1069,6 +1072,10 @@ where d.rfcmcd = '01' and d.rfyymm = :ag_yyyymm and
   f.sliptype in ('RF','RP') and
 	f.tdte4 >= :ls_from_dt and f.tdte4 <= :ls_to_dt
 using sqlca;
+
+if sqlca.sqlcode < 0 then
+	uo_status.st_message.text = "[wf_get_cost_itemchange] 에러발생내역 : " + sqlca.sqlerrtext
+end if
 
 if isnull(ld_each_qty) then ld_each_qty = 0
 if ld_each_qty = 0 then 
@@ -1444,6 +1451,7 @@ open upitemf_cur;
 		if sqlca.sqlcode <> 0 then
 			exit
 		end if
+		
 		lc_itcoct = f_bom_get_itemcost(ls_plant,ls_div,ls_itno,ls_yymm,lc_umcv)
 		if ls_gubn <> 'N' then    //외자이면서 내자대상의 유상사급인경우는 제외
 		   lc_itcoct = wf_get_cost_multivendor(ls_yymm,ls_plant,ls_div,ls_itno,lc_itcoct,ls_cust)
@@ -1486,10 +1494,12 @@ do until lc_prelev < 1
 //			ls_div = ds_optionchk.object.rfexdv[ll_cntnum]
 //		end if
 		ls_itno = ds_optionchk.object.rfcitn[ll_cntnum]
+		
 		ls_rtnitem = f_option_chk_after(ls_plant,ls_div,ls_itno,ls_refdate + '31')
 		if ls_rtnitem <> "" then
 			// 호환품번인 경우에 수행됨.
 			ll_holdrow = ll_cntnum
+			
 			wf_get_cost_itemchange(ls_refdate,ls_plant,ls_div,ls_itno,ls_rtnitem,lc_prelev,ds_optionchk,ll_cntnum)
 			
 			for ll_cntsec = ll_cntnum + 1 to ll_rowcnt

@@ -237,12 +237,13 @@ else
 end if
 f_pism_working_msg(This.title,"BOM/Routing 정보를 조회중입니다. 잠시만 기다려 주십시오.") 
 
-f_creation_bom_dw(i_s_setdate,l_s_plant,l_s_div,l_s_itno,'G','Y')
+f_creation_bom_sf('01',l_s_plant,l_s_div,l_s_itno,i_s_setdate,'G')
+//2012.10 f_creation_bom_dw(i_s_setdate,l_s_plant,l_s_div,l_s_itno,'G','Y')
 // f_creation_sp_bom(i_s_setdate,l_s_plant,l_s_div,l_s_itno,'A','Y')
 
 dw_indentlist.reset()
 
-l_n_rows = dw_indentlist.retrieve(i_s_setdate)
+l_n_rows = dw_indentlist.retrieve(l_s_plant, l_s_div, i_s_setdate)
 If IsValid(w_pism_working) Then Close(w_pism_working) 
 if l_n_rows = 0 then
 	pb_excel.enabled = false
@@ -253,6 +254,10 @@ end if
 pb_excel.enabled = true
 return 0
 
+end event
+
+event resize;call super::resize;dw_indentlist.Width = newwidth - ( dw_indentlist.x + 10 ) 
+dw_indentlist.Height = newheight - ( dw_indentlist.y + uo_status.Height + 10 ) 
 end event
 
 type uo_status from w_origin_sheet02`uo_status within w_rtn034i
@@ -380,7 +385,7 @@ integer width = 4576
 integer height = 2264
 boolean bringtotop = true
 string title = " "
-string dataobject = "d_rtn034i_01"
+string dataobject = "d_rtn034i_01_join"
 boolean hscrollbar = true
 boolean vscrollbar = true
 boolean hsplitscroll = true

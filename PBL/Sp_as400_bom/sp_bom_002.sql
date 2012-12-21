@@ -5,6 +5,7 @@
 --         ONLY 재료비산출('N')
 --         Create BOM113 'K'
 --         Create BOM115 'M'
+--         Create BOM113D 'P' interface ipis
 -- a_gubun : 고객사유상사급포함('Y'), 고객사유상사급제외('N')
 
 drop procedure pbpdm.sp_bom_002;
@@ -34,7 +35,7 @@ declare continue handler for not_found
   set at_end = 1;
 
 if a_chk <> 'A' and a_chk <> 'B' and a_chk <> 'C' and
-  a_chk <> 'K' and a_chk <> 'M' and a_chk <> 'N' then
+  a_chk <> 'K' and a_chk <> 'M' and a_chk <> 'N' and a_chk <> 'P' then
   return;
 end if;
 

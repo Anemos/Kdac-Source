@@ -21,7 +21,6 @@ declare p_tmodl varchar(12);
 declare p_tlevel decimal(2,0);
 declare p_tpitn varchar(12);
 declare p_tcitn varchar(12);
-declare p_srce char(2);
 declare p_damdang char(2);
 declare p_prunt char(2);
 declare p_ptod char(2);
@@ -51,13 +50,11 @@ set p_tserl = '';
 
 inc_loop:
 loop
- select a.tplnt,a.tdvsn,a.tcitn,a.tserl,b.srce,a.tinputcost,
+ select a.tplnt,a.tdvsn,a.tcitn,a.tserl,a.tinputcost,
   a.tsubpaycd,a.texplant,a.texdv
- into p_plant,p_dvsn,p_tcitn,p_tserl,p_srce,p_inputcost,
+ into p_plant,p_dvsn,p_tcitn,p_tserl,p_inputcost,
   p_ygchk,p_explant,p_exdiv
- from qtemp.tmp_bom a inner join pbinv.inv402 b
-  on a.tcmcd = b.comltd and a.tplnt = b.xplant and
-    a.tdvsn = b.div and a.tcitn = b.itno and b.xyear = p_yyyymm
+ from qtemp.tmp_bom a
  where a.topchk <> '2' and a.tserl > p_tserl
  order by a.tserl
  fetch first 1 row only;

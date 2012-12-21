@@ -7,6 +7,8 @@ type tab_1 from tab within w_dac005i
 end type
 type tabpage_1 from userobject within tab_1
 end type
+type pb_1 from picturebutton within tabpage_1
+end type
 type em_1 from editmask within tabpage_1
 end type
 type st_1 from statictext within tabpage_1
@@ -14,13 +16,14 @@ end type
 type dw_1 from datawindow within tabpage_1
 end type
 type tabpage_1 from userobject within tab_1
+pb_1 pb_1
 em_1 em_1
 st_1 st_1
 dw_1 dw_1
 end type
 type tabpage_2 from userobject within tab_1
 end type
-type cb_1 from commandbutton within tabpage_2
+type pb_2 from picturebutton within tabpage_2
 end type
 type dw_3 from datawindow within tabpage_2
 end type
@@ -37,7 +40,7 @@ end type
 type st_2 from statictext within tabpage_2
 end type
 type tabpage_2 from userobject within tab_1
-cb_1 cb_1
+pb_2 pb_2
 dw_3 dw_3
 dw_2 dw_2
 st_4 st_4
@@ -114,7 +117,7 @@ tab_1.tabpage_2.dw_2.GetChild('exut', dw_child1)
 dw_child1.settransobject(sqlca)
 dw_child1.retrieve(g_s_company, l_s_frdt, l_s_todt)
 tab_1.tabpage_2.dw_2.insertrow(0)
-tab_1.tabpage_2.cb_1.enabled = false
+//tab_1.tabpage_2.cb_1.enabled = false
 i_b_retrieve =	True
 i_b_insert   =	False
 i_b_delete	 =	False
@@ -171,7 +174,7 @@ choose case i_n_tab_index
 		l_n_row = tab_1.tabpage_2.dw_3.retrieve(g_s_company, l_s_date1, l_s_date2, i_s_exut)
 		if l_n_row > 0 then
 			uo_status.st_message.text	=	'조회되었습니다.'
-			tab_1.tabpage_2.cb_1.enabled = true
+//			tab_1.tabpage_2.cb_1.enabled = true
 		else
 			uo_status.st_message.text	=	'조회할 자료가 없습니다.'
 		end if
@@ -499,25 +502,48 @@ string text = "일자별 환율조회"
 long tabtextcolor = 33554432
 long tabbackcolor = 12632256
 long picturemaskcolor = 536870912
+pb_1 pb_1
 em_1 em_1
 st_1 st_1
 dw_1 dw_1
 end type
 
 on tabpage_1.create
+this.pb_1=create pb_1
 this.em_1=create em_1
 this.st_1=create st_1
 this.dw_1=create dw_1
-this.Control[]={this.em_1,&
+this.Control[]={this.pb_1,&
+this.em_1,&
 this.st_1,&
 this.dw_1}
 end on
 
 on tabpage_1.destroy
+destroy(this.pb_1)
 destroy(this.em_1)
 destroy(this.st_1)
 destroy(this.dw_1)
 end on
+
+type pb_1 from picturebutton within tabpage_1
+integer x = 4398
+integer y = 12
+integer width = 160
+integer height = 104
+integer taborder = 50
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+string picturename = "C:\kdac\bmp\Excel.bmp"
+alignment htextalign = left!
+end type
+
+event clicked;f_save_to_excel_number(tab_1.tabpage_1.dw_1)
+end event
 
 type em_1 from editmask within tabpage_1
 integer x = 347
@@ -531,7 +557,7 @@ fontcharset fontcharset = hangeul!
 fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
-long backcolor = 16777215
+long backcolor = 15780518
 string text = "none"
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = stringmask!
@@ -577,7 +603,7 @@ string text = "통화별 환율조회"
 long tabtextcolor = 33554432
 long tabbackcolor = 12632256
 long picturemaskcolor = 536870912
-cb_1 cb_1
+pb_2 pb_2
 dw_3 dw_3
 dw_2 dw_2
 st_4 st_4
@@ -588,7 +614,7 @@ st_2 st_2
 end type
 
 on tabpage_2.create
-this.cb_1=create cb_1
+this.pb_2=create pb_2
 this.dw_3=create dw_3
 this.dw_2=create dw_2
 this.st_4=create st_4
@@ -596,7 +622,7 @@ this.st_3=create st_3
 this.em_3=create em_3
 this.em_2=create em_2
 this.st_2=create st_2
-this.Control[]={this.cb_1,&
+this.Control[]={this.pb_2,&
 this.dw_3,&
 this.dw_2,&
 this.st_4,&
@@ -607,7 +633,7 @@ this.st_2}
 end on
 
 on tabpage_2.destroy
-destroy(this.cb_1)
+destroy(this.pb_2)
 destroy(this.dw_3)
 destroy(this.dw_2)
 destroy(this.st_4)
@@ -617,11 +643,11 @@ destroy(this.em_2)
 destroy(this.st_2)
 end on
 
-type cb_1 from commandbutton within tabpage_2
-integer x = 4242
-integer y = 32
-integer width = 302
-integer height = 92
+type pb_2 from picturebutton within tabpage_2
+integer x = 4402
+integer y = 12
+integer width = 155
+integer height = 112
 integer taborder = 40
 integer textsize = -10
 integer weight = 400
@@ -629,10 +655,11 @@ fontcharset fontcharset = hangeul!
 fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
-string text = "DOWNLOAD"
+string picturename = "C:\kdac\bmp\Excel.bmp"
+alignment htextalign = left!
 end type
 
-event clicked;f_save_to_excel(tab_1.tabpage_2.dw_3)
+event clicked;f_save_to_excel_number(tab_1.tabpage_2.dw_3)
 end event
 
 type dw_3 from datawindow within tabpage_2
@@ -709,6 +736,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
+long backcolor = 15780518
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = stringmask!
 string mask = "####/##/##"
@@ -739,6 +767,7 @@ fontpitch fontpitch = fixed!
 fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 33554432
+long backcolor = 15780518
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = stringmask!
 string mask = "####/##/##"

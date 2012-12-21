@@ -41,6 +41,8 @@ elseif a_s_comdiv = 'KH' then
 	l_s_dept = 'KH00'
 elseif a_s_comdiv = 'KS' then
 	l_s_dept = 'KS00'
+elseif a_s_comdiv = 'KV' then
+	l_s_dept = 'KV00'	
 elseif a_s_comdiv = 'KM' then
 	l_s_dept = 'KM00'
 elseif a_s_comdiv = 'YX' then
@@ -68,7 +70,17 @@ elseif a_s_comdiv = 'BV' then
 elseif a_s_comdiv = 'BD' then
 	l_s_dept = 'BD00'
 elseif a_s_comdiv = 'BF' then
-	l_s_dept = 'BF00'		
+	l_s_dept = 'BF00'	
+elseif a_s_comdiv = 'SX' then
+	l_s_dept = 'SS00'
+elseif a_s_comdiv = 'SD' then
+	l_s_dept = 'SD00'		
+elseif a_s_comdiv = 'DQ' then
+	l_s_dept = 'DQ00'	
+elseif a_s_comdiv = 'DR' then
+	l_s_dept = 'DR00'		
+elseif a_s_comdiv = 'DT' then
+	l_s_dept = 'DT00'		
 else
 	l_s_dept = 'DX00'
 end if

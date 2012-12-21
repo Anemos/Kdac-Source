@@ -151,7 +151,7 @@ string ls_check
   		into :ls_check
   FROM "PBBPM"."BPM504"  
   WHERE "PBBPM"."BPM504"."XYEAR" = :i_s_applyyear AND
-  			"PBBPM"."BPM504"."XYEAR" = :i_s_revno AND
+  			"PBBPM"."BPM504"."REVNO" = :i_s_revno AND
   			"PBBPM"."BPM504"."PLANT" = :a_plant AND
   			"PBBPM"."BPM504"."PCITN" = :a_item AND
   		  "PBBPM"."BPM504"."PDVSN" = :a_div  using sqlca;
@@ -409,7 +409,7 @@ dw_regitem.object.oindt[1] = g_s_date
 dw_regitem.object.oplant[1] = ls_plant
 dw_regitem.object.odvsn[1] = ls_cocode
 dw_regitem.object.xyear[1] = i_s_applyyear
-dw_regitem.object.xyear[1] = i_s_revno
+dw_regitem.object.revno[1] = i_s_revno
 dw_regitem.object.oedtm[1] = i_s_applydate
 
 //부품번 등록초기화
@@ -507,6 +507,7 @@ else
 	select sum(orate) into :lc_sumorate
    from pbbpm.bpm505
    where ocmcd = '01' and oplant = :ls_plant
+	     and xyear = :i_s_applyyear and revno = :i_s_revno
         and odvsn = :ls_div and opitn = :ls_chkmain
         and ofitn <> :ls_chksub
         and (( oedte = ' ' and  oedtm <= :i_s_applydate ) or

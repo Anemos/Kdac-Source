@@ -14,7 +14,7 @@ table(column=(type=char(9) updatewhereclause=yes name=cocode dbname="COCODE" )
   rtrim(A.Rblnmn) || '(' || rtrim(A.Rbline1||'-'||A.Rbline2) || ')' as DisplayName
 From  ~"PBRTN~".~"RTN012~"   A
 Where A.Rbcmcd = :ag_cmcd AND A.Rbplant = :ag_plant AND A.Rbdvsn = :ag_dvsn
-" arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string)) )
+" arguments=(("ag_cmcd", string),("ag_plant", string),("ag_dvsn", string))  sort="cocode A " )
 text(band=header alignment="2" text="ÄÚµå" border="6" color="0" x="9" y="4" height="60" width="279" html.valueishtml="0"  name=tmm008_cocode_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 text(band=header alignment="2" text="ÄÚµå¸í" border="6" color="0" x="297" y="4" height="60" width="919" html.valueishtml="0"  name=tmm008_codename_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 text(band=header alignment="2" text="DisplayName" border="6" color="0" x="1225" y="4" height="60" width="1102" html.valueishtml="0"  name=displayname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )

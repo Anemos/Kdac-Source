@@ -60,7 +60,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 		lstr_ipis = ag_str_ipis[li_index]
 	end if
 		
-	if ( ls_cls = '23' or ls_cls = '43' or ls_cls = '22') then
+	if ( ls_cls = '23' or ls_cls = '43' ) then
 		SELECT MINQ, MAXQ INTO :lc_minq, :lc_maxq
 		FROM PBINV.INV101
 		WHERE COMLTD = '01' AND XPLANT = :ls_xplant AND 
@@ -137,7 +137,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 			if lstr_ipis.t_sqlpis.sqlcode <> 0 then
 				ag_message = "품목단가정보 생성에 실패하였습니다."
 				f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv101',&
-					lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_xplant + ls_div + ls_itno, g_s_empno, g_s_ipaddr, g_s_macaddr)
+				lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_xplant + ls_div + ls_itno, g_s_empno, g_s_ipaddr, g_s_macaddr)
 				return -1
 			end if
 		case 'U'
@@ -174,8 +174,8 @@ for li_cnt = 1 to ag_dwo.rowcount()
 				UnitCost = :lc_saud,
 				LastEmp = :g_s_empno,
 				LastDate = Getdate()
-			WHERE	AreaCode	= :ls_xplant AND	DivisionCode	= :ls_div AND	
-					ItemCode	= :ls_itno 
+			WHERE	AreaCode	= :ls_xplant 	AND	DivisionCode	= :ls_div AND	
+						ItemCode	= :ls_itno 
 			using lstr_ipis.t_sqlpis;
 			
 			if lstr_ipis.t_sqlpis.sqlnrows < 1 then
@@ -204,7 +204,7 @@ for li_cnt = 1 to ag_dwo.rowcount()
 					ItemCode	= :ls_itno 
 			using lstr_ipis.t_sqlpis;
 			
-			if lstr_ipis.t_sqlpis.sqlcode <> 0 then
+			if 	lstr_ipis.t_sqlpis.sqlcode <> 0 then
 				ag_message = "품목모델정보 삭제에 실패하였습니다."
 				f_ipis_transaction_errorlog(ls_chgcd,g_s_winid,'f_down_ipis_mis_inv101',&
 					lstr_ipis.t_sqlpis.sqlerrtext,ag_message + ls_xplant + ls_div + ls_itno, g_s_empno, g_s_ipaddr, g_s_macaddr)

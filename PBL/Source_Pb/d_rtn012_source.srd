@@ -1,0 +1,78 @@
+$PBExportHeader$d_rtn012_source.srd
+$PBExportComments$라우팅 라인내역
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=92 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=104 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=rbcmcd dbname="RTN012.RBCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rbplant dbname="RTN012.RBPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rbdvsn dbname="RTN012.RBDVSN" )
+ column=(type=char(7) update=yes updatewhereclause=yes key=yes name=rbline1 dbname="RTN012.RBLINE1" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rbline2 dbname="RTN012.RBLINE2" )
+ column=(type=char(50) update=yes updatewhereclause=yes name=rblnmn dbname="RTN012.RBLNMN" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rblctn dbname="RTN012.RBLCTN" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rbvend dbname="RTN012.RBVEND" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rbflag dbname="RTN012.RBFLAG" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=rbepno dbname="RTN012.RBEPNO" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=rbipad dbname="RTN012.RBIPAD" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=rbupdt dbname="RTN012.RBUPDT" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=rbsydt dbname="RTN012.RBSYDT" )
+ column=(type=long update=yes updatewhereclause=yes name=rboption dbname="RTN012.RBOPTION" )
+ column=(type=char(1) update=yes updatewhereclause=yes name=rbsubchk dbname="RTN012.RBSUBCHK" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN012~".~"RBCMCD~",   
+         ~"PBRTN~".~"RTN012~".~"RBPLANT~",   
+         ~"PBRTN~".~"RTN012~".~"RBDVSN~",   
+         ~"PBRTN~".~"RTN012~".~"RBLINE1~",   
+         ~"PBRTN~".~"RTN012~".~"RBLINE2~",   
+         ~"PBRTN~".~"RTN012~".~"RBLNMN~",   
+         ~"PBRTN~".~"RTN012~".~"RBLCTN~",   
+         ~"PBRTN~".~"RTN012~".~"RBVEND~",   
+         ~"PBRTN~".~"RTN012~".~"RBFLAG~",   
+         ~"PBRTN~".~"RTN012~".~"RBEPNO~",   
+         ~"PBRTN~".~"RTN012~".~"RBIPAD~",   
+         ~"PBRTN~".~"RTN012~".~"RBUPDT~",   
+         ~"PBRTN~".~"RTN012~".~"RBSYDT~",   
+         ~"PBRTN~".~"RTN012~".~"RBOPTION~",   
+         ~"PBRTN~".~"RTN012~".~"RBSUBCHK~"  
+    FROM ~"PBRTN~".~"RTN012~" 
+WHERE  ~"PBRTN~".~"RTN012~".~"RBPLANT~" = :ag_plant AND   
+         ~"PBRTN~".~"RTN012~".~"RBDVSN~" = :ag_dvsn
+" update="PBRTN.RTN012" updatewhere=1 updatekeyinplace=no arguments=(("ag_plant", string),("ag_dvsn", string)) )
+text(band=header alignment="2" text="Rbcmcd" border="0" color="33554432" x="9" y="8" height="76" width="265" html.valueishtml="0"  name=rbcmcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbplant" border="0" color="33554432" x="283" y="8" height="76" width="242" html.valueishtml="0"  name=rbplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbdvsn" border="0" color="33554432" x="535" y="8" height="76" width="238" html.valueishtml="0"  name=rbdvsn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbline1" border="0" color="33554432" x="782" y="8" height="76" width="256" html.valueishtml="0"  name=rbline1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbline2" border="0" color="33554432" x="1047" y="8" height="76" width="242" html.valueishtml="0"  name=rbline2_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rblnmn" border="0" color="33554432" x="1298" y="8" height="76" width="1632" html.valueishtml="0"  name=rblnmn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rblctn" border="0" color="33554432" x="2939" y="8" height="76" width="197" html.valueishtml="0"  name=rblctn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbvend" border="0" color="33554432" x="3145" y="8" height="76" width="242" html.valueishtml="0"  name=rbvend_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbflag" border="0" color="33554432" x="3397" y="8" height="76" width="206" html.valueishtml="0"  name=rbflag_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbepno" border="0" color="33554432" x="3611" y="8" height="76" width="251" html.valueishtml="0"  name=rbepno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbipad" border="0" color="33554432" x="3872" y="8" height="76" width="512" html.valueishtml="0"  name=rbipad_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbupdt" border="0" color="33554432" x="4393" y="8" height="76" width="288" html.valueishtml="0"  name=rbupdt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbsydt" border="0" color="33554432" x="4690" y="8" height="76" width="288" html.valueishtml="0"  name=rbsydt_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rboption" border="0" color="33554432" x="4987" y="8" height="76" width="384" html.valueishtml="0"  name=rboption_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+text(band=header alignment="2" text="Rbsubchk" border="0" color="33554432" x="5381" y="8" height="76" width="315" html.valueishtml="0"  name=rbsubchk_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=1 alignment="0" tabsequence=10 border="0" color="33554432" x="9" y="8" height="88" width="265" format="[general]" html.valueishtml="0"  name=rbcmcd visible="1" edit.limit=2 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=2 alignment="0" tabsequence=20 border="0" color="33554432" x="283" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=rbplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="0" tabsequence=30 border="0" color="33554432" x="535" y="8" height="88" width="238" format="[general]" html.valueishtml="0"  name=rbdvsn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=40 border="0" color="33554432" x="782" y="8" height="88" width="256" format="[general]" html.valueishtml="0"  name=rbline1 visible="1" edit.limit=7 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="0" tabsequence=50 border="0" color="33554432" x="1047" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=rbline2 visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=6 alignment="0" tabsequence=60 border="0" color="33554432" x="1298" y="8" height="88" width="1632" format="[general]" html.valueishtml="0"  name=rblnmn visible="1" edit.limit=50 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="0" tabsequence=70 border="0" color="33554432" x="2939" y="8" height="88" width="197" format="[general]" html.valueishtml="0"  name=rblctn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=80 border="0" color="33554432" x="3145" y="8" height="88" width="242" format="[general]" html.valueishtml="0"  name=rbvend visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=90 border="0" color="33554432" x="3397" y="8" height="88" width="206" format="[general]" html.valueishtml="0"  name=rbflag visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="0" tabsequence=100 border="0" color="33554432" x="3611" y="8" height="88" width="251" format="[general]" html.valueishtml="0"  name=rbepno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="0" tabsequence=110 border="0" color="33554432" x="3872" y="8" height="88" width="512" format="[general]" html.valueishtml="0"  name=rbipad visible="1" edit.limit=15 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=12 alignment="0" tabsequence=120 border="0" color="33554432" x="4393" y="8" height="88" width="288" format="[general]" html.valueishtml="0"  name=rbupdt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=13 alignment="0" tabsequence=130 border="0" color="33554432" x="4690" y="8" height="88" width="288" format="[general]" html.valueishtml="0"  name=rbsydt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=14 alignment="1" tabsequence=140 border="0" color="33554432" x="4987" y="8" height="88" width="384" format="[general]" html.valueishtml="0"  name=rboption visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+column(band=detail id=15 alignment="0" tabsequence=150 border="0" color="33554432" x="5381" y="8" height="88" width="315" format="[general]" html.valueishtml="0"  name=rbsubchk visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

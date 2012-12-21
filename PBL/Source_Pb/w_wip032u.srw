@@ -1111,7 +1111,7 @@ event clicked;if dw_wip032u_02.rowcount() < 1 then
 	return 0
 end if
 
-f_save_to_excel(dw_wip032u_02)
+f_save_to_excel_number(dw_wip032u_02)
 end event
 
 type uo_1 from uo_ccyymm_mps within w_wip032u

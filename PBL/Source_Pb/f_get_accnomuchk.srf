@@ -1,0 +1,26 @@
+$PBExportHeader$f_get_accnomuchk.srf
+$PBExportComments$노무비 추정 상태코드 return
+global type f_get_accnomuchk from function_object
+end type
+
+forward prototypes
+global function string f_get_accnomuchk (string a_s_sysid, string a_s_yymm)
+end prototypes
+
+global function string f_get_accnomuchk (string a_s_sysid, string a_s_yymm);string l_s_chk
+
+SELECT ifnull("PBCOMMON"."COMM710"."INPT_ID",'')  
+INTO :l_s_chk
+FROM   "PBCOMMON"."COMM710" 
+WHERE   "PBCOMMON"."COMM710"."SYSTEM_ID" = :a_s_sysid AND 
+        "PBCOMMON"."COMM710"."INPT_DT" = :a_s_yymm using sqlca ;
+if sqlca.sqlcode <> 0 then
+	l_s_chk = ''
+end if
+
+ 
+ 
+return l_s_chk
+ 
+end function
+

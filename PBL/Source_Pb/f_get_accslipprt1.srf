@@ -53,9 +53,9 @@ if mod(l_n_totrow, 3) > 0 then
 	l_n_totpage ++
 end if
 
-if (l_n_drcnt > 0 and l_n_crcnt = 0 ) or (l_n_crcnt > 0 and l_n_drcnt = 0) then
-	l_n_totpage++
-end if 
+//if (l_n_drcnt > 0 and l_n_crcnt = 0 ) or (l_n_crcnt > 0 and l_n_drcnt = 0) then
+//	l_n_totpage++
+//end if 
 
 l_n_tamt    = 0
 l_n_crtpage = 1
@@ -110,6 +110,8 @@ do while true
 					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.bankcode[l_n_drrow])
 					l_s_colnm = 'dr_frdt' + string(l_n_i, '0')
 					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.fromdt[l_n_drrow])
+					l_s_colnm = 'dr_todt' + string(l_n_i, '0')
+					a_dw_1.setitem(1, l_s_colnm, a_dw_2.object.todt[l_n_drrow])
 					l_n_dramt = l_n_dramt + a_dw_2.object.amt[l_n_drrow]
 					l_n_pamt  = l_n_pamt  + a_dw_2.object.amt[l_n_drrow]
 					l_n_tamt  = l_n_tamt  + a_dw_2.object.amt[l_n_drrow]

@@ -127,7 +127,7 @@ dw_2.height = newheight -1500
 
 dw_3.width = newwidth
 dw_3.y = dw_1.height+dw_2.height+130
-dw_3.height = newheight -dw_1.height -dw_2.height - 230
+dw_3.height = newheight -dw_1.height -dw_2.height - 240
 
 
 end event
@@ -764,18 +764,13 @@ string ls_end_date, ls_endday
 ls_end_date=f_date_end(string(g_s_date,"@@@@-@@-@@"))
 ls_endday = left(string(g_s_date,"@@@@-@@-@@"),8) + ls_end_date
 
-//if isnull(dw_1.getitemnumber(dw_1.getrow(),'normal_qty')) then 
-//	messagebox("알림",'재고량이 존재하지 않습니다.')
-//	return
-//end if 
-
 if dw_1.getitemstring(dw_1.getrow(),'part_code') ='' or isnull(dw_1.getitemstring(dw_1.getrow(),'part_code')) or dw_1.getitemstring(dw_1.getrow(),'dept_code') ='' or isnull(dw_1.getitemstring(dw_1.getrow(),'dept_code')) then
-	messagebox("알림",'품번, 부서코드는 반드시 입력하십시오.')
+	uo_status.st_message.text = "품번, 부서코드는 반드시 입력하십시오."
 	return 0
 end if
 
 if dw_1.getitemstring(dw_1.getrow(),'part_used') = '' or isnull( dw_1.getitemstring(dw_1.getrow(),'part_used')) then
-	messagebox("알림",'용도를 선택해 주십시요.')
+	uo_status.st_message.text = "용도를 선택해 주십시요."
 	return 0
 end if
 
@@ -785,7 +780,7 @@ lc_partcost = dw_1.getitemdecimal(dw_1.getrow(),'part_cost')
 ls_state = dw_1.getitemstring( dw_1.getrow(),'invy_state')
 
 if f_spacechk(part_code) = -1 then
-	uo_status.st_message.text = '품번을 입력하십시요'
+	uo_status.st_message.text = "품번을 입력하십시요"
 	return 0
 else
 	select count(*) into :ll_check from part_master
@@ -806,16 +801,16 @@ end if
 //end if
 
 if dw_1.getitemnumber(dw_1.getrow(),'return_qty') <=0  then
- 	messagebox("알림",'반납수량이 0이거나 0보다 작기때문에 반납하실 수 없습니다.')
+ 	uo_status.st_message.text = "반납수량이 0이거나 0보다 작기때문에 반납하실 수 없습니다."
 	return
 end if
 
 if string(dw_1.getitemdatetime(dw_1.getrow(),'return_date'),'yyyy-mm-dd') > string(g_s_date,"@@@@-@@-@@")  then
-	messagebox("알림",'반납일자가 오늘일자보다 큽니다. 다시입력하세요..')
+	uo_status.st_message.text = "반납일자가 오늘일자보다 큽니다. 다시입력하세요."
 	return
 end if
 if string(dw_1.getitemdatetime(dw_1.getrow(),'return_date'),'yyyy-mm-dd') < string(relativedate(date(string(g_s_date,"@@@@-@@-@@")),-30),'yyyy-mm-dd')  then
-	messagebox("알림",'반납일자가 범위를 넘었습니다. 다시입력하세요..')
+	uo_status.st_message.text = "반납일자가 범위를 넘었습니다. 다시입력하세요."
 	return
 end if
 
@@ -834,7 +829,7 @@ SELECT equip_code INTO :ls_equip_code
 
 if (ls_equip_code ='' or isnull(ls_equip_code)) &
 		and (ls_equip <> '') and (Not IsNull(ls_equip)) then
-	messagebox("알림",'장비번호가 존재하지 않습니다.')
+	uo_status.st_message.text = "장비번호가 존재하지 않습니다."
 	return
 end if
 
@@ -854,7 +849,7 @@ end if
 
 if  dw_1.getitemstring(dw_1.getrow(),'part_used')='04' or dw_1.getitemstring(dw_1.getrow(),'part_used')='07' then
 	if mid(ls_cc,1,1) <> 'D' then
-		messagebox("알림","부서에 업체코드가 들어가야 합니다.")
+		uo_status.st_message.text = "부서에 업체코드가 들어가야 합니다."
 		return 0
 	end if
 	
@@ -864,23 +859,12 @@ if  dw_1.getitemstring(dw_1.getrow(),'part_used')='04' or dw_1.getitemstring(dw_
 		WHERE comp_master.comp_code = :ls_cc and comp_master.comp_div_code1 ='외주업체' 
 		using sqlcmms;
 	if (ls_cc_code ='' or isnull(ls_cc_code)) then 
-		messagebox("알림",'업체가 존재하지 않습니다.')
+		uo_status.st_message.text = "업체가 존재하지 않습니다."
 		return 0
-	end if
-//elseif  dw_1.getitemstring(dw_1.getrow(),'part_used')='06' then
-//	
-//	SELECT cc_master.cc_code INTO :ls_cc_code
-//		FROM cc_master  
-//		WHERE cc_master.cc_code = :ls_cc 
-//		using sqlcmms;
-//		
-//	if (ls_cc_code ='' or isnull(ls_cc_code)) then 
-//		messagebox("알림",'부서가 존재하지 않습니다.')
-//		return
-//	end if	
+	end if	
 else
 	if (ls_cc_code ='' or isnull(ls_cc_code)) then 
-		messagebox("알림",'부서가 존재하지 않습니다.')
+		uo_status.st_message.text = "부서가 존재하지 않습니다."
 		return
 	end if
 end if
@@ -897,7 +881,7 @@ string ls_data1
 ls_data1 =dw_1.getitemstring(dw_1.getrow(),'dept_code')
 		
 if isnull(ls_data1) or ls_data1='' then
-	messagebox("알림",'반납전표 발행하기전에 부서(업체)코드를 먼저 입력하셔야 합니다!!')
+	uo_status.st_message.text = "반납전표 발행하기전에 부서(업체)코드를 먼저 입력하셔야 합니다!!"
 	return 0
 end if
 
@@ -1095,8 +1079,7 @@ if not(gs_kmArea = 'D' And gs_kmDivision = 'R') then
 end if
 
 SetPointer(Arrow!)
-uo_status.st_message.text = ls_message
-MessageBox("반납오류", ls_message, StopSign!)
+uo_status.st_message.text = "반납오류" + ls_message
 
 Parent.triggerevent('ue_retrieve')
 

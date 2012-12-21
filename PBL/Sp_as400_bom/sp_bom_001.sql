@@ -5,6 +5,7 @@
 --         ONLY 재료비산출('N')
 --         Create BOM113 'K'
 --         Create BOM115 'M'
+--         Create BOM113D 'P'
 
 drop procedure pbpdm.sp_bom_001;
 create procedure pbpdm.sp_bom_001 (
@@ -51,7 +52,7 @@ declare continue handler for sqlstate '42704'
 delete from qtemp.tmp_bomitem;
 
 if a_chk <> 'A' and a_chk <> 'B' and a_chk <> 'C' and
-  a_chk <> 'K' and a_chk <> 'M' and a_chk <> 'N' then
+  a_chk <> 'K' and a_chk <> 'M' and a_chk <> 'N' and a_chk <> 'P' then
   return;
 end if;
 
@@ -235,6 +236,12 @@ if a_chk = 'N' then
       fplant = a_plant and fdvsn = a_dvsn and
       fgubun in ('B','E');
 end if;
+if a_chk = 'P' then
+  set p_expchk = 'C';
+  delete from pbpdm.bom113d
+    where zcmcd = a_comltd and zdate = a_createdate and
+      zplant = a_plant and zdiv = a_dvsn;
+end if;
 
 set at_end = 0;
 set p_tlogid = 0;
@@ -354,6 +361,12 @@ loop
       p_itno,p_pdcd,p_costdiv,p_yyyymm,a_createdate,p_exprtn);
     set p_rtn = pbpdm.sf_bom_104(a_comltd,p_plant,p_dvsn,
       p_itno,p_pdcd,p_costdiv,p_yyyymm,a_createdate,p_exprtn);
+  end if;
+  if a_chk = 'P' then
+    set p_exprtn = pbpdm.sf_bom_exp(a_comltd,p_plant,p_dvsn,
+      p_itno,a_applydate,p_expchk);
+    call pbpdm.sp_bom_106(a_comltd,p_plant,p_dvsn,p_pdcd,
+      a_applydate,a_createdate);
   end if;
   set at_end = 0;
 end loop;

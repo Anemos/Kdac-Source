@@ -1,7 +1,7 @@
 $PBExportHeader$dddw_accplan.srd
 $PBExportComments$공통코드DB 코드명 DDDW
-release 8;
-datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=16777215 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
 detail(height=84 color="536870912" )
@@ -27,9 +27,12 @@ table(column=(type=char(50) updatewhereclause=yes name=coflname dbname="DAC002.C
          {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,8)} as cocode8,   
          {fn substring(~"PBCOMMON~".~"DAC002~".~"COCODE~",1,9)} as cocode9,   
          ~"PBCOMMON~".~"DAC002~".~"COCODE~"   
-    FROM ~"PBCOMMON~".~"DAC002~"  
-   WHERE ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = :l_s_gubun  and 
-         ~"PBCOMMON~".~"DAC002~".~"COFLNAME~" <> '미사용'  
+    FROM ~"PBCOMMON~".~"DAC002~" , ~"PBCOMMON~".~"DAC003~" 
+   WHERE ~"PBCOMMON~".~"DAC002~".~"COITNAMEE~" = ~"PBCOMMON~".~"DAC003~".~"PEEMPNO~" AND 
+         ~"PBCOMMON~".~"DAC003~".~"PEOUT~" <>'*' AND 
+         ~"PBCOMMON~".~"DAC002~".~"COGUBUN~" = :l_s_gubun  and 
+         ~"PBCOMMON~".~"DAC002~".~"COFLNAME~" <> '미사용'   
+
 ORDER BY ~"PBCOMMON~".~"DAC002~".~"COFLNAME~" ASC   
 " arguments=(("l_s_gubun", string)) )
 column(band=detail id=11 alignment="0" tabsequence=32766 border="0" color="0" x="4261" y="0" height="68" width="320" format="[general]" html.valueishtml="0"  name=cocode visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
@@ -44,5 +47,8 @@ column(band=detail id=10 alignment="0" tabsequence=32766 border="0" color="0" x=
 column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="1614" y="0" height="76" width="174" format="[general]" html.valueishtml="0"  name=cocode1 visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="굴림체" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
 compute(band=detail alignment="0" expression="trim( coflname ) + ' (' + trim( cocode ) + ')'"border="0" color="0" x="0" y="0" height="76" width="1600" format="[GENERAL]" html.valueishtml="0"  name=coname visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="16777215" )
 htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

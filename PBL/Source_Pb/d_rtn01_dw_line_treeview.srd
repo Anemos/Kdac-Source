@@ -5,22 +5,29 @@ datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.
 summary(height=0 color="536870912" )
 footer(height=0 color="536870912" )
 detail(height=68 color="536870912" )
-table(column=(type=char(1) updatewhereclause=yes name=rbdvsn dbname="RTN012.RBDVSN" )
- column=(type=char(7) updatewhereclause=yes name=rbline1 dbname="RTN012.RBLINE1" )
- column=(type=char(1) updatewhereclause=yes name=rbplant dbname="RTN012.RBPLANT" )
- retrieve="  SELECT ~"PBRTN~".~"RTN012~".~"RBDVSN~",   
-         ~"PBRTN~".~"RTN012~".~"RBLINE1~",   
-         ~"PBRTN~".~"RTN012~".~"RBPLANT~"  
-    FROM ~"PBRTN~".~"RTN012~"  
-   WHERE ( ~"PBRTN~".~"RTN012~".~"RBCMCD~" = '01' ) AND  
-         ( ~"PBRTN~".~"RTN012~".~"RBDVSN~" = :a_div ) AND  
-         ( ~"PBRTN~".~"RTN012~".~"RBPLANT~" = :a_plant )   
-GROUP BY ~"PBRTN~".~"RTN012~".~"RBPLANT~",   
-         ~"PBRTN~".~"RTN012~".~"RBDVSN~",   
-         ~"PBRTN~".~"RTN012~".~"RBLINE1~"   
-" arguments=(("a_plant", string),("a_div", string)) )
-text(band=header alignment="0" text="Rbline1" border="0" color="0" x="9" y="4" height="76" width="219" html.valueishtml="0"  name=rbline1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
-column(band=detail id=2 alignment="0" tabsequence=32766 border="0" color="0" x="9" y="0" height="60" width="219" format="[general]" html.valueishtml="0"  name=rbline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-9" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+table(column=(type=char(1) updatewhereclause=yes name=rbdvsn dbname="RTN013.RBDVSN" )
+ column=(type=char(7) updatewhereclause=yes name=rbline1 dbname="RTN013.RBLINE1" )
+ column=(type=char(1) updatewhereclause=yes name=rbplant dbname="RTN013.RBPLANT" )
+ retrieve="  SELECT ~"PBRTN~".~"RTN013~".~"RCDVSN~" AS RBDVSN,   
+         ~"PBRTN~".~"RTN013~".~"RCLINE1~" AS RBLINE1,   
+         ~"PBRTN~".~"RTN013~".~"RCPLANT~" AS RBPLANT  
+    FROM ~"PBRTN~".~"RTN013~" INNER JOIN PBINV.INV101
+		ON RCCMCD = COMLTD AND RCPLANT = XPLANT AND
+			RCDVSN = DIV AND RCITNO = ITNO
+   WHERE ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = '01' ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCDVSN~" = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCPLANT~" = :a_plant ) AND 
+			( PDCD LIKE :a_pdcd ) 
+GROUP BY ~"PBRTN~".~"RTN013~".~"RCPLANT~",   
+         ~"PBRTN~".~"RTN013~".~"RCDVSN~",   
+         ~"PBRTN~".~"RTN013~".~"RCLINE1~"   
+" arguments=(("a_plant", string),("a_div", string),("a_pdcd", string)) )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="9" y="0" height="76" width="23" html.valueishtml="0"  name=rbdvsn visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Rtn013 Rbdvsn" border="0" color="0" x="5" y="4" height="76" width="27" html.valueishtml="0"  name=rtn013_rbdvsn_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=0 border="0" color="0" x="46" y="0" height="76" width="215" html.valueishtml="0"  name=rbline1 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Rtn013 Rbline1" border="0" color="0" x="41" y="4" height="76" width="219" html.valueishtml="0"  name=rtn013_rbline1_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=0 border="0" color="0" x="274" y="0" height="76" width="23" html.valueishtml="0"  name=rbplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Rtn013 Rbplant" border="0" color="0" x="270" y="4" height="76" width="27" html.valueishtml="0"  name=rtn013_rbplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
 htmltable(border="1" )
 htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
 export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )

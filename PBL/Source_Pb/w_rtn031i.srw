@@ -464,6 +464,13 @@ destroy ids_data4
 return 0
 end event
 
+event resize;call super::resize;
+dw_rtninfo.Width = newwidth - ( dw_rtninfo.x + 10 ) 
+dw_rtninfo.Height = newheight - ( dw_rtninfo.y + uo_status.Height + 10 ) 
+
+tv_query.Height = dw_rtninfo.Height
+end event
+
 type uo_status from w_origin_sheet04`uo_status within w_rtn031i
 end type
 

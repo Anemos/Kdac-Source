@@ -1,0 +1,102 @@
+$PBExportHeader$d_rtn01_dw_routing_item_treeview_rev3.srd
+$PBExportComments$´ëÃ¼Ç°¹ø DB & BALANCE DB Exist Item
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 selected.mouse=no )
+header(height=68 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=68 color="536870912" )
+table(column=(type=char(2) updatewhereclause=yes name=rtn013_rccmcd dbname="RTN013.RCCMCD" )
+ column=(type=char(1) updatewhereclause=yes name=rtn013_rcplant dbname="RTN013.RCPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=rtn013_rcdvsn dbname="RTN013.RCDVSN" )
+ column=(type=char(4) updatewhereclause=yes name=inv101_pdcd dbname="PDCD" )
+ column=(type=char(60) updatewhereclause=yes name=dac007_prname dbname="DAC007.PRNAME" )
+ column=(type=char(12) updatewhereclause=yes name=rtn013_rcitno dbname="RTN013.RCITNO" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="INV002.ITNM" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="INV101.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="INV101.SRCE" )
+ column=(type=long updatewhereclause=yes name=chk_cnt dbname="CHK_CNT" )
+ retrieve="SELECT DISTINCT ~"PBRTN~".~"RTN013~".~"RCCMCD~",
+         ~"PBRTN~".~"RTN013~".~"RCPLANT~",
+         ~"PBRTN~".~"RTN013~".~"RCDVSN~",
+         SUBSTRING(~"PBINV~".~"INV101~".~"PDCD~",1,2) AS PDCD ,
+			~"PBCOMMON~".~"DAC007~".~"PRNAME~",
+         ~"PBRTN~".~"RTN013~".~"RCITNO~",
+         ~"PBINV~".~"INV002~".~"ITNM~",
+			~"PBINV~".~"INV101~".~"CLS~",
+			~"PBINV~".~"INV101~".~"SRCE~",
+			( SELECT COUNT(*) FROM PBRTN.RTN011 
+				WHERE RACMCD = RCCMCD AND RAPLANT = RCPLANT AND 
+						RADVSN = RCDVSN AND RAITNO = RCITNO ) AS CHK_CNT
+					
+    FROM ~"PBRTN~".~"RTN013~",   
+         ~"PBINV~".~"INV101~",   
+         ~"PBINV~".~"INV002~",
+			~"PBCOMMON~".~"DAC007~" 
+   WHERE ( ~"PBINV~".~"INV002~".~"COMLTD~" = ~"PBRTN~".~"RTN013~".~"RCCMCD~" ) and
+         ( ~"PBINV~".~"INV002~".~"ITNO~" = ~"PBRTN~".~"RTN013~".~"RCITNO~" ) and 
+         ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( ~"PBRTN~".~"RTN013~".~"RCPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and
+         ( ~"PBRTN~".~"RTN013~".~"RCDVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( ~"PBRTN~".~"RTN013~".~"RCITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and
+			( ~"PBCOMMON~".~"DAC007~".~"COMLTD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+			( ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" = SUBSTRING(~"PBINV~".~"INV101~".~"PDCD~",1,2) ) AND
+         ( ( ~"PBRTN~".~"RTN013~".~"RCCMCD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCITNO~" LIKE :a_itno ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCDVSN~"  = :a_div ) AND  
+         ( ~"PBRTN~".~"RTN013~".~"RCPLANT~" = :a_plant ) )
+UNION
+
+SELECT DISTINCT B.~"RACMCD~",
+         B.~"RAPLANT~",
+         B.~"RADVSN~",
+         SUBSTRING(~"PBINV~".~"INV101~".~"PDCD~",1,2) AS PDCD ,
+			~"PBCOMMON~".~"DAC007~".~"PRNAME~",
+         B.~"RAITNO~",
+         ~"PBINV~".~"INV002~".~"ITNM~",
+			~"PBINV~".~"INV101~".~"CLS~",
+			~"PBINV~".~"INV101~".~"SRCE~",
+			( SELECT COUNT(*) FROM PBRTN.RTN011 A
+				WHERE A.RACMCD = B.RACMCD AND A.RAPLANT = B.RAPLANT AND 
+						A.RADVSN = B.RADVSN AND A.RAITNO = B.RAITNO ) AS CHK_CNT
+					
+    FROM ~"PBRTN~".~"RTN011~" B,   
+         ~"PBINV~".~"INV101~",   
+         ~"PBINV~".~"INV002~",
+			~"PBCOMMON~".~"DAC007~" 
+   WHERE ( ~"PBINV~".~"INV002~".~"COMLTD~" = B.~"RACMCD~" ) and
+         ( ~"PBINV~".~"INV002~".~"ITNO~" = B.~"RAITNO~" ) and 
+         ( B.~"RACMCD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) and  
+         ( B.~"RAPLANT~" = ~"PBINV~".~"INV101~".~"XPLANT~" ) and
+         ( B.~"RADVSN~" = ~"PBINV~".~"INV101~".~"DIV~" ) and  
+         ( B.~"RAITNO~" = ~"PBINV~".~"INV101~".~"ITNO~" ) and
+			( ~"PBCOMMON~".~"DAC007~".~"COMLTD~" = ~"PBINV~".~"INV101~".~"COMLTD~" ) AND
+			( ~"PBCOMMON~".~"DAC007~".~"PRPRCD~" = SUBSTRING(~"PBINV~".~"INV101~".~"PDCD~",1,2) ) AND
+         ( ( B.~"RACMCD~" = '01' ) AND  
+         ( ~"PBINV~".~"INV101~".~"PDCD~" LIKE :a_pdcd ) AND  
+         ( B.~"RAITNO~" LIKE :a_itno ) AND  
+         ( B.~"RADVSN~"  = :a_div ) AND  
+         ( B.~"RAPLANT~" = :a_plant ) )
+" arguments=(("a_plant", string),("a_div", string),("a_pdcd", string),("a_itno", string))  sort="inv101_pdcd A rtn013_rcitno A inv101_cls A " )
+text(band=header alignment="2" text="Á¦Ç°" border="0" color="16777215" x="9" y="4" height="60" width="133" html.valueishtml="0"  name=t_3 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç° ¸í" border="0" color="16777215" x="992" y="4" height="60" width="809" html.valueishtml="0"  name=t_2 visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="1810" y="4" height="60" width="137" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="1957" y="4" height="60" width="197" html.valueishtml="0"  name=inv101_srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Á¦Ç°±º" border="0" color="16777215" x="151" y="4" height="60" width="457" html.valueishtml="0"  name=dac007_prname_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="´ëÇ¥Ç°¹ø" border="0" color="16777215" x="617" y="4" height="60" width="366" html.valueishtml="0"  name=rtn013_rcitno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸ñ¼ö" border="0" color="16777215" x="2162" y="4" height="60" width="192" html.valueishtml="0"  name=chk_cnt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=4 alignment="2" tabsequence=32766 border="0" color="0" x="9" y="0" height="64" width="133" format="[general]" html.valueishtml="0"  name=inv101_pdcd visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=5 alignment="0" tabsequence=32766 border="0" color="0" x="151" y="0" height="64" width="457" format="[general]" html.valueishtml="0"  name=dac007_prname visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="0" x="992" y="0" height="64" width="809" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.autoselect=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=8 alignment="2" tabsequence=32766 border="0" color="0" x="1810" y="0" height="64" width="137" format="[general]" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=6 alignment="0" tabsequence=32766 border="0" color="0" x="617" y="0" height="60" width="366" format="[general]" html.valueishtml="0"  name=rtn013_rcitno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=9 alignment="2" tabsequence=32766 border="0" color="0" x="1957" y="0" height="64" width="197" format="[general]" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="0" x="2162" y="0" height="64" width="192" format="[general]" html.valueishtml="0"  name=chk_cnt visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
+
+sparse(names="inv101_pdcd	dac007_prname")htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

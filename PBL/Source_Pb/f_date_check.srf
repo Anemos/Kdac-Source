@@ -19,8 +19,13 @@ global function integer f_date_check (string as_date);//		Date Check - 올바른 날
 
 string ls_rtn
 
-ls_rtn =  ef_dateproc( as_date , " ", 0, 0, 0)
-
-return integer(ls_rtn)
+if f_dateedit(as_date) = space(8) then
+	return 0
+else
+	return 1
+end if
+//ls_rtn =  ef_dateproc( as_date , " ", 0, 0, 0)
+//
+//return integer(ls_rtn)
 end function
 

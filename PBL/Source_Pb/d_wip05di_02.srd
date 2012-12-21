@@ -1,6 +1,6 @@
 $PBExportHeader$d_wip05di_02.srd
-release 8;
-datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.prompt=no print.buttons=no print.preview.buttons=no )
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=0 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no )
 header(height=136 color="536870912" )
 summary(height=288 color="536870912" )
 footer(height=0 color="536870912" )
@@ -16,7 +16,7 @@ table(column=(type=char(50) updatewhereclause=yes name=plantnm dbname="PLANTNM" 
  column=(type=char(1) updatewhereclause=yes name=wip009_wfdvsn dbname="WIP009.WFDVSN" )
  column=(type=char(15) updatewhereclause=yes name=wip009_wfitno dbname="WIP009.WFITNO" )
  column=(type=char(5) updatewhereclause=yes name=wip009_wfvendor dbname="WIP009.WFVENDOR" )
- column=(type=char(30) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
+ column=(type=char(50) updatewhereclause=yes name=pur101_vndnm dbname="PUR101.VNDNM" )
  column=(type=char(10) updatewhereclause=yes name=pur101_vndr dbname="PUR101.VNDR" )
  column=(type=char(2) updatewhereclause=yes name=wip009_wfunit dbname="WIP009.WFUNIT" )
  column=(type=decimal(2) updatewhereclause=yes name=wip009_wfscrp dbname="WIP009.WFSCRP" )
@@ -98,6 +98,7 @@ table(column=(type=char(50) updatewhereclause=yes name=plantnm dbname="PLANTNM" 
          ( ( ~"PBWIP~".~"WIP009~".~"WFCMCD~" = :a_cmcd ) AND 
          ( ~"PBWIP~".~"WIP009~".~"WFYEAR~" = :a_year ) AND  
          ( ~"PBWIP~".~"WIP009~".~"WFMONTH~" = :a_month ) AND 
+			( ~"PBWIP~".~"WIP009~".~"WFIOCD~" = :a_iocd ) AND 
 			( ~"PBWIP~".~"WIP009~".~"WFPLANT~" LIKE :a_plant ) AND
 			( ~"PBWIP~".~"WIP009~".~"WFDVSN~" LIKE :a_dvsn ) AND
          ( ~"PBWIP~".~"WIP009~".~"WFVENDOR~"  LIKE :a_vsrno ) AND
@@ -108,7 +109,7 @@ ORDER BY ~"PBWIP~".~"WIP009~".~"WFPLANT~" ASC,
 			~"PBWIP~".~"WIP009~".~"WFVENDOR~" ASC,   
           ~"PBINV~".~"INV101~".~"PDCD~" asc, 
          ~"PBWIP~".~"WIP009~".~"WFITNO~" ASC   
-" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_vsrno", string),("a_year", string),("a_month", string)) )
+" arguments=(("a_cmcd", string),("a_plant", string),("a_dvsn", string),("a_vsrno", string),("a_year", string),("a_month", string),("a_iocd", string)) )
 group(level=1 header.height=0 trailer.height=144 by=("wip009_wfplant" , "wip009_wfdvsn" ) header.color="536870912" trailer.color="536870912" )
 group(level=2 header.height=0 trailer.height=156 by=("wip009_wfplant" , "wip009_wfdvsn" , "wip009_wfvendor" ) header.color="536870912" trailer.color="536870912" )
 text(band=header alignment="2" text="사용수량 / 금액" border="2" color="16777215" x="3008" y="4" height="64" width="1413" html.valueishtml="0"  name=t_14 visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
@@ -272,5 +273,8 @@ compute(band=summary alignment="1" expression="sum(   wip009_wfrautat  for all )
 text(band=summary alignment="2" text="잉여분합계:" border="0" color="0" x="6217" y="148" height="60" width="443" html.valueishtml="0"  name=t_36 visible="1"  font.face="굴림체" font.height="-10" font.weight="700"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="12632256" )
 
 sparse(names="pur101_vndnm	pdcdnm")htmltable(border="1" )
-htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" netscapelayers="0" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
  

@@ -1,0 +1,158 @@
+$PBExportHeader$f_creation_manhour_bpm508.srf
+$PBExportComments$표준재료비 BOM이동(사업계획용)
+global type f_creation_manhour_bpm508 from function_object
+end type
+
+forward prototypes
+global function boolean f_creation_manhour_bpm508 (string ag_year, string ag_gubun, string ag_message)
+end prototypes
+
+global function boolean f_creation_manhour_bpm508 (string ag_year, string ag_gubun, string ag_message);integer li_rtn, li_rowcnt, li_index
+string ls_node, ls_plant, ls_div, ls_areadivision[]
+datastore lds_source, lds_target, lds_source_501, lds_target_501, lds_source_515, lds_target_515, lds_source_516c, lds_target_516c
+str_ipis_server lstr_ipis[]
+
+// BOM 정보
+lds_source = create datastore
+lds_source.dataobject = "d_bpm508_source"
+lds_source.settransobject(sqlca)
+
+lds_source_501 = create datastore
+lds_source_501.dataobject = "d_bpm501_source"
+lds_source_501.settransobject(sqlca)
+
+lds_source_515 = create datastore
+lds_source_515.dataobject = "d_bpm515_source"
+lds_source_515.settransobject(sqlca)
+
+lds_source_516c = create datastore
+lds_source_516c.dataobject = "d_bpm516c_source"
+lds_source_516c.settransobject(sqlca)
+
+lds_target = create datastore
+lds_target.dataobject = "d_tmhbasebombpm_target"
+
+lds_target_501 = create datastore
+lds_target_501.dataobject = "d_tmhbpm501_target"
+
+lds_target_515 = create datastore
+lds_target_515.dataobject = "d_tmhbpm515_target"
+
+lds_target_516c = create datastore
+lds_target_516c.dataobject = "d_tmhbpm516c_target"
+
+
+ls_node = ''
+
+do while true
+	select ifnull(concat(a.xplant,a.div),'') into :ls_node
+	 from pbinv.inv902 a inner join pbcommon.dac002 b
+	  on a.div = b.cocode and b.cogubun = 'DAC030' and
+	  a.inptid = 'A'
+	 where concat(a.xplant,a.div) > :ls_node
+	 order by a.xplant,a.div
+	 fetch first 1 row only
+	 using sqlca;
+	
+	if f_spacechk(ls_node) = -1 or sqlca.sqlcode <> 0 then
+		exit
+	end if
+	ls_plant = mid(ls_node,1,1)
+	ls_div = mid(ls_node,2,1)
+	
+	ls_areadivision[1] = ls_node
+	lstr_ipis = f_ipis_server_set_transaction("EACH",ls_areadivision)
+	li_index = f_ipis_server_get_transaction(lstr_ipis,ls_plant,ls_div)
+	
+	// 사업계획 bom 원단위정보
+	li_rowcnt = lds_source.retrieve(ag_year,ag_gubun,ls_plant,ls_div)
+	if li_rowcnt > 0 then
+		lds_target.settransobject(lstr_ipis[li_index].t_sqlpis)
+		li_rtn = lds_source.RowsMove(1, li_rowcnt, Primary!, lds_target, 1, Primary!)
+		DELETE FROM TMHBASEBOMBPM
+		WHERE ZCMCD = '01' AND XYEAR = :ag_year AND REVNO = :ag_gubun AND ZPLANT = :ls_plant AND ZDIV = :ls_div
+		using lstr_ipis[li_index].t_sqlpis;
+		
+		if lds_target.update() <> 1 then
+			ag_message = "IPIS TMHBASEBOMBPM테이블 저장시에 오류 : " + lstr_ipis[li_index].t_sqlpis.sqlerrtext
+			f_ipis_server_rollback_transaction(lstr_ipis)
+			destroy lds_source
+			destroy lds_target
+			return false
+		end if
+	end if
+	
+	// 사업계획 매출수량/금액 정보
+	li_rowcnt = lds_source_501.retrieve(ag_year,ag_gubun,ls_plant,ls_div)
+	if li_rowcnt > 0 then
+		lds_target_501.settransobject(lstr_ipis[li_index].t_sqlpis)
+		li_rtn = lds_source_501.RowsMove(1, li_rowcnt, Primary!, lds_target_501, 1, Primary!)
+		
+		DELETE FROM TMHBPM501
+		WHERE COMLTD = '01' AND AYEAR = :ag_year AND AREV = :ag_gubun AND APLANT = :ls_plant AND ADIV = :ls_div
+		using lstr_ipis[li_index].t_sqlpis;
+		
+		if lds_target_501.update() <> 1 then
+			ag_message = "IPIS TMHBASEBOMBPM테이블 저장시에 오류 : " + lstr_ipis[li_index].t_sqlpis.sqlerrtext
+			f_ipis_server_rollback_transaction(lstr_ipis)
+			destroy lds_source_501
+			destroy lds_target_501
+			return false
+		end if
+	end if
+	
+	// 사업계획 제품별재료비 정보
+	li_rowcnt = lds_source_515.retrieve(ag_year,ag_gubun,ls_plant,ls_div)
+	if li_rowcnt > 0 then
+		lds_target_515.settransobject(lstr_ipis[li_index].t_sqlpis)
+		li_rtn = lds_source_515.RowsMove(1, li_rowcnt, Primary!, lds_target_515, 1, Primary!)
+		
+		DELETE FROM TMHBPM515
+		WHERE COMLTD = '01' AND MYEAR = :ag_year AND MBREV = :ag_gubun AND MPLANT = :ls_plant AND MDIV = :ls_div
+		using lstr_ipis[li_index].t_sqlpis;
+		
+		if lds_target_515.update() <> 1 then
+			ag_message = "IPIS TMHBASEBOMBPM테이블 저장시에 오류 : " + lstr_ipis[li_index].t_sqlpis.sqlerrtext
+			f_ipis_server_rollback_transaction(lstr_ipis)
+			destroy lds_source_515
+			destroy lds_target_515
+			return false
+		end if
+	end if
+	
+	// 사업계획 품목별재료비 정보
+	li_rowcnt = lds_source_516c.retrieve(ag_year,ag_gubun,ls_plant,ls_div)
+	if li_rowcnt > 0 then
+		lds_target_516c.settransobject(lstr_ipis[li_index].t_sqlpis)
+		li_rtn = lds_source_516c.RowsMove(1, li_rowcnt, Primary!, lds_target_516c, 1, Primary!)
+		
+		DELETE FROM TMHBPM516C
+		WHERE COMLTD = '01' AND XYEAR = :ag_year AND WREV = :ag_gubun AND WPLANT = :ls_plant AND WDVSN = :ls_div
+		using lstr_ipis[li_index].t_sqlpis;
+		
+		if lds_target_516c.update() <> 1 then
+			ag_message = "IPIS TMHBPM516C 저장시에 오류 : " + lstr_ipis[li_index].t_sqlpis.sqlerrtext
+			f_ipis_server_rollback_transaction(lstr_ipis)
+			destroy lds_source_516c
+			destroy lds_target_516c
+			return false
+		end if
+	end if
+
+	f_ipis_server_commit_transaction(lstr_ipis)
+
+loop
+
+destroy lds_source
+destroy lds_target
+destroy lds_source_501
+destroy lds_target_501
+destroy lds_source_515
+destroy lds_target_515
+destroy lds_source_516c
+destroy lds_target_516c
+
+ag_message = "원단위정보가 정상적으로 이동되었습니다."
+return true
+end function
+

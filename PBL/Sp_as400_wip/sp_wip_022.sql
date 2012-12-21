@@ -5,6 +5,8 @@
 --author        : kim ki sub
 --desc          : Vendorsheet creation(After Final)
 
+drop procedure pbwip.sp_wip_022;
+
 create procedure pbwip.sp_wip_022
 (in a_cmcd char(2),
  in a_yyyy char(4),
@@ -25,6 +27,7 @@ declare p_itno char(15);
 declare p_orct char(5);
 declare p_chkorct char(5);
 declare p_part char(1);
+declare p_iocd char(1);
 declare p_itnm char(50);
 declare p_serl char(5);
 declare p_count integer;
@@ -85,11 +88,11 @@ fetch wipchk_cur into p_count;
 
 if p_count = 0 then
 insert into pbwip.wip008
-(wfcmcd,wfyear,wfpart,wfserl,wfpage,wfplant,wfdvsn,
+(wfcmcd,wfyear,wfpart,wfiocd,wfserl,wfpage,wfplant,wfdvsn,
  wfvsrno,wfvndr,wfvndnm,wfaddr,wfprnm,wfitno,
  wfitnm,wfunit,wfscrp,wfretn,wfbgqt,wfinqt,
  wfusqt2,wfusqt7,wfohqt,wfinptid,wfinptdt)
-select wbcmcd,a_yyyy,p_part,' ',' ',wbplant,
+select wbcmcd,a_yyyy,p_part,wbiocd,' ',' ',wbplant,
  wbdvsn,wborct,' ',' ',' ',' ',wbitno,
  ' ',' ',
  decimal(sum(case wbmonth
@@ -125,7 +128,7 @@ select wbcmcd,a_yyyy,p_part,' ',' ',wbplant,
         wbusqt1 = 0 and wbusqt2 = 0 and wbusqt4 = 0 and
         wbusqt5 = 0 and wbusqt6 = 0 and wbusqt7 = 0 and
         wbusqt8 = 0)
-  group by wbcmcd,wbplant,wbdvsn,wborct,wbitno;
+  group by wbcmcd,wbiocd,wbplant,wbdvsn,wborct,wbitno;
 end if;
 close wipchk_cur;
 

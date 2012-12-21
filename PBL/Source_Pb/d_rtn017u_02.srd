@@ -1,0 +1,61 @@
+$PBExportHeader$d_rtn017u_02.srd
+$PBExportComments$¼­ºêÃâÇÏÇ° µî·Ï
+release 9;
+datawindow(units=0 timer_interval=0 color=12632256 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=72 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=80 color="536870912" )
+table(column=(type=char(2) update=yes updatewhereclause=yes key=yes name=rcmcd dbname="RTN020.RCMCD" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rplant dbname="RTN020.RPLANT" )
+ column=(type=char(1) update=yes updatewhereclause=yes key=yes name=rdvsn dbname="RTN020.RDVSN" )
+ column=(type=char(12) update=yes updatewhereclause=yes key=yes name=ritno dbname="RTN020.RITNO" )
+ column=(type=char(6) update=yes updatewhereclause=yes name=repno dbname="RTN020.REPNO" )
+ column=(type=char(15) update=yes updatewhereclause=yes name=ripad dbname="RTN020.RIPAD" )
+ column=(type=char(8) update=yes updatewhereclause=yes name=rsydt dbname="RTN020.RSYDT" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_itnm dbname="RTN020.ITNM" )
+ column=(type=char(50) updatewhereclause=yes name=inv002_spec dbname="RTN020.SPEC" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_cls dbname="RTN020.CLS" )
+ column=(type=char(2) updatewhereclause=yes name=inv101_srce dbname="RTN020.SRCE" )
+ retrieve="  SELECT A.RCMCD,   
+         A.RPLANT,   
+         A.RDVSN,   
+         A.RITNO,   
+         A.REPNO,   
+         A.RIPAD,   
+         A.RSYDT,
+			C.ITNM,
+			C.SPEC,
+			B.CLS,
+			B.SRCE  
+    FROM PBRTN.RTN020 A INNER JOIN PBINV.INV101 B
+	ON A.RCMCD = B.COMLTD AND A.RPLANT = B.XPLANT AND
+		A.RDVSN = B.DIV AND A.RITNO = B.ITNO
+	INNER JOIN PBINV.INV002 C
+	ON A.RCMCD = C.COMLTD AND A.RITNO = C.ITNO 
+WHERE A.RCMCD = '01' AND A.RPLANT = :a_plant AND A.RDVSN = :a_dvsn
+" update="PBRTN.RTN020" updatewhere=1 updatekeyinplace=no arguments=(("a_plant", string),("a_dvsn", string)) )
+text(band=header alignment="2" text="Áö¿ª" border="0" color="16777215" x="9" y="8" height="60" width="137" html.valueishtml="0"  name=rplant_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°øÀå" border="0" color="16777215" x="155" y="8" height="60" width="128" html.valueishtml="0"  name=rdvsn_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¹ø" border="0" color="16777215" x="293" y="8" height="60" width="416" html.valueishtml="0"  name=ritno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÔ·ÂÀÚ" border="0" color="16777215" x="718" y="8" height="60" width="224" html.valueishtml="0"  name=repno_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="ÀÔ·ÂÀÏ" border="0" color="16777215" x="951" y="8" height="60" width="288" html.valueishtml="0"  name=rsydt_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="Ç°¸í" border="0" color="16777215" x="1248" y="4" height="60" width="617" html.valueishtml="0"  name=inv002_itnm_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±Ô°Ý" border="0" color="16777215" x="1874" y="4" height="60" width="544" html.valueishtml="0"  name=inv002_spec_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="°èÁ¤" border="0" color="16777215" x="2427" y="4" height="60" width="133" html.valueishtml="0"  name=inv101_cls_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+text(band=header alignment="2" text="±¸ÀÔ¼±" border="0" color="16777215" x="2569" y="4" height="60" width="192" html.valueishtml="0"  name=inv101_srce_t visible="1"  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
+column(band=detail id=2 alignment="2" tabsequence=32766 border="0" color="33554432" x="9" y="0" height="76" width="137" format="[general]" html.valueishtml="0"  name=rplant visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=3 alignment="2" tabsequence=32766 border="0" color="33554432" x="155" y="0" height="76" width="128" format="[general]" html.valueishtml="0"  name=rdvsn visible="1" edit.limit=1 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=4 alignment="0" tabsequence=32766 border="0" color="33554432" x="293" y="0" height="76" width="416" format="[general]" html.valueishtml="0"  name=ritno visible="1" edit.limit=12 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=5 alignment="2" tabsequence=32766 border="0" color="33554432" x="718" y="0" height="76" width="224" format="[general]" html.valueishtml="0"  name=repno visible="1" edit.limit=6 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=7 alignment="2" tabsequence=32766 border="0" color="33554432" x="951" y="0" height="76" width="288" format="[general]" html.valueishtml="0"  name=rsydt visible="1" edit.limit=8 edit.case=any edit.focusrectangle=no edit.autoselect=yes edit.autohscroll=yes edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=8 alignment="0" tabsequence=32766 border="0" color="33554432" x="1248" y="0" height="76" width="617" format="[general]" html.valueishtml="0"  name=inv002_itnm visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=9 alignment="0" tabsequence=32766 border="0" color="33554432" x="1874" y="0" height="76" width="544" format="[general]" html.valueishtml="0"  name=inv002_spec visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=10 alignment="2" tabsequence=32766 border="0" color="33554432" x="2427" y="0" height="76" width="133" format="[general]" html.valueishtml="0"  name=inv101_cls visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+column(band=detail id=11 alignment="2" tabsequence=32766 border="0" color="33554432" x="2569" y="0" height="76" width="192" format="[general]" html.valueishtml="0"  name=inv101_srce visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="±¼¸²Ã¼" font.height="-10" font.weight="400"  font.family="1" font.pitch="2" font.charset="129" background.mode="1" background.color="536870912" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

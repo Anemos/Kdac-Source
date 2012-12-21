@@ -13,9 +13,10 @@ dec{0} ld_coct
 dec{2} ld_itemcost
 
 select	xyear,outqty,outamt into :ls_year,:ld_coac,:ld_coct	from pbinv.inv402
-	where	comltd = '01' and xplant = :a_plant and div    = :a_div and itno = :a_itno and
-			xyear <= :a_date  and ( outqty <> 0 and outamt <> 0 ) 
-	order by xyear desc
+where	comltd = '01' and xplant = :a_plant and div    = :a_div and itno = :a_itno and
+		xyear <= :a_date  and ( outqty <> 0 and outamt <> 0 ) 
+order by xyear desc
+fetch first 1 row only
 using sqlca ;
 
 //if sqlca.sqlcode <> 0 then
@@ -26,7 +27,7 @@ if ld_coac 	= 0 or isnull(ld_coac) then
 	return 	0
 end if
 
-if a_factor 	> 0 then
+if a_factor > 0 then
 	ld_itemcost = (ld_coct / ld_coac) / a_factor
 	return	ld_itemcost
 else

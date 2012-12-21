@@ -19,6 +19,10 @@ type st_2 from statictext within w_wip05fu
 end type
 type pb_down from picturebutton within w_wip05fu
 end type
+type rb_free from radiobutton within w_wip05fu
+end type
+type rb_cost from radiobutton within w_wip05fu
+end type
 type gb_1 from groupbox within w_wip05fu
 end type
 type gb_2 from groupbox within w_wip05fu
@@ -34,6 +38,8 @@ cb_confirm cb_confirm
 cb_cancel cb_cancel
 st_2 st_2
 pb_down pb_down
+rb_free rb_free
+rb_cost rb_cost
 gb_1 gb_1
 gb_2 gb_2
 end type
@@ -54,6 +60,8 @@ this.cb_confirm=create cb_confirm
 this.cb_cancel=create cb_cancel
 this.st_2=create st_2
 this.pb_down=create pb_down
+this.rb_free=create rb_free
+this.rb_cost=create rb_cost
 this.gb_1=create gb_1
 this.gb_2=create gb_2
 iCurrent=UpperBound(this.Control)
@@ -65,8 +73,10 @@ this.Control[iCurrent+5]=this.cb_confirm
 this.Control[iCurrent+6]=this.cb_cancel
 this.Control[iCurrent+7]=this.st_2
 this.Control[iCurrent+8]=this.pb_down
-this.Control[iCurrent+9]=this.gb_1
-this.Control[iCurrent+10]=this.gb_2
+this.Control[iCurrent+9]=this.rb_free
+this.Control[iCurrent+10]=this.rb_cost
+this.Control[iCurrent+11]=this.gb_1
+this.Control[iCurrent+12]=this.gb_2
 end on
 
 on w_wip05fu.destroy
@@ -79,12 +89,14 @@ destroy(this.cb_confirm)
 destroy(this.cb_cancel)
 destroy(this.st_2)
 destroy(this.pb_down)
+destroy(this.rb_free)
+destroy(this.rb_cost)
 destroy(this.gb_1)
 destroy(this.gb_2)
 end on
 
 event ue_retrieve;call super::ue_retrieve;dec{0} ld_yyyymm
-string ls_fromdt,ls_todt, ls_plant, ls_dvsn, ls_part
+string ls_fromdt,ls_todt, ls_plant, ls_dvsn, ls_part, ls_iocd
 string ls_year, ls_month
 long ll_rowcnt
 
@@ -98,6 +110,12 @@ ls_fromdt      = uf_wip_addmonth(is_adjdt,-2)
 ls_plant = trim(uo_1.dw_1.getitemstring(1,'xplant'))
 ls_dvsn  = trim(uo_1.dw_1.getitemstring(1,'div'))
 
+if rb_free.checked then
+	ls_iocd = '2'
+else
+	ls_iocd = '3'
+end if
+
 if f_spacechk(ls_plant) = -1 then
 	ls_plant = '%'
 else
@@ -109,7 +127,7 @@ else
 	ls_dvsn = ls_dvsn + '%'
 end if
 
-ll_rowcnt = dw_wip05fu_01.retrieve(ls_year, ls_month, '01', ls_plant, ls_dvsn)
+ll_rowcnt = dw_wip05fu_01.retrieve(ls_year, ls_month, '01', ls_plant, ls_dvsn, ls_iocd)
 if ll_rowcnt < 1 then
 	uo_status.st_message.text = '조회할 자료가 없습니다.'
 else
@@ -118,9 +136,10 @@ else
 		SELECT count(*)  
 			INTO :ll_rowcnt  
 			FROM "PBWIP"."WIP009"  
-			WHERE ( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
+			WHERE ( "PBWIP"."WIP009"."WFCMCD" = :g_s_company ) AND
+					( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
 					( "PBWIP"."WIP009"."WFMONTH" = :ls_month ) AND  
-					( "PBWIP"."WIP009"."WFCMCD" = :g_s_company ) AND  
+					( "PBWIP"."WIP009"."WFIOCD" = :ls_iocd ) AND    
 					( "PBWIP"."WIP009"."WFSTSCD" < '4' )   
 			using sqlca;
 			
@@ -162,7 +181,7 @@ type uo_status from w_origin_sheet02`uo_status within w_wip05fu
 end type
 
 type uo_1 from uo_wip_plandiv within w_wip05fu
-integer x = 96
+integer x = 64
 integer y = 64
 integer taborder = 20
 boolean bringtotop = true
@@ -173,7 +192,7 @@ call uo_wip_plandiv::destroy
 end on
 
 type uo_to from uo_yymm_boongi within w_wip05fu
-integer x = 1778
+integer x = 1710
 integer y = 68
 integer taborder = 30
 boolean bringtotop = true
@@ -184,7 +203,7 @@ call uo_yymm_boongi::destroy
 end on
 
 type st_1 from statictext within w_wip05fu
-integer x = 1408
+integer x = 1339
 integer y = 80
 integer width = 357
 integer height = 64
@@ -229,7 +248,7 @@ return 0
 end event
 
 type cb_confirm from commandbutton within w_wip05fu
-integer x = 2583
+integer x = 3090
 integer y = 56
 integer width = 462
 integer height = 112
@@ -246,7 +265,7 @@ end type
 
 event clicked;dec{0} ld_yyyymm
 integer li_rtn, li_mm, li_year
-string ls_year, ls_mm, ls_yyyymm, ls_currdt,ls_nextdt
+string ls_year, ls_mm, ls_yyyymm, ls_currdt,ls_nextdt, ls_iocd
 
 ld_yyyymm     = uo_to.uf_yyyymm()
 ls_currdt        = string(ld_yyyymm)
@@ -260,11 +279,19 @@ if li_rtn = 2 then
 	return 0
 end if  
 
+if rb_free.checked then
+	ls_iocd = '2'
+else
+	ls_iocd = '3'
+end if
+
 //해당분기 전업체 경리확정 (wip009)
 UPDATE "PBWIP"."WIP009"  
    SET "WFSTSCD" = '5'  
-   WHERE ( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
-         ( "PBWIP"."WIP009"."WFMONTH" = :ls_mm )   
+   WHERE ( "PBWIP"."WIP009"."WFCMCD" = '01' ) AND  
+			( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
+         ( "PBWIP"."WIP009"."WFMONTH" = :ls_mm ) AND
+			( "PBWIP"."WIP009"."WFIOCD" = :ls_iocd )  
    using sqlca;
 
 if sqlca.sqlcode = 0 and sqlca.sqlnrows > 0 then
@@ -310,7 +337,8 @@ if sqlca.sqlcode = 0 and sqlca.sqlnrows > 0 then
 		//정산 데이타 업데이트 ( wip002, wip001 )
 		DECLARE up_wip_024 PROCEDURE FOR PBWIP.SP_WIP_024  
          A_CMCD = :g_s_company,   
-         A_CURRDT = :ls_currdt,   
+         A_CURRDT = :ls_currdt,  
+			A_IOCD = :ls_iocd,
          A_NEXTDT = :ls_nextdt,   
          A_IPADDR = :g_s_ipaddr,   
          A_MACADDR = :g_s_macaddr,   
@@ -319,9 +347,11 @@ if sqlca.sqlcode = 0 and sqlca.sqlnrows > 0 then
 		Execute up_wip_024;
 		Close up_wip_024;
 		
-		if f_wip050_cost_pcc950(ls_yyyymm) = -1 then
-			uo_status.st_message.text = '원가회계 재공생성작업시 오류가 발생했습니다.'
-			return 0
+		if ls_iocd = '2' then
+			if f_wip050_cost_pcc950(ls_yyyymm) = -1 then
+				uo_status.st_message.text = '원가회계 재공생성작업시 오류가 발생했습니다.'
+				return 0
+			end if
 		end if
 		
 		UPDATE "PBWIP"."WIP090"  
@@ -341,7 +371,7 @@ return 0
 end event
 
 type cb_cancel from commandbutton within w_wip05fu
-integer x = 3200
+integer x = 3625
 integer y = 56
 integer width = 462
 integer height = 112
@@ -359,7 +389,7 @@ end type
 event clicked;
 long	ll_row, ll_LastRow, ll_index = 1, ll_select_row 
 long	ll_SaveRow[] 
-string ls_plant, ls_dvsn, ls_vendor, ls_rtncd, ls_cttp, ls_year, ls_month, ls_stscd
+string ls_plant, ls_dvsn, ls_vendor, ls_rtncd, ls_cttp, ls_year, ls_month, ls_stscd, ls_iocd
 
 setpointer(hourglass!)
 // 선택된 행이 있는지 체크한다
@@ -389,16 +419,18 @@ FOR ll_row = 1 TO ll_index - 1
 	ls_dvsn   = dw_wip05fu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfdvsn')
 	ls_vendor = dw_wip05fu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfvendor')
 	ls_stscd = dw_wip05fu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfstscd')
+	ls_iocd = dw_wip05fu_01.getitemstring(ll_SaveRow[ll_row],'wip009_wfiocd')
 	if ls_stscd = '4' or ls_stscd = '5' then
 		// 해당지역, 공장에 대한 단가계산 완료여부를 체크한다.
 		UPDATE "PBWIP"."WIP009"  
 			SET "WFSTSCD" = '2'  
-			WHERE ( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
+			WHERE ( "PBWIP"."WIP009"."WFCMCD" = :g_s_company ) AND 
+					( "PBWIP"."WIP009"."WFYEAR" = :ls_year ) AND  
 					( "PBWIP"."WIP009"."WFMONTH" = :ls_month ) AND  
-					( "PBWIP"."WIP009"."WFCMCD" = :g_s_company ) AND  
+					( "PBWIP"."WIP009"."WFIOCD" = :ls_iocd ) AND
 					( "PBWIP"."WIP009"."WFPLANT" = :ls_plant ) AND  
 					( "PBWIP"."WIP009"."WFDVSN" = :ls_dvsn ) AND  
-					( "PBWIP"."WIP009"."WFVENDOR" = :ls_vendor )   
+					( "PBWIP"."WIP009"."WFVENDOR" = :ls_vendor )			
 			using sqlca;
 	end if
 NEXT
@@ -422,12 +454,12 @@ fontfamily fontfamily = modern!
 string facename = "굴림체"
 long textcolor = 128
 long backcolor = 12632256
-string text = "경리확정은 전지역, 전업체가 최종확정상태여야 합니다. 확정최소는 선택된 업체만 1차확정상태로 바뀝니다."
+string text = "경리확정은 전지역, 전업체가 최종확정상태여야 합니다. 확정취소는 선택된 업체만 1차확정상태로 바뀝니다."
 boolean focusrectangle = false
 end type
 
 type pb_down from picturebutton within w_wip05fu
-integer x = 3831
+integer x = 4146
 integer y = 48
 integer width = 155
 integer height = 132
@@ -454,9 +486,48 @@ f_save_to_excel(dw_wip05fu_01)
 return 0
 end event
 
+type rb_free from radiobutton within w_wip05fu
+integer x = 2295
+integer y = 76
+integer width = 375
+integer height = 76
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "무상사급"
+boolean checked = true
+boolean automatic = false
+end type
+
+type rb_cost from radiobutton within w_wip05fu
+integer x = 2647
+integer y = 84
+integer width = 357
+integer height = 64
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = fixed!
+fontfamily fontfamily = modern!
+string facename = "굴림체"
+long textcolor = 33554432
+long backcolor = 12632256
+boolean enabled = false
+string text = "유상사급"
+boolean automatic = false
+end type
+
 type gb_1 from groupbox within w_wip05fu
 integer x = 27
-integer width = 2341
+integer width = 2994
 integer height = 196
 integer taborder = 20
 integer textsize = -8
@@ -470,9 +541,9 @@ long backcolor = 12632256
 end type
 
 type gb_2 from groupbox within w_wip05fu
-integer x = 2473
+integer x = 3035
 integer y = 4
-integer width = 1600
+integer width = 1307
 integer height = 192
 integer taborder = 20
 integer textsize = -8

@@ -19,7 +19,7 @@ table(column=(type=char(1) updatewhereclause=no name=areacode dbname="AreaCode" 
  column=(type=decimal(1) updatewhereclause=no name=s4mh dbname="s4mh" )
  column=(type=decimal(1) updatewhereclause=no name=f67mh dbname="F67MH" )
  column=(type=decimal(5) updatewhereclause=no name=tarqtymh dbname="tarqtyMH" )
- procedure="1 execute dbo.sp_pism071i_01_jin;1 @ps_area = :ps_area, @ps_div = :ps_div, @ps_stFromDate = :ps_stFromDate, @ps_stToDate = :ps_stToDate" arguments=(("ps_area", string),("ps_div", string),("ps_stFromDate", string),("ps_stToDate", string))  sort="workcenter A " )
+ procedure="1 execute dbo.sp_pism071i_02_jin;1 @ps_area = :ps_area, @ps_div = :ps_div, @ps_stFromDate = :ps_stFromDate, @ps_stToDate = :ps_stToDate, @ps_check = :ps_check" arguments=(("ps_area", string),("ps_div", string),("ps_stFromDate", string),("ps_stToDate", string),("ps_check", string))  sort="workcenter A " )
 text(band=header alignment="2" text="조" border="2" color="16777215" x="5" y="8" height="120" width="965" html.valueishtml="0"  name=workcentername_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="총 보 유 공 수" border="2" color="16777215" x="1326" y="8" height="60" width="946" html.valueishtml="0"  name=totmh_t visible="1"  font.face="굴림체" font.height="-10" font.weight="400"  font.family="1" font.pitch="1" font.charset="129" background.mode="2" background.color="8421376" )
 text(band=header alignment="2" text="표준대비

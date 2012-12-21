@@ -24,7 +24,7 @@ WHERE  "PBCOMMON"."DAC001A"."DCODE" = :a_s_deptcd and
 		 "PBCOMMON"."DAC001A"."DACTTODT" = 0 using sqlca;
 
 IF sqlca.sqlcode <> 0 Then
-	l_s_deptnm = 'error'
+	l_s_deptnm = ''
 End IF
 
 Return l_s_deptnm

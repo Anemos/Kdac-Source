@@ -298,7 +298,7 @@ end if
 						dw_1.object.slcucode[1]   = dw_1.object.sldept[1]
 					end if
 			elseif f_get_acckyungbi_accode(l_s_accode) = 'y' then
-					if f_get_accdr021(dw_1.object.slcucode[1]) = 'e' then
+					if f_get_accdr021(dw_1.object.slcucode[1],l_s_acdate) = 'e' then
 						dw_1.object.slcucode.Background.Color = rgb(255,255,0)
 						if len(l_s_column) < 1 then
 							l_s_column = "slcucode"
@@ -319,7 +319,7 @@ end if
 					end if
 				end if
 			elseif dw_1.object.slcucodegb[1] = 'D' then
-				if f_get_accdr021(dw_1.object.slcucode[1]) = 'e' then
+				if f_get_accdr021(dw_1.object.slcucode[1],l_s_acdate) = 'e' then
 					dw_1.object.slcucode.Background.Color = rgb(255,255,0)
 					if len(l_s_column) < 1 then
 						l_s_column = "slcucode"
@@ -355,7 +355,7 @@ end if
 		end if
 	end if
 	if i_s_5 = 'X' then
-		if f_get_accdr051(dw_1.object.slmanage2[1], dw_1.object.slaccode[1], dw_1.object.slacdate[1], dw_1.object.sldiv[1], dw_1.object.sldrcr[1], dw_1.object.sldept[1]) = 'e' then
+		if f_get_accdr051(dw_1.object.slmanage2[1], dw_1.object.slaccode[1], dw_1.object.slacdate[1], dw_1.object.sldiv[1], dw_1.object.sldrcr[1], dw_1.object.sldept[1],dw_1.object.slpdcd[1]) = 'e' then
 			dw_1.object.slmanage2.Background.Color = rgb(255,255,0)
 			if len(l_s_column) < 1 then
 				l_s_column = "slmanage2"

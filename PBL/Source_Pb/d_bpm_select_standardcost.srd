@@ -1,0 +1,55 @@
+$PBExportHeader$d_bpm_select_standardcost.srd
+$PBExportComments$사업계획 표준재료비 내역
+release 9;
+datawindow(units=0 timer_interval=0 color=1073741824 processing=1 HTMLDW=no print.printername="" print.documentname="" print.orientation = 0 print.margin.left = 110 print.margin.right = 110 print.margin.top = 96 print.margin.bottom = 96 print.paper.source = 0 print.paper.size = 0 print.canusedefaultprinter=yes print.prompt=no print.buttons=no print.preview.buttons=no print.cliptext=no print.overrideprintjob=no print.collate=yes hidegrayline=no grid.lines=0 )
+header(height=100 color="536870912" )
+summary(height=0 color="536870912" )
+footer(height=0 color="536870912" )
+detail(height=112 color="536870912" )
+table(column=(type=char(1) updatewhereclause=yes name=mplant dbname="MPLANT" )
+ column=(type=char(1) updatewhereclause=yes name=mdiv dbname="MDIV" )
+ column=(type=char(4) updatewhereclause=yes name=mmdcd dbname="MMDCD" )
+ column=(type=char(12) updatewhereclause=yes name=mmdno dbname="MMDNO" )
+ column=(type=decimal(6) updatewhereclause=yes name=matcost dbname="MATCOST" )
+ column=(type=decimal(6) updatewhereclause=yes name=molat dbname="MOLAT" )
+ column=(type=decimal(6) updatewhereclause=yes name=mcmcd dbname="MCMCD" )
+ column=(type=decimal(6) updatewhereclause=yes name=compute_0008 dbname="compute_0008" )
+ retrieve="select a.mplant,a.mdiv, a.mmdcd,a.mmdno,a.matcost,a.molat,a.mcmcd,(a.matcost - b.matcost)
+from
+( select mplant,mdiv, mmdcd,mmdno,(mtwon + mtusd + mtjpy + mtdem + mtfrf + mtgbp 
++ mtaud + mtesp + mtemu + mtitl + 
+mtchf + mtbfr + mtdkk + mtats + mtcad + mtsek 
++ mtrmb + mtthb + mtetc) as matcost ,molat,mcmcd
+from pbbpm.bpm515
+where comltd = '01' and myear = :ag_year and mbrev = :ag_revno and mgubun = 'A' and musge = 'D'
+and mseqgb <> 'S' ) a inner join 
+( select mplant,mdiv, mmdcd,mmdno,(mtwon + mtusd + mtjpy + mtdem + mtfrf + mtgbp 
++ mtaud + mtesp + mtemu + mtitl + 
+mtchf + mtbfr + mtdkk + mtats + mtcad + mtsek 
++ mtrmb + mtthb + mtetc) as matcost ,molat,mcmcd
+from pbbpm.bpm515
+where comltd = '01' and myear = :ag_year and mbrev = :ag_revno and mgubun = 'A' and musge = 'E'
+and mseqgb <> 'S' ) b
+on a.mplant = b.mplant and a.mdiv = b.mdiv and a.mmdcd = b.mmdcd and a.mmdno = b.mmdno" arguments=(("ag_year", string),("ag_revno", string)) )
+column(band=detail id=1 alignment="0" tabsequence=0 border="0" color="0" x="9" y="0" height="76" width="178" html.valueishtml="0"  name=mplant visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="지역" border="0" color="0" x="5" y="4" height="76" width="183" html.valueishtml="0"  name=mplant_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=2 alignment="0" tabsequence=0 border="0" color="0" x="201" y="0" height="76" width="192" html.valueishtml="0"  name=mdiv visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="공장" border="0" color="0" x="197" y="4" height="76" width="197" html.valueishtml="0"  name=mdiv_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=3 alignment="0" tabsequence=0 border="0" color="0" x="407" y="0" height="76" width="288" html.valueishtml="0"  name=mmdcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="제품군" border="0" color="0" x="402" y="4" height="76" width="293" html.valueishtml="0"  name=mmdcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=4 alignment="0" tabsequence=0 border="0" color="0" x="709" y="0" height="76" width="375" html.valueishtml="0"  name=mmdno visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Mmdno" border="0" color="0" x="704" y="4" height="76" width="379" html.valueishtml="0"  name=mmdno_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=5 alignment="0" tabsequence=0 border="0" color="0" x="1097" y="0" height="76" width="1367" html.valueishtml="0"  name=matcost visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Matcost" border="0" color="0" x="1093" y="4" height="76" width="1371" html.valueishtml="0"  name=matcost_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=6 alignment="0" tabsequence=0 border="0" color="0" x="2478" y="0" height="76" width="1367" html.valueishtml="0"  name=molat visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Molat" border="0" color="0" x="2473" y="4" height="76" width="1371" html.valueishtml="0"  name=molat_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=7 alignment="0" tabsequence=0 border="0" color="0" x="3858" y="0" height="76" width="1367" html.valueishtml="0"  name=mcmcd visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Mcmcd" border="0" color="0" x="3854" y="4" height="76" width="1371" html.valueishtml="0"  name=mcmcd_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+column(band=detail id=8 alignment="0" tabsequence=0 border="0" color="0" x="5239" y="0" height="76" width="1367" html.valueishtml="0"  name=compute_0008 visible="1" edit.limit=0 edit.case=any edit.focusrectangle=no edit.autoselect=no edit.imemode=0  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+text(band=header alignment="0" text="Compute 0008" border="0" color="0" x="5234" y="4" height="76" width="1371" html.valueishtml="0"  name=compute_0008_t visible="1"  font.face="Arial" font.height="-12" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+htmltable(border="1" )
+htmlgen(clientevents="1" clientvalidation="1" clientcomputedfields="1" clientformatting="0" clientscriptable="0" generatejavascript="1" encodeselflinkargs="1" netscapelayers="0" )
+export.xml(headgroups="1" includewhitespace="0" metadatatype=0 savemetadata=0 )
+import.xml()
+export.pdf(method=0 distill.custompostscript="0" xslfop.print="0" )
+ 

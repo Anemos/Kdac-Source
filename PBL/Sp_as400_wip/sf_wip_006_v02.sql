@@ -2,6 +2,15 @@
 -- procedure name : pbwip.sf_wip_006
 -- desc : bom explosion for many item
 -- a_chk: G(라인전개),K(업체전개)
+-- a_chk = 'A' --> ALL(10/05,10/06 Deploy),Not Main, Not InvUnit
+--       = 'B' --> ALL(10/05,10/06 Deploy),Main Deploy, Not InvUnit
+--       = 'C' --> Plant(10/05,10/06 Not Deploy),Not Main, Not InvUnit
+--       = 'D' --> Plant(10/05,10/06 Not Deploy),Main Deploy, Not InvUnit
+--       = 'E' --> ALL(10/05,10/06 Deploy),Not Main, InvUnit
+--       = 'F' --> ALL(10/05,10/06 Deploy),Main Deploy, InvUnit
+--       = 'G' --> Plant(10/05,10/06 Not Deploy),Not Main, InvUnit
+--       = 'H' --> Plant(10/05,10/06 Not Deploy),Main Deploy, InvUnit
+--       = 'I' --> Plant(10/05,10/06 Not Deploy),Single Deploy,InvUnit
 
 drop function pbwip.sf_wip_006;
 create function pbwip.sf_wip_006 (
@@ -136,12 +145,6 @@ elseif length(trim(p_itno)) > 1 then
 else
    set p_opcd = ' ';
 end if;
-if a_chk = 'B' or a_chk = 'D' or
-   a_chk = 'F' then
-   if p_opcd = '2' then
-      return 'N';
-   end if;
-end if;
 
 set p_level = 1;
 set p_qty = 1;
@@ -180,6 +183,12 @@ else
 end if;
 if p_srce = '03' and p_opcd = '2' and a_chk = 'G' then
   goto inc_loop;
+end if;
+
+if a_chk = 'B' or a_chk = 'D' or a_chk = 'F' or a_chk = 'H' then
+   if p_opcd = '2' then
+      goto inc_loop;
+   end if;
 end if;
 
 if a_chk = 'K' and p_srce <> '03' then

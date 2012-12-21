@@ -7,14 +7,16 @@ forward prototypes
 global function string f_get_acccomm_kyungbi (string a_s_accode)
 end prototypes
 
-global function string f_get_acccomm_kyungbi (string a_s_accode);
+global function string f_get_acccomm_kyungbi (string a_s_accode);//여비교통비제외
+
+//	( a_s_accode >= 'D1052401' and a_s_accode <= 'D1052499' ) or &
+//	( a_s_accode >= 'M1032401' and a_s_accode <= 'M1032499' ) or &
+//	( a_s_accode >= 'S1032401' and a_s_accode <= 'S1032499' ) or &
+
 if a_s_accode = 'D1052310' or a_s_accode = 'M1032310' or a_s_accode = 'S1032310' or &
    ( a_s_accode >= 'M1020900' and a_s_accode <= 'M1020999' ) or &
 	( a_s_accode >= 'M1033800' and a_s_accode <= 'M1033899' ) or &
-	( a_s_accode >= 'D1052401' and a_s_accode <= 'D1052499' ) or &
-	( a_s_accode >= 'M1032401' and a_s_accode <= 'M1032499' ) or &
-	( a_s_accode >= 'S1032401' and a_s_accode <= 'S1032499' ) or &
-	( a_s_accode >= 'D1052601' and a_s_accode <= 'D1052699' ) or &
+ 	( a_s_accode >= 'D1052601' and a_s_accode <= 'D1052699' ) or &
 	( a_s_accode >= 'M1032601' and a_s_accode <= 'M1032699' ) or &
 	( a_s_accode >= 'S1032601' and a_s_accode <= 'S1032699' ) then
 	return 'y'

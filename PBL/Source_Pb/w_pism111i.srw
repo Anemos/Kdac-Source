@@ -5,10 +5,13 @@ global type w_pism111i from w_pism_sheet03
 end type
 type dw_buhajanup from u_pism_dw within w_pism111i
 end type
+type cbx_holiday from checkbox within w_pism111i
+end type
 end forward
 
 global type w_pism111i from w_pism_sheet03
 dw_buhajanup dw_buhajanup
+cbx_holiday cbx_holiday
 end type
 global w_pism111i w_pism111i
 
@@ -16,13 +19,16 @@ on w_pism111i.create
 int iCurrent
 call super::create
 this.dw_buhajanup=create dw_buhajanup
+this.cbx_holiday=create cbx_holiday
 iCurrent=UpperBound(this.Control)
 this.Control[iCurrent+1]=this.dw_buhajanup
+this.Control[iCurrent+2]=this.cbx_holiday
 end on
 
 on w_pism111i.destroy
 call super::destroy
 destroy(this.dw_buhajanup)
+destroy(this.cbx_holiday)
 end on
 
 event open;call super::open;wf_setRetCondition(STYEAR)
@@ -31,12 +37,19 @@ ib_wcallview = True
 end event
 
 event ue_retrieve;call super::ue_retrieve;Integer li_ret 
+String ls_check
+
+if cbx_holiday.checked then
+	ls_check = 'Y'
+else
+	ls_check = 'N'
+end if
 
 f_pism_working_msg(istr_mh.year + '년 ' + & 
 						 uo_div.is_uo_divisionname + "공장 " + uo_wc.is_uo_workcentername + " 조", '월별 ' + dw_buhajanup.Title + "를 조회중입니다. 잠시만 기다려 주십시오.") 
 
 dw_buhajanup.SetTransObject(SqlPIS) 
-li_ret = dw_buhajanup.Retrieve(istr_mh.area, istr_mh.div, istr_mh.wc, istr_mh.year) 
+li_ret = dw_buhajanup.Retrieve(istr_mh.area, istr_mh.div, istr_mh.wc, istr_mh.year, ls_check) 
 
 If IsValid(w_pism_working) Then Close(w_pism_working) 
 If li_ret = 0 Then f_pism_messagebox(Information!, -1, "조회실패", istr_mh.year + '년~n' + uo_wc.is_uo_workcentername + " 조의 생산실적이 존재하지 않습니다.")
@@ -118,5 +131,24 @@ boolean bringtotop = true
 string title = "월별 부하/잔업율"
 string dataobject = "d_pism111i_02"
 integer ii_selection = 0
+end type
+
+type cbx_holiday from checkbox within w_pism111i
+boolean visible = false
+integer x = 3570
+integer y = 44
+integer width = 398
+integer height = 84
+boolean bringtotop = true
+integer textsize = -10
+integer weight = 700
+fontcharset fontcharset = hangeul!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = modern!
+string facename = "맑은 고딕"
+long textcolor = 33554432
+long backcolor = 12632256
+string text = "휴일제외"
+boolean automatic = false
 end type
 

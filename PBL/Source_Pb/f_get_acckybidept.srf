@@ -1,0 +1,43 @@
+$PBExportHeader$f_get_acckybidept.srf
+$PBExportComments$경비 소관부서 변환 return
+global type f_get_acckybidept from function_object
+end type
+
+forward prototypes
+global function string f_get_acckybidept (string a_s_deptcd)
+end prototypes
+
+global function string f_get_acckybidept (string a_s_deptcd);string l_s_sys1, l_s_sys2  ,l_s_dept
+
+SELECT "PBCOMMON"."DAC001A"."DSYS1", "PBCOMMON"."DAC001A"."DSYS2"
+INTO   :l_s_sys1, :l_s_sys2
+FROM   "PBCOMMON"."DAC001A"
+WHERE  "PBCOMMON"."DAC001A"."DCODE" = :a_s_deptcd and  
+		 "PBCOMMON"."DAC001A"."DUSE" = ' '   AND  
+		 "PBCOMMON"."DAC001A"."DTODT" = 0    and
+		 "PBCOMMON"."DAC001A"."DACTTODT" = 0 using sqlca;
+
+ 	
+if l_s_sys1='' and l_s_sys2='X' and mid(a_s_deptcd,3,2) <> '00' then
+	
+		SELECT "PBCOMMON"."DAC002"."COFLNAME"
+		INTO :l_s_dept
+		FROM "PBCOMMON"."DAC002"
+		WHERE "PBCOMMON"."DAC002"."COMLTD" = :g_s_company and 
+		      "PBCOMMON"."DAC002"."COGUBUN" = 'ACC550' and 
+				"PBCOMMON"."DAC002"."COCODE"  = SUBSTR(:a_s_deptcd,1,1)  using sqlca;
+				
+		if sqlca.sqlcode <> 0 then 		
+		   l_s_dept =mid(a_s_deptcd,1,2) +'00'
+		end if 
+else 
+   l_s_dept = mid(a_s_deptcd,1,2) +'00'
+end if 
+
+
+return l_s_dept
+
+
+ 
+end function
+

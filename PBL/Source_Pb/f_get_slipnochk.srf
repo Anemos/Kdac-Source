@@ -54,7 +54,10 @@ for l_n_row = 1 to l_n_count
 next
 
 declare acc_cur cursor for	
-SELECT  distinct "PBACC"."ACC100"."SLSLIPNO"
+
+
+
+SELECT  distinct   "PBACC"."ACC100"."SLSLIPNO"
 FROM "PBACC"."ACC100"  
    WHERE ( "PBACC"."ACC100"."COMLTD" = :g_s_company ) AND  
          ( "PBACC"."ACC100"."SLAREA" = :g_s_wkcd ) AND  
@@ -64,8 +67,17 @@ FROM "PBACC"."ACC100"
         ( "PBACC"."ACC100"."SLACCODE" IN ('S1010203','S1010202','S1011203','S1011202','H1080105','H1080103','H1080104' )and "PBACC"."ACC100"."SLDRCR" = '2' AND SUBSTR("PBACC"."ACC100"."SLMANAGE2",1,1) <>'L')) AND 
         ( "PBACC"."ACC100"."SLSLIPCM" ='1') AND
         ( "PBACC"."ACC100"."SLEMPNO" = :a_s_emp) 
-      
-ORDER BY"PBACC"."ACC100"."SLSLIPNO" ;
+UNION 
+
+SELECT  distinct "PBSLE"."SLE606"."ACCNO1"
+FROM  "PBSLE"."SLE606"  
+WHERE "PBSLE"."SLE606"."COMLTD" = :g_s_company and 
+      "PBSLE"."SLE606"."ACCDT" = :a_s_dt and 
+      SUBSTR("PBSLE"."SLE606"."SLSLIP",1,1) ='P' AND 
+      "PBSLE"."SLE606"."EMCD" NOT IN ('','ZA')  AND 
+      "PBSLE"."SLE606"."STCD" IN ('1','2','C') AND 
+		"PBSLE"."SLE606"."ACCNO1" <> 0  
+ORDER BY 1 ;
 
 open acc_cur ;
 	do while true
@@ -77,6 +89,9 @@ open acc_cur ;
 		l_s_nochk = l_s_nochk + '  ' + string(l_n_slipno)
 	loop	
 close acc_cur;
+
+
+ 
 
 return l_s_nochk 
   

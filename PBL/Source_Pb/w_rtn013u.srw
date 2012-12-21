@@ -42,7 +42,8 @@ end type
 end forward
 
 global type w_rtn013u from w_origin_sheet01
-integer width = 4677
+integer width = 4713
+integer height = 2792
 string title = "Routing 정보 등록"
 tv_1 tv_1
 dw_1 dw_1
@@ -84,7 +85,7 @@ public subroutine wf_rtn005_update (string a_cmcd, string a_plant, string a_dvsn
 public subroutine wf_rtn006_update (string a_plant, string a_dvsn, string a_itno, string a_line1, string a_line2, string a_opno, string a_nvmo, string a_mcno, string a_term, decimal a_rrnno, string a_rdedfm)
 public subroutine wf_itempopulate (long ag_handle, treeview ag_tvcurrent)
 public subroutine wf_set_items (integer ag_level, integer ag_row, readonly treeviewitem ag_tvinew)
-protected function string wf_chk_error1 (decimal l_n_rbopsq, string l_s_rbopno, string l_s_rbedfm, string l_s_rbopnm, string l_s_rbline3, decimal l_d_rbbmtm, decimal l_d_rbbltm, decimal l_d_rbbstm, decimal l_n_rblbcnt, string l_s_rbplant, string l_s_rbdvsn, string l_s_rbline, string l_s_rbitno)
+protected function string wf_chk_error1 (decimal l_n_rbopsq, string l_s_rbopno, string l_s_rbedfm, string l_s_rbopnm, string l_s_rbline3, decimal l_d_rbbmtm, decimal l_d_rbbltm, decimal l_d_rbbstm, decimal l_n_rblbcnt, string l_s_rbplant, string l_s_rbdvsn, string l_s_rbline, string l_s_rbitno, decimal l_d_rcpower)
 end prototypes
 
 public subroutine wf_visible_check (string ag_visible);
@@ -156,6 +157,7 @@ if a_para = 'I' then
 	dw_detail.object.rcbltm.background.color  = rgb(192,192,192)
 	dw_detail.object.rcbstm.background.color  = rgb(192,192,192)
 	dw_detail.object.rclbcnt.background.color = rgb(192,192,192)
+	dw_detail.object.rcpower.background.color = rgb(192,192,192)
 	
 	dw_detail.object.rcitno.protect           = true
 	dw_detail.object.rcline1.protect          = true
@@ -169,6 +171,7 @@ if a_para = 'I' then
 	dw_detail.object.rcbltm.protect           = true
 	dw_detail.object.rcbstm.protect           = true
 	dw_detail.object.rclbcnt.protect          = true
+	dw_detail.object.rcpower.protect          = true
 	dw_detail.object.find_button.visible      = false
 	dw_detail.object.jangbi_button.visible    = true
 	dw_detail.object.budae_button.visible     = true
@@ -213,6 +216,7 @@ elseif a_para = 'A' then
 	dw_detail.object.rcbltm.background.color  = rgb(255,255,239)
 	dw_detail.object.rcbstm.background.color  = rgb(255,255,239)
 	dw_detail.object.rclbcnt.background.color = rgb(255,255,255)
+	dw_detail.object.rcpower.background.color  = rgb(255,255,239)
 	
    dw_detail.object.rcopsq.protect           = false
 	dw_detail.object.rcopno.protect           = false
@@ -223,6 +227,7 @@ elseif a_para = 'A' then
 	dw_detail.object.rcbltm.protect           = false
 	dw_detail.object.rcbstm.protect           = false
 	dw_detail.object.rclbcnt.protect          = false
+	dw_detail.object.rcpower.protect          = false
 	dw_detail.object.find_button.visible      = true
 	dw_detail.object.jangbi_button.visible    = true
 	dw_detail.object.budae_button.visible     = true
@@ -241,6 +246,7 @@ else
 	dw_detail.object.rcbltm.background.color  = rgb(255,255,239)
 	dw_detail.object.rcbstm.background.color  = rgb(255,255,239)
 	dw_detail.object.rclbcnt.background.color = rgb(255,255,255)
+	dw_detail.object.rcpower.background.color  = rgb(255,255,239)
 	i_s_protect = '111'
 	dw_detail.object.rcitno.protect           = true
 	dw_detail.object.rcline1.protect          = true
@@ -255,6 +261,7 @@ else
 	dw_detail.object.rcbltm.protect           = false
 	dw_detail.object.rcbstm.protect           = false
 	dw_detail.object.rclbcnt.protect          = false
+	dw_detail.object.rcpower.protect          = false
 	dw_detail.object.find_button.visible      = true
 	dw_detail.object.jangbi_button.visible    = true
 	dw_detail.object.budae_button.visible     = true
@@ -533,23 +540,33 @@ end if
 
 end subroutine
 
-protected function string wf_chk_error1 (decimal l_n_rbopsq, string l_s_rbopno, string l_s_rbedfm, string l_s_rbopnm, string l_s_rbline3, decimal l_d_rbbmtm, decimal l_d_rbbltm, decimal l_d_rbbstm, decimal l_n_rblbcnt, string l_s_rbplant, string l_s_rbdvsn, string l_s_rbline, string l_s_rbitno);string l_s_error, l_s_wkrbedfm ,l_s_string,l_s_rcedfm
+protected function string wf_chk_error1 (decimal l_n_rbopsq, string l_s_rbopno, string l_s_rbedfm, string l_s_rbopnm, string l_s_rbline3, decimal l_d_rbbmtm, decimal l_d_rbbltm, decimal l_d_rbbstm, decimal l_n_rblbcnt, string l_s_rbplant, string l_s_rbdvsn, string l_s_rbline, string l_s_rbitno, decimal l_d_rcpower);string l_s_error, l_s_wkrbedfm ,l_s_string,l_s_rcedfm
+string l_s_cls, l_s_srce, l_s_pdcd
 integer l_n_sqlcount
 
 l_s_error = space(13)
 
 if i_s_selected = 'A' then
 	//신규입력일때  품번체크
-	select count(*) into:l_n_sqlcount from pbinv.inv101
-			where xplant = :l_s_rbplant and div = :l_s_rbdvsn and itno = :l_s_rbitno using sqlca;
+	select cls,count(*) into :l_s_cls, :l_n_sqlcount from pbinv.inv101
+			where xplant = :l_s_rbplant and div = :l_s_rbdvsn and itno = :l_s_rbitno 
+	group by cls
+	using sqlca;
 	if l_n_sqlcount = 0 then
 		l_s_error = '1'
 	else
 		//BOM등록품번여부
-		select count(*) into:l_n_sqlcount from pbpdm.bom001
-			where plant = :l_s_rbplant and pdvsn = :l_s_rbdvsn and ppitn = :l_s_rbitno and 
-					( (PEDTE = ' ' ) OR  
-							( PEDTE <> ' ' AND PEDTE >= :l_s_rbedfm )) using sqlca;
+		if l_s_cls = '50' then
+			select count(*) into:l_n_sqlcount from pbpdm.bom001
+				where plant = :l_s_rbplant and pdvsn = :l_s_rbdvsn and pcitn = :l_s_rbitno and 
+						( (PEDTE = ' ' ) OR  
+								( PEDTE <> ' ' AND PEDTE >= :l_s_rbedfm )) using sqlca;
+		else
+			select count(*) into:l_n_sqlcount from pbpdm.bom001
+				where plant = :l_s_rbplant and pdvsn = :l_s_rbdvsn and ppitn = :l_s_rbitno and 
+						( (PEDTE = ' ' ) OR  
+								( PEDTE <> ' ' AND PEDTE >= :l_s_rbedfm )) using sqlca;
+		end if
 		if l_n_sqlcount = 0 then		
 			l_s_error = '1'
 		else
@@ -638,11 +655,23 @@ else
 	l_s_error = l_s_error + ' '
 end if
 
-// 조코드가 4자리가 아니거나 등록된 코드가 아니면 에러
+select cls, srce, substring(pdcd,1,2) into :l_s_cls, :l_s_srce, :l_s_pdcd
+from pbinv.inv101
+where comltd = '01' and xplant = :l_s_rbplant and
+	div = :l_s_rbdvsn and itno = :l_s_rbitno
+using sqlca;
+
+// 사내외주가공품 코스트센터 설정
+if l_s_cls = '50' and l_s_srce = '04' then
+	SELECT center into :l_s_rbline3
+	from pbrtn.costcenter
+	where plant = :l_s_rbplant and div = :l_s_rbdvsn and pdcd = :l_s_pdcd
+	using sqlca;
+	
+end if
+// 사내라인 또는 조코드 체크
 if len(l_s_rbline3) = 4 then
 	l_s_string = f_get_deptnm(l_s_rbline3,'5')
-elseif len(l_s_rbline3) = 5 then
-//	l_s_string = f_get_purvndnm(l_s_rbline3)
 end if
 
 if f_spacechk(l_s_string) = -1 then
@@ -695,6 +724,17 @@ if isnull(l_n_rblbcnt) = false and l_n_rblbcnt <> 0 then
 else
 	l_s_error = l_s_error + ' '
 end if
+
+// 소비전력이 음수이면 오류
+//if isnull(l_d_rcpower) = false and l_d_rcpower <> 0 then
+// 	if l_d_rcpower < 0 then
+//		 l_s_error = l_s_error + '1'
+//	else
+//		 l_s_error = l_s_error + ' '
+// 	end if
+//else
+//	l_s_error = l_s_error + ' '
+//end if
 
 return l_s_error
 
@@ -960,7 +1000,7 @@ else
 	i_s_chkbox = '2'
 //	st_input.text = ''
 	if f_spacechk(l_s_sleinput) = -1 then
-		l_n_rows = ids_data4.retrieve(l_s_plant,l_s_div)
+		l_n_rows = ids_data4.retrieve(l_s_plant,l_s_div,l_s_pdcd)
 		if l_n_rows = 0 then
 			uo_status.st_message.text = f_message("I020")
 			return 
@@ -1136,6 +1176,7 @@ event ue_save;string l_s_rcplant, l_s_rcdvsn, l_s_rcitno, l_s_rcline, l_s_rcopno
 dec    l_d_rcbmtm, l_d_rcbltm, l_d_rcbstm, l_d_rcnvmc, l_d_rcnvlb, l_n_rcopsq, l_n_rclbcnt,l_n_sum_rdmctm,l_n_sum_rdlbtm
 int    l_n_rowcount, i, l_n_sqlcount, l_n_modifycount, net, net1
 string ls_message, ls_chtime
+dec{5} l_d_rcpower
 window l_s_wsheet
 
 setpointer(hourglass!)
@@ -1165,12 +1206,13 @@ l_d_rcbltm  = dw_detail.getitemnumber(1,"rcbltm")
 l_d_rcbstm  = dw_detail.getitemnumber(1,"rcbstm")
 l_s_rcnvcd  = dw_detail.getitemstring(1,"rcnvcd")
 l_n_rclbcnt = dw_detail.getitemnumber(1,"rclbcnt")
+l_d_rcpower = dw_detail.getitemnumber(1,"rcpower")
 l_s_rcepno  = g_s_empno
 l_s_rcupdt  = g_s_date
 l_s_rcsydt  = dw_detail.getitemstring(1,"rcsydt")
 
 l_s_error   = wf_chk_error1(l_n_rcopsq,l_s_rcopno,l_s_rcedfm,l_s_rcopnm,l_s_rcline3,l_d_rcbmtm, &
- 						    l_d_rcbltm,l_d_rcbstm,l_n_rclbcnt,l_s_rcplant,l_s_rcdvsn, l_s_rcline,l_s_rcitno)
+ 						    l_d_rcbltm,l_d_rcbstm,l_n_rclbcnt,l_s_rcplant,l_s_rcdvsn, l_s_rcline,l_s_rcitno,l_d_rcpower)
 
 dw_detail.object.cp_chk[1] = l_s_error
 wf_rgbset("rcitno" ,1,1,dw_detail)
@@ -1185,6 +1227,7 @@ wf_rgbset("rcbmtm" ,9,1,dw_detail)
 wf_rgbset("rcbltm" ,10,1,dw_detail)
 wf_rgbset("rcbstm", 11,1,dw_detail)
 wf_rgbset("rclbcnt",12,2,dw_detail)
+wf_rgbset("rcpower",13,1,dw_detail)
 dw_1.setredraw(false)
 
 l_s_column = ''
@@ -1239,6 +1282,10 @@ if f_spacechk(l_s_error) = 0 then
 	elseif mid(l_s_error,12,1) = "1" then
 			if f_spacechk(l_s_column) = -1 then
 				l_s_column = "rclbcnt"
+			end if
+	elseif mid(l_s_error,13,1) = "1" then
+			if f_spacechk(l_s_column) = -1 then
+				l_s_column = "rcpower"
 			end if
 	end if
 end if
@@ -1325,7 +1372,8 @@ if l_n_sqlcount > 0 then
 		 rcepno = :l_s_rcepno , rcipad = :g_s_ipaddr, rcupdt = :g_s_date, rcflag = :l_s_flag,
 		 rcchtime = :ls_chtime, rcinemp = :g_s_empno, rcinchk = 'N', rcintime = '',
 		 rcplemp = '', rcplchk = 'N', rcpltime = '',
-		 rcdlemp = '', rcdlchk = 'N', rcdltime = ''
+		 rcdlemp = '', rcdlchk = 'N', rcdltime = '',
+		 rcpower = :l_d_rcpower
 	where rccmcd = '01' and rcplant = :l_s_rcplant and rcdvsn = :l_s_rcdvsn and 
 			rcitno = :l_s_rcitno and rcline1 = :l_s_rcline1 and  rcline2 = :l_s_rcline2 and 
 			rcopno = :l_s_rcopno 
@@ -1351,13 +1399,13 @@ else
 		rcopnm,rcopsq,rcline3,rcgrde,rcmcyn,rcbmtm,rcbltm,rcbstm,
 		rcnvcd,rcnvmc,rcnvlb,rclbcnt,rcflag,rcepno,rcipad,rcupdt,rcsydt,
 		rcinemp, rcinchk, rcintime, rcplemp, rcplchk, rcpltime,
-		rcdlemp, rcdlchk, rcdltime )
+		rcdlemp, rcdlchk, rcdltime, rcpower )
 	values
 		( '01',:l_s_rcplant,:l_s_rcdvsn,:l_s_rcitno,:l_s_rcline1,:l_s_rcline2,:l_s_rcopno,:ls_chtime,'',
 		:l_s_rcopnm,:l_n_rcopsq,:l_s_rcline3,:l_s_rcgrde,:l_s_rcmcyn,:l_d_rcbmtm,:l_d_rcbltm,:l_d_rcbstm,
 		:l_s_rcnvcd,:l_d_rcnvmc,:l_d_rcnvlb,:l_n_rclbcnt,:l_s_flag,:l_s_rcepno,:g_s_ipaddr,:g_s_date,:g_s_date,
 		:g_s_empno, 'N', '', '', 'N','',
-		'', 'N','')
+		'', 'N','', :l_d_rcpower)
 	using sqlca;
 	
 	if sqlca.sqlcode <> 0 then
@@ -1440,7 +1488,7 @@ uo_status.st_message.text = ""
 
 l_n_row = dw_1.getselectedrow(0)
 if l_n_row < 1 then
-	uo_status.st_message.text = f_message("D040")
+	uo_status.st_message.text = "삭제할 공정을 선택해 주세요."
 	return 0
 end if
 
@@ -1557,7 +1605,7 @@ type tv_1 from treeview within w_rtn013u
 integer x = 5
 integer y = 284
 integer width = 754
-integer height = 2148
+integer height = 2156
 boolean bringtotop = true
 integer textsize = -10
 integer weight = 400
@@ -1699,7 +1747,7 @@ event ue_keydown pbm_dwnkey
 integer x = 782
 integer y = 284
 integer width = 3794
-integer height = 1552
+integer height = 1448
 boolean bringtotop = true
 string title = "dw_1"
 string dataobject = "d_rtn01_dw_detail_routing"
@@ -1814,9 +1862,9 @@ end event
 type dw_detail from datawindow within w_rtn013u
 event ue_keydown pbm_dwnkey
 integer x = 782
-integer y = 1852
+integer y = 1756
 integer width = 3794
-integer height = 588
+integer height = 684
 integer taborder = 30
 boolean bringtotop = true
 string dataobject = "d_rtn01_dw_rtn013_ffinput"
@@ -2122,21 +2170,49 @@ end if
 ls_chtime = f_get_systemdate(sqlca)
 SQLCA.AUTOCOMMIT = FALSE
 
-update pbrtn.rtn013
-set rcchtime = :ls_chtime, rcflag = 'D',
-	 rcepno = :g_s_empno , rcipad = :g_s_ipaddr, rcupdt = :g_s_date,
-	 rcinemp = :g_s_empno, rcinchk = 'N', rcintime = '',
-	 rcplemp = '', rcplchk = 'N', rcpltime = '',
-	 rcdlemp = '', rcdlchk = 'N', rcdltime = ''
-where rccmcd = :g_s_company and rcplant = :l_s_plant and 
-	rcdvsn = :l_s_dvsn and rcitno = :l_s_pitno and
-	rcline1 = :l_s_line1 and rcline2 = :l_s_line2
+select count(*) into :li_rtn
+from pbrtn.rtn015
+where recmcd = :g_s_company and replant = :l_s_plant and 
+	redvsn = :l_s_dvsn and reitno = :l_s_pitno and
+	reline1 = :l_s_line1 and reline2 = :l_s_line2
 using sqlca;
 
-if sqlca.sqlnrows < 1 then
-	ls_message = "삭제중에 오류가 발생하였습니다."
-	goto Rollback_
+if li_rtn <= 0 then
+	delete from pbrtn.rtn013
+	where rccmcd = :g_s_company and rcplant = :l_s_plant and 
+		rcdvsn = :l_s_dvsn and rcitno = :l_s_pitno and
+		rcline1 = :l_s_line1 and rcline2 = :l_s_line2
+	using sqlca;
+	
+	delete from pbrtn.rtn014
+	where rdcmcd = :g_s_company and rdplant = :l_s_plant and 
+		rddvsn = :l_s_dvsn and rditno = :l_s_pitno and
+		rdline1 = :l_s_line1 and rdline2 = :l_s_line2
+	using sqlca;
+	
+	delete from pbrtn.rtn017
+	where rgcmcd = :g_s_company and rgplant = :l_s_plant and 
+		rgdvsn = :l_s_dvsn and rgitno = :l_s_pitno and
+		rgline1 = :l_s_line1 and rgline2 = :l_s_line2
+	using sqlca;
+else
+	update pbrtn.rtn013
+	set rcchtime = :ls_chtime, rcflag = 'D',
+		 rcepno = :g_s_empno , rcipad = :g_s_ipaddr, rcupdt = :g_s_date,
+		 rcinemp = :g_s_empno, rcinchk = 'N', rcintime = '',
+		 rcplemp = '', rcplchk = 'N', rcpltime = '',
+		 rcdlemp = '', rcdlchk = 'N', rcdltime = ''
+	where rccmcd = :g_s_company and rcplant = :l_s_plant and 
+		rcdvsn = :l_s_dvsn and rcitno = :l_s_pitno and
+		rcline1 = :l_s_line1 and rcline2 = :l_s_line2
+	using sqlca;
+	
+	if sqlca.sqlnrows < 1 then
+		ls_message = "삭제중에 오류가 발생하였습니다."
+		goto Rollback_
+	end if
 end if
+
 COMMIT USING SQLCA;
 SQLCA.AUTOCOMMIT = TRUE
 

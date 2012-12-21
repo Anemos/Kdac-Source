@@ -1,0 +1,42 @@
+$PBExportHeader$f_get_fexpay.srf
+$PBExportComments$결제조건별 일자 return
+global type f_get_fexpay from function_object
+end type
+
+forward prototypes
+global function string f_get_fexpay (string a_s_date, string a_s_xpay)
+end prototypes
+
+global function string f_get_fexpay (string a_s_date, string a_s_xpay);// * return 시 error
+
+string  l_s_rdate
+
+
+CHOOSE CASE a_s_xpay
+	CASE 'G9'
+    l_s_rdate = f_relativedate(a_s_date,10)
+   CASE 'GC'
+	 l_s_rdate = f_relativedate(a_s_date,15)	
+   CASE 'G2'
+    l_s_rdate = f_relativedate(a_s_date,30)
+   CASE 'G3'
+	 l_s_rdate = f_relativedate(a_s_date,45)
+   CASE 'G4'
+    l_s_rdate = f_relativedate(a_s_date,60)
+   CASE 'G7'
+	 l_s_rdate = mid(f_relative_month(a_s_date,2),1,6) + '02'
+	CASE 'GA'
+	 l_s_rdate = mid(f_relative_month(a_s_date,3),1,6) + '02' 
+	CASE 'GA'
+	 l_s_rdate = mid(f_relative_month(a_s_date,4),1,6) + '02' 
+	CASE 'G8'
+	 l_s_rdate =f_relativedate(a_s_date,90)
+   CASE ELSE 
+	 l_s_rdate =''
+	 
+END CHOOSE 	 
+
+
+return l_s_rdate
+end function
+

@@ -166,13 +166,16 @@ table(column=(type=char(1) updatewhereclause=yes name=wplant dbname="BPM516.WPLA
 			A.WITNO = B.WITNO AND A.WVDNO = B.WVDNO
 		INNER JOIN PBBPM.BPM509 C
 		ON A.XYEAR = C.YCCYY AND A.WREV = C.REVNO AND A.WITNO = C.YITNO AND A.WVDNO = C.YVNDSR AND
-   		C.YGUBUN = '10' AND ((C.YSRCE = '01' AND C.YGRAD = '1') OR (C.YSRCE <> '01' AND C.YGRAD <> '9'))
+   		C.YGUBUN = '10' AND 
+			((C.YSRCE = '01' AND
+			((C.YGRAD = '1') OR (C.YGRAD = '' AND C.MRATE > 0 AND C.MRATE < 100))) OR (C.YSRCE <> '01' AND C.YGRAD <> '9'))
 
 
    WHERE ( A.~"COMLTD~" = '01' ) AND 
 			( A.~"XYEAR~" = :a_year ) AND
 			( A.~"WREV~" = :a_rev ) AND
 			( A.~"WGUBUN~" = :a_gubun ) AND 
+			( A.~"WSRCE~" <> '03' ) AND
          ( A.~"WPLANT~" like :a_xplant ) AND  
          ( A.~"WDVSN~" like :a_div ) AND  
          ( A.~"WPDCD~" like :a_pdcd ) AND  

@@ -22,7 +22,7 @@ dec l_n_fornamt, l_n_orgamt
          ( "PBACC"."ACC100"."SLACCODE" ='H1080104' ) AND  
          ( "PBACC"."ACC100"."SLDRCR" = '2' ) AND  
          ( "PBACC"."ACC100"."SLOSSTS" <> '1' )    and 
-         (SUBSTR("PBACC"."ACC100"."SLMANAGE1",1,1) = :ag_area)
+         (:ag_area = '' or SUBSTR("PBACC"."ACC100"."SLMANAGE1",1,1) = :ag_area)
 using sqlca;
 
 if sqlca.sqlcode <> 0 or (isnull(l_n_fornamt) and isnull(l_n_orgamt)) then
